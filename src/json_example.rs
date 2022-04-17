@@ -3,6 +3,6 @@ use serde_derive::Serialize;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct JsonExample {
-    first: String,
-    second: String,
+    pub first: String,
+    pub second: String,
 }
