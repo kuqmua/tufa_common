@@ -20,7 +20,7 @@ pub fn get_git_commit_info() -> GitCommitInfo {
     //must not panic
     //todo: write a message on start in case of error get config info
     //todo: make it parallel or async
-    let commit_editmsg_string_path = ".git/COMMIT_EDITMSG";
+    let commit_editmsg_string_path = "../.git/COMMIT_EDITMSG";//todo: can be two version - just only this repo or this repo as submodule
     let commit_editmsg_path = Path::new(commit_editmsg_string_path);
     let commit_message: String;
     match File::open(commit_editmsg_path) {
@@ -34,7 +34,7 @@ pub fn get_git_commit_info() -> GitCommitInfo {
             }
         }
     }
-    let orig_head_string_path = ".git/ORIG_HEAD";
+    let orig_head_string_path = "../.git/ORIG_HEAD";//todo: can be two version - just only this repo or this repo as submodule
     let orig_head_path = Path::new(orig_head_string_path);
     let commit_id: String;
     match File::open(orig_head_path) {
@@ -48,7 +48,7 @@ pub fn get_git_commit_info() -> GitCommitInfo {
             }
         }
     }
-    let fetch_head_string_path = ".git/FETCH_HEAD";
+    let fetch_head_string_path = "../.git/FETCH_HEAD";//todo: can be two version - just only this repo or this repo as submodule
     let fetch_head_path = Path::new(fetch_head_string_path);
     let branch: String;
     let repo_link: String;
