@@ -1,14 +1,16 @@
-use crate::helpers::git::lazy_static_git_info::GIT_INFO;
+use crate::helpers::git::git_info::GitInfo;
 
-#[deny(
-    clippy::indexing_slicing,
-    clippy::unwrap_used,
-    clippy::integer_arithmetic,
-    clippy::float_arithmetic
-)]
-pub fn get_git_commit_string() -> String {
-    format!(
-        "{} branch'{}' {} {}",
-        GIT_INFO.repo_link, GIT_INFO.branch, GIT_INFO.commit_id, GIT_INFO.commit_message,
-    )
+impl GitInfo {
+    #[deny(
+        clippy::indexing_slicing,
+        clippy::unwrap_used,
+        clippy::integer_arithmetic,
+        clippy::float_arithmetic
+    )]
+    pub fn get_git_commit_string(&self) -> String {
+        format!(
+            "{} branch'{}' {} {}",
+            self.repo_link, self.branch, self.commit_id, self.commit_message,
+        )
+    }
 }
