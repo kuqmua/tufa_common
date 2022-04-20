@@ -1,0 +1,1 @@
+pub const GIT_PATH_FROM_SUBMODULE: &str = "../"; 
