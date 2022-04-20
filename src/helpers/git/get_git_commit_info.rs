@@ -3,6 +3,7 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
 use std::path::Path;
+use crate::constants::GIT_PATH_FROM_SUBMODULE;
 
 impl GitInformation {
     #[deny(
@@ -11,11 +12,21 @@ impl GitInformation {
         clippy::integer_arithmetic,
         clippy::float_arithmetic
     )]
-    pub fn get_git_commit_info(path: &str) -> GitInformation {
+    pub fn get_git_commit_info(repo_git_path: &str) -> GitInformation {
+        let path: &str;
+        if Path::new(&format!("{}.git/", repo_git_path)).is_dir() {//for docker image or run not as tufa_project repo, as git clone tufa_server
+            path = repo_git_path
+        }
+        else if Path::new(&format!("{}.git/", GIT_PATH_FROM_SUBMODULE)).is_dir() {
+            path = GIT_PATH_FROM_SUBMODULE;
+        }
+        else {
+            panic!("no .git folder inside current and parent dir. this message should be displayed only on compile time error")
+        }
         //must not panic
         //todo: write a message on start in case of error get config info
         //todo: make it parallel or async
-        let commit_editmsg_string_path = format!("{}{}", path, ".git/COMMIT_EDITMSG");
+        let commit_editmsg_string_path = format!("{}{}", path, "COMMIT_EDITMSG");
         //todo: make it different for all submodules/repos (no .git folder inside submodule)
         //todo: can be two version - just only this repo or this repo as submodule
         let commit_editmsg_path = Path::new(&commit_editmsg_string_path);
@@ -31,7 +42,7 @@ impl GitInformation {
                 }
             }
         }
-        let orig_head_string_path = format!("{}{}", path, ".git/ORIG_HEAD");
+        let orig_head_string_path = format!("{}{}", path, "ORIG_HEAD");
         //todo: make it different for all submodules/repos (no .git folder inside submodule)
         //todo: can be two version - just only this repo or this repo as submodule
         let orig_head_path = Path::new(&orig_head_string_path);
@@ -47,7 +58,7 @@ impl GitInformation {
                 }
             }
         }
-        let fetch_head_string_path = format!("{}{}", path, ".git/FETCH_HEAD");//todo: can be two version - just only this repo or this repo as submodule
+        let fetch_head_string_path = format!("{}{}", path, "FETCH_HEAD");//todo: can be two version - just only this repo or this repo as submodule
         let fetch_head_path = Path::new(&fetch_head_string_path);
         let branch: String;
         let repo_link: String;
