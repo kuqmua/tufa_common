@@ -1,10 +1,10 @@
-use crate::helpers::git::git_info::GitInfo;
+use crate::helpers::git::git_info::GitInformation;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
 use std::path::Path;
 
-impl GitInfo {
+impl GitInformation {
     #[deny(
         clippy::indexing_slicing,
         clippy::unwrap_used,
@@ -15,7 +15,7 @@ impl GitInfo {
         commit_edit_msg: &str,
         orig_head: &str,
         fetch_head: &str,
-    ) -> GitInfo {
+    ) -> GitInformation {
         //must not panic
         //todo: write a message on start in case of error get config info
         //todo: make it parallel or async
@@ -117,7 +117,7 @@ impl GitInfo {
                 }
             }
         }
-        GitInfo {
+        GitInformation {
             commit_message,
             commit_id,
             branch,
