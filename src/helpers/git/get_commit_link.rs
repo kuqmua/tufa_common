@@ -8,7 +8,7 @@ use crate::helpers::git::lazy_static_git_info::GIT_INFO;
 )]
 pub fn get_commit_link() -> String {
     format!(
-        "https://{}/blob/{}/",
+        "{}/tree/{}/",
         GIT_INFO.repo_link, GIT_INFO.commit_id
     )
 }
