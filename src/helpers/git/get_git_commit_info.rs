@@ -12,19 +12,18 @@ impl GitInformation {
         clippy::integer_arithmetic,
         clippy::float_arithmetic
     )]
-    pub fn get_git_commit_info(repo_git_path: &str) -> GitInformation {
+    pub fn get_git_commit_info(repo_git_path: &str, repo_name: &str) -> GitInformation {
         let path: String;
-        let local = format!("{}.git/", repo_git_path);
-        let submodule = format!("{}.git/", GIT_PATH_FROM_SUBMODULE);
-        if Path::new(&local).is_dir() {//for docker image or run not as tufa_project repo, as git clone tufa_server
-            path = local;
+        if Path::new(&format!("{}.git/", repo_git_path)).is_dir() {//for docker image or run not as tufa_project repo, as git clone tufa_server
+            path = format!("{}.git/", repo_git_path);
         }
-        else if Path::new(&submodule).is_dir() {
-            path = submodule;
+        else if Path::new(&format!("{}.git/", GIT_PATH_FROM_SUBMODULE)).is_dir() {
+            path = format!("{}.git/modules/{}/", GIT_PATH_FROM_SUBMODULE, repo_name);
         }
         else {
             panic!("no .git folder inside current and parent dir. this message should be displayed only on compile time error")
         }
+        println!("{}", path);
         //must not panic
         //todo: write a message on start in case of error get config info
         //todo: make it parallel or async
