@@ -7,10 +7,10 @@ impl GitInformation {
         clippy::integer_arithmetic,
         clippy::float_arithmetic
     )]
-    pub fn get_git_commit_string(&self) -> String {
+    pub fn get_git_fetch_head(&self) -> String {
         format!(
-            "{} branch'{}' {} {}",
-            self.repo_link, self.branch, self.commit_id, self.commit_message,
+            "{}                branch '{}' of {}",
+            self.commit_id, self.branch, self.repo_link
         )
     }
 }
