@@ -27,7 +27,7 @@ impl GitInformation {
         //must not panic
         //todo: write a message on start in case of error get config info
         //todo: make it parallel or async
-        let commit_editmsg_string_path = format!("{}{}", path, "COMMIT_EDITMSG");
+        let commit_editmsg_string_path = format!("{}{}", path, "COMMIT_EDITMSG");//do not use it COMMIT_EDITMSG/ it creates only if you commit something
         //todo: make it different for all submodules/repos (no .git folder inside submodule)
         //todo: can be two version - just only this repo or this repo as submodule
         let commit_editmsg_path = Path::new(&commit_editmsg_string_path);
