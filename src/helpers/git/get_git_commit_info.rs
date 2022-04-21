@@ -23,26 +23,9 @@ impl GitInformation {
         else {
             panic!("no .git folder inside current and parent dir. this message should be displayed only on compile time error")
         }
-        println!("{}", path);
         //must not panic
         //todo: write a message on start in case of error get config info
         //todo: make it parallel or async
-        let commit_editmsg_string_path = format!("{}{}", path, "COMMIT_EDITMSG");//do not use it COMMIT_EDITMSG/ it creates only if you commit something
-        //todo: make it different for all submodules/repos (no .git folder inside submodule)
-        //todo: can be two version - just only this repo or this repo as submodule
-        let commit_editmsg_path = Path::new(&commit_editmsg_string_path);
-        let commit_message: String;
-        match File::open(commit_editmsg_path) {
-            Err(e) => commit_message = e.to_string(),
-            Ok(file) => {
-                let mut buf_reader = BufReader::new(file);
-                let mut commit_editmsg_content = String::new();
-                match buf_reader.read_to_string(&mut commit_editmsg_content) {
-                    Err(e) => commit_message = e.to_string(),
-                    Ok(_) => commit_message = commit_editmsg_content.replace('\n', ""),
-                }
-            }
-        }
         let orig_head_string_path = format!("{}{}", path, "ORIG_HEAD");
         //todo: make it different for all submodules/repos (no .git folder inside submodule)
         //todo: can be two version - just only this repo or this repo as submodule
@@ -126,7 +109,6 @@ impl GitInformation {
             }
         }
         GitInformation {
-            commit_message,
             commit_id,
             branch,
             repo_link,
