@@ -14,6 +14,8 @@ impl GitInformation {
     )]
     pub fn get_git_commit_info(repo_git_path: &str, repo_name: &str) -> GitInformation {
         //todo: use only .git/logs/HEAD file for parsing
+///Todo what happens if use https instead of ssh key
+
         let path: String;
         if Path::new(&format!("{}.git/", repo_git_path)).is_dir() {//for docker image or run not as tufa_project repo, as git clone tufa_server
             path = format!("{}.git/", repo_git_path);
