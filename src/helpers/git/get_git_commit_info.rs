@@ -13,6 +13,76 @@ impl GitInformation {
         clippy::float_arithmetic
     )]
     pub fn get_git_commit_info(repo_git_path: &str, repo_name: &str) -> GitInformation {
+        match File::open(Path::new("../.git/logs/HEAD")) {
+            Err(e) => panic!("error1"),
+            Ok(file) => {
+                let mut buf_reader = BufReader::new(file);
+                let mut orig_head_content = String::new();
+                match buf_reader.read_to_string(&mut orig_head_content) {
+                    Err(e) =>  panic!("error2"),
+                    Ok(_) => {
+                        print!("{}",orig_head_content);
+                        //
+                        let end_line_to_find = "from ";
+                        match orig_head_content.find(end_line_to_find) {
+                            None => {
+                                // branch = format!(
+                                //     "error: no line break character inside '{orig_head_content}'"
+                                // );
+                                // repo_link = format!(
+                                //     "error: no line break character inside '{orig_head_content}'"
+                                // );
+                            }
+                            Some(index) => {
+                                match orig_head_content.find(".git") {
+                                    None => println!("nope"),
+                                    Some(dot_git_index) => {
+                                        let git_repo_link = orig_head_content[index
+                                                            + "from ".len()
+                                                            ..dot_git_index]
+                                                            .to_string();
+                                                            println!("git_repo_link {}", git_repo_link);
+                                    }
+                                }
+                                // let first_line = fetch_head_content[..index].to_string();
+                                // let first_slice_to_find = "branch '";
+                                // let second_slice_to_find = "' of ";
+                                // match first_line.find(first_slice_to_find) {
+                                //     None => {
+                                //         branch = format!(
+                                //             "error: no '{first_slice_to_find}' inside '{first_line}'"
+                                //         );
+                                //         repo_link = format!(
+                                //             "error: no '{first_slice_to_find}' inside '{first_line}'"
+                                //         );
+                                //     }
+                                //     Some(first_branch_index) => {
+                                //         match first_line.find(second_slice_to_find) {
+                                //             None => {
+                                //                 branch = format!("error: no '{second_slice_to_find}' inside '{first_line}'");
+                                //                 repo_link = format!("error: no '{second_slice_to_find}' inside '{first_line}'");
+                                //             }
+                                //             Some(second_branch_index) => {
+                                //                 branch = first_line[first_branch_index
+                                //                     + first_slice_to_find.len()
+                                //                     ..second_branch_index]
+                                //                     .to_string();
+                                //                 repo_link = first_line[second_branch_index
+                                //                     + second_slice_to_find.len()..]
+                                //                     .to_string();
+                                //                 //was .replace(':', "/")
+                                //             }
+                                //         }
+                                //     }
+                                // }
+                            }
+                        }
+                        //
+                    },
+                }
+            }
+        }
+        //
         //todo: use only .git/logs/HEAD file for parsing
         let path: String;
         if Path::new(&format!("{}.git/", repo_git_path)).is_dir() {//for docker image or run not as tufa_project repo, as git clone tufa_server
