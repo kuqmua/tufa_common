@@ -42,6 +42,19 @@ impl GitInformation {
                                                             ..dot_git_index]
                                                             .to_string();
                                                             println!("git_repo_link {}", git_repo_link);
+                                        let v: Vec<(usize, &str)> = orig_head_content.match_indices(" kuqmua").collect();
+                                        println!("v {:#?}", v.last());
+                                        let innd = v.last().unwrap().0;
+                                        // fac3c3cc376a7dc5441dc3f91782f2a202fbe8e9
+                                        let nn = orig_head_content[innd - "fac3c3cc376a7dc5441dc3f91782f2a202fbe8e9".len()..innd].to_string();
+                                        println!("{}/tree/{}/",git_repo_link,  nn);
+                                        // match orig_head_content.rfind(' kuqmua') {
+                                        //     None => println!("nope2"),
+                                        //     Some(_) => {
+
+                                        //     },
+                                        // }
+
                                     }
                                 }
                                 // let first_line = fetch_head_content[..index].to_string();
