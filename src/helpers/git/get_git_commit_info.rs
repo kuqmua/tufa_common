@@ -1,4 +1,4 @@
-use crate::constants::GIT_COMMIT_ID_LENGTH;
+// use crate::constants::GIT_COMMIT_ID_LENGTH;//todo should i check commit length?
 use crate::constants::GIT_PATH_FROM_SUBMODULE;
 use crate::helpers::git::git_info::GitInformation;
 use std::fs::File;
@@ -32,7 +32,6 @@ impl GitInformation {
             .read_to_string(&mut git_logs_head_content)
             .unwrap_or_else(|e| panic!("cannot read to string from HEAD file, error: \"{}\"", e));
         let from_handle = "from ";
-        println!("it_logs_head_content {}", git_logs_head_content);
         let from_handle_index = git_logs_head_content
             .find(from_handle)
             .unwrap_or_else(|| panic!("no \"{}\" inside git_logs_head_content", from_handle));
@@ -109,7 +108,7 @@ impl GitInformation {
                 )
             });
         let message = part_after_commit_unix_time
-            .get(backslash_t_index..)
+            .get(backslash_t_index + 1..)
             .unwrap_or_else(|| {
                 panic!("failed to get slice from part_after_commit_unix_time as message")
             })
