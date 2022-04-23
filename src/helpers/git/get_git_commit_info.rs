@@ -53,10 +53,6 @@ impl GitInformation {
             .last()
             .expect("no last element inside git head file lines");
         let line_parts: Vec<&str> = last_head_file_line.split(' ').collect();
-        let last_commit = line_parts
-            .get(0)
-            .unwrap_or_else(|| panic!("failed to get 0 element from line_parts as last commit"))
-            .to_string();
         let commit_id = line_parts
             .get(1)
             .unwrap_or_else(|| panic!("failed to get 1 element from line_parts as commit_id"))
@@ -122,7 +118,6 @@ impl GitInformation {
         GitInformation {
             commit_id,
             repo_link,
-            last_commit,
             author,
             author_email,
             commit_unix_time,
