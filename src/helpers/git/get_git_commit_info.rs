@@ -16,10 +16,13 @@ impl GitInformation {
     pub fn get_git_commit_info(repo_git_path: &str, repo_name: &str) -> GitInformation {
         let path: String;
         let git_folder_name = ".git";
-        if Path::new(&format!("{}{}/", git_folder_name, repo_git_path)).is_dir() {
-            path = format!("{}.git/", repo_git_path); //for docker image or run not as tufa_project repo, as git clone tufa_server
-        } else if Path::new(&format!("{}.git/", GIT_PATH_FROM_SUBMODULE)).is_dir() {
-            path = format!("{}.git/modules/{}/", GIT_PATH_FROM_SUBMODULE, repo_name);
+        if Path::new(&format!("{}{}/", repo_git_path, git_folder_name)).is_dir() {
+            path = format!("{}{}/", repo_git_path, git_folder_name); //for docker image or run not as tufa_project repo, as git clone tufa_server
+        } else if Path::new(&format!("{}{}/", GIT_PATH_FROM_SUBMODULE, git_folder_name)).is_dir() {
+            path = format!(
+                "{}{}/modules/{}/",
+                GIT_PATH_FROM_SUBMODULE, git_folder_name, repo_name
+            );
         } else {
             panic!("error: no .git folder inside current and parent dir(this message should be displayed only on compile time)")
         }
