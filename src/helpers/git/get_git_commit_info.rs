@@ -23,97 +23,61 @@ impl GitInformation {
         } else {
             panic!("error: no .git folder inside current and parent dir(this message should be displayed only on compile time)")
         }
-        let commit_id: String;
-        let repo_link: String;
-        let last_commit: String;
-        let author: String;
-        let author_email: String;
-        let commit_unix_time: String;
-        let timezone: String;
-        let message: String;
-        match File::open(Path::new(&format!("{}{}", path, "logs/HEAD"))) {
-            Err(e) => panic!("error: {:#?}", e),
-            Ok(file) => {
-                let mut buf_reader = BufReader::new(file);
-                let mut git_logs_head_content = String::new();
-                if let Err(e) = buf_reader.read_to_string(&mut git_logs_head_content) {
-                    panic!("error: {:#?}", e);
-                }
-                let from_handle = "from ";
-                match git_logs_head_content.find(from_handle) {
-                    None => panic!("no \"{}\" inside git_logs_head_content", from_handle),
-                    Some(index) => {
-                        let git_extenstion_name = ".git";
-                        match git_logs_head_content.find(git_extenstion_name) {
-                            None => panic!(
-                                "no \"{}\" inside git_logs_head_content",
-                                git_extenstion_name
-                            ),
-                            Some(dot_git_index) => {
-                                repo_link = git_logs_head_content
-                                    [index + from_handle.len()..dot_git_index]
-                                    .to_string();
-                                let head_file_lines: Vec<&str> =
-                                    git_logs_head_content.lines().collect::<Vec<&str>>();
-                                let last_head_file_line = head_file_lines
-                                    .last()
-                                    .expect("no last element inside git head file lines");
-                                let line_parts: Vec<&str> =
-                                    last_head_file_line.split(' ').collect();
-                                last_commit = line_parts[0].to_string();
-                                commit_id = line_parts[1].to_string();
-                                author = line_parts[2].to_string();
-                                author_email = line_parts[3].to_string();
-                                commit_unix_time = line_parts[4].to_string();
-                                match last_head_file_line.find(&commit_unix_time) {
-                                    None => panic!(
-                                        "cannot find \"{}\" for the second time inside {}",
-                                        commit_unix_time, git_logs_head_content
-                                    ),
-                                    Some(commit_unix_time_index) => {
-                                        let part_after_commit_unix_time = last_head_file_line
-                                            [commit_unix_time_index + commit_unix_time.len() + 1..]
-                                            .to_string();
-                                        let space_symbol = ' ';
-                                        let backslash_t = "\t";
-                                        let first_space_index = part_after_commit_unix_time
-                                            .find(space_symbol)
-                                            .expect(&format!(
-                                                "no \"{}\" symbol inside \"{}\"",
-                                                space_symbol, part_after_commit_unix_time
-                                            ));
-                                        let unhandled_timezone = part_after_commit_unix_time
-                                            [1..first_space_index]
-                                            .to_string();
-                                        match unhandled_timezone.find(backslash_t) {
-                                            None => panic!(
-                                                "no \"{}\" inside \"{}\"",
-                                                backslash_t, unhandled_timezone
-                                            ),
-                                            Some(backslash_t_index) => {
-                                                timezone = unhandled_timezone[..backslash_t_index]
-                                                    .to_string();
-                                            }
-                                        }
-                                        match part_after_commit_unix_time.find(backslash_t) {
-                                            None => panic!(
-                                                "no \"{}\" inside \"{}\"",
-                                                backslash_t, part_after_commit_unix_time
-                                            ),
-                                            Some(backslash_t_index) => {
-                                                message = part_after_commit_unix_time
-                                                    [backslash_t_index..]
-                                                    .to_string();
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        let full_path = &format!("{}{}", path, "logs/HEAD");
+        let file = File::open(Path::new(full_path))
+            .unwrap_or_else(|e| panic!("cannot open HEAD file, error: \"{}\"", e));
+        let mut buf_reader = BufReader::new(file);
+        let mut git_logs_head_content = String::new();
+        buf_reader
+            .read_to_string(&mut git_logs_head_content)
+            .unwrap_or_else(|e| panic!("cannot read to string from HEAD file, error: \"{}\"", e));
+        let from_handle = "from ";
+        let from_handle_index = git_logs_head_content
+            .find(from_handle)
+            .unwrap_or_else(|| panic!("no \"{}\" inside git_logs_head_content", from_handle));
+        let git_extenstion_name = ".git";
+        let dot_git_index = git_logs_head_content
+            .find(git_extenstion_name)
+            .unwrap_or_else(|| {
+                panic!(
+                    "no \"{}\" inside git_logs_head_content",
+                    git_extenstion_name
+                )
+            });
+        let repo_link =
+            git_logs_head_content[from_handle_index + from_handle.len()..dot_git_index].to_string();
+        let head_file_lines: Vec<&str> = git_logs_head_content.lines().collect::<Vec<&str>>();
+        let last_head_file_line = head_file_lines
+            .last()
+            .expect("no last element inside git head file lines");
+        let line_parts: Vec<&str> = last_head_file_line.split(' ').collect();
+        let last_commit = line_parts[0].to_string();
+        let commit_id = line_parts[1].to_string();
+        let author = line_parts[2].to_string();
+        let author_email = line_parts[3][1..line_parts[3].len() - 1].to_string();
+        let commit_unix_time = line_parts[4].to_string();
+        let commit_unix_time_index =
+            last_head_file_line
+                .find(&commit_unix_time)
+                .unwrap_or_else(|| {
+                    panic!(
+                        "cannot find \"{}\" for the second time inside {}",
+                        commit_unix_time, git_logs_head_content
+                    )
+                });
+        let part_after_commit_unix_time =
+            last_head_file_line[commit_unix_time_index + commit_unix_time.len() + 1..].to_string();
+        let backslash_t = "\t";
+        let backslash_t_index = part_after_commit_unix_time
+            .find(backslash_t)
+            .unwrap_or_else(|| {
+                panic!(
+                    "no \"{}\" inside \"{}\"",
+                    backslash_t, part_after_commit_unix_time
+                )
+            });
+        let message = part_after_commit_unix_time[backslash_t_index..].to_string();
+        let timezone = part_after_commit_unix_time[..backslash_t_index].to_string();
         GitInformation {
             commit_id,
             repo_link,
