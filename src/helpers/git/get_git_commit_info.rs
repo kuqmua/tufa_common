@@ -7,12 +7,12 @@ use std::io::BufReader;
 use std::path::Path;
 
 impl GitInformation {
-    // #[deny(
-    //     clippy::indexing_slicing,
-    //     clippy::unwrap_used,
-    //     clippy::integer_arithmetic,
-    //     clippy::float_arithmetic
-    // )]
+    #[deny(
+        clippy::indexing_slicing,
+        clippy::unwrap_used,
+        // clippy::integer_arithmetic,
+        clippy::float_arithmetic
+    )]
     pub fn get_git_commit_info(repo_git_path: &str, repo_name: &str) -> GitInformation {
         let path: String;
         let git_folder_name = ".git";
@@ -32,6 +32,7 @@ impl GitInformation {
             .read_to_string(&mut git_logs_head_content)
             .unwrap_or_else(|e| panic!("cannot read to string from HEAD file, error: \"{}\"", e));
         let from_handle = "from ";
+        println!("it_logs_head_content {}", git_logs_head_content);
         let from_handle_index = git_logs_head_content
             .find(from_handle)
             .unwrap_or_else(|| panic!("no \"{}\" inside git_logs_head_content", from_handle));
@@ -44,18 +45,43 @@ impl GitInformation {
                     git_extenstion_name
                 )
             });
-        let repo_link =
-            git_logs_head_content[from_handle_index + from_handle.len()..dot_git_index].to_string();
+        let repo_link = git_logs_head_content
+            .get(from_handle_index + from_handle.len()..dot_git_index)
+            .unwrap_or_else(|| panic!("failed to get slice from git_logs_head_content"))
+            .to_string();
         let head_file_lines: Vec<&str> = git_logs_head_content.lines().collect::<Vec<&str>>();
         let last_head_file_line = head_file_lines
             .last()
             .expect("no last element inside git head file lines");
         let line_parts: Vec<&str> = last_head_file_line.split(' ').collect();
-        let last_commit = line_parts[0].to_string();
-        let commit_id = line_parts[1].to_string();
-        let author = line_parts[2].to_string();
-        let author_email = line_parts[3][1..line_parts[3].len() - 1].to_string();
-        let commit_unix_time = line_parts[4].to_string();
+        let last_commit = line_parts
+            .get(0)
+            .unwrap_or_else(|| panic!("failed to get 0 element from line_parts as last commit"))
+            .to_string();
+        let commit_id = line_parts
+            .get(1)
+            .unwrap_or_else(|| panic!("failed to get 1 element from line_parts as commit_id"))
+            .to_string();
+        let author = line_parts
+            .get(2)
+            .unwrap_or_else(|| panic!("failed to get 2 element from line_parts as author"))
+            .to_string();
+        let unhandled_author_email = line_parts
+            .get(3)
+            .unwrap_or_else(|| {
+                panic!("failed to get 3 element from line_parts as slice for author_email")
+            })
+            .to_string();
+        let author_email = unhandled_author_email
+            .get(1..unhandled_author_email.len() - 1)
+            .unwrap_or_else(|| panic!("failed to get slice from line_parts as author_email"))
+            .to_string();
+        let commit_unix_time = line_parts
+            .get(4)
+            .unwrap_or_else(|| {
+                panic!("failed to get 4 element from line_parts as commit_unix_time")
+            })
+            .to_string();
         let commit_unix_time_index =
             last_head_file_line
                 .find(&commit_unix_time)
@@ -65,8 +91,14 @@ impl GitInformation {
                         commit_unix_time, git_logs_head_content
                     )
                 });
-        let part_after_commit_unix_time =
-            last_head_file_line[commit_unix_time_index + commit_unix_time.len() + 1..].to_string();
+        let part_after_commit_unix_time = last_head_file_line
+            .get(commit_unix_time_index + commit_unix_time.len() + 1..)
+            .unwrap_or_else(|| {
+                panic!(
+                    "failed to get slice from last_head_file_line as part_after_commit_unix_time"
+                )
+            })
+            .to_string();
         let backslash_t = "\t";
         let backslash_t_index = part_after_commit_unix_time
             .find(backslash_t)
@@ -76,8 +108,18 @@ impl GitInformation {
                     backslash_t, part_after_commit_unix_time
                 )
             });
-        let message = part_after_commit_unix_time[backslash_t_index..].to_string();
-        let timezone = part_after_commit_unix_time[..backslash_t_index].to_string();
+        let message = part_after_commit_unix_time
+            .get(backslash_t_index..)
+            .unwrap_or_else(|| {
+                panic!("failed to get slice from part_after_commit_unix_time as message")
+            })
+            .to_string();
+        let timezone = part_after_commit_unix_time
+            .get(..backslash_t_index)
+            .unwrap_or_else(|| {
+                panic!("failed to get slice from part_after_commit_unix_time as timezone")
+            })
+            .to_string();
         GitInformation {
             commit_id,
             repo_link,
