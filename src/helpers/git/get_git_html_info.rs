@@ -1,4 +1,4 @@
-pub async fn get_git_html_info(
+pub fn get_git_html_info(
     commit_id: String, 
     repo_link: String, 
     author: String, 
