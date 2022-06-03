@@ -1,15 +1,15 @@
 pub fn get_git_html_info(
-    commit_id: String, 
-    repo_link: String, 
-    author: String, 
-    author_email: String, 
-    commit_unix_time: String, 
-    timezone: String, 
-    message: String, 
-    commit_link: String, 
+    commit_id: String,
+    repo_link: String,
+    author: String,
+    author_email: String,
+    commit_unix_time: String,
+    timezone: String,
+    message: String,
+    commit_link: String,
 ) -> String {
-        format!(
-            r#"<!DOCTYPE html>
+    format!(
+        r#"<!DOCTYPE html>
 <html>
 
 <head>
@@ -5647,5 +5647,6 @@ pub fn get_git_html_info(
 </code></pre>
 </body>
 
-</html>"#)
+</html>"#
+    )
 }
