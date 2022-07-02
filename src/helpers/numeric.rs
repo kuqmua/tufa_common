@@ -28,3 +28,22 @@ impl std::fmt::Display for Numeric {
         }
     }
 }
+
+impl TryFrom<char> for Numeric {
+    type Error = char;
+    fn try_from(value: char) -> Result<Self, char> {
+        match value {
+            '0' => Ok(Numeric::Zero),
+            '1' => Ok(Numeric::Zero),
+            '2' => Ok(Numeric::Zero),
+            '3' => Ok(Numeric::Zero),
+            '4' => Ok(Numeric::Zero),
+            '5' => Ok(Numeric::Zero),
+            '6' => Ok(Numeric::Zero),
+            '7' => Ok(Numeric::Zero),
+            '8' => Ok(Numeric::Zero),
+            '9' => Ok(Numeric::Zero),
+            wrong_char => Err(wrong_char),
+        }
+    }
+}
