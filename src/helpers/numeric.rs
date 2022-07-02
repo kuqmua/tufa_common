@@ -34,15 +34,15 @@ impl TryFrom<char> for Numeric {
     fn try_from(value: char) -> Result<Self, char> {
         match value {
             '0' => Ok(Numeric::Zero),
-            '1' => Ok(Numeric::Zero),
-            '2' => Ok(Numeric::Zero),
-            '3' => Ok(Numeric::Zero),
-            '4' => Ok(Numeric::Zero),
-            '5' => Ok(Numeric::Zero),
-            '6' => Ok(Numeric::Zero),
-            '7' => Ok(Numeric::Zero),
-            '8' => Ok(Numeric::Zero),
-            '9' => Ok(Numeric::Zero),
+            '1' => Ok(Numeric::One),
+            '2' => Ok(Numeric::Two),
+            '3' => Ok(Numeric::Three),
+            '4' => Ok(Numeric::Four),
+            '5' => Ok(Numeric::Five),
+            '6' => Ok(Numeric::Six),
+            '7' => Ok(Numeric::Seven),
+            '8' => Ok(Numeric::Eight),
+            '9' => Ok(Numeric::Nine),
             wrong_char => Err(wrong_char),
         }
     }
