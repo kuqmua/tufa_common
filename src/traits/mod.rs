@@ -5,5 +5,4 @@ pub mod git_info_trait;
 pub mod init_error_with_possible_trace;
 pub mod new_error;
 pub mod print_type_trait;
-// pub mod provider_kind_trait;
 pub mod with_tracing;
