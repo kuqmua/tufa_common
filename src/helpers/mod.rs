@@ -5,4 +5,5 @@ pub mod numeric;
 pub mod postgres;
 pub mod prints;
 pub mod redis;
-pub mod write_bytes_into_file;
+pub mod write_bytes_into_file_async_tokio;
+pub mod write_bytes_into_file_sync;

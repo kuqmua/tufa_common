@@ -6,7 +6,10 @@ use std::io::Write;
     clippy::integer_arithmetic,
     clippy::float_arithmetic
 )]
-pub fn write_bytes_into_file(path: &std::path::Path, bytes: &[u8]) -> Result<(), std::io::Error> {
+pub fn write_bytes_into_file_sync(
+    path: &std::path::Path,
+    bytes: &[u8],
+) -> Result<(), std::io::Error> {
     if let Some(prefix) = path.parent() {
         std::fs::create_dir_all(prefix)?;
     }
