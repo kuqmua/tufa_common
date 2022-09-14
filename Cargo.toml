@@ -10,3 +10,29 @@ ansi_term = "0.12"
 chrono = "0.4"
 serde = "1.0"
 serde_derive = "1.0"
+tokio = {version = "1.7.1", features = ["macros"]}
+
+enum_extension = {path = "../proc_macros/enum_extension"}
+error_display = {path = "../proc_macros/error_display"}
+gen_enum = {path = "../proc_macros/gen_enum"}
+gen_enum_without_values = {path = "../proc_macros/gen_enum_without_values"}
+git_info = {path = "../proc_macros/git_info"}
+impl_box_err_source_from_err = {path = "../proc_macros/impl_box_err_source_from_err"}
+impl_display = {path = "../proc_macros/impl_display"}
+impl_display_for_error_struct = {path = "../proc_macros/impl_display_for_error_struct"}
+impl_display_for_simple_error_enum = {path = "../proc_macros/impl_display_for_simple_error_enum"}
+impl_error_with_tracing_for_original_error_struct_without_source_enum = {path = "../proc_macros/impl_error_with_tracing_for_original_error_struct_without_source_enum"}
+impl_from_for_upper_struct = {path = "../proc_macros/impl_from_for_upper_struct"}
+impl_get_source_for_original_error_struct = {path = "../proc_macros/impl_get_source_for_original_error_struct"}
+impl_get_source_for_parent_error_struct = {path = "../proc_macros/impl_get_source_for_parent_error_struct"}
+impl_get_source_for_simple_error_enum = {path = "../proc_macros/impl_get_source_for_simple_error_enum"}
+impl_get_source_for_source_error_enum = {path = "../proc_macros/impl_get_source_for_source_error_enum"}
+impl_get_where_was_for_enum = {path = "../proc_macros/impl_get_where_was_for_enum"}
+impl_get_where_was_for_error_struct = {path = "../proc_macros/impl_get_where_was_for_error_struct"}
+init_error = {path = "../proc_macros/init_error"}
+init_error_with_tracing = {path = "../proc_macros/init_error_with_tracing"}
+init_error_with_tracing_for_original_error_struct = {path = "../proc_macros/init_error_with_tracing_for_original_error_struct"}
+init_from_env = {path = "../proc_macros/init_from_env"}
+provider_kind_from_config = {path = "../proc_macros/provider_kind_from_config"}
+struct_field_getter = {path = "../proc_macros/struct_field_getter"}
+struct_field_setter = {path = "../proc_macros/struct_field_setter"}
