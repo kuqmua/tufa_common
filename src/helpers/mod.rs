@@ -7,3 +7,4 @@ pub mod prints;
 pub mod redis;
 pub mod write_bytes_into_file_async_tokio;
 pub mod write_bytes_into_file_sync;
+pub mod write_json_into_file;
