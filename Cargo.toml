@@ -10,6 +10,7 @@ ansi_term = "0.12"
 chrono = "0.4"
 serde = "1.0"
 serde_derive = "1.0"
+thiserror = "1.0.30"
 tokio = {version = "1.7.1", features = ["macros"]}
 
 enum_extension = {path = "../proc_macros/enum_extension"}
