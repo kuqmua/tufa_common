@@ -21,7 +21,7 @@ pub struct WhereWas {
 //                 self.file_line_column()
 //             }
 //             crate::config_mods::source_place_type::SourcePlaceType::Github => {
-//                 self.github_file_line_column(&crate::helpers::git_info::GIT_INFO.data)
+//                 self.github_file_line_column(&crate::lazy_static::git_info::GIT_INFO.data)
 //             }
 //             crate::config_mods::source_place_type::SourcePlaceType::None => String::from(""),
 //         }
@@ -32,12 +32,12 @@ pub struct WhereWas {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 //         match CONFIG.is_debug_implementation_enable {
 //             true => write!(f, "{:#?}", self),
-//             false => match crate::config_mods::lazy_static_config::CONFIG.source_place_type {
+//             false => match crate::lazy_static::config::CONFIG.source_place_type {
 //                 crate::config_mods::source_place_type::SourcePlaceType::Source => {
 //                     write!(f, "{}", self.file_line_column())
 //                 }
 //                 crate::config_mods::source_place_type::SourcePlaceType::Github => {
-//                     write!(f, "{}", self.github_file_line_column(&crate::helpers::git_info::GIT_INFO.data))
+//                     write!(f, "{}", self.github_file_line_column(&crate::lazy_static::git_info::GIT_INFO.data))
 //                 }
 //                 crate::config_mods::source_place_type::SourcePlaceType::None => {
 //                     write!(f, "")
@@ -119,7 +119,7 @@ impl Display for WhereWasWithAddition {
             Some(additional) => format!("{} {}", additional, self.where_was.file_line_column()),
         };
         write!(f, "{}", as_string)
-        // match crate::config_mods::lazy_static_config::CONFIG.source_place_type {
+        // match crate::lazy_static::config::CONFIG.source_place_type {
         //     crate::config_mods::source_place_type::SourcePlaceType::Source => {
         //         write!(f, "{}", as_string)
         //     }
