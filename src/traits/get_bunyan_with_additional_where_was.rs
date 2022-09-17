@@ -6,7 +6,7 @@ use crate::where_was::WhereWas;
 pub trait GetBunyanWithAdditionalWhereWas<T> {
     fn get_bunyan_with_additional_where_was(
         &self,
-        where_was: WhereWas,
+        where_was: &WhereWas,
         source_place_type: &SourcePlaceType,
         git_info: &GitInformation,
     ) -> String;
@@ -18,7 +18,7 @@ where
 {
     fn get_bunyan_with_additional_where_was(
         &self,
-        where_was: WhereWas,
+        where_was: &WhereWas,
         source_place_type: &SourcePlaceType,
         git_info: &GitInformation,
     ) -> String {
