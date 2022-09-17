@@ -22,10 +22,18 @@ where
         source_place_type: &SourcePlaceType,
         git_info: &GitInformation,
     ) -> String {
-        format!(
-            "{} {}",
-            where_was.file_line_column(),
-            self.get_bunyan_where_was(source_place_type, git_info)
-        )
+        match source_place_type {
+            SourcePlaceType::Source => format!(
+                "{} {}",
+                where_was.file_line_column(),
+                self.get_bunyan_where_was(source_place_type, git_info)
+            ),
+            SourcePlaceType::Github => format!(
+                "{} {}",
+                where_was.github_file_line_column(git_info),
+                self.get_bunyan_where_was(source_place_type, git_info)
+            ),
+            SourcePlaceType::None => self.get_bunyan_where_was(source_place_type, git_info),
+        }
     }
 }
