@@ -1,9 +1,6 @@
 use crate::helpers::git::git_info::GitInformation;
 use chrono::prelude::DateTime;
 use chrono::FixedOffset;
-use std::fmt::Display;
-use crate::lazy_static::config::CONFIG;
-use crate::lazy_static::git_info::GIT_INFO;
 
 #[derive(Debug, Clone)]
 pub struct WhereWas {
@@ -19,13 +16,13 @@ pub struct WhereWas {
 //         place_type: crate::config_mods::source_place_type::SourcePlaceType,
 //     ) -> String {
 //         match place_type {
-//             crate::config_mods::source_place_type::SourcePlaceType::Source => {
+//             tufa_common::config::source_place_type::SourcePlaceType::Source => {
 //                 self.file_line_column()
 //             }
-//             crate::config_mods::source_place_type::SourcePlaceType::Github => {
+//             tufa_common::config::source_place_type::SourcePlaceType::Github => {
 //                 self.github_file_line_column(&crate::lazy_static::git_info::GIT_INFO.data)
 //             }
-//             crate::config_mods::source_place_type::SourcePlaceType::None => String::from(""),
+//             tufa_common::config::source_place_type::SourcePlaceType::None => String::from(""),
 //         }
 //     }
 // }
@@ -35,13 +32,13 @@ pub struct WhereWas {
 //         match CONFIG.is_debug_implementation_enable {
 //             true => write!(f, "{:#?}", self),
 //             false => match crate::lazy_static::config::CONFIG.source_place_type {
-//                 crate::config_mods::source_place_type::SourcePlaceType::Source => {
+//                 tufa_common::config::source_place_type::SourcePlaceType::Source => {
 //                     write!(f, "{}", self.file_line_column())
 //                 }
-//                 crate::config_mods::source_place_type::SourcePlaceType::Github => {
+//                 tufa_common::config::source_place_type::SourcePlaceType::Github => {
 //                     write!(f, "{}", self.github_file_line_column(&crate::lazy_static::git_info::GIT_INFO.data))
 //                 }
-//                 crate::config_mods::source_place_type::SourcePlaceType::None => {
+//                 tufa_common::config::source_place_type::SourcePlaceType::None => {
 //                     write!(f, "")
 //                 }
 //             },
@@ -114,27 +111,32 @@ pub struct WhereWasWithAddition {
     pub where_was: WhereWas,
 }
 
-impl Display for WhereWasWithAddition {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        let as_string = match crate::lazy_static::config::CONFIG.source_place_type {
-            crate::config_mods::source_place_type::SourcePlaceType::Source => {
-        //                 match &self.additional_info {
-        //     None => self.where_was.file_line_column(),
-        //     Some(additional) => format!("{} {}", additional, self.where_was.file_line_column()),
-        // }
-        String::from("")
+impl WhereWasWithAddition {
+    pub fn get_file_line_column(
+        &self,
+        source_place_type: &crate::config::source_place_type::SourcePlaceType,
+        git_info: &GitInformation,
+    ) -> String {
+        match source_place_type {
+            crate::config::source_place_type::SourcePlaceType::Source => {
+                match &self.additional_info {
+                    None => self.where_was.file_line_column(),
+                    Some(additional) => {
+                        format!("{} {}", additional, self.where_was.file_line_column())
+                    }
+                }
             }
-            crate::config_mods::source_place_type::SourcePlaceType::Github => {
-        //                 match &self.additional_info {
-        //     None => self.where_was.github_file_line_column(GIT_INFO.data),
-        //     Some(additional) => format!("{} {}", additional, self.where_was.github_file_line_column(GIT_INFO.data)),
-        // }
-        String::from("")
+            crate::config::source_place_type::SourcePlaceType::Github => {
+                match &self.additional_info {
+                    None => self.where_was.github_file_line_column(git_info),
+                    Some(additional) => format!(
+                        "{} {}",
+                        additional,
+                        self.where_was.github_file_line_column(git_info)
+                    ),
+                }
             }
-            crate::config_mods::source_place_type::SourcePlaceType::None => {
-                String::from("")
-            }
+            crate::config::source_place_type::SourcePlaceType::None => String::from(""),
         }
-        write!(f, "{}", as_string)
     }
 }
