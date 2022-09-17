@@ -3,21 +3,21 @@ use crate::helpers::git::git_info::GitInformation;
 use crate::traits::get_bunyan_where_was::GetBunyanWhereWas;
 use crate::where_was::WhereWas;
 
-pub trait WhereWasErrorWithTracingAsString<T> {
-    fn where_was_error_with_tracing_as_string(
-        source: T,
+pub trait GetBunyanWithAdditionalWhereWas<T> {
+    fn get_bunyan_with_additional_where_was(
+        &self,
         where_was: WhereWas,
         source_place_type: &SourcePlaceType,
         git_info: &GitInformation,
     ) -> String;
 }
 
-impl<T, SourceType> WhereWasErrorWithTracingAsString<SourceType> for T
+impl<T> GetBunyanWithAdditionalWhereWas<Self> for T
 where
-    SourceType: GetBunyanWhereWas,
+    Self: GetBunyanWhereWas,
 {
-    fn where_was_error_with_tracing_as_string(
-        source: SourceType,
+    fn get_bunyan_with_additional_where_was(
+        &self,
         where_was: WhereWas,
         source_place_type: &SourcePlaceType,
         git_info: &GitInformation,
@@ -25,7 +25,7 @@ where
         format!(
             "{} {}",
             where_was.file_line_column(),
-            source.get_bunyan_where_was(source_place_type, git_info)
+            self.get_bunyan_where_was(source_place_type, git_info)
         )
     }
 }
