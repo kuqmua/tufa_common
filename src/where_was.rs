@@ -2,6 +2,8 @@ use crate::helpers::git::git_info::GitInformation;
 use chrono::prelude::DateTime;
 use chrono::FixedOffset;
 use std::fmt::Display;
+use crate::lazy_static::config::CONFIG;
+use crate::lazy_static::git_info::GIT_INFO;
 
 #[derive(Debug, Clone)]
 pub struct WhereWas {
@@ -114,21 +116,25 @@ pub struct WhereWasWithAddition {
 
 impl Display for WhereWasWithAddition {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        let as_string = match &self.additional_info {
-            None => self.where_was.file_line_column(),
-            Some(additional) => format!("{} {}", additional, self.where_was.file_line_column()),
-        };
-        write!(f, "{}", as_string)
-        // match crate::lazy_static::config::CONFIG.source_place_type {
-        //     crate::config_mods::source_place_type::SourcePlaceType::Source => {
-        //         write!(f, "{}", as_string)
-        //     }
-        //     crate::config_mods::source_place_type::SourcePlaceType::Github => {
-        //         write!(f, "{}", as_string)
-        //     }
-        //     crate::config_mods::source_place_type::SourcePlaceType::None => {
-        //         write!(f, "{}", as_string)
-        //     }
+        let as_string = match crate::lazy_static::config::CONFIG.source_place_type {
+            crate::config_mods::source_place_type::SourcePlaceType::Source => {
+        //                 match &self.additional_info {
+        //     None => self.where_was.file_line_column(),
+        //     Some(additional) => format!("{} {}", additional, self.where_was.file_line_column()),
         // }
+        String::from("")
+            }
+            crate::config_mods::source_place_type::SourcePlaceType::Github => {
+        //                 match &self.additional_info {
+        //     None => self.where_was.github_file_line_column(GIT_INFO.data),
+        //     Some(additional) => format!("{} {}", additional, self.where_was.github_file_line_column(GIT_INFO.data)),
+        // }
+        String::from("")
+            }
+            crate::config_mods::source_place_type::SourcePlaceType::None => {
+                String::from("")
+            }
+        }
+        write!(f, "{}", as_string)
     }
 }
