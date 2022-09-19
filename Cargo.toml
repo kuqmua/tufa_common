@@ -33,7 +33,6 @@ impl_get_source_for_parent_error_struct = {path = "../proc_macros/impl_get_sourc
 impl_get_source_for_simple_error_enum = {path = "../proc_macros/impl_get_source_for_simple_error_enum"}
 impl_get_source_for_source_error_enum = {path = "../proc_macros/impl_get_source_for_source_error_enum"}
 impl_get_where_was_for_enum = {path = "../proc_macros/impl_get_where_was_for_enum"}
-impl_get_where_was_for_error_struct = {path = "../proc_macros/impl_get_where_was_for_error_struct"}
 init_error = {path = "../proc_macros/init_error"}
 init_error_with_tracing = {path = "../proc_macros/init_error_with_tracing"}
 init_error_with_tracing_for_original_error_struct = {path = "../proc_macros/init_error_with_tracing_for_original_error_struct"}
