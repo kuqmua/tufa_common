@@ -9,22 +9,12 @@ pub trait GetBunyanWhereWas {
         source_place_type: &SourcePlaceType,
         git_info: &GitInformation,
     ) -> String;
-    fn get_bunyan_where_was_separated_by_commas_and_spaces(
+    fn get_bunyan_where_was_separated(
         &self,
         source_place_type: &SourcePlaceType,
         git_info: &GitInformation,
+        separation_by_line: bool,
     ) -> String;
-    fn get_bunyan_where_was_separated_by_line(
-        &self,
-        source_place_type: &SourcePlaceType,
-        git_info: &GitInformation,
-    ) -> String;
-    // fn get_bunyan_where_was_separated_by_input(
-    //     &self,
-    //     source_place_type: &SourcePlaceType,
-    //     git_info: &GitInformation,
-    //     input:
-    // ) -> String;
 }
 
 impl<T> GetBunyanWhereWas for T
@@ -64,34 +54,21 @@ where
             }
         }
     }
-    fn get_bunyan_where_was_separated_by_commas_and_spaces(
+    fn get_bunyan_where_was_separated(
         &self,
         source_place_type: &SourcePlaceType,
         git_info: &GitInformation,
+        separation_by_line: bool,
     ) -> String {
-        format!(
-            "{}, ",
-            self.get_bunyan_where_was(source_place_type, git_info)
-        )
+        match separation_by_line {
+            true => format!(
+                "{}\n",
+                self.get_bunyan_where_was(source_place_type, git_info)
+            ),
+            false => format!(
+                "{}, ",
+                self.get_bunyan_where_was(source_place_type, git_info)
+            ),
+        }
     }
-    fn get_bunyan_where_was_separated_by_line(
-        &self,
-        source_place_type: &SourcePlaceType,
-        git_info: &GitInformation,
-    ) -> String {
-        format!(
-            "{}\n",
-            self.get_bunyan_where_was(source_place_type, git_info)
-        )
-    }
-    // fn get_bunyan_where_was_separated_by_line(
-    //     &self,
-    //     source_place_type: &SourcePlaceType,
-    //     git_info: &GitInformation,
-    // ) -> String {
-    //     format!(
-    //         "{}\n",
-    //         self.get_bunyan_where_was(source_place_type, git_info)
-    //     )
-    // }
 }
