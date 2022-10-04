@@ -3,7 +3,6 @@ use crate::helpers::git::git_info::GitInformation;
 use crate::traits::get_bunyan_where_was::GetBunyanWhereWas;
 use crate::traits::get_json_where_was::GetJsonWhereWas;
 use crate::traits::get_where_was_one_or_many::GetWhereWasOneOrMany;
-use crate::where_was::WhereWasOneOrMany;
 
 pub trait GetLogWhereWas {
     fn get_log_where_was(

@@ -1,10 +1,11 @@
 use crate::config::source_place_type::SourcePlaceType;
 use crate::helpers::git::git_info::GitInformation;
 use crate::traits::get_log_where_was::GetLogWhereWas;
+use crate::traits::where_was_trait::WhereWasTrait;
 use crate::where_was::WhereWas;
 
-pub trait GetBunyanWithAdditionalWhereWas<T> {
-    fn get_bunyan_with_additional_where_was(
+pub trait GetLogWithAdditionalWhereWas<T> {
+    fn get_log_with_additional_where_was(
         &self,
         where_was: &WhereWas,
         source_place_type: &SourcePlaceType,
@@ -13,11 +14,11 @@ pub trait GetBunyanWithAdditionalWhereWas<T> {
     ) -> String;
 }
 
-impl<T> GetBunyanWithAdditionalWhereWas<Self> for T
+impl<T> GetLogWithAdditionalWhereWas<Self> for T
 where
     Self: GetLogWhereWas,
 {
-    fn get_bunyan_with_additional_where_was(
+    fn get_log_with_additional_where_was(
         &self,
         where_was: &WhereWas,
         source_place_type: &SourcePlaceType,

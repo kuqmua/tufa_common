@@ -1,4 +1,5 @@
 use crate::helpers::git::git_info::GitInformation;
+use crate::traits::where_was_trait::WhereWasTrait;
 use chrono::prelude::DateTime;
 use chrono::FixedOffset;
 
@@ -46,38 +47,14 @@ pub struct WhereWas {
 //     }
 // }
 
-impl WhereWas {
-    #[deny(
-        clippy::indexing_slicing,
-        clippy::unwrap_used,
-        clippy::integer_arithmetic,
-        clippy::float_arithmetic
-    )]
-    pub fn readable_time(&self) -> String {
+impl WhereWasTrait for WhereWas {
+    fn readable_time(&self) -> String {
         self.time.format("%Y-%m-%d %H:%M:%S").to_string()
     }
-    #[deny(
-        clippy::indexing_slicing,
-        clippy::unwrap_used,
-        clippy::integer_arithmetic,
-        clippy::float_arithmetic
-    )]
-    pub fn file_line_column(&self) -> String {
+    fn file_line_column(&self) -> String {
         format!("{}:{}:{}", self.file, self.line, self.column)
     }
-    #[deny(
-        clippy::indexing_slicing,
-        clippy::unwrap_used,
-        clippy::integer_arithmetic,
-        clippy::float_arithmetic
-    )]
-    #[deny(
-        clippy::indexing_slicing,
-        clippy::unwrap_used,
-        clippy::integer_arithmetic,
-        clippy::float_arithmetic
-    )]
-    pub fn github_file_line_column(&self, git_info: &GitInformation) -> String {
+    fn github_file_line_column(&self, git_info: &GitInformation) -> String {
         git_info.get_git_source_file_link(self.file, self.line)
     }
 }
@@ -139,4 +116,11 @@ impl WhereWasWithAddition {
             crate::config::source_place_type::SourcePlaceType::None => String::from(""),
         }
     }
+    // pub fn get_file_line_column_separated(
+    //     &self,
+    //     source_place_type: &crate::config::source_place_type::SourcePlaceType,
+    //     git_info: &GitInformation,
+    // ) {
+
+    // }
 }
