@@ -24,32 +24,49 @@ where
         git_info: &GitInformation,
         is_bunyan_separated_by_line_enabled: bool,
     ) -> String {
-        let separator = match is_bunyan_separated_by_line_enabled {
-            true => "\n",
-            false => ", ",
-        };
-        match source_place_type {
-            SourcePlaceType::Source => format!(
-                "{}{}{}",
+        match (is_bunyan_separated_by_line_enabled, source_place_type) {
+            (true, SourcePlaceType::Source) => format!(
+                "\n{}{}",
                 where_was.file_line_column(),
-                separator,
-                self.get_bunyan_where_was_separated(
+                self.get_bunyan_where_was(
                     source_place_type,
                     git_info,
                     is_bunyan_separated_by_line_enabled
                 )
             ),
-            SourcePlaceType::Github => format!(
-                "{}{}{}",
+            (true, SourcePlaceType::Github) => format!(
+                "\n{}{}",
                 where_was.github_file_line_column(git_info),
-                separator,
-                self.get_bunyan_where_was_separated(
+                self.get_bunyan_where_was(
                     source_place_type,
                     git_info,
                     is_bunyan_separated_by_line_enabled
                 )
             ),
-            SourcePlaceType::None => self.get_bunyan_where_was_separated(
+            (true, SourcePlaceType::None) => self.get_bunyan_where_was(
+                source_place_type,
+                git_info,
+                is_bunyan_separated_by_line_enabled,
+            ),
+            (false, SourcePlaceType::Source) => format!(
+                "{}, {}",
+                where_was.file_line_column(),
+                self.get_bunyan_where_was(
+                    source_place_type,
+                    git_info,
+                    is_bunyan_separated_by_line_enabled
+                )
+            ),
+            (false, SourcePlaceType::Github) => format!(
+                "{}, {}",
+                where_was.github_file_line_column(git_info),
+                self.get_bunyan_where_was(
+                    source_place_type,
+                    git_info,
+                    is_bunyan_separated_by_line_enabled
+                )
+            ),
+            (false, SourcePlaceType::None) => self.get_bunyan_where_was(
                 source_place_type,
                 git_info,
                 is_bunyan_separated_by_line_enabled,
