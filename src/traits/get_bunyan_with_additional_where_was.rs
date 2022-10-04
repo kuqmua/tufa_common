@@ -1,6 +1,6 @@
 use crate::config::source_place_type::SourcePlaceType;
 use crate::helpers::git::git_info::GitInformation;
-use crate::traits::get_bunyan_where_was::GetBunyanWhereWas;
+use crate::traits::get_log_where_was::GetLogWhereWas;
 use crate::where_was::WhereWas;
 
 pub trait GetBunyanWithAdditionalWhereWas<T> {
@@ -15,7 +15,7 @@ pub trait GetBunyanWithAdditionalWhereWas<T> {
 
 impl<T> GetBunyanWithAdditionalWhereWas<Self> for T
 where
-    Self: GetBunyanWhereWas,
+    Self: GetLogWhereWas,
 {
     fn get_bunyan_with_additional_where_was(
         &self,
@@ -28,7 +28,7 @@ where
             (true, SourcePlaceType::Source) => format!(
                 "\n{}{}",
                 where_was.file_line_column(),
-                self.get_bunyan_where_was(
+                self.get_log_where_was(
                     source_place_type,
                     git_info,
                     is_bunyan_separated_by_line_enabled
@@ -37,13 +37,13 @@ where
             (true, SourcePlaceType::Github) => format!(
                 "\n{}{}",
                 where_was.github_file_line_column(git_info),
-                self.get_bunyan_where_was(
+                self.get_log_where_was(
                     source_place_type,
                     git_info,
                     is_bunyan_separated_by_line_enabled
                 )
             ),
-            (true, SourcePlaceType::None) => self.get_bunyan_where_was(
+            (true, SourcePlaceType::None) => self.get_log_where_was(
                 source_place_type,
                 git_info,
                 is_bunyan_separated_by_line_enabled,
@@ -51,7 +51,7 @@ where
             (false, SourcePlaceType::Source) => format!(
                 "{}, {}",
                 where_was.file_line_column(),
-                self.get_bunyan_where_was(
+                self.get_log_where_was(
                     source_place_type,
                     git_info,
                     is_bunyan_separated_by_line_enabled
@@ -60,13 +60,13 @@ where
             (false, SourcePlaceType::Github) => format!(
                 "{}, {}",
                 where_was.github_file_line_column(git_info),
-                self.get_bunyan_where_was(
+                self.get_log_where_was(
                     source_place_type,
                     git_info,
                     is_bunyan_separated_by_line_enabled
                 )
             ),
-            (false, SourcePlaceType::None) => self.get_bunyan_where_was(
+            (false, SourcePlaceType::None) => self.get_log_where_was(
                 source_place_type,
                 git_info,
                 is_bunyan_separated_by_line_enabled,

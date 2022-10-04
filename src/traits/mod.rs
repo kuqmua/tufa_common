@@ -1,6 +1,7 @@
 pub mod get_bunyan_where_was;
 pub mod get_bunyan_with_additional_where_was;
 pub mod get_json_where_was;
+pub mod get_log_where_was;
 pub mod get_source;
 pub mod get_where_was_one_or_many;
 pub mod git_info_trait;
