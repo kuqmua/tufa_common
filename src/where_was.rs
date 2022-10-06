@@ -11,6 +11,7 @@ pub struct WhereWas {
     pub column: u32,
 }
 
+//cannot implement that, cause SourcePlaceType::None => String::from("") would be incorrect for tracing
 // impl WhereWas {
 //     pub fn get_place_type(
 //         &self,

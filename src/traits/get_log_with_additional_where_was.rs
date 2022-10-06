@@ -10,6 +10,7 @@ pub trait GetLogWithAdditionalWhereWas<T> {
         where_was: &WhereWas,
         source_place_type: &SourcePlaceType,
         git_info: &GitInformation,
+        error: String,
         is_bunyan_separated_by_line_enabled: bool,
     ) -> String;
 }
@@ -23,54 +24,61 @@ where
         where_was: &WhereWas,
         source_place_type: &SourcePlaceType,
         git_info: &GitInformation,
+        error: String,
         is_bunyan_separated_by_line_enabled: bool,
     ) -> String {
         match (is_bunyan_separated_by_line_enabled, source_place_type) {
             (true, SourcePlaceType::Source) => format!(
-                "\n{}{}",
-                where_was.file_line_column(),
+                "{}\n{}",
                 self.get_log_where_was(
                     source_place_type,
                     git_info,
-                    is_bunyan_separated_by_line_enabled
-                )
+                    is_bunyan_separated_by_line_enabled,
+                    error
+                ),
+                where_was.file_line_column(),
             ),
             (true, SourcePlaceType::Github) => format!(
-                "\n{}{}",
-                where_was.github_file_line_column(git_info),
+                "{}\n{}",
                 self.get_log_where_was(
                     source_place_type,
                     git_info,
-                    is_bunyan_separated_by_line_enabled
-                )
+                    is_bunyan_separated_by_line_enabled,
+                    error
+                ),
+                where_was.github_file_line_column(git_info),
             ),
             (true, SourcePlaceType::None) => self.get_log_where_was(
                 source_place_type,
                 git_info,
                 is_bunyan_separated_by_line_enabled,
+                error,
             ),
             (false, SourcePlaceType::Source) => format!(
                 "{}, {}",
-                where_was.file_line_column(),
                 self.get_log_where_was(
                     source_place_type,
                     git_info,
-                    is_bunyan_separated_by_line_enabled
-                )
+                    is_bunyan_separated_by_line_enabled,
+                    error
+                ),
+                where_was.file_line_column(),
             ),
             (false, SourcePlaceType::Github) => format!(
                 "{}, {}",
-                where_was.github_file_line_column(git_info),
                 self.get_log_where_was(
                     source_place_type,
                     git_info,
-                    is_bunyan_separated_by_line_enabled
-                )
+                    is_bunyan_separated_by_line_enabled,
+                    error
+                ),
+                where_was.github_file_line_column(git_info),
             ),
             (false, SourcePlaceType::None) => self.get_log_where_was(
                 source_place_type,
                 git_info,
                 is_bunyan_separated_by_line_enabled,
+                error,
             ),
         }
     }

@@ -10,6 +10,7 @@ pub trait GetLogWhereWas {
         source_place_type: &SourcePlaceType,
         git_info: &GitInformation,
         separation_by_line: bool,
+        error: String,
     ) -> String;
 }
 
@@ -22,10 +23,11 @@ where
         source_place_type: &SourcePlaceType,
         git_info: &GitInformation,
         separation_by_line: bool,
+        error: String,
     ) -> String {
         match separation_by_line {
-            true => self.get_bunyan_where_was(source_place_type, git_info),
-            false => self.get_json_where_was(source_place_type, git_info),
+            true => self.get_bunyan_where_was(source_place_type, git_info, error),
+            false => self.get_json_where_was(source_place_type, git_info, error),
         }
     }
 }

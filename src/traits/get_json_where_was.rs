@@ -9,6 +9,7 @@ pub trait GetJsonWhereWas {
         &self,
         source_place_type: &SourcePlaceType,
         git_info: &GitInformation,
+        error: String,
     ) -> String;
 }
 
@@ -20,6 +21,7 @@ where
         &self,
         source_place_type: &SourcePlaceType,
         git_info: &GitInformation,
+        error: String,
     ) -> String {
         match self.get_where_was_one_or_many() {
             WhereWasOneOrMany::One(where_was_with_addition) => {
@@ -28,13 +30,20 @@ where
             WhereWasOneOrMany::Many(vec_where_was_with_addition) => {
                 let mut formatted_into_string_vec = vec_where_was_with_addition
                     .iter()
-                    .rev()
-                    .map(|where_was_with_addition| {
-                        format!(
+                    .enumerate()
+                    // .rev()
+                    .map(|(number, where_was_with_addition)| match number == 0 {
+                        true => format!(
+                            "{} {}, ",
+                            where_was_with_addition
+                                .get_file_line_column(source_place_type, git_info),
+                            error
+                        ),
+                        false => format!(
                             "{}, ",
                             where_was_with_addition
                                 .get_file_line_column(source_place_type, git_info)
-                        )
+                        ),
                     })
                     .collect::<Vec<String>>()
                     .iter()
