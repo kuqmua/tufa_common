@@ -26,8 +26,8 @@ where
         error: String,
     ) -> String {
         match separation_by_line {
-            true => self.get_bunyan_where_was(source_place_type, git_info, error),
-            false => self.get_json_where_was(source_place_type, git_info, error),
+            true => self.get_json_where_was(source_place_type, git_info, error),
+            false => self.get_bunyan_where_was(source_place_type, git_info, error),
         }
     }
 }

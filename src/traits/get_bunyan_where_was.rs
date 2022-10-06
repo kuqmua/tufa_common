@@ -34,7 +34,7 @@ where
                     // .rev()
                     .map(|(number, where_was_with_addition)| match number == 0 {
                         true => format!(
-                            "\n{} {}",
+                            "{} {}",
                             where_was_with_addition
                                 .get_file_line_column(source_place_type, git_info),
                             error
