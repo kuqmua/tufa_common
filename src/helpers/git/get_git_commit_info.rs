@@ -16,11 +16,17 @@ impl GitInformation {
     pub fn get_git_commit_info(repo_git_path: &str, repo_name: &str) -> GitInformation {
         let path: String;
         let git_folder_name = ".git";
-        if Path::new(&format!("{}{}/", repo_git_path, git_folder_name)).is_dir() {
-            path = format!("{}{}/", repo_git_path, git_folder_name); //for docker image or run not as tufa_project repo, as git clone tufa_server
-        } else if Path::new(&format!("{}{}/", GIT_PATH_FROM_SUBMODULE, git_folder_name)).is_dir() {
+        let first_guess = format!("../{}{}/", repo_git_path, git_folder_name); //maybe here some error?
+        if Path::new(&first_guess).is_dir() {
+            path = first_guess; //for docker image or run not as tufa_project repo, as git clone tufa_server
+        } else if Path::new(&format!(
+            "../{}{}/",
+            GIT_PATH_FROM_SUBMODULE, git_folder_name
+        ))
+        .is_dir()
+        {
             path = format!(
-                "{}{}/modules/{}/",
+                "../{}{}/modules/src/{}/",
                 GIT_PATH_FROM_SUBMODULE, git_folder_name, repo_name
             );
         } else {
