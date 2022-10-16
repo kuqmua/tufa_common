@@ -251,3 +251,186 @@ pub fn handle_status_code(error_status_code: StatusCode, link: &str) -> bool {
     // }
     false
 }
+
+// match error_status_code {
+//         reqwest::StatusCode::CONTINUE => {
+//             println!("status 100(Continue) link: {link}");
+//         }
+//         reqwest::StatusCode::SWITCHING_PROTOCOLS => {
+//             println!("status 101(Switching Protocols) link: {link}");
+//         }
+//         reqwest::StatusCode::PROCESSING => {
+//             println!("status 102(Processing) link: {link}");
+//         }
+//         reqwest::StatusCode::OK => {
+//             println!("status 200(Ok) link: {link}");
+//         }
+//         reqwest::StatusCode::CREATED => {
+//             println!("status 201(Created) link: {link}");
+//         }
+//         reqwest::StatusCode::ACCEPTED => {
+//             println!("status 202(Accepted) link: {link}");
+//         }
+//         reqwest::StatusCode::NON_AUTHORITATIVE_INFORMATION => {
+//             println!("status 203(Non-Authoritative Information) link: {link}");
+//         }
+//         reqwest::StatusCode::NO_CONTENT => {
+//             println!("status 204(No Content) link: {link}");
+//         }
+//         reqwest::StatusCode::RESET_CONTENT => {
+//             println!("status 205(Reset Content) link: {link}");
+//         }
+//         reqwest::StatusCode::PARTIAL_CONTENT => {
+//             println!("status 206(Partial Content) link: {link}");
+//         }
+//         reqwest::StatusCode::MULTI_STATUS => {
+//             println!("status 207(Multi-Status) link: {link}");
+//         }
+//         reqwest::StatusCode::ALREADY_REPORTED => {
+//             println!("status 208(Already Reported) link: {link}");
+//         }
+//         reqwest::StatusCode::IM_USED => {
+//             println!("status 226(IM Used) link: {link}");
+//         }
+//         reqwest::StatusCode::MULTIPLE_CHOICES => {
+//             println!("status 300(Multiple Choices) link: {link}");
+//         }
+//         reqwest::StatusCode::MOVED_PERMANENTLY => {
+//             println!("status 301(Moved Permanently) link: {link}");
+//         }
+//         reqwest::StatusCode::FOUND => {
+//             println!("status 302(Moved Temporarily) link: {link}");
+//         }
+//         reqwest::StatusCode::SEE_OTHER => {
+//             println!("status 303(See Other) link: {link}");
+//         }
+//         reqwest::StatusCode::NOT_MODIFIED => {
+//             println!("status 304(Not Modified) link: {link}");
+//         }
+//         reqwest::StatusCode::USE_PROXY => {
+//             println!("status 305(Use Proxy) link: {link}");
+//         }
+//         reqwest::StatusCode::TEMPORARY_REDIRECT => {
+//             println!("status 307(Temporary Redirect) link: {link}");
+//         }
+//         reqwest::StatusCode::PERMANENT_REDIRECT => {
+//             println!("status 308(Permanent Redirect) link: {link}");
+//         }
+//         reqwest::StatusCode::BAD_REQUEST => {
+//             println!("status 400(Bad Request) link: {link}");
+//         }
+//         reqwest::StatusCode::UNAUTHORIZED => {
+//             println!("status 401(Unauthorized) link: {link}");
+//         }
+//         reqwest::StatusCode::PAYMENT_REQUIRED => {
+//             println!("status 402(Payment Required) link: {link}");
+//         }
+//         reqwest::StatusCode::FORBIDDEN => {
+//             println!("status 403(Forbidden) link: {link}");
+//         }
+//         reqwest::StatusCode::NOT_FOUND => {
+//             println!("status 404(Not Found) link: {link}");
+//         }
+//         reqwest::StatusCode::METHOD_NOT_ALLOWED => {
+//             println!("status 405(Method Not Allowed) link: {link}");
+//         }
+//         reqwest::StatusCode::NOT_ACCEPTABLE => {
+//             println!("status 406(Not Acceptable) link: {link}");
+//         }
+//         reqwest::StatusCode::PROXY_AUTHENTICATION_REQUIRED => {
+//             println!("status 407(Proxy Authentication Required) link: {link}");
+//         }
+//         reqwest::StatusCode::REQUEST_TIMEOUT => {
+//             println!("status 408(Request Timeout) link: {link}");
+//         }
+//         reqwest::StatusCode::CONFLICT => {
+//             println!("status 409(Conflict) link: {link}");
+//         }
+//         reqwest::StatusCode::GONE => {
+//             println!("status 410(Gone) link: {link}");
+//         }
+//         reqwest::StatusCode::LENGTH_REQUIRED => {
+//             println!("status 411(Length Required) link: {link}");
+//         }
+//         reqwest::StatusCode::PRECONDITION_FAILED => {
+//             println!("status 412(Precondition Failed) link: {link}");
+//         }
+//         reqwest::StatusCode::PAYLOAD_TOO_LARGE => {
+//             println!("status 413(Payload Too Large) link: {link}");
+//         }
+//         reqwest::StatusCode::URI_TOO_LONG => {
+//             println!("status 414(URI Too Long) link: {link}");
+//         }
+//         reqwest::StatusCode::UNSUPPORTED_MEDIA_TYPE => {
+//             println!("status 415(Unsupported Media Type) link: {link}");
+//         }
+//         reqwest::StatusCode::RANGE_NOT_SATISFIABLE => {
+//             println!("status 416(Range Not Satisfiable) link: {link}");
+//         }
+//         reqwest::StatusCode::EXPECTATION_FAILED => {
+//             println!("status 417(Expectation Failed) link: {link}");
+//         }
+//         reqwest::StatusCode::IM_A_TEAPOT => {
+//             println!("status 418(I’m a teapot) link: {link}");
+//         }
+//         reqwest::StatusCode::MISDIRECTED_REQUEST => {
+//             println!("status 421(Misdirected Request) link: {link}");
+//         }
+//         reqwest::StatusCode::UNPROCESSABLE_ENTITY => {
+//             println!("status 422(Unprocessable Entity) link: {link}");
+//         }
+//         reqwest::StatusCode::LOCKED => {
+//             println!("status 423(Locked) link: {link}");
+//         }
+//         reqwest::StatusCode::FAILED_DEPENDENCY => {
+//             println!("status 424(Failed Dependency) link: {link}");
+//         }
+//         reqwest::StatusCode::UPGRADE_REQUIRED => {
+//             println!("status 426(Upgrade Required) link: {link}");
+//         }
+//         reqwest::StatusCode::PRECONDITION_REQUIRED => {
+//             println!("status 428(Precondition Required) link: {link}");
+//         }
+//         reqwest::StatusCode::TOO_MANY_REQUESTS => {
+//             println!("status 429(Too Many Requests) link: {link}");
+//         }
+//         reqwest::StatusCode::REQUEST_HEADER_FIELDS_TOO_LARGE => {
+//             println!("status 431(Request Header Fields Too Large) link: {link}");
+//         }
+//         reqwest::StatusCode::UNAVAILABLE_FOR_LEGAL_REASONS => {
+//             println!("status 451(Unavailable For Legal Reasons) link: {link}");
+//         }
+//         reqwest::StatusCode::INTERNAL_SERVER_ERROR => {
+//             println!("status 500(Internal Server Error) link: {link}");
+//         }
+//         reqwest::StatusCode::NOT_IMPLEMENTED => {
+//             println!("status 501(Not Implemented) link: {link}");
+//         }
+//         reqwest::StatusCode::BAD_GATEWAY => {
+//             println!("status 502(Bad Gateway) link: {link}");
+//         }
+//         reqwest::StatusCode::SERVICE_UNAVAILABLE => {
+//             println!("status 503(Service Unavailable) link: {link}");
+//         }
+//         reqwest::StatusCode::GATEWAY_TIMEOUT => {
+//             println!("status 504(Gateway Timeout) link: {link}");
+//         }
+//         reqwest::StatusCode::HTTP_VERSION_NOT_SUPPORTED => {
+//             println!("status 505(HTTP Version Not Supported) link: {link}");
+//         }
+//         reqwest::StatusCode::VARIANT_ALSO_NEGOTIATES => {
+//             println!("status 506(Variant Also Negotiates) link: {link}");
+//         }
+//         reqwest::StatusCode::INSUFFICIENT_STORAGE => {
+//             println!("status 507(Insufficient Storage) link: {link}");
+//         }
+//         reqwest::StatusCode::LOOP_DETECTED => {
+//             println!("status 508(Loop Detected) link: {link}");
+//         }
+//         reqwest::StatusCode::NOT_EXTENDED => {
+//             println!("status 510(Not Extended) link: {link}");
+//         }
+//         reqwest::StatusCode::NETWORK_AUTHENTICATION_REQUIRED => {
+//             println!("status 511(Network Authentication Required) link: {link}");
+//         }
+//     }
