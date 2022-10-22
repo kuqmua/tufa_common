@@ -1,11 +1,9 @@
 use crate::helpers::git::git_info::GitInformation;
 use crate::traits::where_was_trait::WhereWasTrait;
-use chrono::prelude::DateTime;
-use chrono::FixedOffset;
 
 #[derive(Debug, Clone)]
 pub struct WhereWas {
-    pub time: DateTime<FixedOffset>,
+    pub time: std::time::Duration,
     pub location: core::panic::Location<'static>,
 }
 
@@ -47,8 +45,10 @@ pub struct WhereWas {
 // }
 
 impl WhereWasTrait for WhereWas {
-    fn readable_time(&self) -> String {
-        self.time.format("%Y-%m-%d %H:%M:%S").to_string()
+    fn readable_time(&self, timezone: i32) -> String {
+        let datetime = chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.time)
+            .with_timezone(&chrono::FixedOffset::east(timezone));
+        datetime.format("%Y-%m-%d %H:%M:%S").to_string()
     }
     fn file_line_column(&self) -> String {
         format!(
