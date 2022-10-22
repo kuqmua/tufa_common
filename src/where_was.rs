@@ -6,9 +6,7 @@ use chrono::FixedOffset;
 #[derive(Debug, Clone)]
 pub struct WhereWas {
     pub time: DateTime<FixedOffset>,
-    pub file: &'static str,
-    pub line: u32,
-    pub column: u32,
+    pub location: core::panic::Location<'static>,
 }
 
 //cannot implement that, cause SourcePlaceType::None => String::from("") would be incorrect for tracing
@@ -53,10 +51,15 @@ impl WhereWasTrait for WhereWas {
         self.time.format("%Y-%m-%d %H:%M:%S").to_string()
     }
     fn file_line_column(&self) -> String {
-        format!("{}:{}:{}", self.file, self.line, self.column)
+        format!(
+            "{}:{}:{}",
+            self.location.file(),
+            self.location.line(),
+            self.location.column()
+        )
     }
     fn github_file_line_column(&self, git_info: &GitInformation) -> String {
-        git_info.get_git_source_file_link(self.file, self.line)
+        git_info.get_git_source_file_link(self.location.file(), self.location.line())
     }
 }
 
