@@ -2,9 +2,9 @@ use super::copy_to_error::CopyToError;
 use crate::helpers::http_request::request_builder_methods::copy_to::copy_to_error::CopyToErrorEnum;
 use crate::lazy_static::config::CONFIG;
 use crate::lazy_static::git_info::GIT_INFO;
+use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
+use crate::where_was::WhereWas;
 use reqwest::blocking::RequestBuilder;
-use tufa_common::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
-use tufa_common::where_was::WhereWas;
 
 #[deny(
     clippy::indexing_slicing,
