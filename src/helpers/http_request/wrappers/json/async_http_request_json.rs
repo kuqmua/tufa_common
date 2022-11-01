@@ -28,8 +28,8 @@ pub async fn async_http_request_json_wrapper<
     BearerAuthGeneric,
     BodyGeneric,
     QueryGeneric,
-    FormGeneric: serde::Serialize,
-    JsonGeneric: serde::Serialize,
+    FormGeneric,
+    JsonGeneric,
 >(
     url: &str,
     //client parameters
@@ -126,6 +126,8 @@ where
     BearerAuthGeneric: std::fmt::Display,
     BodyGeneric: Into<reqwest::Body>,
     QueryGeneric: serde::Serialize,
+    FormGeneric: serde::Serialize,
+    JsonGeneric: serde::Serialize,
 {
     match async_http_request_client_request_builder_prep(
         url,
