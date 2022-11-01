@@ -20,7 +20,7 @@ pub async fn async_http_request_text_wrapper<
     LocalAddressGeneric,
     TcpKeepaliveGeneric,
     UsePreconfiguredTlsGeneric,
-    // //request builder generics
+    //request builder generics
     HeaderKeyGeneric,
     HeaderValueGeneric,
     BasicAuthUsernameGeneric,

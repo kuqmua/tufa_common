@@ -11,18 +11,23 @@ use crate::where_was::WhereWas;
 pub async fn async_http_request_text_with_charset_wrapper<
     //client generics
     UserAgentValueGeneric,
-    CookieProviderGeneric: reqwest::cookie::CookieStore + 'static,
+    CookieProviderGeneric,
     PoolIdleTimeoutDurationGeneric,
+    Http2InitialStreamWindowSizeGeneric,
+    Http2InitialConnectionWindowSizeGeneric,
+    Http2MaxFrameSizeGeneric,
+    Http2KeepAliveIntervalGeneric,
     LocalAddressGeneric,
     TcpKeepaliveGeneric,
+    UsePreconfiguredTlsGeneric,
     //request builder generics
     HeaderKeyGeneric,
     HeaderValueGeneric,
     BasicAuthUsernameGeneric,
     BasicAuthPasswordGeneric,
     BearerAuthGeneric,
-    BodyGeneric: Into<reqwest::Body>,
-    QueryGeneric: serde::Serialize,
+    BodyGeneric,
+    QueryGeneric,
     FormGeneric: serde::Serialize,
     JsonGeneric: serde::Serialize,
 >(
@@ -102,10 +107,15 @@ pub async fn async_http_request_text_with_charset_wrapper<
 where
     UserAgentValueGeneric: TryInto<reqwest::header::HeaderValue>,
     UserAgentValueGeneric::Error: Into<http::Error>,
+    CookieProviderGeneric: reqwest::cookie::CookieStore + 'static,
     PoolIdleTimeoutDurationGeneric: Into<Option<std::time::Duration>>,
+    Http2InitialStreamWindowSizeGeneric: Into<Option<u32>>,
+    Http2InitialConnectionWindowSizeGeneric: Into<Option<u32>>,
+    Http2MaxFrameSizeGeneric: Into<Option<u32>>,
+    Http2KeepAliveIntervalGeneric: Into<Option<std::time::Duration>>,
     LocalAddressGeneric: Into<Option<std::net::IpAddr>>,
     TcpKeepaliveGeneric: Into<Option<std::time::Duration>>,
-
+    UsePreconfiguredTlsGeneric: std::any::Any,
     reqwest::header::HeaderName: TryFrom<HeaderKeyGeneric>,
     <reqwest::header::HeaderName as TryFrom<HeaderKeyGeneric>>::Error: Into<http::Error>,
     reqwest::header::HeaderValue: TryFrom<HeaderValueGeneric>,
@@ -113,6 +123,8 @@ where
     BasicAuthUsernameGeneric: std::fmt::Display,
     BasicAuthPasswordGeneric: std::fmt::Display,
     BearerAuthGeneric: std::fmt::Display,
+    BodyGeneric: Into<reqwest::Body>,
+    QueryGeneric: serde::Serialize,
 {
     match async_http_request_client_request_builder_prep(
         url,
