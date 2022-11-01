@@ -8,20 +8,24 @@ use crate::where_was::WhereWas;
 pub async fn sync_http_request_client_request_builder_prep<
     //client generics
     UserAgentValueGeneric,
-    CookieProviderGeneric: reqwest::cookie::CookieStore + 'static,
+    CookieProviderGeneric,
     PoolIdleTimeoutDurationGeneric,
+    Http2InitialStreamWindowSizeGeneric,
+    Http2InitialConnectionWindowSizeGeneric,
+    Http2MaxFrameSizeGeneric,
     LocalAddressGeneric,
     TcpKeepaliveGeneric,
+    UsePreconfiguredTlsGeneric,
     //request builder generics
     HeaderKeyGeneric,
     HeaderValueGeneric,
     BasicAuthUsernameGeneric,
     BasicAuthPasswordGeneric,
     BearerAuthGeneric,
-    BodyGeneric: Into<reqwest::blocking::Body>,
-    QueryGeneric: serde::Serialize, // + ?Sized,
-    FormGeneric: serde::Serialize,  // + ?Sized,
-    JsonGeneric: serde::Serialize,  // + ?Sized,
+    BodyGeneric,
+    QueryGeneric,
+    FormGeneric,
+    JsonGeneric,
 >(
     url: &str,
     //client parameters
@@ -49,16 +53,12 @@ pub async fn sync_http_request_client_request_builder_prep<
     http1_only_client_argument: Option<()>,
     http09_responses_client_argument: Option<()>,
     http2_prior_knowledge_client_argument: Option<()>,
-    http2_initial_stream_window_size_client_argument: Option<impl Into<Option<u32>>>,
-    http2_initial_connection_window_size_client_argument: Option<impl Into<Option<u32>>>,
+    http2_initial_stream_window_size_client_argument: Option<Http2InitialStreamWindowSizeGeneric>, //impl Into<Option<u32>>
+    http2_initial_connection_window_size_client_argument: Option<
+        Http2InitialConnectionWindowSizeGeneric,
+    >,
     http2_adaptive_window_client_argument: Option<bool>,
-    http2_max_frame_size_client_argument: Option<impl Into<Option<u32>>>,
-    // not implemented for blocking
-    // http2_keep_alive_interval_client_argument: Option<impl Into<Option<std::time::Duration>>>,
-    // not implemented for blocking
-    // http2_keep_alive_timeout_client_argument: Option<std::time::Duration>,
-    // not implemented for blocking
-    // http2_keep_alive_while_idle_client_argument: Option<bool>,
+    http2_max_frame_size_client_argument: Option<Http2MaxFrameSizeGeneric>,
     tcp_nodelay_client_argument: Option<bool>,
     local_address_client_argument: Option<LocalAddressGeneric>,
     tcp_keepalive_client_argument: Option<TcpKeepaliveGeneric>,
@@ -71,7 +71,7 @@ pub async fn sync_http_request_client_request_builder_prep<
     max_tls_version_client_argument: Option<reqwest::tls::Version>,
     use_native_tls_client_argument: Option<()>,
     use_rustls_tls_client_argument: Option<()>,
-    use_preconfigured_tls_client_argument: Option<impl std::any::Any>,
+    use_preconfigured_tls_client_argument: Option<UsePreconfiguredTlsGeneric>,
     trust_dns_client_argument: Option<bool>,
     no_trust_dns_client_argument: Option<()>,
     https_only_client_argument: Option<bool>,
@@ -92,8 +92,6 @@ pub async fn sync_http_request_client_request_builder_prep<
     version_request_builder: Option<reqwest::Version>,
     form_request_builder: Option<FormGeneric>,
     json_request_builder: Option<JsonGeneric>,
-    // not implemented for blocking
-    // fetch_mode_no_cors_request_builder: Option<()>,
     //
     method: HttpRequestMethod,
     source_place_type: &crate::config::source_place_type::SourcePlaceType,
@@ -101,11 +99,16 @@ pub async fn sync_http_request_client_request_builder_prep<
 ) -> Result<reqwest::blocking::RequestBuilder, Box<HttpRequestClientRequestBuilderPrepError>>
 where
     UserAgentValueGeneric: TryInto<reqwest::header::HeaderValue>,
+    UserAgentValueGeneric: TryInto<reqwest::header::HeaderValue>,
     UserAgentValueGeneric::Error: Into<http::Error>,
+    CookieProviderGeneric: reqwest::cookie::CookieStore + 'static,
     PoolIdleTimeoutDurationGeneric: Into<Option<std::time::Duration>>,
+    Http2InitialStreamWindowSizeGeneric: Into<Option<u32>>,
+    Http2InitialConnectionWindowSizeGeneric: Into<Option<u32>>,
+    Http2MaxFrameSizeGeneric: Into<Option<u32>>,
     LocalAddressGeneric: Into<Option<std::net::IpAddr>>,
     TcpKeepaliveGeneric: Into<Option<std::time::Duration>>,
-
+    UsePreconfiguredTlsGeneric: std::any::Any,
     reqwest::header::HeaderName: TryFrom<HeaderKeyGeneric>,
     <reqwest::header::HeaderName as TryFrom<HeaderKeyGeneric>>::Error: Into<http::Error>,
     reqwest::header::HeaderValue: TryFrom<HeaderValueGeneric>,
@@ -113,6 +116,10 @@ where
     BasicAuthUsernameGeneric: std::fmt::Display,
     BasicAuthPasswordGeneric: std::fmt::Display,
     BearerAuthGeneric: std::fmt::Display,
+    BodyGeneric: Into<reqwest::blocking::Body>,
+    QueryGeneric: serde::Serialize,
+    FormGeneric: serde::Serialize,
+    JsonGeneric: serde::Serialize,
 {
     let mut client_builder = reqwest::blocking::Client::builder();
     if let Some(v) = user_agent_client_argument {
