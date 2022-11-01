@@ -11,20 +11,24 @@ use crate::where_was::WhereWas;
 pub async fn sync_http_request_text_with_charset_wrapper<
     //client generics
     UserAgentValueGeneric,
-    CookieProviderGeneric: reqwest::cookie::CookieStore + 'static,
+    CookieProviderGeneric,
     PoolIdleTimeoutDurationGeneric,
+    Http2InitialStreamWindowSizeGeneric,
+    Http2InitialConnectionWindowSizeGeneric,
+    Http2MaxFrameSizeGeneric,
     LocalAddressGeneric,
     TcpKeepaliveGeneric,
+    UsePreconfiguredTlsGeneric,
     //request builder generics
     HeaderKeyGeneric,
     HeaderValueGeneric,
     BasicAuthUsernameGeneric,
     BasicAuthPasswordGeneric,
     BearerAuthGeneric,
-    BodyGeneric: Into<reqwest::blocking::Body>,
-    QueryGeneric: serde::Serialize, // + ?Sized,
-    FormGeneric: serde::Serialize,  // + ?Sized,
-    JsonGeneric: serde::Serialize,  // + ?Sized,
+    BodyGeneric,
+    QueryGeneric,
+    FormGeneric,
+    JsonGeneric,
 >(
     url: &str,
     //client parameters
@@ -95,7 +99,6 @@ pub async fn sync_http_request_text_with_charset_wrapper<
     version_request_builder: Option<reqwest::Version>,
     form_request_builder: Option<FormGeneric>,
     json_request_builder: Option<JsonGeneric>,
-    fetch_mode_no_cors_request_builder: Option<()>,
     //
     method: HttpRequestMethod,
     default_encoding: &str,
@@ -104,11 +107,16 @@ pub async fn sync_http_request_text_with_charset_wrapper<
 ) -> Result<String, Box<HttpRequestWrapperTextWithCharsetError>>
 where
     UserAgentValueGeneric: TryInto<reqwest::header::HeaderValue>,
+    UserAgentValueGeneric: TryInto<reqwest::header::HeaderValue>,
     UserAgentValueGeneric::Error: Into<http::Error>,
+    CookieProviderGeneric: reqwest::cookie::CookieStore + 'static,
     PoolIdleTimeoutDurationGeneric: Into<Option<std::time::Duration>>,
+    Http2InitialStreamWindowSizeGeneric: Into<Option<u32>>,
+    Http2InitialConnectionWindowSizeGeneric: Into<Option<u32>>,
+    Http2MaxFrameSizeGeneric: Into<Option<u32>>,
     LocalAddressGeneric: Into<Option<std::net::IpAddr>>,
     TcpKeepaliveGeneric: Into<Option<std::time::Duration>>,
-
+    UsePreconfiguredTlsGeneric: std::any::Any,
     reqwest::header::HeaderName: TryFrom<HeaderKeyGeneric>,
     <reqwest::header::HeaderName as TryFrom<HeaderKeyGeneric>>::Error: Into<http::Error>,
     reqwest::header::HeaderValue: TryFrom<HeaderValueGeneric>,
@@ -116,6 +124,10 @@ where
     BasicAuthUsernameGeneric: std::fmt::Display,
     BasicAuthPasswordGeneric: std::fmt::Display,
     BearerAuthGeneric: std::fmt::Display,
+    BodyGeneric: Into<reqwest::blocking::Body>,
+    QueryGeneric: serde::Serialize,
+    FormGeneric: serde::Serialize,
+    JsonGeneric: serde::Serialize,
 {
     match sync_http_request_client_request_builder_prep(
         url,
