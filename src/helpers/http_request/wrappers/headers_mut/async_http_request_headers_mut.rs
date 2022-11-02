@@ -1,8 +1,6 @@
 use crate::helpers::http_request::async_http_request_client_request_builder_prep::async_http_request_client_request_builder_prep;
 use crate::helpers::http_request::http_request_method::HttpRequestMethod;
-use crate::helpers::http_request::request_builder_methods::headers_mut::async_headers_mut::async_headers_mut;
 use crate::helpers::http_request::wrappers::headers_mut::http_request_headers_mut_error::HttpRequestWrapperHeadersMutError;
-use crate::helpers::http_request::wrappers::headers_mut::http_request_headers_mut_error::HttpRequestWrapperHeadersMutErrorEnum;
 use crate::lazy_static::git_info::GIT_INFO;
 use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
 use crate::where_was::WhereWas;
@@ -203,7 +201,7 @@ where
     {
         Err(e) => Err(Box::new(
             HttpRequestWrapperHeadersMutError::init_error_with_possible_trace(
-                HttpRequestWrapperHeadersMutErrorEnum::Prep(*e),
+                e.source,
                 WhereWas {
                     time: std::time::SystemTime::now()
                         .duration_since(std::time::UNIX_EPOCH)
@@ -215,22 +213,40 @@ where
                 should_trace,
             ),
         )),
-        Ok(request_builder) => match async_headers_mut(request_builder, false).await {
+        Ok(request_builder) => match request_builder.send().await {
             Err(e) => Err(Box::new(
                 HttpRequestWrapperHeadersMutError::init_error_with_possible_trace(
-                    HttpRequestWrapperHeadersMutErrorEnum::HeadersMut(*e),
+                    e,
                     WhereWas {
                         time: std::time::SystemTime::now()
                             .duration_since(std::time::UNIX_EPOCH)
                             .expect("cannot convert time to unix_epoch"),
                         location: *core::panic::Location::caller(),
                     },
-                    source_place_type,
+                    &source_place_type,
                     &GIT_INFO.data,
                     should_trace,
                 ),
             )),
-            Ok(headers_mut) => Ok(headers_mut),
+            Ok(mut res) => {
+                if let Err(e) = res.error_for_status_ref() {
+                    return Err(Box::new(
+                        HttpRequestWrapperHeadersMutError::init_error_with_possible_trace(
+                            e,
+                            WhereWas {
+                                time: std::time::SystemTime::now()
+                                    .duration_since(std::time::UNIX_EPOCH)
+                                    .expect("cannot convert time to unix_epoch"),
+                                location: *core::panic::Location::caller(),
+                            },
+                            &source_place_type,
+                            &GIT_INFO.data,
+                            should_trace,
+                        ),
+                    ));
+                }
+                Ok(res.headers_mut().clone()) //todo do something with it
+            }
         },
     }
 }

@@ -14,8 +14,8 @@ use init_error::InitErrorFromCrate;
     ImplGetSourceWithoutMethodFromCrate,
 )]
 pub struct HttpRequestClientRequestBuilderPrepError {
-    source: reqwest::Error,
-    where_was: WhereWas,
+    pub source: reqwest::Error,
+    pub where_was: WhereWas,
 }
 
 //

@@ -1,8 +1,6 @@
 use crate::helpers::http_request::http_request_method::HttpRequestMethod;
-use crate::helpers::http_request::request_builder_methods::error_for_status::sync_error_for_status::sync_error_for_status;
 use crate::helpers::http_request::sync_http_request_client_request_builder_prep::sync_http_request_client_request_builder_prep;
 use crate::helpers::http_request::wrappers::error_for_status::http_request_error_for_status_error::HttpRequestWrapperErrorForStatusError;
-use crate::helpers::http_request::wrappers::error_for_status::http_request_error_for_status_error::HttpRequestWrapperErrorForStatusErrorEnum;
 use crate::lazy_static::git_info::GIT_INFO;
 use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
 use crate::where_was::WhereWas;
@@ -202,7 +200,7 @@ where
     {
         Err(e) => Err(Box::new(
             HttpRequestWrapperErrorForStatusError::init_error_with_possible_trace(
-                HttpRequestWrapperErrorForStatusErrorEnum::Prep(*e),
+                e.source,
                 WhereWas {
                     time: std::time::SystemTime::now()
                         .duration_since(std::time::UNIX_EPOCH)
@@ -214,22 +212,40 @@ where
                 should_trace,
             ),
         )),
-        Ok(request_builder) => match sync_error_for_status(request_builder, false) {
+        Ok(request_builder) => match request_builder.send() {
             Err(e) => Err(Box::new(
                 HttpRequestWrapperErrorForStatusError::init_error_with_possible_trace(
-                    HttpRequestWrapperErrorForStatusErrorEnum::ErrorForStatus(*e),
+                    e,
                     WhereWas {
                         time: std::time::SystemTime::now()
                             .duration_since(std::time::UNIX_EPOCH)
                             .expect("cannot convert time to unix_epoch"),
                         location: *core::panic::Location::caller(),
                     },
-                    source_place_type,
+                    &source_place_type,
                     &GIT_INFO.data,
                     should_trace,
                 ),
             )),
-            Ok(error_for_status) => Ok(error_for_status),
+            Ok(res) => {
+                if let Err(e) = res.error_for_status() {
+                    return Err(Box::new(
+                        HttpRequestWrapperErrorForStatusError::init_error_with_possible_trace(
+                            e,
+                            WhereWas {
+                                time: std::time::SystemTime::now()
+                                    .duration_since(std::time::UNIX_EPOCH)
+                                    .expect("cannot convert time to unix_epoch"),
+                                location: *core::panic::Location::caller(),
+                            },
+                            &source_place_type,
+                            &GIT_INFO.data,
+                            should_trace,
+                        ),
+                    ));
+                }
+                Ok(())
+            }
         },
     }
 }

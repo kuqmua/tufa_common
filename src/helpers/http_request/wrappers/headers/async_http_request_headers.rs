@@ -1,8 +1,6 @@
 use crate::helpers::http_request::async_http_request_client_request_builder_prep::async_http_request_client_request_builder_prep;
 use crate::helpers::http_request::http_request_method::HttpRequestMethod;
-use crate::helpers::http_request::request_builder_methods::headers::async_headers::async_headers;
 use crate::helpers::http_request::wrappers::headers::http_request_headers_error::HttpRequestWrapperHeadersError;
-use crate::helpers::http_request::wrappers::headers::http_request_headers_error::HttpRequestWrapperHeadersErrorEnum;
 use crate::lazy_static::git_info::GIT_INFO;
 use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
 use crate::where_was::WhereWas;
@@ -203,7 +201,7 @@ where
     {
         Err(e) => Err(Box::new(
             HttpRequestWrapperHeadersError::init_error_with_possible_trace(
-                HttpRequestWrapperHeadersErrorEnum::Prep(*e),
+                e.source,
                 WhereWas {
                     time: std::time::SystemTime::now()
                         .duration_since(std::time::UNIX_EPOCH)
@@ -215,22 +213,40 @@ where
                 should_trace,
             ),
         )),
-        Ok(request_builder) => match async_headers(request_builder, false).await {
+        Ok(request_builder) => match request_builder.send().await {
             Err(e) => Err(Box::new(
                 HttpRequestWrapperHeadersError::init_error_with_possible_trace(
-                    HttpRequestWrapperHeadersErrorEnum::Headers(*e),
+                    e,
                     WhereWas {
                         time: std::time::SystemTime::now()
                             .duration_since(std::time::UNIX_EPOCH)
                             .expect("cannot convert time to unix_epoch"),
                         location: *core::panic::Location::caller(),
                     },
-                    source_place_type,
+                    &source_place_type,
                     &GIT_INFO.data,
                     should_trace,
                 ),
             )),
-            Ok(headers) => Ok(headers),
+            Ok(res) => {
+                if let Err(e) = res.error_for_status_ref() {
+                    return Err(Box::new(
+                        HttpRequestWrapperHeadersError::init_error_with_possible_trace(
+                            e,
+                            WhereWas {
+                                time: std::time::SystemTime::now()
+                                    .duration_since(std::time::UNIX_EPOCH)
+                                    .expect("cannot convert time to unix_epoch"),
+                                location: *core::panic::Location::caller(),
+                            },
+                            &source_place_type,
+                            &GIT_INFO.data,
+                            should_trace,
+                        ),
+                    ));
+                }
+                Ok(res.headers().clone()) //todo do something with it
+            }
         },
     }
 }

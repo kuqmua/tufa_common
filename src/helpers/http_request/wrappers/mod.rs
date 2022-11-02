@@ -1,9 +1,7 @@
 pub mod bytes;
 pub mod bytes_stream; //async only
-pub mod chunk;
 pub mod content_length;
 pub mod cookies;
-pub mod copy_to; //sync only
 pub mod error_for_status;
 pub mod extensions;
 pub mod extensions_mut;
