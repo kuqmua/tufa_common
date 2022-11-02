@@ -13,7 +13,7 @@ use init_error::InitErrorFromCrate;
     ImplGetWhereWasOneOrManyOneForErrorStructFromCrate,
     ImplGetSourceWithoutMethodFromCrate,
 )]
-pub struct HHttpRequestWrapperRemoteAddrError {
+pub struct HttpRequestWrapperRemoteAddrError {
     source: reqwest::Error,
     where_was: WhereWas,
 }

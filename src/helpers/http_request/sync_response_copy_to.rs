@@ -27,7 +27,7 @@ pub struct SyncResponseCopyToError {
     clippy::float_arithmetic
 )]
 pub fn sync_copy_to<W: ?Sized>(
-    response: reqwest::blocking::Response,
+    mut response: reqwest::blocking::Response,
     w: &mut W,
     source_place_type: &crate::config::source_place_type::SourcePlaceType,
     should_trace: bool,
@@ -45,7 +45,7 @@ where
                         .expect("cannot convert time to unix_epoch"),
                     location: *core::panic::Location::caller(),
                 },
-                &source_place_type,
+                source_place_type,
                 &GIT_INFO.data,
                 should_trace,
             ),
