@@ -1,4 +1,4 @@
-// use super::http_request_extensions_mut_error::ExtensionsMutError;
+// use crate::helpers::http_request::http_request_error::HttpRequestError;
 // use crate::helpers::http_request::request_builder_methods::ExtensionsMut::http_request_extensions_mut_error::ExtensionsMutErrorEnum;
 // use crate::lazy_static::config::CONFIG;
 // use crate::lazy_static::git_info::GIT_INFO;

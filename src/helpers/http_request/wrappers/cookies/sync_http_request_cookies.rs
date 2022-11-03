@@ -1,4 +1,4 @@
-// use super::http_request_cookies_error::CookiesError;
+// use crate::helpers::http_request::http_request_error::HttpRequestError;
 // use crate::helpers::http_request::request_builder_methods::cookies::http_request_cookies_error::CookiesErrorEnum;
 // use crate::lazy_static::config::CONFIG;
 // use crate::lazy_static::git_info::GIT_INFO;
