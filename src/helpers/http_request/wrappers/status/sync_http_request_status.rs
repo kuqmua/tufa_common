@@ -223,23 +223,7 @@ where
                 &GIT_INFO.data,
                 should_trace,
             ))),
-            Ok(res) => {
-                if let Err(e) = res.error_for_status_ref() {
-                    return Err(Box::new(HttpRequestError::init_error_with_possible_trace(
-                        e,
-                        WhereWas {
-                            time: std::time::SystemTime::now()
-                                .duration_since(std::time::UNIX_EPOCH)
-                                .expect("cannot convert time to unix_epoch"),
-                            location: *core::panic::Location::caller(),
-                        },
-                        source_place_type,
-                        &GIT_INFO.data,
-                        should_trace,
-                    )));
-                }
-                Ok(res.status())
-            }
+            Ok(res) => Ok(res.status()),
         },
     }
 }
