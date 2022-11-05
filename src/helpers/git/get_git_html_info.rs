@@ -1,3 +1,4 @@
+#[allow(clippy::too_many_arguments)]
 pub fn get_git_html_info(
     commit_id: String,
     repo_link: String,
