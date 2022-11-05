@@ -1,4 +1,4 @@
-use crate::config::source_place_type::SourcePlaceType;
+use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::helpers::git::git_info::GitInformation;
 use crate::traits::get_bunyan_where_was::GetBunyanWhereWas;
 use crate::traits::get_json_where_was::GetJsonWhereWas;

@@ -1,5 +1,5 @@
-use crate::config::source_place_type::SourcePlaceType;
-use crate::config::tracing_type::TracingType;
+use crate::config_mods::source_place_type::SourcePlaceType;
+use crate::config_mods::tracing_type::TracingType;
 use crate::helpers::resource::Resource;
 use gen_enum::GenEnum;
 use gen_enum_without_values::GenEnumWithoutValues;

@@ -1,4 +1,4 @@
-use crate::config::source_place_type::SourcePlaceType;
+use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::helpers::git::git_info::GitInformation;
 use crate::traits::get_log_where_was::GetLogWhereWas;
 use crate::traits::where_was_trait::WhereWasTrait;

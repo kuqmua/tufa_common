@@ -14,13 +14,13 @@ pub struct WhereWas {
 //         place_type: crate::config_mods::source_place_type::SourcePlaceType,
 //     ) -> String {
 //         match place_type {
-//             tufa_common::config::source_place_type::SourcePlaceType::Source => {
+//             tufa_common::config_mods::source_place_type::SourcePlaceType::Source => {
 //                 self.file_line_column()
 //             }
-//             tufa_common::config::source_place_type::SourcePlaceType::Github => {
+//             tufa_common::config_mods::source_place_type::SourcePlaceType::Github => {
 //                 self.github_file_line_column(&crate::lazy_static::git_info::GIT_INFO.data)
 //             }
-//             tufa_common::config::source_place_type::SourcePlaceType::None => String::from(""),
+//             tufa_common::config_mods::source_place_type::SourcePlaceType::None => String::from(""),
 //         }
 //     }
 // }
@@ -30,13 +30,13 @@ pub struct WhereWas {
 //         match CONFIG.is_debug_implementation_enable {
 //             true => write!(f, "{:#?}", self),
 //             false => match crate::lazy_static::config::CONFIG.source_place_type {
-//                 tufa_common::config::source_place_type::SourcePlaceType::Source => {
+//                 tufa_common::config_mods::source_place_type::SourcePlaceType::Source => {
 //                     write!(f, "{}", self.file_line_column())
 //                 }
-//                 tufa_common::config::source_place_type::SourcePlaceType::Github => {
+//                 tufa_common::config_mods::source_place_type::SourcePlaceType::Github => {
 //                     write!(f, "{}", self.github_file_line_column(&crate::lazy_static::git_info::GIT_INFO.data))
 //                 }
-//                 tufa_common::config::source_place_type::SourcePlaceType::None => {
+//                 tufa_common::config_mods::source_place_type::SourcePlaceType::None => {
 //                     write!(f, "")
 //                 }
 //             },
@@ -95,11 +95,11 @@ pub struct WhereWasWithAddition {
 impl WhereWasWithAddition {
     pub fn get_file_line_column(
         &self,
-        source_place_type: &crate::config::source_place_type::SourcePlaceType,
+        source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
         git_info: &GitInformation,
     ) -> String {
         match source_place_type {
-            crate::config::source_place_type::SourcePlaceType::Source => {
+            crate::config_mods::source_place_type::SourcePlaceType::Source => {
                 match &self.additional_info {
                     None => self.where_was.file_line_column(),
                     Some(additional) => {
@@ -107,7 +107,7 @@ impl WhereWasWithAddition {
                     }
                 }
             }
-            crate::config::source_place_type::SourcePlaceType::Github => {
+            crate::config_mods::source_place_type::SourcePlaceType::Github => {
                 match &self.additional_info {
                     None => self.where_was.github_file_line_column(git_info),
                     Some(additional) => format!(
@@ -117,12 +117,12 @@ impl WhereWasWithAddition {
                     ),
                 }
             }
-            crate::config::source_place_type::SourcePlaceType::None => String::from(""),
+            crate::config_mods::source_place_type::SourcePlaceType::None => String::from(""),
         }
     }
     // pub fn get_file_line_column_separated(
     //     &self,
-    //     source_place_type: &crate::config::source_place_type::SourcePlaceType,
+    //     source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
     //     git_info: &GitInformation,
     // ) {
 

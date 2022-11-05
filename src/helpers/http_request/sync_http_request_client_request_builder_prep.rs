@@ -94,7 +94,7 @@ pub async fn sync_http_request_client_request_builder_prep<
     json_request_builder: Option<JsonGeneric>,
     //
     method: HttpRequestMethod,
-    source_place_type: &crate::config::source_place_type::SourcePlaceType,
+    source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
     should_trace: bool,
 ) -> Result<reqwest::blocking::RequestBuilder, Box<HttpRequestError>>
 where

@@ -95,7 +95,7 @@ pub async fn sync_http_request_content_length_wrapper<
     json_request_builder: Option<JsonGeneric>,
     //
     method: HttpRequestMethod,
-    source_place_type: &crate::config::source_place_type::SourcePlaceType,
+    source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
     should_trace: bool,
 ) -> Result<Option<u64>, Box<HttpRequestError>>
 where

@@ -99,7 +99,7 @@ pub async fn async_http_request_text_with_charset_wrapper<
     //
     method: HttpRequestMethod,
     default_encoding: &str,
-    source_place_type: &crate::config::source_place_type::SourcePlaceType,
+    source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
     should_trace: bool,
 ) -> Result<String, Box<HttpRequestError>>
 where

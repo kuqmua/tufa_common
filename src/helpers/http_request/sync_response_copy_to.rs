@@ -29,7 +29,7 @@ pub struct SyncResponseCopyToError {
 pub fn sync_copy_to<W: ?Sized>(
     mut response: reqwest::blocking::Response,
     w: &mut W,
-    source_place_type: &crate::config::source_place_type::SourcePlaceType,
+    source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
     should_trace: bool,
 ) -> Result<u64, Box<SyncResponseCopyToError>>
 where
