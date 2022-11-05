@@ -1,7 +1,3 @@
-use crate::helpers::write_bytes_into_file_async_tokio::write_bytes_into_file_async_tokio;
-use serde_json::Value;
-use std::path::Path;
-
 #[derive(thiserror::Error, Debug)]
 pub enum WriteJsonIntoFileError {
     #[error("serde_json::to_string_pretty serde_json::Error error: `{0}`.")]
@@ -25,9 +21,15 @@ pub enum WriteJsonIntoFileError {
     clippy::float_arithmetic
 )]
 pub async fn write_json_into_file(
-    path: &Path,
-    json_object: Value,
+    path: &std::path::Path,
+    json_object: serde_json::Value,
 ) -> Result<(), WriteJsonIntoFileError> {
     let stringified_json = serde_json::to_string_pretty(&json_object)?;
-    Ok(write_bytes_into_file_async_tokio(path, stringified_json.as_bytes()).await?)
+    Ok(
+        crate::helpers::write_bytes_into_file_async_tokio::write_bytes_into_file_async_tokio(
+            path,
+            stringified_json.as_bytes(),
+        )
+        .await?,
+    )
 }

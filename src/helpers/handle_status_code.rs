@@ -1,12 +1,10 @@
-use reqwest::StatusCode;
-
 #[deny(
     clippy::indexing_slicing,
     clippy::unwrap_used,
     clippy::integer_arithmetic,
     clippy::float_arithmetic
 )]
-pub fn handle_status_code(error_status_code: StatusCode, link: &str) -> bool {
+pub fn handle_status_code(error_status_code: reqwest::StatusCode, link: &str) -> bool {
     if error_status_code == reqwest::StatusCode::CONTINUE {
         println!("status 100(Continue) link: {link}");
     }

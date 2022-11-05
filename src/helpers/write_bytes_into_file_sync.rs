@@ -1,5 +1,3 @@
-use std::io::Write;
-
 #[deny(
     clippy::indexing_slicing,
     clippy::unwrap_used,
@@ -10,6 +8,7 @@ pub fn write_bytes_into_file_sync(
     path: &std::path::Path,
     bytes: &[u8],
 ) -> Result<(), std::io::Error> {
+    use std::io::Write;
     if let Some(prefix) = path.parent() {
         std::fs::create_dir_all(prefix)?;
     }

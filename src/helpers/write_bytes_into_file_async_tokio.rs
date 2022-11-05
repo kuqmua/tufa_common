@@ -1,6 +1,3 @@
-use std::path::Path;
-use tokio::io::AsyncWriteExt;
-
 #[deny(
     clippy::indexing_slicing,
     clippy::unwrap_used,
@@ -8,9 +5,10 @@ use tokio::io::AsyncWriteExt;
     clippy::float_arithmetic
 )]
 pub async fn write_bytes_into_file_async_tokio(
-    path: &Path,
+    path: &std::path::Path,
     bytes: &[u8],
 ) -> Result<(), std::io::Error> {
+    use tokio::io::AsyncWriteExt;
     if let Some(prefix) = path.parent() {
         std::fs::create_dir_all(prefix)?;
     }

@@ -1,5 +1,3 @@
-use std::str::FromStr;
-
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Resource {
     Local,
@@ -17,7 +15,7 @@ pub struct ParseResourceError {
     incorrect_str: String,
 }
 
-impl FromStr for Resource {
+impl std::str::FromStr for Resource {
     type Err = ParseResourceError;
 
     #[deny(
