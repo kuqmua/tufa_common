@@ -1,16 +1,17 @@
-#[allow(clippy::too_many_arguments)]
-pub fn get_git_html_info(
-    commit_id: String,
-    repo_link: String,
-    author: String,
-    author_email: String,
-    commit_unix_time: String,
-    timezone: String,
-    message: String,
-    commit_link: String,
-) -> String {
-    format!(
-        r#"<!DOCTYPE html>
+use crate::helpers::git::git_info::GitInformation;
+
+impl GitInformation {
+    #[allow(clippy::too_many_arguments)]
+    pub fn get_git_html_info(&self, commit_link: String) -> String {
+        let commit_id = &self.commit_id;
+        let repo_link = &self.repo_link;
+        let author = &self.author;
+        let author_email = &self.author_email;
+        let commit_unix_time = &self.commit_unix_time;
+        let timezone = &self.timezone;
+        let message = &self.message;
+        format!(
+            r#"<!DOCTYPE html>
 <html>
 
 <head>
@@ -5649,5 +5650,6 @@ pub fn get_git_html_info(
 </body>
 
 </html>"#
-    )
+        )
+    }
 }
