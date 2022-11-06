@@ -1,6 +1,6 @@
 use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::config_mods::tracing_type::TracingType;
-use crate::helpers::resource::Resource;
+use crate::server::resource::Resource;
 use gen_enum::GenEnum;
 use gen_enum_without_values::GenEnumWithoutValues;
 use init_from_env_with_panic_if_failed::InitFromEnvWithPanicIfFailedWithPanicIfFailedFromCrate;
