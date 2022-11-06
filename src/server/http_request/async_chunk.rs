@@ -30,6 +30,7 @@ pub struct HttpRequestChunkError {
 )]
 pub async fn async_chunk(
     response: &mut reqwest::Response,
+    source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
     should_trace: bool,
 ) -> Result<Option<bytes::Bytes>, Box<HttpRequestChunkError>> {
     match response.chunk().await {
@@ -42,7 +43,7 @@ pub async fn async_chunk(
                         .expect("cannot convert time to unix_epoch"),
                     location: *core::panic::Location::caller(),
                 },
-                &CONFIG.source_place_type,
+                source_place_type,
                 &GIT_INFO.data,
                 should_trace,
             ),
