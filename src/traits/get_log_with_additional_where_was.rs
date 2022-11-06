@@ -1,8 +1,8 @@
 use crate::common::git::git_info::GitInformation;
+use crate::common::where_was::WhereWas;
 use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::traits::get_log_where_was::GetLogWhereWas;
 use crate::traits::where_was_trait::WhereWasTrait;
-use crate::where_was::WhereWas;
 
 pub trait GetLogWithAdditionalWhereWas<T> {
     fn get_log_with_additional_where_was(

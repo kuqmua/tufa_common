@@ -1,8 +1,8 @@
+use crate::common::where_was::WhereWas;
 use crate::lazy_static::config::CONFIG;
 use crate::lazy_static::git_info::GIT_INFO;
 use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
 use crate::traits::where_was_trait::WhereWasTrait;
-use crate::where_was::WhereWas;
 use impl_display_for_error_struct::ImplDisplayForErrorStruct;
 use impl_error_with_tracing_for_struct_without_get_source::ImplErrorWithTracingForStructWithoutGetSourceFromCrate;
 use impl_get_source_without_method::ImplGetSourceWithoutMethodFromCrate;

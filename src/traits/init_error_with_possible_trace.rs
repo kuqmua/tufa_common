@@ -1,8 +1,8 @@
 use crate::common::git::git_info::GitInformation;
+use crate::common::where_was::WhereWas;
 use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::traits::new_error::NewError;
 use crate::traits::with_tracing::WithTracing;
-use crate::where_was::WhereWas;
 
 pub trait InitErrorWithPossibleTrace<GenericErrorStruct, GenericErrorStructSource>
 where

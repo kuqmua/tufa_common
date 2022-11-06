@@ -4,7 +4,7 @@
 // use crate::lazy_static::git_info::GIT_INFO;
 // use reqwest::RequestBuilder;
 // use tufa_common::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
-// use tufa_common::where_was::WhereWas;
+// use tufa_common::common::where_was::WhereWas;
 
 // #[deny(
 //     clippy::indexing_slicing,

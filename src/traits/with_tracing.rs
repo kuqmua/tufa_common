@@ -1,6 +1,6 @@
 use crate::{
-    common::git::git_info::GitInformation, config_mods::source_place_type::SourcePlaceType,
-    where_was::WhereWas,
+    common::git::git_info::GitInformation, common::where_was::WhereWas,
+    config_mods::source_place_type::SourcePlaceType,
 };
 
 pub trait WithTracing<T> {

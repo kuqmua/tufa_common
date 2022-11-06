@@ -1,8 +1,8 @@
 use crate::common::git::git_info::GitInformation;
+use crate::common::where_was::WhereWasOneOrMany;
 use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::traits::get_where_was_one_or_many::GetWhereWasOneOrMany;
 use crate::traits::where_was_trait::WhereWasTrait;
-use crate::where_was::WhereWasOneOrMany;
 
 pub trait GetJsonWhereWas {
     fn get_json_where_was(
