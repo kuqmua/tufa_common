@@ -1,6 +1,6 @@
 // use crate::constants::GIT_COMMIT_ID_LENGTH;//todo should i check commit length?
+use crate::common::git::git_info::GitInformation;
 use crate::constants::GIT_PATH_FROM_SUBMODULE;
-use crate::helpers::git::git_info::GitInformation;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;

@@ -1,4 +1,4 @@
-use crate::helpers::git::git_info::GitInformation;
+use crate::common::git::git_info::GitInformation;
 
 pub trait WhereWasTrait {
     fn readable_time(&self, timezone: i32) -> String;

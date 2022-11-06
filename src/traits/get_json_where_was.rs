@@ -1,5 +1,5 @@
+use crate::common::git::git_info::GitInformation;
 use crate::config_mods::source_place_type::SourcePlaceType;
-use crate::helpers::git::git_info::GitInformation;
 use crate::traits::get_where_was_one_or_many::GetWhereWasOneOrMany;
 use crate::traits::where_was_trait::WhereWasTrait;
 use crate::where_was::WhereWasOneOrMany;

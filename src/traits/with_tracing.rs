@@ -1,5 +1,5 @@
 use crate::{
-    config_mods::source_place_type::SourcePlaceType, helpers::git::git_info::GitInformation,
+    common::git::git_info::GitInformation, config_mods::source_place_type::SourcePlaceType,
     where_was::WhereWas,
 };
 

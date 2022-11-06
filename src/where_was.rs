@@ -1,4 +1,4 @@
-use crate::helpers::git::git_info::GitInformation;
+use crate::common::git::git_info::GitInformation;
 use crate::traits::where_was_trait::WhereWasTrait;
 
 #[derive(Debug, Clone)]

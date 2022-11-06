@@ -1,4 +1,4 @@
-use crate::helpers::git::git_info::GitInformation;
+use crate::common::git::git_info::GitInformation;
 
 impl GitInformation {
     #[allow(clippy::too_many_arguments)]

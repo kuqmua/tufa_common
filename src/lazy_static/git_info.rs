@@ -1,5 +1,5 @@
 // use crate::project_constants::PROJECT_NAME;
-use crate::helpers::git::git_info_wrapper::GitInformationWrapper;
+use crate::common::git::git_info_wrapper::GitInformationWrapper;
 use lazy_static::lazy_static;
 
 lazy_static! {
