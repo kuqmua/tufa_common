@@ -19,8 +19,8 @@ use std::io::Write;
     ImplDisplayForErrorStruct,
 )]
 pub struct WriteBytesIntoFileSyncError {
-    source: std::io::Error,
-    where_was: WhereWas,
+    pub source: std::io::Error,
+    pub where_was: WhereWas,
 }
 #[deny(
     clippy::indexing_slicing,

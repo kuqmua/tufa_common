@@ -19,13 +19,13 @@ use init_error::InitErrorFromCrate;
     ImplGetSourceWithMethodFromCrate,
     ImplDisplayForErrorStruct,
 )]
-pub struct WriteJsonIntoFileAsyncError {
-    source: WriteJsonIntoFileAsyncErrorEnum,
+pub struct WriteJsonIntoFileAsyncTokioError {
+    source: WriteJsonIntoFileAsyncTokioErrorEnum,
     where_was: WhereWas,
 }
 
 #[derive(Debug, ImplGetSourceWithoutMethodFromCrate, ImplDisplayForSimpleErrorEnum)]
-pub enum WriteJsonIntoFileAsyncErrorEnum {
+pub enum WriteJsonIntoFileAsyncTokioErrorEnum {
     SerdeJsonError(serde_json::Error),
     StdIoError(std::io::Error),
 }
@@ -36,17 +36,17 @@ pub enum WriteJsonIntoFileAsyncErrorEnum {
     clippy::integer_arithmetic,
     clippy::float_arithmetic
 )]
-pub async fn write_json_into_file_async(
+pub async fn write_json_into_file_async_tokio(
     path: &std::path::Path,
     json_object: serde_json::Value,
     source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
     should_trace: bool,
-) -> Result<(), Box<WriteJsonIntoFileAsyncError>> {
+) -> Result<(), Box<WriteJsonIntoFileAsyncTokioError>> {
     match serde_json::to_string_pretty(&json_object) {
         Err(e) => {
             return Err(Box::new(
-                WriteJsonIntoFileAsyncError::init_error_with_possible_trace(
-                    WriteJsonIntoFileAsyncErrorEnum::SerdeJsonError(e),
+                WriteJsonIntoFileAsyncTokioError::init_error_with_possible_trace(
+                    WriteJsonIntoFileAsyncTokioErrorEnum::SerdeJsonError(e),
                     WhereWas {
                         time: std::time::SystemTime::now()
                             .duration_since(std::time::UNIX_EPOCH)
@@ -69,8 +69,8 @@ pub async fn write_json_into_file_async(
             .await {
                 Err(e) => {
                     return Err(Box::new(
-                        WriteJsonIntoFileAsyncError::init_error_with_possible_trace(
-                            WriteJsonIntoFileAsyncErrorEnum::StdIoError(e.source),
+                        WriteJsonIntoFileAsyncTokioError::init_error_with_possible_trace(
+                            WriteJsonIntoFileAsyncTokioErrorEnum::StdIoError(e.source),
                             WhereWas {
                                 time: std::time::SystemTime::now()
                             .duration_since(std::time::UNIX_EPOCH)
