@@ -3,6 +3,7 @@ use crate::config_mods::tracing_type::TracingType;
 use crate::server::resource::Resource;
 use gen_enum::GenEnum;
 use gen_enum_without_values::GenEnumWithoutValues;
+use generate_getter_traits_for_struct_fields::GenerateGetterTraitsForStructFieldsFromCrate;
 use init_from_env_with_panic_if_failed::InitFromEnvWithPanicIfFailedWithPanicIfFailedFromCrate;
 
 #[derive(
@@ -14,6 +15,7 @@ use init_from_env_with_panic_if_failed::InitFromEnvWithPanicIfFailedWithPanicIfF
     Default,
     PartialEq,
     Eq,
+    GenerateGetterTraitsForStructFieldsFromCrate,
 )]
 pub struct ConfigStruct {
     pub server_ip: String,

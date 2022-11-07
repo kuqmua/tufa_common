@@ -1,13 +1,13 @@
-use crate::config_mods::traits::mongo::get_mongo_fifth_handle_url_part::GetMongoFifthHandleUrlPart;
-use crate::config_mods::traits::mongo::get_mongo_first_handle_url_part::GetMongoFirstHandleUrlPart;
-use crate::config_mods::traits::mongo::get_mongo_fourth_handle_url_part::GetMongoFourthHandleUrlPart;
-use crate::config_mods::traits::mongo::get_mongo_ip::GetMongoIp;
-use crate::config_mods::traits::mongo::get_mongo_login::GetMongoLogin;
-use crate::config_mods::traits::mongo::get_mongo_params::GetMongoParams;
-use crate::config_mods::traits::mongo::get_mongo_password::GetMongoPassword;
-use crate::config_mods::traits::mongo::get_mongo_port::GetMongoPort;
-use crate::config_mods::traits::mongo::get_mongo_second_handle_url_part::GetMongodSecondHandleUrlPart;
-use crate::config_mods::traits::mongo::get_mongo_third_handle_url_part::GetMongoThirdHandleUrlPart;
+use crate::config_mods::traits::fields::GetMongoFifthHandleUrlPart;
+use crate::config_mods::traits::fields::GetMongoFirstHandleUrlPart;
+use crate::config_mods::traits::fields::GetMongoFourthHandleUrlPart;
+use crate::config_mods::traits::fields::GetMongoIp;
+use crate::config_mods::traits::fields::GetMongoLogin;
+use crate::config_mods::traits::fields::GetMongoParams;
+use crate::config_mods::traits::fields::GetMongoPassword;
+use crate::config_mods::traits::fields::GetMongoPort;
+use crate::config_mods::traits::fields::GetMongoSecondHandleUrlPart;
+use crate::config_mods::traits::fields::GetMongoThirdHandleUrlPart;
 
 pub trait GetMongoUrl<SomeGenericParam> {
     fn get_mongo_url(&self) -> String;
@@ -16,7 +16,7 @@ pub trait GetMongoUrl<SomeGenericParam> {
 impl<T> GetMongoUrl<Self> for T
 where
     Self: GetMongoFirstHandleUrlPart
-        + GetMongodSecondHandleUrlPart
+        + GetMongoSecondHandleUrlPart
         + GetMongoThirdHandleUrlPart
         + GetMongoFourthHandleUrlPart
         + GetMongoFifthHandleUrlPart
