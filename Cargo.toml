@@ -31,6 +31,7 @@ enum_extension = {path = "../proc_macros/enum_extension"}
 error_display = {path = "../proc_macros/error_display"}
 gen_enum = {path = "../proc_macros/gen_enum"}
 gen_enum_without_values = {path = "../proc_macros/gen_enum_without_values"}
+generate_getter_traits_for_struct_fields = {path = "../proc_macros/generate_getter_traits_for_struct_fields"}
 git_info = {path = "../proc_macros/git_info"}
 impl_box_err_source_from_err = {path = "../proc_macros/impl_box_err_source_from_err"}
 impl_display = {path = "../proc_macros/impl_display"}
