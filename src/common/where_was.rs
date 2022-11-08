@@ -18,7 +18,7 @@ pub struct WhereWas {
 //                 self.file_line_column()
 //             }
 //             tufa_common::config_mods::source_place_type::SourcePlaceType::Github => {
-//                 self.github_file_line_column(&crate::lazy_static::git_info::GIT_INFO.data)
+//                 self.github_file_line_column(&crate::once_cell_globals::git_info::GIT_INFO.data)
 //             }
 //             tufa_common::config_mods::source_place_type::SourcePlaceType::None => String::from(""),
 //         }
@@ -29,12 +29,12 @@ pub struct WhereWas {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 //         match CONFIG.is_debug_implementation_enable {
 //             true => write!(f, "{:#?}", self),
-//             false => match crate::lazy_static::config::CONFIG.source_place_type {
+//             false => match crate::once_cell_globals::config::CONFIG.source_place_type {
 //                 tufa_common::config_mods::source_place_type::SourcePlaceType::Source => {
 //                     write!(f, "{}", self.file_line_column())
 //                 }
 //                 tufa_common::config_mods::source_place_type::SourcePlaceType::Github => {
-//                     write!(f, "{}", self.github_file_line_column(&crate::lazy_static::git_info::GIT_INFO.data))
+//                     write!(f, "{}", self.github_file_line_column(&crate::once_cell_globals::git_info::GIT_INFO.data))
 //                 }
 //                 tufa_common::config_mods::source_place_type::SourcePlaceType::None => {
 //                     write!(f, "")

@@ -1,4 +1,4 @@
-//for some reason cannot get GitInformation type directly from lazy_static value. temp solution - put in struct wrapper
+//for some reason cannot get GitInformation type directly from value. temp solution - put in struct wrapper
 pub struct GitInformationWrapper {
     pub data: crate::common::git::git_info::GitInformation,
 }

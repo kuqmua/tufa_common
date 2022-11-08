@@ -1,5 +1,5 @@
 use crate::common::where_was::WhereWas;
-use crate::lazy_static::git_info::GIT_INFO;
+use crate::once_cell_globals::git_info::GIT_INFO;
 use crate::server::http_request::async_http_request_client_request_builder_prep::async_http_request_client_request_builder_prep;
 use crate::server::http_request::http_request_error::HttpRequestError;
 use crate::server::http_request::http_request_method::HttpRequestMethod;
