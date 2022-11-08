@@ -1,8 +1,6 @@
 // use crate::project_constants::PROJECT_NAME;
 use crate::common::git::git_info_wrapper::GitInformationWrapper;
-use lazy_static::lazy_static;
+use once_cell::sync::Lazy;
 
-lazy_static! {
-    pub static ref GIT_INFO: GitInformationWrapper =
-        GitInformationWrapper::init("../", "tufa_common");
-}
+pub static GIT_INFO: Lazy<GitInformationWrapper> =
+    Lazy::new(|| GitInformationWrapper::init("../", "tufa_common"));
