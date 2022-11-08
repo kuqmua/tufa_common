@@ -15,7 +15,8 @@ dotenv = "0.15.0"
 futures = "0.3.5"
 http = "0.2.8"
 lazy_static = "1.4"
-reqwest = {version = "0.11.0", default-features = false, features = ["json", "blocking", "rustls-tls", "cookies"]}
+# reqwest = {version = "0.11.0", default-features = false, features = ["json", "blocking", "rustls-tls", "cookies"]}
+reqwest = {version = "0.11.0", default-features = false, features = ["json", "blocking", "rustls-tls", "cookies", "gzip", "brotli", "deflate", "trust-dns", "native-tls", "multipart", "stream", "cookies"]}
 serde = {version = "1.0", features = ["derive"]}
 serde-aux = "4.0.0"
 serde-xml-rs = "0.6.0"
