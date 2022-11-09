@@ -54,7 +54,7 @@ pub fn write_json_into_file_async(
                         location: *core::panic::Location::caller(),
                     },
                     source_place_type,
-                    &GIT_INFO.data,
+                    &GIT_INFO,
                     should_trace,
                 ),
             ));
@@ -77,7 +77,7 @@ pub fn write_json_into_file_async(
                                 location: *core::panic::Location::caller(),
                             },
                             source_place_type,
-                  &GIT_INFO.data,
+                  &GIT_INFO,
                            should_trace,
                         ),
                     )

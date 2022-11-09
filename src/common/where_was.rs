@@ -18,7 +18,7 @@ pub struct WhereWas {
 //                 self.file_line_column()
 //             }
 //             tufa_common::config_mods::source_place_type::SourcePlaceType::Github => {
-//                 self.github_file_line_column(&crate::once_cell_globals::git_info::GIT_INFO.data)
+//                 self.github_file_line_column(&crate::once_cell_globals::git_info::GIT_INFO)
 //             }
 //             tufa_common::config_mods::source_place_type::SourcePlaceType::None => String::from(""),
 //         }
@@ -34,7 +34,7 @@ pub struct WhereWas {
 //                     write!(f, "{}", self.file_line_column())
 //                 }
 //                 tufa_common::config_mods::source_place_type::SourcePlaceType::Github => {
-//                     write!(f, "{}", self.github_file_line_column(&crate::once_cell_globals::git_info::GIT_INFO.data))
+//                     write!(f, "{}", self.github_file_line_column(&crate::once_cell_globals::git_info::GIT_INFO))
 //                 }
 //                 tufa_common::config_mods::source_place_type::SourcePlaceType::None => {
 //                     write!(f, "")

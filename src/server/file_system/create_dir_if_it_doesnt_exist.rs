@@ -47,7 +47,7 @@ pub fn create_dir_if_it_doesnt_exist(
                     location: *core::panic::Location::caller(),
                 },
                 source_place_type,
-                &GIT_INFO.data,
+                &GIT_INFO,
                 should_trace,
             ),
         ));

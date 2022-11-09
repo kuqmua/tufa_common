@@ -47,7 +47,7 @@ pub async fn write_bytes_into_file_async_tokio(
                         location: *core::panic::Location::caller(),
                     },
                     source_place_type,
-                    &GIT_INFO.data,
+                    &GIT_INFO,
                     should_trace,
                 ),
             ));
@@ -65,7 +65,7 @@ pub async fn write_bytes_into_file_async_tokio(
                         location: *core::panic::Location::caller(),
                     },
                     source_place_type,
-                    &GIT_INFO.data,
+                    &GIT_INFO,
                     should_trace,
                 ),
             ));
@@ -82,7 +82,7 @@ pub async fn write_bytes_into_file_async_tokio(
                             location: *core::panic::Location::caller(),
                         },
                         source_place_type,
-                        &GIT_INFO.data,
+                        &GIT_INFO,
                         should_trace,
                     ),
                 ));

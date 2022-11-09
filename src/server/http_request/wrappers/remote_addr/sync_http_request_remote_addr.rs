@@ -207,7 +207,7 @@ where
                 location: *core::panic::Location::caller(),
             },
             source_place_type,
-            &GIT_INFO.data,
+            &GIT_INFO,
             should_trace,
         ))),
         Ok(request_builder) => match request_builder.send() {
@@ -220,7 +220,7 @@ where
                     location: *core::panic::Location::caller(),
                 },
                 source_place_type,
-                &GIT_INFO.data,
+                &GIT_INFO,
                 should_trace,
             ))),
             Ok(res) => {
@@ -234,7 +234,7 @@ where
                             location: *core::panic::Location::caller(),
                         },
                         source_place_type,
-                        &GIT_INFO.data,
+                        &GIT_INFO,
                         should_trace,
                     )));
                 }
