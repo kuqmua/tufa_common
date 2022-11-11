@@ -28,6 +28,7 @@ thiserror = "1.0.30"
 tokio = {version = "1.7.1", features = ["macros"]}
 tracing = {version = "0.1", features = ["log", "valuable"]}
 
+compile_time_git_info = {path = "../proc_macros/compile_time_git_info"}
 enum_extension = {path = "../proc_macros/enum_extension"}
 error_display = {path = "../proc_macros/error_display"}
 gen_enum = {path = "../proc_macros/gen_enum"}
