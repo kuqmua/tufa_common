@@ -1,9 +1,13 @@
-pub struct GitInformation {
-    pub commit_id: String,
-    pub repo_link: String,
-    pub author: String,
-    pub author_email: String,
-    pub commit_unix_time: String,
-    pub timezone: String,
-    pub message: String,
+use serde_derive::Deserialize;
+use serde_derive::Serialize;
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct GitInformation<'a> {
+    pub commit_id: &'a str,
+    pub repo_link: &'a str,
+    pub author: &'a str,
+    pub author_email: &'a str,
+    pub commit_unix_time: &'a str,
+    pub timezone: &'a str,
+    pub message: &'a str,
 }

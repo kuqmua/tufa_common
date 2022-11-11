@@ -1,6 +1,6 @@
 use crate::common::git::git_info::GitInformation;
 
-impl GitInformation {
+impl GitInformation<'_> {
     #[deny(
         clippy::indexing_slicing,
         clippy::unwrap_used,

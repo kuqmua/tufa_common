@@ -1,6 +1,6 @@
 use crate::common::git::git_info::GitInformation;
 
-impl GitInformation {
+impl GitInformation<'_> {
     #[allow(clippy::too_many_arguments)]
     pub fn get_git_html_info(&self, commit_link: String) -> String {
         let commit_id = &self.commit_id;
