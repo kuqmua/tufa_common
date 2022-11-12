@@ -1,6 +1,6 @@
 use crate::common::where_was::WhereWas;
-use crate::once_cell_globals::config::CONFIG;
-use crate::once_cell_globals::git_info::GIT_INFO;
+use crate::global_variables::compile_time::git_info::GIT_INFO;
+use crate::global_variables::runtime::config::CONFIG;
 use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
 use crate::traits::where_was_trait::WhereWasTrait;
 use impl_error_with_tracing_for_struct_without_get_source::ImplErrorWithTracingForStructWithoutGetSourceFromCrate;

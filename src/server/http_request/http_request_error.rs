@@ -1,5 +1,5 @@
 use crate::common::where_was::WhereWas;
-use crate::once_cell_globals::config::CONFIG;
+use crate::global_variables::runtime::config::CONFIG;
 use crate::traits::where_was_trait::WhereWasTrait;
 use impl_error_with_tracing_for_struct_without_get_source::ImplErrorWithTracingForStructWithoutGetSourceFromCrate;
 use impl_get_source_without_method::ImplGetSourceWithoutMethodFromCrate;

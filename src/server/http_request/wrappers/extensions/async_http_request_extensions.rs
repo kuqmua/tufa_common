@@ -1,7 +1,7 @@
 // use crate::helpers::http_request::http_request_error::HttpRequestError;
 // use crate::helpers::http_request::request_builder_methods::extensions::http_request_extensions_error::ExtensionsErrorEnum;
-// use crate::once_cell_globals::config::CONFIG;
-// use crate::once_cell_globals::git_info::GIT_INFO;
+// use crate::global_variables::runtime::config::CONFIG;
+// use crate::global_variables::compile_time::git_info::GIT_INFO;
 // use reqwest::RequestBuilder;
 // use tufa_common::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
 // use tufa_common::common::where_was::WhereWas;

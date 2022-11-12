@@ -1,7 +1,7 @@
 pub mod config_mods;
 pub mod constants;
+pub mod global_variables;
 pub mod json_example;
-pub mod once_cell_globals;
 pub mod traits;
 
 pub mod client;

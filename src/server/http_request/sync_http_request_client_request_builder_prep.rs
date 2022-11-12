@@ -1,5 +1,5 @@
 use crate::common::where_was::WhereWas;
-use crate::once_cell_globals::git_info::GIT_INFO;
+use crate::global_variables::compile_time::git_info::GIT_INFO;
 use crate::server::http_request::http_request_error::HttpRequestError;
 use crate::server::http_request::http_request_method::HttpRequestMethod;
 use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
