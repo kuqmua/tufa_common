@@ -1,4 +1,5 @@
 use crate::common::where_was::WhereWas;
+use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::global_variables::compile_time::git_info::GIT_INFO;
 use crate::global_variables::runtime::config::CONFIG;
 use crate::traits::get_source::GetSource;
@@ -46,6 +47,7 @@ pub async fn mongo_check_collection_is_empty(
     mongo_url: &str,
     db_name: &str,
     db_collection_name: &str,
+    source_place_type: &SourcePlaceType,
     should_trace: bool,
 ) -> Result<(), Box<MongoCheckCollectionIsEmptyError>> {
     match ClientOptions::parse(mongo_url).await {
@@ -58,7 +60,7 @@ pub async fn mongo_check_collection_is_empty(
                         .expect("cannot convert time to unix_epoch"),
                     location: *core::panic::Location::caller(),
                 },
-                &CONFIG.source_place_type,
+                source_place_type,
                 &GIT_INFO,
                 should_trace,
             ),
@@ -73,7 +75,7 @@ pub async fn mongo_check_collection_is_empty(
                             .expect("cannot convert time to unix_epoch"),
                         location: *core::panic::Location::caller(),
                     },
-                    &CONFIG.source_place_type,
+                    source_place_type,
                     &GIT_INFO,
                     should_trace,
                 ),
@@ -94,7 +96,7 @@ pub async fn mongo_check_collection_is_empty(
                                     .expect("cannot convert time to unix_epoch"),
                                 location: *core::panic::Location::caller(),
                             },
-                            &CONFIG.source_place_type,
+                            source_place_type,
                             &GIT_INFO,
                             should_trace,
                         ),
@@ -112,7 +114,7 @@ pub async fn mongo_check_collection_is_empty(
                                             .expect("cannot convert time to unix_epoch"),
                                         location: *core::panic::Location::caller(),
                                     },
-                                    &CONFIG.source_place_type,
+                                    source_place_type,
                                     &GIT_INFO,
                                     should_trace,
                                 ),

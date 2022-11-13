@@ -1,4 +1,5 @@
 use crate::common::where_was::WhereWas;
+use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::global_variables::compile_time::git_info::GIT_INFO;
 use crate::global_variables::runtime::config::CONFIG;
 use crate::traits::get_source::GetSource;
@@ -50,6 +51,7 @@ pub async fn mongo_insert_docs_in_empty_collection(
     db_collection_handle: String,
     collection_field_name: String,
     vec_of_values: Vec<String>,
+    source_place_type: &SourcePlaceType,
     should_trace: bool,
 ) -> Result<(), Box<MongoInsertDocsInEmptyCollectionError>> {
     match ClientOptions::parse(mongo_url).await {
@@ -62,7 +64,7 @@ pub async fn mongo_insert_docs_in_empty_collection(
                         .expect("cannot convert time to unix_epoch"),
                     location: *core::panic::Location::caller(),
                 },
-                &CONFIG.source_place_type,
+                source_place_type,
                 &GIT_INFO,
                 should_trace,
             ),
@@ -77,7 +79,7 @@ pub async fn mongo_insert_docs_in_empty_collection(
                             .expect("cannot convert time to unix_epoch"),
                         location: *core::panic::Location::caller(),
                     },
-                    &CONFIG.source_place_type,
+                    source_place_type,
                     &GIT_INFO,
                     should_trace,
                 ),
@@ -96,7 +98,7 @@ pub async fn mongo_insert_docs_in_empty_collection(
                                     .expect("cannot convert time to unix_epoch"),
                                 location: *core::panic::Location::caller(),
                             },
-                            &CONFIG.source_place_type,
+                            source_place_type,
                             &GIT_INFO,
                             should_trace,
                         ),
@@ -112,7 +114,7 @@ pub async fn mongo_insert_docs_in_empty_collection(
                                         .expect("cannot convert time to unix_epoch"),
                                         location: *core::panic::Location::caller(),
                                     },
-                                    &CONFIG.source_place_type,
+                                    source_place_type,
                                     &GIT_INFO,
                                     should_trace,
                                 ),
@@ -137,7 +139,7 @@ pub async fn mongo_insert_docs_in_empty_collection(
                                             .expect("cannot convert time to unix_epoch"),
                                             location: *core::panic::Location::caller(),
                                         },
-                                        &CONFIG.source_place_type,
+                                        source_place_type,
                                         &GIT_INFO,
                                         should_trace,
                                     ),
