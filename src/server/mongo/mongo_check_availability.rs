@@ -31,7 +31,6 @@ pub struct MongoCheckAvailabilityError {
 
 #[derive(Debug, ImplGetSourceWithoutMethodFromCrate, ImplDisplayForSimpleErrorEnum)]
 pub enum MongoCheckAvailabilityErrorEnum {
-    ClientOptionsParse(mongodb::error::Error),
     ClientWithOptions(mongodb::error::Error),
     ListCollectionNames(mongodb::error::Error),
 }
@@ -43,35 +42,33 @@ pub enum MongoCheckAvailabilityErrorEnum {
     clippy::float_arithmetic
 )]
 pub async fn mongo_check_availability(
-    mongo_url: &str,
+    mut client_options: ClientOptions,
     db_name: &str,
     source_place_type: &SourcePlaceType,
     timeout: Duration,
     should_trace: bool,
 ) -> Result<(), Box<MongoCheckAvailabilityError>> {
-    match ClientOptions::parse(mongo_url).await {
-        Err(e) => {
-            return Err(Box::new(
-                MongoCheckAvailabilityError::init_error_with_possible_trace(
-                    MongoCheckAvailabilityErrorEnum::ClientOptionsParse(e),
-                    WhereWas {
-                        time: std::time::SystemTime::now()
-                            .duration_since(std::time::UNIX_EPOCH)
-                            .expect("cannot convert time to unix_epoch"),
-                        location: *core::panic::Location::caller(),
-                    },
-                    source_place_type,
-                    &GIT_INFO,
-                    should_trace,
-                ),
-            ));
-        }
-        Ok(mut client_options) => {
-            client_options.connect_timeout = Some(timeout);
-            match Client::with_options(client_options) {
-                Err(e) => Err(Box::new(
+    client_options.connect_timeout = Some(timeout);
+    match Client::with_options(client_options) {
+        Err(e) => Err(Box::new(
+            MongoCheckAvailabilityError::init_error_with_possible_trace(
+                MongoCheckAvailabilityErrorEnum::ClientWithOptions(e),
+                WhereWas {
+                    time: std::time::SystemTime::now()
+                        .duration_since(std::time::UNIX_EPOCH)
+                        .expect("cannot convert time to unix_epoch"),
+                    location: *core::panic::Location::caller(),
+                },
+                source_place_type,
+                &GIT_INFO,
+                should_trace,
+            ),
+        )),
+        Ok(client) => {
+            if let Err(e) = client.database(db_name).list_collection_names(None).await {
+                return Err(Box::new(
                     MongoCheckAvailabilityError::init_error_with_possible_trace(
-                        MongoCheckAvailabilityErrorEnum::ClientWithOptions(e),
+                        MongoCheckAvailabilityErrorEnum::ListCollectionNames(e),
                         WhereWas {
                             time: std::time::SystemTime::now()
                                 .duration_since(std::time::UNIX_EPOCH)
@@ -82,27 +79,9 @@ pub async fn mongo_check_availability(
                         &GIT_INFO,
                         should_trace,
                     ),
-                )),
-                Ok(client) => {
-                    if let Err(e) = client.database(db_name).list_collection_names(None).await {
-                        return Err(Box::new(
-                            MongoCheckAvailabilityError::init_error_with_possible_trace(
-                                MongoCheckAvailabilityErrorEnum::ListCollectionNames(e),
-                                WhereWas {
-                                    time: std::time::SystemTime::now()
-                                        .duration_since(std::time::UNIX_EPOCH)
-                                        .expect("cannot convert time to unix_epoch"),
-                                    location: *core::panic::Location::caller(),
-                                },
-                                source_place_type,
-                                &GIT_INFO,
-                                should_trace,
-                            ),
-                        ));
-                    }
-                    Ok(())
-                }
+                ));
             }
+            Ok(())
         }
     }
 }
