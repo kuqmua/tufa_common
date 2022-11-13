@@ -44,6 +44,7 @@ pub enum MongoCheckAvailabilityErrorEnum {
 )]
 pub async fn mongo_check_availability(
     mongo_url: &str,
+    db_name: &str,
     source_place_type: &SourcePlaceType,
     timeout: Duration,
     should_trace: bool,
@@ -83,11 +84,7 @@ pub async fn mongo_check_availability(
                     ),
                 )),
                 Ok(client) => {
-                    if let Err(e) = client
-                        .database(&CONFIG.mongo_providers_logs_db_name)
-                        .list_collection_names(None)
-                        .await
-                    {
+                    if let Err(e) = client.database(db_name).list_collection_names(None).await {
                         return Err(Box::new(
                             MongoCheckAvailabilityError::init_error_with_possible_trace(
                                 MongoCheckAvailabilityErrorEnum::ListCollectionNames(e),
