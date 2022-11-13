@@ -14,7 +14,6 @@ use impl_get_where_was_one_or_many_one_for_error_struct::ImplGetWhereWasOneOrMan
 use init_error::InitErrorFromCrate;
 use mongodb::options::ClientOptions;
 use mongodb::Client;
-use std::time::Duration;
 
 #[derive(
     Debug,
@@ -42,13 +41,11 @@ pub enum MongoCheckAvailabilityErrorEnum {
     clippy::float_arithmetic
 )]
 pub async fn mongo_check_availability(
-    mut client_options: ClientOptions,
+    client_options: ClientOptions,
     db_name: &str,
     source_place_type: &SourcePlaceType,
-    timeout: Duration,
     should_trace: bool,
 ) -> Result<(), Box<MongoCheckAvailabilityError>> {
-    client_options.connect_timeout = Some(timeout);
     match Client::with_options(client_options) {
         Err(e) => Err(Box::new(
             MongoCheckAvailabilityError::init_error_with_possible_trace(

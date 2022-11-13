@@ -32,7 +32,6 @@ pub struct MongoInsertDocsInEmptyCollectionError {
 
 #[derive(Debug, ImplGetSourceWithoutMethodFromCrate, ImplDisplayForSimpleErrorEnum)]
 pub enum MongoInsertDocsInEmptyCollectionErrorEnum {
-    ClientOptionsParse(mongodb::error::Error),
     ClientWithOptions(mongodb::error::Error),
     CountDocuments(mongodb::error::Error),
     NotEmpty(u64),
@@ -46,7 +45,7 @@ pub enum MongoInsertDocsInEmptyCollectionErrorEnum {
     clippy::float_arithmetic
 )]
 pub async fn mongo_insert_docs_in_empty_collection(
-    mongo_url: String,
+    client_options: ClientOptions,
     db_name_handle: &str,
     db_collection_handle: String,
     collection_field_name: String,
@@ -54,10 +53,10 @@ pub async fn mongo_insert_docs_in_empty_collection(
     source_place_type: &SourcePlaceType,
     should_trace: bool,
 ) -> Result<(), Box<MongoInsertDocsInEmptyCollectionError>> {
-    match ClientOptions::parse(mongo_url).await {
+    match Client::with_options(client_options) {
         Err(e) => Err(Box::new(
             MongoInsertDocsInEmptyCollectionError::init_error_with_possible_trace(
-                MongoInsertDocsInEmptyCollectionErrorEnum::ClientOptionsParse(e),
+                MongoInsertDocsInEmptyCollectionErrorEnum::ClientWithOptions(e),
                 WhereWas {
                     time: std::time::SystemTime::now()
                         .duration_since(std::time::UNIX_EPOCH)
@@ -69,68 +68,55 @@ pub async fn mongo_insert_docs_in_empty_collection(
                 should_trace,
             ),
         )),
-        Ok(client_options) => match Client::with_options(client_options) {
-            Err(e) => Err(Box::new(
-                MongoInsertDocsInEmptyCollectionError::init_error_with_possible_trace(
-                    MongoInsertDocsInEmptyCollectionErrorEnum::ClientWithOptions(e),
-                    WhereWas {
-                        time: std::time::SystemTime::now()
-                            .duration_since(std::time::UNIX_EPOCH)
-                            .expect("cannot convert time to unix_epoch"),
-                        location: *core::panic::Location::caller(),
-                    },
-                    source_place_type,
-                    &GIT_INFO,
-                    should_trace,
-                ),
-            )),
-            Ok(client) => {
-                let collection = client
-                    .database(db_name_handle)
-                    .collection(&db_collection_handle);
-                match collection.count_documents(None, None).await {
-                    Err(e) => Err(Box::new(
-                        MongoInsertDocsInEmptyCollectionError::init_error_with_possible_trace(
-                            MongoInsertDocsInEmptyCollectionErrorEnum::CountDocuments(e),
-                            WhereWas {
-                                time: std::time::SystemTime::now()
-                                    .duration_since(std::time::UNIX_EPOCH)
-                                    .expect("cannot convert time to unix_epoch"),
-                                location: *core::panic::Location::caller(),
-                            },
-                            source_place_type,
-                            &GIT_INFO,
-                            should_trace,
-                        ),
-                    )),
-                    Ok(documents_number) => {
-                        if documents_number > 0 {
-                            Err(Box::new(
-                                MongoInsertDocsInEmptyCollectionError::init_error_with_possible_trace(
-                                    MongoInsertDocsInEmptyCollectionErrorEnum::NotEmpty(documents_number),
-                                    WhereWas {
-                                        time: std::time::SystemTime::now()
+        Ok(client) => {
+            let collection = client
+                .database(db_name_handle)
+                .collection(&db_collection_handle);
+            match collection.count_documents(None, None).await {
+                Err(e) => Err(Box::new(
+                    MongoInsertDocsInEmptyCollectionError::init_error_with_possible_trace(
+                        MongoInsertDocsInEmptyCollectionErrorEnum::CountDocuments(e),
+                        WhereWas {
+                            time: std::time::SystemTime::now()
+                                .duration_since(std::time::UNIX_EPOCH)
+                                .expect("cannot convert time to unix_epoch"),
+                            location: *core::panic::Location::caller(),
+                        },
+                        source_place_type,
+                        &GIT_INFO,
+                        should_trace,
+                    ),
+                )),
+                Ok(documents_number) => {
+                    if documents_number > 0 {
+                        Err(Box::new(
+                            MongoInsertDocsInEmptyCollectionError::init_error_with_possible_trace(
+                                MongoInsertDocsInEmptyCollectionErrorEnum::NotEmpty(
+                                    documents_number,
+                                ),
+                                WhereWas {
+                                    time: std::time::SystemTime::now()
                                         .duration_since(std::time::UNIX_EPOCH)
                                         .expect("cannot convert time to unix_epoch"),
-                                        location: *core::panic::Location::caller(),
-                                    },
-                                    source_place_type,
-                                    &GIT_INFO,
-                                    should_trace,
-                                ),
-                            ))
-                        } else {
-                            if let Err(e) = collection
-                                .insert_many(
-                                    vec_of_values
-                                        .iter()
-                                        .map(|value| doc! { &collection_field_name: value })
-                                        .collect::<Vec<Document>>(),
-                                    None,
-                                )
-                                .await
-                            {
-                                return Err(Box::new(
+                                    location: *core::panic::Location::caller(),
+                                },
+                                source_place_type,
+                                &GIT_INFO,
+                                should_trace,
+                            ),
+                        ))
+                    } else {
+                        if let Err(e) = collection
+                            .insert_many(
+                                vec_of_values
+                                    .iter()
+                                    .map(|value| doc! { &collection_field_name: value })
+                                    .collect::<Vec<Document>>(),
+                                None,
+                            )
+                            .await
+                        {
+                            return Err(Box::new(
                                     MongoInsertDocsInEmptyCollectionError::init_error_with_possible_trace(
                                         MongoInsertDocsInEmptyCollectionErrorEnum::CollectionInsertMany(e),
                                         WhereWas {
@@ -144,12 +130,11 @@ pub async fn mongo_insert_docs_in_empty_collection(
                                         should_trace,
                                     ),
                                 ));
-                            }
-                            Ok(())
                         }
+                        Ok(())
                     }
                 }
             }
-        },
+        }
     }
 }

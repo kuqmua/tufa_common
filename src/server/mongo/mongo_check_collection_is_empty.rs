@@ -31,7 +31,6 @@ pub struct MongoCheckCollectionIsEmptyError {
 
 #[derive(Debug, ImplGetSourceWithoutMethodFromCrate, ImplDisplayForSimpleErrorEnum)]
 pub enum MongoCheckCollectionIsEmptyErrorEnum {
-    ClientOptionsParse(mongodb::error::Error),
     ClientWithOptions(mongodb::error::Error),
     CountDocuments(mongodb::error::Error),
     NotEmpty(u64),
@@ -44,16 +43,16 @@ pub enum MongoCheckCollectionIsEmptyErrorEnum {
     clippy::float_arithmetic
 )]
 pub async fn mongo_check_collection_is_empty(
-    mongo_url: &str,
+    client_options: ClientOptions,
     db_name: &str,
     db_collection_name: &str,
     source_place_type: &SourcePlaceType,
     should_trace: bool,
 ) -> Result<(), Box<MongoCheckCollectionIsEmptyError>> {
-    match ClientOptions::parse(mongo_url).await {
+    match Client::with_options(client_options) {
         Err(e) => Err(Box::new(
             MongoCheckCollectionIsEmptyError::init_error_with_possible_trace(
-                MongoCheckCollectionIsEmptyErrorEnum::ClientOptionsParse(e),
+                MongoCheckCollectionIsEmptyErrorEnum::ClientWithOptions(e),
                 WhereWas {
                     time: std::time::SystemTime::now()
                         .duration_since(std::time::UNIX_EPOCH)
@@ -65,65 +64,47 @@ pub async fn mongo_check_collection_is_empty(
                 should_trace,
             ),
         )),
-        Ok(client_options) => match Client::with_options(client_options) {
-            Err(e) => Err(Box::new(
-                MongoCheckCollectionIsEmptyError::init_error_with_possible_trace(
-                    MongoCheckCollectionIsEmptyErrorEnum::ClientWithOptions(e),
-                    WhereWas {
-                        time: std::time::SystemTime::now()
-                            .duration_since(std::time::UNIX_EPOCH)
-                            .expect("cannot convert time to unix_epoch"),
-                        location: *core::panic::Location::caller(),
-                    },
-                    source_place_type,
-                    &GIT_INFO,
-                    should_trace,
-                ),
-            )),
-            Ok(client) => {
-                match client
-                    .database(db_name)
-                    .collection::<Document>(db_collection_name)
-                    .count_documents(None, None)
-                    .await
-                {
-                    Err(e) => Err(Box::new(
-                        MongoCheckCollectionIsEmptyError::init_error_with_possible_trace(
-                            MongoCheckCollectionIsEmptyErrorEnum::CountDocuments(e),
-                            WhereWas {
-                                time: std::time::SystemTime::now()
-                                    .duration_since(std::time::UNIX_EPOCH)
-                                    .expect("cannot convert time to unix_epoch"),
-                                location: *core::panic::Location::caller(),
-                            },
-                            source_place_type,
-                            &GIT_INFO,
-                            should_trace,
-                        ),
-                    )),
-                    Ok(documents_number) => {
-                        if documents_number > 0 {
-                            return Err(Box::new(
-                                MongoCheckCollectionIsEmptyError::init_error_with_possible_trace(
-                                    MongoCheckCollectionIsEmptyErrorEnum::NotEmpty(
-                                        documents_number,
-                                    ),
-                                    WhereWas {
-                                        time: std::time::SystemTime::now()
-                                            .duration_since(std::time::UNIX_EPOCH)
-                                            .expect("cannot convert time to unix_epoch"),
-                                        location: *core::panic::Location::caller(),
-                                    },
-                                    source_place_type,
-                                    &GIT_INFO,
-                                    should_trace,
-                                ),
-                            ));
-                        }
-                        Ok(())
+        Ok(client) => {
+            match client
+                .database(db_name)
+                .collection::<Document>(db_collection_name)
+                .count_documents(None, None)
+                .await
+            {
+                Err(e) => Err(Box::new(
+                    MongoCheckCollectionIsEmptyError::init_error_with_possible_trace(
+                        MongoCheckCollectionIsEmptyErrorEnum::CountDocuments(e),
+                        WhereWas {
+                            time: std::time::SystemTime::now()
+                                .duration_since(std::time::UNIX_EPOCH)
+                                .expect("cannot convert time to unix_epoch"),
+                            location: *core::panic::Location::caller(),
+                        },
+                        source_place_type,
+                        &GIT_INFO,
+                        should_trace,
+                    ),
+                )),
+                Ok(documents_number) => {
+                    if documents_number > 0 {
+                        return Err(Box::new(
+                            MongoCheckCollectionIsEmptyError::init_error_with_possible_trace(
+                                MongoCheckCollectionIsEmptyErrorEnum::NotEmpty(documents_number),
+                                WhereWas {
+                                    time: std::time::SystemTime::now()
+                                        .duration_since(std::time::UNIX_EPOCH)
+                                        .expect("cannot convert time to unix_epoch"),
+                                    location: *core::panic::Location::caller(),
+                                },
+                                source_place_type,
+                                &GIT_INFO,
+                                should_trace,
+                            ),
+                        ));
                     }
+                    Ok(())
                 }
             }
-        },
+        }
     }
 }
