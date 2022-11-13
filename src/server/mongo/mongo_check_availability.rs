@@ -1,4 +1,5 @@
 use crate::common::where_was::WhereWas;
+use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::global_variables::compile_time::git_info::GIT_INFO;
 use crate::global_variables::runtime::config::CONFIG;
 use crate::traits::get_source::GetSource;
@@ -43,6 +44,8 @@ pub enum MongoCheckAvailabilityErrorEnum {
 )]
 pub async fn mongo_check_availability(
     mongo_url: &str,
+    source_place_type: &SourcePlaceType,
+    timeout: Duration,
     should_trace: bool,
 ) -> Result<(), Box<MongoCheckAvailabilityError>> {
     match ClientOptions::parse(mongo_url).await {
@@ -56,15 +59,14 @@ pub async fn mongo_check_availability(
                             .expect("cannot convert time to unix_epoch"),
                         location: *core::panic::Location::caller(),
                     },
-                    &CONFIG.source_place_type,
+                    source_place_type,
                     &GIT_INFO,
                     should_trace,
                 ),
             ));
         }
         Ok(mut client_options) => {
-            client_options.connect_timeout =
-                Some(Duration::from_millis(CONFIG.mongo_connection_timeout));
+            client_options.connect_timeout = Some(timeout);
             match Client::with_options(client_options) {
                 Err(e) => Err(Box::new(
                     MongoCheckAvailabilityError::init_error_with_possible_trace(
@@ -75,7 +77,7 @@ pub async fn mongo_check_availability(
                                 .expect("cannot convert time to unix_epoch"),
                             location: *core::panic::Location::caller(),
                         },
-                        &CONFIG.source_place_type,
+                        source_place_type,
                         &GIT_INFO,
                         should_trace,
                     ),
@@ -95,7 +97,7 @@ pub async fn mongo_check_availability(
                                         .expect("cannot convert time to unix_epoch"),
                                     location: *core::panic::Location::caller(),
                                 },
-                                &CONFIG.source_place_type,
+                                source_place_type,
                                 &GIT_INFO,
                                 should_trace,
                             ),
