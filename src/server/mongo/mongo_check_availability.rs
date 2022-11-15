@@ -23,7 +23,7 @@ use mongodb::Client;
     ImplErrorWithTracingForStructWithGetSourceWithoutGetWhereWasFromCrate,
     ImplGetWhereWasOneOrManyOneForErrorStructFromCrate,
 )]
-pub struct MongoCheckAvailabilityError {
+pub struct MongoCheckAvailabilityWrapperError {
     source: MongoCheckAvailabilityErrorEnum,
     where_was: WhereWas,
 }
@@ -45,10 +45,10 @@ pub async fn mongo_check_availability(
     db_name: &str,
     source_place_type: &SourcePlaceType,
     should_trace: bool,
-) -> Result<(), Box<MongoCheckAvailabilityError>> {
+) -> Result<(), Box<MongoCheckAvailabilityWrapperError>> {
     match Client::with_options(client_options) {
         Err(e) => Err(Box::new(
-            MongoCheckAvailabilityError::init_error_with_possible_trace(
+            MongoCheckAvailabilityWrapperError::init_error_with_possible_trace(
                 MongoCheckAvailabilityErrorEnum::ClientWithOptions(e),
                 WhereWas {
                     time: std::time::SystemTime::now()
@@ -64,7 +64,7 @@ pub async fn mongo_check_availability(
         Ok(client) => {
             if let Err(e) = client.database(db_name).list_collection_names(None).await {
                 return Err(Box::new(
-                    MongoCheckAvailabilityError::init_error_with_possible_trace(
+                    MongoCheckAvailabilityWrapperError::init_error_with_possible_trace(
                         MongoCheckAvailabilityErrorEnum::ListCollectionNames(e),
                         WhereWas {
                             time: std::time::SystemTime::now()

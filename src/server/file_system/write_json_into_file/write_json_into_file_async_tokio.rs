@@ -19,7 +19,7 @@ use init_error::InitErrorFromCrate;
     ImplGetSourceWithMethodFromCrate,
     ImplDisplayForErrorStruct,
 )]
-pub struct WriteJsonIntoFileAsyncTokioError {
+pub struct WriteJsonIntoFileAsyncTokioWrapperError {
     source: WriteJsonIntoFileAsyncTokioErrorEnum,
     where_was: WhereWas,
 }
@@ -41,11 +41,11 @@ pub async fn write_json_into_file_async_tokio(
     json_object: serde_json::Value,
     source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
     should_trace: bool,
-) -> Result<(), Box<WriteJsonIntoFileAsyncTokioError>> {
+) -> Result<(), Box<WriteJsonIntoFileAsyncTokioWrapperError>> {
     match serde_json::to_string_pretty(&json_object) {
         Err(e) => {
             return Err(Box::new(
-                WriteJsonIntoFileAsyncTokioError::init_error_with_possible_trace(
+                WriteJsonIntoFileAsyncTokioWrapperError::init_error_with_possible_trace(
                     WriteJsonIntoFileAsyncTokioErrorEnum::SerdeJsonError(e),
                     WhereWas {
                         time: std::time::SystemTime::now()
@@ -69,7 +69,7 @@ pub async fn write_json_into_file_async_tokio(
             .await {
                 Err(e) => {
                     return Err(Box::new(
-                        WriteJsonIntoFileAsyncTokioError::init_error_with_possible_trace(
+                        WriteJsonIntoFileAsyncTokioWrapperError::init_error_with_possible_trace(
                             WriteJsonIntoFileAsyncTokioErrorEnum::StdIoError(e.source),
                             WhereWas {
                                 time: std::time::SystemTime::now()

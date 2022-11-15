@@ -24,7 +24,7 @@ use mongodb::Client;
     ImplErrorWithTracingForStructWithGetSourceWithoutGetWhereWasFromCrate,
     ImplGetWhereWasOneOrManyOneForErrorStructFromCrate,
 )]
-pub struct MongoCheckCollectionIsEmptyError {
+pub struct MongoCheckCollectionIsEmptyWrapperError {
     source: MongoCheckCollectionIsEmptyErrorEnum,
     where_was: WhereWas,
 }
@@ -48,10 +48,10 @@ pub async fn mongo_check_collection_is_empty(
     db_collection_name: &str,
     source_place_type: &SourcePlaceType,
     should_trace: bool,
-) -> Result<(), Box<MongoCheckCollectionIsEmptyError>> {
+) -> Result<(), Box<MongoCheckCollectionIsEmptyWrapperError>> {
     match Client::with_options(client_options) {
         Err(e) => Err(Box::new(
-            MongoCheckCollectionIsEmptyError::init_error_with_possible_trace(
+            MongoCheckCollectionIsEmptyWrapperError::init_error_with_possible_trace(
                 MongoCheckCollectionIsEmptyErrorEnum::ClientWithOptions(e),
                 WhereWas {
                     time: std::time::SystemTime::now()
@@ -72,7 +72,7 @@ pub async fn mongo_check_collection_is_empty(
                 .await
             {
                 Err(e) => Err(Box::new(
-                    MongoCheckCollectionIsEmptyError::init_error_with_possible_trace(
+                    MongoCheckCollectionIsEmptyWrapperError::init_error_with_possible_trace(
                         MongoCheckCollectionIsEmptyErrorEnum::CountDocuments(e),
                         WhereWas {
                             time: std::time::SystemTime::now()
@@ -88,7 +88,7 @@ pub async fn mongo_check_collection_is_empty(
                 Ok(documents_number) => {
                     if documents_number > 0 {
                         return Err(Box::new(
-                            MongoCheckCollectionIsEmptyError::init_error_with_possible_trace(
+                            MongoCheckCollectionIsEmptyWrapperError::init_error_with_possible_trace(
                                 MongoCheckCollectionIsEmptyErrorEnum::NotEmpty(documents_number),
                                 WhereWas {
                                     time: std::time::SystemTime::now()

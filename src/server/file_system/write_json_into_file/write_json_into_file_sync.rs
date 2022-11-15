@@ -19,7 +19,7 @@ use init_error::InitErrorFromCrate;
     ImplGetSourceWithMethodFromCrate,
     ImplDisplayForErrorStruct,
 )]
-pub struct WriteJsonIntoFileSyncError {
+pub struct WriteJsonIntoFileSyncWrapperError {
     source: WriteJsonIntoFileSyncErrorEnum,
     where_was: WhereWas,
 }
@@ -41,11 +41,11 @@ pub fn write_json_into_file_async(
     json_object: serde_json::Value,
     source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
     should_trace: bool,
-) -> Result<(), Box<WriteJsonIntoFileSyncError>> {
+) -> Result<(), Box<WriteJsonIntoFileSyncWrapperError>> {
     match serde_json::to_string_pretty(&json_object) {
         Err(e) => {
             return Err(Box::new(
-                WriteJsonIntoFileSyncError::init_error_with_possible_trace(
+                WriteJsonIntoFileSyncWrapperError::init_error_with_possible_trace(
                     WriteJsonIntoFileSyncErrorEnum::SerdeJsonError(e),
                     WhereWas {
                         time: std::time::SystemTime::now()
@@ -68,7 +68,7 @@ pub fn write_json_into_file_async(
             ) {
                 return Err(
                     Box::new(
-                        WriteJsonIntoFileSyncError::init_error_with_possible_trace(
+                        WriteJsonIntoFileSyncWrapperError::init_error_with_possible_trace(
                             WriteJsonIntoFileSyncErrorEnum::StdIoError(e.source),
                             WhereWas {
                                 time: std::time::SystemTime::now()

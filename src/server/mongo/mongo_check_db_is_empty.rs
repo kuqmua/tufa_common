@@ -23,7 +23,7 @@ use mongodb::Client;
     ImplErrorWithTracingForStructWithGetSourceWithoutGetWhereWasFromCrate,
     ImplGetWhereWasOneOrManyOneForErrorStructFromCrate,
 )]
-pub struct MongoCheckDbIsEmptyError {
+pub struct MongoCheckDbIsEmptyWrapperError {
     source: MongoCheckDbIsEmptyErrorEnum,
     where_was: WhereWas,
 }
@@ -47,10 +47,10 @@ pub async fn mongo_check_db_is_empty(
     db_name: &str,
     source_place_type: &SourcePlaceType,
     should_trace: bool,
-) -> Result<(), Box<MongoCheckDbIsEmptyError>> {
+) -> Result<(), Box<MongoCheckDbIsEmptyWrapperError>> {
     match Client::with_options(client_options) {
         Err(e) => Err(Box::new(
-            MongoCheckDbIsEmptyError::init_error_with_possible_trace(
+            MongoCheckDbIsEmptyWrapperError::init_error_with_possible_trace(
                 MongoCheckDbIsEmptyErrorEnum::ClientWithOptions(e),
                 WhereWas {
                     time: std::time::SystemTime::now()
@@ -65,7 +65,7 @@ pub async fn mongo_check_db_is_empty(
         )),
         Ok(client) => match client.database(db_name).list_collection_names(None).await {
             Err(e) => Err(Box::new(
-                MongoCheckDbIsEmptyError::init_error_with_possible_trace(
+                MongoCheckDbIsEmptyWrapperError::init_error_with_possible_trace(
                     MongoCheckDbIsEmptyErrorEnum::ListCollectionNames(e),
                     WhereWas {
                         time: std::time::SystemTime::now()
@@ -81,7 +81,7 @@ pub async fn mongo_check_db_is_empty(
             Ok(documents_number) => {
                 if !documents_number.is_empty() {
                     return Err(Box::new(
-                        MongoCheckDbIsEmptyError::init_error_with_possible_trace(
+                        MongoCheckDbIsEmptyWrapperError::init_error_with_possible_trace(
                             MongoCheckDbIsEmptyErrorEnum::NotEmpty(documents_number.len()),
                             WhereWas {
                                 time: std::time::SystemTime::now()

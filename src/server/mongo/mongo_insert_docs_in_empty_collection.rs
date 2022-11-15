@@ -25,7 +25,7 @@ use mongodb::Client;
     ImplErrorWithTracingForStructWithGetSourceWithoutGetWhereWasFromCrate,
     ImplGetWhereWasOneOrManyOneForErrorStructFromCrate,
 )]
-pub struct MongoInsertDocsInEmptyCollectionError {
+pub struct MongoInsertDocsInEmptyCollectionWrapperError {
     source: MongoInsertDocsInEmptyCollectionErrorEnum,
     where_was: WhereWas,
 }
@@ -52,10 +52,10 @@ pub async fn mongo_insert_docs_in_empty_collection(
     vec_of_values: Vec<String>,
     source_place_type: &SourcePlaceType,
     should_trace: bool,
-) -> Result<(), Box<MongoInsertDocsInEmptyCollectionError>> {
+) -> Result<(), Box<MongoInsertDocsInEmptyCollectionWrapperError>> {
     match Client::with_options(client_options) {
         Err(e) => Err(Box::new(
-            MongoInsertDocsInEmptyCollectionError::init_error_with_possible_trace(
+            MongoInsertDocsInEmptyCollectionWrapperError::init_error_with_possible_trace(
                 MongoInsertDocsInEmptyCollectionErrorEnum::ClientWithOptions(e),
                 WhereWas {
                     time: std::time::SystemTime::now()
@@ -74,7 +74,7 @@ pub async fn mongo_insert_docs_in_empty_collection(
                 .collection(&db_collection_handle);
             match collection.count_documents(None, None).await {
                 Err(e) => Err(Box::new(
-                    MongoInsertDocsInEmptyCollectionError::init_error_with_possible_trace(
+                    MongoInsertDocsInEmptyCollectionWrapperError::init_error_with_possible_trace(
                         MongoInsertDocsInEmptyCollectionErrorEnum::CountDocuments(e),
                         WhereWas {
                             time: std::time::SystemTime::now()
@@ -90,7 +90,7 @@ pub async fn mongo_insert_docs_in_empty_collection(
                 Ok(documents_number) => {
                     if documents_number > 0 {
                         Err(Box::new(
-                            MongoInsertDocsInEmptyCollectionError::init_error_with_possible_trace(
+                            MongoInsertDocsInEmptyCollectionWrapperError::init_error_with_possible_trace(
                                 MongoInsertDocsInEmptyCollectionErrorEnum::NotEmpty(
                                     documents_number,
                                 ),
@@ -117,7 +117,7 @@ pub async fn mongo_insert_docs_in_empty_collection(
                             .await
                         {
                             return Err(Box::new(
-                                    MongoInsertDocsInEmptyCollectionError::init_error_with_possible_trace(
+                                    MongoInsertDocsInEmptyCollectionWrapperError::init_error_with_possible_trace(
                                         MongoInsertDocsInEmptyCollectionErrorEnum::CollectionInsertMany(e),
                                         WhereWas {
                                             time: std::time::SystemTime::now()
