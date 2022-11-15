@@ -5,7 +5,7 @@ use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
 use crate::traits::where_was_trait::WhereWasTrait;
 use impl_display_for_error_struct::ImplDisplayForErrorStruct;
 use impl_error_with_tracing_for_struct_without_get_source::ImplErrorWithTracingForStructWithoutGetSourceFromCrate;
-use impl_get_source_without_method::ImplGetSourceWithoutMethodFromCrate;
+use impl_get_source_with_method::ImplGetSourceWithMethodFromCrate;
 use impl_get_where_was_one_or_many_one_for_error_struct::ImplGetWhereWasOneOrManyOneForErrorStructFromCrate;
 use init_error::InitErrorFromCrate;
 use tokio::io::AsyncWriteExt;
@@ -15,10 +15,10 @@ use tokio::io::AsyncWriteExt;
     InitErrorFromCrate,
     ImplErrorWithTracingForStructWithoutGetSourceFromCrate,
     ImplGetWhereWasOneOrManyOneForErrorStructFromCrate,
-    ImplGetSourceWithoutMethodFromCrate,
+    ImplGetSourceWithMethodFromCrate,
     ImplDisplayForErrorStruct,
 )]
-pub struct WriteBytesIntoFileAsyncTokioError {
+pub struct WriteBytesIntoFileAsyncTokioOriginError {
     pub source: std::io::Error,
     pub where_was: WhereWas,
 }
@@ -34,11 +34,11 @@ pub async fn write_bytes_into_file_async_tokio(
     bytes: &[u8],
     source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
     should_trace: bool,
-) -> Result<(), Box<WriteBytesIntoFileAsyncTokioError>> {
+) -> Result<(), Box<WriteBytesIntoFileAsyncTokioOriginError>> {
     if let Some(prefix) = path.parent() {
         if let Err(e) = std::fs::create_dir_all(prefix) {
             return Err(Box::new(
-                WriteBytesIntoFileAsyncTokioError::init_error_with_possible_trace(
+                WriteBytesIntoFileAsyncTokioOriginError::init_error_with_possible_trace(
                     e,
                     WhereWas {
                         time: std::time::SystemTime::now()
@@ -56,7 +56,7 @@ pub async fn write_bytes_into_file_async_tokio(
     match tokio::fs::File::open(path).await {
         Err(e) => {
             return Err(Box::new(
-                WriteBytesIntoFileAsyncTokioError::init_error_with_possible_trace(
+                WriteBytesIntoFileAsyncTokioOriginError::init_error_with_possible_trace(
                     e,
                     WhereWas {
                         time: std::time::SystemTime::now()
@@ -73,7 +73,7 @@ pub async fn write_bytes_into_file_async_tokio(
         Ok(mut file) => {
             if let Err(e) = file.write_all(bytes).await {
                 return Err(Box::new(
-                    WriteBytesIntoFileAsyncTokioError::init_error_with_possible_trace(
+                    WriteBytesIntoFileAsyncTokioOriginError::init_error_with_possible_trace(
                         e,
                         WhereWas {
                             time: std::time::SystemTime::now()

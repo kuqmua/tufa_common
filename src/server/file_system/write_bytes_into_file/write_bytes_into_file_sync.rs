@@ -5,7 +5,7 @@ use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
 use crate::traits::where_was_trait::WhereWasTrait;
 use impl_display_for_error_struct::ImplDisplayForErrorStruct;
 use impl_error_with_tracing_for_struct_without_get_source::ImplErrorWithTracingForStructWithoutGetSourceFromCrate;
-use impl_get_source_without_method::ImplGetSourceWithoutMethodFromCrate;
+use impl_get_source_with_method::ImplGetSourceWithMethodFromCrate;
 use impl_get_where_was_one_or_many_one_for_error_struct::ImplGetWhereWasOneOrManyOneForErrorStructFromCrate;
 use init_error::InitErrorFromCrate;
 use std::io::Write;
@@ -15,10 +15,10 @@ use std::io::Write;
     InitErrorFromCrate,
     ImplErrorWithTracingForStructWithoutGetSourceFromCrate,
     ImplGetWhereWasOneOrManyOneForErrorStructFromCrate,
-    ImplGetSourceWithoutMethodFromCrate,
+    ImplGetSourceWithMethodFromCrate,
     ImplDisplayForErrorStruct,
 )]
-pub struct WriteBytesIntoFileSyncError {
+pub struct WriteBytesIntoFileSyncOriginError {
     pub source: std::io::Error,
     pub where_was: WhereWas,
 }
@@ -33,11 +33,11 @@ pub fn write_bytes_into_file_sync(
     bytes: &[u8],
     source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
     should_trace: bool,
-) -> Result<(), Box<WriteBytesIntoFileSyncError>> {
+) -> Result<(), Box<WriteBytesIntoFileSyncOriginError>> {
     if let Some(prefix) = path.parent() {
         if let Err(e) = std::fs::create_dir_all(prefix) {
             return Err(Box::new(
-                WriteBytesIntoFileSyncError::init_error_with_possible_trace(
+                WriteBytesIntoFileSyncOriginError::init_error_with_possible_trace(
                     e,
                     WhereWas {
                         time: std::time::SystemTime::now()
@@ -55,7 +55,7 @@ pub fn write_bytes_into_file_sync(
     match std::fs::File::create(path) {
         Err(e) => {
             return Err(Box::new(
-                WriteBytesIntoFileSyncError::init_error_with_possible_trace(
+                WriteBytesIntoFileSyncOriginError::init_error_with_possible_trace(
                     e,
                     WhereWas {
                         time: std::time::SystemTime::now()
@@ -72,7 +72,7 @@ pub fn write_bytes_into_file_sync(
         Ok(mut file) => {
             if let Err(e) = file.write_all(bytes) {
                 return Err(Box::new(
-                    WriteBytesIntoFileSyncError::init_error_with_possible_trace(
+                    WriteBytesIntoFileSyncOriginError::init_error_with_possible_trace(
                         e,
                         WhereWas {
                             time: std::time::SystemTime::now()
@@ -88,7 +88,7 @@ pub fn write_bytes_into_file_sync(
             }
             if let Err(e) = file.sync_all() {
                 return Err(Box::new(
-                    WriteBytesIntoFileSyncError::init_error_with_possible_trace(
+                    WriteBytesIntoFileSyncOriginError::init_error_with_possible_trace(
                         e,
                         WhereWas {
                             time: std::time::SystemTime::now()

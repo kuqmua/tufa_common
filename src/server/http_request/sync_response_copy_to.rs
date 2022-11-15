@@ -4,7 +4,7 @@ use crate::global_variables::runtime::config::CONFIG;
 use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
 use crate::traits::where_was_trait::WhereWasTrait;
 use impl_error_with_tracing_for_struct_without_get_source::ImplErrorWithTracingForStructWithoutGetSourceFromCrate;
-use impl_get_source_without_method::ImplGetSourceWithoutMethodFromCrate;
+use impl_get_source_with_method::ImplGetSourceWithMethodFromCrate;
 use impl_get_where_was_one_or_many_one_for_error_struct::ImplGetWhereWasOneOrManyOneForErrorStructFromCrate;
 use init_error::InitErrorFromCrate;
 
@@ -13,9 +13,9 @@ use init_error::InitErrorFromCrate;
     InitErrorFromCrate,
     ImplErrorWithTracingForStructWithoutGetSourceFromCrate,
     ImplGetWhereWasOneOrManyOneForErrorStructFromCrate,
-    ImplGetSourceWithoutMethodFromCrate,
+    ImplGetSourceWithMethodFromCrate,
 )]
-pub struct SyncResponseCopyToError {
+pub struct SyncResponseCopyToOriginError {
     source: reqwest::Error,
     where_was: WhereWas,
 }
@@ -31,13 +31,13 @@ pub fn sync_copy_to<W: ?Sized>(
     w: &mut W,
     source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
     should_trace: bool,
-) -> Result<u64, Box<SyncResponseCopyToError>>
+) -> Result<u64, Box<SyncResponseCopyToOriginError>>
 where
     W: std::io::Write,
 {
     match response.copy_to(w) {
         Err(e) => Err(Box::new(
-            SyncResponseCopyToError::init_error_with_possible_trace(
+            SyncResponseCopyToOriginError::init_error_with_possible_trace(
                 e,
                 WhereWas {
                     time: std::time::SystemTime::now()

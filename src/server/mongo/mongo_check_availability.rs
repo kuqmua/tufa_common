@@ -9,7 +9,6 @@ use impl_display_for_error_struct::ImplDisplayForErrorStruct;
 use impl_display_for_simple_error_enum::ImplDisplayForSimpleErrorEnum;
 use impl_error_with_tracing_for_struct_with_get_source_without_get_where_was::ImplErrorWithTracingForStructWithGetSourceWithoutGetWhereWasFromCrate;
 use impl_get_source_with_method::ImplGetSourceWithMethodFromCrate;
-use impl_get_source_without_method::ImplGetSourceWithoutMethodFromCrate;
 use impl_get_where_was_one_or_many_one_for_error_struct::ImplGetWhereWasOneOrManyOneForErrorStructFromCrate;
 use init_error::InitErrorFromCrate;
 use mongodb::options::ClientOptions;
@@ -28,10 +27,10 @@ pub struct MongoCheckAvailabilityWrapperError {
     where_was: WhereWas,
 }
 
-#[derive(Debug, ImplGetSourceWithoutMethodFromCrate, ImplDisplayForSimpleErrorEnum)]
+#[derive(Debug, ImplGetSourceWithMethodFromCrate, ImplDisplayForSimpleErrorEnum)]
 pub enum MongoCheckAvailabilityErrorEnum {
-    ClientWithOptions(mongodb::error::Error),
-    ListCollectionNames(mongodb::error::Error),
+    ClientWithOptionsOrigin(mongodb::error::Error),
+    ListCollectionNamesOrigin(mongodb::error::Error),
 }
 
 #[deny(
@@ -49,7 +48,7 @@ pub async fn mongo_check_availability(
     match Client::with_options(client_options) {
         Err(e) => Err(Box::new(
             MongoCheckAvailabilityWrapperError::init_error_with_possible_trace(
-                MongoCheckAvailabilityErrorEnum::ClientWithOptions(e),
+                MongoCheckAvailabilityErrorEnum::ClientWithOptionsOrigin(e),
                 WhereWas {
                     time: std::time::SystemTime::now()
                         .duration_since(std::time::UNIX_EPOCH)
@@ -65,7 +64,7 @@ pub async fn mongo_check_availability(
             if let Err(e) = client.database(db_name).list_collection_names(None).await {
                 return Err(Box::new(
                     MongoCheckAvailabilityWrapperError::init_error_with_possible_trace(
-                        MongoCheckAvailabilityErrorEnum::ListCollectionNames(e),
+                        MongoCheckAvailabilityErrorEnum::ListCollectionNamesOrigin(e),
                         WhereWas {
                             time: std::time::SystemTime::now()
                                 .duration_since(std::time::UNIX_EPOCH)

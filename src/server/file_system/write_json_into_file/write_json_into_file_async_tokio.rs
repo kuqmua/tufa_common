@@ -7,7 +7,6 @@ use impl_display_for_error_struct::ImplDisplayForErrorStruct;
 use impl_display_for_simple_error_enum::ImplDisplayForSimpleErrorEnum;
 use impl_error_with_tracing_for_struct_without_get_source::ImplErrorWithTracingForStructWithoutGetSourceFromCrate;
 use impl_get_source_with_method::ImplGetSourceWithMethodFromCrate;
-use impl_get_source_without_method::ImplGetSourceWithoutMethodFromCrate;
 use impl_get_where_was_one_or_many_one_for_error_struct::ImplGetWhereWasOneOrManyOneForErrorStructFromCrate;
 use init_error::InitErrorFromCrate;
 
@@ -24,10 +23,10 @@ pub struct WriteJsonIntoFileAsyncTokioWrapperError {
     where_was: WhereWas,
 }
 
-#[derive(Debug, ImplGetSourceWithoutMethodFromCrate, ImplDisplayForSimpleErrorEnum)]
+#[derive(Debug, ImplGetSourceWithMethodFromCrate, ImplDisplayForSimpleErrorEnum)]
 pub enum WriteJsonIntoFileAsyncTokioErrorEnum {
-    SerdeJsonError(serde_json::Error),
-    StdIoError(std::io::Error),
+    SerdeJsonOrigin(serde_json::Error),
+    StdIoOrigin(std::io::Error),
 }
 
 #[deny(
@@ -46,7 +45,7 @@ pub async fn write_json_into_file_async_tokio(
         Err(e) => {
             return Err(Box::new(
                 WriteJsonIntoFileAsyncTokioWrapperError::init_error_with_possible_trace(
-                    WriteJsonIntoFileAsyncTokioErrorEnum::SerdeJsonError(e),
+                    WriteJsonIntoFileAsyncTokioErrorEnum::SerdeJsonOrigin(e),
                     WhereWas {
                         time: std::time::SystemTime::now()
                             .duration_since(std::time::UNIX_EPOCH)
@@ -70,7 +69,7 @@ pub async fn write_json_into_file_async_tokio(
                 Err(e) => {
                     return Err(Box::new(
                         WriteJsonIntoFileAsyncTokioWrapperError::init_error_with_possible_trace(
-                            WriteJsonIntoFileAsyncTokioErrorEnum::StdIoError(e.source),
+                            WriteJsonIntoFileAsyncTokioErrorEnum::StdIoOrigin(e.source),
                             WhereWas {
                                 time: std::time::SystemTime::now()
                             .duration_since(std::time::UNIX_EPOCH)

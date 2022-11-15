@@ -7,7 +7,6 @@ use impl_display_for_error_struct::ImplDisplayForErrorStruct;
 use impl_display_for_simple_error_enum::ImplDisplayForSimpleErrorEnum;
 use impl_error_with_tracing_for_struct_without_get_source::ImplErrorWithTracingForStructWithoutGetSourceFromCrate;
 use impl_get_source_with_method::ImplGetSourceWithMethodFromCrate;
-use impl_get_source_without_method::ImplGetSourceWithoutMethodFromCrate;
 use impl_get_where_was_one_or_many_one_for_error_struct::ImplGetWhereWasOneOrManyOneForErrorStructFromCrate;
 use init_error::InitErrorFromCrate;
 
@@ -24,10 +23,10 @@ pub struct WriteJsonIntoFileSyncWrapperError {
     where_was: WhereWas,
 }
 
-#[derive(Debug, ImplGetSourceWithoutMethodFromCrate, ImplDisplayForSimpleErrorEnum)]
+#[derive(Debug, ImplGetSourceWithMethodFromCrate, ImplDisplayForSimpleErrorEnum)]
 pub enum WriteJsonIntoFileSyncErrorEnum {
-    SerdeJsonError(serde_json::Error),
-    StdIoError(std::io::Error),
+    SerdeJsonOrigin(serde_json::Error),
+    StdIoOrigin(std::io::Error),
 }
 
 #[deny(
@@ -46,7 +45,7 @@ pub fn write_json_into_file_async(
         Err(e) => {
             return Err(Box::new(
                 WriteJsonIntoFileSyncWrapperError::init_error_with_possible_trace(
-                    WriteJsonIntoFileSyncErrorEnum::SerdeJsonError(e),
+                    WriteJsonIntoFileSyncErrorEnum::SerdeJsonOrigin(e),
                     WhereWas {
                         time: std::time::SystemTime::now()
                             .duration_since(std::time::UNIX_EPOCH)
@@ -69,7 +68,7 @@ pub fn write_json_into_file_async(
                 return Err(
                     Box::new(
                         WriteJsonIntoFileSyncWrapperError::init_error_with_possible_trace(
-                            WriteJsonIntoFileSyncErrorEnum::StdIoError(e.source),
+                            WriteJsonIntoFileSyncErrorEnum::StdIoOrigin(e.source),
                             WhereWas {
                                 time: std::time::SystemTime::now()
                                 .duration_since(std::time::UNIX_EPOCH)
