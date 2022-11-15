@@ -1,6 +1,6 @@
 ### reqwest async example
 ```
-let result: Result<String, Box<tufa_common::helpers::http_request::wrappers::text::http_request_text_error::HttpRequestError>> =
+let result: Result<String, Box<tufa_common::helpers::http_request::wrappers::text::http_request_text_error::HttpRequestOriginError>> =
                 async_http_request_text_wrapper::<
                     String,
                     reqwest::cookie::Jar,

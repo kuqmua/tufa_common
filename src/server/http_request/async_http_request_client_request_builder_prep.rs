@@ -1,6 +1,6 @@
 use crate::common::where_was::WhereWas;
 use crate::global_variables::compile_time::git_info::GIT_INFO;
-use crate::server::http_request::http_request_error::HttpRequestError;
+use crate::server::http_request::http_request_error::HttpRequestOriginError;
 use crate::server::http_request::http_request_method::HttpRequestMethod;
 use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
 
@@ -101,7 +101,7 @@ pub async fn async_http_request_client_request_builder_prep<
     method: HttpRequestMethod,
     source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
     should_trace: bool,
-) -> Result<reqwest::RequestBuilder, Box<HttpRequestError>>
+) -> Result<reqwest::RequestBuilder, Box<HttpRequestOriginError>>
 where
     UserAgentValueGeneric: TryInto<reqwest::header::HeaderValue>,
     UserAgentValueGeneric::Error: Into<http::Error>,
@@ -275,18 +275,20 @@ where
         client_builder = client_builder.resolve_to_addrs(v.0, v.1);
     }
     match client_builder.build() {
-        Err(e) => Err(Box::new(HttpRequestError::init_error_with_possible_trace(
-            e,
-            WhereWas {
-                time: std::time::SystemTime::now()
-                    .duration_since(std::time::UNIX_EPOCH)
-                    .expect("cannot convert time to unix_epoch"),
-                location: *core::panic::Location::caller(),
-            },
-            source_place_type,
-            &GIT_INFO,
-            should_trace,
-        ))),
+        Err(e) => Err(Box::new(
+            HttpRequestOriginError::init_error_with_possible_trace(
+                e,
+                WhereWas {
+                    time: std::time::SystemTime::now()
+                        .duration_since(std::time::UNIX_EPOCH)
+                        .expect("cannot convert time to unix_epoch"),
+                    location: *core::panic::Location::caller(),
+                },
+                source_place_type,
+                &GIT_INFO,
+                should_trace,
+            ),
+        )),
         Ok(client_handle) => {
             let mut request_builder_handle = method.get_async_request_builder(client_handle, url); //do something with get
             if let Some(v) = header_request_builder {

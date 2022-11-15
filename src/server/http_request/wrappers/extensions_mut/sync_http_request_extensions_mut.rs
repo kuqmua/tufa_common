@@ -1,4 +1,4 @@
-// use crate::helpers::http_request::http_request_error::HttpRequestError;
+// use crate::helpers::http_request::http_request_error::HttpRequestOriginError;
 // use crate::helpers::http_request::request_builder_methods::ExtensionsMut::http_request_extension_mut_error::ExtensionsMutErrorEnum;
 // use crate::global_variables::runtime::config::CONFIG;
 // use crate::global_variables::compile_time::git_info::GIT_INFO;
