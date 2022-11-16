@@ -7,7 +7,7 @@ use crate::traits::where_was_trait::WhereWasTrait;
 use impl_display_for_error_struct::ImplDisplayForErrorStruct;
 use impl_error_with_tracing_for_struct_without_get_source::ImplErrorWithTracingForStructWithoutGetSourceFromCrate;
 use impl_get_source::ImplGetSourceFromCrate;
-use impl_get_where_was_origin_or_wrapper::ImplGetWhereWasOriginOrWrapperWithMethodFromCrate;
+use impl_get_where_was_origin_or_wrapper::ImplGetWhereWasOriginOrWrapperFromCrate;
 use init_error::InitErrorFromCrate;
 use mongodb::options::ClientOptions;
 use mongodb::Client;
@@ -18,7 +18,7 @@ use mongodb::Client;
     ImplDisplayForErrorStruct,
     InitErrorFromCrate,
     ImplErrorWithTracingForStructWithoutGetSourceFromCrate,
-    ImplGetWhereWasOriginOrWrapperWithMethodFromCrate,
+    ImplGetWhereWasOriginOrWrapperFromCrate,
 )]
 pub struct MongoClientWithOptionOriginError {
     source: mongodb::error::Error,
