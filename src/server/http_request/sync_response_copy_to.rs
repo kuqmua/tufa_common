@@ -4,7 +4,7 @@ use crate::global_variables::runtime::config::CONFIG;
 use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
 use crate::traits::where_was_trait::WhereWasTrait;
 use impl_error_with_tracing_for_struct_without_get_source::ImplErrorWithTracingForStructWithoutGetSourceFromCrate;
-use impl_get_source_with_method::ImplGetSourceWithMethodFromCrate;
+use impl_get_source::ImplGetSourceFromCrate;
 use impl_get_where_was_one_or_many_one_for_error_struct::ImplGetWhereWasOneOrManyOneForErrorStructFromCrate;
 use init_error::InitErrorFromCrate;
 
@@ -13,7 +13,7 @@ use init_error::InitErrorFromCrate;
     InitErrorFromCrate,
     ImplErrorWithTracingForStructWithoutGetSourceFromCrate,
     ImplGetWhereWasOneOrManyOneForErrorStructFromCrate,
-    ImplGetSourceWithMethodFromCrate,
+    ImplGetSourceFromCrate,
 )]
 pub struct SyncResponseCopyToOriginError {
     source: reqwest::Error,

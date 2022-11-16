@@ -8,7 +8,7 @@ use crate::traits::where_was_trait::WhereWasTrait;
 use impl_display_for_error_struct::ImplDisplayForErrorStruct;
 use impl_display_for_simple_error_enum::ImplDisplayForSimpleErrorEnum;
 use impl_error_with_tracing_for_struct_with_get_source_without_get_where_was::ImplErrorWithTracingForStructWithGetSourceWithoutGetWhereWasFromCrate;
-use impl_get_source_with_method::ImplGetSourceWithMethodFromCrate;
+use impl_get_source::ImplGetSourceFromCrate;
 use impl_get_where_was_one_or_many_one_for_error_struct::ImplGetWhereWasOneOrManyOneForErrorStructFromCrate;
 use init_error::InitErrorFromCrate;
 use mongodb::bson::doc;
@@ -18,7 +18,7 @@ use mongodb::Client;
 
 #[derive(
     Debug,
-    ImplGetSourceWithMethodFromCrate,
+    ImplGetSourceFromCrate,
     ImplDisplayForErrorStruct,
     InitErrorFromCrate,
     ImplErrorWithTracingForStructWithGetSourceWithoutGetWhereWasFromCrate,
@@ -29,7 +29,7 @@ pub struct MongoInsertDocsInEmptyCollectionWrapperError {
     where_was: WhereWas,
 }
 
-#[derive(Debug, ImplGetSourceWithMethodFromCrate, ImplDisplayForSimpleErrorEnum)]
+#[derive(Debug, ImplGetSourceFromCrate, ImplDisplayForSimpleErrorEnum)]
 pub enum MongoInsertDocsInEmptyCollectionErrorEnum {
     ClientWithOptionsOrigin(mongodb::error::Error),
     CountDocumentsOrigin(mongodb::error::Error),
