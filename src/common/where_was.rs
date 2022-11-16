@@ -64,19 +64,21 @@ impl WhereWasTrait for WhereWas {
 }
 
 #[derive(Debug, Clone)]
-pub enum WhereWasOneOrMany {
+pub enum WhereWasOriginOrWrapper {
     One(WhereWasWithAddition),
     Many(Vec<WhereWasWithAddition>),
 }
 
-impl WhereWasOneOrMany {
+impl WhereWasOriginOrWrapper {
     pub fn into_vec(self) -> Vec<WhereWasWithAddition> {
         let mut vec = Vec::new();
         match self {
-            crate::common::where_was::WhereWasOneOrMany::One(where_was_with_addition) => {
+            crate::common::where_was::WhereWasOriginOrWrapper::One(where_was_with_addition) => {
                 vec.push(where_was_with_addition);
             }
-            crate::common::where_was::WhereWasOneOrMany::Many(where_was_with_addition_vec) => {
+            crate::common::where_was::WhereWasOriginOrWrapper::Many(
+                where_was_with_addition_vec,
+            ) => {
                 where_was_with_addition_vec.into_iter().for_each(|w| {
                     vec.push(w);
                 });

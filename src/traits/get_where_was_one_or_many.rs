@@ -1,5 +1,5 @@
-use crate::common::where_was::WhereWasOneOrMany;
+use crate::common::where_was::WhereWasOriginOrWrapper;
 
-pub trait GetWhereWasOneOrMany {
-    fn get_where_was_one_or_many(&self) -> WhereWasOneOrMany;
+pub trait GetWhereWasOriginOrWrapper {
+    fn get_where_was_one_or_many(&self) -> WhereWasOriginOrWrapper;
 }

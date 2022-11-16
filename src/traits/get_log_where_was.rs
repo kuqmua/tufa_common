@@ -2,7 +2,7 @@ use crate::common::git::git_info::GitInformation;
 use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::traits::get_bunyan_where_was::GetBunyanWhereWas;
 use crate::traits::get_json_where_was::GetJsonWhereWas;
-use crate::traits::get_where_was_one_or_many::GetWhereWasOneOrMany;
+use crate::traits::get_where_was_one_or_many::GetWhereWasOriginOrWrapper;
 
 pub trait GetLogWhereWas {
     fn get_log_where_was(
@@ -16,7 +16,7 @@ pub trait GetLogWhereWas {
 
 impl<T> GetLogWhereWas for T
 where
-    T: GetWhereWasOneOrMany + GetJsonWhereWas + GetBunyanWhereWas,
+    T: GetWhereWasOriginOrWrapper + GetJsonWhereWas + GetBunyanWhereWas,
 {
     fn get_log_where_was(
         &self,

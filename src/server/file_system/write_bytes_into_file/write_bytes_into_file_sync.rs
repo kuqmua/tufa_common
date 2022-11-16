@@ -6,7 +6,7 @@ use crate::traits::where_was_trait::WhereWasTrait;
 use impl_display_for_error_struct::ImplDisplayForErrorStruct;
 use impl_error_with_tracing_for_struct_without_get_source::ImplErrorWithTracingForStructWithoutGetSourceFromCrate;
 use impl_get_source::ImplGetSourceFromCrate;
-use impl_get_where_was_one_or_many_with_method::ImplGetWhereWasOneOrManyWithMethodFromCrate;
+use impl_get_where_was_origin_or_wrapper::ImplGetWhereWasOriginOrWrapperWithMethodFromCrate;
 use init_error::InitErrorFromCrate;
 use std::io::Write;
 
@@ -14,7 +14,7 @@ use std::io::Write;
     Debug,
     InitErrorFromCrate,
     ImplErrorWithTracingForStructWithoutGetSourceFromCrate,
-    ImplGetWhereWasOneOrManyWithMethodFromCrate,
+    ImplGetWhereWasOriginOrWrapperWithMethodFromCrate,
     ImplGetSourceFromCrate,
     ImplDisplayForErrorStruct,
 )]
