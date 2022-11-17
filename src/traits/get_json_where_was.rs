@@ -57,6 +57,7 @@ where
                 }
                 formatted_into_string_vec
             }
+            WhereWasOriginOrWrapper::None => String::from(""), //todo - not a good decision
         }
     }
 }

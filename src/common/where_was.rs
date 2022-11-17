@@ -65,6 +65,7 @@ impl WhereWasTrait for WhereWas {
 
 #[derive(Debug, Clone)]
 pub enum WhereWasOriginOrWrapper {
+    None,
     One(WhereWasWithAddition),
     Many(Vec<WhereWasWithAddition>),
 }
@@ -83,6 +84,7 @@ impl WhereWasOriginOrWrapper {
                     vec.push(w);
                 });
             }
+            crate::common::where_was::WhereWasOriginOrWrapper::None => (),
         }
         vec
     }
