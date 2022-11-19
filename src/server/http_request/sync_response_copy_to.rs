@@ -3,7 +3,7 @@ use crate::global_variables::compile_time::git_info::GIT_INFO;
 use crate::global_variables::runtime::config::CONFIG;
 use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
 use crate::traits::where_was_trait::WhereWasTrait;
-use impl_error_with_tracing_for_struct_with_get_source_with_get_where_was::ImplErrorWithTracingForStructWithGetSourceWithGetWhereWasFromCrate;
+use impl_error_with_tracing::ImplErrorWithTracingFromCrate;
 use impl_get_source::ImplGetSourceFromCrate;
 use impl_get_where_was_origin_or_wrapper::ImplGetWhereWasOriginOrWrapperFromCrate;
 use init_error::InitErrorFromCrate;
@@ -11,7 +11,7 @@ use init_error::InitErrorFromCrate;
 #[derive(
     Debug,
     InitErrorFromCrate,
-    ImplErrorWithTracingForStructWithGetSourceWithGetWhereWasFromCrate,
+    ImplErrorWithTracingFromCrate,
     ImplGetWhereWasOriginOrWrapperFromCrate,
     ImplGetSourceFromCrate,
 )]
