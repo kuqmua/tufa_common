@@ -3,7 +3,7 @@ use crate::global_variables::compile_time::git_info::GIT_INFO;
 use crate::global_variables::runtime::config::CONFIG;
 use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
 use crate::traits::where_was_trait::WhereWasTrait;
-use impl_display_for_error_struct::ImplDisplayForErrorStruct;
+use impl_display_for_simple_error_enum::ImplDisplayForSimpleErrorEnum;
 use impl_error_with_tracing::ImplErrorWithTracingFromCrate;
 use impl_get_source::ImplGetSourceFromCrate;
 use impl_get_where_was_origin_or_wrapper::ImplGetWhereWasOriginOrWrapperFromCrate;
@@ -16,7 +16,7 @@ use std::io::Error;
     ImplErrorWithTracingFromCrate,
     ImplGetWhereWasOriginOrWrapperFromCrate,
     ImplGetSourceFromCrate,
-    ImplDisplayForErrorStruct,
+    ImplDisplayForSimpleErrorEnum,
 )]
 pub struct CreateDirIfItDoesntExistOriginError {
     pub source: Error,
