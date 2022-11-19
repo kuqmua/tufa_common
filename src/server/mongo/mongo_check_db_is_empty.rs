@@ -7,7 +7,7 @@ use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
 use crate::traits::where_was_trait::WhereWasTrait;
 use impl_display_for_error_struct::ImplDisplayForErrorStruct;
 use impl_display_for_simple_error_enum::ImplDisplayForSimpleErrorEnum;
-use impl_error_with_tracing_for_struct_with_get_source_without_get_where_was::ImplErrorWithTracingForStructWithGetSourceWithoutGetWhereWasFromCrate;
+use impl_error_with_tracing_for_struct_with_get_source_with_get_where_was::ImplErrorWithTracingForStructWithGetSourceWithGetWhereWasFromCrate;
 use impl_get_source::ImplGetSourceFromCrate;
 use impl_get_where_was_origin_or_wrapper::ImplGetWhereWasOriginOrWrapperFromCrate;
 use init_error::InitErrorFromCrate;
@@ -19,16 +19,16 @@ use mongodb::Client;
     ImplGetSourceFromCrate,
     ImplDisplayForErrorStruct,
     InitErrorFromCrate,
-    ImplErrorWithTracingForStructWithGetSourceWithoutGetWhereWasFromCrate,
+    ImplErrorWithTracingForStructWithGetSourceWithGetWhereWasFromCrate,
     ImplGetWhereWasOriginOrWrapperFromCrate,
 )]
 pub struct MongoCheckDbIsEmptyWrapperError {
-    source: MongoCheckDbIsEmptyErrorEnum,
+    source: MongoCheckDbIsEmptyOriginErrorEnum,
     where_was: WhereWas,
 }
 
 #[derive(Debug, ImplGetSourceFromCrate, ImplDisplayForSimpleErrorEnum)]
-pub enum MongoCheckDbIsEmptyErrorEnum {
+pub enum MongoCheckDbIsEmptyOriginErrorEnum {
     ClientWithOptionsOrigin(mongodb::error::Error),
     ListCollectionNamesOrigin(mongodb::error::Error),
     NotEmptyOrigin(usize),
@@ -50,7 +50,7 @@ pub async fn mongo_check_db_is_empty(
     match Client::with_options(client_options) {
         Err(e) => Err(Box::new(
             MongoCheckDbIsEmptyWrapperError::init_error_with_possible_trace(
-                MongoCheckDbIsEmptyErrorEnum::ClientWithOptionsOrigin(e),
+                MongoCheckDbIsEmptyOriginErrorEnum::ClientWithOptionsOrigin(e),
                 WhereWas {
                     time: std::time::SystemTime::now()
                         .duration_since(std::time::UNIX_EPOCH)
@@ -65,7 +65,7 @@ pub async fn mongo_check_db_is_empty(
         Ok(client) => match client.database(db_name).list_collection_names(None).await {
             Err(e) => Err(Box::new(
                 MongoCheckDbIsEmptyWrapperError::init_error_with_possible_trace(
-                    MongoCheckDbIsEmptyErrorEnum::ListCollectionNamesOrigin(e),
+                    MongoCheckDbIsEmptyOriginErrorEnum::ListCollectionNamesOrigin(e),
                     WhereWas {
                         time: std::time::SystemTime::now()
                             .duration_since(std::time::UNIX_EPOCH)
@@ -81,7 +81,9 @@ pub async fn mongo_check_db_is_empty(
                 if !documents_number.is_empty() {
                     return Err(Box::new(
                         MongoCheckDbIsEmptyWrapperError::init_error_with_possible_trace(
-                            MongoCheckDbIsEmptyErrorEnum::NotEmptyOrigin(documents_number.len()),
+                            MongoCheckDbIsEmptyOriginErrorEnum::NotEmptyOrigin(
+                                documents_number.len(),
+                            ),
                             WhereWas {
                                 time: std::time::SystemTime::now()
                                     .duration_since(std::time::UNIX_EPOCH)

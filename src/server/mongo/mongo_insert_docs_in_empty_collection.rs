@@ -7,7 +7,7 @@ use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
 use crate::traits::where_was_trait::WhereWasTrait;
 use impl_display_for_error_struct::ImplDisplayForErrorStruct;
 use impl_display_for_simple_error_enum::ImplDisplayForSimpleErrorEnum;
-use impl_error_with_tracing_for_struct_with_get_source_without_get_where_was::ImplErrorWithTracingForStructWithGetSourceWithoutGetWhereWasFromCrate;
+use impl_error_with_tracing_for_struct_with_get_source_with_get_where_was::ImplErrorWithTracingForStructWithGetSourceWithGetWhereWasFromCrate;
 use impl_get_source::ImplGetSourceFromCrate;
 use impl_get_where_was_origin_or_wrapper::ImplGetWhereWasOriginOrWrapperFromCrate;
 use init_error::InitErrorFromCrate;
@@ -21,16 +21,16 @@ use mongodb::Client;
     ImplGetSourceFromCrate,
     ImplDisplayForErrorStruct,
     InitErrorFromCrate,
-    ImplErrorWithTracingForStructWithGetSourceWithoutGetWhereWasFromCrate,
+    ImplErrorWithTracingForStructWithGetSourceWithGetWhereWasFromCrate,
     ImplGetWhereWasOriginOrWrapperFromCrate,
 )]
 pub struct MongoInsertDocsInEmptyCollectionWrapperError {
-    source: MongoInsertDocsInEmptyCollectionErrorEnum,
+    source: MongoInsertDocsInEmptyCollectionOriginErrorEnum,
     where_was: WhereWas,
 }
 
 #[derive(Debug, ImplGetSourceFromCrate, ImplDisplayForSimpleErrorEnum)]
-pub enum MongoInsertDocsInEmptyCollectionErrorEnum {
+pub enum MongoInsertDocsInEmptyCollectionOriginErrorEnum {
     ClientWithOptionsOrigin(mongodb::error::Error),
     CountDocumentsOrigin(mongodb::error::Error),
     NotEmptyOrigin(u64),
@@ -55,7 +55,7 @@ pub async fn mongo_insert_docs_in_empty_collection(
     match Client::with_options(client_options) {
         Err(e) => Err(Box::new(
             MongoInsertDocsInEmptyCollectionWrapperError::init_error_with_possible_trace(
-                MongoInsertDocsInEmptyCollectionErrorEnum::ClientWithOptionsOrigin(e),
+                MongoInsertDocsInEmptyCollectionOriginErrorEnum::ClientWithOptionsOrigin(e),
                 WhereWas {
                     time: std::time::SystemTime::now()
                         .duration_since(std::time::UNIX_EPOCH)
@@ -74,7 +74,7 @@ pub async fn mongo_insert_docs_in_empty_collection(
             match collection.count_documents(None, None).await {
                 Err(e) => Err(Box::new(
                     MongoInsertDocsInEmptyCollectionWrapperError::init_error_with_possible_trace(
-                        MongoInsertDocsInEmptyCollectionErrorEnum::CountDocumentsOrigin(e),
+                        MongoInsertDocsInEmptyCollectionOriginErrorEnum::CountDocumentsOrigin(e),
                         WhereWas {
                             time: std::time::SystemTime::now()
                                 .duration_since(std::time::UNIX_EPOCH)
@@ -90,7 +90,7 @@ pub async fn mongo_insert_docs_in_empty_collection(
                     if documents_number > 0 {
                         Err(Box::new(
                             MongoInsertDocsInEmptyCollectionWrapperError::init_error_with_possible_trace(
-                                MongoInsertDocsInEmptyCollectionErrorEnum::NotEmptyOrigin(
+                                MongoInsertDocsInEmptyCollectionOriginErrorEnum::NotEmptyOrigin(
                                     documents_number,
                                 ),
                                 WhereWas {
@@ -117,7 +117,7 @@ pub async fn mongo_insert_docs_in_empty_collection(
                         {
                             return Err(Box::new(
                                     MongoInsertDocsInEmptyCollectionWrapperError::init_error_with_possible_trace(
-                                        MongoInsertDocsInEmptyCollectionErrorEnum::CollectionInsertManyOrigin(e),
+                                        MongoInsertDocsInEmptyCollectionOriginErrorEnum::CollectionInsertManyOrigin(e),
                                         WhereWas {
                                             time: std::time::SystemTime::now()
                                             .duration_since(std::time::UNIX_EPOCH)
