@@ -43,7 +43,6 @@ impl_display_for_error_struct = {path = "../proc_macros/impl_display_for_error_s
 impl_display_for_simple_error_enum = {path = "../proc_macros/impl_display_for_simple_error_enum"}
 impl_error_with_tracing_for_struct_with_get_source_with_get_where_was = {path = "../proc_macros/impl_error_with_tracing_for_struct_with_get_source_with_get_where_was"}
 impl_error_with_tracing_for_struct_with_get_source_without_get_where_was = {path = "../proc_macros/impl_error_with_tracing_for_struct_with_get_source_without_get_where_was"}
-impl_error_with_tracing_for_struct_without_get_source = {path = "../proc_macros/impl_error_with_tracing_for_struct_without_get_source"}
 impl_from_for_upper_struct = {path = "../proc_macros/impl_from_for_upper_struct"}
 impl_get_source = {path = "../proc_macros/impl_get_source"}
 impl_get_where_was_origin_or_wrapper = {path = "../proc_macros/impl_get_where_was_origin_or_wrapper"}
