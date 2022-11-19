@@ -4,7 +4,7 @@ use crate::global_variables::runtime::config::CONFIG;
 use crate::traits::get_source::GetSource;
 use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
 use crate::traits::where_was_trait::WhereWasTrait;
-use impl_display_for_simple_error_enum::ImplDisplayForSimpleErrorEnum;
+use impl_display_for_error::ImplDisplayForError;
 use impl_error_with_tracing::ImplErrorWithTracingFromCrate;
 use impl_get_source::ImplGetSourceFromCrate;
 use impl_get_where_was_origin_or_wrapper::ImplGetWhereWasOriginOrWrapperFromCrate;
@@ -16,14 +16,14 @@ use init_error::InitErrorFromCrate;
     ImplErrorWithTracingFromCrate,
     ImplGetWhereWasOriginOrWrapperFromCrate,
     ImplGetSourceFromCrate,
-    ImplDisplayForSimpleErrorEnum,
+    ImplDisplayForError,
 )]
 pub struct WriteJsonIntoFileSyncWrapperError {
     source: WriteJsonIntoFileSyncOriginErrorEnum,
     where_was: WhereWas,
 }
 
-#[derive(Debug, ImplGetSourceFromCrate, ImplDisplayForSimpleErrorEnum)]
+#[derive(Debug, ImplGetSourceFromCrate, ImplDisplayForError)]
 pub enum WriteJsonIntoFileSyncOriginErrorEnum {
     SerdeJsonOrigin(serde_json::Error),
     StdIoOrigin(std::io::Error),
