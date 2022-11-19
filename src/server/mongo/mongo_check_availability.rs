@@ -23,12 +23,12 @@ use mongodb::Client;
     ImplGetWhereWasOriginOrWrapperFromCrate,
 )]
 pub struct MongoCheckAvailabilityWrapperError {
-    source: MongoCheckAvailabilityErrorEnum,
+    source: MongoCheckAvailabilityWrapperErrorEnum,
     where_was: WhereWas,
 }
 
 #[derive(Debug, ImplGetSourceFromCrate, ImplDisplayForSimpleErrorEnum)]
-pub enum MongoCheckAvailabilityErrorEnum {
+pub enum MongoCheckAvailabilityWrapperErrorEnum {
     ClientWithOptionsOrigin(mongodb::error::Error),
     ListCollectionNamesOrigin(mongodb::error::Error),
 }
@@ -48,7 +48,7 @@ pub async fn mongo_check_availability(
     match Client::with_options(client_options) {
         Err(e) => Err(Box::new(
             MongoCheckAvailabilityWrapperError::init_error_with_possible_trace(
-                MongoCheckAvailabilityErrorEnum::ClientWithOptionsOrigin(e),
+                MongoCheckAvailabilityWrapperErrorEnum::ClientWithOptionsOrigin(e),
                 WhereWas {
                     time: std::time::SystemTime::now()
                         .duration_since(std::time::UNIX_EPOCH)
@@ -64,7 +64,7 @@ pub async fn mongo_check_availability(
             if let Err(e) = client.database(db_name).list_collection_names(None).await {
                 return Err(Box::new(
                     MongoCheckAvailabilityWrapperError::init_error_with_possible_trace(
-                        MongoCheckAvailabilityErrorEnum::ListCollectionNamesOrigin(e),
+                        MongoCheckAvailabilityWrapperErrorEnum::ListCollectionNamesOrigin(e),
                         WhereWas {
                             time: std::time::SystemTime::now()
                                 .duration_since(std::time::UNIX_EPOCH)

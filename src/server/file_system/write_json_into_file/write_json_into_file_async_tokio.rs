@@ -20,12 +20,17 @@ use init_error::InitErrorFromCrate;
     ImplDisplayForErrorStruct,
 )]
 pub struct WriteJsonIntoFileAsyncTokioWrapperError {
-    source: WriteJsonIntoFileAsyncTokioErrorEnum,
+    source: WriteJsonIntoFileAsyncTokioOriginErrorEnum,
     where_was: WhereWas,
 }
 
-#[derive(Debug, ImplGetSourceFromCrate, ImplDisplayForSimpleErrorEnum)]
-pub enum WriteJsonIntoFileAsyncTokioErrorEnum {
+#[derive(
+    Debug,
+    ImplGetSourceFromCrate,
+    ImplDisplayForSimpleErrorEnum,
+    ImplGetWhereWasOriginOrWrapperFromCrate,
+)]
+pub enum WriteJsonIntoFileAsyncTokioOriginErrorEnum {
     SerdeJsonOrigin(serde_json::Error),
     StdIoOrigin(std::io::Error),
 }
@@ -46,7 +51,7 @@ pub async fn write_json_into_file_async_tokio(
         Err(e) => {
             return Err(Box::new(
                 WriteJsonIntoFileAsyncTokioWrapperError::init_error_with_possible_trace(
-                    WriteJsonIntoFileAsyncTokioErrorEnum::SerdeJsonOrigin(e),
+                    WriteJsonIntoFileAsyncTokioOriginErrorEnum::SerdeJsonOrigin(e),
                     WhereWas {
                         time: std::time::SystemTime::now()
                             .duration_since(std::time::UNIX_EPOCH)
@@ -70,7 +75,7 @@ pub async fn write_json_into_file_async_tokio(
                 Err(e) => {
                     return Err(Box::new(
                         WriteJsonIntoFileAsyncTokioWrapperError::init_error_with_possible_trace(
-                            WriteJsonIntoFileAsyncTokioErrorEnum::StdIoOrigin(e.source),
+                            WriteJsonIntoFileAsyncTokioOriginErrorEnum::StdIoOrigin(e.source),
                             WhereWas {
                                 time: std::time::SystemTime::now()
                             .duration_since(std::time::UNIX_EPOCH)

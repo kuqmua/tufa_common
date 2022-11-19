@@ -20,12 +20,12 @@ use init_error::InitErrorFromCrate;
     ImplDisplayForErrorStruct,
 )]
 pub struct WriteJsonIntoFileSyncWrapperError {
-    source: WriteJsonIntoFileSyncErrorEnum,
+    source: WriteJsonIntoFileSyncOriginErrorEnum,
     where_was: WhereWas,
 }
 
 #[derive(Debug, ImplGetSourceFromCrate, ImplDisplayForSimpleErrorEnum)]
-pub enum WriteJsonIntoFileSyncErrorEnum {
+pub enum WriteJsonIntoFileSyncOriginErrorEnum {
     SerdeJsonOrigin(serde_json::Error),
     StdIoOrigin(std::io::Error),
 }
@@ -46,7 +46,7 @@ pub fn write_json_into_file_async(
         Err(e) => {
             return Err(Box::new(
                 WriteJsonIntoFileSyncWrapperError::init_error_with_possible_trace(
-                    WriteJsonIntoFileSyncErrorEnum::SerdeJsonOrigin(e),
+                    WriteJsonIntoFileSyncOriginErrorEnum::SerdeJsonOrigin(e),
                     WhereWas {
                         time: std::time::SystemTime::now()
                             .duration_since(std::time::UNIX_EPOCH)
@@ -69,7 +69,7 @@ pub fn write_json_into_file_async(
                 return Err(
                     Box::new(
                         WriteJsonIntoFileSyncWrapperError::init_error_with_possible_trace(
-                            WriteJsonIntoFileSyncErrorEnum::StdIoOrigin(e.source),
+                            WriteJsonIntoFileSyncOriginErrorEnum::StdIoOrigin(e.source),
                             WhereWas {
                                 time: std::time::SystemTime::now()
                                 .duration_since(std::time::UNIX_EPOCH)
