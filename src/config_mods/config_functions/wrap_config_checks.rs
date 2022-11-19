@@ -1,6 +1,5 @@
 use crate::common::where_was::WhereWas;
 use crate::config_mods::config_struct::ConfigStruct;
-use crate::global_variables::runtime::config::CONFIG;
 
 #[derive(Debug)]
 pub struct WrapConfigChecksError {
