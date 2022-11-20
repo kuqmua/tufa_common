@@ -28,7 +28,9 @@ pub struct MongoInsertDocsInEmptyCollectionWrapperError {
     where_was: WhereWas,
 }
 
-#[derive(Debug, ImplGetSourceFromCrate, ImplDisplayForError)]
+#[derive(
+    Debug, ImplGetSourceFromCrate, ImplDisplayForError, ImplGetWhereWasOriginOrWrapperFromCrate,
+)]
 pub enum MongoInsertDocsInEmptyCollectionOriginErrorEnum {
     ClientWithOptionsOrigin(mongodb::error::Error),
     CountDocumentsOrigin(mongodb::error::Error),

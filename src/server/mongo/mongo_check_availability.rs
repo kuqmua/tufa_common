@@ -26,7 +26,9 @@ pub struct MongoCheckAvailabilityWrapperError {
     where_was: WhereWas,
 }
 
-#[derive(Debug, ImplGetSourceFromCrate, ImplDisplayForError)]
+#[derive(
+    Debug, ImplGetSourceFromCrate, ImplDisplayForError, ImplGetWhereWasOriginOrWrapperFromCrate,
+)]
 pub enum MongoCheckAvailabilityOriginErrorEnum {
     ClientWithOptionsOrigin(mongodb::error::Error),
     ListCollectionNamesOrigin(mongodb::error::Error),

@@ -23,7 +23,9 @@ pub struct WriteJsonIntoFileSyncWrapperError {
     where_was: WhereWas,
 }
 
-#[derive(Debug, ImplGetSourceFromCrate, ImplDisplayForError)]
+#[derive(
+    Debug, ImplGetSourceFromCrate, ImplDisplayForError, ImplGetWhereWasOriginOrWrapperFromCrate,
+)]
 pub enum WriteJsonIntoFileSyncOriginErrorEnum {
     SerdeJsonOrigin(serde_json::Error),
     StdIoOrigin(std::io::Error),

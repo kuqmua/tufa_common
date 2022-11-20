@@ -26,7 +26,9 @@ pub struct MongoCheckDbIsEmptyWrapperError {
     where_was: WhereWas,
 }
 
-#[derive(Debug, ImplGetSourceFromCrate, ImplDisplayForError)]
+#[derive(
+    Debug, ImplGetSourceFromCrate, ImplDisplayForError, ImplGetWhereWasOriginOrWrapperFromCrate,
+)]
 pub enum MongoCheckDbIsEmptyOriginErrorEnum {
     ClientWithOptionsOrigin(mongodb::error::Error),
     ListCollectionNamesOrigin(mongodb::error::Error),
