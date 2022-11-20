@@ -44,7 +44,9 @@ pub async fn write_bytes_into_file_async_tokio(
                         time: std::time::SystemTime::now()
                             .duration_since(std::time::UNIX_EPOCH)
                             .expect("cannot convert time to unix_epoch"),
-                        location: *core::panic::Location::caller(),
+                        file: String::from(file!()),
+                        line: line!(),
+                        column: column!(),
                     },
                     source_place_type,
                     &GIT_INFO,
@@ -62,7 +64,9 @@ pub async fn write_bytes_into_file_async_tokio(
                         time: std::time::SystemTime::now()
                             .duration_since(std::time::UNIX_EPOCH)
                             .expect("cannot convert time to unix_epoch"),
-                        location: *core::panic::Location::caller(),
+                        file: String::from(file!()),
+                        line: line!(),
+                        column: column!(),
                     },
                     source_place_type,
                     &GIT_INFO,
@@ -79,7 +83,9 @@ pub async fn write_bytes_into_file_async_tokio(
                             time: std::time::SystemTime::now()
                                 .duration_since(std::time::UNIX_EPOCH)
                                 .expect("cannot convert time to unix_epoch"),
-                            location: *core::panic::Location::caller(),
+                            file: String::from(file!()),
+                            line: line!(),
+                            column: column!(),
                         },
                         source_place_type,
                         &GIT_INFO,

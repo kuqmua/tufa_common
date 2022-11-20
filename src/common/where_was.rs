@@ -4,7 +4,10 @@ use crate::traits::where_was_trait::WhereWasTrait;
 #[derive(Debug, Clone)]
 pub struct WhereWas {
     pub time: std::time::Duration,
-    pub location: core::panic::Location<'static>,
+    // pub location: core::panic::Location<'static>, - location file() returns absolute path instead if relative in some cases like library or submodule
+    pub file: String, //&'a str
+    pub line: u32,
+    pub column: u32,
 }
 
 //cannot implement that, cause SourcePlaceType::None => String::from("") would be incorrect for tracing
@@ -52,17 +55,17 @@ impl WhereWasTrait for WhereWas {
     }
     //todo make it const fn
     fn file_line_column(&self) -> String {
-        format!("{}", self.location)
+        format!("{}:{}:{}", self.file, self.line, self.column)
     }
     //todo make it const fn
     fn github_file_line_column(&self, git_info: &GitInformation) -> String {
-        let file = self.location.file();
+        let file = self.file.clone();
         let backslash = "/";
         let index = file
             .find(backslash)
             .expect("cant find backslash symbol in file path of location"); //todo - bad code ?
         let subtr_file = &file[index + backslash.len()..];
-        let line = self.location.line();
+        let line = self.line;
         git_info.get_git_source_file_link(subtr_file, line)
     }
 }

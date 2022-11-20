@@ -205,7 +205,9 @@ where
                     time: std::time::SystemTime::now()
                         .duration_since(std::time::UNIX_EPOCH)
                         .expect("cannot convert time to unix_epoch"),
-                    location: *core::panic::Location::caller(),
+                    file: String::from(file!()),
+                    line: line!(),
+                    column: column!(),
                 },
                 source_place_type,
                 &GIT_INFO,
@@ -220,7 +222,9 @@ where
                         time: std::time::SystemTime::now()
                             .duration_since(std::time::UNIX_EPOCH)
                             .expect("cannot convert time to unix_epoch"),
-                        location: *core::panic::Location::caller(),
+                        file: String::from(file!()),
+                        line: line!(),
+                        column: column!(),
                     },
                     source_place_type,
                     &GIT_INFO,

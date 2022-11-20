@@ -42,22 +42,22 @@ pub fn write_json_into_file_async(
     should_trace: bool,
 ) -> Result<(), Box<WriteJsonIntoFileSyncWrapperError>> {
     match serde_json::to_string_pretty(&json_object) {
-        Err(e) => {
-            return Err(Box::new(
-                WriteJsonIntoFileSyncWrapperError::init_error_with_possible_trace(
-                    WriteJsonIntoFileSyncOriginErrorEnum::SerdeJsonOrigin(e),
-                    WhereWas {
-                        time: std::time::SystemTime::now()
-                            .duration_since(std::time::UNIX_EPOCH)
-                            .expect("cannot convert time to unix_epoch"),
-                        location: *core::panic::Location::caller(),
-                    },
-                    source_place_type,
-                    &GIT_INFO,
-                    should_trace,
-                ),
-            ));
-        }
+        Err(e) => Err(Box::new(
+            WriteJsonIntoFileSyncWrapperError::init_error_with_possible_trace(
+                WriteJsonIntoFileSyncOriginErrorEnum::SerdeJsonOrigin(e),
+                WhereWas {
+                    time: std::time::SystemTime::now()
+                        .duration_since(std::time::UNIX_EPOCH)
+                        .expect("cannot convert time to unix_epoch"),
+                    file: String::from(file!()),
+                    line: line!(),
+                    column: column!(),
+                },
+                source_place_type,
+                &GIT_INFO,
+                should_trace,
+            ),
+        )),
         Ok(stringified_json) => {
             if let Err(e) = crate::server::file_system::write_bytes_into_file::write_bytes_into_file_sync::write_bytes_into_file_sync(
                 path,
@@ -73,7 +73,9 @@ pub fn write_json_into_file_async(
                                 time: std::time::SystemTime::now()
                                 .duration_since(std::time::UNIX_EPOCH)
                                 .expect("cannot convert time to unix_epoch"),
-                                location: *core::panic::Location::caller(),
+                                file: String::from(file!()),
+                                line: line!(),
+                                column: column!(),
                             },
                             source_place_type,
                   &GIT_INFO,
