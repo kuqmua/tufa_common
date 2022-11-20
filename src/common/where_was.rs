@@ -50,16 +50,20 @@ impl WhereWasTrait for WhereWas {
             .with_timezone(&chrono::FixedOffset::east(timezone));
         datetime.format("%Y-%m-%d %H:%M:%S").to_string()
     }
+    //todo make it const fn
     fn file_line_column(&self) -> String {
-        format!(
-            "{}:{}:{}",
-            self.location.file(),
-            self.location.line(),
-            self.location.column()
-        )
+        format!("{}", self.location)
     }
+    //todo make it const fn
     fn github_file_line_column(&self, git_info: &GitInformation) -> String {
-        git_info.get_git_source_file_link(self.location.file(), self.location.line())
+        let file = self.location.file();
+        let backslash = "/";
+        let index = file
+            .find(backslash)
+            .expect("cant find backslash symbol in file path of location"); //todo - bad code ?
+        let subtr_file = &file[index + backslash.len()..];
+        let line = self.location.line();
+        git_info.get_git_source_file_link(subtr_file, line)
     }
 }
 
