@@ -2,7 +2,6 @@ use crate::common::git::git_info::GitInformation;
 use crate::common::where_was::WhereWasOriginOrWrapper;
 use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::traits::get_where_was_one_or_many::GetWhereWasOriginOrWrapper;
-use crate::traits::where_was_trait::WhereWasTrait;
 
 pub trait GetBunyanWhereWas {
     fn get_bunyan_where_was(
@@ -24,13 +23,11 @@ where
         error: String,
     ) -> String {
         match self.get_where_was_one_or_many() {
-            WhereWasOriginOrWrapper::One(where_was_with_addition) => match source_place_type {
-                SourcePlaceType::Source => where_was_with_addition.where_was.file_line_column(),
-                SourcePlaceType::Github => where_was_with_addition
-                    .where_was
-                    .github_file_line_column(git_info),
-                SourcePlaceType::None => String::from(""), //todo - is it wrong?
-            },
+            WhereWasOriginOrWrapper::One(where_was_with_addition) => format!(
+                "{} {}",
+                where_was_with_addition.get_file_line_column(source_place_type, git_info),
+                error
+            ),
             WhereWasOriginOrWrapper::Many(vec_where_was_with_addition) => {
                 let mut formatted_into_string_vec = vec_where_was_with_addition
                     .iter()
@@ -61,7 +58,7 @@ where
                 }
                 formatted_into_string_vec
             }
-            WhereWasOriginOrWrapper::None => String::from(""), //todo - not a good decision
+            WhereWasOriginOrWrapper::None => error, //todo - not a good decision
         }
     }
 }
