@@ -24,9 +24,13 @@ where
         error: String,
     ) -> String {
         match self.get_where_was_one_or_many() {
-            WhereWasOriginOrWrapper::One(where_was_with_addition) => {
-                where_was_with_addition.where_was.file_line_column()
-            }
+            WhereWasOriginOrWrapper::One(where_was_with_addition) => match source_place_type {
+                SourcePlaceType::Source => where_was_with_addition.where_was.file_line_column(),
+                SourcePlaceType::Github => where_was_with_addition
+                    .where_was
+                    .github_file_line_column(git_info),
+                SourcePlaceType::None => String::from(""), //todo - is it wrong?
+            },
             WhereWasOriginOrWrapper::Many(vec_where_was_with_addition) => {
                 let mut formatted_into_string_vec = vec_where_was_with_addition
                     .iter()
