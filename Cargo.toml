@@ -39,6 +39,7 @@ generate_getter_traits_for_struct_fields = {path = "../proc_macros/generate_gett
 impl_display_for_error = {path = "../proc_macros/impl_display_for_error"}
 impl_error_with_tracing = {path = "../proc_macros/impl_error_with_tracing"}
 impl_from_for_upper_struct = {path = "../proc_macros/impl_from_for_upper_struct"}
+impl_get_git_info = {path = "../proc_macros/impl_get_git_info"}
 impl_get_source = {path = "../proc_macros/impl_get_source"}
 impl_get_where_was_origin_or_wrapper = {path = "../proc_macros/impl_get_where_was_origin_or_wrapper"}
 init_error = {path = "../proc_macros/init_error"}

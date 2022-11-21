@@ -1,4 +1,5 @@
 pub mod get_bunyan_where_was;
+pub mod get_git_info;
 pub mod get_json_where_was;
 pub mod get_log_where_was;
 pub mod get_log_with_additional_where_was;
