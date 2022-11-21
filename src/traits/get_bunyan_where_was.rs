@@ -29,7 +29,7 @@ where
                 error
             ),
             WhereWasOriginOrWrapper::Many(vec_where_was_with_addition) => {
-                let mut formatted_into_string_vec = vec_where_was_with_addition
+                let formatted_into_string_vec = vec_where_was_with_addition
                     .iter()
                     .enumerate()
                     // .rev()
@@ -52,10 +52,6 @@ where
                         acc.push_str(elem);
                         acc
                     });
-                if !formatted_into_string_vec.is_empty() {
-                    formatted_into_string_vec.pop();
-                    formatted_into_string_vec.pop();
-                }
                 formatted_into_string_vec
             }
             WhereWasOriginOrWrapper::None => error, //todo - not a good decision
