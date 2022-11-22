@@ -29,8 +29,8 @@ pub struct WriteBytesIntoFileAsyncTokioOriginError {
     clippy::integer_arithmetic,
     clippy::float_arithmetic
 )]
-pub async fn write_bytes_into_file_async_tokio(
-    path: &std::path::Path,
+pub async fn write_bytes_into_file_async_tokio<'a>(
+    path: &'a std::path::Path,
     bytes: &[u8],
     source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
     should_trace: bool,
@@ -47,6 +47,31 @@ pub async fn write_bytes_into_file_async_tokio(
                         file: String::from(file!()),
                         line: line!(),
                         column: column!(),
+                        git_info: crate::common::where_was::GitInfoForWhereWas {
+                            commit_id: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.commit_id,
+                            ),
+                            repo_link: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.repo_link,
+                            ),
+                            author: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.author,
+                            ),
+                            author_email: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .author_email,
+                            ),
+                            commit_unix_time: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .commit_unix_time,
+                            ),
+                            timezone: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.timezone,
+                            ),
+                            message: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.message,
+                            ),
+                        },
                     },
                     source_place_type,
                     &GIT_INFO,
@@ -67,6 +92,31 @@ pub async fn write_bytes_into_file_async_tokio(
                         file: String::from(file!()),
                         line: line!(),
                         column: column!(),
+                        git_info: crate::common::where_was::GitInfoForWhereWas {
+                            commit_id: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.commit_id,
+                            ),
+                            repo_link: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.repo_link,
+                            ),
+                            author: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.author,
+                            ),
+                            author_email: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .author_email,
+                            ),
+                            commit_unix_time: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .commit_unix_time,
+                            ),
+                            timezone: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.timezone,
+                            ),
+                            message: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.message,
+                            ),
+                        },
                     },
                     source_place_type,
                     &GIT_INFO,
@@ -86,6 +136,36 @@ pub async fn write_bytes_into_file_async_tokio(
                             file: String::from(file!()),
                             line: line!(),
                             column: column!(),
+                            git_info: crate::common::where_was::GitInfoForWhereWas {
+                                commit_id: String::from(
+                                    crate::global_variables::compile_time::git_info::GIT_INFO
+                                        .commit_id,
+                                ),
+                                repo_link: String::from(
+                                    crate::global_variables::compile_time::git_info::GIT_INFO
+                                        .repo_link,
+                                ),
+                                author: String::from(
+                                    crate::global_variables::compile_time::git_info::GIT_INFO
+                                        .author,
+                                ),
+                                author_email: String::from(
+                                    crate::global_variables::compile_time::git_info::GIT_INFO
+                                        .author_email,
+                                ),
+                                commit_unix_time: String::from(
+                                    crate::global_variables::compile_time::git_info::GIT_INFO
+                                        .commit_unix_time,
+                                ),
+                                timezone: String::from(
+                                    crate::global_variables::compile_time::git_info::GIT_INFO
+                                        .timezone,
+                                ),
+                                message: String::from(
+                                    crate::global_variables::compile_time::git_info::GIT_INFO
+                                        .message,
+                                ),
+                            },
                         },
                         source_place_type,
                         &GIT_INFO,

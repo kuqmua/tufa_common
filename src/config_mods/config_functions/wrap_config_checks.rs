@@ -55,6 +55,31 @@ impl ConfigStruct {
                         file: String::from(file!()),
                         line: line!(),
                         column: column!(),
+                        git_info: crate::common::where_was::GitInfoForWhereWas {
+                            commit_id: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.commit_id,
+                            ),
+                            repo_link: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.repo_link,
+                            ),
+                            author: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.author,
+                            ),
+                            author_email: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .author_email,
+                            ),
+                            commit_unix_time: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .commit_unix_time,
+                            ),
+                            timezone: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.timezone,
+                            ),
+                            message: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.message,
+                            ),
+                        },
                     },
                 }),
             });
@@ -71,6 +96,31 @@ impl ConfigStruct {
                         file: String::from(file!()),
                         line: line!(),
                         column: column!(),
+                        git_info: crate::common::where_was::GitInfoForWhereWas {
+                            commit_id: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.commit_id,
+                            ),
+                            repo_link: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.repo_link,
+                            ),
+                            author: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.author,
+                            ),
+                            author_email: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .author_email,
+                            ),
+                            commit_unix_time: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .commit_unix_time,
+                            ),
+                            timezone: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.timezone,
+                            ),
+                            message: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.message,
+                            ),
+                        },
                     },
                 }),
             });
@@ -86,6 +136,31 @@ impl ConfigStruct {
                         file: String::from(file!()),
                         line: line!(),
                         column: column!(),
+                        git_info: crate::common::where_was::GitInfoForWhereWas {
+                            commit_id: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.commit_id,
+                            ),
+                            repo_link: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.repo_link,
+                            ),
+                            author: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.author,
+                            ),
+                            author_email: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .author_email,
+                            ),
+                            commit_unix_time: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .commit_unix_time,
+                            ),
+                            timezone: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.timezone,
+                            ),
+                            message: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.message,
+                            ),
+                        },
                     },
                 }),
             });
@@ -101,6 +176,31 @@ impl ConfigStruct {
                         file: String::from(file!()),
                         line: line!(),
                         column: column!(),
+                        git_info: crate::common::where_was::GitInfoForWhereWas {
+                            commit_id: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.commit_id,
+                            ),
+                            repo_link: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.repo_link,
+                            ),
+                            author: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.author,
+                            ),
+                            author_email: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .author_email,
+                            ),
+                            commit_unix_time: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .commit_unix_time,
+                            ),
+                            timezone: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.timezone,
+                            ),
+                            message: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.message,
+                            ),
+                        },
                     },
                 }),
             });
@@ -116,6 +216,31 @@ impl ConfigStruct {
                         file: String::from(file!()),
                         line: line!(),
                         column: column!(),
+                        git_info: crate::common::where_was::GitInfoForWhereWas {
+                            commit_id: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.commit_id,
+                            ),
+                            repo_link: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.repo_link,
+                            ),
+                            author: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.author,
+                            ),
+                            author_email: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .author_email,
+                            ),
+                            commit_unix_time: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .commit_unix_time,
+                            ),
+                            timezone: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.timezone,
+                            ),
+                            message: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.message,
+                            ),
+                        },
                     },
                 }),
             });
@@ -131,6 +256,31 @@ impl ConfigStruct {
                         file: String::from(file!()),
                         line: line!(),
                         column: column!(),
+                        git_info: crate::common::where_was::GitInfoForWhereWas {
+                            commit_id: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.commit_id,
+                            ),
+                            repo_link: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.repo_link,
+                            ),
+                            author: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.author,
+                            ),
+                            author_email: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .author_email,
+                            ),
+                            commit_unix_time: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .commit_unix_time,
+                            ),
+                            timezone: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.timezone,
+                            ),
+                            message: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.message,
+                            ),
+                        },
                     },
                 }),
             });
@@ -146,6 +296,31 @@ impl ConfigStruct {
                         file: String::from(file!()),
                         line: line!(),
                         column: column!(),
+                        git_info: crate::common::where_was::GitInfoForWhereWas {
+                            commit_id: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.commit_id,
+                            ),
+                            repo_link: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.repo_link,
+                            ),
+                            author: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.author,
+                            ),
+                            author_email: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .author_email,
+                            ),
+                            commit_unix_time: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .commit_unix_time,
+                            ),
+                            timezone: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.timezone,
+                            ),
+                            message: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.message,
+                            ),
+                        },
                     },
                 }),
             });
@@ -161,6 +336,31 @@ impl ConfigStruct {
                         file: String::from(file!()),
                         line: line!(),
                         column: column!(),
+                        git_info: crate::common::where_was::GitInfoForWhereWas {
+                            commit_id: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.commit_id,
+                            ),
+                            repo_link: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.repo_link,
+                            ),
+                            author: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.author,
+                            ),
+                            author_email: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .author_email,
+                            ),
+                            commit_unix_time: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .commit_unix_time,
+                            ),
+                            timezone: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.timezone,
+                            ),
+                            message: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.message,
+                            ),
+                        },
                     },
                 }),
             });
@@ -176,6 +376,31 @@ impl ConfigStruct {
                         file: String::from(file!()),
                         line: line!(),
                         column: column!(),
+                        git_info: crate::common::where_was::GitInfoForWhereWas {
+                            commit_id: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.commit_id,
+                            ),
+                            repo_link: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.repo_link,
+                            ),
+                            author: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.author,
+                            ),
+                            author_email: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .author_email,
+                            ),
+                            commit_unix_time: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .commit_unix_time,
+                            ),
+                            timezone: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.timezone,
+                            ),
+                            message: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.message,
+                            ),
+                        },
                     },
                 }),
             });
@@ -191,6 +416,31 @@ impl ConfigStruct {
                         file: String::from(file!()),
                         line: line!(),
                         column: column!(),
+                        git_info: crate::common::where_was::GitInfoForWhereWas {
+                            commit_id: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.commit_id,
+                            ),
+                            repo_link: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.repo_link,
+                            ),
+                            author: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.author,
+                            ),
+                            author_email: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .author_email,
+                            ),
+                            commit_unix_time: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .commit_unix_time,
+                            ),
+                            timezone: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.timezone,
+                            ),
+                            message: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.message,
+                            ),
+                        },
                     },
                 }),
             });
@@ -206,6 +456,31 @@ impl ConfigStruct {
                         file: String::from(file!()),
                         line: line!(),
                         column: column!(),
+                        git_info: crate::common::where_was::GitInfoForWhereWas {
+                            commit_id: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.commit_id,
+                            ),
+                            repo_link: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.repo_link,
+                            ),
+                            author: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.author,
+                            ),
+                            author_email: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .author_email,
+                            ),
+                            commit_unix_time: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .commit_unix_time,
+                            ),
+                            timezone: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.timezone,
+                            ),
+                            message: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.message,
+                            ),
+                        },
                     },
                 }),
             });
@@ -221,6 +496,31 @@ impl ConfigStruct {
                         file: String::from(file!()),
                         line: line!(),
                         column: column!(),
+                        git_info: crate::common::where_was::GitInfoForWhereWas {
+                            commit_id: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.commit_id,
+                            ),
+                            repo_link: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.repo_link,
+                            ),
+                            author: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.author,
+                            ),
+                            author_email: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .author_email,
+                            ),
+                            commit_unix_time: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .commit_unix_time,
+                            ),
+                            timezone: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.timezone,
+                            ),
+                            message: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.message,
+                            ),
+                        },
                     },
                 }),
             });
@@ -236,6 +536,31 @@ impl ConfigStruct {
                         file: String::from(file!()),
                         line: line!(),
                         column: column!(),
+                        git_info: crate::common::where_was::GitInfoForWhereWas {
+                            commit_id: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.commit_id,
+                            ),
+                            repo_link: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.repo_link,
+                            ),
+                            author: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.author,
+                            ),
+                            author_email: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .author_email,
+                            ),
+                            commit_unix_time: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .commit_unix_time,
+                            ),
+                            timezone: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.timezone,
+                            ),
+                            message: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.message,
+                            ),
+                        },
                     },
                 }),
             });
@@ -251,6 +576,31 @@ impl ConfigStruct {
                         file: String::from(file!()),
                         line: line!(),
                         column: column!(),
+                        git_info: crate::common::where_was::GitInfoForWhereWas {
+                            commit_id: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.commit_id,
+                            ),
+                            repo_link: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.repo_link,
+                            ),
+                            author: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.author,
+                            ),
+                            author_email: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .author_email,
+                            ),
+                            commit_unix_time: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO
+                                    .commit_unix_time,
+                            ),
+                            timezone: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.timezone,
+                            ),
+                            message: String::from(
+                                crate::global_variables::compile_time::git_info::GIT_INFO.message,
+                            ),
+                        },
                     },
                 }),
             });

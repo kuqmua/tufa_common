@@ -8,6 +8,18 @@ pub struct WhereWas {
     pub file: String, //&'a str
     pub line: u32,
     pub column: u32,
+    pub git_info: GitInfoForWhereWas,
+}
+
+#[derive(Debug, Clone)]
+pub struct GitInfoForWhereWas {
+    pub commit_id: String,
+    pub repo_link: String,
+    pub author: String,
+    pub author_email: String,
+    pub commit_unix_time: String,
+    pub timezone: String,
+    pub message: String,
 }
 
 //cannot implement that, cause SourcePlaceType::None => String::from("") would be incorrect for tracing
@@ -66,6 +78,8 @@ impl WhereWasTrait for WhereWas {
             .expect("cant find backslash symbol in file path of location"); //todo - bad code ?
         let subtr_file = &file[index + backslash.len()..];
         let line = self.line;
+        println!("subtr_file {}", subtr_file);
+        println!("line {}", line);
         git_info.get_git_source_file_link(subtr_file, line)
     }
 }
