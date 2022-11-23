@@ -79,11 +79,7 @@ impl WhereWasTrait for WhereWas {
         let index = file
             .find(backslash)
             .expect("cant find backslash symbol in file path of location"); //todo - bad code ?
-        let subtr_file = &file[index + backslash.len()..];
-        let line = self.line;
-        println!("subtr_file {}", subtr_file);
-        println!("line {}", line);
-        git_info.get_git_source_file_link(subtr_file, line)
+        git_info.get_git_source_file_link(&file[index + backslash.len()..], self.line)
     }
 }
 
@@ -124,7 +120,6 @@ impl WhereWasWithAddition {
     pub fn get_file_line_column(
         &self,
         source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
-        git_info: &crate::common::where_was::GitInfoForWhereWas,
     ) -> String {
         match source_place_type {
             crate::config_mods::source_place_type::SourcePlaceType::Source => {
@@ -137,11 +132,14 @@ impl WhereWasWithAddition {
             }
             crate::config_mods::source_place_type::SourcePlaceType::Github => {
                 match &self.additional_info {
-                    None => self.where_was.github_file_line_column(git_info),
+                    None => self
+                        .where_was
+                        .github_file_line_column(&self.where_was.git_info),
                     Some(additional) => format!(
                         "{} {}",
                         additional,
-                        self.where_was.github_file_line_column(git_info)
+                        self.where_was
+                            .github_file_line_column(&self.where_was.git_info)
                     ),
                 }
             }

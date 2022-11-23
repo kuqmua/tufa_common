@@ -8,7 +8,6 @@ impl GitInformation<'_> {
         clippy::float_arithmetic
     )]
     pub fn get_git_source_file_link(&self, file: &str, line: u32) -> String {
-        println!("self.repo_link {}", self.repo_link);
         format!("{}/blob/{}/{file}#L{line}", self.repo_link, self.commit_id)
     }
 }
@@ -23,7 +22,6 @@ impl GitInfoForWhereWas {
         clippy::float_arithmetic
     )]
     pub fn get_git_source_file_link(&self, file: &str, line: u32) -> String {
-        println!("self.repo_link {}", self.repo_link);
         format!("{}/blob/{}/{file}#L{line}", self.repo_link, self.commit_id)
     }
 }

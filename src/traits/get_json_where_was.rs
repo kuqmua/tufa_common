@@ -6,24 +6,14 @@ use crate::traits::get_where_was_one_or_many::GetWhereWasOriginOrWrapper;
 use crate::traits::where_was_trait::WhereWasTrait;
 
 pub trait GetJsonWhereWas {
-    fn get_json_where_was(
-        &self,
-        source_place_type: &SourcePlaceType,
-        git_info: &crate::common::where_was::GitInfoForWhereWas,
-        error: String,
-    ) -> String;
+    fn get_json_where_was(&self, source_place_type: &SourcePlaceType, error: String) -> String;
 }
 
 impl<T> GetJsonWhereWas for T
 where
     T: GetWhereWasOriginOrWrapper,
 {
-    fn get_json_where_was(
-        &self,
-        source_place_type: &SourcePlaceType,
-        git_info: &crate::common::where_was::GitInfoForWhereWas,
-        error: String,
-    ) -> String {
+    fn get_json_where_was(&self, source_place_type: &SourcePlaceType, error: String) -> String {
         match self.get_where_was_one_or_many() {
             WhereWasOriginOrWrapper::One(where_was_with_addition) => {
                 where_was_with_addition.where_was.file_line_column()
@@ -36,14 +26,12 @@ where
                     .map(|(number, where_was_with_addition)| match number == 0 {
                         true => format!(
                             "{} {}, ",
-                            where_was_with_addition
-                                .get_file_line_column(source_place_type, git_info),
+                            where_was_with_addition.get_file_line_column(source_place_type),
                             error
                         ),
                         false => format!(
                             "{}, ",
-                            where_was_with_addition
-                                .get_file_line_column(source_place_type, git_info)
+                            where_was_with_addition.get_file_line_column(source_place_type)
                         ),
                     })
                     .collect::<Vec<String>>()

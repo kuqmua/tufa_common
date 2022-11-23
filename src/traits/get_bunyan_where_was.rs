@@ -4,28 +4,18 @@ use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::traits::get_where_was_one_or_many::GetWhereWasOriginOrWrapper;
 
 pub trait GetBunyanWhereWas {
-    fn get_bunyan_where_was(
-        &self,
-        source_place_type: &SourcePlaceType,
-        git_info: &crate::common::where_was::GitInfoForWhereWas,
-        error: String,
-    ) -> String;
+    fn get_bunyan_where_was(&self, source_place_type: &SourcePlaceType, error: String) -> String;
 }
 
 impl<T> GetBunyanWhereWas for T
 where
     T: GetWhereWasOriginOrWrapper,
 {
-    fn get_bunyan_where_was(
-        &self,
-        source_place_type: &SourcePlaceType,
-        git_info: &crate::common::where_was::GitInfoForWhereWas,
-        error: String,
-    ) -> String {
+    fn get_bunyan_where_was(&self, source_place_type: &SourcePlaceType, error: String) -> String {
         match self.get_where_was_one_or_many() {
             WhereWasOriginOrWrapper::One(where_was_with_addition) => format!(
                 "{} {}",
-                where_was_with_addition.get_file_line_column(source_place_type, git_info),
+                where_was_with_addition.get_file_line_column(source_place_type),
                 error
             ),
             WhereWasOriginOrWrapper::Many(vec_where_was_with_addition) => {
@@ -36,14 +26,12 @@ where
                     .map(|(number, where_was_with_addition)| match number == 0 {
                         true => format!(
                             "{} {}",
-                            where_was_with_addition
-                                .get_file_line_column(source_place_type, git_info),
+                            where_was_with_addition.get_file_line_column(source_place_type),
                             error
                         ),
                         false => format!(
                             "\n{}",
-                            where_was_with_addition
-                                .get_file_line_column(source_place_type, git_info)
+                            where_was_with_addition.get_file_line_column(source_place_type)
                         ),
                     }) //maybe here use \n
                     .collect::<Vec<String>>()
