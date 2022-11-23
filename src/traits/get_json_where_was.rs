@@ -1,4 +1,5 @@
 use crate::common::git::git_info::GitInformation;
+use crate::common::where_was::GitInfoForWhereWas;
 use crate::common::where_was::WhereWasOriginOrWrapper;
 use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::traits::get_where_was_one_or_many::GetWhereWasOriginOrWrapper;
@@ -8,7 +9,7 @@ pub trait GetJsonWhereWas {
     fn get_json_where_was(
         &self,
         source_place_type: &SourcePlaceType,
-        git_info: &GitInformation,
+        git_info: &crate::common::where_was::GitInfoForWhereWas,
         error: String,
     ) -> String;
 }
@@ -20,7 +21,7 @@ where
     fn get_json_where_was(
         &self,
         source_place_type: &SourcePlaceType,
-        git_info: &GitInformation,
+        git_info: &crate::common::where_was::GitInfoForWhereWas,
         error: String,
     ) -> String {
         match self.get_where_was_one_or_many() {

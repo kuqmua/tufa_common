@@ -73,7 +73,6 @@ pub async fn mongo_client_with_options(
                     },
                 },
                 source_place_type,
-                &GIT_INFO,
                 should_trace,
             ),
         )),

@@ -70,7 +70,6 @@ pub async fn async_chunk(
                     },
                 },
                 source_place_type,
-                &GIT_INFO,
                 should_trace,
             ),
         )),

@@ -7,7 +7,7 @@ pub trait GetBunyanWhereWas {
     fn get_bunyan_where_was(
         &self,
         source_place_type: &SourcePlaceType,
-        git_info: &GitInformation,
+        git_info: &crate::common::where_was::GitInfoForWhereWas,
         error: String,
     ) -> String;
 }
@@ -19,7 +19,7 @@ where
     fn get_bunyan_where_was(
         &self,
         source_place_type: &SourcePlaceType,
-        git_info: &GitInformation,
+        git_info: &crate::common::where_was::GitInfoForWhereWas,
         error: String,
     ) -> String {
         match self.get_where_was_one_or_many() {

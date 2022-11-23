@@ -235,7 +235,6 @@ where
                     },
                 },
                 source_place_type,
-                &GIT_INFO,
                 should_trace,
             ),
         )),
@@ -277,7 +276,6 @@ where
                         },
                     },
                     source_place_type,
-                    &GIT_INFO,
                     should_trace,
                 ),
             )),
@@ -325,7 +323,6 @@ where
                                 },
                             },
                             source_place_type,
-                            &GIT_INFO,
                             should_trace,
                         ),
                     ));

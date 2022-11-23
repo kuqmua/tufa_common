@@ -83,7 +83,6 @@ pub async fn mongo_check_availability(
                     },
                 },
                 source_place_type,
-                &GIT_INFO,
                 should_trace,
             ),
         )),
@@ -131,7 +130,6 @@ pub async fn mongo_check_availability(
                             },
                         },
                         source_place_type,
-                        &GIT_INFO,
                         should_trace,
                     ),
                 ));

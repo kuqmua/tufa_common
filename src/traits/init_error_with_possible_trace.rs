@@ -12,7 +12,6 @@ where
         source: GenericErrorStructSource,
         where_was: WhereWas,
         source_place_type: &SourcePlaceType,
-        git_info: &GitInformation,
         should_trace: bool,
     ) -> Self;
 }
@@ -26,11 +25,10 @@ where
         source: GenericErrorStructSource,
         where_was: WhereWas,
         source_place_type: &SourcePlaceType,
-        git_info: &GitInformation,
         should_trace: bool,
     ) -> Self {
         match should_trace {
-            true => Self::with_tracing(source, where_was, source_place_type, git_info),
+            true => Self::with_tracing(source, where_was, source_place_type),
             false => Self::new(source, where_was),
         }
     }

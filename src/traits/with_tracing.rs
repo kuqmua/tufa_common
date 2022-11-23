@@ -4,10 +4,5 @@ use crate::{
 };
 
 pub trait WithTracing<T> {
-    fn with_tracing(
-        source: T,
-        where_was: WhereWas,
-        source_place_type: &SourcePlaceType,
-        git_info: &GitInformation,
-    ) -> Self;
+    fn with_tracing(source: T, where_was: WhereWas, source_place_type: &SourcePlaceType) -> Self;
 }

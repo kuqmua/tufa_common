@@ -85,7 +85,6 @@ pub async fn mongo_check_db_is_empty(
                     },
                 },
                 source_place_type,
-                &GIT_INFO,
                 should_trace,
             ),
         )),
@@ -127,7 +126,6 @@ pub async fn mongo_check_db_is_empty(
                         },
                     },
                     source_place_type,
-                    &GIT_INFO,
                     should_trace,
                 ),
             )),
@@ -177,7 +175,6 @@ pub async fn mongo_check_db_is_empty(
                                 },
                             },
                             source_place_type,
-                            &GIT_INFO,
                             should_trace,
                         ),
                     ));

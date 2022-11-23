@@ -80,7 +80,6 @@ pub fn write_json_into_file_async(
                     },
                 },
                 source_place_type,
-                &GIT_INFO,
                 should_trace,
             ),
         )),
@@ -128,7 +127,6 @@ pub fn write_json_into_file_async(
                     },
                             },
                             source_place_type,
-                  &GIT_INFO,
                            should_trace,
                         ),
                     )

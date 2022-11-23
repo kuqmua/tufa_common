@@ -74,7 +74,6 @@ pub fn create_dir_if_it_doesnt_exist(
                     },
                 },
                 source_place_type,
-                &GIT_INFO,
                 should_trace,
             ),
         ));

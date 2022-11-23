@@ -90,7 +90,6 @@ pub async fn mongo_insert_docs_in_empty_collection(
                     },
                 },
                 source_place_type,
-                &GIT_INFO,
                 should_trace,
             ),
         )),
@@ -141,7 +140,6 @@ pub async fn mongo_insert_docs_in_empty_collection(
                             },
                         },
                         source_place_type,
-                        &GIT_INFO,
                         should_trace,
                     ),
                 )),
@@ -185,7 +183,6 @@ pub async fn mongo_insert_docs_in_empty_collection(
                     },
                                 },
                                 source_place_type,
-                                &GIT_INFO,
                                 should_trace,
                             ),
                         ))
@@ -236,7 +233,6 @@ pub async fn mongo_insert_docs_in_empty_collection(
                     },
                                         },
                                         source_place_type,
-                                        &GIT_INFO,
                                         should_trace,
                                     ),
                                 ));

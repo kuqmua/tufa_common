@@ -70,7 +70,10 @@ impl WhereWasTrait for WhereWas {
         format!("{}:{}:{}", self.file, self.line, self.column)
     }
     //todo make it const fn
-    fn github_file_line_column(&self, git_info: &GitInformation) -> String {
+    fn github_file_line_column(
+        &self,
+        git_info: &crate::common::where_was::GitInfoForWhereWas,
+    ) -> String {
         let file = self.file.clone();
         let backslash = "/";
         let index = file
@@ -121,7 +124,7 @@ impl WhereWasWithAddition {
     pub fn get_file_line_column(
         &self,
         source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
-        git_info: &GitInformation,
+        git_info: &crate::common::where_was::GitInfoForWhereWas,
     ) -> String {
         match source_place_type {
             crate::config_mods::source_place_type::SourcePlaceType::Source => {

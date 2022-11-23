@@ -1,4 +1,5 @@
 use crate::common::git::git_info::GitInformation;
+use crate::common::where_was::GitInfoForWhereWas;
 use crate::common::where_was::WhereWas;
 use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::traits::get_git_info::GetGitInfo;
@@ -10,7 +11,7 @@ pub trait GetLogWithAdditionalWhereWas<T> {
         &self,
         where_was: &WhereWas,
         source_place_type: &SourcePlaceType,
-        git_info: &GitInformation,
+        git_info: &GitInfoForWhereWas,
         error: String,
         is_tracing_enabled: bool,
     ) -> String;
@@ -24,7 +25,7 @@ where
         &self,
         where_was: &WhereWas,
         source_place_type: &SourcePlaceType,
-        git_info: &GitInformation,
+        git_info: &GitInfoForWhereWas,
         error: String,
         is_tracing_enabled: bool,
     ) -> String {
