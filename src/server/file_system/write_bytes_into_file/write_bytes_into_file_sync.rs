@@ -22,12 +22,7 @@ pub struct WriteBytesIntoFileSyncOriginError {
     pub source: std::io::Error,
     pub where_was: WhereWas,
 }
-#[deny(
-    clippy::indexing_slicing,
-    clippy::unwrap_used,
-    clippy::integer_arithmetic,
-    clippy::float_arithmetic
-)]
+
 pub fn write_bytes_into_file_sync(
     path: &std::path::Path,
     bytes: &[u8],

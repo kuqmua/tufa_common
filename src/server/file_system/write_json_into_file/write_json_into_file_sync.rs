@@ -31,12 +31,6 @@ pub enum WriteJsonIntoFileSyncOriginErrorEnum {
     StdIoOrigin(std::io::Error),
 }
 
-#[deny(
-    clippy::indexing_slicing,
-    clippy::unwrap_used,
-    clippy::integer_arithmetic,
-    clippy::float_arithmetic
-)]
 pub fn write_json_into_file_async(
     path: &std::path::Path,
     json_object: serde_json::Value,

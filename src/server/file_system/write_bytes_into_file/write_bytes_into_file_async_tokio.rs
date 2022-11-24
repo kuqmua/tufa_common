@@ -23,12 +23,6 @@ pub struct WriteBytesIntoFileAsyncTokioOriginError {
     pub where_was: WhereWas,
 }
 
-#[deny(
-    clippy::indexing_slicing,
-    clippy::unwrap_used,
-    clippy::integer_arithmetic,
-    clippy::float_arithmetic
-)]
 pub async fn write_bytes_into_file_async_tokio<'a>(
     path: &'a std::path::Path,
     bytes: &[u8],

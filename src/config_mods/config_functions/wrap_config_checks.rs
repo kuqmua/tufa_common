@@ -28,12 +28,6 @@ pub enum WrapConfigChecksErrorEnum {
 }
 
 impl ConfigStruct {
-    #[deny(
-        clippy::indexing_slicing,
-        clippy::unwrap_used,
-        clippy::integer_arithmetic,
-        clippy::float_arithmetic
-    )]
     pub fn wrap_config_checks(self) -> Result<Self, WrapConfigChecksError> {
         //its important to check timezone first coz it will be used later. it must be valid
         if !(-86_400 < self.timezone && self.timezone < 86_400) {

@@ -31,12 +31,6 @@ pub enum WriteJsonIntoFileAsyncTokioOriginErrorEnum {
     StdIoOrigin(std::io::Error),
 }
 
-#[deny(
-    clippy::indexing_slicing,
-    clippy::unwrap_used,
-    clippy::integer_arithmetic,
-    clippy::float_arithmetic
-)]
 pub async fn write_json_into_file_async_tokio(
     path: &std::path::Path,
     json_object: serde_json::Value,

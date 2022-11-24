@@ -1,7 +1,6 @@
 use crate::common::git::git_info::GitInformation;
 
 impl GitInformation<'_> {
-    #[allow(clippy::too_many_arguments)]
     pub fn get_git_html_info(&self, commit_link: String) -> String {
         let commit_id = &self.commit_id;
         let repo_link = &self.repo_link;
@@ -5657,7 +5656,6 @@ impl GitInformation<'_> {
 use crate::common::where_was::GitInfoForWhereWas;
 
 impl GitInfoForWhereWas {
-    #[allow(clippy::too_many_arguments)]
     pub fn get_git_html_info(&self, commit_link: String) -> String {
         let commit_id = &self.commit_id;
         let repo_link = &self.repo_link;

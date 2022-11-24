@@ -5,7 +5,7 @@ use crate::server::http_request::http_request_error::HttpRequestOriginError;
 use crate::server::http_request::http_request_method::HttpRequestMethod;
 use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
 
-#[allow(clippy::too_many_arguments)]
+#[allow(too_many_arguments)]
 pub async fn async_http_request_text_with_charset_wrapper<
     //client generics
     UserAgentValueGeneric,

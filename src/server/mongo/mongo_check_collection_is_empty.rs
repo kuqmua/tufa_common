@@ -36,12 +36,6 @@ pub enum MongoCheckCollectionIsEmptyOriginErrorEnum {
     NotEmptyOrigin(u64),
 }
 
-#[deny(
-    clippy::indexing_slicing,
-    clippy::unwrap_used,
-    clippy::integer_arithmetic,
-    clippy::float_arithmetic
-)]
 pub async fn mongo_check_collection_is_empty(
     client_options: ClientOptions,
     db_name: &str,

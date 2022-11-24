@@ -19,13 +19,6 @@ pub struct ParseSourcePlaceTypeError {
 
 impl FromStr for SourcePlaceType {
     type Err = ParseSourcePlaceTypeError;
-
-    #[deny(
-        clippy::indexing_slicing,
-        clippy::unwrap_used,
-        clippy::integer_arithmetic,
-        clippy::float_arithmetic
-    )]
     fn from_str(e: &str) -> Result<Self, ParseSourcePlaceTypeError> {
         if e == "source" {
             return Ok(SourcePlaceType::Source);

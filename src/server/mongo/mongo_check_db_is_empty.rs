@@ -36,12 +36,6 @@ pub enum MongoCheckDbIsEmptyOriginErrorEnum {
     DatabaseDropOrigin(mongodb::error::Error),
 }
 
-#[deny(
-    clippy::indexing_slicing,
-    clippy::unwrap_used,
-    clippy::integer_arithmetic,
-    clippy::float_arithmetic
-)]
 pub async fn mongo_check_db_is_empty(
     client_options: ClientOptions,
     db_name: &str,

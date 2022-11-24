@@ -23,12 +23,6 @@ pub struct CreateDirIfItDoesntExistOriginError {
     pub where_was: WhereWas,
 }
 
-#[deny(
-    clippy::indexing_slicing,
-    clippy::unwrap_used,
-    clippy::integer_arithmetic,
-    clippy::float_arithmetic
-)]
 pub fn create_dir_if_it_doesnt_exist(
     path: &str,
     source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,

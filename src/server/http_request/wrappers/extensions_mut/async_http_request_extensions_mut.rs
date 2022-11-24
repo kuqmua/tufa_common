@@ -6,12 +6,6 @@
 // use tufa_common::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
 // use tufa_common::common::where_was::WhereWas;
 
-// #[deny(
-//     clippy::indexing_slicing,
-//     clippy::unwrap_used,
-//     clippy::integer_arithmetic,
-//     clippy::float_arithmetic
-// )]
 // pub async fn async_extensions_mut(
 //     request_builder: RequestBuilder,
 //     should_trace: bool,

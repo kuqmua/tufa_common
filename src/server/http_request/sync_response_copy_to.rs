@@ -20,12 +20,6 @@ pub struct SyncResponseCopyToOriginError {
     where_was: WhereWas,
 }
 
-#[deny(
-    clippy::indexing_slicing,
-    clippy::unwrap_used,
-    clippy::integer_arithmetic,
-    clippy::float_arithmetic
-)]
 pub fn sync_copy_to<W: ?Sized>(
     mut response: reqwest::blocking::Response,
     w: &mut W,

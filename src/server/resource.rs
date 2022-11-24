@@ -17,13 +17,6 @@ pub struct ParseResourceError {
 
 impl std::str::FromStr for Resource {
     type Err = ParseResourceError;
-
-    #[deny(
-        clippy::indexing_slicing,
-        clippy::unwrap_used,
-        clippy::integer_arithmetic,
-        clippy::float_arithmetic
-    )]
     fn from_str(e: &str) -> Result<Self, ParseResourceError> {
         if e == "local" {
             return Ok(Resource::Local);

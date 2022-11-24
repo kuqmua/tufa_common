@@ -34,12 +34,6 @@ pub enum MongoCheckAvailabilityOriginErrorEnum {
     ListCollectionNamesOrigin(mongodb::error::Error),
 }
 
-#[deny(
-    clippy::indexing_slicing,
-    clippy::unwrap_used,
-    clippy::integer_arithmetic,
-    clippy::float_arithmetic
-)]
 pub async fn mongo_check_availability(
     client_options: ClientOptions,
     db_name: &str,
