@@ -11,7 +11,7 @@ pub struct WhereWas {
     pub git_info: GitInfoForWhereWas,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Eq, Hash, PartialEq)]
 pub struct GitInfoForWhereWas {
     pub commit_id: String,
     pub repo_link: String,

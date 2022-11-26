@@ -1,15 +1,63 @@
 use crate::common::git::git_info::GitInformation;
 use crate::common::where_was::GitInfoForWhereWas;
 use crate::common::where_was::WhereWas;
+use crate::traits::code_occurence_insert::CodeOccurenceInsertTrait;
 use crate::traits::file_line_column::FileLineColumnTrait;
 use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
 pub struct CodeOccurence {
-    where_was_hashmap: HashMap<GitInfoForWhereWas, TimeFileLineColumn>,
+    where_was_hashmap: HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIncrement>>,
 }
 
-// impl
+impl CodeOccurenceInsertTrait for CodeOccurence {
+    fn insert(&mut self, key: GitInfoForWhereWas, value_element: TimeFileLineColumn) {
+        match self.where_was_hashmap.is_empty() {
+            true => {
+                self.where_was_hashmap.insert(
+                    key,
+                    vec![TimeFileLineColumnIncrement {
+                        increment: 0,
+                        value: value_element,
+                    }],
+                );
+            }
+            false => {
+                let last_increment = {
+                    let mut increment_handle = 0;
+                    self.where_was_hashmap.iter().for_each(|(_, v)| {
+                        v.iter().for_each(|e| {
+                            if e.increment > increment_handle {
+                                increment_handle = e.increment;
+                            }
+                        });
+                    });
+                    increment_handle
+                };
+                self.where_was_hashmap
+                    .entry(key)
+                    .and_modify(|vec_existing_value_elements| {
+                        vec_existing_value_elements.push(TimeFileLineColumnIncrement {
+                            increment: last_increment,
+                            value: value_element.clone(), //todo how to rewrite it without clone() ?
+                        });
+                    })
+                    .or_insert_with(|| {
+                        vec![TimeFileLineColumnIncrement {
+                            increment: last_increment,
+                            value: value_element,
+                        }]
+                    });
+            }
+        };
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct TimeFileLineColumnIncrement {
+    pub increment: u64, //potential overflow?
+    pub value: TimeFileLineColumn,
+}
 
 #[derive(Debug, Clone)]
 pub struct TimeFileLineColumn {
