@@ -1,12 +1,15 @@
 use crate::common::git::git_info::GitInformation;
 use crate::common::where_was::GitInfoForWhereWas;
-use crate::traits::where_was_trait::WhereWasTrait;
+use crate::common::where_was::WhereWas;
+use crate::traits::file_line_column::FileLineColumnTrait;
 use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
 pub struct CodeOccurence {
     where_was_hashmap: HashMap<GitInfoForWhereWas, TimeFileLineColumn>,
 }
+
+// impl
 
 #[derive(Debug, Clone)]
 pub struct TimeFileLineColumn {
@@ -20,13 +23,7 @@ pub struct FileLineColumn {
     pub column: u32,
 }
 
-impl WhereWasTrait for WhereWas {
-    fn readable_time(&self, timezone: i32) -> String {
-        let datetime = chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.time)
-            .with_timezone(&chrono::FixedOffset::east(timezone));
-        datetime.format("%Y-%m-%d %H:%M:%S").to_string()
-    }
-    //todo make it const fn
+impl FileLineColumnTrait for FileLineColumn {
     fn file_line_column(&self) -> String {
         format!("{}:{}:{}", self.file, self.line, self.column)
     }
@@ -37,9 +34,11 @@ impl WhereWasTrait for WhereWas {
     ) -> String {
         let file = self.file.clone();
         let backslash = "/";
-        let index = file
-            .find(backslash)
-            .expect("cant find backslash symbol in file path of location"); //todo - bad code ?
-        git_info.get_git_source_file_link(&file[index + backslash.len()..], self.line)
+        match file.find(backslash) {
+            Some(index) => {
+                git_info.get_git_source_file_link(&file[index + backslash.len()..], self.line)
+            }
+            None => String::from("cant find backslash symbol in file path of location"),
+        }
     }
 }
