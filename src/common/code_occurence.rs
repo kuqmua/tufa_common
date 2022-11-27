@@ -1,6 +1,7 @@
 use crate::common::git::git_info::GitInformation;
 use crate::common::where_was::GitInfoForWhereWas;
 use crate::common::where_was::WhereWas;
+use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::traits::code_occurence::CodeOccurenceTrait;
 use crate::traits::file_line_column::FileLineColumnTrait;
 use crate::traits::readable_time::ReadableTimeTrait;
@@ -12,45 +13,46 @@ pub struct CodeOccurence {
 }
 
 impl CodeOccurenceTrait for CodeOccurence {
+    fn new(key: GitInfoForWhereWas, value_element: TimeFileLineColumn) -> Self {
+        Self {
+            where_was_hashmap: HashMap::from([(
+                key,
+                vec![TimeFileLineColumnIncrement {
+                    increment: 0,
+                    value: value_element,
+                }],
+            )]),
+        }
+    }
     fn insert(&mut self, key: GitInfoForWhereWas, value_element: TimeFileLineColumn) {
-        match self.where_was_hashmap.is_empty() {
-            true => {
-                self.where_was_hashmap.insert(
-                    key,
-                    vec![TimeFileLineColumnIncrement {
-                        increment: 0,
-                        value: value_element,
-                    }],
-                );
-            }
-            false => {
-                let last_increment = {
-                    let mut increment_handle = 0;
-                    self.where_was_hashmap.iter().for_each(|(_, v)| {
-                        v.iter().for_each(|e| {
-                            if e.increment > increment_handle {
-                                increment_handle = e.increment;
-                            }
-                        });
-                    });
-                    increment_handle
-                };
-                self.where_was_hashmap
-                    .entry(key)
-                    .and_modify(|vec_existing_value_elements| {
-                        vec_existing_value_elements.push(TimeFileLineColumnIncrement {
-                            increment: last_increment,
-                            value: value_element.clone(), //todo how to rewrite it without clone() ?
-                        });
-                    })
-                    .or_insert_with(|| {
-                        vec![TimeFileLineColumnIncrement {
-                            increment: last_increment,
-                            value: value_element,
-                        }]
-                    });
-            }
+        let last_increment = {
+            let mut increment_handle = 0;
+            self.where_was_hashmap.iter().for_each(|(_, v)| {
+                v.iter().for_each(|e| {
+                    if e.increment > increment_handle {
+                        increment_handle = e.increment;
+                    }
+                });
+            });
+            increment_handle
         };
+        self.where_was_hashmap
+            .entry(key)
+            .and_modify(|vec_existing_value_elements| {
+                vec_existing_value_elements.push(TimeFileLineColumnIncrement {
+                    increment: last_increment,
+                    value: value_element.clone(), //todo how to rewrite it without clone() ?
+                });
+            })
+            .or_insert_with(|| {
+                vec![TimeFileLineColumnIncrement {
+                    increment: last_increment,
+                    value: value_element,
+                }]
+            });
+    }
+    fn tracing_log(&self, source_place_type: &SourcePlaceType) -> String {
+        String::from("")
     }
 }
 
