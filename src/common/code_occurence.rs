@@ -19,6 +19,7 @@ pub enum SeparatorSymbol {
     DotSpace,
 }
 
+//its must be implement for the future of is_tracing_enabled: bool
 impl SeparatorSymbolTrait for SeparatorSymbol {
     fn symbol(&self) -> &str {
         match self {
@@ -75,7 +76,6 @@ impl CodeOccurenceTrait for CodeOccurence {
     fn log(&self, source_place_type: &SourcePlaceType, is_tracing_enabled: bool, source: String) {
         match source_place_type {
             SourcePlaceType::Source => {
-                // let
                 let mut vec: Vec<OccurenceFilter> =
                     Vec::with_capacity(self.where_was_hashmap.values().fold(0, |mut acc, elem| {
                         acc += elem.len();
