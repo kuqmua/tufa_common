@@ -1,8 +1,9 @@
 use crate::common::git::git_info::GitInformation;
 use crate::common::where_was::GitInfoForWhereWas;
 use crate::common::where_was::WhereWas;
-use crate::traits::code_occurence_insert::CodeOccurenceInsertTrait;
+use crate::traits::code_occurence::CodeOccurenceTrait;
 use crate::traits::file_line_column::FileLineColumnTrait;
+use crate::traits::readable_time::ReadableTimeTrait;
 use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
@@ -10,7 +11,7 @@ pub struct CodeOccurence {
     where_was_hashmap: HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIncrement>>,
 }
 
-impl CodeOccurenceInsertTrait for CodeOccurence {
+impl CodeOccurenceTrait for CodeOccurence {
     fn insert(&mut self, key: GitInfoForWhereWas, value_element: TimeFileLineColumn) {
         match self.where_was_hashmap.is_empty() {
             true => {
@@ -64,6 +65,29 @@ pub struct TimeFileLineColumn {
     pub time: std::time::Duration,
     pub file_line_column: FileLineColumn,
 }
+
+impl ReadableTimeTrait for TimeFileLineColumn {
+    fn readable_time(&self, timezone: i32) -> String {
+        chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.time)
+            .with_timezone(&chrono::FixedOffset::east(timezone))
+            .format("%Y-%m-%d %H:%M:%S")
+            .to_string()
+    }
+}
+
+impl FileLineColumnTrait for TimeFileLineColumn {
+    fn file_line_column(&self) -> String {
+        self.file_line_column()
+    }
+    //todo make it const fn
+    fn github_file_line_column(
+        &self,
+        git_info: &crate::common::where_was::GitInfoForWhereWas,
+    ) -> String {
+        self.github_file_line_column(git_info)
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct FileLineColumn {
     pub file: String, //&'a str
