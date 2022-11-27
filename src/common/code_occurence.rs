@@ -5,11 +5,32 @@ use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::traits::code_occurence::CodeOccurenceTrait;
 use crate::traits::file_line_column::FileLineColumnTrait;
 use crate::traits::readable_time::ReadableTimeTrait;
+use crate::traits::separator_symbol_trait::SeparatorSymbolTrait;
 use std::collections::HashMap;
+use std::fmt::{self, Display};
 
 #[derive(Debug, Clone)]
 pub struct CodeOccurence {
     where_was_hashmap: HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIncrement>>,
+}
+
+pub enum SeparatorSymbol {
+    LineBreak,
+    DotSpace,
+}
+
+impl SeparatorSymbolTrait for SeparatorSymbol {
+    fn symbol(&self) -> &str {
+        match self {
+            SeparatorSymbol::LineBreak => "\n",
+            SeparatorSymbol::DotSpace => ", ",
+        }
+    }
+    fn pop_last(&self, vec: &mut Vec<String>) {
+        for i in 0..self.symbol().len() {
+            vec.pop();
+        }
+    }
 }
 
 impl CodeOccurenceTrait for CodeOccurence {
@@ -27,7 +48,7 @@ impl CodeOccurenceTrait for CodeOccurence {
     fn insert(&mut self, key: GitInfoForWhereWas, value_element: TimeFileLineColumn) {
         let last_increment = {
             let mut increment_handle = 0;
-            self.where_was_hashmap.iter().for_each(|(_, v)| {
+            self.where_was_hashmap.values().for_each(|v| {
                 v.iter().for_each(|e| {
                     if e.increment > increment_handle {
                         increment_handle = e.increment;
@@ -51,9 +72,78 @@ impl CodeOccurenceTrait for CodeOccurence {
                 }]
             });
     }
-    fn tracing_log(&self, source_place_type: &SourcePlaceType) -> String {
-        String::from("")
+    fn log(&self, source_place_type: &SourcePlaceType, is_tracing_enabled: bool, source: String) {
+        match source_place_type {
+            SourcePlaceType::Source => {
+                // let
+                let mut vec: Vec<OccurenceFilter> =
+                    Vec::with_capacity(self.where_was_hashmap.values().fold(0, |mut acc, elem| {
+                        acc += elem.len();
+                        acc
+                    }));
+                self.where_was_hashmap.iter().for_each(|(k, v)| {
+                    v.iter().for_each(|e| {
+                        vec.push(OccurenceFilter {
+                            increment: e.increment,
+                            occurence: e.value.file_line_column(),
+                        })
+                    })
+                });
+                //todo check reserve or not
+                vec.sort_by(|a, b| a.increment.cmp(&b.increment));
+                let occurences = vec
+                    .into_iter()
+                    .map(|e| format!("{}/n", e.occurence))
+                    .collect::<Vec<String>>();
+            }
+            SourcePlaceType::Github => {
+                let mut vec: Vec<OccurenceFilter> =
+                    Vec::with_capacity(self.where_was_hashmap.values().fold(0, |mut acc, elem| {
+                        acc += elem.len();
+                        acc
+                    }));
+                self.where_was_hashmap.iter().for_each(|(k, v)| {
+                    v.iter().for_each(|e| {
+                        vec.push(OccurenceFilter {
+                            increment: e.increment,
+                            occurence: e.value.github_file_line_column(k),
+                        })
+                    })
+                });
+                //todo check reserve or not
+                vec.sort_by(|a, b| a.increment.cmp(&b.increment));
+                let occurences = vec
+                    .into_iter()
+                    .map(|e| e.occurence)
+                    .collect::<Vec<String>>();
+            }
+            SourcePlaceType::None => {
+                todo!();
+                ()
+            }
+        }
     }
+}
+
+// impl Vec<Occurence> {
+//     pub fn kekw(&self) -> String {
+//         let mut value = String::from("");
+//         self.iter().for_each(|c| {
+//             value.push_str(&format!("{}\n", c.occurence));
+//         });
+//         value
+//     }
+// }
+
+// #[derive(Debug, Clone)]
+// pub struct Occurence {
+//     pub occurence: String,
+// }
+
+#[derive(Debug, Clone)]
+pub struct OccurenceFilter {
+    pub increment: u64, //potential overflow?
+    pub occurence: String,
 }
 
 #[derive(Debug, Clone)]

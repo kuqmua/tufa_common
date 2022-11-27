@@ -5,5 +5,5 @@ use crate::config_mods::source_place_type::SourcePlaceType;
 pub trait CodeOccurenceTrait {
     fn new(key: GitInfoForWhereWas, value_element: TimeFileLineColumn) -> Self;
     fn insert(&mut self, key: GitInfoForWhereWas, value_element: TimeFileLineColumn);
-    fn tracing_log(&self, source_place_type: &SourcePlaceType) -> String;
+    fn log(&self, source_place_type: &SourcePlaceType, is_tracing_enabled: bool, source: String);
 }
