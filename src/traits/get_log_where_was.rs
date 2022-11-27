@@ -1,5 +1,6 @@
 use crate::common::git::git_info::GitInformation;
 use crate::common::where_was::GitInfoForWhereWas;
+use crate::config_mods::log_type::LogType;
 use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::traits::get_bunyan_where_was::GetBunyanWhereWas;
 use crate::traits::get_json_where_was::GetJsonWhereWas;
@@ -9,7 +10,7 @@ pub trait GetLogWhereWas {
     fn get_log_where_was(
         &self,
         source_place_type: &SourcePlaceType,
-        separation_by_line: bool,
+        log_type: LogType,
         error: String,
     ) -> String;
 }
@@ -21,12 +22,13 @@ where
     fn get_log_where_was(
         &self,
         source_place_type: &SourcePlaceType,
-        separation_by_line: bool,
+        log_type: LogType,
         error: String,
     ) -> String {
-        match separation_by_line {
-            true => self.get_json_where_was(source_place_type, error),
-            false => self.get_bunyan_where_was(source_place_type, error),
+        match log_type {
+            LogType::Tracing => self.get_json_where_was(source_place_type, error),
+            LogType::Stack => self.get_bunyan_where_was(source_place_type, error),
+            LogType::None => String::from(""), //todo -incorrect?
         }
     }
 }

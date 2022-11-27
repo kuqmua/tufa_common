@@ -1,6 +1,7 @@
 use crate::common::git::git_info::GitInformation;
 use crate::common::where_was::GitInfoForWhereWas;
 use crate::common::where_was::WhereWas;
+use crate::config_mods::log_type::LogType;
 use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::traits::code_occurence::CodeOccurenceTrait;
 use crate::traits::file_line_column::FileLineColumnTrait;
@@ -19,7 +20,7 @@ pub enum SeparatorSymbol {
     DotSpace,
 }
 
-//its must be implement for the future of is_tracing_enabled: bool
+//its must be implement for the future of
 impl SeparatorSymbolTrait for SeparatorSymbol {
     fn symbol(&self) -> &str {
         match self {
@@ -73,7 +74,7 @@ impl CodeOccurenceTrait for CodeOccurence {
                 }]
             });
     }
-    fn log(&self, source_place_type: &SourcePlaceType, is_tracing_enabled: bool, source: String) {
+    fn log(&self, source_place_type: &SourcePlaceType, log_type: LogType, source: String) {
         match source_place_type {
             SourcePlaceType::Source => {
                 let mut vec: Vec<OccurenceFilter> =
@@ -118,8 +119,7 @@ impl CodeOccurenceTrait for CodeOccurence {
                     .collect::<Vec<String>>();
             }
             SourcePlaceType::None => {
-                todo!();
-                ()
+                // ()
             }
         }
     }

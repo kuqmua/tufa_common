@@ -1,3 +1,4 @@
+use crate::config_mods::log_type::LogType;
 use crate::{
     config_mods::{source_place_type::SourcePlaceType, tracing_type::TracingType},
     server::resource::Resource,
@@ -707,8 +708,8 @@ pub trait GetLinksLimitTwitter {
 pub trait GetIsPreparationEnabled {
     fn get_is_preparation_enabled(&self) -> &bool;
 }
-pub trait GetIsTracingEnabled {
-    fn get_is_tracing_enabled(&self) -> &bool;
+pub trait GetLogType {
+    fn get_log_type(&self) -> &LogType;
 }
 pub trait GetTracingType {
     fn get_tracing_type(&self) -> &TracingType;
