@@ -1,6 +1,7 @@
 pub mod code_occurence;
 pub mod file_line_column;
 pub mod get_bunyan_where_was;
+pub mod get_color;
 pub mod get_git_info;
 pub mod get_json_where_was;
 pub mod get_log_where_was;
