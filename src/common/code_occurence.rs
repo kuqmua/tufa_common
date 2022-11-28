@@ -184,14 +184,14 @@ impl ReadableTimeTrait for TimeFileLineColumn {
 
 impl FileLineColumnTrait for TimeFileLineColumn {
     fn file_line_column(&self) -> String {
-        self.file_line_column()
+        self.file_line_column.file_line_column()
     }
     //todo make it const fn
     fn github_file_line_column(
         &self,
         git_info: &crate::common::where_was::GitInfoForWhereWas,
     ) -> String {
-        self.github_file_line_column(git_info)
+        self.file_line_column.github_file_line_column(git_info)
     }
 }
 
