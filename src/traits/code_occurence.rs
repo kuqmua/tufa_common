@@ -6,5 +6,13 @@ use crate::config_mods::source_place_type::SourcePlaceType;
 pub trait CodeOccurenceTrait {
     fn new(key: GitInfoForWhereWas, value_element: TimeFileLineColumn) -> Self;
     fn insert(&mut self, key: GitInfoForWhereWas, value_element: TimeFileLineColumn);
-    fn log(&self, source_place_type: &SourcePlaceType, log_type: LogType, source: String);
+    fn log(
+        &self,
+        source_place_type: &SourcePlaceType,
+        log_type: LogType,
+        source: String,
+        error_red: u8,
+        error_green: u8,
+        error_blue: u8,
+    );
 }

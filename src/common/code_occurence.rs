@@ -7,32 +7,13 @@ use crate::traits::code_occurence::CodeOccurenceTrait;
 use crate::traits::file_line_column::FileLineColumnTrait;
 use crate::traits::readable_time::ReadableTimeTrait;
 use crate::traits::separator_symbol_trait::SeparatorSymbolTrait;
+use ansi_term::Colour::RGB;
 use std::collections::HashMap;
 use std::fmt::{self, Display};
 
 #[derive(Debug, Clone)]
 pub struct CodeOccurence {
     where_was_hashmap: HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIncrement>>,
-}
-
-pub enum SeparatorSymbol {
-    LineBreak,
-    DotSpace,
-}
-
-//its must be implement for the future of
-impl SeparatorSymbolTrait for SeparatorSymbol {
-    fn symbol(&self) -> &str {
-        match self {
-            SeparatorSymbol::LineBreak => "\n",
-            SeparatorSymbol::DotSpace => ", ",
-        }
-    }
-    fn pop_last(&self, vec: &mut Vec<String>) {
-        for i in 0..self.symbol().len() {
-            vec.pop();
-        }
-    }
 }
 
 impl CodeOccurenceTrait for CodeOccurence {
@@ -74,75 +55,109 @@ impl CodeOccurenceTrait for CodeOccurence {
                 }]
             });
     }
-    fn log(&self, source_place_type: &SourcePlaceType, log_type: LogType, source: String) {
+    fn log(
+        &self,
+        source_place_type: &SourcePlaceType,
+        log_type: LogType,
+        source: String,
+        error_red: u8,
+        error_green: u8,
+        error_blue: u8,
+    ) {
         match source_place_type {
             SourcePlaceType::Source => {
-                let mut vec: Vec<OccurenceFilter> =
-                    Vec::with_capacity(self.where_was_hashmap.values().fold(0, |mut acc, elem| {
-                        acc += elem.len();
-                        acc
-                    }));
+                let len = self.where_was_hashmap.values().fold(0, |mut acc, elem| {
+                    acc += elem.len();
+                    acc
+                });
+                let mut vec: Vec<OccurenceFilter> = Vec::with_capacity(len);
                 self.where_was_hashmap.iter().for_each(|(k, v)| {
                     v.iter().for_each(|e| {
                         vec.push(OccurenceFilter {
                             increment: e.increment,
+                            time: e.value.time,
                             occurence: e.value.file_line_column(),
                         })
                     })
                 });
                 //todo check reserve or not
                 vec.sort_by(|a, b| a.increment.cmp(&b.increment));
-                let occurences = vec
-                    .into_iter()
-                    .map(|e| format!("{}/n", e.occurence))
-                    .collect::<Vec<String>>();
+                let mut occurences = Vec::with_capacity(len + 1);
+                occurences.push(format!("{}{}", source, log_type.symbol()));
+                vec.into_iter().for_each(|e| {
+                    occurences.push(format!("{:?} {}{}", e.time, e.occurence, log_type.symbol()));
+                });
+                let mut occurence = occurences.iter().fold(String::from(""), |mut acc, elem| {
+                    acc.push_str(elem);
+                    acc
+                });
+                log_type.pop_last(&mut occurence);
+                match log_type {
+                    LogType::Tracing => {
+                        tracing::error!(error = occurence);
+                    }
+                    LogType::Stack => {
+                        eprintln!(
+                            "{}",
+                            RGB(error_red, error_green, error_blue)
+                                .bold()
+                                .paint(occurence)
+                        );
+                    }
+                    LogType::None => (),
+                }
             }
             SourcePlaceType::Github => {
-                let mut vec: Vec<OccurenceFilter> =
-                    Vec::with_capacity(self.where_was_hashmap.values().fold(0, |mut acc, elem| {
-                        acc += elem.len();
-                        acc
-                    }));
+                let len = self.where_was_hashmap.values().fold(0, |mut acc, elem| {
+                    acc += elem.len();
+                    acc
+                });
+                let mut vec: Vec<OccurenceFilter> = Vec::with_capacity(len);
                 self.where_was_hashmap.iter().for_each(|(k, v)| {
                     v.iter().for_each(|e| {
                         vec.push(OccurenceFilter {
                             increment: e.increment,
+                            time: e.value.time,
                             occurence: e.value.github_file_line_column(k),
                         })
                     })
                 });
                 //todo check reserve or not
                 vec.sort_by(|a, b| a.increment.cmp(&b.increment));
-                let occurences = vec
-                    .into_iter()
-                    .map(|e| e.occurence)
-                    .collect::<Vec<String>>();
+                let mut occurences = Vec::with_capacity(len + 1);
+                occurences.push(format!("{}{}", source, log_type.symbol()));
+                vec.into_iter().for_each(|e| {
+                    occurences.push(format!("{:?} {}{}", e.time, e.occurence, log_type.symbol()));
+                });
+                let mut occurence = occurences.iter().fold(String::from(""), |mut acc, elem| {
+                    acc.push_str(elem);
+                    acc
+                });
+                log_type.pop_last(&mut occurence);
+                match log_type {
+                    LogType::Tracing => {
+                        tracing::error!(error = occurence);
+                    }
+                    LogType::Stack => {
+                        eprintln!(
+                            "{}",
+                            RGB(error_red, error_green, error_blue)
+                                .bold()
+                                .paint(occurence)
+                        );
+                    }
+                    LogType::None => (),
+                }
             }
-            SourcePlaceType::None => {
-                // ()
-            }
+            SourcePlaceType::None => (),
         }
     }
 }
 
-// impl Vec<Occurence> {
-//     pub fn kekw(&self) -> String {
-//         let mut value = String::from("");
-//         self.iter().for_each(|c| {
-//             value.push_str(&format!("{}\n", c.occurence));
-//         });
-//         value
-//     }
-// }
-
-// #[derive(Debug, Clone)]
-// pub struct Occurence {
-//     pub occurence: String,
-// }
-
 #[derive(Debug, Clone)]
 pub struct OccurenceFilter {
     pub increment: u64, //potential overflow?
+    pub time: std::time::Duration,
     pub occurence: String,
 }
 

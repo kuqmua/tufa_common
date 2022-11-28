@@ -31,3 +31,18 @@ impl std::str::FromStr for LogType {
         }
     }
 }
+
+impl crate::traits::separator_symbol_trait::SeparatorSymbolTrait for LogType {
+    fn symbol(&self) -> &str {
+        match self {
+            LogType::Tracing => "\n",
+            LogType::Stack => ", ",
+            LogType::None => "", //todo is it correct?
+        }
+    }
+    fn pop_last(&self, string: &mut String) {
+        for i in 0..self.symbol().len() {
+            string.pop();
+        }
+    }
+}
