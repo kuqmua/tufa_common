@@ -1,6 +1,7 @@
 #[derive(
     Debug,
     Clone,
+    Copy,
     strum_macros::EnumIter,
     strum_macros::Display,
     enum_extension::EnumExtension,
