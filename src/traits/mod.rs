@@ -9,6 +9,7 @@ pub mod get_log_with_additional_where_was;
 pub mod get_source;
 pub mod get_where_was_one_or_many;
 pub mod init_error_with_possible_trace;
+pub mod is_enabled_prints;
 pub mod new_error;
 pub mod print_type_trait;
 pub mod readable_time;
