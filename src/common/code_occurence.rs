@@ -71,7 +71,7 @@ impl CodeOccurenceTrait for CodeOccurence {
                     acc
                 });
                 let mut vec: Vec<OccurenceFilter> = Vec::with_capacity(len);
-                self.where_was_hashmap.iter().for_each(|(k, v)| {
+                self.where_was_hashmap.values().for_each(|v| {
                     v.iter().for_each(|e| {
                         vec.push(OccurenceFilter {
                             increment: e.increment,
