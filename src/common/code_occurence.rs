@@ -17,25 +17,23 @@ pub struct CodeOccurence {
 }
 
 impl CodeOccurenceTrait for HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIncrement>> {
-//     time: std::time::Duration,
-//     file: String, //&'a str
-//     line: u32,
-//     column: u32,
-   fn new(key: GitInfoForWhereWas, value_element: TimeFileLineColumn) -> Self {
-        HashMap::from([
-            (
-                key,
-                vec![TimeFileLineColumnIncrement {
-                    increment: 0,
-                    value: value_element,
-                }]
-            ),
-        ])
+    //     time: std::time::Duration,
+    //     file: String, //&'a str
+    //     line: u32,
+    //     column: u32,
+    fn new(key: GitInfoForWhereWas, value_element: TimeFileLineColumn) -> Self {
+        HashMap::from([(
+            key,
+            vec![TimeFileLineColumnIncrement {
+                increment: 0,
+                value: value_element,
+            }],
+        )])
     }
     fn insert(&mut self, key: GitInfoForWhereWas, value_element: TimeFileLineColumn) {
         let last_increment = {
             let mut increment_handle = 0;
-            self.for_each(|v| {
+            self.values().for_each(|v| {
                 v.iter().for_each(|e| {
                     if e.increment > increment_handle {
                         increment_handle = e.increment;
