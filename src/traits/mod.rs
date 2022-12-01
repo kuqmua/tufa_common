@@ -13,6 +13,7 @@ pub mod is_enabled_prints;
 pub mod new_error;
 pub mod print_type_trait;
 pub mod readable_time;
+pub mod readable_time_string;
 pub mod separator_symbol_trait;
 pub mod where_was_trait;
 pub mod with_tracing;
