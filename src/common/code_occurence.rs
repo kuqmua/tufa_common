@@ -30,7 +30,11 @@ impl CodeOccurenceTrait for HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIn
     //         }],
     //     )])
     // }
-    fn insert(&mut self, key: GitInfoForWhereWas, value_element: TimeFileLineColumn) {
+    fn insert_with_key_check(
+        &mut self,
+        key: GitInfoForWhereWas,
+        value_element: TimeFileLineColumn,
+    ) {
         let last_increment = {
             let mut increment_handle = 0;
             self.values().for_each(|v| {
@@ -55,6 +59,37 @@ impl CodeOccurenceTrait for HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIn
                     value: value_element,
                 }]
             });
+    }
+    fn add(&mut self, hashmap: HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIncrement>>) {
+        let mut last_increment = {
+            let mut increment_handle = 0;
+            hashmap.values().for_each(|v| {
+                v.iter().for_each(|e| {
+                    if e.increment > increment_handle {
+                        increment_handle = e.increment;
+                    }
+                });
+            });
+            increment_handle
+        };
+        hashmap.iter().for_each(|(key, value)| {
+            value.iter().for_each(|value_element| {
+                last_increment += 1;
+                self.entry(key.clone())
+                    .and_modify(|vec_existing_value_elements| {
+                        vec_existing_value_elements.push(TimeFileLineColumnIncrement {
+                            increment: last_increment,
+                            value: value_element.value.clone(), //todo how to rewrite it without clone() ?
+                        });
+                    })
+                    .or_insert_with(|| {
+                        vec![TimeFileLineColumnIncrement {
+                            increment: last_increment,
+                            value: value_element.value.clone(),
+                        }]
+                    });
+            });
+        });
     }
     fn log(
         &self,
