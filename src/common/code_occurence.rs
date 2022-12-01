@@ -6,13 +6,13 @@ use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::traits::code_occurence::CodeOccurenceTrait;
 use crate::traits::file_line_column::FileLineColumnTrait;
 use crate::traits::readable_time::ReadableTimeTrait;
+use crate::traits::readable_time_string::ReadableTimeStringTrait;
 use crate::traits::separator_symbol_trait::SeparatorSymbolTrait;
 use ansi_term::Colour::RGB;
 use chrono::prelude::DateTime;
 use chrono::Utc;
 use std::collections::HashMap;
 use std::fmt::{self, Display};
-use std::time::UNIX_EPOCH;
 
 // #[derive(Debug, Clone)]
 // pub struct CodeOccurence {
@@ -124,7 +124,12 @@ impl CodeOccurenceTrait for HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIn
                 let mut occurences = Vec::with_capacity(len + 1);
                 occurences.push(format!("{}{}", source, log_type.symbol()));
                 vec.into_iter().for_each(|e| {
-                    occurences.push(format!("{:?} {}{}", e.time, e.occurence, log_type.symbol()));
+                    occurences.push(format!(
+                        "{:?} {}{}",
+                        e.readable_time_string(),
+                        e.occurence,
+                        log_type.symbol()
+                    ));
                 });
                 let mut occurence = occurences.iter().fold(String::from(""), |mut acc, elem| {
                     acc.push_str(elem);
@@ -166,12 +171,9 @@ impl CodeOccurenceTrait for HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIn
                 let mut occurences = Vec::with_capacity(len + 1);
                 occurences.push(format!("{}{}", source, log_type.symbol()));
                 vec.into_iter().for_each(|e| {
-                    let d = UNIX_EPOCH + e.time;
-                    let datetime = DateTime::<Utc>::from(d);
-                    let timestamp_str = datetime.format("%Y-%m-%d %H:%M:%S.%f").to_string();
                     occurences.push(format!(
                         "{} {}{}",
-                        timestamp_str,
+                        e.readable_time_string(),
                         e.occurence,
                         log_type.symbol()
                     ));
@@ -208,16 +210,38 @@ pub struct OccurenceFilter {
     pub occurence: String,
 }
 
+impl ReadableTimeStringTrait for OccurenceFilter {
+    fn readable_time_string(&self) -> String {
+        DateTime::<Utc>::from(std::time::UNIX_EPOCH + self.time)
+            .format("%Y-%m-%d %H:%M:%S.%f")
+            .to_string()
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct TimeFileLineColumnIncrement {
     pub increment: u64, //potential overflow?
     pub value: TimeFileLineColumn,
 }
 
+impl ReadableTimeStringTrait for TimeFileLineColumnIncrement {
+    fn readable_time_string(&self) -> String {
+        self.value.readable_time_string()
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct TimeFileLineColumn {
     pub time: std::time::Duration,
     pub file_line_column: FileLineColumn,
+}
+
+impl ReadableTimeStringTrait for TimeFileLineColumn {
+    fn readable_time_string(&self) -> String {
+        DateTime::<Utc>::from(std::time::UNIX_EPOCH + self.time)
+            .format("%Y-%m-%d %H:%M:%S.%f")
+            .to_string()
+    }
 }
 
 impl ReadableTimeTrait for TimeFileLineColumn {
