@@ -17,6 +17,10 @@ pub struct CodeOccurence {
 }
 
 impl CodeOccurenceTrait for HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIncrement>> {
+//     time: std::time::Duration,
+//     file: String, //&'a str
+//     line: u32,
+//     column: u32,
    fn new(key: GitInfoForWhereWas, value_element: TimeFileLineColumn) -> Self {
         HashMap::from([
             (
