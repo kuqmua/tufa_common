@@ -4,7 +4,7 @@ use crate::config_mods::log_type::LogType;
 use crate::config_mods::source_place_type::SourcePlaceType;
 
 pub trait CodeOccurenceTrait {
-    fn new(key: GitInfoForWhereWas, value_element: TimeFileLineColumn) -> Self;
+    // fn new_with_increment(key: GitInfoForWhereWas, value_element: TimeFileLineColumn) -> Self;
     fn insert(&mut self, key: GitInfoForWhereWas, value_element: TimeFileLineColumn);
     fn log(
         &self,
