@@ -362,3 +362,17 @@ impl FileLineColumnTrait for FileLineColumn {
         }
     }
 }
+
+// #[derive(Debug, Clone)]
+// pub struct FileLineColumn<'a> {
+//     pub file: &'a str
+//     pub line: u32,
+//     pub column: u32,
+// }
+
+// impl FileLineColumn {
+//     const fn file_line_column<'a>(&self) -> &'a str {
+//         //todo how to convert u32 to &'a str on compiletime
+//         format!("{}:{}:{}", self.file, self.line, self.column)
+//     }
+// }
