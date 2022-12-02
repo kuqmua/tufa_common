@@ -15,6 +15,20 @@ pub enum LogType {
     None,
 }
 
+impl crate::traits::console::ConsoleTrait for LogType {
+    fn console(&self, style: ansi_term::Style, occurence: String) {
+        match self {
+            LogType::Tracing => {
+                tracing::error!(error = occurence);
+            }
+            LogType::Stack => {
+                eprintln!("{}", style.paint(occurence));
+            }
+            LogType::None => (),
+        }
+    }
+}
+
 impl Default for LogType {
     fn default() -> Self {
         Self::Stack

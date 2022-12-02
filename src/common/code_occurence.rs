@@ -4,6 +4,7 @@ use crate::common::where_was::WhereWas;
 use crate::config_mods::log_type::LogType;
 use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::traits::code_occurence::CodeOccurenceTrait;
+use crate::traits::console::ConsoleTrait;
 use crate::traits::file_line_column::FileLineColumnTrait;
 use crate::traits::readable_time::ReadableTimeTrait;
 use crate::traits::readable_time_string::ReadableTimeStringTrait;
@@ -152,15 +153,7 @@ impl CodeOccurenceTrait for HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIn
                     acc
                 });
                 log_type.pop_last(&mut occurence);
-                match log_type {
-                    LogType::Tracing => {
-                        tracing::error!(error = occurence);
-                    }
-                    LogType::Stack => {
-                        eprintln!("{}", style.paint(occurence));
-                    }
-                    LogType::None => (),
-                }
+                log_type.console(style, occurence);
             }
             SourcePlaceType::Github => {
                 let len = self.values().fold(0, |mut acc, elem| {
@@ -194,15 +187,7 @@ impl CodeOccurenceTrait for HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIn
                     acc
                 });
                 log_type.pop_last(&mut occurence);
-                match log_type {
-                    LogType::Tracing => {
-                        tracing::error!(error = occurence);
-                    }
-                    LogType::Stack => {
-                        eprintln!("{}", style.paint(occurence));
-                    }
-                    LogType::None => (),
-                }
+                log_type.console(style, occurence);
             }
             SourcePlaceType::None => (),
         }

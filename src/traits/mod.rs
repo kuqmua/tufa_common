@@ -1,4 +1,5 @@
 pub mod code_occurence;
+pub mod console;
 pub mod file_line_column;
 pub mod get_bunyan_where_was;
 pub mod get_color;
