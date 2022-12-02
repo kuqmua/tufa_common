@@ -14,6 +14,48 @@ use chrono::Utc;
 use std::collections::HashMap;
 use std::fmt::{self, Display};
 
+use crate::global_variables::compile_time::git_info::GIT_INFO;
+pub struct ThreeError {
+    source: u32,
+    pub code_occurence: HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIncrement>>,
+}
+
+// impl GetCodeOccurence for ThreeError {
+//     fn get_code_occurence(&self) -> HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIncrement>> {
+//         self.code_occurence
+//     }
+// }
+
+pub fn three() -> Result<(), Box<ThreeError>> {
+    return Err(Box::new(ThreeError {
+        source: 34,
+        code_occurence: HashMap::from([(
+            GitInfoForWhereWas {
+                commit_id: String::from(GIT_INFO.commit_id),
+                repo_link: String::from(GIT_INFO.repo_link),
+                author: String::from(GIT_INFO.author),
+                author_email: String::from(GIT_INFO.author_email),
+                commit_unix_time: String::from(GIT_INFO.commit_unix_time),
+                timezone: String::from(GIT_INFO.timezone),
+                message: String::from(GIT_INFO.message),
+            },
+            vec![TimeFileLineColumnIncrement {
+                increment: 0,
+                value: TimeFileLineColumn {
+                    time: std::time::SystemTime::now()
+                        .duration_since(std::time::UNIX_EPOCH)
+                        .expect("cannot convert time to unix_epoch"),
+                    file_line_column: FileLineColumn {
+                        file: String::from(file!()),
+                        line: line!(),
+                        column: column!(),
+                    },
+                },
+            }],
+        )]),
+    }));
+}
+
 // #[derive(Debug, Clone)]
 // pub struct CodeOccurence {
 //     where_was_hashmap: HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIncrement>>,
