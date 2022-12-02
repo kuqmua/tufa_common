@@ -20,12 +20,6 @@ pub struct ThreeError {
     pub code_occurence: HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIncrement>>,
 }
 
-// impl GetCodeOccurence for ThreeError {
-//     fn get_code_occurence(&self) -> HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIncrement>> {
-//         self.code_occurence
-//     }
-// }
-
 pub fn three() -> Result<(), Box<ThreeError>> {
     return Err(Box::new(ThreeError {
         source: 34,
@@ -56,25 +50,7 @@ pub fn three() -> Result<(), Box<ThreeError>> {
     }));
 }
 
-// #[derive(Debug, Clone)]
-// pub struct CodeOccurence {
-//     where_was_hashmap: HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIncrement>>,
-// }
-
 impl CodeOccurenceTrait for HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIncrement>> {
-    //     time: std::time::Duration,
-    //     file: String, //&'a str
-    //     line: u32,
-    //     column: u32,
-    // fn new_with_increment(key: GitInfoForWhereWas, value_element: TimeFileLineColumn) -> Self {
-    //     HashMap::from([(
-    //         key,
-    //         vec![TimeFileLineColumnIncrement {
-    //             increment: 0,
-    //             value: value_element,
-    //         }],
-    //     )])
-    // }
     fn insert_with_key_check(
         &mut self,
         key: GitInfoForWhereWas,
@@ -141,9 +117,7 @@ impl CodeOccurenceTrait for HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIn
         source_place_type: &SourcePlaceType,
         log_type: LogType,
         source: String,
-        error_red: u8,
-        error_green: u8,
-        error_blue: u8,
+        style: ansi_term::Style,
     ) {
         match source_place_type {
             SourcePlaceType::Source => {
@@ -183,12 +157,7 @@ impl CodeOccurenceTrait for HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIn
                         tracing::error!(error = occurence);
                     }
                     LogType::Stack => {
-                        eprintln!(
-                            "{}",
-                            RGB(error_red, error_green, error_blue)
-                                .bold()
-                                .paint(occurence)
-                        );
+                        eprintln!("{}", style.paint(occurence));
                     }
                     LogType::None => (),
                 }
@@ -230,12 +199,7 @@ impl CodeOccurenceTrait for HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIn
                         tracing::error!(error = occurence);
                     }
                     LogType::Stack => {
-                        eprintln!(
-                            "{}",
-                            RGB(error_red, error_green, error_blue)
-                                .bold()
-                                .paint(occurence)
-                        );
+                        eprintln!("{}", style.paint(occurence));
                     }
                     LogType::None => (),
                 }
@@ -334,13 +298,6 @@ impl FileLineColumnTrait for FileLineColumn {
         }
     }
 }
-
-// #[derive(Debug, Clone)]
-// pub struct FileLineColumn<'a> {
-//     pub file: &'a str
-//     pub line: u32,
-//     pub column: u32,
-// }
 
 // impl FileLineColumn {
 //     const fn file_line_column<'a>(&self) -> &'a str {

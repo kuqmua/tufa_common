@@ -13,8 +13,6 @@ pub trait CodeOccurenceTrait {
         source_place_type: &SourcePlaceType,
         log_type: LogType,
         source: String,
-        error_red: u8,
-        error_green: u8,
-        error_blue: u8,
+        style: ansi_term::Style,
     );
 }
