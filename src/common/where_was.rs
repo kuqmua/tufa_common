@@ -9,8 +9,7 @@ pub struct WhereWas {
     pub file: String, //&'a str
     pub line: u32,
     pub column: u32,
-    pub git_info: GitInfoForWhereWas,
-    // pub git_info: &GitInfoForWhereWasWithoutLifetimes,
+    pub git_info: GitInformationWithoutLifetimes,
 }
 
 #[derive(Debug, Clone, Eq, Hash, PartialEq)]
@@ -73,7 +72,7 @@ impl WhereWasTrait for WhereWas {
     //todo make it const fn
     fn github_file_line_column(
         &self,
-        git_info: &crate::common::where_was::GitInfoForWhereWas,
+        git_info: &crate::common::git::git_info::GitInformationWithoutLifetimes,
     ) -> String {
         let file = self.file.clone();
         let backslash = "/";
