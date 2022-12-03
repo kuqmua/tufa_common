@@ -12,16 +12,6 @@ pub struct WhereWas {
     pub git_info: GitInformationWithoutLifetimes,
 }
 
-#[derive(Debug, Clone, Eq, Hash, PartialEq)]
-pub struct GitInfoForWhereWas {
-    pub commit_id: String,
-    pub repo_link: String,
-    pub author: String,
-    pub author_email: String,
-    pub commit_unix_time: String,
-    pub timezone: String,
-    pub message: String,
-}
 //cannot implement that, cause SourcePlaceType::None => String::from("") would be incorrect for tracing
 // impl WhereWas {
 //     pub fn get_place_type(

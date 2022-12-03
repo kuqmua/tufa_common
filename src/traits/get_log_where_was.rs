@@ -1,5 +1,4 @@
 use crate::common::git::git_info::GitInformation;
-use crate::common::where_was::GitInfoForWhereWas;
 use crate::config_mods::log_type::LogType;
 use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::traits::get_bunyan_where_was::GetBunyanWhereWas;
