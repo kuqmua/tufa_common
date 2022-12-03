@@ -1,7 +1,6 @@
 use crate::common::code_occurence::TimeFileLineColumn;
 use crate::common::code_occurence::TimeFileLineColumnIncrement;
 use crate::common::git::git_info::GitInformationWithoutLifetimes;
-// use crate::common::where_was::GitInfoForWhereWas;
 use crate::config_mods::log_type::LogType;
 use crate::config_mods::source_place_type::SourcePlaceType;
 use std::collections::HashMap;
