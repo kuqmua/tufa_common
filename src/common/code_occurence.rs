@@ -6,6 +6,7 @@ use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::traits::code_occurence::CodeOccurenceTrait;
 use crate::traits::console::ConsoleTrait;
 use crate::traits::file_line_column::FileLineColumnTrait;
+use crate::traits::get_git_source_file_link::GetGitSourceFileLink;
 use crate::traits::readable_time::ReadableTimeTrait;
 use crate::traits::readable_time_string::ReadableTimeStringTrait;
 use crate::traits::separator_symbol_trait::SeparatorSymbolTrait;

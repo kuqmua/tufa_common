@@ -6,6 +6,7 @@ pub mod get_color;
 pub mod get_git_commit_link;
 pub mod get_git_html_info;
 pub mod get_git_info;
+pub mod get_git_source_file_link;
 pub mod get_json_where_was;
 pub mod get_log_where_was;
 pub mod get_log_with_additional_where_was;
