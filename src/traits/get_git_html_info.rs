@@ -1,14 +1,33 @@
-use crate::common::git::git_info::GitInformation;
+use crate::traits::git_info::GetAuthor;
+use crate::traits::git_info::GetAuthorEmail;
+use crate::traits::git_info::GetCommitId;
+use crate::traits::git_info::GetCommitUnixTime;
+use crate::traits::git_info::GetMessage;
+use crate::traits::git_info::GetRepoLink;
+use crate::traits::git_info::GetTimezone;
 
-impl GitInformation<'_> {
-    pub fn get_git_html_info(&self, commit_link: String) -> String {
-        let commit_id = &self.commit_id;
-        let repo_link = &self.repo_link;
-        let author = &self.author;
-        let author_email = &self.author_email;
-        let commit_unix_time = &self.commit_unix_time;
-        let timezone = &self.timezone;
-        let message = &self.message;
+pub trait GetGitHtmlInfo {
+    fn get_git_html_info(&self, commit_link: String) -> String;
+}
+
+impl<T> GetGitHtmlInfo for T
+where
+    T: GetAuthor
+        + GetAuthorEmail
+        + GetCommitId
+        + GetCommitUnixTime
+        + GetMessage
+        + GetRepoLink
+        + GetTimezone,
+{
+    fn get_git_html_info(&self, commit_link: String) -> String {
+        let commit_id = &self.get_commit_id();
+        let repo_link = &self.get_repo_link();
+        let author = &self.get_author();
+        let author_email = &self.get_author_email();
+        let commit_unix_time = &self.get_commit_unix_time();
+        let timezone = &self.get_timezone();
+        let message = &self.get_message();
         format!(
             r#"<!DOCTYPE html>
 <html>
