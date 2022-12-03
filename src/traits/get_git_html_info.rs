@@ -1,3 +1,4 @@
+use crate::traits::get_git_commit_link::GetGitCommitLink;
 use crate::traits::git_info::GetAuthor;
 use crate::traits::git_info::GetAuthorEmail;
 use crate::traits::git_info::GetCommitId;
@@ -7,7 +8,7 @@ use crate::traits::git_info::GetRepoLink;
 use crate::traits::git_info::GetTimezone;
 
 pub trait GetGitHtmlInfo {
-    fn get_git_html_info(&self, commit_link: String) -> String;
+    fn get_git_html_info(&self) -> String;
 }
 
 impl<T> GetGitHtmlInfo for T
@@ -20,7 +21,7 @@ where
         + GetRepoLink
         + GetTimezone,
 {
-    fn get_git_html_info(&self, commit_link: String) -> String {
+    fn get_git_html_info(&self) -> String {
         let commit_id = &self.get_commit_id();
         let repo_link = &self.get_repo_link();
         let author = &self.get_author();
@@ -28,6 +29,7 @@ where
         let commit_unix_time = &self.get_commit_unix_time();
         let timezone = &self.get_timezone();
         let message = &self.get_message();
+        let commit_link = &self.get_git_commit_link();
         format!(
             r#"<!DOCTYPE html>
 <html>
