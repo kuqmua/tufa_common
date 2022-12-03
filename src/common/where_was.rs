@@ -1,4 +1,5 @@
 use crate::common::git::git_info::GitInformation;
+use crate::common::git::git_info::GitInformationWithoutLifetimes;
 use crate::traits::where_was_trait::WhereWasTrait;
 
 #[derive(Debug, Clone)]
@@ -9,6 +10,7 @@ pub struct WhereWas {
     pub line: u32,
     pub column: u32,
     pub git_info: GitInfoForWhereWas,
+    // pub git_info: &GitInfoForWhereWasWithoutLifetimes,
 }
 
 #[derive(Debug, Clone, Eq, Hash, PartialEq)]
@@ -21,7 +23,6 @@ pub struct GitInfoForWhereWas {
     pub timezone: String,
     pub message: String,
 }
-
 //cannot implement that, cause SourcePlaceType::None => String::from("") would be incorrect for tracing
 // impl WhereWas {
 //     pub fn get_place_type(

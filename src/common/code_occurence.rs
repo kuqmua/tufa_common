@@ -1,5 +1,5 @@
 use crate::common::git::git_info::GitInformation;
-use crate::common::where_was::GitInfoForWhereWas;
+use crate::common::git::git_info::GitInformationWithoutLifetimes;
 use crate::common::where_was::WhereWas;
 use crate::config_mods::log_type::LogType;
 use crate::config_mods::source_place_type::SourcePlaceType;
@@ -18,22 +18,14 @@ use std::fmt::{self, Display};
 use crate::global_variables::compile_time::git_info::GIT_INFO;
 pub struct ThreeError {
     source: u32,
-    pub code_occurence: HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIncrement>>,
+    pub code_occurence: HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>,
 }
 
 pub fn three() -> Result<(), Box<ThreeError>> {
     return Err(Box::new(ThreeError {
         source: 34,
         code_occurence: HashMap::from([(
-            GitInfoForWhereWas {
-                commit_id: String::from(GIT_INFO.commit_id),
-                repo_link: String::from(GIT_INFO.repo_link),
-                author: String::from(GIT_INFO.author),
-                author_email: String::from(GIT_INFO.author_email),
-                commit_unix_time: String::from(GIT_INFO.commit_unix_time),
-                timezone: String::from(GIT_INFO.timezone),
-                message: String::from(GIT_INFO.message),
-            },
+            crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
             vec![TimeFileLineColumnIncrement {
                 increment: 0,
                 value: TimeFileLineColumn {
@@ -51,10 +43,12 @@ pub fn three() -> Result<(), Box<ThreeError>> {
     }));
 }
 
-impl CodeOccurenceTrait for HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIncrement>> {
+impl CodeOccurenceTrait
+    for HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>
+{
     fn insert_with_key_check(
         &mut self,
-        key: GitInfoForWhereWas,
+        key: GitInformationWithoutLifetimes,
         value_element: TimeFileLineColumn,
     ) {
         let last_increment = {
@@ -82,7 +76,10 @@ impl CodeOccurenceTrait for HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIn
                 }]
             });
     }
-    fn add(&mut self, hashmap: HashMap<GitInfoForWhereWas, Vec<TimeFileLineColumnIncrement>>) {
+    fn add(
+        &mut self,
+        hashmap: HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>,
+    ) {
         let mut last_increment = {
             let mut increment_handle = 0;
             hashmap.values().for_each(|v| {
@@ -249,10 +246,7 @@ impl FileLineColumnTrait for TimeFileLineColumn {
         self.file_line_column.file_line_column()
     }
     //todo make it const fn
-    fn github_file_line_column(
-        &self,
-        git_info: &crate::common::where_was::GitInfoForWhereWas,
-    ) -> String {
+    fn github_file_line_column(&self, git_info: &GitInformationWithoutLifetimes) -> String {
         self.file_line_column.github_file_line_column(git_info)
     }
 }
@@ -269,10 +263,7 @@ impl FileLineColumnTrait for FileLineColumn {
         format!("{}:{}:{}", self.file, self.line, self.column)
     }
     //todo make it const fn
-    fn github_file_line_column(
-        &self,
-        git_info: &crate::common::where_was::GitInfoForWhereWas,
-    ) -> String {
+    fn github_file_line_column(&self, git_info: &GitInformationWithoutLifetimes) -> String {
         let file = self.file.clone();
         let backslash = "/";
         match file.find(backslash) {
