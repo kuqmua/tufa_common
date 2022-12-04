@@ -7,6 +7,7 @@ use crate::traits::code_occurence::CodeOccurence;
 use crate::traits::code_path::CodePath;
 use crate::traits::console::Console;
 use crate::traits::get_git_source_file_link::GetGitSourceFileLink;
+use crate::traits::log_code_occurence::LogCodeOccurence;
 use crate::traits::readable_time::ReadableTimeTrait;
 use crate::traits::readable_time_string::ReadableTimeStringTrait;
 use crate::traits::separator_symbol_trait::SeparatorSymbolTrait;
@@ -101,6 +102,11 @@ impl CodeOccurence for HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineC
             });
         });
     }
+}
+
+impl LogCodeOccurence
+    for HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>
+{
     fn log(
         &self,
         source_place_type: &SourcePlaceType,
