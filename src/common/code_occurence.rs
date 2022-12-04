@@ -29,16 +29,11 @@ pub fn three() -> Result<(), Box<ThreeError>> {
             crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
             vec![TimeFileLineColumnIncrement {
                 increment: 0,
-                value: TimeFileLineColumn {
-                    time: std::time::SystemTime::now()
-                        .duration_since(std::time::UNIX_EPOCH)
-                        .expect("cannot convert time to unix_epoch"),
-                    file_line_column: FileLineColumn {
-                        file: String::from(file!()),
-                        line: line!(),
-                        column: column!(),
-                    },
-                },
+                value: TimeFileLineColumn::new(FileLineColumn {
+                    file: String::from(file!()),
+                    line: line!(),
+                    column: column!(),
+                })
             }],
         )]),
     }));
@@ -219,8 +214,19 @@ impl ReadableTimeStringTrait for TimeFileLineColumnIncrement {
 
 #[derive(Debug, Clone)]
 pub struct TimeFileLineColumn {
-    pub time: std::time::Duration,
-    pub file_line_column: FileLineColumn,
+    time: std::time::Duration,
+    file_line_column: FileLineColumn,
+}
+
+impl TimeFileLineColumn {
+    pub fn new(file_line_column: FileLineColumn) -> Self {
+        TimeFileLineColumn {
+            time: std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .expect("cannot convert time to unix_epoch"),
+            file_line_column,
+        }
+    }
 }
 
 impl ReadableTimeStringTrait for TimeFileLineColumn {
