@@ -5,5 +5,5 @@ use std::collections::HashMap;
 pub trait GetCodeOccurence {
     fn get_code_occurence(
         &self,
-    ) -> HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>;
+    ) -> &HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>;
 }

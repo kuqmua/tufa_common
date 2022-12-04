@@ -6,6 +6,7 @@ use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::traits::code_occurence::CodeOccurence;
 use crate::traits::code_path::CodePath;
 use crate::traits::console::Console;
+use crate::traits::get_code_occurence::GetCodeOccurence;
 use crate::traits::get_git_source_file_link::GetGitSourceFileLink;
 use crate::traits::log_code_occurence::LogCodeOccurence;
 use crate::traits::readable_time::ReadableTimeTrait;
@@ -24,6 +25,14 @@ use crate::global_variables::compile_time::git_info::GIT_INFO;
 pub struct ThreeOriginError {
     source: u32,
     pub code_occurence: HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>,
+}
+
+impl GetCodeOccurence for ThreeOriginError {
+    fn get_code_occurence(
+        &self,
+    ) -> &HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>> {
+        &self.code_occurence
+    }
 }
 
 pub fn three() -> Result<(), Box<ThreeOriginError>> {
