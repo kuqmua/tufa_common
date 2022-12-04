@@ -27,14 +27,11 @@ pub fn three() -> Result<(), Box<ThreeError>> {
         source: 34,
         code_occurence: HashMap::from([(
             crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-            vec![TimeFileLineColumnIncrement {
-                increment: 0,
-                value: TimeFileLineColumn::new(FileLineColumn {
-                    file: String::from(file!()),
-                    line: line!(),
-                    column: column!(),
-                })
-            }],
+            vec![TimeFileLineColumnIncrement::new(TimeFileLineColumn::new(FileLineColumn {
+                file: String::from(file!()),
+                line: line!(),
+                column: column!(),
+            }))],
         )]),
     }));
 }
@@ -60,13 +57,13 @@ impl CodeOccurence for HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineC
             .and_modify(|vec_existing_value_elements| {
                 vec_existing_value_elements.push(TimeFileLineColumnIncrement {
                     increment: last_increment,
-                    value: value_element.clone(), //todo how to rewrite it without clone() ?
+                    time_file_line_column: value_element.clone(), //todo how to rewrite it without clone() ?
                 });
             })
             .or_insert_with(|| {
                 vec![TimeFileLineColumnIncrement {
                     increment: last_increment,
-                    value: value_element,
+                    time_file_line_column: value_element,
                 }]
             });
     }
@@ -92,13 +89,13 @@ impl CodeOccurence for HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineC
                     .and_modify(|vec_existing_value_elements| {
                         vec_existing_value_elements.push(TimeFileLineColumnIncrement {
                             increment: last_increment,
-                            value: value_element.value.clone(), //todo how to rewrite it without clone() ?
+                            time_file_line_column: value_element.time_file_line_column.clone(), //todo how to rewrite it without clone() ?
                         });
                     })
                     .or_insert_with(|| {
                         vec![TimeFileLineColumnIncrement {
                             increment: last_increment,
-                            value: value_element.value.clone(),
+                            time_file_line_column: value_element.time_file_line_column.clone(),
                         }]
                     });
             });
@@ -122,8 +119,8 @@ impl CodeOccurence for HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineC
                     v.iter().for_each(|e| {
                         vec.push(OccurenceFilter {
                             increment: e.increment,
-                            time: e.value.time,
-                            occurence: e.value.get_project_code_path(),
+                            time: e.time_file_line_column.time,
+                            occurence: e.time_file_line_column.get_project_code_path(),
                         })
                     })
                 });
@@ -156,8 +153,8 @@ impl CodeOccurence for HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineC
                     v.iter().for_each(|e| {
                         vec.push(OccurenceFilter {
                             increment: e.increment,
-                            time: e.value.time,
-                            occurence: e.value.get_github_code_path(k),
+                            time: e.time_file_line_column.time,
+                            occurence: e.time_file_line_column.get_github_code_path(k),
                         })
                     })
                 });
@@ -203,12 +200,21 @@ impl ReadableTimeStringTrait for OccurenceFilter {
 #[derive(Debug, Clone)]
 pub struct TimeFileLineColumnIncrement {
     pub increment: u64, //potential overflow?
-    pub value: TimeFileLineColumn,
+    pub time_file_line_column: TimeFileLineColumn,
+}
+
+impl TimeFileLineColumnIncrement {
+    pub fn new(time_file_line_column: TimeFileLineColumn) -> Self {
+        Self {
+            increment: 0, //potential overflow?
+            time_file_line_column,
+        }
+    }
 }
 
 impl ReadableTimeStringTrait for TimeFileLineColumnIncrement {
     fn readable_time_string(&self) -> String {
-        self.value.readable_time_string()
+        self.time_file_line_column.readable_time_string()
     }
 }
 
@@ -220,7 +226,7 @@ pub struct TimeFileLineColumn {
 
 impl TimeFileLineColumn {
     pub fn new(file_line_column: FileLineColumn) -> Self {
-        TimeFileLineColumn {
+        Self {
             time: std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("cannot convert time to unix_epoch"),
