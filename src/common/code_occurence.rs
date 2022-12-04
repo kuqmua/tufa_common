@@ -27,11 +27,11 @@ pub fn three() -> Result<(), Box<ThreeError>> {
         source: 34,
         code_occurence: HashMap::from([(
             crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-            vec![TimeFileLineColumnIncrement::new(TimeFileLineColumn::new(FileLineColumn {
-                file: String::from(file!()),
-                line: line!(),
-                column: column!(),
-            }))],
+            vec![TimeFileLineColumnIncrement::new(
+                String::from(file!()),
+                line!(),
+                column!(),
+            )],
         )]),
     }));
 }
@@ -199,15 +199,19 @@ impl ReadableTimeStringTrait for OccurenceFilter {
 
 #[derive(Debug, Clone)]
 pub struct TimeFileLineColumnIncrement {
-    pub increment: u64, //potential overflow?
-    pub time_file_line_column: TimeFileLineColumn,
+    increment: u64, //potential overflow?
+    time_file_line_column: TimeFileLineColumn,
 }
 
 impl TimeFileLineColumnIncrement {
-    pub fn new(time_file_line_column: TimeFileLineColumn) -> Self {
+    pub fn new(
+        file: String, //&'a str
+        line: u32,
+        column: u32,
+    ) -> Self {
         Self {
             increment: 0, //potential overflow?
-            time_file_line_column,
+            time_file_line_column: TimeFileLineColumn::new(FileLineColumn { file, line, column }),
         }
     }
 }
