@@ -3,9 +3,9 @@ use crate::common::git::git_info::GitInformationWithoutLifetimes;
 use crate::common::where_was::WhereWas;
 use crate::config_mods::log_type::LogType;
 use crate::config_mods::source_place_type::SourcePlaceType;
-use crate::traits::code_occurence::CodeOccurenceTrait;
-use crate::traits::console::ConsoleTrait;
-use crate::traits::file_line_column::FileLineColumnTrait;
+use crate::traits::code_occurence::CodeOccurence;
+use crate::traits::code_path::CodePath;
+use crate::traits::console::Console;
 use crate::traits::get_git_source_file_link::GetGitSourceFileLink;
 use crate::traits::readable_time::ReadableTimeTrait;
 use crate::traits::readable_time_string::ReadableTimeStringTrait;
@@ -44,9 +44,7 @@ pub fn three() -> Result<(), Box<ThreeError>> {
     }));
 }
 
-impl CodeOccurenceTrait
-    for HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>
-{
+impl CodeOccurence for HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>> {
     fn insert_with_key_check(
         &mut self,
         key: GitInformationWithoutLifetimes,
@@ -130,7 +128,7 @@ impl CodeOccurenceTrait
                         vec.push(OccurenceFilter {
                             increment: e.increment,
                             time: e.value.time,
-                            occurence: e.value.file_line_column(),
+                            occurence: e.value.get_project_code_path(),
                         })
                     })
                 });
@@ -164,7 +162,7 @@ impl CodeOccurenceTrait
                         vec.push(OccurenceFilter {
                             increment: e.increment,
                             time: e.value.time,
-                            occurence: e.value.github_file_line_column(k),
+                            occurence: e.value.get_github_code_path(k),
                         })
                     })
                 });
@@ -242,13 +240,13 @@ impl ReadableTimeTrait for TimeFileLineColumn {
     }
 }
 
-impl FileLineColumnTrait for TimeFileLineColumn {
-    fn file_line_column(&self) -> String {
-        self.file_line_column.file_line_column()
+impl CodePath for TimeFileLineColumn {
+    fn get_project_code_path(&self) -> String {
+        self.file_line_column.get_project_code_path()
     }
     //todo make it const fn
-    fn github_file_line_column(&self, git_info: &GitInformationWithoutLifetimes) -> String {
-        self.file_line_column.github_file_line_column(git_info)
+    fn get_github_code_path(&self, git_info: &GitInformationWithoutLifetimes) -> String {
+        self.file_line_column.get_github_code_path(git_info)
     }
 }
 
@@ -259,12 +257,12 @@ pub struct FileLineColumn {
     pub column: u32,
 }
 
-impl FileLineColumnTrait for FileLineColumn {
-    fn file_line_column(&self) -> String {
+impl CodePath for FileLineColumn {
+    fn get_project_code_path(&self) -> String {
         format!("{}:{}:{}", self.file, self.line, self.column)
     }
     //todo make it const fn
-    fn github_file_line_column(&self, git_info: &GitInformationWithoutLifetimes) -> String {
+    fn get_github_code_path(&self, git_info: &GitInformationWithoutLifetimes) -> String {
         let file = self.file.clone();
         let backslash = "/";
         match file.find(backslash) {

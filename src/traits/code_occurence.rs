@@ -5,7 +5,7 @@ use crate::config_mods::log_type::LogType;
 use crate::config_mods::source_place_type::SourcePlaceType;
 use std::collections::HashMap;
 
-pub trait CodeOccurenceTrait {
+pub trait CodeOccurence {
     fn insert_with_key_check(
         &mut self,
         key: GitInformationWithoutLifetimes,

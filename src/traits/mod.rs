@@ -1,6 +1,6 @@
 pub mod code_occurence;
+pub mod code_path;
 pub mod console;
-pub mod file_line_column;
 pub mod get_bunyan_where_was;
 pub mod get_color;
 pub mod get_git_commit_link;
