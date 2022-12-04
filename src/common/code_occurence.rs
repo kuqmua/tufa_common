@@ -14,17 +14,20 @@ use crate::traits::separator_symbol_trait::SeparatorSymbolTrait;
 use ansi_term::Colour::RGB;
 use chrono::prelude::DateTime;
 use chrono::Utc;
+use impl_get_source::ImplGetSourceFromCrate;
 use std::collections::HashMap;
 use std::fmt::{self, Display};
 
 use crate::global_variables::compile_time::git_info::GIT_INFO;
-pub struct ThreeError {
+
+#[derive(ImplGetSourceFromCrate)]
+pub struct ThreeOriginError {
     source: u32,
     pub code_occurence: HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>,
 }
 
-pub fn three() -> Result<(), Box<ThreeError>> {
-    return Err(Box::new(ThreeError {
+pub fn three() -> Result<(), Box<ThreeOriginError>> {
+    return Err(Box::new(ThreeOriginError {
         source: 34,
         code_occurence: HashMap::from([(
             crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
