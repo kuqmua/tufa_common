@@ -116,6 +116,7 @@ impl CodeOccurence for HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineC
     }
 }
 
+//todo for error struct and code occurence - must be different traits
 impl LogCodeOccurence
     for HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>
 {
