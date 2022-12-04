@@ -107,7 +107,7 @@ impl CodeOccurence for HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineC
 impl LogCodeOccurence
     for HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>
 {
-    fn log(
+    fn log_code_occurence(
         &self,
         source_place_type: &SourcePlaceType,
         log_type: LogType,

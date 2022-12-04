@@ -6,7 +6,7 @@ use crate::config_mods::source_place_type::SourcePlaceType;
 use std::collections::HashMap;
 
 pub trait LogCodeOccurence {
-    fn log(
+    fn log_code_occurence(
         &self,
         source_place_type: &SourcePlaceType,
         log_type: LogType,
