@@ -16,7 +16,7 @@ pub mod get_where_was_one_or_many;
 pub mod git_info;
 pub mod init_error_with_possible_trace;
 pub mod is_enabled_prints;
-pub mod log_code_occurence;
+pub mod log_error_code_occurence;
 pub mod new_error;
 pub mod print_type_methods;
 pub mod readable_time;

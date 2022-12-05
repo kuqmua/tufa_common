@@ -8,7 +8,6 @@ use crate::traits::code_path::CodePath;
 use crate::traits::console::Console;
 use crate::traits::get_code_occurence::GetCodeOccurence;
 use crate::traits::get_git_source_file_link::GetGitSourceFileLink;
-use crate::traits::log_code_occurence::LogCodeOccurence;
 use crate::traits::readable_time::ReadableTime;
 use crate::traits::readable_time_string::ReadableTimeString;
 use crate::traits::separator_symbol::SeparatorSymbol;
@@ -103,10 +102,6 @@ impl CodeOccurenceMethods for CodeOccurence {
             });
         });
     }
-}
-
-//todo for error struct and code occurence - must be different traits
-impl LogCodeOccurence for CodeOccurence {
     fn log_code_occurence(
         &self,
         source_place_type: &SourcePlaceType,

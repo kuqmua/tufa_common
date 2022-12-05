@@ -6,4 +6,11 @@ pub trait CodeOccurenceMethods {
         column: u32,
     ) -> Self;
     fn add(&mut self, another_code_occurence: Self);
+    fn log_code_occurence(
+        &self,
+        source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
+        log_type: crate::config_mods::log_type::LogType,
+        source: String,
+        style: ansi_term::Style,
+    );
 }
