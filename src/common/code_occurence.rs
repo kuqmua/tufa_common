@@ -20,7 +20,7 @@ use std::fmt::{self, Display};
 
 use crate::global_variables::compile_time::git_info::GIT_INFO;
 
-#[derive(ImplGetSourceFromCrate)]
+#[derive(ImplGetSourceFromCrate, Clone)]
 pub struct ThreeOriginError {
     source: u32,
     pub code_occurence: CodeOccurence,
