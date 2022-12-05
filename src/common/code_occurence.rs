@@ -68,9 +68,9 @@ impl CodeOccurenceMethods for CodeOccurence {
         }
     }
     fn add(
-        &mut self,
+        mut self,
         another_code_occurence: Self,
-    ) {
+    ) -> Self {
         let mut last_increment = {
             let mut increment_handle = 0;
             another_code_occurence.occurences.values().for_each(|v| {
@@ -101,6 +101,7 @@ impl CodeOccurenceMethods for CodeOccurence {
                     });
             });
         });
+        self
     }
     fn log_code_occurence(
         &self,
@@ -127,6 +128,7 @@ impl CodeOccurenceMethods for CodeOccurence {
                 });
                 //todo check reserve or not
                 vec.sort_by(|a, b| a.increment.cmp(&b.increment));
+                vec.reverse();
                 let mut occurences = Vec::with_capacity(len + 1);
                 occurences.push(format!("{}{}", source, log_type.symbol()));
                 vec.into_iter().for_each(|e| {
@@ -161,6 +163,7 @@ impl CodeOccurenceMethods for CodeOccurence {
                 });
                 //todo check reserve or not
                 vec.sort_by(|a, b| a.increment.cmp(&b.increment));
+                vec.reverse();
                 let mut occurences = Vec::with_capacity(len + 1);
                 occurences.push(format!("{}{}", source, log_type.symbol()));
                 vec.into_iter().for_each(|e| {

@@ -26,6 +26,6 @@ where
             log_type,
             self.get_source(),
             style,
-        )
+        );
     }
 }
