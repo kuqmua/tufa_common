@@ -36,17 +36,12 @@ impl GetCodeOccurence for ThreeOriginError {
 pub fn three() -> Result<(), Box<ThreeOriginError>> {
     return Err(Box::new(ThreeOriginError {
         source: 34,
-        code_occurence: 
-        CodeOccurence {
-            occurences: HashMap::from([(
-                crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-                vec![TimeFileLineColumnIncrement::new(
-                    String::from(file!()),
-                    line!(),
-                    column!(),
-                )],
-            )]),
-        }
+        code_occurence: CodeOccurence::new(
+            crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(), 
+            String::from(file!()), 
+            line!(), 
+            column!()
+        )
     }));
 }
 
@@ -56,6 +51,23 @@ pub struct CodeOccurence {
 }
 
 impl CodeOccurenceMethods for CodeOccurence {
+    fn new(
+        git_info: GitInformationWithoutLifetimes,
+        file: String, //&'a str
+        line: u32,
+        column: u32,
+    ) -> Self {
+        Self {
+            occurences: HashMap::from([(
+                git_info,
+                vec![TimeFileLineColumnIncrement::new(
+                    file,
+                    line,
+                    column,
+                )],
+            )])
+        }
+    }
     fn add(
         &mut self,
         another_code_occurence: Self,
