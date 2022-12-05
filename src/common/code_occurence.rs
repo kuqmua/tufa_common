@@ -9,9 +9,9 @@ use crate::traits::console::Console;
 use crate::traits::get_code_occurence::GetCodeOccurence;
 use crate::traits::get_git_source_file_link::GetGitSourceFileLink;
 use crate::traits::log_code_occurence::LogCodeOccurence;
-use crate::traits::readable_time::ReadableTimeTrait;
-use crate::traits::readable_time_string::ReadableTimeStringTrait;
-use crate::traits::separator_symbol_trait::SeparatorSymbolTrait;
+use crate::traits::readable_time::ReadableTime;
+use crate::traits::readable_time_string::ReadableTimeString;
+use crate::traits::separator_symbol::SeparatorSymbol;
 use ansi_term::Colour::RGB;
 use chrono::prelude::DateTime;
 use chrono::Utc;
@@ -208,7 +208,7 @@ pub struct OccurenceFilter {
     pub occurence: String,
 }
 
-impl ReadableTimeStringTrait for OccurenceFilter {
+impl ReadableTimeString for OccurenceFilter {
     fn readable_time_string(&self) -> String {
         DateTime::<Utc>::from(std::time::UNIX_EPOCH + self.time)
             .format("%Y-%m-%d %H:%M:%S.%f")
@@ -235,7 +235,7 @@ impl TimeFileLineColumnIncrement {
     }
 }
 
-impl ReadableTimeStringTrait for TimeFileLineColumnIncrement {
+impl ReadableTimeString for TimeFileLineColumnIncrement {
     fn readable_time_string(&self) -> String {
         self.time_file_line_column.readable_time_string()
     }
@@ -258,7 +258,7 @@ impl TimeFileLineColumn {
     }
 }
 
-impl ReadableTimeStringTrait for TimeFileLineColumn {
+impl ReadableTimeString for TimeFileLineColumn {
     fn readable_time_string(&self) -> String {
         DateTime::<Utc>::from(std::time::UNIX_EPOCH + self.time)
             .format("%Y-%m-%d %H:%M:%S.%f")
@@ -266,7 +266,7 @@ impl ReadableTimeStringTrait for TimeFileLineColumn {
     }
 }
 
-impl ReadableTimeTrait for TimeFileLineColumn {
+impl ReadableTime for TimeFileLineColumn {
     fn readable_time(&self, timezone: i32) -> String {
         chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.time)
             .with_timezone(&chrono::FixedOffset::east(timezone))

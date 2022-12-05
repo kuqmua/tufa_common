@@ -17,12 +17,12 @@ use crate::traits::is_enabled_prints::GetIsWarningHighPrintsEnabledWrapper;
 use crate::traits::is_enabled_prints::GetIsWarningLowPrintsEnabledWrapper;
 use ansi_term::Colour;
 
-pub trait PrintTypeTrait {
+pub trait PrintTypeMethods {
     fn is_prints_enabled(&self, print_type: &PrintType) -> bool;
     fn get_color(&self, print_type: &PrintType) -> Colour;
 }
 
-impl PrintTypeTrait for ConfigStruct {
+impl PrintTypeMethods for ConfigStruct {
     fn is_prints_enabled(&self, print_type: &PrintType) -> bool {
         match print_type {
             PrintType::WarningHigh => self.get_is_warning_high_prints_enabled_wrapper(),

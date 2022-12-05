@@ -47,7 +47,7 @@ impl std::str::FromStr for LogType {
     }
 }
 
-impl crate::traits::separator_symbol_trait::SeparatorSymbolTrait for LogType {
+impl crate::traits::separator_symbol::SeparatorSymbol for LogType {
     fn symbol(&self) -> &str {
         match self {
             LogType::Tracing => ", ",

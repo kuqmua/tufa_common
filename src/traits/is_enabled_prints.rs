@@ -88,7 +88,7 @@ where
 // use tufa_common::config_mods::print_type::PrintType;
 // use crate::providers::provider_kind::provider_kind_enum::ProviderKind;
 // use crate::providers::provider_kind::provider_kind_enum::ProviderKindFromConfigTrait;
-// use tufa_common::traits::print_type_trait::PrintTypeTrait;
+// use tufa_common::traits::print_type::PrintType;
 
 // impl ProviderKind {
 //     pub fn is_prints_for_print_type_enabled(&self, pt: &PrintType) -> bool {

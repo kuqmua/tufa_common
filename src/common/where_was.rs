@@ -1,7 +1,7 @@
 use crate::common::git::git_info::GitInformation;
 use crate::common::git::git_info::GitInformationWithoutLifetimes;
 use crate::traits::get_git_source_file_link::GetGitSourceFileLink;
-use crate::traits::where_was_trait::WhereWasTrait;
+use crate::traits::where_was_methods::WhereWasMethods;
 
 #[derive(Debug, Clone)]
 pub struct WhereWas {
@@ -50,7 +50,7 @@ pub struct WhereWas {
 //     }
 // }
 
-impl WhereWasTrait for WhereWas {
+impl WhereWasMethods for WhereWas {
     fn readable_time(&self, timezone: i32) -> String {
         let datetime = chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.time)
             .with_timezone(&chrono::FixedOffset::east(timezone));

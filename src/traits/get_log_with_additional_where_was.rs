@@ -4,7 +4,7 @@ use crate::config_mods::log_type::LogType;
 use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::traits::get_git_info::GetGitInfo;
 use crate::traits::get_log_where_was::GetLogWhereWas;
-use crate::traits::where_was_trait::WhereWasTrait;
+use crate::traits::where_was_methods::WhereWasMethods;
 
 pub trait GetLogWithAdditionalWhereWas<T> {
     fn get_log_with_additional_where_was(
