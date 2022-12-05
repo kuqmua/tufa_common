@@ -1,4 +1,4 @@
-pub mod code_occurence;
+pub mod code_occurence_methods;
 pub mod code_path;
 pub mod console;
 pub mod get_bunyan_where_was;

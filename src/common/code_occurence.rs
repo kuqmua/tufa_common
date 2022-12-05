@@ -3,7 +3,7 @@ use crate::common::git::git_info::GitInformationWithoutLifetimes;
 use crate::common::where_was::WhereWas;
 use crate::config_mods::log_type::LogType;
 use crate::config_mods::source_place_type::SourcePlaceType;
-use crate::traits::code_occurence::CodeOccurence;
+use crate::traits::code_occurence_methods::CodeOccurenceMethods;
 use crate::traits::code_path::CodePath;
 use crate::traits::console::Console;
 use crate::traits::get_code_occurence::GetCodeOccurence;
@@ -49,7 +49,9 @@ pub fn three() -> Result<(), Box<ThreeOriginError>> {
     }));
 }
 
-impl CodeOccurence for HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>> {
+impl CodeOccurenceMethods
+    for HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>
+{
     fn insert_with_key_check(
         &mut self,
         key: GitInformationWithoutLifetimes,
