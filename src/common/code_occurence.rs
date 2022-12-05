@@ -56,37 +56,6 @@ pub struct CodeOccurence {
 }
 
 impl CodeOccurenceMethods for CodeOccurence {
-    fn insert_with_key_check(
-        &mut self,
-        key: GitInformationWithoutLifetimes,
-        value_element: TimeFileLineColumn, //todo - remove line
-    ) {
-        let last_increment = {
-            let mut increment_handle = 0;
-            self.occurences.values().for_each(|v| {
-                v.iter().for_each(|e| {
-                    if e.increment > increment_handle {
-                        increment_handle = e.increment;
-                    }
-                });
-            });
-            increment_handle
-        };
-        self.occurences
-            .entry(key)
-            .and_modify(|vec_existing_value_elements| {
-                vec_existing_value_elements.push(TimeFileLineColumnIncrement {
-                    increment: last_increment,
-                    time_file_line_column: value_element.clone(), //todo how to rewrite it without clone() ?
-                });
-            })
-            .or_insert_with(|| {
-                vec![TimeFileLineColumnIncrement {
-                    increment: last_increment,
-                    time_file_line_column: value_element,
-                }]
-            });
-    }
     fn add(
         &mut self,
         another_code_occurence: Self,
