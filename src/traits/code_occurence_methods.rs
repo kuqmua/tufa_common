@@ -9,8 +9,5 @@ pub trait CodeOccurenceMethods {
         key: GitInformationWithoutLifetimes,
         value_element: TimeFileLineColumn,
     );
-    fn add(
-        &mut self,
-        hashmap: HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>,
-    );
+    fn add(&mut self, another_code_occurence: Self);
 }

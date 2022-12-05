@@ -24,13 +24,11 @@ use crate::global_variables::compile_time::git_info::GIT_INFO;
 #[derive(ImplGetSourceFromCrate)]
 pub struct ThreeOriginError {
     source: u32,
-    pub code_occurence: HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>,
+    pub code_occurence: CodeOccurence,
 }
 
 impl GetCodeOccurence for ThreeOriginError {
-    fn get_code_occurence(
-        &self,
-    ) -> &HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>> {
+    fn get_code_occurence(&self) -> &CodeOccurence {
         &self.code_occurence
     }
 }
@@ -38,28 +36,34 @@ impl GetCodeOccurence for ThreeOriginError {
 pub fn three() -> Result<(), Box<ThreeOriginError>> {
     return Err(Box::new(ThreeOriginError {
         source: 34,
-        code_occurence: HashMap::from([(
-            crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-            vec![TimeFileLineColumnIncrement::new(
-                String::from(file!()),
-                line!(),
-                column!(),
-            )],
-        )]),
+        code_occurence: 
+        CodeOccurence {
+            occurences: HashMap::from([(
+                crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
+                vec![TimeFileLineColumnIncrement::new(
+                    String::from(file!()),
+                    line!(),
+                    column!(),
+                )],
+            )]),
+        }
     }));
 }
 
-impl CodeOccurenceMethods
-    for HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>
-{
+#[derive(Debug, Clone)]
+pub struct CodeOccurence {
+    pub occurences: HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>,
+}
+
+impl CodeOccurenceMethods for CodeOccurence {
     fn insert_with_key_check(
         &mut self,
         key: GitInformationWithoutLifetimes,
-        value_element: TimeFileLineColumn,
+        value_element: TimeFileLineColumn, //todo - remove line
     ) {
         let last_increment = {
             let mut increment_handle = 0;
-            self.values().for_each(|v| {
+            self.occurences.values().for_each(|v| {
                 v.iter().for_each(|e| {
                     if e.increment > increment_handle {
                         increment_handle = e.increment;
@@ -68,7 +72,8 @@ impl CodeOccurenceMethods
             });
             increment_handle
         };
-        self.entry(key)
+        self.occurences
+            .entry(key)
             .and_modify(|vec_existing_value_elements| {
                 vec_existing_value_elements.push(TimeFileLineColumnIncrement {
                     increment: last_increment,
@@ -84,11 +89,11 @@ impl CodeOccurenceMethods
     }
     fn add(
         &mut self,
-        hashmap: HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>,
+        another_code_occurence: Self,
     ) {
         let mut last_increment = {
             let mut increment_handle = 0;
-            hashmap.values().for_each(|v| {
+            another_code_occurence.occurences.values().for_each(|v| {
                 v.iter().for_each(|e| {
                     if e.increment > increment_handle {
                         increment_handle = e.increment;
@@ -97,10 +102,11 @@ impl CodeOccurenceMethods
             });
             increment_handle
         };
-        hashmap.iter().for_each(|(key, value)| {
+        another_code_occurence.occurences.iter().for_each(|(key, value)| {
             value.iter().for_each(|value_element| {
                 last_increment += 1;
-                self.entry(key.clone())
+                self.occurences
+                    .entry(key.clone())
                     .and_modify(|vec_existing_value_elements| {
                         vec_existing_value_elements.push(TimeFileLineColumnIncrement {
                             increment: last_increment,
@@ -119,9 +125,7 @@ impl CodeOccurenceMethods
 }
 
 //todo for error struct and code occurence - must be different traits
-impl LogCodeOccurence
-    for HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>
-{
+impl LogCodeOccurence for CodeOccurence {
     fn log_code_occurence(
         &self,
         source_place_type: &SourcePlaceType,
@@ -131,12 +135,12 @@ impl LogCodeOccurence
     ) {
         match source_place_type {
             SourcePlaceType::Source => {
-                let len = self.values().fold(0, |mut acc, elem| {
+                let len = self.occurences.values().fold(0, |mut acc, elem| {
                     acc += elem.len();
                     acc
                 });
                 let mut vec: Vec<OccurenceFilter> = Vec::with_capacity(len);
-                self.values().for_each(|v| {
+                self.occurences.values().for_each(|v| {
                     v.iter().for_each(|e| {
                         vec.push(OccurenceFilter {
                             increment: e.increment,
@@ -165,12 +169,12 @@ impl LogCodeOccurence
                 log_type.console(style, occurence);
             }
             SourcePlaceType::Github => {
-                let len = self.values().fold(0, |mut acc, elem| {
+                let len = self.occurences.values().fold(0, |mut acc, elem| {
                     acc += elem.len();
                     acc
                 });
                 let mut vec: Vec<OccurenceFilter> = Vec::with_capacity(len);
-                self.iter().for_each(|(k, v)| {
+                self.occurences.iter().for_each(|(k, v)| {
                     v.iter().for_each(|e| {
                         vec.push(OccurenceFilter {
                             increment: e.increment,
