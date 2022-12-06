@@ -9,7 +9,7 @@ pub trait CodeOccurenceMethods {
     fn log_code_occurence(
         &self,
         source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
-        log_type: crate::config_mods::log_type::LogType,
+        log_type: &crate::config_mods::log_type::LogType,
         source: String,
         style: ansi_term::Style,
     );

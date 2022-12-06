@@ -6,7 +6,7 @@ pub trait LogErrorCodeOccurence {
     fn log_error_code_occurence(
         &self,
         source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
-        log_type: crate::config_mods::log_type::LogType,
+        log_type: &crate::config_mods::log_type::LogType,
         style: ansi_term::Style,
     );
 }
@@ -18,7 +18,7 @@ where
     fn log_error_code_occurence(
         &self,
         source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
-        log_type: crate::config_mods::log_type::LogType,
+        log_type: &crate::config_mods::log_type::LogType,
         style: ansi_term::Style,
     ) {
         self.get_code_occurence().log_code_occurence(

@@ -106,7 +106,7 @@ impl CodeOccurenceMethods for CodeOccurence {
     fn log_code_occurence(
         &self,
         source_place_type: &SourcePlaceType,
-        log_type: LogType,
+        log_type: &LogType,
         source: String,
         style: ansi_term::Style,
     ) {
