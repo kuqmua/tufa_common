@@ -69,7 +69,7 @@ impl CodeOccurenceMethods for CodeOccurence {
     }
     fn add(
         mut self,
-        another_code_occurence: Self,
+        another_code_occurence: &Self,
     ) -> Self {
         let mut last_increment = {
             let mut increment_handle = 0;
