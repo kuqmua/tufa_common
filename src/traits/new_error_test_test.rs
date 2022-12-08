@@ -40,7 +40,7 @@ where
             column,
             source.get_code_occurence(),
         );
-        let error = ReturnSelfGeneric::new_error_test(source, code_occurence);
+        let error = ReturnSelfGeneric::new_with_code_occurance(source, code_occurence);
         if let true = should_trace {
             error.log_error_code_occurence(
                 config.get_source_place_type(),

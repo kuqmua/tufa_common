@@ -8,10 +8,10 @@ use crate::traits::code_path::CodePath;
 use crate::traits::console::Console;
 use crate::traits::get_code_occurence::GetCodeOccurence;
 use crate::traits::get_git_source_file_link::GetGitSourceFileLink;
+use crate::traits::new_error_test::NewErrorTest;
 use crate::traits::readable_time::ReadableTime;
 use crate::traits::readable_time_string::ReadableTimeString;
 use crate::traits::separator_symbol::SeparatorSymbol;
-use crate::traits::new_error_test::NewErrorTest;
 use ansi_term::Colour::RGB;
 use chrono::prelude::DateTime;
 use chrono::Utc;
@@ -26,13 +26,25 @@ pub struct ThreeOriginError {
 }
 
 impl crate::traits::new_error_test::NewErrorTest<u32> for ThreeOriginError {
-    fn new_error_test(
+    fn new_with_git_info_file_line_column(
         source: u32,
-        code_occurence: CodeOccurence,
+        git_info: GitInformationWithoutLifetimes,
+        file: String, //&'a str
+        line: u32,
+        column: u32,
     ) -> Self {
         Self {
             source,
-            code_occurence
+            code_occurence: CodeOccurence::new(git_info, file, line, column),
+        }
+    }
+    fn new_with_code_occurance(
+        source: u32,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    ) -> Self {
+        Self {
+            source,
+            code_occurence,
         }
     }
 }
@@ -44,14 +56,13 @@ impl crate::traits::get_code_occurence::GetCodeOccurence for ThreeOriginError {
 }
 
 pub fn three() -> Result<(), Box<ThreeOriginError>> {
-    return Err(Box::new(ThreeOriginError::new_error_test(
+    return Err(Box::new(ThreeOriginError::new_with_git_info_file_line_column(
         34,
-        CodeOccurence::new(
-            crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(), 
-            String::from(file!()), 
-            line!(), 
-            column!()
-        )
+        crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES
+            .clone(),
+        String::from(file!()),
+        line!(),
+        column!(),
     )));
 }
 
@@ -70,12 +81,8 @@ impl CodeOccurenceMethods for CodeOccurence {
         Self {
             occurences: HashMap::from([(
                 git_info,
-                vec![TimeFileLineColumnIncrement::new(
-                    file,
-                    line,
-                    column,
-                )],
-            )])
+                vec![TimeFileLineColumnIncrement::new(file, line, column)],
+            )]),
         }
     }
     fn new_with_addition(
@@ -83,13 +90,16 @@ impl CodeOccurenceMethods for CodeOccurence {
         file: String, //&'a str
         line: u32,
         column: u32,
-        another_code_occurence: &Self
+        another_code_occurence: &Self,
     ) -> Self {
-        let capacity = another_code_occurence.occurences.values().fold(0, |mut acc, elem| {
-            acc += elem.len();
-            acc
-        });
-        let mut occurences =  HashMap::with_capacity(capacity + 1);
+        let capacity = another_code_occurence
+            .occurences
+            .values()
+            .fold(0, |mut acc, elem| {
+                acc += elem.len();
+                acc
+            });
+        let mut occurences = HashMap::with_capacity(capacity + 1);
         let mut new_last_increment = {
             let mut increment_handle = 0;
             another_code_occurence.occurences.values().for_each(|v| {
@@ -107,22 +117,24 @@ impl CodeOccurenceMethods for CodeOccurence {
             .and_modify(|vec_existing_value_elements| {
                 vec_existing_value_elements.push(TimeFileLineColumnIncrement {
                     increment: new_last_increment,
-                    time_file_line_column: TimeFileLineColumn::new(FileLineColumn{
-                        file: file.clone(), line, column
+                    time_file_line_column: TimeFileLineColumn::new(FileLineColumn {
+                        file: file.clone(),
+                        line,
+                        column,
                     }), //todo how to rewrite it without clone() ?
                 });
             })
             .or_insert_with(|| {
                 vec![TimeFileLineColumnIncrement {
                     increment: new_last_increment,
-                    time_file_line_column: TimeFileLineColumn::new(FileLineColumn{
-                        file: file.clone(), line, column
-                    })
+                    time_file_line_column: TimeFileLineColumn::new(FileLineColumn {
+                        file: file.clone(),
+                        line,
+                        column,
+                    }),
                 }]
             });
-        Self {
-            occurences
-        }
+        Self { occurences }
     }
     fn log_code_occurence(
         &self,
