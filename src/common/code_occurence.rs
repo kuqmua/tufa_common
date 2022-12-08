@@ -25,23 +25,8 @@ pub struct ThreeOriginError {
     code_occurence: CodeOccurence,
 }
 
-impl crate::traits::new_error_test::NewErrorTest<u32> for ThreeOriginError {
-    fn new_with_git_info_file_line_column(
-        source: u32,
-        git_info: GitInformationWithoutLifetimes,
-        file: String, //&'a str
-        line: u32,
-        column: u32,
-    ) -> Self {
-        Self {
-            source,
-            code_occurence: CodeOccurence::new(git_info, file, line, column),
-        }
-    }
-    fn new_with_code_occurance(
-        source: u32,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    ) -> Self {
+impl crate::traits::new_error_test::NewErrorTestTestTest<u32> for ThreeOriginError {
+    fn new(source: u32, code_occurence: crate::common::code_occurence::CodeOccurence) -> Self {
         Self {
             source,
             code_occurence,
