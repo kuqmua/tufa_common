@@ -128,79 +128,40 @@ impl CodeOccurenceMethods for CodeOccurence {
         source: String,
         style: ansi_term::Style,
     ) {
-        match source_place_type {
-            SourcePlaceType::Source => {
-                let capacity = self.occurences.values().fold(0, |mut acc, elem| {
-                    acc += elem.len();
-                    acc
-                });
-                let mut vec: Vec<OccurenceFilter> = Vec::with_capacity(capacity);
-                self.occurences.values().for_each(|v| {
-                    v.iter().for_each(|e| {
-                        vec.push(OccurenceFilter {
-                            increment: e.increment,
-                            time: e.time_file_line_column.time,
-                            occurence: e.time_file_line_column.get_project_code_path(),
-                        })
-                    })
-                });
-                //todo check reserve or not
-                vec.sort_by(|a, b| a.increment.cmp(&b.increment));
-                // vec.reverse();
-                let mut occurences = Vec::with_capacity(capacity + 1);
-                occurences.push(format!("{}{}", source, log_type.symbol()));
-                vec.into_iter().for_each(|e| {
-                    occurences.push(format!(
-                        "{:?} {}{}",
-                        e.readable_time_string(),
-                        e.occurence,
-                        log_type.symbol()
-                    ));
-                });
-                let mut occurence = occurences.iter().fold(String::from(""), |mut acc, elem| {
-                    acc.push_str(elem);
-                    acc
-                });
-                log_type.pop_last(&mut occurence);
-                log_type.console(style, occurence);
-            }
-            SourcePlaceType::Github => {
-                let capacity = self.occurences.values().fold(0, |mut acc, elem| {
-                    acc += elem.len();
-                    acc
-                });
-                let mut vec: Vec<OccurenceFilter> = Vec::with_capacity(capacity);
-                self.occurences.iter().for_each(|(k, v)| {
-                    v.iter().for_each(|e| {
-                        vec.push(OccurenceFilter {
-                            increment: e.increment,
-                            time: e.time_file_line_column.time,
-                            occurence: e.time_file_line_column.get_github_code_path(k),
-                        })
-                    })
-                });
-                //todo check reserve or not
-                vec.sort_by(|a, b| a.increment.cmp(&b.increment));
-                // vec.reverse();
-                let mut occurences = Vec::with_capacity(capacity + 1);
-                occurences.push(format!("{}{}", source, log_type.symbol()));
-                vec.into_iter().for_each(|e| {
-                    occurences.push(format!(
-                        "{} {}{}",
-                        e.readable_time_string(),
-                        e.occurence,
-                        log_type.symbol()
-                    ));
-                });
-                let mut occurence = occurences.iter().fold(String::from(""), |mut acc, elem| {
-                    acc.push_str(elem);
-                    acc
-                });
-                log_type.pop_last(&mut occurence);
-                log_type.console(style, occurence);
-            }
-            SourcePlaceType::None => (),
-        }
+        let capacity = self.occurences.values().fold(0, |mut acc, elem| {
+            acc += elem.len();
+            acc
+        });
+        let mut vec: Vec<OccurenceFilter> = Vec::with_capacity(capacity);
+        self.occurences.iter().for_each(|(git_info, v)| {
+            v.iter().for_each(|e| {
+                vec.push(OccurenceFilter {
+                    increment: e.increment,
+                    time: e.time_file_line_column.time,
+                    occurence: e
+                        .time_file_line_column
+                        .get_code_path(git_info, source_place_type), // .get_project_code_path()
+                })
+            })
+        });
+        //vec.reverse();//todo check reserve or not
+        vec.sort_by(|a, b| a.increment.cmp(&b.increment));
+        let mut occurences = Vec::with_capacity(capacity + 1);
+        occurences.push(format!("{}{}", source, log_type.symbol()));
+        vec.into_iter().for_each(|e| {
+            occurences.push(format!(
+                "{} {}{}",
+                e.readable_time_string(),
+                e.occurence,
+                log_type.symbol()
+            ));
+        });
+        let mut occurence = occurences.iter().fold(String::from(""), |mut acc, elem| {
+            acc.push_str(elem);
+            acc
+        });
+        log_type.pop_last(&mut occurence);
+        log_type.console(style, occurence);
     }
 }
 
@@ -244,6 +205,24 @@ impl ReadableTimeString for TimeFileLineColumnIncrement {
     }
 }
 
+impl crate::traits::file_line_column::GetFile for TimeFileLineColumnIncrement {
+    fn get_file(&self) -> &String {
+        &self.time_file_line_column.get_file()
+    }
+}
+
+impl crate::traits::file_line_column::GetLine for TimeFileLineColumnIncrement {
+    fn get_line(&self) -> u32 {
+        self.time_file_line_column.get_line()
+    }
+}
+
+impl crate::traits::file_line_column::GetColumn for TimeFileLineColumnIncrement {
+    fn get_column(&self) -> u32 {
+        self.time_file_line_column.get_column()
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct TimeFileLineColumn {
     time: std::time::Duration,
@@ -278,24 +257,21 @@ impl ReadableTime for TimeFileLineColumn {
     }
 }
 
-impl CodePath for TimeFileLineColumn {
-    fn get_code_path(
-        &self,
-        git_info: &GitInformationWithoutLifetimes,
-        source_place_type: crate::config_mods::source_place_type::SourcePlaceType,
-    ) -> String {
-        match source_place_type {
-            SourcePlaceType::Source => self.get_project_code_path(),
-            SourcePlaceType::Github => self.get_github_code_path(git_info),
-            SourcePlaceType::None => String::from(""), //todo maybe incorrect?
-        }
+impl crate::traits::file_line_column::GetFile for TimeFileLineColumn {
+    fn get_file(&self) -> &String {
+        &self.file_line_column.get_file()
     }
-    fn get_project_code_path(&self) -> String {
-        self.file_line_column.get_project_code_path()
+}
+
+impl crate::traits::file_line_column::GetLine for TimeFileLineColumn {
+    fn get_line(&self) -> u32 {
+        self.file_line_column.get_line()
     }
-    //todo make it const fn
-    fn get_github_code_path(&self, git_info: &GitInformationWithoutLifetimes) -> String {
-        self.file_line_column.get_github_code_path(git_info)
+}
+
+impl crate::traits::file_line_column::GetColumn for TimeFileLineColumn {
+    fn get_column(&self) -> u32 {
+        self.file_line_column.get_column()
     }
 }
 
@@ -306,30 +282,20 @@ pub struct FileLineColumn {
     pub column: u32,
 }
 
-impl CodePath for FileLineColumn {
-    fn get_code_path(
-        &self,
-        git_info: &GitInformationWithoutLifetimes,
-        source_place_type: crate::config_mods::source_place_type::SourcePlaceType,
-    ) -> String {
-        match source_place_type {
-            SourcePlaceType::Source => self.get_project_code_path(),
-            SourcePlaceType::Github => self.get_github_code_path(git_info),
-            SourcePlaceType::None => String::from(""), //todo maybe incorrect?
-        }
+impl crate::traits::file_line_column::GetFile for FileLineColumn {
+    fn get_file(&self) -> &String {
+        &self.file
     }
-    fn get_project_code_path(&self) -> String {
-        format!("{}:{}:{}", self.file, self.line, self.column)
+}
+
+impl crate::traits::file_line_column::GetLine for FileLineColumn {
+    fn get_line(&self) -> u32 {
+        self.line
     }
-    //todo make it const fn
-    fn get_github_code_path(&self, git_info: &GitInformationWithoutLifetimes) -> String {
-        let file = self.file.clone();
-        let backslash = "/";
-        match file.find(backslash) {
-            Some(index) => {
-                git_info.get_git_source_file_link(&file[index + backslash.len()..], self.line)
-            }
-            None => String::from("cant find backslash symbol in file path of location"),
-        }
+}
+
+impl crate::traits::file_line_column::GetColumn for FileLineColumn {
+    fn get_column(&self) -> u32 {
+        self.column
     }
 }
