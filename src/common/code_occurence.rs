@@ -19,15 +19,13 @@ use impl_get_source::ImplGetSourceFromCrate;
 use std::collections::HashMap;
 use std::fmt::{self, Display};
 
-use crate::global_variables::compile_time::git_info::GIT_INFO;
-
 #[derive(ImplGetSourceFromCrate, Clone)]
 pub struct ThreeOriginError {
     source: u32,
     code_occurence: CodeOccurence,
 }
 
-impl NewErrorTest<u32> for ThreeOriginError {
+impl crate::traits::new_error_test::NewErrorTest<u32> for ThreeOriginError {
     fn new_error_test(
         source: u32,
         code_occurence: CodeOccurence,
@@ -39,7 +37,7 @@ impl NewErrorTest<u32> for ThreeOriginError {
     }
 }
 
-impl GetCodeOccurence for ThreeOriginError {
+impl crate::traits::get_code_occurence::GetCodeOccurence for ThreeOriginError {
     fn get_code_occurence(&self) -> &CodeOccurence {
         &self.code_occurence
     }
@@ -80,11 +78,19 @@ impl CodeOccurenceMethods for CodeOccurence {
             )])
         }
     }
-    fn add(
-        mut self,
-        another_code_occurence: &Self,
+    fn new_with_addition(
+        git_info: &GitInformationWithoutLifetimes,
+        file: String, //&'a str
+        line: u32,
+        column: u32,
+        another_code_occurence: &Self
     ) -> Self {
-        let mut last_increment = {
+        let capacity = another_code_occurence.occurences.values().fold(0, |mut acc, elem| {
+            acc += elem.len();
+            acc
+        });
+        let mut occurences =  HashMap::with_capacity(capacity + 1);
+        let mut new_last_increment = {
             let mut increment_handle = 0;
             another_code_occurence.occurences.values().for_each(|v| {
                 v.iter().for_each(|e| {
@@ -94,27 +100,29 @@ impl CodeOccurenceMethods for CodeOccurence {
                 });
             });
             increment_handle
-        };
-        another_code_occurence.occurences.iter().for_each(|(key, value)| {
-            value.iter().for_each(|value_element| {
-                last_increment += 1;
-                self.occurences
-                    .entry(key.clone())
-                    .and_modify(|vec_existing_value_elements| {
-                        vec_existing_value_elements.push(TimeFileLineColumnIncrement {
-                            increment: last_increment,
-                            time_file_line_column: value_element.time_file_line_column.clone(), //todo how to rewrite it without clone() ?
-                        });
+        } + 1;
+        occurences = another_code_occurence.occurences.clone();
+        occurences
+            .entry(git_info.clone())
+            .and_modify(|vec_existing_value_elements| {
+                vec_existing_value_elements.push(TimeFileLineColumnIncrement {
+                    increment: new_last_increment,
+                    time_file_line_column: TimeFileLineColumn::new(FileLineColumn{
+                        file: file.clone(), line, column
+                    }), //todo how to rewrite it without clone() ?
+                });
+            })
+            .or_insert_with(|| {
+                vec![TimeFileLineColumnIncrement {
+                    increment: new_last_increment,
+                    time_file_line_column: TimeFileLineColumn::new(FileLineColumn{
+                        file: file.clone(), line, column
                     })
-                    .or_insert_with(|| {
-                        vec![TimeFileLineColumnIncrement {
-                            increment: last_increment,
-                            time_file_line_column: value_element.time_file_line_column.clone(),
-                        }]
-                    });
+                }]
             });
-        });
-        self
+        Self {
+            occurences
+        }
     }
     fn log_code_occurence(
         &self,
@@ -125,11 +133,11 @@ impl CodeOccurenceMethods for CodeOccurence {
     ) {
         match source_place_type {
             SourcePlaceType::Source => {
-                let len = self.occurences.values().fold(0, |mut acc, elem| {
+                let capacity = self.occurences.values().fold(0, |mut acc, elem| {
                     acc += elem.len();
                     acc
                 });
-                let mut vec: Vec<OccurenceFilter> = Vec::with_capacity(len);
+                let mut vec: Vec<OccurenceFilter> = Vec::with_capacity(capacity);
                 self.occurences.values().for_each(|v| {
                     v.iter().for_each(|e| {
                         vec.push(OccurenceFilter {
@@ -141,8 +149,8 @@ impl CodeOccurenceMethods for CodeOccurence {
                 });
                 //todo check reserve or not
                 vec.sort_by(|a, b| a.increment.cmp(&b.increment));
-                vec.reverse();
-                let mut occurences = Vec::with_capacity(len + 1);
+                // vec.reverse();
+                let mut occurences = Vec::with_capacity(capacity + 1);
                 occurences.push(format!("{}{}", source, log_type.symbol()));
                 vec.into_iter().for_each(|e| {
                     occurences.push(format!(
@@ -160,11 +168,11 @@ impl CodeOccurenceMethods for CodeOccurence {
                 log_type.console(style, occurence);
             }
             SourcePlaceType::Github => {
-                let len = self.occurences.values().fold(0, |mut acc, elem| {
+                let capacity = self.occurences.values().fold(0, |mut acc, elem| {
                     acc += elem.len();
                     acc
                 });
-                let mut vec: Vec<OccurenceFilter> = Vec::with_capacity(len);
+                let mut vec: Vec<OccurenceFilter> = Vec::with_capacity(capacity);
                 self.occurences.iter().for_each(|(k, v)| {
                     v.iter().for_each(|e| {
                         vec.push(OccurenceFilter {
@@ -176,8 +184,8 @@ impl CodeOccurenceMethods for CodeOccurence {
                 });
                 //todo check reserve or not
                 vec.sort_by(|a, b| a.increment.cmp(&b.increment));
-                vec.reverse();
-                let mut occurences = Vec::with_capacity(len + 1);
+                // vec.reverse();
+                let mut occurences = Vec::with_capacity(capacity + 1);
                 occurences.push(format!("{}{}", source, log_type.symbol()));
                 vec.into_iter().for_each(|e| {
                     occurences.push(format!(
@@ -306,10 +314,3 @@ impl CodePath for FileLineColumn {
         }
     }
 }
-
-// impl FileLineColumn {
-//     const fn file_line_column<'a>(&self) -> &'a str {
-//         //todo how to convert u32 to &'a str on compiletime
-//         format!("{}:{}:{}", self.file, self.line, self.column)
-//     }
-// }

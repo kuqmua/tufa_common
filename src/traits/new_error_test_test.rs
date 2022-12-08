@@ -4,7 +4,7 @@ pub trait NewErrorTestTest<SourceGeneric, ConfigGeneric, ErrorColorBoldGeneric, 
     fn new_error_test_test(
         source: SourceGeneric,
         config: ConfigGeneric,
-        git_info: crate::common::git::git_info::GitInformationWithoutLifetimes,
+        git_info: &crate::common::git::git_info::GitInformationWithoutLifetimes,
         file: String,
         line: u32,
         column: u32,
@@ -27,15 +27,19 @@ where
     fn new_error_test_test(
         source: SourceGeneric,
         config: ConfigGeneric,
-        git_info: crate::common::git::git_info::GitInformationWithoutLifetimes,
+        git_info: &crate::common::git::git_info::GitInformationWithoutLifetimes,
         file: String,
         line: u32,
         column: u32,
         should_trace: bool,
     ) -> ReturnSelfGeneric {
-        let code_occurence =
-            crate::common::code_occurence::CodeOccurence::new(git_info, file, line, column)
-                .add(source.get_code_occurence());
+        let code_occurence = crate::common::code_occurence::CodeOccurence::new_with_addition(
+            git_info,
+            file,
+            line,
+            column,
+            source.get_code_occurence(),
+        );
         let error = ReturnSelfGeneric::new_error_test(source, code_occurence);
         if let true = should_trace {
             error.log_error_code_occurence(
