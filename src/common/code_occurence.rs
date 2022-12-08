@@ -279,6 +279,17 @@ impl ReadableTime for TimeFileLineColumn {
 }
 
 impl CodePath for TimeFileLineColumn {
+    fn get_code_path(
+        &self,
+        git_info: &GitInformationWithoutLifetimes,
+        source_place_type: crate::config_mods::source_place_type::SourcePlaceType,
+    ) -> String {
+        match source_place_type {
+            SourcePlaceType::Source => self.get_project_code_path(),
+            SourcePlaceType::Github => self.get_github_code_path(git_info),
+            SourcePlaceType::None => String::from(""), //todo maybe incorrect?
+        }
+    }
     fn get_project_code_path(&self) -> String {
         self.file_line_column.get_project_code_path()
     }
@@ -296,6 +307,17 @@ pub struct FileLineColumn {
 }
 
 impl CodePath for FileLineColumn {
+    fn get_code_path(
+        &self,
+        git_info: &GitInformationWithoutLifetimes,
+        source_place_type: crate::config_mods::source_place_type::SourcePlaceType,
+    ) -> String {
+        match source_place_type {
+            SourcePlaceType::Source => self.get_project_code_path(),
+            SourcePlaceType::Github => self.get_github_code_path(git_info),
+            SourcePlaceType::None => String::from(""), //todo maybe incorrect?
+        }
+    }
     fn get_project_code_path(&self) -> String {
         format!("{}:{}:{}", self.file, self.line, self.column)
     }
