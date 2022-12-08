@@ -1,7 +1,13 @@
 use crate::traits::code_occurence_methods::CodeOccurenceMethods;
 
-pub trait NewErrorTestTest<SourceGeneric, ConfigGeneric, ErrorColorBoldGeneric, ReturnSelfGeneric> {
-    fn new_error_test_test(
+pub trait NewErrorWithAddition<
+    SourceGeneric,
+    ConfigGeneric,
+    ErrorColorBoldGeneric,
+    ReturnSelfGeneric,
+>
+{
+    fn new_error_with_addition(
         source: SourceGeneric,
         config: ConfigGeneric,
         git_info: &crate::common::git::git_info::GitInformationWithoutLifetimes,
@@ -13,7 +19,7 @@ pub trait NewErrorTestTest<SourceGeneric, ConfigGeneric, ErrorColorBoldGeneric, 
 }
 
 impl<SourceGeneric, ConfigGeneric, ErrorColorBoldGeneric, ReturnSelfGeneric>
-    NewErrorTestTest<SourceGeneric, ConfigGeneric, ErrorColorBoldGeneric, ReturnSelfGeneric>
+    NewErrorWithAddition<SourceGeneric, ConfigGeneric, ErrorColorBoldGeneric, ReturnSelfGeneric>
     for ReturnSelfGeneric
 where
     SourceGeneric:
@@ -24,7 +30,7 @@ where
         + crate::config_mods::traits::fields::GetLogType
         + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
 {
-    fn new_error_test_test(
+    fn new_error_with_addition(
         source: SourceGeneric,
         config: ConfigGeneric,
         git_info: &crate::common::git::git_info::GitInformationWithoutLifetimes,
