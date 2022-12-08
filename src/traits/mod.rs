@@ -18,6 +18,7 @@ pub mod init_error_with_possible_trace;
 pub mod is_enabled_prints;
 pub mod log_error_code_occurence;
 pub mod new_error;
+pub mod new_error_test;
 pub mod print_type_methods;
 pub mod readable_time;
 pub mod readable_time_string;

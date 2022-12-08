@@ -11,6 +11,7 @@ use crate::traits::get_git_source_file_link::GetGitSourceFileLink;
 use crate::traits::readable_time::ReadableTime;
 use crate::traits::readable_time_string::ReadableTimeString;
 use crate::traits::separator_symbol::SeparatorSymbol;
+use crate::traits::new_error_test::NewErrorTest;
 use ansi_term::Colour::RGB;
 use chrono::prelude::DateTime;
 use chrono::Utc;
@@ -23,7 +24,19 @@ use crate::global_variables::compile_time::git_info::GIT_INFO;
 #[derive(ImplGetSourceFromCrate, Clone)]
 pub struct ThreeOriginError {
     source: u32,
-    pub code_occurence: CodeOccurence,
+    code_occurence: CodeOccurence,
+}
+
+impl NewErrorTest<u32> for ThreeOriginError {
+    fn new_error_test(
+        source: u32,
+        code_occurence: CodeOccurence,
+    ) -> Self {
+        Self {
+            source,
+            code_occurence
+        }
+    }
 }
 
 impl GetCodeOccurence for ThreeOriginError {
@@ -33,15 +46,15 @@ impl GetCodeOccurence for ThreeOriginError {
 }
 
 pub fn three() -> Result<(), Box<ThreeOriginError>> {
-    return Err(Box::new(ThreeOriginError {
-        source: 34,
-        code_occurence: CodeOccurence::new(
+    return Err(Box::new(ThreeOriginError::new_error_test(
+        34,
+        CodeOccurence::new(
             crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(), 
             String::from(file!()), 
             line!(), 
             column!()
         )
-    }));
+    )));
 }
 
 #[derive(Debug, Clone)]
