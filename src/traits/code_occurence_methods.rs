@@ -8,18 +8,15 @@ pub trait CodeOccurenceNewWithAddition<SourceGeneric> {
     ) -> Self;
 }
 
-pub trait CodeOccurenceMethods {
+pub trait CodeOccurenceNew {
     fn new(
         git_info: crate::common::git::git_info::GitInformationWithoutLifetimes,
         file: String, //&'a str
         line: u32,
         column: u32,
     ) -> Self;
-    fn log_code_occurence(
-        &self,
-        source: String,
-        source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
-        log_type: &crate::config_mods::log_type::LogType,
-        style: ansi_term::Style,
-    );
+}
+
+pub trait CodeOccurenceLog<ConfigGeneric, ErrorColorBoldGeneric> {
+    fn log(&self, source: String, config_generic: ConfigGeneric);
 }

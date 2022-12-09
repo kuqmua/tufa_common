@@ -1,4 +1,4 @@
-use crate::traits::code_occurence_methods::CodeOccurenceMethods;
+use crate::traits::code_occurence_methods::CodeOccurenceLog;
 use crate::traits::code_occurence_methods::CodeOccurenceNewWithAddition;
 
 pub trait LogErrorCodeOccurence<ConfigGeneric, ErrorColorBoldGeneric> {
@@ -14,11 +14,6 @@ where
         + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
 {
     fn log_error_code_occurence(&self, config: ConfigGeneric) {
-        self.get_code_occurence().log_code_occurence(
-            self.get_source(),
-            config.get_source_place_type(),
-            config.get_log_type(),
-            config.get_error_color_bold(),
-        );
+        self.get_code_occurence().log(self.get_source(), config);
     }
 }

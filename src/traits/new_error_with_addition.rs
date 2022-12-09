@@ -1,4 +1,4 @@
-use crate::traits::code_occurence_methods::CodeOccurenceMethods;
+use crate::traits::code_occurence_methods::CodeOccurenceLog;
 use crate::traits::code_occurence_methods::CodeOccurenceNewWithAddition;
 
 pub trait NewErrorWithAddition<

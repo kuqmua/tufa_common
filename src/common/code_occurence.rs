@@ -119,7 +119,7 @@ where
     }
 }
 
-impl crate::traits::code_occurence_methods::CodeOccurenceMethods for CodeOccurence {
+impl crate::traits::code_occurence_methods::CodeOccurenceNew for CodeOccurence {
     fn new(
         git_info: GitInformationWithoutLifetimes,
         file: String, //&'a str
@@ -133,13 +133,17 @@ impl crate::traits::code_occurence_methods::CodeOccurenceMethods for CodeOccuren
             )]),
         }
     }
-    fn log_code_occurence(
-        &self,
-        source: String,
-        source_place_type: &SourcePlaceType,
-        log_type: &LogType,
-        style: ansi_term::Style,
-    ) {
+}
+
+impl<ConfigGeneric, ErrorColorBoldGeneric>
+    crate::traits::code_occurence_methods::CodeOccurenceLog<ConfigGeneric, ErrorColorBoldGeneric>
+    for CodeOccurence
+where
+    ConfigGeneric: crate::config_mods::traits::fields::GetSourcePlaceType
+        + crate::config_mods::traits::fields::GetLogType
+        + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
+{
+    fn log(&self, source: String, config_generic: ConfigGeneric) {
         let capacity = self.occurences.values().fold(0, |mut acc, elem| {
             acc += elem.len();
             acc
@@ -152,28 +156,34 @@ impl crate::traits::code_occurence_methods::CodeOccurenceMethods for CodeOccuren
                     time: e.time_file_line_column.time,
                     occurence: e
                         .time_file_line_column
-                        .get_code_path(git_info, source_place_type), // .get_project_code_path()
+                        .get_code_path(git_info, config_generic.get_source_place_type()),
                 })
             })
         });
         //vec.reverse();//todo check reserve or not
         vec.sort_by(|a, b| a.increment.cmp(&b.increment));
         let mut occurences = Vec::with_capacity(capacity + 1);
-        occurences.push(format!("{}{}", source, log_type.symbol()));
+        occurences.push(format!(
+            "{}{}",
+            source,
+            config_generic.get_log_type().symbol()
+        ));
         vec.into_iter().for_each(|e| {
             occurences.push(format!(
                 "{} {}{}",
                 e.readable_time_string(),
                 e.occurence,
-                log_type.symbol()
+                config_generic.get_log_type().symbol()
             ));
         });
         let mut occurence = occurences.iter().fold(String::from(""), |mut acc, elem| {
             acc.push_str(elem);
             acc
         });
-        log_type.pop_last(&mut occurence);
-        log_type.console(style, occurence);
+        config_generic.get_log_type().pop_last(&mut occurence);
+        config_generic
+            .get_log_type()
+            .console(config_generic.get_error_color_bold(), occurence);
     }
 }
 
