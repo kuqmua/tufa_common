@@ -3,7 +3,6 @@ use crate::common::git::git_info::GitInformationWithoutLifetimes;
 use crate::common::where_was::WhereWas;
 use crate::config_mods::log_type::LogType;
 use crate::config_mods::source_place_type::SourcePlaceType;
-use crate::traits::code_occurence_methods::CodeOccurenceMethods;
 use crate::traits::code_path::CodePath;
 use crate::traits::console::Console;
 use crate::traits::get_code_occurence::GetCodeOccurence;
@@ -56,28 +55,21 @@ pub struct CodeOccurence {
     pub occurences: HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>,
 }
 
-impl CodeOccurenceMethods for CodeOccurence {
-    fn new(
-        git_info: GitInformationWithoutLifetimes,
-        file: String, //&'a str
-        line: u32,
-        column: u32,
-    ) -> Self {
-        Self {
-            occurences: HashMap::from([(
-                git_info,
-                vec![TimeFileLineColumnIncrement::new(file, line, column)],
-            )]),
-        }
-    }
+impl<SourceGeneric>
+    crate::traits::code_occurence_methods::CodeOccurenceNewWithAddition<SourceGeneric>
+    for CodeOccurence
+where
+    SourceGeneric: crate::traits::get_code_occurence::GetCodeOccurence,
+{
     fn new_with_addition(
         git_info: &GitInformationWithoutLifetimes,
         file: String, //&'a str
         line: u32,
         column: u32,
-        another_code_occurence: &Self,
+        source_generic: &SourceGeneric,
     ) -> Self {
-        let capacity = another_code_occurence
+        let capacity = source_generic
+            .get_code_occurence()
             .occurences
             .values()
             .fold(0, |mut acc, elem| {
@@ -87,16 +79,20 @@ impl CodeOccurenceMethods for CodeOccurence {
         let mut occurences = HashMap::with_capacity(capacity + 1);
         let mut new_last_increment = {
             let mut increment_handle = 0;
-            another_code_occurence.occurences.values().for_each(|v| {
-                v.iter().for_each(|e| {
-                    if e.increment > increment_handle {
-                        increment_handle = e.increment;
-                    }
+            source_generic
+                .get_code_occurence()
+                .occurences
+                .values()
+                .for_each(|v| {
+                    v.iter().for_each(|e| {
+                        if e.increment > increment_handle {
+                            increment_handle = e.increment;
+                        }
+                    });
                 });
-            });
             increment_handle
         } + 1;
-        occurences = another_code_occurence.occurences.clone();
+        occurences = source_generic.get_code_occurence().occurences.clone();
         occurences
             .entry(git_info.clone())
             .and_modify(|vec_existing_value_elements| {
@@ -120,6 +116,22 @@ impl CodeOccurenceMethods for CodeOccurence {
                 }]
             });
         Self { occurences }
+    }
+}
+
+impl crate::traits::code_occurence_methods::CodeOccurenceMethods for CodeOccurence {
+    fn new(
+        git_info: GitInformationWithoutLifetimes,
+        file: String, //&'a str
+        line: u32,
+        column: u32,
+    ) -> Self {
+        Self {
+            occurences: HashMap::from([(
+                git_info,
+                vec![TimeFileLineColumnIncrement::new(file, line, column)],
+            )]),
+        }
     }
     fn log_code_occurence(
         &self,

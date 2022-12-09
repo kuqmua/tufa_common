@@ -1,4 +1,5 @@
 use crate::traits::code_occurence_methods::CodeOccurenceMethods;
+use crate::traits::code_occurence_methods::CodeOccurenceNewWithAddition;
 
 pub trait NewErrorWithAddition<
     SourceGeneric,
@@ -43,11 +44,7 @@ where
         should_trace: bool,
     ) -> ReturnSelfGeneric {
         let code_occurence = crate::common::code_occurence::CodeOccurence::new_with_addition(
-            git_info,
-            file,
-            line,
-            column,
-            source.get_code_occurence(),
+            git_info, file, line, column, &source,
         );
         let error = ReturnSelfGeneric::new_with_code_occurance(source, code_occurence);
         if let true = should_trace {

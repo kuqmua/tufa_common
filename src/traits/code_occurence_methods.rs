@@ -1,16 +1,19 @@
+pub trait CodeOccurenceNewWithAddition<SourceGeneric> {
+    fn new_with_addition(
+        git_info: &crate::common::git::git_info::GitInformationWithoutLifetimes,
+        file: String, //&'a str
+        line: u32,
+        column: u32,
+        source_generic: &SourceGeneric,
+    ) -> Self;
+}
+
 pub trait CodeOccurenceMethods {
     fn new(
         git_info: crate::common::git::git_info::GitInformationWithoutLifetimes,
         file: String, //&'a str
         line: u32,
         column: u32,
-    ) -> Self;
-    fn new_with_addition(
-        git_info: &crate::common::git::git_info::GitInformationWithoutLifetimes,
-        file: String, //&'a str
-        line: u32,
-        column: u32,
-        another_code_occurence: &Self,
     ) -> Self;
     fn log_code_occurence(
         &self,
