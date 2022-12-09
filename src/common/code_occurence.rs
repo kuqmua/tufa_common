@@ -68,15 +68,8 @@ where
         column: u32,
         source_generic: &SourceGeneric,
     ) -> Self {
-        let capacity = source_generic
-            .get_code_occurence()
-            .occurences
-            .values()
-            .fold(0, |mut acc, elem| {
-                acc += elem.len();
-                acc
-            });
-        let mut occurences = HashMap::with_capacity(capacity + 1);
+        let mut occurences =
+            HashMap::with_capacity(source_generic.get_code_occurence().occurences.keys().len() + 1);
         let mut new_last_increment = {
             let mut increment_handle = 0;
             source_generic
