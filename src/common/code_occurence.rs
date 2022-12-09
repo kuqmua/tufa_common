@@ -163,27 +163,22 @@ where
         //vec.reverse();//todo check reserve or not
         vec.sort_by(|a, b| a.increment.cmp(&b.increment));
         let mut occurences = Vec::with_capacity(capacity + 1);
-        occurences.push(format!(
-            "{}{}",
-            source,
-            config_generic.get_log_type().symbol()
-        ));
+        let log_type = config_generic.get_log_type();
+        occurences.push(format!("{}{}", source, log_type.symbol()));
         vec.into_iter().for_each(|e| {
             occurences.push(format!(
                 "{} {}{}",
                 e.readable_time_string(),
                 e.occurence,
-                config_generic.get_log_type().symbol()
+                log_type.symbol()
             ));
         });
         let mut occurence = occurences.iter().fold(String::from(""), |mut acc, elem| {
             acc.push_str(elem);
             acc
         });
-        config_generic.get_log_type().pop_last(&mut occurence);
-        config_generic
-            .get_log_type()
-            .console(config_generic.get_error_color_bold(), occurence);
+        log_type.pop_last(&mut occurence);
+        log_type.console(config_generic.get_error_color_bold(), occurence);
     }
 }
 
