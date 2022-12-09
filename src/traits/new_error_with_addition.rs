@@ -25,7 +25,10 @@ where
     SourceGeneric:
         crate::traits::get_source::GetSource + crate::traits::get_code_occurence::GetCodeOccurence,
     ReturnSelfGeneric: crate::traits::new_error_test::NewErrorTest<SourceGeneric>
-        + crate::traits::log_error_code_occurence::LogErrorCodeOccurence,
+        + crate::traits::log_error_code_occurence::LogErrorCodeOccurence<
+            ConfigGeneric,
+            ErrorColorBoldGeneric,
+        >,
     ConfigGeneric: crate::config_mods::traits::fields::GetSourcePlaceType
         + crate::config_mods::traits::fields::GetLogType
         + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
@@ -48,11 +51,7 @@ where
         );
         let error = ReturnSelfGeneric::new_with_code_occurance(source, code_occurence);
         if let true = should_trace {
-            error.log_error_code_occurence(
-                config.get_source_place_type(),
-                config.get_log_type(),
-                config.get_error_color_bold(),
-            );
+            error.log_error_code_occurence(config);
         }
         error
     }
