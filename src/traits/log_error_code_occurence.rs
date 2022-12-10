@@ -14,6 +14,9 @@ where
         + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
 {
     fn log_error_code_occurence(&self, config: ConfigGeneric) {
-        self.get_code_occurence().log(self.get_source(), config);
+        self.get_code_occurence().log(
+            // self.get_source(),
+            self, config,
+        );
     }
 }

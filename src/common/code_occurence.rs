@@ -128,15 +128,19 @@ impl crate::traits::code_occurence_methods::CodeOccurenceNew for CodeOccurence {
     }
 }
 
-impl<ConfigGeneric, ErrorColorBoldGeneric>
-    crate::traits::code_occurence_methods::CodeOccurenceLog<ConfigGeneric, ErrorColorBoldGeneric>
-    for CodeOccurence
+impl<ConfigGeneric, ErrorColorBoldGeneric, SourceGeneric>
+    crate::traits::code_occurence_methods::CodeOccurenceLog<
+        ConfigGeneric,
+        ErrorColorBoldGeneric,
+        SourceGeneric,
+    > for CodeOccurence
 where
     ConfigGeneric: crate::config_mods::traits::fields::GetSourcePlaceType
         + crate::config_mods::traits::fields::GetLogType
         + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
+    SourceGeneric: crate::traits::get_source::GetSource,
 {
-    fn log(&self, source: String, config_generic: ConfigGeneric) {
+    fn log(&self, source_generic: &SourceGeneric, config_generic: ConfigGeneric) {
         let capacity = self.occurences.values().fold(0, |mut acc, elem| {
             acc += elem.len();
             acc
@@ -157,7 +161,11 @@ where
         vec.sort_by(|a, b| a.increment.cmp(&b.increment));
         let mut occurences = Vec::with_capacity(capacity + 1);
         let log_type = config_generic.get_log_type();
-        occurences.push(format!("{}{}", source, log_type.symbol()));
+        occurences.push(format!(
+            "{}{}",
+            source_generic.get_source(),
+            log_type.symbol()
+        ));
         vec.into_iter().for_each(|e| {
             occurences.push(format!(
                 "{} {}{}",

@@ -17,6 +17,6 @@ pub trait CodeOccurenceNew {
     ) -> Self;
 }
 
-pub trait CodeOccurenceLog<ConfigGeneric, ErrorColorBoldGeneric> {
-    fn log(&self, source: String, config_generic: ConfigGeneric);
+pub trait CodeOccurenceLog<ConfigGeneric, ErrorColorBoldGeneric, SourceGeneric> {
+    fn log(&self, source: &SourceGeneric, config_generic: ConfigGeneric);
 }
