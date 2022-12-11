@@ -40,6 +40,9 @@ where
     }
 }
 
-pub trait NewErrorTestTestTest<T> {
-    fn new(source: T, code_occurence: crate::common::code_occurence::CodeOccurence) -> Self;
+pub trait NewErrorTestTestTest<SourceGeneric> {
+    fn new(
+        source: SourceGeneric,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    ) -> Self;
 }

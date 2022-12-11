@@ -8,6 +8,7 @@ use crate::traits::console::Console;
 use crate::traits::get_code_occurence::GetCodeOccurence;
 use crate::traits::get_git_source_file_link::GetGitSourceFileLink;
 use crate::traits::new_error_test::NewErrorTest;
+use crate::traits::new_error_with_addition::NewErrorWithAddition;
 use crate::traits::readable_time::ReadableTime;
 use crate::traits::readable_time_string::ReadableTimeString;
 use crate::traits::separator_symbol::SeparatorSymbol;
@@ -17,14 +18,69 @@ use chrono::Utc;
 use impl_get_source::ImplGetSourceFromCrate;
 use std::collections::HashMap;
 use std::fmt::{self, Display};
+use crate::global_variables::runtime::config::CONFIG;
 
 #[derive(ImplGetSourceFromCrate)]
-pub struct ThreeOriginError {
+pub struct ThreeWrapperError {
+    source: ThreeWrapperErrorEnum,
+    code_occurence: CodeOccurence,
+}
+
+impl crate::traits::new_error_test::NewErrorTestTestTest<ThreeWrapperErrorEnum>
+    for ThreeWrapperError
+{
+    fn new(
+        source: ThreeWrapperErrorEnum,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    ) -> Self {
+        Self {
+            source,
+            code_occurence,
+        }
+    }
+}
+
+impl crate::traits::get_code_occurence::GetCodeOccurence for ThreeWrapperError {
+    fn get_code_occurence(&self) -> &CodeOccurence {
+        &self.code_occurence
+    }
+}
+
+pub fn three(should_trace: bool) -> Result<(), Box<ThreeWrapperError>> {
+    if let Err(e) = four(false) {
+        return Err(Box::new(ThreeWrapperError::new_error_with_addition(
+            ThreeWrapperErrorEnum::FourWrapper(*e),
+            once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG), 
+            once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES), 
+            String::from(file!()), 
+            line!(), 
+            column!(), 
+            should_trace
+        )));
+    };
+    Ok(())
+}
+//
+#[derive(ImplGetSourceFromCrate)]
+pub enum ThreeWrapperErrorEnum {
+    FourWrapper(FourOriginError),
+}
+
+impl crate::traits::get_code_occurence::GetCodeOccurence for ThreeWrapperErrorEnum {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
+        match self {
+            ThreeWrapperErrorEnum::FourWrapper(e) => e.get_code_occurence(),
+        }
+    }
+}
+//
+#[derive(ImplGetSourceFromCrate)]
+pub struct FourOriginError {
     source: u32,
     code_occurence: CodeOccurence,
 }
 
-impl crate::traits::new_error_test::NewErrorTestTestTest<u32> for ThreeOriginError {
+impl crate::traits::new_error_test::NewErrorTestTestTest<u32> for FourOriginError {
     fn new(source: u32, code_occurence: crate::common::code_occurence::CodeOccurence) -> Self {
         Self {
             source,
@@ -33,22 +89,23 @@ impl crate::traits::new_error_test::NewErrorTestTestTest<u32> for ThreeOriginErr
     }
 }
 
-impl crate::traits::get_code_occurence::GetCodeOccurence for ThreeOriginError {
+impl crate::traits::get_code_occurence::GetCodeOccurence for FourOriginError {
     fn get_code_occurence(&self) -> &CodeOccurence {
         &self.code_occurence
     }
 }
-
-pub fn three() -> Result<(), Box<ThreeOriginError>> {
-    return Err(Box::new(ThreeOriginError::new_with_git_info_file_line_column(
+//
+pub fn four(should_trace: bool) -> Result<(), Box<FourOriginError>> {
+    return Err(Box::new(FourOriginError::new_with_git_info_file_line_column(
         34,
-        crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES
-            .clone(),
-        String::from(file!()),
-        line!(),
-        column!(),
+            crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES
+            .clone(), 
+            String::from(file!()), 
+            line!(), 
+            column!(), 
     )));
 }
+//
 
 #[derive(Debug, Clone)]
 pub struct CodeOccurence {
