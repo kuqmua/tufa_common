@@ -255,6 +255,7 @@ where
             .and_modify(|vec_existing_value_elements| {
                 vec_existing_value_elements.push(TimeFileLineColumnIncrement {
                     increment: new_last_increment,
+                    concurrent_or_parallel_execution_index: None,
                     time_file_line_column: TimeFileLineColumn::new(FileLineColumn {
                         file: file.clone(),
                         line,
@@ -265,6 +266,7 @@ where
             .or_insert_with(|| {
                 vec![TimeFileLineColumnIncrement {
                     increment: new_last_increment,
+                    concurrent_or_parallel_execution_index: None,
                     time_file_line_column: TimeFileLineColumn::new(FileLineColumn {
                         file: file.clone(),
                         line,
@@ -399,6 +401,7 @@ impl ReadableTimeString for OccurenceFilter {
 #[derive(Debug, Clone)]
 pub struct TimeFileLineColumnIncrement {
     increment: u64, //potential overflow?
+    concurrent_or_parallel_execution_index: Option<u64>,//for information about parallel error result like inside join_all!() or join!()
     time_file_line_column: TimeFileLineColumn,
 }
 
@@ -410,6 +413,7 @@ impl TimeFileLineColumnIncrement {
     ) -> Self {
         Self {
             increment: 0, //potential overflow?
+            concurrent_or_parallel_execution_index: None,
             time_file_line_column: TimeFileLineColumn::new(FileLineColumn { file, line, column }),
         }
     }
