@@ -20,7 +20,7 @@ pub mod is_enabled_prints;
 pub mod log_error_code_occurence;
 pub mod new_error;
 pub mod new_error_test;
-pub mod new_error_with_addition;
+pub mod new_error_with_one_addition;
 pub mod print_type_methods;
 pub mod readable_time;
 pub mod readable_time_string;

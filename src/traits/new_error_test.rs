@@ -1,5 +1,5 @@
 use crate::traits::code_occurence_methods::CodeOccurenceNew;
-use crate::traits::code_occurence_methods::CodeOccurenceNewWithAddition;
+use crate::traits::code_occurence_methods::CodeOccurenceNewErrorWithOneAddition;
 
 pub trait NewErrorTest<T> {
     fn new_with_git_info_file_line_column(

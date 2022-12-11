@@ -1,5 +1,5 @@
-pub trait CodeOccurenceNewWithAddition<SourceGeneric> {
-    fn new_with_addition(
+pub trait CodeOccurenceNewErrorWithOneAddition<SourceGeneric> {
+    fn new_error_with_one_addition(
         git_info: &crate::common::git::git_info::GitInformationWithoutLifetimes,
         file: String, //&'a str
         line: u32,

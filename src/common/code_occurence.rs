@@ -3,12 +3,13 @@ use crate::common::git::git_info::GitInformationWithoutLifetimes;
 use crate::common::where_was::WhereWas;
 use crate::config_mods::log_type::LogType;
 use crate::config_mods::source_place_type::SourcePlaceType;
+use crate::traits::code_occurence_methods;
 use crate::traits::code_path::CodePath;
 use crate::traits::console::Console;
 use crate::traits::get_code_occurence::GetCodeOccurence;
 use crate::traits::get_git_source_file_link::GetGitSourceFileLink;
 use crate::traits::new_error_test::NewErrorTest;
-use crate::traits::new_error_with_addition::NewErrorWithAddition;
+use crate::traits::new_error_with_one_addition::NewErrorWithOneAddition;
 use crate::traits::readable_time::ReadableTime;
 use crate::traits::readable_time_string::ReadableTimeString;
 use crate::traits::separator_symbol::SeparatorSymbol;
@@ -48,7 +49,7 @@ impl crate::traits::get_code_occurence::GetCodeOccurence for ThreeWrapperError {
 
 pub fn three(should_trace: bool) -> Result<(), Box<ThreeWrapperError>> {
     if let Err(e) = four(false) {
-        return Err(Box::new(ThreeWrapperError::new_error_with_addition(
+        return Err(Box::new(ThreeWrapperError::new_error_with_one_addition(
             ThreeWrapperErrorEnum::FourWrapper(*e),
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG), 
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES), 
@@ -120,30 +121,32 @@ impl crate::traits::get_code_occurence::GetCodeOccurence for FourWrapperErrorEnu
 }
 //
 pub fn four(should_trace: bool) -> Result<(), Box<FourOriginError>> {
-    match (five(false), six(false)) {
-        (Ok(_), Ok(_)) => todo!(),
-        (Ok(_), Err(_)) => todo!(),
-        (Err(_), Ok(_)) => todo!(),
-        (Err(f), Err(s)) => {
-                 return Err(Box::new(FourOriginError::new_with_git_info_file_line_column(
-            HashMap::from([
-                (
-                    String::from("one"),
-                    FourWrapperErrorEnum::FiveWrapper(*f)
-                ),
-                (
-                    String::from("two"),
-                    FourWrapperErrorEnum::SixWrapper(*s)
-                )
-            ]),
-            crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES
-            .clone(), 
-            String::from(file!()), 
-            line!(), 
-            column!(), 
-    )));
-        },
-    }
+    // match (five(false), six(false)) {
+    //     (Ok(_), Ok(_)) => todo!(),
+    //     (Ok(_), Err(_)) => todo!(),
+    //     (Err(_), Ok(_)) => todo!(),
+    //     (Err(f), Err(s)) => {
+    //              return Err(Box::new(FourOriginError::new_error_with_one_addition(
+    //         HashMap::from([
+    //             (
+    //                 String::from("one"),
+    //                 FourWrapperErrorEnum::FiveWrapper(*f)
+    //             ),
+    //             (
+    //                 String::from("two"),
+    //                 FourWrapperErrorEnum::SixWrapper(*s)
+    //             )
+    //         ]),
+    //         once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG), 
+    //         once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES), 
+    //         String::from(file!()), 
+    //         line!(), 
+    //         column!(), 
+    //         should_trace
+    // )));
+    //     },
+    // }
+    Ok(())
 }
 //
 #[derive(ImplGetSourceFromCrate)]
@@ -217,12 +220,12 @@ pub struct CodeOccurence {
 }
 
 impl<SourceGeneric>
-    crate::traits::code_occurence_methods::CodeOccurenceNewWithAddition<SourceGeneric>
+    crate::traits::code_occurence_methods::CodeOccurenceNewErrorWithOneAddition<SourceGeneric>
     for CodeOccurence
 where
     SourceGeneric: crate::traits::get_code_occurence::GetCodeOccurence,
 {
-    fn new_with_addition(
+    fn new_error_with_one_addition(
         git_info: &GitInformationWithoutLifetimes,
         file: String, //&'a str
         line: u32,
@@ -343,6 +346,40 @@ where
         log_type.console(config_generic.get_error_color_bold(), occurence);
     }
 }
+
+//
+pub trait FromFewCodeOccurencesHashMap<KeyGeneric, ValueGeneric> {
+    fn from_few_code_occurences_hashmap(&self) -> CodeOccurence;
+}
+
+impl<KeyGeneric, ValueGeneric> FromFewCodeOccurencesHashMap<KeyGeneric, ValueGeneric> for HashMap<KeyGeneric, ValueGeneric> 
+where 
+    ValueGeneric: crate::traits::get_code_occurence::GetCodeOccurence
+{
+    fn from_few_code_occurences_hashmap(&self) -> CodeOccurence {
+        let mut parallel_counter = 0;//todo - add some field to code occurence?
+        let mut formatted = self
+        // .iter()
+        .values()
+        // .map(|(code_occurence)| code_occurence)
+        // .collect::<Vec<String>>()
+        // .iter()
+        .fold(HashMap::<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>::new(), |mut acc, elem| {
+            let current_code_occurence = elem.get_code_occurence();
+            // acc.push_str(elem);
+            acc
+        })
+        ;
+        // if !formatted.is_empty() {
+        //     formatted.pop();
+        // }
+        // formatted
+        CodeOccurence {
+            occurences: HashMap::new(),
+        }
+    }
+}
+//
 
 #[derive(Debug, Clone)]
 pub struct OccurenceFilter {

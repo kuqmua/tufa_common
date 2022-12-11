@@ -1,14 +1,14 @@
 use crate::traits::code_occurence_methods::CodeOccurenceLog;
-use crate::traits::code_occurence_methods::CodeOccurenceNewWithAddition;
+use crate::traits::code_occurence_methods::CodeOccurenceNewErrorWithOneAddition;
 
-pub trait NewErrorWithAddition<
+pub trait NewErrorWithOneAddition<
     SourceGeneric,
     ConfigGeneric,
     ErrorColorBoldGeneric,
     ReturnSelfGeneric,
 >
 {
-    fn new_error_with_addition(
+    fn new_error_with_one_addition(
         source: SourceGeneric,
         config: ConfigGeneric,
         git_info: &crate::common::git::git_info::GitInformationWithoutLifetimes,
@@ -20,7 +20,7 @@ pub trait NewErrorWithAddition<
 }
 
 impl<SourceGeneric, ConfigGeneric, ErrorColorBoldGeneric, ReturnSelfGeneric>
-    NewErrorWithAddition<SourceGeneric, ConfigGeneric, ErrorColorBoldGeneric, ReturnSelfGeneric>
+    NewErrorWithOneAddition<SourceGeneric, ConfigGeneric, ErrorColorBoldGeneric, ReturnSelfGeneric>
     for ReturnSelfGeneric
 where
     SourceGeneric:
@@ -34,7 +34,7 @@ where
         + crate::config_mods::traits::fields::GetLogType
         + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
 {
-    fn new_error_with_addition(
+    fn new_error_with_one_addition(
         source: SourceGeneric,
         config: ConfigGeneric,
         git_info: &crate::common::git::git_info::GitInformationWithoutLifetimes,
@@ -43,9 +43,10 @@ where
         column: u32,
         should_trace: bool,
     ) -> ReturnSelfGeneric {
-        let code_occurence = crate::common::code_occurence::CodeOccurence::new_with_addition(
-            git_info, file, line, column, &source,
-        );
+        let code_occurence =
+            crate::common::code_occurence::CodeOccurence::new_error_with_one_addition(
+                git_info, file, line, column, &source,
+            );
         let error = ReturnSelfGeneric::new_with_code_occurance(source, code_occurence);
         if let true = should_trace {
             error.log_error_code_occurence(config);
