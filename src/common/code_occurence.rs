@@ -18,7 +18,7 @@ use impl_get_source::ImplGetSourceFromCrate;
 use std::collections::HashMap;
 use std::fmt::{self, Display};
 
-#[derive(ImplGetSourceFromCrate, Clone)]
+#[derive(ImplGetSourceFromCrate)]
 pub struct ThreeOriginError {
     source: u32,
     code_occurence: CodeOccurence,
