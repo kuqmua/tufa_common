@@ -37,24 +37,28 @@ where
         + crate::config_mods::traits::fields::GetLogType
         + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
     SourceGeneric: crate::traits::get_source::GetSource,
-    Self: CodeOccurenceToString<ConfigGeneric, ErrorColorBoldGeneric, SourceGeneric>,
+    Self: CodeOccurenceWithSourceToString<ConfigGeneric, ErrorColorBoldGeneric, SourceGeneric>,
 {
     fn log(&self, source_generic: &SourceGeneric, config_generic: ConfigGeneric) {
         let log_type = config_generic.get_log_type();
         let error_color_bold = config_generic.get_error_color_bold();
         log_type.console(
             error_color_bold,
-            self.to_string(source_generic, &config_generic),
+            self.code_occurence_with_source_to_string(source_generic, &config_generic),
         )
     }
 }
 
-pub trait CodeOccurenceToString<ConfigGeneric, ErrorColorBoldGeneric, SourceGeneric> {
-    fn to_string(&self, source: &SourceGeneric, config_generic: &ConfigGeneric) -> String;
+pub trait CodeOccurenceWithSourceToString<ConfigGeneric, ErrorColorBoldGeneric, SourceGeneric> {
+    fn code_occurence_with_source_to_string(
+        &self,
+        source: &SourceGeneric,
+        config_generic: &ConfigGeneric,
+    ) -> String;
 }
 
 impl<ConfigGeneric, ErrorColorBoldGeneric, SourceGeneric>
-    crate::traits::code_occurence_methods::CodeOccurenceToString<
+    crate::traits::code_occurence_methods::CodeOccurenceWithSourceToString<
         ConfigGeneric,
         ErrorColorBoldGeneric,
         SourceGeneric,
@@ -65,7 +69,11 @@ where
         + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
     SourceGeneric: crate::traits::get_source::GetSource,
 {
-    fn to_string(&self, source_generic: &SourceGeneric, config_generic: &ConfigGeneric) -> String {
+    fn code_occurence_with_source_to_string(
+        &self,
+        source_generic: &SourceGeneric,
+        config_generic: &ConfigGeneric,
+    ) -> String {
         let capacity = self.occurences.values().fold(0, |mut acc, elem| {
             acc += elem.len();
             acc

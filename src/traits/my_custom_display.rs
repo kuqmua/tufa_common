@@ -1,41 +1,59 @@
-pub trait MyCustomDisplay<SourceGeneric, ConfigGeneric, ErrorColorBoldGeneric, ReturnSelfGeneric> {
-    fn display_source(&self) -> String;
-    fn display_code_occurence(&self) -> String;
-    fn display_full_error(&self) -> String;
-}
+use crate::traits::code_occurence_methods::CodeOccurenceWithSourceToString;
+use crate::traits::get_code_occurence::GetCodeOccurence;
+use crate::traits::get_source::GetSource;
+
+// pub trait DisplayError<SourceGeneric, ConfigGeneric, ErrorColorBoldGeneric> {
+//     fn display_error(
+//         &self,
+//         source_generic: &SourceGeneric,
+//         config_generic: &ConfigGeneric,
+//     ) -> String;
+// }
 
 // impl<SourceGeneric, ConfigGeneric, ErrorColorBoldGeneric, ReturnSelfGeneric>
-//     NewErrorWithOneAddition<SourceGeneric, ConfigGeneric, ErrorColorBoldGeneric, ReturnSelfGeneric>
+//     DisplayError<SourceGeneric, ConfigGeneric, ErrorColorBoldGeneric>
 //     for ReturnSelfGeneric
 // where
-//     SourceGeneric:
-//         crate::traits::get_source::GetSource + crate::traits::get_code_occurence::GetCodeOccurence,
-//     ReturnSelfGeneric: crate::traits::new_error_test::NewErrorTest<SourceGeneric>
-//         + crate::traits::log_error_code_occurence::LogErrorCodeOccurence<
-//             ConfigGeneric,
-//             ErrorColorBoldGeneric,
-//         >,
 //     ConfigGeneric: crate::config_mods::traits::fields::GetSourcePlaceType
 //         + crate::config_mods::traits::fields::GetLogType
 //         + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
+//     SourceGeneric: crate::traits::get_source::GetSource,
+//     ReturnSelfGeneric: crate::traits::get_code_occurence::GetCodeOccurence + crate::traits::get_source::GetSource,
 // {
-//     fn new_error_with_one_addition(
-//         source: SourceGeneric,
-//         config: ConfigGeneric,
-//         git_info: &crate::common::git::git_info::GitInformationWithoutLifetimes,
-//         file: String,
-//         line: u32,
-//         column: u32,
-//         should_trace: bool,
-//     ) -> ReturnSelfGeneric {
-//         let code_occurence =
-//             crate::common::code_occurence::CodeOccurence::new_error_with_one_addition(
-//                 git_info, file, line, column, &source,
-//             );
-//         let error = ReturnSelfGeneric::new_with_code_occurance(source, code_occurence);
-//         if let true = should_trace {
-//             error.log_error_code_occurence(config);
-//         }
-//         error
+//     fn display_error(
+//         &self,
+//         source_generic: &SourceGeneric,
+//         config_generic: &ConfigGeneric,
+//     ) -> String {
+//         self.get_code_occurence()
+//             .to_string(source_generic, config_generic)
 //     }
 // }
+
+pub trait ErrorCodeOccurenceToString<ConfigGeneric, ErrorColorBoldGeneric, SourceGeneric> {
+    fn error_code_occurence_to_string(
+        &self,
+        source_generic: &SourceGeneric,
+        config_generic: &ConfigGeneric,
+    ) -> String;
+}
+
+impl<ConfigGeneric, ErrorColorBoldGeneric, SourceGeneric, ReturnSelfGeneric>
+    ErrorCodeOccurenceToString<ConfigGeneric, ErrorColorBoldGeneric, SourceGeneric>
+    for ReturnSelfGeneric
+where
+    ConfigGeneric: crate::config_mods::traits::fields::GetSourcePlaceType
+        + crate::config_mods::traits::fields::GetLogType
+        + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
+    SourceGeneric: crate::traits::get_source::GetSource,
+    ReturnSelfGeneric: crate::traits::get_code_occurence::GetCodeOccurence,
+{
+    fn error_code_occurence_to_string(
+        &self,
+        source_generic: &SourceGeneric,
+        config_generic: &ConfigGeneric,
+    ) -> String {
+        self.get_code_occurence()
+            .code_occurence_with_source_to_string(source_generic, config_generic)
+    }
+}
