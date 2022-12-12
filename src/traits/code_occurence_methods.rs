@@ -116,3 +116,56 @@ where
         occurence
     }
 }
+
+pub trait CodeOccurenceToString<ConfigGeneric, ErrorColorBoldGeneric> {
+    fn code_occurence_to_string(&self, config_generic: &ConfigGeneric) -> String;
+}
+
+impl<ConfigGeneric, ErrorColorBoldGeneric>
+    crate::traits::code_occurence_methods::CodeOccurenceToString<
+        ConfigGeneric,
+        ErrorColorBoldGeneric,
+    > for crate::common::code_occurence::CodeOccurence
+where
+    ConfigGeneric: crate::config_mods::traits::fields::GetSourcePlaceType
+        + crate::config_mods::traits::fields::GetLogType
+        + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
+{
+    fn code_occurence_to_string(&self, config_generic: &ConfigGeneric) -> String {
+        let capacity = self.occurences.values().fold(0, |mut acc, elem| {
+            acc += elem.len();
+            acc
+        });
+        let mut vec: Vec<crate::common::code_occurence::OccurenceFilter> =
+            Vec::with_capacity(capacity);
+        self.occurences.iter().for_each(|(git_info, v)| {
+            v.iter().for_each(|e| {
+                vec.push(crate::common::code_occurence::OccurenceFilter {
+                    increment: e.increment,
+                    time: e.time_file_line_column.time,
+                    occurence: e
+                        .time_file_line_column
+                        .get_code_path(git_info, config_generic.get_source_place_type()),
+                })
+            })
+        });
+        //vec.reverse();//todo check reserve or not
+        vec.sort_by(|a, b| a.increment.cmp(&b.increment));
+        let mut occurences = Vec::with_capacity(capacity + 1);
+        let log_type = config_generic.get_log_type();
+        vec.into_iter().for_each(|e| {
+            occurences.push(format!(
+                "{} {}{}",
+                e.readable_time_string(),
+                e.occurence,
+                log_type.symbol()
+            ));
+        });
+        let mut occurence = occurences.iter().fold(String::from(""), |mut acc, elem| {
+            acc.push_str(elem);
+            acc
+        });
+        log_type.pop_last(&mut occurence);
+        occurence
+    }
+}
