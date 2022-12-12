@@ -18,6 +18,7 @@ pub mod git_info;
 pub mod init_error_with_possible_trace;
 pub mod is_enabled_prints;
 pub mod log_error_code_occurence;
+pub mod my_custom_display;
 pub mod new_error;
 pub mod new_error_test;
 pub mod new_error_with_one_addition;
