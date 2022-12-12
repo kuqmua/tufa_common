@@ -52,9 +52,10 @@ impl crate::traits::get_code_occurence::GetCodeOccurence for ThreeWrapperError {
         &self.code_occurence
     }
 }
-
+use crate::traits::my_custom_display::DisplayError;
 pub fn three(should_trace: bool) -> Result<(), Box<ThreeWrapperError>> {
     if let Err(e) = four(false) {
+                // println!("{}", <FourOriginError as DisplayError<SourceGeneric, ConfigStruct, ConfigStruct>>::display_error(&*e, once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG)));
         return Err(Box::new(ThreeWrapperError::new_error_with_one_addition(
             ThreeWrapperErrorEnum::FourWrapper(*e),
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG), 
@@ -83,12 +84,14 @@ impl crate::traits::get_code_occurence::GetCodeOccurence for ThreeWrapperErrorEn
 //
 #[derive(ImplGetSourceFromCrate)]
 pub struct FourOriginError {
-    source: HashMap<String, FourWrapperErrorEnum>,
+    source: FourWrapperErrorEnum,//HashMap<String, FourWrapperErrorEnum>,
     code_occurence: CodeOccurence,
 }
-
-impl crate::traits::new_error_test::NewErrorTestTestTest<HashMap<String, FourWrapperErrorEnum>> for FourOriginError {
-    fn new(source: HashMap<String, FourWrapperErrorEnum>, code_occurence: crate::common::code_occurence::CodeOccurence) -> Self {
+//HashMap<String, FourWrapperErrorEnum>
+impl crate::traits::new_error_test::NewErrorTestTestTest<FourWrapperErrorEnum> for FourOriginError {
+    fn new(
+        source: FourWrapperErrorEnum,//HashMap<String, FourWrapperErrorEnum>, 
+        code_occurence: crate::common::code_occurence::CodeOccurence) -> Self {
         Self {
             source,
             code_occurence,
@@ -127,6 +130,18 @@ impl crate::traits::get_code_occurence::GetCodeOccurence for FourWrapperErrorEnu
 }
 //
 pub fn four(should_trace: bool) -> Result<(), Box<FourOriginError>> {
+    if let Err(e) = six(false) {
+        
+                         return Err(Box::new(FourOriginError::new_error_with_one_addition(
+            FourWrapperErrorEnum::SixWrapper(*e),
+            once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG), 
+            once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES), 
+            String::from(file!()), 
+            line!(), 
+            column!(), 
+            should_trace
+    )));
+    }
     // match (five(false), six(false)) {
     //     (Ok(_), Ok(_)) => todo!(),
     //     (Ok(_), Err(_)) => todo!(),
