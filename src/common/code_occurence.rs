@@ -84,13 +84,13 @@ impl crate::traits::get_code_occurence::GetCodeOccurence for ThreeWrapperErrorEn
 //
 #[derive(ImplGetSourceFromCrate)]
 pub struct FourOriginError {
-    source: FourWrapperErrorEnum,//HashMap<String, FourWrapperErrorEnum>,
+    source: HashMap<String, FourWrapperErrorEnum>,
     code_occurence: CodeOccurence,
 }
-//HashMap<String, FourWrapperErrorEnum>
-impl crate::traits::new_error_test::NewErrorTestTestTest<FourWrapperErrorEnum> for FourOriginError {
+//
+impl crate::traits::new_error_test::NewErrorTestTestTest<HashMap<String, FourWrapperErrorEnum>> for FourOriginError {
     fn new(
-        source: FourWrapperErrorEnum,//HashMap<String, FourWrapperErrorEnum>, 
+        source: HashMap<String, FourWrapperErrorEnum>, 
         code_occurence: crate::common::code_occurence::CodeOccurence) -> Self {
         Self {
             source,
@@ -130,10 +130,33 @@ impl crate::traits::get_code_occurence::GetCodeOccurence for FourWrapperErrorEnu
 }
 //
 pub fn four(should_trace: bool) -> Result<(), Box<FourOriginError>> {
-    if let Err(e) = six(false) {
-        
-                         return Err(Box::new(FourOriginError::new_error_with_one_addition(
-            FourWrapperErrorEnum::SixWrapper(*e),
+    // if let Err(e) = six(false) {
+    //     return Err(Box::new(FourOriginError::new_error_with_one_addition(
+    //         FourWrapperErrorEnum::SixWrapper(*e),
+    //         once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG), 
+    //         once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES), 
+    //         String::from(file!()), 
+    //         line!(), 
+    //         column!(), 
+    //         should_trace
+    //     )));
+    // }
+    match (five(false), six(false)) {
+        (Ok(_), Ok(_)) => todo!(),
+        (Ok(_), Err(_)) => todo!(),
+        (Err(_), Ok(_)) => todo!(),
+        (Err(f), Err(s)) => {
+                 return Err(Box::new(FourOriginError::new_error_with_one_addition(
+            HashMap::from([
+                (
+                    String::from("one"),
+                    FourWrapperErrorEnum::FiveWrapper(*f)
+                ),
+                (
+                    String::from("two"),
+                    FourWrapperErrorEnum::SixWrapper(*s)
+                )
+            ]),
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG), 
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES), 
             String::from(file!()), 
@@ -141,32 +164,8 @@ pub fn four(should_trace: bool) -> Result<(), Box<FourOriginError>> {
             column!(), 
             should_trace
     )));
+        },
     }
-    // match (five(false), six(false)) {
-    //     (Ok(_), Ok(_)) => todo!(),
-    //     (Ok(_), Err(_)) => todo!(),
-    //     (Err(_), Ok(_)) => todo!(),
-    //     (Err(f), Err(s)) => {
-    //              return Err(Box::new(FourOriginError::new_error_with_one_addition(
-    //         HashMap::from([
-    //             (
-    //                 String::from("one"),
-    //                 FourWrapperErrorEnum::FiveWrapper(*f)
-    //             ),
-    //             (
-    //                 String::from("two"),
-    //                 FourWrapperErrorEnum::SixWrapper(*s)
-    //             )
-    //         ]),
-    //         once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG), 
-    //         once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES), 
-    //         String::from(file!()), 
-    //         line!(), 
-    //         column!(), 
-    //         should_trace
-    // )));
-    //     },
-    // }
     Ok(())
 }
 //
@@ -320,6 +319,63 @@ impl crate::traits::code_occurence_methods::CodeOccurenceNew for CodeOccurence {
 //
 pub trait FromFewCodeOccurencesHashMap<KeyGeneric, ValueGeneric> {
     fn from_few_code_occurences_hashmap(&self) -> CodeOccurence;
+}
+
+impl crate::traits::get_code_occurence::GetCodeOccurence for HashMap<std::string::String, FourWrapperErrorEnum> 
+{
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
+        //todo
+        // self.values().fold(HashMap::<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>::new(), |mut acc, elem| {
+        //     let f = match elem {
+        //         FourWrapperErrorEnum::FiveWrapper(e) => e.get_code_occurence(),
+        //         FourWrapperErrorEnum::SixWrapper(e) => e.get_code_occurence(),
+        //     };
+        //     f.occurences.iter().for_each(|(key, value)|{
+        //         acc
+        //     .entry(key)
+        //     .and_modify(|vec_existing_value_elements| {
+        //         vec_existing_value_elements.push(TimeFileLineColumnIncrement {
+        //             increment: new_last_increment,
+        //             concurrent_or_parallel_execution_index: None,
+        //             time_file_line_column: TimeFileLineColumn::new(FileLineColumn {
+        //                 file: file.clone(),
+        //                 line,
+        //                 column,
+        //             }), //todo how to rewrite it without clone() ?
+        //         });
+        //     })
+        //     .or_insert_with(|| {
+        //         vec![TimeFileLineColumnIncrement {
+        //             increment: new_last_increment,
+        //             concurrent_or_parallel_execution_index: None,
+        //             time_file_line_column: TimeFileLineColumn::new(FileLineColumn {
+        //                 file: file.clone(),
+        //                 line,
+        //                 column,
+        //             }),
+        //         }]
+        //     });
+        //     });
+        //     // let current_code_occurence = elem.get_code_occurence();
+        //     // acc.push_str(elem);
+        //     acc
+        // });
+        let f = self.get("one").unwrap();
+        match f {
+            FourWrapperErrorEnum::FiveWrapper(e) => e.get_code_occurence(),
+            FourWrapperErrorEnum::SixWrapper(e) => e.get_code_occurence(),
+        }
+        // &CodeOccurence {
+        //     occurences: HashMap::new(),
+        // }
+    }
+}
+
+impl crate::traits::get_source::GetSource for HashMap<std::string::String, FourWrapperErrorEnum> 
+{
+    fn get_source(&self) -> String {
+        String::from("todo this impl")
+    }
 }
 
 impl<KeyGeneric, ValueGeneric> FromFewCodeOccurencesHashMap<KeyGeneric, ValueGeneric> for HashMap<KeyGeneric, ValueGeneric> 
