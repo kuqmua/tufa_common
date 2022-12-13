@@ -1,8 +1,8 @@
-pub trait GetMongoUrl<SomeGenericParam> {
+pub trait GetMongoUrl<SelfGeneric> {
     fn get_mongo_url(&self) -> String;
 }
 
-impl<T> GetMongoUrl<Self> for T
+impl<SelfGeneric> GetMongoUrl<Self> for SelfGeneric
 where
     Self: crate::traits::fields::GetMongoFirstHandleUrlPart
         + crate::traits::fields::GetMongoSecondHandleUrlPart

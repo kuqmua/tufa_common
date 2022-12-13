@@ -14,9 +14,9 @@ pub trait CodePath {
     ) -> String; //theoretically can make it const fn
 }
 
-impl<T> CodePath for T
+impl<SelfGeneric> CodePath for SelfGeneric
 where
-    T: crate::traits::get_file::GetFile
+    SelfGeneric: crate::traits::get_file::GetFile
         + crate::traits::get_line::GetLine
         + crate::traits::get_column::GetColumn,
 {

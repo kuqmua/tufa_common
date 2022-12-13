@@ -1,8 +1,8 @@
-pub trait GetPostgresUrl<SomeGenericParam> {
+pub trait GetPostgresUrl<SelfGeneric> {
     fn get_postgres_url(&self) -> String;
 }
 
-impl<T> GetPostgresUrl<Self> for T
+impl<SelfGeneric> GetPostgresUrl<Self> for SelfGeneric
 where
     Self: crate::traits::fields::GetPostgresFirstHandleUrlPart
         + crate::traits::fields::GetPostgresLogin

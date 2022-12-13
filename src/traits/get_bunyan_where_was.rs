@@ -7,9 +7,9 @@ pub trait GetBunyanWhereWas {
     fn get_bunyan_where_was(&self, source_place_type: &SourcePlaceType, error: String) -> String;
 }
 
-impl<T> GetBunyanWhereWas for T
+impl<SelfGeneric> GetBunyanWhereWas for SelfGeneric
 where
-    T: GetWhereWasOriginOrWrapper,
+    SelfGeneric: GetWhereWasOriginOrWrapper,
 {
     fn get_bunyan_where_was(&self, source_place_type: &SourcePlaceType, error: String) -> String {
         match self.get_where_was_one_or_many() {

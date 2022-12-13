@@ -3,10 +3,9 @@ use crate::common::where_was::WhereWas;
 use crate::config_mods::log_type::LogType;
 use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::traits::get_git_info::GetGitInfo;
-use crate::traits::get_log_where_was::GetLogWhereWas;
 use crate::traits::where_was_methods::WhereWasMethods;
 
-pub trait GetLogWithAdditionalWhereWas<T> {
+pub trait GetLogWithAdditionalWhereWas<SelfGeneric> {
     fn get_log_with_additional_where_was(
         &self,
         where_was: &WhereWas,
@@ -16,9 +15,9 @@ pub trait GetLogWithAdditionalWhereWas<T> {
     ) -> String;
 }
 
-impl<T> GetLogWithAdditionalWhereWas<Self> for T
+impl<SelfGeneric> GetLogWithAdditionalWhereWas<Self> for SelfGeneric
 where
-    Self: GetLogWhereWas, // + GetGitInfo,
+    Self: crate::traits::get_log_where_was::GetLogWhereWas, // + GetGitInfo,
 {
     fn get_log_with_additional_where_was(
         &self,
