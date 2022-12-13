@@ -2,6 +2,7 @@ pub mod change_password_form_data;
 pub mod code_occurence;
 pub mod file_line_column;
 pub mod git;
+pub mod increment_time_file_line_column;
 pub mod numeric;
 pub mod postgres_credentials;
 pub mod time_file_line_column;
