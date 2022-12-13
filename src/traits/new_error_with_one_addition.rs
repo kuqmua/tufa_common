@@ -1,13 +1,7 @@
 use crate::traits::code_occurence_methods::CodeOccurenceLog;
 use crate::traits::code_occurence_methods::CodeOccurenceNewErrorWithOneAddition;
 
-pub trait NewErrorWithOneAddition<
-    SourceGeneric,
-    ConfigGeneric,
-    ErrorColorBoldGeneric,
-    ReturnSelfGeneric,
->
-{
+pub trait NewErrorWithOneAddition<SourceGeneric, ConfigGeneric, ReturnSelfGeneric> {
     fn new_error_with_one_addition(
         source: SourceGeneric,
         config: ConfigGeneric,
@@ -19,20 +13,16 @@ pub trait NewErrorWithOneAddition<
     ) -> ReturnSelfGeneric;
 }
 
-impl<SourceGeneric, ConfigGeneric, ErrorColorBoldGeneric, ReturnSelfGeneric>
-    NewErrorWithOneAddition<SourceGeneric, ConfigGeneric, ErrorColorBoldGeneric, ReturnSelfGeneric>
-    for ReturnSelfGeneric
+impl<SourceGeneric, ConfigGeneric, ReturnSelfGeneric>
+    NewErrorWithOneAddition<SourceGeneric, ConfigGeneric, ReturnSelfGeneric> for ReturnSelfGeneric
 where
     SourceGeneric:
         crate::traits::get_source::GetSource + crate::traits::get_code_occurence::GetCodeOccurence,
     ReturnSelfGeneric: crate::traits::init_error::InitError<SourceGeneric>
-        + crate::traits::log_error_code_occurence::LogErrorCodeOccurence<
-            ConfigGeneric,
-            ErrorColorBoldGeneric,
-        >,
+        + crate::traits::log_error_code_occurence::LogErrorCodeOccurence<ConfigGeneric>,
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetLogType
-        + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
+        + crate::traits::get_color::ErrorColorBold,
 {
     fn new_error_with_one_addition(
         source: SourceGeneric,

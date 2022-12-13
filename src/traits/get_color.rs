@@ -24,11 +24,11 @@ use crate::traits::fields::GetWarningLowGreen;
 use crate::traits::fields::GetWarningLowRed;
 use ansi_term::Colour::RGB;
 
-pub trait ErrorColor<T> {
+pub trait ErrorColor {
     fn get_error_color(&self) -> ansi_term::Colour;
 }
 
-impl<T> ErrorColor<Self> for T
+impl<SelfGeneric> ErrorColor for SelfGeneric
 where
     Self: GetErrorBlue + GetErrorGreen + GetErrorRed,
 {
@@ -41,13 +41,13 @@ where
     }
 }
 
-pub trait ErrorColorBold<T> {
+pub trait ErrorColorBold {
     fn get_error_color_bold(&self) -> ansi_term::Style;
 }
 
-impl<T> ErrorColorBold<Self> for T
+impl<SelfGeneric> ErrorColorBold for SelfGeneric
 where
-    Self: ErrorColor<T>,
+    Self: ErrorColor,
 {
     fn get_error_color_bold(&self) -> ansi_term::Style {
         self.get_error_color().bold()

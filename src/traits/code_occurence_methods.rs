@@ -17,7 +17,7 @@ pub trait CodeOccurenceNew {
     ) -> Self;
 }
 
-pub trait CodeOccurenceLog<ConfigGeneric, ErrorColorBoldGeneric, SourceGeneric> {
+pub trait CodeOccurenceLog<ConfigGeneric, SourceGeneric> {
     fn log(&self, source: &SourceGeneric, config_generic: ConfigGeneric);
 }
 
@@ -26,18 +26,15 @@ use crate::traits::console::Console;
 use crate::traits::readable_time_string::ReadableTimeString;
 use crate::traits::separator_symbol::SeparatorSymbol;
 
-impl<ConfigGeneric, ErrorColorBoldGeneric, SourceGeneric>
-    crate::traits::code_occurence_methods::CodeOccurenceLog<
-        ConfigGeneric,
-        ErrorColorBoldGeneric,
-        SourceGeneric,
-    > for crate::common::code_occurence::CodeOccurence
+impl<ConfigGeneric, SourceGeneric>
+    crate::traits::code_occurence_methods::CodeOccurenceLog<ConfigGeneric, SourceGeneric>
+    for crate::common::code_occurence::CodeOccurence
 where
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetLogType
-        + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
+        + crate::traits::get_color::ErrorColorBold,
     SourceGeneric: crate::traits::get_source::GetSource,
-    Self: CodeOccurenceWithSourceToString<ConfigGeneric, ErrorColorBoldGeneric, SourceGeneric>,
+    Self: CodeOccurenceWithSourceToString<ConfigGeneric, SourceGeneric>,
 {
     fn log(&self, source_generic: &SourceGeneric, config_generic: ConfigGeneric) {
         let log_type = config_generic.get_log_type();
@@ -49,7 +46,7 @@ where
     }
 }
 
-pub trait CodeOccurenceWithSourceToString<ConfigGeneric, ErrorColorBoldGeneric, SourceGeneric> {
+pub trait CodeOccurenceWithSourceToString<ConfigGeneric, SourceGeneric> {
     fn code_occurence_with_source_to_string(
         &self,
         source: &SourceGeneric,
@@ -57,16 +54,15 @@ pub trait CodeOccurenceWithSourceToString<ConfigGeneric, ErrorColorBoldGeneric, 
     ) -> String;
 }
 
-impl<ConfigGeneric, ErrorColorBoldGeneric, SourceGeneric>
+impl<ConfigGeneric, SourceGeneric>
     crate::traits::code_occurence_methods::CodeOccurenceWithSourceToString<
         ConfigGeneric,
-        ErrorColorBoldGeneric,
         SourceGeneric,
     > for crate::common::code_occurence::CodeOccurence
 where
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetLogType
-        + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
+        + crate::traits::get_color::ErrorColorBold,
     SourceGeneric: crate::traits::get_source::GetSource,
 {
     fn code_occurence_with_source_to_string(
@@ -117,19 +113,16 @@ where
     }
 }
 
-pub trait CodeOccurenceToString<ConfigGeneric, ErrorColorBoldGeneric> {
+pub trait CodeOccurenceToString<ConfigGeneric> {
     fn code_occurence_to_string(&self, config_generic: &ConfigGeneric) -> String;
 }
 
-impl<ConfigGeneric, ErrorColorBoldGeneric>
-    crate::traits::code_occurence_methods::CodeOccurenceToString<
-        ConfigGeneric,
-        ErrorColorBoldGeneric,
-    > for crate::common::code_occurence::CodeOccurence
+impl<ConfigGeneric> crate::traits::code_occurence_methods::CodeOccurenceToString<ConfigGeneric>
+    for crate::common::code_occurence::CodeOccurence
 where
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetLogType
-        + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
+        + crate::traits::get_color::ErrorColorBold,
 {
     fn code_occurence_to_string(&self, config_generic: &ConfigGeneric) -> String {
         let capacity = self.occurences.values().fold(0, |mut acc, elem| {

@@ -4,16 +4,15 @@ use crate::traits::get_code_occurence::GetCodeOccurence;
 use crate::traits::get_source::GetSource;
 use crate::traits::separator_symbol::SeparatorSymbol;
 
-pub trait DisplayError<ConfigGeneric, ErrorColorBoldGeneric> {
+pub trait DisplayError<ConfigGeneric> {
     fn display_error(&self, config_generic: &ConfigGeneric) -> String;
 }
 
-impl<ConfigGeneric, ErrorColorBoldGeneric, ReturnSelfGeneric>
-    DisplayError<ConfigGeneric, ErrorColorBoldGeneric> for ReturnSelfGeneric
+impl<ConfigGeneric, ReturnSelfGeneric> DisplayError<ConfigGeneric> for ReturnSelfGeneric
 where
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetLogType
-        + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
+        + crate::traits::get_color::ErrorColorBold,
     ReturnSelfGeneric:
         crate::traits::get_code_occurence::GetCodeOccurence + crate::traits::get_source::GetSource,
 {
@@ -28,7 +27,7 @@ where
     }
 }
 
-pub trait ErrorCodeOccurenceToString<ConfigGeneric, ErrorColorBoldGeneric, SourceGeneric> {
+pub trait ErrorCodeOccurenceToString<ConfigGeneric, SourceGeneric> {
     fn error_code_occurence_to_string(
         &self,
         source_generic: &SourceGeneric,
@@ -36,13 +35,12 @@ pub trait ErrorCodeOccurenceToString<ConfigGeneric, ErrorColorBoldGeneric, Sourc
     ) -> String;
 }
 
-impl<ConfigGeneric, ErrorColorBoldGeneric, SourceGeneric, ReturnSelfGeneric>
-    ErrorCodeOccurenceToString<ConfigGeneric, ErrorColorBoldGeneric, SourceGeneric>
-    for ReturnSelfGeneric
+impl<ConfigGeneric, SourceGeneric, ReturnSelfGeneric>
+    ErrorCodeOccurenceToString<ConfigGeneric, SourceGeneric> for ReturnSelfGeneric
 where
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetLogType
-        + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
+        + crate::traits::get_color::ErrorColorBold,
     SourceGeneric: crate::traits::get_source::GetSource,
     ReturnSelfGeneric: crate::traits::get_code_occurence::GetCodeOccurence,
 {
