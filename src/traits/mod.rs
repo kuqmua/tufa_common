@@ -15,6 +15,8 @@ pub mod get_json_where_was;
 pub mod get_line;
 pub mod get_log_where_was;
 pub mod get_log_with_additional_where_was;
+pub mod get_mongo_url;
+pub mod get_postgres_url;
 pub mod get_source;
 pub mod get_time;
 pub mod get_where_was_one_or_many;
