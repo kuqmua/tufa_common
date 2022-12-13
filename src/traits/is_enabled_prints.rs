@@ -1,11 +1,11 @@
-use crate::config_mods::traits::fields::GetIsCleaningWarningLogsDirectoryEnabled;
-use crate::config_mods::traits::fields::GetIsInfoPrintsEnabled;
-use crate::config_mods::traits::fields::GetIsPartialSuccessPrintsEnabled;
-use crate::config_mods::traits::fields::GetIsPrintsEnabled;
-use crate::config_mods::traits::fields::GetIsSuccessPrintsEnabled;
-use crate::config_mods::traits::fields::GetIsTimeMeasurementPrintsEnabled;
-use crate::config_mods::traits::fields::GetIsWarningHighPrintsEnabled;
-use crate::config_mods::traits::fields::GetIsWarningLowPrintsEnabled;
+use crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabled;
+use crate::traits::fields::GetIsInfoPrintsEnabled;
+use crate::traits::fields::GetIsPartialSuccessPrintsEnabled;
+use crate::traits::fields::GetIsPrintsEnabled;
+use crate::traits::fields::GetIsSuccessPrintsEnabled;
+use crate::traits::fields::GetIsTimeMeasurementPrintsEnabled;
+use crate::traits::fields::GetIsWarningHighPrintsEnabled;
+use crate::traits::fields::GetIsWarningLowPrintsEnabled;
 
 pub trait GetIsWarningHighPrintsEnabledWrapper<T> {
     fn get_is_warning_high_prints_enabled_wrapper(&self) -> bool;

@@ -1,15 +1,15 @@
-use crate::config_mods::traits::fields::GetPostgresDb;
-use crate::config_mods::traits::fields::GetPostgresFifthHandleUrlPart;
-use crate::config_mods::traits::fields::GetPostgresFirstHandleUrlPart;
-use crate::config_mods::traits::fields::GetPostgresFourthHandleUrlPart;
-use crate::config_mods::traits::fields::GetPostgresIp;
-use crate::config_mods::traits::fields::GetPostgresLogin;
-use crate::config_mods::traits::fields::GetPostgresParams;
-use crate::config_mods::traits::fields::GetPostgresPassword;
-use crate::config_mods::traits::fields::GetPostgresPort;
-use crate::config_mods::traits::fields::GetPostgresSecondHandleUrlPart;
-use crate::config_mods::traits::fields::GetPostgresSixthHandleUrlPart;
-use crate::config_mods::traits::fields::GetPostgresThirdHandleUrlPart;
+use crate::traits::fields::GetPostgresDb;
+use crate::traits::fields::GetPostgresFifthHandleUrlPart;
+use crate::traits::fields::GetPostgresFirstHandleUrlPart;
+use crate::traits::fields::GetPostgresFourthHandleUrlPart;
+use crate::traits::fields::GetPostgresIp;
+use crate::traits::fields::GetPostgresLogin;
+use crate::traits::fields::GetPostgresParams;
+use crate::traits::fields::GetPostgresPassword;
+use crate::traits::fields::GetPostgresPort;
+use crate::traits::fields::GetPostgresSecondHandleUrlPart;
+use crate::traits::fields::GetPostgresSixthHandleUrlPart;
+use crate::traits::fields::GetPostgresThirdHandleUrlPart;
 
 pub trait GetPostgresUrl<SomeGenericParam> {
     fn get_postgres_url(&self) -> String;

@@ -11,8 +11,8 @@ pub trait DisplayError<ConfigGeneric, ErrorColorBoldGeneric> {
 impl<ConfigGeneric, ErrorColorBoldGeneric, ReturnSelfGeneric>
     DisplayError<ConfigGeneric, ErrorColorBoldGeneric> for ReturnSelfGeneric
 where
-    ConfigGeneric: crate::config_mods::traits::fields::GetSourcePlaceType
-        + crate::config_mods::traits::fields::GetLogType
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetLogType
         + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
     ReturnSelfGeneric:
         crate::traits::get_code_occurence::GetCodeOccurence + crate::traits::get_source::GetSource,
@@ -40,8 +40,8 @@ impl<ConfigGeneric, ErrorColorBoldGeneric, SourceGeneric, ReturnSelfGeneric>
     ErrorCodeOccurenceToString<ConfigGeneric, ErrorColorBoldGeneric, SourceGeneric>
     for ReturnSelfGeneric
 where
-    ConfigGeneric: crate::config_mods::traits::fields::GetSourcePlaceType
-        + crate::config_mods::traits::fields::GetLogType
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetLogType
         + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
     SourceGeneric: crate::traits::get_source::GetSource,
     ReturnSelfGeneric: crate::traits::get_code_occurence::GetCodeOccurence,

@@ -33,8 +33,8 @@ impl<ConfigGeneric, ErrorColorBoldGeneric, SourceGeneric>
         SourceGeneric,
     > for crate::common::code_occurence::CodeOccurence
 where
-    ConfigGeneric: crate::config_mods::traits::fields::GetSourcePlaceType
-        + crate::config_mods::traits::fields::GetLogType
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetLogType
         + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
     SourceGeneric: crate::traits::get_source::GetSource,
     Self: CodeOccurenceWithSourceToString<ConfigGeneric, ErrorColorBoldGeneric, SourceGeneric>,
@@ -64,8 +64,8 @@ impl<ConfigGeneric, ErrorColorBoldGeneric, SourceGeneric>
         SourceGeneric,
     > for crate::common::code_occurence::CodeOccurence
 where
-    ConfigGeneric: crate::config_mods::traits::fields::GetSourcePlaceType
-        + crate::config_mods::traits::fields::GetLogType
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetLogType
         + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
     SourceGeneric: crate::traits::get_source::GetSource,
 {
@@ -127,8 +127,8 @@ impl<ConfigGeneric, ErrorColorBoldGeneric>
         ErrorColorBoldGeneric,
     > for crate::common::code_occurence::CodeOccurence
 where
-    ConfigGeneric: crate::config_mods::traits::fields::GetSourcePlaceType
-        + crate::config_mods::traits::fields::GetLogType
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetLogType
         + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
 {
     fn code_occurence_to_string(&self, config_generic: &ConfigGeneric) -> String {

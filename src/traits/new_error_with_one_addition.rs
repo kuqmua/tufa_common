@@ -30,8 +30,8 @@ where
             ConfigGeneric,
             ErrorColorBoldGeneric,
         >,
-    ConfigGeneric: crate::config_mods::traits::fields::GetSourcePlaceType
-        + crate::config_mods::traits::fields::GetLogType
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetLogType
         + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
 {
     fn new_error_with_one_addition(

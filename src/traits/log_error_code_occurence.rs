@@ -9,8 +9,8 @@ impl<SelfGeneric, ConfigGeneric, ErrorColorBoldGeneric>
 where
     SelfGeneric:
         crate::traits::get_code_occurence::GetCodeOccurence + crate::traits::get_source::GetSource,
-    ConfigGeneric: crate::config_mods::traits::fields::GetSourcePlaceType
-        + crate::config_mods::traits::fields::GetLogType
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetLogType
         + crate::traits::get_color::ErrorColorBold<ErrorColorBoldGeneric>,
 {
     fn log_error_code_occurence(&self, config: ConfigGeneric) {

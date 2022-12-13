@@ -319,6 +319,20 @@ impl crate::traits::code_occurence_methods::CodeOccurenceNew for CodeOccurence {
     }
 }
 
+use crate::traits::readable_time_string::ReadableTimeString;
+#[derive(Debug, Clone)]
+pub struct OccurenceFilter {
+    pub increment: u64, //potential overflow?
+    pub time: std::time::Duration,
+    pub occurence: String,
+}
+
+impl crate::traits::get_time::GetTime for OccurenceFilter {
+    fn get_time(&self) -> std::time::Duration {
+        self.time
+    }
+}
+
 //
 
 
@@ -377,20 +391,5 @@ impl crate::traits::code_occurence_methods::CodeOccurenceNew for CodeOccurence {
 impl crate::traits::get_source::GetSource for HashMap<std::string::String, FourWrapperErrorEnum> {
     fn get_source(&self) -> String {
         String::from("todo this impl")
-    }
-}
-
-
-use crate::traits::readable_time_string::ReadableTimeString;
-#[derive(Debug, Clone)]
-pub struct OccurenceFilter {
-    pub increment: u64, //potential overflow?
-    pub time: std::time::Duration,
-    pub occurence: String,
-}
-
-impl crate::traits::get_time::GetTime for OccurenceFilter {
-    fn get_time(&self) -> std::time::Duration {
-        self.time
     }
 }
