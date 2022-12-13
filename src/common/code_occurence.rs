@@ -14,6 +14,7 @@ use crate::traits::new_error_with_one_addition::NewErrorWithOneAddition;
 use crate::traits::readable_time::ReadableTime;
 use crate::traits::readable_time_string::ReadableTimeString;
 use crate::traits::separator_symbol::SeparatorSymbol;
+use crate::traits::new_error_with_git_info_file_line_column::NewErrorWithGitInfoFileLineColumn;
 use ansi_term::Colour::RGB;
 use chrono::prelude::DateTime;
 use chrono::Utc;
@@ -194,7 +195,7 @@ impl crate::traits::get_code_occurence::GetCodeOccurence for FiveOriginError {
 }
 //
 pub fn five(should_trace: bool) -> Result<(), Box<FiveOriginError>> {
-    return Err(Box::new(FiveOriginError::new_with_git_info_file_line_column(
+    return Err(Box::new(FiveOriginError::new_error_with_git_info_file_line_column(
         34,
             crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES
             .clone(), 
@@ -226,7 +227,7 @@ impl crate::traits::get_code_occurence::GetCodeOccurence for SixOriginError {
 }
 //
 pub fn six(should_trace: bool) -> Result<(), Box<SixOriginError>> {
-    return Err(Box::new(SixOriginError::new_with_git_info_file_line_column(
+    return Err(Box::new(SixOriginError::new_error_with_git_info_file_line_column(
         true,
             crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES
             .clone(), 
