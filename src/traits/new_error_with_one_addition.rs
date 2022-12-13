@@ -25,7 +25,7 @@ impl<SourceGeneric, ConfigGeneric, ErrorColorBoldGeneric, ReturnSelfGeneric>
 where
     SourceGeneric:
         crate::traits::get_source::GetSource + crate::traits::get_code_occurence::GetCodeOccurence,
-    ReturnSelfGeneric: crate::traits::new_error_test::NewErrorTestTestTest<SourceGeneric>
+    ReturnSelfGeneric: crate::traits::init_error::InitError<SourceGeneric>
         + crate::traits::log_error_code_occurence::LogErrorCodeOccurence<
             ConfigGeneric,
             ErrorColorBoldGeneric,
@@ -47,7 +47,7 @@ where
             crate::common::code_occurence::CodeOccurence::new_error_with_one_addition(
                 git_info, file, line, column, &source,
             );
-        let error = ReturnSelfGeneric::new(source, code_occurence);
+        let error = ReturnSelfGeneric::init_error(source, code_occurence);
         if let true = should_trace {
             error.log_error_code_occurence(config);
         }

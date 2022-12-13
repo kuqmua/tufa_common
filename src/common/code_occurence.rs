@@ -9,7 +9,7 @@ use crate::traits::code_path::CodePath;
 use crate::traits::console::Console;
 use crate::traits::get_code_occurence::GetCodeOccurence;
 use crate::traits::get_git_source_file_link::GetGitSourceFileLink;
-use crate::traits::new_error_test::NewErrorTestTestTest;
+use crate::traits::init_error::InitError;
 use crate::traits::new_error_with_one_addition::NewErrorWithOneAddition;
 use crate::traits::readable_time::ReadableTime;
 use crate::traits::readable_time_string::ReadableTimeString;
@@ -34,10 +34,10 @@ pub struct ThreeWrapperError {
 //     }
 // }
 
-impl crate::traits::new_error_test::NewErrorTestTestTest<ThreeWrapperErrorEnum>
+impl crate::traits::init_error::InitError<ThreeWrapperErrorEnum>
     for ThreeWrapperError
 {
-    fn new(
+    fn init_error(
         source: ThreeWrapperErrorEnum,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     ) -> Self {
@@ -89,10 +89,10 @@ pub struct FourOriginError {
     code_occurence: CodeOccurence,
 }
 //
-impl crate::traits::new_error_test::NewErrorTestTestTest<HashMap<String, FourWrapperErrorEnum>>
+impl crate::traits::init_error::InitError<HashMap<String, FourWrapperErrorEnum>>
     for FourOriginError
 {
-    fn new(
+    fn init_error(
         source: HashMap<String, FourWrapperErrorEnum>,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     ) -> Self {
@@ -179,8 +179,8 @@ pub struct FiveOriginError {
     code_occurence: CodeOccurence,
 }
 
-impl crate::traits::new_error_test::NewErrorTestTestTest<u32> for FiveOriginError {
-    fn new(source: u32, code_occurence: crate::common::code_occurence::CodeOccurence) -> Self {
+impl crate::traits::init_error::InitError<u32> for FiveOriginError {
+    fn init_error(source: u32, code_occurence: crate::common::code_occurence::CodeOccurence) -> Self {
         Self {
             source,
             code_occurence,
@@ -211,8 +211,8 @@ pub struct SixOriginError {
     code_occurence: CodeOccurence,
 }
 
-impl crate::traits::new_error_test::NewErrorTestTestTest<bool> for SixOriginError {
-    fn new(source: bool, code_occurence: crate::common::code_occurence::CodeOccurence) -> Self {
+impl crate::traits::init_error::InitError<bool> for SixOriginError {
+    fn init_error(source: bool, code_occurence: crate::common::code_occurence::CodeOccurence) -> Self {
         Self {
             source,
             code_occurence,

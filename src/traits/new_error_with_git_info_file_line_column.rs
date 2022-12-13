@@ -1,6 +1,6 @@
 use crate::traits::code_occurence_methods::CodeOccurenceNew;
 use crate::traits::code_occurence_methods::CodeOccurenceNewErrorWithOneAddition;
-use crate::traits::new_error_test::NewErrorTestTestTest;
+use crate::traits::init_error::InitError;
 
 pub trait NewErrorWithGitInfoFileLineColumn<SourceGeneric> {
     fn new_error_with_git_info_file_line_column(
@@ -15,7 +15,7 @@ pub trait NewErrorWithGitInfoFileLineColumn<SourceGeneric> {
 impl<SourceGeneric, ReturnSelfGeneric> NewErrorWithGitInfoFileLineColumn<SourceGeneric>
     for ReturnSelfGeneric
 where
-    ReturnSelfGeneric: NewErrorTestTestTest<SourceGeneric>,
+    ReturnSelfGeneric: InitError<SourceGeneric>,
 {
     fn new_error_with_git_info_file_line_column(
         source: SourceGeneric,
@@ -24,7 +24,7 @@ where
         line: u32,
         column: u32,
     ) -> ReturnSelfGeneric {
-        ReturnSelfGeneric::new(
+        ReturnSelfGeneric::init_error(
             source,
             crate::common::code_occurence::CodeOccurence::new(git_info, file, line, column),
         )
