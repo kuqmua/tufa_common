@@ -27,19 +27,19 @@ impl crate::traits::get_time::GetTime for IncrementTimeFileLineColumn {
     }
 }
 
-impl crate::traits::get_file::GetFile for IncrementTimeFileLineColumn {
+impl crate::traits::fields::GetFile for IncrementTimeFileLineColumn {
     fn get_file(&self) -> &String {
         &self.time_file_line_column.get_file()
     }
 }
 
-impl crate::traits::get_line::GetLine for IncrementTimeFileLineColumn {
+impl crate::traits::fields::GetLine for IncrementTimeFileLineColumn {
     fn get_line(&self) -> &u32 {
         &self.time_file_line_column.get_line()
     }
 }
 
-impl crate::traits::get_column::GetColumn for IncrementTimeFileLineColumn {
+impl crate::traits::fields::GetColumn for IncrementTimeFileLineColumn {
     fn get_column(&self) -> &u32 {
         &self.time_file_line_column.get_column()
     }

@@ -16,9 +16,9 @@ pub trait CodePath {
 
 impl<SelfGeneric> CodePath for SelfGeneric
 where
-    SelfGeneric: crate::traits::get_file::GetFile
-        + crate::traits::get_line::GetLine
-        + crate::traits::get_column::GetColumn,
+    SelfGeneric: crate::traits::fields::GetFile
+        + crate::traits::fields::GetLine
+        + crate::traits::fields::GetColumn,
 {
     fn get_code_path(
         &self,

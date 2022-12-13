@@ -7,19 +7,19 @@ pub struct FileLineColumn {
     pub column: u32,
 }
 
-impl crate::traits::get_file::GetFile for FileLineColumn {
+impl crate::traits::fields::GetFile for FileLineColumn {
     fn get_file(&self) -> &String {
         &self.file
     }
 }
 
-impl crate::traits::get_line::GetLine for FileLineColumn {
+impl crate::traits::fields::GetLine for FileLineColumn {
     fn get_line(&self) -> &u32 {
         &self.line
     }
 }
 
-impl crate::traits::get_column::GetColumn for FileLineColumn {
+impl crate::traits::fields::GetColumn for FileLineColumn {
     fn get_column(&self) -> &u32 {
         &self.column
     }
