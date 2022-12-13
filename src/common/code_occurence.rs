@@ -12,7 +12,6 @@ use crate::traits::get_git_source_file_link::GetGitSourceFileLink;
 use crate::traits::init_error::InitError;
 use crate::traits::new_error_with_one_addition::NewErrorWithOneAddition;
 use crate::traits::readable_time::ReadableTime;
-use crate::traits::readable_time_string::ReadableTimeString;
 use crate::traits::separator_symbol::SeparatorSymbol;
 use crate::traits::new_error_with_git_info_file_line_column::NewErrorWithGitInfoFileLineColumn;
 use ansi_term::Colour::RGB;
@@ -22,6 +21,7 @@ use impl_get_source::ImplGetSourceFromCrate;
 use std::collections::HashMap;
 use std::fmt::{self, Display};
 use crate::common::file_line_column::FileLineColumn;
+use crate::common::time_file_line_column::TimeFileLineColumn;
 
 #[derive(ImplGetSourceFromCrate)]
 pub struct ThreeWrapperError {
@@ -380,6 +380,8 @@ impl crate::traits::get_source::GetSource for HashMap<std::string::String, FourW
     }
 }
 
+
+use crate::traits::readable_time_string::ReadableTimeString;
 #[derive(Debug, Clone)]
 pub struct OccurenceFilter {
     pub increment: u64, //potential overflow?
@@ -387,11 +389,9 @@ pub struct OccurenceFilter {
     pub occurence: String,
 }
 
-impl ReadableTimeString for OccurenceFilter {
-    fn readable_time_string(&self) -> String {
-        DateTime::<Utc>::from(std::time::UNIX_EPOCH + self.time)
-            .format("%Y-%m-%d %H:%M:%S.%f")
-            .to_string()
+impl crate::traits::get_time::GetTime for OccurenceFilter {
+    fn get_time(&self) -> std::time::Duration {
+        self.time
     }
 }
 
@@ -416,9 +416,9 @@ impl TimeFileLineColumnIncrement {
     }
 }
 
-impl ReadableTimeString for TimeFileLineColumnIncrement {
-    fn readable_time_string(&self) -> String {
-        self.time_file_line_column.readable_time_string()
+impl crate::traits::get_time::GetTime for TimeFileLineColumnIncrement {
+    fn get_time(&self) -> std::time::Duration {
+        self.time_file_line_column.get_time()
     }
 }
 
@@ -437,57 +437,5 @@ impl crate::traits::get_line::GetLine for TimeFileLineColumnIncrement {
 impl crate::traits::get_column::GetColumn for TimeFileLineColumnIncrement {
     fn get_column(&self) -> u32 {
         self.time_file_line_column.get_column()
-    }
-}
-
-#[derive(Debug, Clone)]
-pub struct TimeFileLineColumn {
-    pub time: std::time::Duration,
-    pub file_line_column: crate::common::file_line_column::FileLineColumn,
-}
-
-impl TimeFileLineColumn {
-    pub fn new(file_line_column: crate::common::file_line_column::FileLineColumn) -> Self {
-        Self {
-            time: std::time::SystemTime::now()
-                .duration_since(std::time::UNIX_EPOCH)
-                .expect("cannot convert time to unix_epoch"),
-            file_line_column,
-        }
-    }
-}
-
-impl ReadableTimeString for TimeFileLineColumn {
-    fn readable_time_string(&self) -> String {
-        DateTime::<Utc>::from(std::time::UNIX_EPOCH + self.time)
-            .format("%Y-%m-%d %H:%M:%S.%f")
-            .to_string()
-    }
-}
-
-impl ReadableTime for TimeFileLineColumn {
-    fn readable_time(&self, timezone: i32) -> String {
-        chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.time)
-            .with_timezone(&chrono::FixedOffset::east(timezone))
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string()
-    }
-}
-
-impl crate::traits::get_file::GetFile for TimeFileLineColumn {
-    fn get_file(&self) -> &String {
-        &self.file_line_column.get_file()
-    }
-}
-
-impl crate::traits::get_line::GetLine for TimeFileLineColumn {
-    fn get_line(&self) -> u32 {
-        self.file_line_column.get_line()
-    }
-}
-
-impl crate::traits::get_column::GetColumn for TimeFileLineColumn {
-    fn get_column(&self) -> u32 {
-        self.file_line_column.get_column()
     }
 }

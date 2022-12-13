@@ -4,4 +4,5 @@ pub mod file_line_column;
 pub mod git;
 pub mod numeric;
 pub mod postgres_credentials;
+pub mod time_file_line_column;
 pub mod where_was;
