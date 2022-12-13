@@ -1,39 +1,15 @@
-use crate::traits::fields::GetCleaningBlue;
-use crate::traits::fields::GetCleaningGreen;
-use crate::traits::fields::GetCleaningRed;
-use crate::traits::fields::GetErrorBlue;
-use crate::traits::fields::GetErrorGreen;
-use crate::traits::fields::GetErrorRed;
-use crate::traits::fields::GetInfoBlue;
-use crate::traits::fields::GetInfoGreen;
-use crate::traits::fields::GetInfoRed;
-use crate::traits::fields::GetPartialSuccessBlue;
-use crate::traits::fields::GetPartialSuccessGreen;
-use crate::traits::fields::GetPartialSuccessRed;
-use crate::traits::fields::GetSuccessBlue;
-use crate::traits::fields::GetSuccessGreen;
-use crate::traits::fields::GetSuccessRed;
-use crate::traits::fields::GetTimeMeasurementBlue;
-use crate::traits::fields::GetTimeMeasurementGreen;
-use crate::traits::fields::GetTimeMeasurementRed;
-use crate::traits::fields::GetWarningHighBlue;
-use crate::traits::fields::GetWarningHighGreen;
-use crate::traits::fields::GetWarningHighRed;
-use crate::traits::fields::GetWarningLowBlue;
-use crate::traits::fields::GetWarningLowGreen;
-use crate::traits::fields::GetWarningLowRed;
-use ansi_term::Colour::RGB;
-
 pub trait ErrorColor {
     fn get_error_color(&self) -> ansi_term::Colour;
 }
 
 impl<SelfGeneric> ErrorColor for SelfGeneric
 where
-    Self: GetErrorBlue + GetErrorGreen + GetErrorRed,
+    Self: crate::traits::fields::GetErrorBlue
+        + crate::traits::fields::GetErrorGreen
+        + crate::traits::fields::GetErrorRed,
 {
     fn get_error_color(&self) -> ansi_term::Colour {
-        RGB(
+        ansi_term::Colour::RGB(
             *self.get_error_red(),
             *self.get_error_green(),
             *self.get_error_blue(),
@@ -54,16 +30,18 @@ where
     }
 }
 
-pub trait WarningHighColor<T> {
+pub trait WarningHighColor {
     fn get_warning_high_color(&self) -> ansi_term::Colour;
 }
 
-impl<T> WarningHighColor<Self> for T
+impl<SelfGeneric> WarningHighColor for SelfGeneric
 where
-    Self: GetWarningHighBlue + GetWarningHighGreen + GetWarningHighRed,
+    Self: crate::traits::fields::GetWarningHighBlue
+        + crate::traits::fields::GetWarningHighGreen
+        + crate::traits::fields::GetWarningHighRed,
 {
     fn get_warning_high_color(&self) -> ansi_term::Colour {
-        RGB(
+        ansi_term::Colour::RGB(
             *self.get_warning_high_red(),
             *self.get_warning_high_green(),
             *self.get_warning_high_blue(),
@@ -71,29 +49,31 @@ where
     }
 }
 
-pub trait WarningHighColorBold<T> {
+pub trait WarningHighColorBold {
     fn get_warning_high_color_bold(&self) -> ansi_term::Style;
 }
 
-impl<T> WarningHighColorBold<Self> for T
+impl<SelfGeneric> WarningHighColorBold for SelfGeneric
 where
-    Self: WarningHighColor<T>,
+    Self: WarningHighColor,
 {
     fn get_warning_high_color_bold(&self) -> ansi_term::Style {
         self.get_warning_high_color().bold()
     }
 }
 
-pub trait WarningLowColor<T> {
+pub trait WarningLowColor {
     fn get_warning_low_color(&self) -> ansi_term::Colour;
 }
 
-impl<T> WarningLowColor<Self> for T
+impl<SelfGeneric> WarningLowColor for SelfGeneric
 where
-    Self: GetWarningLowBlue + GetWarningLowGreen + GetWarningLowRed,
+    Self: crate::traits::fields::GetWarningLowBlue
+        + crate::traits::fields::GetWarningLowGreen
+        + crate::traits::fields::GetWarningLowRed,
 {
     fn get_warning_low_color(&self) -> ansi_term::Colour {
-        RGB(
+        ansi_term::Colour::RGB(
             *self.get_warning_low_red(),
             *self.get_warning_low_green(),
             *self.get_warning_low_blue(),
@@ -101,29 +81,31 @@ where
     }
 }
 
-pub trait WarningLowColorBold<T> {
+pub trait WarningLowColorBold {
     fn get_warning_low_color_bold(&self) -> ansi_term::Style;
 }
 
-impl<T> WarningLowColorBold<Self> for T
+impl<SelfGeneric> WarningLowColorBold for SelfGeneric
 where
-    Self: WarningLowColor<T>,
+    Self: WarningLowColor,
 {
     fn get_warning_low_color_bold(&self) -> ansi_term::Style {
         self.get_warning_low_color().bold()
     }
 }
 
-pub trait SuccessColor<T> {
+pub trait SuccessColor {
     fn get_success_color(&self) -> ansi_term::Colour;
 }
 
-impl<T> SuccessColor<Self> for T
+impl<SelfGeneric> SuccessColor for SelfGeneric
 where
-    Self: GetSuccessBlue + GetSuccessGreen + GetSuccessRed,
+    Self: crate::traits::fields::GetSuccessBlue
+        + crate::traits::fields::GetSuccessGreen
+        + crate::traits::fields::GetSuccessRed,
 {
     fn get_success_color(&self) -> ansi_term::Colour {
-        RGB(
+        ansi_term::Colour::RGB(
             *self.get_success_red(),
             *self.get_success_green(),
             *self.get_success_blue(),
@@ -131,29 +113,31 @@ where
     }
 }
 
-pub trait SuccessColorBold<T> {
+pub trait SuccessColorBold {
     fn get_success_color_bold(&self) -> ansi_term::Style;
 }
 
-impl<T> SuccessColorBold<Self> for T
+impl<SelfGeneric> SuccessColorBold for SelfGeneric
 where
-    Self: SuccessColor<T>,
+    Self: SuccessColor,
 {
     fn get_success_color_bold(&self) -> ansi_term::Style {
         self.get_success_color().bold()
     }
 }
 
-pub trait PartialSuccessColor<T> {
+pub trait PartialSuccessColor {
     fn get_partial_success_color(&self) -> ansi_term::Colour;
 }
 
-impl<T> PartialSuccessColor<Self> for T
+impl<SelfGeneric> PartialSuccessColor for SelfGeneric
 where
-    Self: GetPartialSuccessBlue + GetPartialSuccessGreen + GetPartialSuccessRed,
+    Self: crate::traits::fields::GetPartialSuccessBlue
+        + crate::traits::fields::GetPartialSuccessGreen
+        + crate::traits::fields::GetPartialSuccessRed,
 {
     fn get_partial_success_color(&self) -> ansi_term::Colour {
-        RGB(
+        ansi_term::Colour::RGB(
             *self.get_partial_success_red(),
             *self.get_partial_success_green(),
             *self.get_partial_success_blue(),
@@ -161,29 +145,31 @@ where
     }
 }
 
-pub trait PartialSuccessColorBold<T> {
+pub trait PartialSuccessColorBold {
     fn get_partial_success_color_bold(&self) -> ansi_term::Style;
 }
 
-impl<T> PartialSuccessColorBold<Self> for T
+impl<SelfGeneric> PartialSuccessColorBold for SelfGeneric
 where
-    Self: PartialSuccessColor<T>,
+    Self: PartialSuccessColor,
 {
     fn get_partial_success_color_bold(&self) -> ansi_term::Style {
         self.get_partial_success_color().bold()
     }
 }
 
-pub trait CleaningColor<T> {
+pub trait CleaningColor {
     fn get_cleaning_color(&self) -> ansi_term::Colour;
 }
 
-impl<T> CleaningColor<Self> for T
+impl<SelfGeneric> CleaningColor for SelfGeneric
 where
-    Self: GetCleaningBlue + GetCleaningGreen + GetCleaningRed,
+    Self: crate::traits::fields::GetCleaningBlue
+        + crate::traits::fields::GetCleaningGreen
+        + crate::traits::fields::GetCleaningRed,
 {
     fn get_cleaning_color(&self) -> ansi_term::Colour {
-        RGB(
+        ansi_term::Colour::RGB(
             *self.get_cleaning_red(),
             *self.get_cleaning_green(),
             *self.get_cleaning_blue(),
@@ -191,29 +177,31 @@ where
     }
 }
 
-pub trait CleaningColorBold<T> {
+pub trait CleaningColorBold {
     fn get_cleaning_color_bold(&self) -> ansi_term::Style;
 }
 
-impl<T> CleaningColorBold<Self> for T
+impl<SelfGeneric> CleaningColorBold for SelfGeneric
 where
-    Self: CleaningColor<T>,
+    Self: CleaningColor,
 {
     fn get_cleaning_color_bold(&self) -> ansi_term::Style {
         self.get_cleaning_color().bold()
     }
 }
 
-pub trait TimeMeasurementColor<T> {
+pub trait TimeMeasurementColor {
     fn get_time_measurement_color(&self) -> ansi_term::Colour;
 }
 
-impl<T> TimeMeasurementColor<Self> for T
+impl<SelfGeneric> TimeMeasurementColor for SelfGeneric
 where
-    Self: GetTimeMeasurementBlue + GetTimeMeasurementGreen + GetTimeMeasurementRed,
+    Self: crate::traits::fields::GetTimeMeasurementBlue
+        + crate::traits::fields::GetTimeMeasurementGreen
+        + crate::traits::fields::GetTimeMeasurementRed,
 {
     fn get_time_measurement_color(&self) -> ansi_term::Colour {
-        RGB(
+        ansi_term::Colour::RGB(
             *self.get_time_measurement_red(),
             *self.get_time_measurement_green(),
             *self.get_time_measurement_blue(),
@@ -221,29 +209,31 @@ where
     }
 }
 
-pub trait TimeMeasurementColorBold<T> {
+pub trait TimeMeasurementColorBold {
     fn get_time_measurement_color_bold(&self) -> ansi_term::Style;
 }
 
-impl<T> TimeMeasurementColorBold<Self> for T
+impl<SelfGeneric> TimeMeasurementColorBold for SelfGeneric
 where
-    Self: TimeMeasurementColor<T>,
+    Self: TimeMeasurementColor,
 {
     fn get_time_measurement_color_bold(&self) -> ansi_term::Style {
         self.get_time_measurement_color().bold()
     }
 }
 
-pub trait InfoColor<T> {
+pub trait InfoColor {
     fn get_info_color(&self) -> ansi_term::Colour;
 }
 
-impl<T> InfoColor<Self> for T
+impl<SelfGeneric> InfoColor for SelfGeneric
 where
-    Self: GetInfoBlue + GetInfoGreen + GetInfoRed,
+    Self: crate::traits::fields::GetInfoBlue
+        + crate::traits::fields::GetInfoGreen
+        + crate::traits::fields::GetInfoRed,
 {
     fn get_info_color(&self) -> ansi_term::Colour {
-        RGB(
+        ansi_term::Colour::RGB(
             *self.get_info_red(),
             *self.get_info_green(),
             *self.get_info_blue(),
@@ -251,13 +241,13 @@ where
     }
 }
 
-pub trait InfoColorBold<T> {
+pub trait InfoColorBold {
     fn get_info_color_bold(&self) -> ansi_term::Style;
 }
 
-impl<T> InfoColorBold<Self> for T
+impl<SelfGeneric> InfoColorBold for SelfGeneric
 where
-    Self: InfoColor<T>,
+    Self: InfoColor,
 {
     fn get_info_color_bold(&self) -> ansi_term::Style {
         self.get_info_color().bold()
