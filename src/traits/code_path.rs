@@ -1,7 +1,4 @@
 use crate::config_mods::source_place_type::SourcePlaceType;
-use crate::traits::file_line_column::GetColumn;
-use crate::traits::file_line_column::GetFile;
-use crate::traits::file_line_column::GetLine;
 use crate::traits::get_git_source_file_link::GetGitSourceFileLink;
 
 pub trait CodePath {
@@ -19,7 +16,9 @@ pub trait CodePath {
 
 impl<T> CodePath for T
 where
-    T: GetFile + GetLine + GetColumn,
+    T: crate::traits::get_file::GetFile
+        + crate::traits::get_line::GetLine
+        + crate::traits::get_column::GetColumn,
 {
     fn get_code_path(
         &self,

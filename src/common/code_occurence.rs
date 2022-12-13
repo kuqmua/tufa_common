@@ -21,6 +21,7 @@ use chrono::Utc;
 use impl_get_source::ImplGetSourceFromCrate;
 use std::collections::HashMap;
 use std::fmt::{self, Display};
+use crate::common::file_line_column::FileLineColumn;
 
 #[derive(ImplGetSourceFromCrate)]
 pub struct ThreeWrapperError {
@@ -421,19 +422,19 @@ impl ReadableTimeString for TimeFileLineColumnIncrement {
     }
 }
 
-impl crate::traits::file_line_column::GetFile for TimeFileLineColumnIncrement {
+impl crate::traits::get_file::GetFile for TimeFileLineColumnIncrement {
     fn get_file(&self) -> &String {
         &self.time_file_line_column.get_file()
     }
 }
 
-impl crate::traits::file_line_column::GetLine for TimeFileLineColumnIncrement {
+impl crate::traits::get_line::GetLine for TimeFileLineColumnIncrement {
     fn get_line(&self) -> u32 {
         self.time_file_line_column.get_line()
     }
 }
 
-impl crate::traits::file_line_column::GetColumn for TimeFileLineColumnIncrement {
+impl crate::traits::get_column::GetColumn for TimeFileLineColumnIncrement {
     fn get_column(&self) -> u32 {
         self.time_file_line_column.get_column()
     }
@@ -442,11 +443,11 @@ impl crate::traits::file_line_column::GetColumn for TimeFileLineColumnIncrement 
 #[derive(Debug, Clone)]
 pub struct TimeFileLineColumn {
     pub time: std::time::Duration,
-    pub file_line_column: FileLineColumn,
+    pub file_line_column: crate::common::file_line_column::FileLineColumn,
 }
 
 impl TimeFileLineColumn {
-    pub fn new(file_line_column: FileLineColumn) -> Self {
+    pub fn new(file_line_column: crate::common::file_line_column::FileLineColumn) -> Self {
         Self {
             time: std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
@@ -473,45 +474,20 @@ impl ReadableTime for TimeFileLineColumn {
     }
 }
 
-impl crate::traits::file_line_column::GetFile for TimeFileLineColumn {
+impl crate::traits::get_file::GetFile for TimeFileLineColumn {
     fn get_file(&self) -> &String {
         &self.file_line_column.get_file()
     }
 }
 
-impl crate::traits::file_line_column::GetLine for TimeFileLineColumn {
+impl crate::traits::get_line::GetLine for TimeFileLineColumn {
     fn get_line(&self) -> u32 {
         self.file_line_column.get_line()
     }
 }
 
-impl crate::traits::file_line_column::GetColumn for TimeFileLineColumn {
+impl crate::traits::get_column::GetColumn for TimeFileLineColumn {
     fn get_column(&self) -> u32 {
         self.file_line_column.get_column()
-    }
-}
-
-#[derive(Debug, Clone)]
-pub struct FileLineColumn {
-    pub file: String, //&'a str
-    pub line: u32,
-    pub column: u32,
-}
-
-impl crate::traits::file_line_column::GetFile for FileLineColumn {
-    fn get_file(&self) -> &String {
-        &self.file
-    }
-}
-
-impl crate::traits::file_line_column::GetLine for FileLineColumn {
-    fn get_line(&self) -> u32 {
-        self.line
-    }
-}
-
-impl crate::traits::file_line_column::GetColumn for FileLineColumn {
-    fn get_column(&self) -> u32 {
-        self.column
     }
 }
