@@ -1,3 +1,5 @@
+// use generate_getter_traits_for_struct_fields::GenerateGetterTraitsForStructFieldsFromCrate;
+
 #[derive(Debug, Clone)] //todo fields implementations
 pub struct FileLineColumn {
     pub file: String, //&'a str
@@ -12,13 +14,13 @@ impl crate::traits::get_file::GetFile for FileLineColumn {
 }
 
 impl crate::traits::get_line::GetLine for FileLineColumn {
-    fn get_line(&self) -> u32 {
-        self.line
+    fn get_line(&self) -> &u32 {
+        &self.line
     }
 }
 
 impl crate::traits::get_column::GetColumn for FileLineColumn {
-    fn get_column(&self) -> u32 {
-        self.column
+    fn get_column(&self) -> &u32 {
+        &self.column
     }
 }

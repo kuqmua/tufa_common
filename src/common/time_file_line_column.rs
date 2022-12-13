@@ -28,13 +28,13 @@ impl crate::traits::get_file::GetFile for TimeFileLineColumn {
 }
 
 impl crate::traits::get_line::GetLine for TimeFileLineColumn {
-    fn get_line(&self) -> u32 {
-        self.file_line_column.get_line()
+    fn get_line(&self) -> &u32 {
+        &self.file_line_column.get_line()
     }
 }
 
 impl crate::traits::get_column::GetColumn for TimeFileLineColumn {
-    fn get_column(&self) -> u32 {
-        self.file_line_column.get_column()
+    fn get_column(&self) -> &u32 {
+        &self.file_line_column.get_column()
     }
 }

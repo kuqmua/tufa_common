@@ -1,3 +1,3 @@
 pub trait GetColumn {
-    fn get_column(&self) -> u32;
+    fn get_column(&self) -> &u32;
 }

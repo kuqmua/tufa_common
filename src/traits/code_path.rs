@@ -47,9 +47,8 @@ where
         let file = self.get_file().clone();
         let backslash = "/";
         match file.find(backslash) {
-            Some(index) => {
-                git_info.get_git_source_file_link(&file[index + backslash.len()..], self.get_line())
-            }
+            Some(index) => git_info
+                .get_git_source_file_link(&file[index + backslash.len()..], *self.get_line()),
             None => String::from("cant find backslash symbol in file path of location"),
         }
     }

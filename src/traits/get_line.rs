@@ -1,3 +1,3 @@
 pub trait GetLine {
-    fn get_line(&self) -> u32;
+    fn get_line(&self) -> &u32;
 }

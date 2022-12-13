@@ -4,6 +4,7 @@ use crate::{
     server::resource::Resource,
 };
 
+//Config
 pub trait GetServerIp {
     fn get_server_ip(&self) -> &String;
 }
@@ -796,3 +797,4 @@ pub trait GetInfoGreen {
 pub trait GetInfoBlue {
     fn get_info_blue(&self) -> &u8;
 }
+//FileLineColumn
