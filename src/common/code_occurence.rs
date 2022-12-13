@@ -9,7 +9,7 @@ use crate::traits::code_path::CodePath;
 use crate::traits::console::Console;
 use crate::traits::get_code_occurence::GetCodeOccurence;
 use crate::traits::get_git_source_file_link::GetGitSourceFileLink;
-use crate::traits::new_error_test::NewErrorTest;
+use crate::traits::new_error_test::NewErrorTestTestTest;
 use crate::traits::new_error_with_one_addition::NewErrorWithOneAddition;
 use crate::traits::readable_time::ReadableTime;
 use crate::traits::readable_time_string::ReadableTimeString;
