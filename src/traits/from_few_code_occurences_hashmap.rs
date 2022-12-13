@@ -16,7 +16,7 @@ where
             // .collect::<Vec<String>>()
             // .iter()
             .fold(
-                HashMap::<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>::new(),
+                HashMap::<GitInformationWithoutLifetimes, Vec<IncrementTimeFileLineColumn>>::new(),
                 |mut acc, elem| {
                     let current_code_occurence = elem.get_code_occurence();
                     // acc.push_str(elem);

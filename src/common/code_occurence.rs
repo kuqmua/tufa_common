@@ -241,7 +241,7 @@ pub fn six(should_trace: bool) -> Result<(), Box<SixOriginError>> {
 
 #[derive(Debug, Clone)]
 pub struct CodeOccurence {
-    pub occurences: HashMap<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>,
+    pub occurences: HashMap<GitInformationWithoutLifetimes, Vec<IncrementTimeFileLineColumn>>,
 }
 
 impl<SourceGeneric>
@@ -278,7 +278,7 @@ where
         occurences
             .entry(git_info.clone())
             .and_modify(|vec_existing_value_elements| {
-                vec_existing_value_elements.push(TimeFileLineColumnIncrement {
+                vec_existing_value_elements.push(IncrementTimeFileLineColumn {
                     increment: new_last_increment,
                     concurrent_or_parallel_execution_index: None,
                     time_file_line_column: TimeFileLineColumn::new(FileLineColumn {
@@ -289,7 +289,7 @@ where
                 });
             })
             .or_insert_with(|| {
-                vec![TimeFileLineColumnIncrement {
+                vec![IncrementTimeFileLineColumn {
                     increment: new_last_increment,
                     concurrent_or_parallel_execution_index: None,
                     time_file_line_column: TimeFileLineColumn::new(FileLineColumn {
@@ -313,7 +313,7 @@ impl crate::traits::code_occurence_methods::CodeOccurenceNew for CodeOccurence {
         Self {
             occurences: HashMap::from([(
                 git_info,
-                vec![TimeFileLineColumnIncrement::new(file, line, column)],
+                vec![IncrementTimeFileLineColumn::new(file, line, column)],
             )]),
         }
     }
@@ -329,7 +329,7 @@ impl crate::traits::code_occurence_methods::CodeOccurenceNew for CodeOccurence {
 //         //todo
 //         self.values().fold(
 //             &CodeOccurence {
-//                 occurences: HashMap::new(),//::<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>
+//                 occurences: HashMap::new(),//::<GitInformationWithoutLifetimes, Vec<IncrementTimeFileLineColumn>>
 //             },
 //             |mut acc, elem| {
 //                 let code_occurence = match elem {
@@ -339,7 +339,7 @@ impl crate::traits::code_occurence_methods::CodeOccurenceNew for CodeOccurence {
 //                 code_occurence.occurences.iter().for_each(|(key, value)| {
 //                     acc.entry(key)
 //                         .and_modify(|vec_existing_value_elements| {
-//                             vec_existing_value_elements.push(TimeFileLineColumnIncrement {
+//                             vec_existing_value_elements.push(IncrementTimeFileLineColumn {
 //                                 increment: new_last_increment,
 //                                 concurrent_or_parallel_execution_index: None,
 //                                 time_file_line_column: TimeFileLineColumn::new(FileLineColumn {
@@ -350,7 +350,7 @@ impl crate::traits::code_occurence_methods::CodeOccurenceNew for CodeOccurence {
 //                             });
 //                         })
 //                         .or_insert_with(|| {
-//                             vec![TimeFileLineColumnIncrement {
+//                             vec![IncrementTimeFileLineColumn {
 //                                 increment: new_last_increment,
 //                                 concurrent_or_parallel_execution_index: None,
 //                                 time_file_line_column: TimeFileLineColumn::new(FileLineColumn {
@@ -396,13 +396,13 @@ impl crate::traits::get_time::GetTime for OccurenceFilter {
 }
 
 #[derive(Debug, Clone)]
-pub struct TimeFileLineColumnIncrement {
+pub struct IncrementTimeFileLineColumn {
     pub increment: u64,                                      //potential overflow?
     pub concurrent_or_parallel_execution_index: Option<u64>, //for information about parallel error result like inside join_all!() or join!()
     pub time_file_line_column: TimeFileLineColumn,
 }
 
-impl TimeFileLineColumnIncrement {
+impl IncrementTimeFileLineColumn {
     pub fn new(
         file: String, //&'a str
         line: u32,
@@ -416,25 +416,25 @@ impl TimeFileLineColumnIncrement {
     }
 }
 
-impl crate::traits::get_time::GetTime for TimeFileLineColumnIncrement {
+impl crate::traits::get_time::GetTime for IncrementTimeFileLineColumn {
     fn get_time(&self) -> std::time::Duration {
         self.time_file_line_column.get_time()
     }
 }
 
-impl crate::traits::get_file::GetFile for TimeFileLineColumnIncrement {
+impl crate::traits::get_file::GetFile for IncrementTimeFileLineColumn {
     fn get_file(&self) -> &String {
         &self.time_file_line_column.get_file()
     }
 }
 
-impl crate::traits::get_line::GetLine for TimeFileLineColumnIncrement {
+impl crate::traits::get_line::GetLine for IncrementTimeFileLineColumn {
     fn get_line(&self) -> u32 {
         self.time_file_line_column.get_line()
     }
 }
 
-impl crate::traits::get_column::GetColumn for TimeFileLineColumnIncrement {
+impl crate::traits::get_column::GetColumn for IncrementTimeFileLineColumn {
     fn get_column(&self) -> u32 {
         self.time_file_line_column.get_column()
     }
