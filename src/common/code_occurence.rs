@@ -319,9 +319,7 @@ impl crate::traits::code_occurence_methods::CodeOccurenceNew for CodeOccurence {
 }
 
 //
-pub trait FromFewCodeOccurencesHashMap<KeyGeneric, ValueGeneric> {
-    fn from_few_code_occurences_hashmap(&self) -> CodeOccurence;
-}
+
 
 // impl crate::traits::get_code_occurence::GetCodeOccurence
 //     for HashMap<std::string::String, FourWrapperErrorEnum>
@@ -380,38 +378,6 @@ impl crate::traits::get_source::GetSource for HashMap<std::string::String, FourW
         String::from("todo this impl")
     }
 }
-
-impl<KeyGeneric, ValueGeneric> FromFewCodeOccurencesHashMap<KeyGeneric, ValueGeneric>
-    for HashMap<KeyGeneric, ValueGeneric>
-where
-    ValueGeneric: crate::traits::get_code_occurence::GetCodeOccurence,
-{
-    fn from_few_code_occurences_hashmap(&self) -> CodeOccurence {
-        let mut parallel_counter = 0; //todo - add some field to code occurence?
-        let mut formatted = self
-            // .iter()
-            .values()
-            // .map(|(code_occurence)| code_occurence)
-            // .collect::<Vec<String>>()
-            // .iter()
-            .fold(
-                HashMap::<GitInformationWithoutLifetimes, Vec<TimeFileLineColumnIncrement>>::new(),
-                |mut acc, elem| {
-                    let current_code_occurence = elem.get_code_occurence();
-                    // acc.push_str(elem);
-                    acc
-                },
-            );
-        // if !formatted.is_empty() {
-        //     formatted.pop();
-        // }
-        // formatted
-        CodeOccurence {
-            occurences: HashMap::new(),
-        }
-    }
-}
-//
 
 #[derive(Debug, Clone)]
 pub struct OccurenceFilter {
