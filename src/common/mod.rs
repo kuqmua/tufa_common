@@ -5,5 +5,6 @@ pub mod git;
 pub mod increment_time_file_line_column;
 pub mod numeric;
 pub mod postgres_credentials;
+pub mod source_and_code_occurence;
 pub mod time_file_line_column;
 pub mod where_was;
