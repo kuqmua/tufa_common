@@ -20,15 +20,13 @@ pub struct ParseSourcePlaceTypeError {
 impl FromStr for SourcePlaceType {
     type Err = ParseSourcePlaceTypeError;
     fn from_str(e: &str) -> Result<Self, ParseSourcePlaceTypeError> {
-        if e == "source" {
-            return Ok(SourcePlaceType::Source);
-        } else if e == "github" {
-            return Ok(SourcePlaceType::Github);
-        } else if e == "none" {
-            return Ok(SourcePlaceType::None);
+        match e {
+            "source" => Ok(SourcePlaceType::Source),
+            "github" => Ok(SourcePlaceType::Github),
+            "none" => Ok(SourcePlaceType::None),
+            _ => Err(ParseSourcePlaceTypeError {
+                _incorrect_str: e.to_string(),
+            }),
         }
-        Err(ParseSourcePlaceTypeError {
-            _incorrect_str: e.to_string(),
-        })
     }
 }
