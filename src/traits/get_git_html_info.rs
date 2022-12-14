@@ -6,23 +6,23 @@ pub trait GetGitHtmlInfo {
 
 impl<T> GetGitHtmlInfo for T
 where
-    T: crate::traits::git_info::GetAuthor
-        + crate::traits::git_info::GetAuthorEmail
-        + crate::traits::git_info::GetCommitId
-        + crate::traits::git_info::GetCommitUnixTime
-        + crate::traits::git_info::GetMessage
-        + crate::traits::git_info::GetRepoLink
-        + crate::traits::git_info::GetTimezone,
+    T: crate::traits::fields::GetGitAuthor
+        + crate::traits::fields::GetGitAuthorEmail
+        + crate::traits::fields::GetGitCommitId
+        + crate::traits::fields::GetGitCommitUnixTime
+        + crate::traits::fields::GetGitMessage
+        + crate::traits::fields::GetGitRepoLink
+        + crate::traits::fields::GetGitTimezone,
 {
     fn get_git_html_info(&self) -> String {
-        let commit_id = &self.get_commit_id();
-        let repo_link = &self.get_repo_link();
-        let author = &self.get_author();
-        let author_email = &self.get_author_email();
-        let commit_unix_time = &self.get_commit_unix_time();
-        let timezone = &self.get_timezone();
-        let message = &self.get_message();
-        let commit_link = &self.get_git_commit_link();
+        let git_commit_id = &self.get_git_commit_id();
+        let git_repo_link = &self.get_git_repo_link();
+        let git_author = &self.get_git_author();
+        let git_author_email = &self.get_git_author_email();
+        let git_commit_unix_time = &self.get_git_commit_unix_time();
+        let git_timezone = &self.get_git_timezone();
+        let git_message = &self.get_git_message();
+        let git_commit_link = &self.get_git_commit_link();
         format!(
             r#"<!DOCTYPE html>
 <html>
@@ -5636,29 +5636,29 @@ where
 </head>
 
 <body id="preview">
-    <h3 class="code-line" data-line-start=0 data-line-end=1><a id="commit_id_0"></a>commit id</h3>
-    <pre><code class="has-line-data" data-line-start="2" data-line-end="4">{commit_id}
+    <h3 class="code-line" data-line-start=0 data-line-end=1><a id="commit_id_0"></a>git commit id</h3>
+    <pre><code class="has-line-data" data-line-start="2" data-line-end="4">{git_commit_id}
 </code></pre>
-    <h3 class="code-line" data-line-start=4 data-line-end=5><a id="repo_link_4"></a>repo link</h3>
-    <pre><code class="has-line-data" data-line-start="6" data-line-end="8">{repo_link}
+    <h3 class="code-line" data-line-start=4 data-line-end=5><a id="repo_link_4"></a>git repo link</h3>
+    <pre><code class="has-line-data" data-line-start="6" data-line-end="8">{git_repo_link}
 </code></pre>
-    <h3 class="code-line" data-line-start=12 data-line-end=13><a id="author_12"></a>author</h3>
-    <pre><code class="has-line-data" data-line-start="14" data-line-end="16">{author}
+    <h3 class="code-line" data-line-start=12 data-line-end=13><a id="author_12"></a>git author</h3>
+    <pre><code class="has-line-data" data-line-start="14" data-line-end="16">{git_author}
 </code></pre>
-    <h3 class="code-line" data-line-start=16 data-line-end=17><a id="author_email_16"></a>author email</h3>
-    <pre><code class="has-line-data" data-line-start="18" data-line-end="20">{author_email}
+    <h3 class="code-line" data-line-start=16 data-line-end=17><a id="author_email_16"></a>git author email</h3>
+    <pre><code class="has-line-data" data-line-start="18" data-line-end="20">{git_author_email}
 </code></pre>
-    <h3 class="code-line" data-line-start=20 data-line-end=21><a id="commit_unix_time_20"></a>commit unix time</h3>
-    <pre><code class="has-line-data" data-line-start="22" data-line-end="24">{commit_unix_time}
+    <h3 class="code-line" data-line-start=20 data-line-end=21><a id="commit_unix_time_20"></a>git commit unix time</h3>
+    <pre><code class="has-line-data" data-line-start="22" data-line-end="24">{git_commit_unix_time}
 </code></pre>
-    <h3 class="code-line" data-line-start=24 data-line-end=25><a id="timezone_24"></a>timezone</h3>
-    <pre><code class="has-line-data" data-line-start="26" data-line-end="28">{timezone}
+    <h3 class="code-line" data-line-start=24 data-line-end=25><a id="timezone_24"></a>git timezone</h3>
+    <pre><code class="has-line-data" data-line-start="26" data-line-end="28">{git_timezone}
 </code></pre>
-    <h3 class="code-line" data-line-start=28 data-line-end=29><a id="message_28"></a>message</h3>
-    <pre><code class="has-line-data" data-line-start="30" data-line-end="32">{message}
+    <h3 class="code-line" data-line-start=28 data-line-end=29><a id="message_28"></a>git message</h3>
+    <pre><code class="has-line-data" data-line-start="30" data-line-end="32">{git_message}
 </code></pre>
-    <h3 class="code-line" data-line-start=32 data-line-end=33><a id="commit_link_32"></a>commit link</h3>
-    <pre><code class="has-line-data" data-line-start="34" data-line-end="36">{commit_link}
+    <h3 class="code-line" data-line-start=32 data-line-end=33><a id="commit_link_32"></a>git commit link</h3>
+    <pre><code class="has-line-data" data-line-start="34" data-line-end="36">{git_commit_link}
 </code></pre>
 </body>
 

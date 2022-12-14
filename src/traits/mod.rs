@@ -19,7 +19,6 @@ pub mod get_source;
 pub mod get_source_and_code_occurence;
 pub mod get_time;
 pub mod get_where_was_one_or_many;
-pub mod git_info;
 pub mod init_error;
 pub mod init_error_with_possible_trace;
 pub mod is_enabled_prints;

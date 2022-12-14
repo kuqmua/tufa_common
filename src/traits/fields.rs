@@ -808,3 +808,31 @@ pub trait GetLine {
 pub trait GetColumn {
     fn get_column(&self) -> &u32;
 }
+//GitInformation GitInformationWithoutLifetimes
+pub trait GetGitCommitId {
+    fn get_git_commit_id(&self) -> String;
+}
+
+pub trait GetGitRepoLink {
+    fn get_git_repo_link(&self) -> String;
+}
+
+pub trait GetGitAuthor {
+    fn get_git_author(&self) -> String;
+}
+
+pub trait GetGitAuthorEmail {
+    fn get_git_author_email(&self) -> String;
+}
+
+pub trait GetGitCommitUnixTime {
+    fn get_git_commit_unix_time(&self) -> String;
+}
+
+pub trait GetGitTimezone {
+    fn get_git_timezone(&self) -> String;
+}
+
+pub trait GetGitMessage {
+    fn get_git_message(&self) -> String;
+}
