@@ -1,3 +1,4 @@
+use generate_getter_traits_for_struct_fields::GenerateGetterTraitsForStructFieldsFromCrate;
 use serde_derive::Deserialize;
 use serde_derive::Serialize;
 
@@ -68,7 +69,7 @@ impl GitInformation<'static> {
     }
 }
 
-#[derive(Debug, Clone, Eq, Hash, PartialEq)]
+#[derive(Debug, Clone, Eq, Hash, PartialEq, GenerateGetterTraitsForStructFieldsFromCrate)]
 pub struct GitInformationWithoutLifetimes {
     pub git_commit_id: String,
     pub git_repo_link: String,
@@ -77,46 +78,4 @@ pub struct GitInformationWithoutLifetimes {
     pub git_commit_unix_time: String,
     pub git_timezone: String,
     pub git_message: String,
-}
-
-impl crate::traits::fields::GetGitCommitId for GitInformationWithoutLifetimes {
-    fn get_git_commit_id(&self) -> &String {
-        &self.git_commit_id
-    }
-}
-
-impl crate::traits::fields::GetGitRepoLink for GitInformationWithoutLifetimes {
-    fn get_git_repo_link(&self) -> &String {
-        &self.git_repo_link
-    }
-}
-
-impl crate::traits::fields::GetGitAuthor for GitInformationWithoutLifetimes {
-    fn get_git_author(&self) -> &String {
-        &self.git_author
-    }
-}
-
-impl crate::traits::fields::GetGitAuthorEmail for GitInformationWithoutLifetimes {
-    fn get_git_author_email(&self) -> &String {
-        &self.git_author_email
-    }
-}
-
-impl crate::traits::fields::GetGitCommitUnixTime for GitInformationWithoutLifetimes {
-    fn get_git_commit_unix_time(&self) -> &String {
-        &self.git_commit_unix_time
-    }
-}
-
-impl crate::traits::fields::GetGitTimezone for GitInformationWithoutLifetimes {
-    fn get_git_timezone(&self) -> &String {
-        &self.git_timezone
-    }
-}
-
-impl crate::traits::fields::GetGitMessage for GitInformationWithoutLifetimes {
-    fn get_git_message(&self) -> &String {
-        &self.git_message
-    }
 }
