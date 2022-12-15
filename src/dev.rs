@@ -12,6 +12,7 @@ use crate::traits::code_path::CodePath;
 use crate::traits::console::Console;
 use crate::traits::get_code_occurence::GetCodeOccurence;
 use crate::traits::get_git_source_file_link::GetGitSourceFileLink;
+use crate::traits::get_source_and_code_occurence;
 use crate::traits::init_error::InitError;
 use crate::traits::new_error_with_git_info_file_line_column::NewErrorWithGitInfoFileLineColumn;
 use crate::traits::new_error_with_one_addition::NewErrorWithOneAddition;
@@ -227,16 +228,19 @@ impl crate::traits::get_code_occurence::GetCodeOccurence for SixOriginError {
         &self.code_occurence
     }
 }
+use crate::traits::get_source_and_code_occurence::GetSourceAndCodeOccurence;
 //
 pub fn six(should_trace: bool) -> Result<(), Box<SixOriginError>> {
-    return Err(Box::new(SixOriginError::new_error_with_git_info_file_line_column(
+    let f = SixOriginError::new_error_with_git_info_file_line_column(
         true,
             crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES
             .clone(), 
             String::from(file!()), 
             line!(), 
             column!(), 
-    )));
+    );
+    let u = f.get_source_and_code_occurence();
+    return Err(Box::new(f));
 }
 //
 impl crate::traits::get_source::GetSource for HashMap<std::string::String, FourWrapperErrorEnum> {

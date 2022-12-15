@@ -1,15 +1,15 @@
 pub trait GetSourceAndCodeOccurence {
-    fn get_code_occurence_with_source(
+    fn get_source_and_code_occurence(
         &self,
     ) -> crate::common::source_and_code_occurence::SourceAndCodeOccurence;
 }
 
 impl<SelfGeneric> GetSourceAndCodeOccurence for SelfGeneric
 where
-    Self:
+    SelfGeneric:
         crate::traits::get_source::GetSource + crate::traits::get_code_occurence::GetCodeOccurence,
 {
-    fn get_code_occurence_with_source(
+    fn get_source_and_code_occurence(
         &self,
     ) -> crate::common::source_and_code_occurence::SourceAndCodeOccurence {
         crate::common::source_and_code_occurence::SourceAndCodeOccurence {
