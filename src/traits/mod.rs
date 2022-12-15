@@ -27,6 +27,7 @@ pub mod my_custom_display;
 pub mod new_error;
 pub mod new_error_with_git_info_file_line_column;
 pub mod new_error_with_one_addition;
+pub mod prepare_log_source_and_code_occurence;
 pub mod print_type_methods;
 pub mod readable_time;
 pub mod readable_time_string;
