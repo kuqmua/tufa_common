@@ -1,7 +1,7 @@
 // use crate::helpers::http_request::http_request_error::HttpRequestOriginError;
 // use crate::helpers::http_request::request_builder_methods::cookies::http_request_cookies_error::CookiesErrorEnum;
 // use crate::global_variables::runtime::config::CONFIG;
-// use crate::global_variables::compile_time::git_info::GIT_INFO;
+// use crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES;
 // use reqwest::blocking::RequestBuilder;
 // use tufa_common::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
 // use tufa_common::common::where_was::WhereWas;

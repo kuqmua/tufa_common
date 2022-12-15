@@ -12,47 +12,47 @@ pub struct GitInformation<'a> {
     pub git_message: &'a str,
 }
 
-impl crate::traits::fields::GetGitCommitId for GitInformation<'_> {
-    fn get_git_commit_id(&self) -> String {
-        String::from(self.git_commit_id)
-    }
-}
+// impl crate::traits::fields::GetGitCommitId for GitInformation<'_> {
+//     fn get_git_commit_id(&self) -> String {
+//         String::from(self.git_commit_id)
+//     }
+// }
 
-impl crate::traits::fields::GetGitRepoLink for GitInformation<'_> {
-    fn get_git_repo_link(&self) -> String {
-        String::from(self.git_repo_link)
-    }
-}
+// impl crate::traits::fields::GetGitRepoLink for GitInformation<'_> {
+//     fn get_git_repo_link(&self) -> String {
+//         String::from(self.git_repo_link)
+//     }
+// }
 
-impl crate::traits::fields::GetGitAuthor for GitInformation<'_> {
-    fn get_git_author(&self) -> String {
-        String::from(self.git_author)
-    }
-}
+// impl crate::traits::fields::GetGitAuthor for GitInformation<'_> {
+//     fn get_git_author(&self) -> String {
+//         String::from(self.git_author)
+//     }
+// }
 
-impl crate::traits::fields::GetGitAuthorEmail for GitInformation<'_> {
-    fn get_git_author_email(&self) -> String {
-        String::from(self.git_author_email)
-    }
-}
+// impl crate::traits::fields::GetGitAuthorEmail for GitInformation<'_> {
+//     fn get_git_author_email(&self) -> String {
+//         String::from(self.git_author_email)
+//     }
+// }
 
-impl crate::traits::fields::GetGitCommitUnixTime for GitInformation<'_> {
-    fn get_git_commit_unix_time(&self) -> String {
-        String::from(self.git_commit_unix_time)
-    }
-}
+// impl crate::traits::fields::GetGitCommitUnixTime for GitInformation<'_> {
+//     fn get_git_commit_unix_time(&self) -> String {
+//         String::from(self.git_commit_unix_time)
+//     }
+// }
 
-impl crate::traits::fields::GetGitTimezone for GitInformation<'_> {
-    fn get_git_timezone(&self) -> String {
-        String::from(self.git_timezone)
-    }
-}
+// impl crate::traits::fields::GetGitTimezone for GitInformation<'_> {
+//     fn get_git_timezone(&self) -> String {
+//         String::from(self.git_timezone)
+//     }
+// }
 
-impl crate::traits::fields::GetGitMessage for GitInformation<'_> {
-    fn get_git_message(&self) -> String {
-        String::from(self.git_message)
-    }
-}
+// impl crate::traits::fields::GetGitMessage for GitInformation<'_> {
+//     fn get_git_message(&self) -> String {
+//         String::from(self.git_message)
+//     }
+// }
 
 impl GitInformation<'static> {
     pub fn get_runtime_version(&self) -> GitInformationWithoutLifetimes {
@@ -80,43 +80,43 @@ pub struct GitInformationWithoutLifetimes {
 }
 
 impl crate::traits::fields::GetGitCommitId for GitInformationWithoutLifetimes {
-    fn get_git_commit_id(&self) -> String {
-        self.git_commit_id.clone()
+    fn get_git_commit_id(&self) -> &String {
+        &self.git_commit_id
     }
 }
 
 impl crate::traits::fields::GetGitRepoLink for GitInformationWithoutLifetimes {
-    fn get_git_repo_link(&self) -> String {
-        self.git_repo_link.clone()
+    fn get_git_repo_link(&self) -> &String {
+        &self.git_repo_link
     }
 }
 
 impl crate::traits::fields::GetGitAuthor for GitInformationWithoutLifetimes {
-    fn get_git_author(&self) -> String {
-        self.git_author.clone()
+    fn get_git_author(&self) -> &String {
+        &self.git_author
     }
 }
 
 impl crate::traits::fields::GetGitAuthorEmail for GitInformationWithoutLifetimes {
-    fn get_git_author_email(&self) -> String {
-        self.git_author_email.clone()
+    fn get_git_author_email(&self) -> &String {
+        &self.git_author_email
     }
 }
 
 impl crate::traits::fields::GetGitCommitUnixTime for GitInformationWithoutLifetimes {
-    fn get_git_commit_unix_time(&self) -> String {
-        self.git_commit_unix_time.clone()
+    fn get_git_commit_unix_time(&self) -> &String {
+        &self.git_commit_unix_time
     }
 }
 
 impl crate::traits::fields::GetGitTimezone for GitInformationWithoutLifetimes {
-    fn get_git_timezone(&self) -> String {
-        self.git_timezone.clone()
+    fn get_git_timezone(&self) -> &String {
+        &self.git_timezone
     }
 }
 
 impl crate::traits::fields::GetGitMessage for GitInformationWithoutLifetimes {
-    fn get_git_message(&self) -> String {
-        self.git_message.clone()
+    fn get_git_message(&self) -> &String {
+        &self.git_message
     }
 }

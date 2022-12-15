@@ -1,6 +1,6 @@
 use crate::common::where_was::WhereWas;
-use crate::global_variables::compile_time::git_info::GIT_INFO;
 use crate::global_variables::runtime::config::CONFIG;
+use crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES;
 use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
 use crate::traits::where_was_methods::WhereWasMethods;
 use impl_display_for_error::ImplDisplayForError;

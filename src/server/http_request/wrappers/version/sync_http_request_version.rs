@@ -1,5 +1,5 @@
 use crate::common::where_was::WhereWas;
-use crate::global_variables::compile_time::git_info::GIT_INFO;
+use crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES;
 use crate::server::http_request::http_request_error::HttpRequestOriginError;
 use crate::server::http_request::http_request_method::HttpRequestMethod;
 use crate::server::http_request::sync_http_request_client_request_builder_prep::sync_http_request_client_request_builder_prep;
