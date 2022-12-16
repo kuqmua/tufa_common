@@ -3,11 +3,7 @@ use crate::traits::readable_time_string::ReadableTimeString;
 use crate::traits::separator_symbol::SeparatorSymbol;
 
 pub trait PrepareLogSourceAndCodeOccurence<ConfigGeneric> {
-    fn prepare_log_source_and_code_occurence(
-        &self,
-        config_generic: ConfigGeneric,
-        key_option: Option<String>,
-    ) -> String;
+    fn prepare_log_source_and_code_occurence(&self, config_generic: ConfigGeneric) -> String;
 }
 
 impl<SelfGeneric, ConfigGeneric> PrepareLogSourceAndCodeOccurence<ConfigGeneric> for SelfGeneric
@@ -16,11 +12,7 @@ where
     SelfGeneric:
         crate::traits::get_source::GetSource + crate::traits::get_code_occurence::GetCodeOccurence,
 {
-    fn prepare_log_source_and_code_occurence(
-        &self,
-        config_generic: ConfigGeneric,
-        key_option: Option<String>,
-    ) -> String {
+    fn prepare_log_source_and_code_occurence(&self, config_generic: ConfigGeneric) -> String {
         let capacity = self
             .get_code_occurence()
             .occurences
@@ -49,19 +41,7 @@ where
         vec.sort_by(|a, b| a.increment.cmp(&b.increment));
         let mut occurences = Vec::with_capacity(capacity + 1);
         let log_type = config_generic.get_log_type();
-        match key_option {
-            Some(key) => {
-                occurences.push(format!(
-                    "[key: {}] {}{}",
-                    key,
-                    self.get_source(),
-                    log_type.symbol()
-                ));
-            }
-            None => {
-                occurences.push(format!("{}{}", self.get_source(), log_type.symbol()));
-            }
-        }
+        occurences.push(format!("{}{}", self.get_source(), log_type.symbol()));
         vec.into_iter().for_each(|e| {
             occurences.push(format!(
                 "{} {}{}",
@@ -88,11 +68,7 @@ where
     HashMapValueGeneric:
         crate::traits::get_source::GetSource + crate::traits::get_code_occurence::GetCodeOccurence,
 {
-    fn prepare_log_source_and_code_occurence(
-        &self,
-        config_generic: ConfigGeneric,
-        key_option: Option<String>,
-    ) -> String {
+    fn prepare_log_source_and_code_occurence(&self, config_generic: ConfigGeneric) -> String {
         let log_type = config_generic.get_log_type();
         let mut prepared_log_handle =
             self.iter()
@@ -119,23 +95,12 @@ where
                     //vec.reverse();//todo check reserve or not
                     vec.sort_by(|a, b| a.increment.cmp(&b.increment));
                     let mut occurences = Vec::with_capacity(capacity + 1);
-                    match &key_option {
-                        Some(key) => {
-                            occurences.push(format!(
-                                "[key: {}] {}{}",
-                                key,
-                                hashmap_value.get_source(),
-                                log_type.symbol()
-                            ));
-                        }
-                        None => {
-                            occurences.push(format!(
-                                "{}{}",
-                                hashmap_value.get_source(),
-                                log_type.symbol()
-                            ));
-                        }
-                    }
+                    occurences.push(format!(
+                        "[key: {}] {}{}",
+                        hashmap_key,
+                        hashmap_value.get_source(),
+                        log_type.symbol()
+                    ));
                     vec.into_iter().for_each(|e| {
                         occurences.push(format!(
                             "{} {}{}",
