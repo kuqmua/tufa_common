@@ -124,6 +124,22 @@ where
     }
 }
 
+// impl<VecElementGeneric, ConfigGeneric> PrepareLogSourceAndCodeOccurence<ConfigGeneric>
+//     for Vec<VecElementGeneric>
+// where
+//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType + crate::traits::fields::GetLogType,
+//     VecElementGeneric: std::fmt::Display,
+// {
+//     fn prepare_log_source_and_code_occurence(&self, config_generic: ConfigGeneric) -> String {
+//         let log_type = config_generic.get_log_type().symbol();
+//         let mut prepared_log_handle = self.iter().fold(String::from(""), |mut acc, vec_element| {
+//             format!("{}{}", occurence, log_type.symbol())
+//         });
+//         prepared_log_handle.pop();
+//         prepared_log_handle
+//     }
+// }
+
 impl<VecElementGeneric, ConfigGeneric> PrepareLogSourceAndCodeOccurence<ConfigGeneric>
     for Vec<VecElementGeneric>
 where
