@@ -2,7 +2,9 @@ use crate::common::code_occurence;
 use crate::traits::code_occurence_methods::CodeOccurenceLog;
 use crate::traits::code_occurence_methods::CodeOccurenceNew;
 use crate::traits::code_occurence_methods::CodeOccurenceNewErrorWithOneAddition;
+use crate::traits::code_occurence_methods::CodeOccurenceToString;
 use crate::traits::console::Console;
+use crate::traits::separator_symbol::SeparatorSymbol;
 
 pub trait NewErrorWithOneAddition<SourceGeneric, ConfigGeneric, ReturnSelfGeneric> {
     fn new_error_with_one_addition(
@@ -72,10 +74,17 @@ where
     ) -> ReturnSelfGeneric {
         let code_occurence =
             crate::common::code_occurence::CodeOccurence::new(git_info.clone(), file, line, column);
+        let string_code_occurence = code_occurence.code_occurence_to_string(&config);
+        let log_type = config.get_log_type().symbol();
         if let true = should_trace {
             config.get_log_type().console(
                 config.get_error_color_bold(),
-                source.prepare_log_source_and_code_occurence(&config), //todo add here another code occurence from file line column
+                format!(
+                    "{}{}{}",
+                    source.prepare_log_source_and_code_occurence(&config),
+                    log_type,
+                    string_code_occurence
+                ),
             );
         }
         ReturnSelfGeneric::init_error(source, code_occurence)

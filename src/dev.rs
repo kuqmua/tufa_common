@@ -60,7 +60,7 @@ impl crate::traits::get_code_occurence::GetCodeOccurence for ThreeWrapperError {
 }
 use crate::traits::my_custom_display::DisplayError;
 pub fn three(should_trace: bool) -> Result<(), Box<ThreeWrapperError>> {
-    if let Err(e) = four(true) {
+    if let Err(e) = four(false) {
         // println!("{}", <FourOriginError as DisplayError<SourceGeneric, ConfigStruct, ConfigStruct>>::display_error(&*e, once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG)));
         return Err(Box::new(ThreeWrapperError::new_error_with_one_addition(
             ThreeWrapperErrorEnum::FourWrapper(*e),
@@ -159,11 +159,11 @@ pub fn four(should_trace: bool) -> Result<(), Box<FourOriginError>> {
             return Err(Box::new(FourOriginError::new_error_with_one_addition(
          HashMap::from([
                     (
-                        String::from("one"),
+                        String::from("five_hashmap_key"),
                         FourWrapperErrorEnum::FiveWrapper(*f)
                     ),
                     (
-                        String::from("two"),
+                        String::from("six_hashmap_key"),
                         FourWrapperErrorEnum::SixWrapper(*s)
                     )
                 ]),
@@ -181,12 +181,12 @@ pub fn four(should_trace: bool) -> Result<(), Box<FourOriginError>> {
 //
 #[derive(ImplGetSourceFromCrate)]
 pub struct FiveOriginError {
-    source: u32,
+    source: String,
     code_occurence: crate::common::code_occurence::CodeOccurence,
 }
 
-impl crate::traits::init_error::InitError<u32> for FiveOriginError {
-    fn init_error(source: u32, code_occurence: crate::common::code_occurence::CodeOccurence) -> Self {
+impl crate::traits::init_error::InitError<String> for FiveOriginError {
+    fn init_error(source: String, code_occurence: crate::common::code_occurence::CodeOccurence) -> Self {
         Self {
             source,
             code_occurence,
@@ -211,7 +211,7 @@ pub fn five(should_trace: bool) -> Result<(), Box<FiveOriginError>> {
     //         column!(), 
     // );
     return Err(Box::new(FiveOriginError::something_test(
-                34,
+                String::from("error_five"),
         once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG), 
         once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES), 
         String::from(file!()),
@@ -223,12 +223,12 @@ pub fn five(should_trace: bool) -> Result<(), Box<FiveOriginError>> {
 //
 #[derive(ImplGetSourceFromCrate)]
 pub struct SixOriginError {
-    source: bool,
+    source: String,
     code_occurence: crate::common::code_occurence::CodeOccurence,
 }
 
-impl crate::traits::init_error::InitError<bool> for SixOriginError {
-    fn init_error(source: bool, code_occurence: crate::common::code_occurence::CodeOccurence) -> Self {
+impl crate::traits::init_error::InitError<String> for SixOriginError {
+    fn init_error(source: String, code_occurence: crate::common::code_occurence::CodeOccurence) -> Self {
         Self {
             source,
             code_occurence,
@@ -244,7 +244,7 @@ impl crate::traits::get_code_occurence::GetCodeOccurence for SixOriginError {
 use crate::traits::get_source_and_code_occurence::GetSourceAndCodeOccurence;
 pub fn six(should_trace: bool) -> Result<(), Box<SixOriginError>> {
     return Err(Box::new(SixOriginError::something_test(
-        true,
+        String::from("error_six"),
         once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG),
         once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES),
         String::from(file!()),
