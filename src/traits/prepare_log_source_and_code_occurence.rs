@@ -245,7 +245,7 @@ where
         let mut occurences = Vec::with_capacity(capacity + 1);
         let log_type = config_generic.get_log_type();
         occurences.push(format!(
-            "{}{}",
+            "////{}{}////",
             self.get_source_value()
                 .prepare_log_source_and_code_occurence(config_generic),
             log_type.symbol()

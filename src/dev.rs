@@ -35,7 +35,7 @@ pub struct ThreeWrapperError {
 
 impl crate::traits::get_source_value::GetSourceValue<ThreeWrapperErrorEnum> for ThreeWrapperError {
     fn get_source_value(&self) -> &ThreeWrapperErrorEnum {
-        &self.source
+        &self.source//.get_source_value() - get source value in string with code occurence and erroor
     }
 }
 
