@@ -32,6 +32,16 @@ pub struct ThreeWrapperError {
     source: ThreeWrapperErrorEnum,
     code_occurence: crate::common::code_occurence::CodeOccurence,
 }
+// хранение данные в code_occurence для сериализации и вывод данных в консоль - 2 разные вещи
+// impl sssssss for SixOriginError {
+//     fn prepare_log_source_inner_and_code_occurence(
+//         &self,
+//         config_generic: &ConfigGeneric,
+//     ) -> String {
+    // format!("{}{}", self.source.get_sourceand_code_occurence_as_string(), code_occurence из инпута параметра, не self. для self.code_occurence возможно будет тзасунуто больше чем нужно для вывода в консоль)
+//     }
+// }
+
 
 impl crate::traits::get_source_value::GetSourceValue<ThreeWrapperErrorEnum> for ThreeWrapperError {
     fn get_source_value(&self) -> &ThreeWrapperErrorEnum {
@@ -40,7 +50,7 @@ impl crate::traits::get_source_value::GetSourceValue<ThreeWrapperErrorEnum> for 
 }
 
 // impl crate::traits::get_source::GetSource for ThreeWrapperError {
-//     fn get_source(&self) -> String {
+//     fn get_source_and_code_occurence_as_string(&self) -> String {
 //         self.source.get_source()
 //     }
 // }
@@ -245,6 +255,63 @@ pub struct SixOriginError {
     source: String,
     code_occurence: crate::common::code_occurence::CodeOccurence,
 }
+
+// impl sssssss for SixOriginError {
+//     fn prepare_log_source_inner_and_code_occurence(
+//         &self,
+//         config_generic: &ConfigGeneric,
+//     ) -> String {
+//         let capacity = self
+//             .get_code_occurence()
+//             .occurences
+//             .values()
+//             .fold(0, |mut acc, elem| {
+//                 acc += elem.len();
+//                 acc
+//             });
+//         let mut vec: Vec<crate::common::code_occurence::OccurenceFilter> =
+//             Vec::with_capacity(capacity);
+//         self.get_code_occurence()
+//             .occurences
+//             .iter()
+//             .for_each(|(git_info, v)| {
+//                 v.iter().for_each(|e| {
+//                     vec.push(crate::common::code_occurence::OccurenceFilter {
+//                         increment: e.increment,
+//                         time: e.time_file_line_column.time,
+//                         occurence: e
+//                             .time_file_line_column
+//                             .get_code_path(git_info, config_generic.get_source_place_type()),
+//                     })
+//                 })
+//             });
+//         //vec.reverse();//todo check reserve or not
+//         vec.sort_by(|a, b| a.increment.cmp(&b.increment));
+//         let mut occurences = Vec::with_capacity(capacity + 1);
+//         let log_type = config_generic.get_log_type();
+//         occurences.push(format!(
+//             "////{}{}////",
+//             self.get_source_value()
+//                 .prepare_log_source_and_code_occurence(config_generic),
+//             log_type.symbol()
+//         )); //here must be self.get_source_value().
+//             // occurences.push(format!("{}{}", self.get_source_value().prepare_log_source_and_code_occurence(), log_type.symbol()));
+//         vec.into_iter().for_each(|e| {
+//             occurences.push(format!(
+//                 "{} {}{}",
+//                 e.readable_time_string(),
+//                 e.occurence,
+//                 log_type.symbol()
+//             ));
+//         });
+//         let mut occurence = occurences.iter().fold(String::from(""), |mut acc, elem| {
+//             acc.push_str(elem);
+//             acc
+//         });
+//         log_type.pop_last(&mut occurence);
+//         occurence
+//     }
+// }
 
 impl crate::traits::get_source_value::GetSourceValue<String> for SixOriginError {
     fn get_source_value(&self) -> &String {
