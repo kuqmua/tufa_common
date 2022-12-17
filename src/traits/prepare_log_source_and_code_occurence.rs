@@ -103,7 +103,7 @@ where
                     ));
                     vec.into_iter().for_each(|e| {
                         occurences.push(format!(
-                            "{} {}{}",
+                            " {} {}{}", //add first symbol here?
                             e.readable_time_string(),
                             e.occurence,
                             log_type.symbol()

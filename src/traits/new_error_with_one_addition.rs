@@ -52,10 +52,9 @@ impl<SourceGeneric, ConfigGeneric, ReturnSelfGeneric>
     NewErrorWithOneAddition<SourceGeneric, ConfigGeneric, ReturnSelfGeneric> for ReturnSelfGeneric
 where
     SourceGeneric:
-        crate::traits::get_source::GetSource
-            + crate::traits::prepare_log_source_and_code_occurence::PrepareLogSourceAndCodeOccurence<
-                ConfigGeneric,
-            >,
+        crate::traits::prepare_log_source_and_code_occurence::PrepareLogSourceAndCodeOccurence<
+            ConfigGeneric,
+        >,
     ReturnSelfGeneric: crate::traits::init_error::InitError<SourceGeneric>
         + crate::traits::log_error_code_occurence::LogErrorCodeOccurence<ConfigGeneric>,
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
@@ -76,7 +75,7 @@ where
         if let true = should_trace {
             config.get_log_type().console(
                 config.get_error_color_bold(),
-                source.prepare_log_source_and_code_occurence(&config),
+                source.prepare_log_source_and_code_occurence(&config), //todo add here another code occurence from file line column
             );
         }
         ReturnSelfGeneric::init_error(source, code_occurence)

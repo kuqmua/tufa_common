@@ -14,7 +14,7 @@ use crate::traits::get_code_occurence::GetCodeOccurence;
 use crate::traits::get_git_source_file_link::GetGitSourceFileLink;
 use crate::traits::get_source_and_code_occurence;
 use crate::traits::init_error::InitError;
-use crate::traits::new_error_with_git_info_file_line_column::NewErrorWithGitInfoFileLineColumn;
+// use crate::traits::new_error_with_git_info_file_line_column::NewErrorWithGitInfoFileLineColumn;
 use crate::traits::new_error_with_one_addition::NewErrorWithOneAddition;
 use crate::traits::readable_time::ReadableTime;
 use crate::traits::separator_symbol::SeparatorSymbol;
@@ -24,7 +24,8 @@ use chrono::Utc;
 use impl_get_source::ImplGetSourceFromCrate;
 use std::collections::HashMap;
 use std::fmt::{self, Display};
- use crate::traits::prepare_log_source_and_code_occurence::PrepareLogSourceAndCodeOccurence;
+use crate::traits::prepare_log_source_and_code_occurence::PrepareLogSourceAndCodeOccurence;
+use crate::traits::new_error_with_git_info_file_line_column::SomethingTest;
 
 #[derive(ImplGetSourceFromCrate)]
 pub struct ThreeWrapperError {
@@ -200,13 +201,23 @@ impl crate::traits::get_code_occurence::GetCodeOccurence for FiveOriginError {
 }
 //
 pub fn five(should_trace: bool) -> Result<(), Box<FiveOriginError>> {
-    return Err(Box::new(FiveOriginError::new_error_with_git_info_file_line_column(
-        34,
-            crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES
-            .clone(), 
-            String::from(file!()), 
-            line!(), 
-            column!(), 
+
+    // let f = FiveOriginError::new_error_with_git_info_file_line_column(
+    //     34,
+    //         crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES
+    //         .clone(), 
+    //         String::from(file!()), 
+    //         line!(), 
+    //         column!(), 
+    // );
+    return Err(Box::new(FiveOriginError::something_test(
+                34,
+        once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG), 
+        once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES), 
+        String::from(file!()),
+        line!(), 
+        column!(), 
+        false
     )));
 }
 //
@@ -231,23 +242,21 @@ impl crate::traits::get_code_occurence::GetCodeOccurence for SixOriginError {
     }
 }
 use crate::traits::get_source_and_code_occurence::GetSourceAndCodeOccurence;
-//
 pub fn six(should_trace: bool) -> Result<(), Box<SixOriginError>> {
-    let f = SixOriginError::new_error_with_git_info_file_line_column(
+    return Err(Box::new(SixOriginError::something_test(
         true,
-            crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES
-            .clone(), 
-            String::from(file!()), 
-            line!(), 
-            column!(), 
-    );
-    let u = f.get_source_and_code_occurence();
-    return Err(Box::new(f));
+        once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG),
+        once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES),
+        String::from(file!()),
+        line!(),
+        column!(),
+        false,
+    ) ));
 }
-//
-impl crate::traits::get_source::GetSource for HashMap<std::string::String, FourWrapperErrorEnum> {
-    fn get_source(&self) -> String {
-        String::from("todo this impl")
-    }
-}
+
+// impl crate::traits::get_source::GetSource for HashMap<std::string::String, FourWrapperErrorEnum> {
+//     fn get_source(&self) -> String {
+//         String::from("todo this impl")
+//     }
+// }
 
