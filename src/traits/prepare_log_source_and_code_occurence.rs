@@ -41,7 +41,8 @@ where
         vec.sort_by(|a, b| a.increment.cmp(&b.increment));
         let mut occurences = Vec::with_capacity(capacity + 1);
         let log_type = config_generic.get_log_type();
-        occurences.push(format!("{}{}", self.get_source(), log_type.symbol()));
+        occurences.push(format!("{}{}", self.get_source(), log_type.symbol())); //here must be self.get_source_value().
+                                                                                // occurences.push(format!("{}{}", self.get_source_value().prepare_log_source_and_code_occurence(), log_type.symbol()));
         vec.into_iter().for_each(|e| {
             occurences.push(format!(
                 "{} {}{}",

@@ -33,6 +33,12 @@ pub struct ThreeWrapperError {
     code_occurence: crate::common::code_occurence::CodeOccurence,
 }
 
+impl crate::traits::get_source_value::GetSourceValue<ThreeWrapperErrorEnum> for ThreeWrapperError {
+    fn get_source_value(&self) -> &ThreeWrapperErrorEnum {
+        &self.source
+    }
+}
+
 // impl crate::traits::get_source::GetSource for ThreeWrapperError {
 //     fn get_source(&self) -> String {
 //         self.source.get_source()
@@ -93,6 +99,13 @@ pub struct FourOriginError {
     source: HashMap<String, FourWrapperErrorEnum>,
     code_occurence: crate::common::code_occurence::CodeOccurence,
 }
+
+impl crate::traits::get_source_value::GetSourceValue<HashMap<String, FourWrapperErrorEnum>> for FourOriginError {
+    fn get_source_value(&self) -> &HashMap<String, FourWrapperErrorEnum> {
+        &self.source
+    }
+}
+
 //
 impl crate::traits::init_error::InitError<HashMap<String, FourWrapperErrorEnum>>
     for FourOriginError
@@ -185,6 +198,12 @@ pub struct FiveOriginError {
     code_occurence: crate::common::code_occurence::CodeOccurence,
 }
 
+impl crate::traits::get_source_value::GetSourceValue<String> for FiveOriginError {
+    fn get_source_value(&self) -> &String {
+        &self.source
+    }
+}
+
 impl crate::traits::init_error::InitError<String> for FiveOriginError {
     fn init_error(source: String, code_occurence: crate::common::code_occurence::CodeOccurence) -> Self {
         Self {
@@ -225,6 +244,12 @@ pub fn five(should_trace: bool) -> Result<(), Box<FiveOriginError>> {
 pub struct SixOriginError {
     source: String,
     code_occurence: crate::common::code_occurence::CodeOccurence,
+}
+
+impl crate::traits::get_source_value::GetSourceValue<String> for SixOriginError {
+    fn get_source_value(&self) -> &String {
+        &self.source
+    }
 }
 
 impl crate::traits::init_error::InitError<String> for SixOriginError {

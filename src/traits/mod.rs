@@ -17,6 +17,7 @@ pub mod get_postgres_url;
 pub mod get_server_address;
 pub mod get_source;
 pub mod get_source_and_code_occurence;
+pub mod get_source_value;
 pub mod get_time;
 pub mod get_where_was_one_or_many;
 pub mod init_error;
