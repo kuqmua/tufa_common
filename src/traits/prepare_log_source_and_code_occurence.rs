@@ -3,7 +3,7 @@ use crate::traits::readable_time_string::ReadableTimeString;
 use crate::traits::separator_symbol::SeparatorSymbol;
 
 pub trait PrepareLogSourceAndCodeOccurence<ConfigGeneric> {
-    fn prepare_log_source_and_code_occurence(&self, config_generic: ConfigGeneric) -> String;
+    fn prepare_log_source_and_code_occurence(&self, config_generic: &ConfigGeneric) -> String;
 }
 
 impl<SelfGeneric, ConfigGeneric> PrepareLogSourceAndCodeOccurence<ConfigGeneric> for SelfGeneric
@@ -12,7 +12,7 @@ where
     SelfGeneric:
         crate::traits::get_source::GetSource + crate::traits::get_code_occurence::GetCodeOccurence,
 {
-    fn prepare_log_source_and_code_occurence(&self, config_generic: ConfigGeneric) -> String {
+    fn prepare_log_source_and_code_occurence(&self, config_generic: &ConfigGeneric) -> String {
         let capacity = self
             .get_code_occurence()
             .occurences
@@ -68,7 +68,7 @@ where
     HashMapValueGeneric:
         crate::traits::get_source::GetSource + crate::traits::get_code_occurence::GetCodeOccurence,
 {
-    fn prepare_log_source_and_code_occurence(&self, config_generic: ConfigGeneric) -> String {
+    fn prepare_log_source_and_code_occurence(&self, config_generic: &ConfigGeneric) -> String {
         let log_type = config_generic.get_log_type();
         let mut prepared_log_handle =
             self.iter()
@@ -147,7 +147,7 @@ where
     VecElementGeneric:
         crate::traits::get_source::GetSource + crate::traits::get_code_occurence::GetCodeOccurence,
 {
-    fn prepare_log_source_and_code_occurence(&self, config_generic: ConfigGeneric) -> String {
+    fn prepare_log_source_and_code_occurence(&self, config_generic: &ConfigGeneric) -> String {
         let log_type = config_generic.get_log_type();
         let mut prepared_log_handle = self.iter().fold(String::from(""), |mut acc, vec_element| {
             let code_occurence = vec_element.get_code_occurence();
