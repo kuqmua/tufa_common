@@ -58,7 +58,9 @@ where
             ConfigGeneric,
         >,
     ReturnSelfGeneric: crate::traits::init_error::InitError<SourceGeneric>
-        + crate::traits::log_error_code_occurence::LogErrorCodeOccurence<ConfigGeneric>,
+        + crate::traits::log_error_code_occurence::LogErrorCodeOccurence<ConfigGeneric>
+        + crate::traits::get_source_value::GetSourceValue<SourceGeneric>
+        + crate::traits::prepare_log_source_and_code_occurence::PrepareLogSourceInnerAndCodeOccurence<ConfigGeneric, SourceGeneric>,
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetLogType
         + crate::traits::get_color::ErrorColorBold,
@@ -76,17 +78,34 @@ where
             crate::common::code_occurence::CodeOccurence::new(git_info.clone(), file, line, column);
         let string_code_occurence = code_occurence.code_occurence_to_string(&config);
         let log_type = config.get_log_type().symbol();
+        // let f = sour
+        // occurences.push(format!("{}{}", self.get_source_value().prepare_log_source_and_code_occurence(), log_type.symbol()));
+        let g = ReturnSelfGeneric::init_error(source, code_occurence);
         if let true = should_trace {
+            // config.get_log_type().console(
+            //     config.get_error_color_bold(),
+            //     format!(
+            //         "{}{}{}",
+            //         source.prepare_log_source_and_code_occurence(&config),
+            //         log_type,
+            //         string_code_occurence
+            //     ),
+            // );
+
             config.get_log_type().console(
                 config.get_error_color_bold(),
                 format!(
-                    "{}{}{}",
-                    source.prepare_log_source_and_code_occurence(&config),
-                    log_type,
-                    string_code_occurence
+                    "{}",
+                    // source.prepare_log_source_inner_and_code_occurence(&config),
+                    g.prepare_log_source_inner_and_code_occurence(&config),
+                    // log_type,
+                    // string_code_occurence
                 ),
             );
+            //prepare_log_source_inner_and_code_occurence
         }
-        ReturnSelfGeneric::init_error(source, code_occurence)
+
+        // let j = g.get_source_value(); // not actuaally this .prepare_log_source_and_code_occurence(&config);
+        g
     }
 }
