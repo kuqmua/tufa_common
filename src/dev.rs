@@ -403,6 +403,20 @@ impl crate::traits::get_code_occurence::GetCodeOccurence for SixOriginError {
 }
 use crate::traits::get_source_and_code_occurence::GetSourceAndCodeOccurence;
 pub fn six(should_trace: bool) -> Result<(), Box<SixOriginError>> {
+    // let arc_usage = crate::common::code_occurence::CodeOccurenceWithArcUsage::new(
+    //     once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES_UNDER_ARC).clone(),
+    //     String::from(file!()),
+    //     line!(),
+    //     column!(),
+    // );
+    let typical = crate::common::code_occurence::CodeOccurence::new(
+        once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
+        String::from(file!()),
+        line!(),
+        column!(),
+    );
+    // println!("arc usage {}", std::mem::size_of_val(&arc_usage.occurences));
+    println!("typical {}", std::mem::size_of_val(&typical.occurences));
     // return Err(Box::new(SixOriginError::something_test(
     //     String::from("error_six"),
     //     once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG),
@@ -415,9 +429,7 @@ pub fn six(should_trace: bool) -> Result<(), Box<SixOriginError>> {
     //
     return Err(Box::new(SixOriginError {
         source: String::from("error_six"),
-        code_occurence: crate::common::code_occurence::CodeOccurence {
-            occurences: HashMap::new(),
-        },
+        code_occurence: typical,
     }));
 }
 

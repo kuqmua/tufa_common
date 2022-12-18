@@ -1,3 +1,27 @@
+// // #[derive(Debug, Clone)]
+// pub struct CodeOccurenceWithArcUsage {
+//     pub occurences: std::collections::HashMap<
+//         std::sync::Arc<crate::common::git::git_info::GitInformationWithoutLifetimes>,
+//         Vec<crate::common::increment_time_file_line_column::IncrementTimeFileLineColumn>,
+//     >,
+// }
+
+// impl CodeOccurenceWithArcUsage {
+//     pub fn new(
+//         git_info: std::sync::Arc<crate::common::git::git_info::GitInformationWithoutLifetimes>,
+//         file: String, //&'a str
+//         line: u32,
+//         column: u32,
+//     ) -> Self {
+//         Self {
+//             occurences: std::collections::HashMap::from([(
+//                 git_info,
+//                 vec![crate::common::increment_time_file_line_column::IncrementTimeFileLineColumn::new(file, line, column)],
+//             )]),
+//         }
+//     }
+// }
+
 #[derive(Debug, Clone)]
 pub struct CodeOccurence {
     pub occurences: std::collections::HashMap<
