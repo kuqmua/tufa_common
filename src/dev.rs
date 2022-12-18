@@ -141,6 +141,7 @@ pub fn three(should_trace: bool) -> Result<(), Box<ThreeWrapperError>> {
                 ),
             }
         };
+        println!("three f {}", std::mem::size_of_val(&f));
         println!("three-----");
         f.log(once_cell::sync::Lazy::force(
             &crate::global_variables::runtime::config::CONFIG,
@@ -407,6 +408,7 @@ pub fn four(should_trace: bool) -> Result<(), Box<FourOriginError>> {
                     ),
                 }
             };
+            println!("four f {}", std::mem::size_of_val(&f));
             println!("four-----");
             f.log(once_cell::sync::Lazy::force(
                 &crate::global_variables::runtime::config::CONFIG,
@@ -512,6 +514,7 @@ pub fn five(should_trace: bool) -> Result<(), Box<FiveOriginError>> {
             ),
         }
     };
+    println!("five f {}", std::mem::size_of_val(&f));
     println!("five-----");
     f.log(once_cell::sync::Lazy::force(
         &crate::global_variables::runtime::config::CONFIG,
@@ -671,6 +674,7 @@ pub fn six(should_trace: bool) -> Result<(), Box<SixOriginError>> {
             ),
         }
     };
+    println!("six f {}", std::mem::size_of_val(&f));
     println!("six-----");
     f.log(once_cell::sync::Lazy::force(
         &crate::global_variables::runtime::config::CONFIG,
