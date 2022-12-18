@@ -13,6 +13,22 @@ impl TimeFileLineColumn {
             file_line_column,
         }
     }
+    pub fn new_file_line_column(
+        file: String, //&'a str
+        line: u32,
+        column: u32,
+    ) -> Self {
+        Self {
+            time: std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .expect("cannot convert time to unix_epoch"),
+            file_line_column: crate::common::file_line_column::FileLineColumn {
+                file,
+                line,
+                column,
+            },
+        }
+    }
 }
 
 impl crate::traits::get_time::GetTime for TimeFileLineColumn {

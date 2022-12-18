@@ -23,6 +23,16 @@
 // }
 
 #[derive(Debug, Clone)]
+pub struct CodeOccurenceOldWay {
+    pub git_info: crate::common::git::git_info::GitInformationWithoutLifetimes,
+    pub time_file_line_column: crate::common::time_file_line_column::TimeFileLineColumn,
+    // pub occurences: std::collections::HashMap<
+    //     crate::common::git::git_info::GitInformationWithoutLifetimes,
+    //     Vec<crate::common::increment_time_file_line_column::IncrementTimeFileLineColumn>,
+    // >,
+}
+
+#[derive(Debug, Clone)]
 pub struct CodeOccurence {
     pub occurences: std::collections::HashMap<
         crate::common::git::git_info::GitInformationWithoutLifetimes,
