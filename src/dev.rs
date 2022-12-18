@@ -250,6 +250,33 @@ pub struct FiveOriginError {
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
+impl FiveOriginError {
+    fn get_source_as_string(&self) -> String {
+        format!("{}", self.source)
+    }
+    fn get_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        self.code_occurence.time_file_line_column.get_code_path(
+            &self.code_occurence.git_info,
+            config.get_source_place_type(),
+        )
+    }
+    fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
+        let log_type = config.get_log_type();
+        log_type.console(
+            &config.get_error_color_bold(),
+            format!(
+                "{}{}{}",
+                self.get_source_as_string(),
+                log_type.symbol(),
+                self.get_code_occurence_as_string(config)
+            ),
+        )
+    }
+}
+
 // impl crate::traits::get_source_value::GetSourceValue<String> for FiveOriginError {
 //     fn get_source_value(&self) -> &String {
 //         &self.source
@@ -293,7 +320,7 @@ pub fn five(should_trace: bool) -> Result<(), Box<FiveOriginError>> {
     //     false
     // )));
     //
-    return Err(Box::new(FiveOriginError {
+    let f = FiveOriginError {
         source: String::from("error_five"),
         code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
             git_info: once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
@@ -303,7 +330,13 @@ pub fn five(should_trace: bool) -> Result<(), Box<FiveOriginError>> {
                 column!(),
             ),
         }
-    }));
+    };
+    println!("five-----");
+    f.log(once_cell::sync::Lazy::force(
+        &crate::global_variables::runtime::config::CONFIG,
+    ));
+    println!("five-----");
+    return Err(Box::new(f));
 }
 //
 use crate::traits::code_occurence_methods::CodeOccurenceToString;
