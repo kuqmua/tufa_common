@@ -125,6 +125,39 @@ pub struct FourOriginError {
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
+// impl FourOriginError {
+//     fn get_source_as_string(&self, config: &crate::config_mods::config_struct::ConfigStruct) -> String {
+//         //
+//         let mut occurence = self.source.iter().fold(String::from(""), |mut acc, (key, value)| {
+//             let source_as_string = value.get_source_as_string();
+//             let get_code_occurence_as_string = value.get_code_occurence_as_string(config);
+//             acc.push_str(elem);
+//             acc
+//         });
+//     }
+//     fn get_code_occurence_as_string(
+//         &self,
+//         config: &crate::config_mods::config_struct::ConfigStruct,
+//     ) -> String {
+//         self.code_occurence.time_file_line_column.get_code_path(
+//             &self.code_occurence.git_info,
+//             config.get_source_place_type(),
+//         )
+//     }
+//     fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
+//         let log_type = config.get_log_type();
+//         log_type.console(
+//             &config.get_error_color_bold(),
+//             format!(
+//                 "{}{}{}",
+//                 self.get_source_as_string(),
+//                 log_type.symbol(),
+//                 self.get_code_occurence_as_string(config)
+//             ),
+//         )
+//     }
+// }
+
 // impl crate::traits::get_source_value::GetSourceValue<HashMap<String, FourWrapperErrorEnum>>
 //     for FourOriginError
 // {
@@ -159,6 +192,36 @@ pub enum FourWrapperErrorEnum {
     FiveWrapper(FiveOriginError),
     SixWrapper(SixOriginError),
 }
+//
+impl FourWrapperErrorEnum {
+    fn get_source_as_string(&self) -> String {
+        match self {
+            FourWrapperErrorEnum::FiveWrapper(i) => i.get_source_as_string(),
+            FourWrapperErrorEnum::SixWrapper(i) => i.get_source_as_string(),
+        }
+    }
+    fn get_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        match self {
+            FourWrapperErrorEnum::FiveWrapper(i) => i.get_code_occurence_as_string(config),
+            FourWrapperErrorEnum::SixWrapper(i) => i.get_code_occurence_as_string(config),
+        }
+    }
+    fn get_source_and_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        format!(
+            "{}{}{}",
+            self.get_source_as_string(),
+            config.get_log_type().symbol(),
+            self.get_code_occurence_as_string(config)
+        )
+    }
+}
+//
 use crate::traits::get_source::GetSource;
 impl std::fmt::Display for FourWrapperErrorEnum {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -263,16 +326,22 @@ impl FiveOriginError {
             config.get_source_place_type(),
         )
     }
+    fn get_source_and_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        format!(
+            "{}{}{}",
+            self.get_source_as_string(),
+            config.get_log_type().symbol(),
+            self.get_code_occurence_as_string(config)
+        )
+    }
     fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         let log_type = config.get_log_type();
         log_type.console(
             &config.get_error_color_bold(),
-            format!(
-                "{}{}{}",
-                self.get_source_as_string(),
-                log_type.symbol(),
-                self.get_code_occurence_as_string(config)
-            ),
+            self.get_source_and_code_occurence_as_string(config),
         )
     }
 }
@@ -367,16 +436,22 @@ impl SixOriginError {
             config.get_source_place_type(),
         )
     }
+    fn get_source_and_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        format!(
+            "{}{}{}",
+            self.get_source_as_string(),
+            config.get_log_type().symbol(),
+            self.get_code_occurence_as_string(config)
+        )
+    }
     fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         let log_type = config.get_log_type();
         log_type.console(
             &config.get_error_color_bold(),
-            format!(
-                "{}{}{}",
-                self.get_source_as_string(),
-                log_type.symbol(),
-                self.get_code_occurence_as_string(config)
-            ),
+            self.get_source_and_code_occurence_as_string(config),
         )
     }
 }
