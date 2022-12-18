@@ -38,7 +38,7 @@ where
 {
     fn log(&self, source_generic: &SourceGeneric, config_generic: ConfigGeneric) {
         let log_type = config_generic.get_log_type();
-        let error_color_bold = config_generic.get_error_color_bold();
+        let error_color_bold = &config_generic.get_error_color_bold();
         log_type.console(
             error_color_bold,
             self.code_occurence_with_source_to_string(source_generic, &config_generic),

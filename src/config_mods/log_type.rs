@@ -16,7 +16,7 @@ pub enum LogType {
 }
 
 impl crate::traits::console::Console for LogType {
-    fn console(&self, style: ansi_term::Style, occurence: String) {
+    fn console(&self, style: &ansi_term::Style, occurence: String) {
         match self {
             LogType::Tracing => {
                 tracing::error!(error = occurence);
