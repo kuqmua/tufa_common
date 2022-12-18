@@ -33,6 +33,47 @@ pub struct ThreeWrapperError {
     // code_occurence: crate::common::code_occurence::CodeOccurence,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
+
+impl ThreeWrapperError {
+    fn get_source_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        //todo if wrapper - config in input parameter
+        format!(
+            "{}",
+            self.source.get_source_and_code_occurence_as_string(config)
+        )
+    }
+    fn get_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        self.code_occurence.time_file_line_column.get_code_path(
+            &self.code_occurence.git_info,
+            config.get_source_place_type(),
+        )
+    }
+    fn get_source_and_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        format!(
+            "{}{}{}",
+            self.get_source_as_string(config),
+            config.get_log_type().symbol(),
+            self.get_code_occurence_as_string(config)
+        )
+    }
+    fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
+        let log_type = config.get_log_type();
+        log_type.console(
+            &config.get_error_color_bold(),
+            self.get_source_and_code_occurence_as_string(config),
+        )
+    }
+}
+
 // хранение данные в code_occurence для сериализации и вывод данных в консоль - 2 разные вещи
 // impl sssssss for SixOriginError {
 //     fn prepare_log_source_inner_and_code_occurence(
@@ -86,8 +127,7 @@ pub fn three(should_trace: bool) -> Result<(), Box<ThreeWrapperError>> {
         //     column!(),
         //     should_trace
         // )));
-
-        return Err(Box::new(ThreeWrapperError {
+        let f = ThreeWrapperError {
             source: ThreeWrapperErrorEnum::FourWrapper(*e),
             // code_occurence: crate::common::code_occurence::CodeOccurence {
             //     occurences: HashMap::new(),
@@ -100,7 +140,13 @@ pub fn three(should_trace: bool) -> Result<(), Box<ThreeWrapperError>> {
                     column!(),
                 ),
             }
-        }));
+        };
+        println!("three-----");
+        f.log(once_cell::sync::Lazy::force(
+            &crate::global_variables::runtime::config::CONFIG,
+        ));
+        println!("three-----");
+        return Err(Box::new(f));
     };
     Ok(())
 }
@@ -128,17 +174,22 @@ impl ThreeWrapperErrorEnum {
         }
     }
     //does it need to be implemented here?
-    // fn get_source_and_code_occurence_as_string(
-    //     &self,
-    //     config: &crate::config_mods::config_struct::ConfigStruct,
-    // ) -> String {
-    //     format!(
-    //         "{}{}{}",
-    //         self.get_source_as_string(),
-    //         config.get_log_type().symbol(),
-    //         self.get_code_occurence_as_string(config)
-    //     )
-    // }
+    fn get_source_and_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        match self {
+            ThreeWrapperErrorEnum::FourWrapper(i) => {
+                i.get_source_and_code_occurence_as_string(config)
+            }
+        }
+        // format!(
+        //     "{}{}{}",
+        //     self.get_source_as_string(),
+        //     config.get_log_type().symbol(),
+        //     self.get_code_occurence_as_string(config)
+        // )
+    }
 }
 
 // impl crate::traits::get_code_occurence::GetCodeOccurence for ThreeWrapperErrorEnum {
@@ -251,8 +302,11 @@ pub enum FourWrapperErrorEnum {
 impl FourWrapperErrorEnum {
     fn get_source_as_string(&self) -> String {
         match self {
+            //todo if origin - without config
             FourWrapperErrorEnum::FiveWrapper(i) => i.get_source_as_string(),
             FourWrapperErrorEnum::SixWrapper(i) => i.get_source_as_string(),
+            //todo if wrapper - with config
+            // FourWrapperErrorEnum::SixWrapper(some_wrapper) => some_wrapper.get_source_as_string(config),
         }
     }
     fn get_code_occurence_as_string(
@@ -265,17 +319,25 @@ impl FourWrapperErrorEnum {
         }
     }
     //does it need to be implemented here?
-    // fn get_source_and_code_occurence_as_string(
-    //     &self,
-    //     config: &crate::config_mods::config_struct::ConfigStruct,
-    // ) -> String {
-    //     format!(
-    //         "{}{}{}",
-    //         self.get_source_as_string(),
-    //         config.get_log_type().symbol(),
-    //         self.get_code_occurence_as_string(config)
-    //     )
-    // }
+    fn get_source_and_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        match self {
+            FourWrapperErrorEnum::FiveWrapper(i) => {
+                i.get_source_and_code_occurence_as_string(config)
+            }
+            FourWrapperErrorEnum::SixWrapper(i) => {
+                i.get_source_and_code_occurence_as_string(config)
+            }
+        }
+        // format!(
+        //     "{}{}{}",
+        //     self.get_source_as_string(),
+        //     config.get_log_type().symbol(),
+        //     self.get_code_occurence_as_string(config)
+        // )
+    }
 }
 //
 use crate::traits::get_source::GetSource;
