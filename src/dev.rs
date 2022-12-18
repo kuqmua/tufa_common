@@ -35,17 +35,17 @@ pub struct ThreeWrapperError {
 }
 
 impl ThreeWrapperError {
-    fn get_source_as_string(
+    pub fn get_source_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
-        //todo if wrapper - config in input parameter
+        //todo if origin - without config, if wrapper - with config
         format!(
             "{}",
             self.source.get_source_and_code_occurence_as_string(config)
         )
     }
-    fn get_code_occurence_as_string(
+    pub fn get_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
@@ -54,7 +54,7 @@ impl ThreeWrapperError {
             config.get_source_place_type(),
         )
     }
-    fn get_source_and_code_occurence_as_string(
+    pub fn get_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
@@ -65,7 +65,7 @@ impl ThreeWrapperError {
             self.get_code_occurence_as_string(config)
         )
     }
-    fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
+    pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         let log_type = config.get_log_type();
         log_type.console(
             &config.get_error_color_bold(),
@@ -157,7 +157,7 @@ pub enum ThreeWrapperErrorEnum {
 }
 
 impl ThreeWrapperErrorEnum {
-    fn get_source_as_string(
+    pub fn get_source_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
@@ -165,7 +165,7 @@ impl ThreeWrapperErrorEnum {
             ThreeWrapperErrorEnum::FourWrapper(i) => i.get_source_as_string(config),
         }
     }
-    fn get_code_occurence_as_string(
+    pub fn get_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
@@ -174,7 +174,7 @@ impl ThreeWrapperErrorEnum {
         }
     }
     //does it need to be implemented here?
-    fn get_source_and_code_occurence_as_string(
+    pub fn get_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
@@ -183,12 +183,6 @@ impl ThreeWrapperErrorEnum {
                 i.get_source_and_code_occurence_as_string(config)
             }
         }
-        // format!(
-        //     "{}{}{}",
-        //     self.get_source_as_string(),
-        //     config.get_log_type().symbol(),
-        //     self.get_code_occurence_as_string(config)
-        // )
     }
 }
 
@@ -208,7 +202,7 @@ pub struct FourOriginError {
 }
 
 impl FourOriginError {
-    fn get_source_as_string(
+    pub fn get_source_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
@@ -218,7 +212,7 @@ impl FourOriginError {
             self.source
                 .iter()
                 .fold(String::from(""), |mut acc, (key, value)| {
-                    let source_as_string = value.get_source_as_string();
+                    let source_as_string = value.get_source_as_string(config);
                     let get_code_occurence_as_string = value.get_code_occurence_as_string(config);
                     //todo maybe space symbol
                     acc.push_str(&format!(
@@ -230,7 +224,7 @@ impl FourOriginError {
         log_type.pop_last(&mut source_as_string);
         source_as_string
     }
-    fn get_code_occurence_as_string(
+    pub fn get_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
@@ -239,7 +233,7 @@ impl FourOriginError {
             config.get_source_place_type(),
         )
     }
-    fn get_source_and_code_occurence_as_string(
+    pub fn get_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
@@ -250,7 +244,7 @@ impl FourOriginError {
             self.get_code_occurence_as_string(config)
         )
     }
-    fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
+    pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         let log_type = config.get_log_type();
         log_type.console(
             &config.get_error_color_bold(),
@@ -300,16 +294,17 @@ pub enum FourWrapperErrorEnum {
 }
 //
 impl FourWrapperErrorEnum {
-    fn get_source_as_string(&self) -> String {
+    pub fn get_source_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
         match self {
-            //todo if origin - without config
+            //todo - if wrapper - with config, if origin - without
             FourWrapperErrorEnum::FiveWrapper(i) => i.get_source_as_string(),
             FourWrapperErrorEnum::SixWrapper(i) => i.get_source_as_string(),
-            //todo if wrapper - with config
-            // FourWrapperErrorEnum::SixWrapper(some_wrapper) => some_wrapper.get_source_as_string(config),
         }
     }
-    fn get_code_occurence_as_string(
+    pub fn get_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
@@ -319,7 +314,7 @@ impl FourWrapperErrorEnum {
         }
     }
     //does it need to be implemented here?
-    fn get_source_and_code_occurence_as_string(
+    pub fn get_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
@@ -331,12 +326,6 @@ impl FourWrapperErrorEnum {
                 i.get_source_and_code_occurence_as_string(config)
             }
         }
-        // format!(
-        //     "{}{}{}",
-        //     self.get_source_as_string(),
-        //     config.get_log_type().symbol(),
-        //     self.get_code_occurence_as_string(config)
-        // )
     }
 }
 //
@@ -437,10 +426,10 @@ pub struct FiveOriginError {
 }
 
 impl FiveOriginError {
-    fn get_source_as_string(&self) -> String {
+    pub fn get_source_as_string(&self) -> String {
         format!("{}", self.source)
     }
-    fn get_code_occurence_as_string(
+    pub fn get_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
@@ -449,7 +438,7 @@ impl FiveOriginError {
             config.get_source_place_type(),
         )
     }
-    fn get_source_and_code_occurence_as_string(
+    pub fn get_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
@@ -460,7 +449,7 @@ impl FiveOriginError {
             self.get_code_occurence_as_string(config)
         )
     }
-    fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
+    pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         let log_type = config.get_log_type();
         log_type.console(
             &config.get_error_color_bold(),
@@ -547,10 +536,10 @@ pub struct SixOriginError {
 }
 
 impl SixOriginError {
-    fn get_source_as_string(&self) -> String {
+    pub fn get_source_as_string(&self) -> String {
         format!("{}", self.source)
     }
-    fn get_code_occurence_as_string(
+    pub fn get_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
@@ -559,7 +548,7 @@ impl SixOriginError {
             config.get_source_place_type(),
         )
     }
-    fn get_source_and_code_occurence_as_string(
+    pub fn get_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
@@ -570,7 +559,7 @@ impl SixOriginError {
             self.get_code_occurence_as_string(config)
         )
     }
-    fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
+    pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         let log_type = config.get_log_type();
         log_type.console(
             &config.get_error_color_bold(),
