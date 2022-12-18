@@ -1,6 +1,7 @@
 use crate::common::file_line_column::FileLineColumn;
 use crate::common::git::git_info::GitInformation;
 use crate::common::git::git_info::GitInformationWithoutLifetimes;
+use crate::common::source_and_code_occurence;
 use crate::common::time_file_line_column;
 use crate::common::time_file_line_column::TimeFileLineColumn;
 use crate::common::where_was::WhereWas;
@@ -26,8 +27,9 @@ use std::collections::HashMap;
 use std::fmt::{self, Display};
 // use crate::traits::prepare_log_source_and_code_occurence::PrepareLogSourceAndCodeOccurence;
 // use crate::traits::new_error_with_git_info_file_line_column::SomethingTest;
+use crate::traits::get_source_and_code_occurence::GetSourceAndCodeOccurence;
 
-#[derive(ImplGetSourceFromCrate)]
+// #[derive(ImplGetSourceFromCrate)]
 pub struct ThreeWrapperError {
     source: ThreeWrapperErrorEnum,
     // code_occurence: crate::common::code_occurence::CodeOccurence,
@@ -152,7 +154,7 @@ pub fn three(should_trace: bool) -> Result<(), Box<ThreeWrapperError>> {
     Ok(())
 }
 //
-#[derive(ImplGetSourceFromCrate)]
+// #[derive(ImplGetSourceFromCrate)]
 pub enum ThreeWrapperErrorEnum {
     FourWrapper(FourOriginError),
 }
@@ -195,12 +197,25 @@ impl ThreeWrapperErrorEnum {
 //     }
 // }
 //
-#[derive(ImplGetSourceFromCrate)]
+// #[derive(ImplGetSourceFromCrate)]
 pub struct FourOriginError {
     source: HashMap<String, FourWrapperErrorEnum>,
     // code_occurence: crate::common::code_occurence::CodeOccurence,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
+
+// 00[key: six_hashmap_key] ==error_seven
+// https://github.com/kuqmua/tufa_common/blob/031d2a364a21941c2742c95076f0d4fd5f2f5acf/src/dev.rs#L809==
+// ==error_eight
+// https://github.com/kuqmua/tufa_common/blob/031d2a364a21941c2742c95076f0d4fd5f2f5acf/src/dev.rs#L870==11
+//   https://github.com/kuqmua/tufa_common/blob/031d2a364a21941c2742c95076f0d4fd5f2f5acf/src/dev.rs#L69722
+
+// [key: six_hashmap_key]
+//  error_seven
+//   https://github.com/kuqmua/tufa_common/blob/031d2a364a21941c2742c95076f0d4fd5f2f5acf/src/dev.rs#L809==
+//  error_eight
+//   https://github.com/kuqmua/tufa_common/blob/031d2a364a21941c2742c95076f0d4fd5f2f5acf/src/dev.rs#L870==11
+// https://github.com/kuqmua/tufa_common/blob/031d2a364a21941c2742c95076f0d4fd5f2f5acf/src/dev.rs#L697
 
 impl FourOriginError {
     pub fn get_source_as_string(
@@ -217,7 +232,7 @@ impl FourOriginError {
                     let get_code_occurence_as_string = value.get_code_occurence_as_string(config);
                     //todo maybe space symbol
                     acc.push_str(&format!(
-                        "[key: {}] {}{} {}{}",
+                        "00[key: {}] {}11{}  {}22{}",
                         key, source_as_string, symbol, get_code_occurence_as_string, symbol
                     ));
                     acc
@@ -288,7 +303,7 @@ impl FourOriginError {
 //     }
 // }
 
-#[derive(ImplGetSourceFromCrate)]
+// #[derive(ImplGetSourceFromCrate)]
 pub enum FourWrapperErrorEnum {
     FiveWrapper(FiveOriginError),
     SixWrapper(SixOriginError),
@@ -302,7 +317,7 @@ impl FourWrapperErrorEnum {
         match self {
             //todo - if wrapper - with config, if origin - without
             FourWrapperErrorEnum::FiveWrapper(i) => i.get_source_as_string(),
-            FourWrapperErrorEnum::SixWrapper(i) => i.get_source_as_string(),
+            FourWrapperErrorEnum::SixWrapper(i) => i.get_source_as_string(config),
         }
     }
     pub fn get_code_occurence_as_string(
@@ -331,14 +346,14 @@ impl FourWrapperErrorEnum {
 }
 //
 use crate::traits::get_source::GetSource;
-impl std::fmt::Display for FourWrapperErrorEnum {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            FourWrapperErrorEnum::FiveWrapper(e) => write!(f, "{}", e.get_source()),
-            FourWrapperErrorEnum::SixWrapper(e) => write!(f, "{}", e.get_source()),
-        }
-    }
-}
+// impl std::fmt::Display for FourWrapperErrorEnum {
+//     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+//         match self {
+//             FourWrapperErrorEnum::FiveWrapper(e) => write!(f, "{}", e.get_source()),
+//             FourWrapperErrorEnum::SixWrapper(e) => write!(f, "{}", e.get_source()),
+//         }
+//     }
+// }
 
 // impl crate::traits::get_code_occurence::GetCodeOccurence for FourWrapperErrorEnum {
 //     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
@@ -420,7 +435,7 @@ pub fn four(should_trace: bool) -> Result<(), Box<FourOriginError>> {
     Ok(())
 }
 //
-#[derive(ImplGetSourceFromCrate)]
+// #[derive(ImplGetSourceFromCrate)]
 pub struct FiveOriginError {
     source: String,
     // code_occurence: crate::common::code_occurence::CodeOccurence,
@@ -531,16 +546,34 @@ use crate::traits::get_source_value::GetSourceValue;
 use crate::traits::readable_time_string::ReadableTimeString;
 // use crate::traits::prepare_log_source_and_code_occurence::PrepareLogSourceInnerAndCodeOccurence;
 
-#[derive(ImplGetSourceFromCrate)]
+// #[derive(ImplGetSourceFromCrate)]
 pub struct SixOriginError {
-    source: String,
+    source: Vec<SixWrapperErrorEnum>,
     // code_occurence: crate::common::code_occurence::CodeOccurence,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
 impl SixOriginError {
-    pub fn get_source_as_string(&self) -> String {
-        format!("{}", self.source)
+    pub fn get_source_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        let log_type = config.get_log_type();
+        let symbol = log_type.symbol();
+        let mut source_as_string =
+            self.source
+                .iter()
+                .fold(String::from(""), |mut acc, vec_element| {
+                    let source_and_code_occurence_as_string =
+                        vec_element.get_source_and_code_occurence_as_string(config);
+                    acc.push_str(&format!(
+                        "=={}=={}",
+                        source_and_code_occurence_as_string, symbol
+                    ));
+                    acc
+                });
+        log_type.pop_last(&mut source_as_string);
+        source_as_string
     }
     pub fn get_code_occurence_as_string(
         &self,
@@ -557,7 +590,7 @@ impl SixOriginError {
     ) -> String {
         format!(
             "{}{}{}",
-            self.get_source_as_string(),
+            self.get_source_as_string(config),
             config.get_log_type().symbol(),
             self.get_code_occurence_as_string(config)
         )
@@ -636,7 +669,7 @@ impl SixOriginError {
 //         &self.code_occurence
 //     }
 // }
-use crate::traits::get_source_and_code_occurence::GetSourceAndCodeOccurence;
+
 pub fn six(should_trace: bool) -> Result<(), Box<SixOriginError>> {
     // let arc_usage = crate::common::code_occurence::CodeOccurenceWithArcUsage::new(
     //     once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES_UNDER_ARC).clone(),
@@ -662,9 +695,126 @@ pub fn six(should_trace: bool) -> Result<(), Box<SixOriginError>> {
     //     false,
     // ) ));
     //
-    let f = SixOriginError {
-        source: String::from("error_six"),
-        // code_occurence: typical,
+    match (seven(false), eight(false)) {
+        (Ok(_), Ok(_)) => todo!(),
+        (Ok(_), Err(_)) => todo!(),
+        (Err(_), Ok(_)) => todo!(),
+        (Err(seven_error), Err(eight_error)) => {
+            let f = SixOriginError {
+                source: vec![SixWrapperErrorEnum::SevenWrapper(*seven_error), SixWrapperErrorEnum::EightWrapper(*eight_error)],
+                // code_occurence: typical,
+                code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
+                    git_info: once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
+                    time_file_line_column: crate::common::time_file_line_column::TimeFileLineColumn::new_file_line_column(
+                        String::from(file!()),
+                        line!(),
+                        column!(),
+                    ),
+                }
+            };
+            println!("six f {}", std::mem::size_of_val(&f));
+            println!("six-----");
+            f.log(once_cell::sync::Lazy::force(
+                &crate::global_variables::runtime::config::CONFIG,
+            ));
+            println!("six-----");
+            return Err(Box::new(f));
+        }
+    }
+    Ok(())
+}
+
+// impl crate::traits::get_source::GetSource for HashMap<std::string::String, FourWrapperErrorEnum> {
+//     fn get_source(&self) -> String {
+//         String::from("todo this impl")
+//     }
+// }
+
+// #[derive(ImplGetSourceFromCrate)]
+pub enum SixWrapperErrorEnum {
+    SevenWrapper(SevenOriginError),
+    EightWrapper(EightOriginError),
+}
+//
+impl SixWrapperErrorEnum {
+    pub fn get_source_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        match self {
+            //todo - if wrapper - with config, if origin - without
+            SixWrapperErrorEnum::SevenWrapper(i) => i.get_source_as_string(),
+            SixWrapperErrorEnum::EightWrapper(i) => i.get_source_as_string(),
+        }
+    }
+    pub fn get_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        match self {
+            SixWrapperErrorEnum::SevenWrapper(i) => i.get_code_occurence_as_string(config),
+            SixWrapperErrorEnum::EightWrapper(i) => i.get_code_occurence_as_string(config),
+        }
+    }
+    //does it need to be implemented here?
+    pub fn get_source_and_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        match self {
+            SixWrapperErrorEnum::SevenWrapper(i) => {
+                i.get_source_and_code_occurence_as_string(config)
+            }
+            SixWrapperErrorEnum::EightWrapper(i) => {
+                i.get_source_and_code_occurence_as_string(config)
+            }
+        }
+    }
+}
+////////////////
+
+// #[derive(ImplGetSourceFromCrate)]
+pub struct SevenOriginError {
+    source: String,
+    code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+}
+
+impl SevenOriginError {
+    pub fn get_source_as_string(&self) -> String {
+        format!("{}", self.source)
+    }
+    pub fn get_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        self.code_occurence.time_file_line_column.get_code_path(
+            &self.code_occurence.git_info,
+            config.get_source_place_type(),
+        )
+    }
+    pub fn get_source_and_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        format!(
+            "{}{}{}",
+            self.get_source_as_string(),
+            config.get_log_type().symbol(),
+            self.get_code_occurence_as_string(config)
+        )
+    }
+    pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
+        let log_type = config.get_log_type();
+        log_type.console(
+            &config.get_error_color_bold(),
+            self.get_source_and_code_occurence_as_string(config),
+        )
+    }
+}
+
+pub fn seven(should_trace: bool) -> Result<(), Box<SevenOriginError>> {
+    let f = SevenOriginError {
+        source: String::from("error_seven"),
         code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
             git_info: once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
             time_file_line_column: crate::common::time_file_line_column::TimeFileLineColumn::new_file_line_column(
@@ -674,17 +824,72 @@ pub fn six(should_trace: bool) -> Result<(), Box<SixOriginError>> {
             ),
         }
     };
-    println!("six f {}", std::mem::size_of_val(&f));
-    println!("six-----");
+    println!("seven f {}", std::mem::size_of_val(&f));
+    println!("seven-----");
     f.log(once_cell::sync::Lazy::force(
         &crate::global_variables::runtime::config::CONFIG,
     ));
-    println!("six-----");
+    println!("seven-----");
     return Err(Box::new(f));
 }
 
-// impl crate::traits::get_source::GetSource for HashMap<std::string::String, FourWrapperErrorEnum> {
-//     fn get_source(&self) -> String {
-//         String::from("todo this impl")
-//     }
-// }
+//
+// #[derive(ImplGetSourceFromCrate)]
+pub struct EightOriginError {
+    source: String,
+    code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+}
+
+impl EightOriginError {
+    pub fn get_source_as_string(&self) -> String {
+        format!("{}", self.source)
+    }
+    pub fn get_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        self.code_occurence.time_file_line_column.get_code_path(
+            &self.code_occurence.git_info,
+            config.get_source_place_type(),
+        )
+    }
+    pub fn get_source_and_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        format!(
+            "{}{}{}",
+            self.get_source_as_string(),
+            config.get_log_type().symbol(),
+            self.get_code_occurence_as_string(config)
+        )
+    }
+    pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
+        let log_type = config.get_log_type();
+        log_type.console(
+            &config.get_error_color_bold(),
+            self.get_source_and_code_occurence_as_string(config),
+        )
+    }
+}
+
+pub fn eight(should_trace: bool) -> Result<(), Box<EightOriginError>> {
+    let f = EightOriginError {
+        source: String::from("error_eight"),
+        code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
+            git_info: once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
+            time_file_line_column: crate::common::time_file_line_column::TimeFileLineColumn::new_file_line_column(
+                String::from(file!()),
+                line!(),
+                column!(),
+            ),
+        }
+    };
+    println!("eight f {}", std::mem::size_of_val(&f));
+    println!("eight-----");
+    f.log(once_cell::sync::Lazy::force(
+        &crate::global_variables::runtime::config::CONFIG,
+    ));
+    println!("eight-----");
+    return Err(Box::new(f));
+}
