@@ -1,5 +1,4 @@
 use crate::traits::code_occurence_methods::CodeOccurenceLog;
-use crate::traits::code_occurence_methods::CodeOccurenceNewErrorWithOneAddition;
 
 pub trait LogErrorCodeOccurence<ConfigGeneric> {
     fn log_error_code_occurence(&self, config: ConfigGeneric);

@@ -1,4 +1,3 @@
-use crate::common::git::git_info::GitInformation;
 use crate::common::where_was::WhereWas;
 use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::traits::new_error::NewError;

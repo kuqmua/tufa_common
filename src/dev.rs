@@ -1,4 +1,3 @@
-
 use crate::common::file_line_column::FileLineColumn;
 use crate::common::git::git_info::GitInformation;
 use crate::common::git::git_info::GitInformationWithoutLifetimes;
@@ -24,8 +23,8 @@ use chrono::Utc;
 use impl_get_source::ImplGetSourceFromCrate;
 use std::collections::HashMap;
 use std::fmt::{self, Display};
-use crate::traits::prepare_log_source_and_code_occurence::PrepareLogSourceAndCodeOccurence;
-use crate::traits::new_error_with_git_info_file_line_column::SomethingTest;
+// use crate::traits::prepare_log_source_and_code_occurence::PrepareLogSourceAndCodeOccurence;
+// use crate::traits::new_error_with_git_info_file_line_column::SomethingTest;
 
 #[derive(ImplGetSourceFromCrate)]
 pub struct ThreeWrapperError {
@@ -38,14 +37,13 @@ pub struct ThreeWrapperError {
 //         &self,
 //         config_generic: &ConfigGeneric,
 //     ) -> String {
-    // format!("{}{}", self.source.get_sourceand_code_occurence_as_string(), code_occurence из инпута параметра, не self. для self.code_occurence возможно будет тзасунуто больше чем нужно для вывода в консоль)
+// format!("{}{}", self.source.get_sourceand_code_occurence_as_string(), code_occurence из инпута параметра, не self. для self.code_occurence возможно будет тзасунуто больше чем нужно для вывода в консоль)
 //     }
 // }
 
-
 impl crate::traits::get_source_value::GetSourceValue<ThreeWrapperErrorEnum> for ThreeWrapperError {
     fn get_source_value(&self) -> &ThreeWrapperErrorEnum {
-        &self.source//.get_source_value() - get source value in string with code occurence and erroor
+        &self.source //.get_source_value() - get source value in string with code occurence and erroor
     }
 }
 
@@ -55,9 +53,7 @@ impl crate::traits::get_source_value::GetSourceValue<ThreeWrapperErrorEnum> for 
 //     }
 // }
 
-impl crate::traits::init_error::InitError<ThreeWrapperErrorEnum>
-    for ThreeWrapperError
-{
+impl crate::traits::init_error::InitError<ThreeWrapperErrorEnum> for ThreeWrapperError {
     fn init_error(
         source: ThreeWrapperErrorEnum,
         code_occurence: crate::common::code_occurence::CodeOccurence,
@@ -78,15 +74,23 @@ use crate::traits::my_custom_display::DisplayError;
 pub fn three(should_trace: bool) -> Result<(), Box<ThreeWrapperError>> {
     if let Err(e) = four(false) {
         // println!("{}", <FourOriginError as DisplayError<SourceGeneric, ConfigStruct, ConfigStruct>>::display_error(&*e, once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG)));
-        return Err(Box::new(ThreeWrapperError::new_error_with_one_addition(
-            ThreeWrapperErrorEnum::FourWrapper(*e),
-            once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG), 
-            once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES), 
-            String::from(file!()), 
-            line!(), 
-            column!(), 
-            should_trace
-        )));
+
+        // return Err(Box::new(ThreeWrapperError::new_error_with_one_addition(
+        //     ThreeWrapperErrorEnum::FourWrapper(*e),
+        //     once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG),
+        //     once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES),
+        //     String::from(file!()),
+        //     line!(),
+        //     column!(),
+        //     should_trace
+        // )));
+
+        return Err(Box::new(ThreeWrapperError {
+            source: ThreeWrapperErrorEnum::FourWrapper(*e),
+            code_occurence: crate::common::code_occurence::CodeOccurence {
+                occurences: HashMap::new(),
+            },
+        }));
     };
     Ok(())
 }
@@ -110,7 +114,9 @@ pub struct FourOriginError {
     code_occurence: crate::common::code_occurence::CodeOccurence,
 }
 
-impl crate::traits::get_source_value::GetSourceValue<HashMap<String, FourWrapperErrorEnum>> for FourOriginError {
+impl crate::traits::get_source_value::GetSourceValue<HashMap<String, FourWrapperErrorEnum>>
+    for FourOriginError
+{
     fn get_source_value(&self) -> &HashMap<String, FourWrapperErrorEnum> {
         &self.source
     }
@@ -179,24 +185,40 @@ pub fn four(should_trace: bool) -> Result<(), Box<FourOriginError>> {
         (Ok(_), Err(_)) => todo!(),
         (Err(_), Ok(_)) => todo!(),
         (Err(f), Err(s)) => {
-            return Err(Box::new(FourOriginError::new_error_with_one_addition(
-         HashMap::from([
+            //     return Err(Box::new(FourOriginError::new_error_with_one_addition(
+            //  HashMap::from([
+            //             (
+            //                 String::from("five_hashmap_key"),
+            //                 FourWrapperErrorEnum::FiveWrapper(*f)
+            //             ),
+            //             (
+            //                 String::from("six_hashmap_key"),
+            //                 FourWrapperErrorEnum::SixWrapper(*s)
+            //             )
+            //         ]),
+            //         once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG),
+            //         once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES),
+            //         String::from(file!()),
+            //         line!(),
+            //         column!(),
+            //         should_trace
+            //     )));
+
+            return Err(Box::new(FourOriginError {
+                source: HashMap::from([
                     (
                         String::from("five_hashmap_key"),
-                        FourWrapperErrorEnum::FiveWrapper(*f)
+                        FourWrapperErrorEnum::FiveWrapper(*f),
                     ),
                     (
                         String::from("six_hashmap_key"),
-                        FourWrapperErrorEnum::SixWrapper(*s)
-                    )
+                        FourWrapperErrorEnum::SixWrapper(*s),
+                    ),
                 ]),
-                once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG), 
-                once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES), 
-                String::from(file!()), 
-                line!(), 
-                column!(), 
-                should_trace
-            )));
+                code_occurence: crate::common::code_occurence::CodeOccurence {
+                    occurences: HashMap::new(),
+                },
+            }));
         }
     }
     Ok(())
@@ -215,7 +237,10 @@ impl crate::traits::get_source_value::GetSourceValue<String> for FiveOriginError
 }
 
 impl crate::traits::init_error::InitError<String> for FiveOriginError {
-    fn init_error(source: String, code_occurence: crate::common::code_occurence::CodeOccurence) -> Self {
+    fn init_error(
+        source: String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    ) -> Self {
         Self {
             source,
             code_occurence,
@@ -230,86 +255,126 @@ impl crate::traits::get_code_occurence::GetCodeOccurence for FiveOriginError {
 }
 //
 pub fn five(should_trace: bool) -> Result<(), Box<FiveOriginError>> {
-
     // let f = FiveOriginError::new_error_with_git_info_file_line_column(
     //     34,
     //         crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES
-    //         .clone(), 
-    //         String::from(file!()), 
-    //         line!(), 
-    //         column!(), 
+    //         .clone(),
+    //         String::from(file!()),
+    //         line!(),
+    //         column!(),
     // );
-    return Err(Box::new(FiveOriginError::something_test(
-                String::from("error_five"),
-        once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG), 
-        once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES), 
-        String::from(file!()),
-        line!(), 
-        column!(), 
-        false
-    )));
+    // return Err(Box::new(FiveOriginError::something_test(
+    //             String::from("error_five"),
+    //     once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG),
+    //     once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES),
+    //     String::from(file!()),
+    //     line!(),
+    //     column!(),
+    //     false
+    // )));
+    //
+    return Err(Box::new(FiveOriginError {
+        source: String::from("error_five"),
+        code_occurence: crate::common::code_occurence::CodeOccurence {
+            occurences: HashMap::new(),
+        },
+    }));
 }
 //
+use crate::traits::code_occurence_methods::CodeOccurenceToString;
+use crate::traits::fields::GetLogType;
+use crate::traits::fields::GetSourcePlaceType;
+use crate::traits::get_color::ErrorColorBold;
+use crate::traits::get_source_value::GetSourceValue;
+use crate::traits::readable_time_string::ReadableTimeString;
+// use crate::traits::prepare_log_source_and_code_occurence::PrepareLogSourceInnerAndCodeOccurence;
+
 #[derive(ImplGetSourceFromCrate)]
 pub struct SixOriginError {
     source: String,
     code_occurence: crate::common::code_occurence::CodeOccurence,
 }
 
-// impl sssssss for SixOriginError {
-//     fn prepare_log_source_inner_and_code_occurence(
-//         &self,
-//         config_generic: &ConfigGeneric,
-//     ) -> String {
-//         let capacity = self
-//             .get_code_occurence()
-//             .occurences
-//             .values()
-//             .fold(0, |mut acc, elem| {
-//                 acc += elem.len();
-//                 acc
-//             });
-//         let mut vec: Vec<crate::common::code_occurence::OccurenceFilter> =
-//             Vec::with_capacity(capacity);
-//         self.get_code_occurence()
-//             .occurences
-//             .iter()
-//             .for_each(|(git_info, v)| {
-//                 v.iter().for_each(|e| {
-//                     vec.push(crate::common::code_occurence::OccurenceFilter {
-//                         increment: e.increment,
-//                         time: e.time_file_line_column.time,
-//                         occurence: e
-//                             .time_file_line_column
-//                             .get_code_path(git_info, config_generic.get_source_place_type()),
-//                     })
-//                 })
-//             });
-//         //vec.reverse();//todo check reserve or not
-//         vec.sort_by(|a, b| a.increment.cmp(&b.increment));
-//         let mut occurences = Vec::with_capacity(capacity + 1);
-//         let log_type = config_generic.get_log_type();
-//         occurences.push(format!(
-//             "////{}{}////",
-//             self.get_source_value()
-//                 .prepare_log_source_and_code_occurence(config_generic),
-//             log_type.symbol()
-//         )); //here must be self.get_source_value().
-//             // occurences.push(format!("{}{}", self.get_source_value().prepare_log_source_and_code_occurence(), log_type.symbol()));
-//         vec.into_iter().for_each(|e| {
-//             occurences.push(format!(
-//                 "{} {}{}",
-//                 e.readable_time_string(),
-//                 e.occurence,
-//                 log_type.symbol()
-//             ));
-//         });
-//         let mut occurence = occurences.iter().fold(String::from(""), |mut acc, elem| {
-//             acc.push_str(elem);
-//             acc
-//         });
-//         log_type.pop_last(&mut occurence);
-//         occurence
+// impl SixOriginError {
+//     fn new_error_with_one_addition_test_six(
+//         source: String,
+//         config: crate::config_mods::config_struct::ConfigStruct,
+//         git_info: &crate::common::git::git_info::GitInformationWithoutLifetimes,
+//         file: String,
+//         line: u32,
+//         column: u32,
+//         should_trace: bool,
+//     ) -> Self {
+//         let code_occurence =
+//             crate::common::code_occurence::CodeOccurence::new(git_info.clone(), file, line, column);
+//         let string_code_occurence = code_occurence.code_occurence_to_string(&config);
+//         let log_type = config.get_log_type().symbol();
+//         // let g = ReturnSelfGeneric::init_error(source, code_occurence);
+//         let g = SixOriginError {
+//             source,
+//             code_occurence,
+//         };
+//         if let true = should_trace {
+//             //
+//             let prepared = {
+//                 let capacity =
+//                     g.get_code_occurence()
+//                         .occurences
+//                         .values()
+//                         .fold(0, |mut acc, elem| {
+//                             acc += elem.len();
+//                             acc
+//                         });
+//                 let mut vec: Vec<crate::common::code_occurence::OccurenceFilter> =
+//                     Vec::with_capacity(capacity);
+//                 g.get_code_occurence()
+//                     .occurences
+//                     .iter()
+//                     .for_each(|(git_info, v)| {
+//                         v.iter().for_each(|e| {
+//                             vec.push(crate::common::code_occurence::OccurenceFilter {
+//                                 increment: e.increment,
+//                                 time: e.time_file_line_column.time,
+//                                 occurence: e
+//                                     .time_file_line_column
+//                                     .get_code_path(git_info, config.get_source_place_type()),
+//                             })
+//                         })
+//                     });
+//                 //vec.reverse();//todo check reserve or not
+//                 vec.sort_by(|a, b| a.increment.cmp(&b.increment));
+//                 let mut occurences = Vec::with_capacity(capacity + 1);
+//                 let log_type = config.get_log_type();
+//                 occurences.push(format!("////{}{}////", g.get_source(), log_type.symbol())); //here must be self.get_source_value().
+//                                                                                              // occurences.push(format!("{}{}", self.get_source_value().prepare_log_source_and_code_occurence(), log_type.symbol()));
+//                 vec.into_iter().for_each(|e| {
+//                     occurences.push(format!(
+//                         "{} {}{}",
+//                         e.readable_time_string(),
+//                         e.occurence,
+//                         log_type.symbol()
+//                     ));
+//                 });
+//                 let mut occurence = occurences.iter().fold(String::from(""), |mut acc, elem| {
+//                     acc.push_str(elem);
+//                     acc
+//                 });
+//                 log_type.pop_last(&mut occurence);
+//                 occurence
+//             };
+//             //
+//             config.get_log_type().console(
+//                 config.get_error_color_bold(),
+//                 format!(
+//                     "{}",
+//                     // source.prepare_log_source_inner_and_code_occurence(&config),
+//                     prepared, // g.prepare_log_source_inner_and_code_occurence(&config),
+//                               // log_type,
+//                               // string_code_occurence
+//                 ),
+//             );
+//         }
+//         g
 //     }
 // }
 
@@ -320,7 +385,10 @@ impl crate::traits::get_source_value::GetSourceValue<String> for SixOriginError 
 }
 
 impl crate::traits::init_error::InitError<String> for SixOriginError {
-    fn init_error(source: String, code_occurence: crate::common::code_occurence::CodeOccurence) -> Self {
+    fn init_error(
+        source: String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    ) -> Self {
         Self {
             source,
             code_occurence,
@@ -335,15 +403,22 @@ impl crate::traits::get_code_occurence::GetCodeOccurence for SixOriginError {
 }
 use crate::traits::get_source_and_code_occurence::GetSourceAndCodeOccurence;
 pub fn six(should_trace: bool) -> Result<(), Box<SixOriginError>> {
-    return Err(Box::new(SixOriginError::something_test(
-        String::from("error_six"),
-        once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG),
-        once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES),
-        String::from(file!()),
-        line!(),
-        column!(),
-        false,
-    ) ));
+    // return Err(Box::new(SixOriginError::something_test(
+    //     String::from("error_six"),
+    //     once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG),
+    //     once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES),
+    //     String::from(file!()),
+    //     line!(),
+    //     column!(),
+    //     false,
+    // ) ));
+    //
+    return Err(Box::new(SixOriginError {
+        source: String::from("error_six"),
+        code_occurence: crate::common::code_occurence::CodeOccurence {
+            occurences: HashMap::new(),
+        },
+    }));
 }
 
 // impl crate::traits::get_source::GetSource for HashMap<std::string::String, FourWrapperErrorEnum> {
@@ -351,4 +426,3 @@ pub fn six(should_trace: bool) -> Result<(), Box<SixOriginError>> {
 //         String::from("todo this impl")
 //     }
 // }
-

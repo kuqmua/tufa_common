@@ -1,4 +1,3 @@
-use crate::common::git::git_info::GitInformation;
 use crate::common::where_was::WhereWasOriginOrWrapper;
 use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::traits::get_where_was_one_or_many::GetWhereWasOriginOrWrapper;
