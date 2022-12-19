@@ -24,6 +24,7 @@ use chrono::prelude::DateTime;
 use chrono::Utc;
 use impl_get_source::ImplGetSourceFromCrate;
 use std::collections::HashMap;
+use std::fmt::format;
 use std::fmt::{self, Display};
 // use crate::traits::prepare_log_source_and_code_occurence::PrepareLogSourceAndCodeOccurence;
 // use crate::traits::new_error_with_git_info_file_line_column::SomethingTest;
@@ -42,10 +43,11 @@ impl ThreeWrapperError {
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
         //todo if origin - without config, if wrapper - with config
-        format!(
-            "{}",
-            self.source.get_source_and_code_occurence_as_string(config)
-        )
+        // format!(
+        //     "{}",
+        //     self.source.get_source_and_code_occurence_as_string(config)
+        // )
+        format!("{}", self.source.get_source_as_string(config))
     }
     pub fn get_code_occurence_as_string(
         &self,
@@ -56,28 +58,34 @@ impl ThreeWrapperError {
             config.get_source_place_type(),
         )
     }
-    pub fn get_source_and_code_occurence_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
-        format!(
-            "{}{}{}",
-            self.get_source_as_string(config),
-            config.get_log_type().symbol(),
-            self.get_code_occurence_as_string(config)
-        )
-    }
+    // pub fn get_source_and_code_occurence_as_string(
+    //     &self,
+    //     config: &crate::config_mods::config_struct::ConfigStruct,
+    // ) -> String {
+    //     format!(
+    //         "{}{}{}",
+    //         self.get_source_as_string(config),
+    //         config.get_log_type().symbol(),
+    //         self.get_code_occurence_as_string(config)
+    //     )
+    // }
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         let log_type = config.get_log_type();
         log_type.console(
             &config.get_error_color_bold(),
-            self.get_source_and_code_occurence_as_string(config),
+            // self.get_source_and_code_occurence_as_string(config),
+            format!(
+                "{}{}{}",
+                self.get_source_as_string(config),
+                config.get_log_type().symbol(),
+                self.get_code_occurence_as_string(config)
+            ),
         )
     }
 }
 
 // хранение данные в code_occurence для сериализации и вывод данных в консоль - 2 разные вещи
-// impl sssssss for SixOriginError {
+// impl sssssss for SixWrapperError {
 //     fn prepare_log_source_inner_and_code_occurence(
 //         &self,
 //         config_generic: &ConfigGeneric,
@@ -178,17 +186,17 @@ impl ThreeWrapperErrorEnum {
             ThreeWrapperErrorEnum::FourWrapper(i) => i.get_code_occurence_as_string(config),
         }
     }
-    //does it need to be implemented here?
-    pub fn get_source_and_code_occurence_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
-        match self {
-            ThreeWrapperErrorEnum::FourWrapper(i) => {
-                i.get_source_and_code_occurence_as_string(config)
-            }
-        }
-    }
+    // //does it need to be implemented here?
+    // pub fn get_source_and_code_occurence_as_string(
+    //     &self,
+    //     config: &crate::config_mods::config_struct::ConfigStruct,
+    // ) -> String {
+    //     match self {
+    //         ThreeWrapperErrorEnum::FourWrapper(i) => {
+    //             i.get_source_and_code_occurence_as_string(config)
+    //         }
+    //     }
+    // }
 }
 
 // impl crate::traits::get_code_occurence::GetCodeOccurence for ThreeWrapperErrorEnum {
@@ -206,19 +214,6 @@ pub struct FourOriginError {
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
-// 00[key: six_hashmap_key] ==error_seven
-// https://github.com/kuqmua/tufa_common/blob/031d2a364a21941c2742c95076f0d4fd5f2f5acf/src/dev.rs#L809==
-// ==error_eight
-// https://github.com/kuqmua/tufa_common/blob/031d2a364a21941c2742c95076f0d4fd5f2f5acf/src/dev.rs#L870==11
-//   https://github.com/kuqmua/tufa_common/blob/031d2a364a21941c2742c95076f0d4fd5f2f5acf/src/dev.rs#L69722
-
-// [key: six_hashmap_key]
-//  error_seven
-//   https://github.com/kuqmua/tufa_common/blob/031d2a364a21941c2742c95076f0d4fd5f2f5acf/src/dev.rs#L809==
-//  error_eight
-//   https://github.com/kuqmua/tufa_common/blob/031d2a364a21941c2742c95076f0d4fd5f2f5acf/src/dev.rs#L870==11
-// https://github.com/kuqmua/tufa_common/blob/031d2a364a21941c2742c95076f0d4fd5f2f5acf/src/dev.rs#L697
-
 impl FourOriginError {
     pub fn get_source_as_string(
         &self,
@@ -234,12 +229,13 @@ impl FourOriginError {
                     let get_code_occurence_as_string = value.get_code_occurence_as_string(config);
                     //todo maybe space symbol
                     acc.push_str(&format!(
-                        "00[key: {}] {}11{}  {}22{}",
-                        key, source_as_string, symbol, get_code_occurence_as_string, symbol
+                        "[key: {}]{} {}{} {}{}",
+                        key, symbol, source_as_string, symbol, get_code_occurence_as_string, symbol
                     ));
                     acc
                 });
         log_type.pop_last(&mut source_as_string);
+        // source_as_string = format!("@{}@", source_as_string);
         source_as_string
     }
     pub fn get_code_occurence_as_string(
@@ -251,17 +247,17 @@ impl FourOriginError {
             config.get_source_place_type(),
         )
     }
-    pub fn get_source_and_code_occurence_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
-        format!(
-            "{}{}{}",
-            self.get_source_as_string(config),
-            config.get_log_type().symbol(),
-            self.get_code_occurence_as_string(config)
-        )
-    }
+    // pub fn get_source_and_code_occurence_as_string(
+    //     &self,
+    //     config: &crate::config_mods::config_struct::ConfigStruct,
+    // ) -> String {
+    //     format!(
+    //         "{}{}{}",
+    //         self.get_source_as_string(config),
+    //         config.get_log_type().symbol(),
+    //         self.get_code_occurence_as_string(config)
+    //     )
+    // }
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         let log_type = config.get_log_type();
         log_type.console(
@@ -308,7 +304,7 @@ impl FourOriginError {
 // #[derive(ImplGetSourceFromCrate)]
 pub enum FourWrapperErrorEnum {
     FiveWrapper(FiveOriginError),
-    SixWrapper(SixOriginError),
+    SixWrapper(SixWrapperError),
 }
 //
 impl FourWrapperErrorEnum {
@@ -332,19 +328,19 @@ impl FourWrapperErrorEnum {
         }
     }
     //does it need to be implemented here?
-    pub fn get_source_and_code_occurence_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
-        match self {
-            FourWrapperErrorEnum::FiveWrapper(i) => {
-                i.get_source_and_code_occurence_as_string(config)
-            }
-            FourWrapperErrorEnum::SixWrapper(i) => {
-                i.get_source_and_code_occurence_as_string(config)
-            }
-        }
-    }
+    // pub fn get_source_and_code_occurence_as_string(
+    //     &self,
+    //     config: &crate::config_mods::config_struct::ConfigStruct,
+    // ) -> String {
+    //     match self {
+    //         FourWrapperErrorEnum::FiveWrapper(i) => {
+    //             i.get_source_and_code_occurence_as_string(config)
+    //         }
+    //         FourWrapperErrorEnum::SixWrapper(i) => {
+    //             i.get_source_and_code_occurence_as_string(config)
+    //         }
+    //     }
+    // }
 }
 //
 use crate::traits::get_source::GetSource;
@@ -459,22 +455,28 @@ impl FiveOriginError {
             config.get_source_place_type(),
         )
     }
-    pub fn get_source_and_code_occurence_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
-        format!(
-            "{}{}{}",
-            self.get_source_as_string(),
-            config.get_log_type().symbol(),
-            self.get_code_occurence_as_string(config)
-        )
-    }
+    // pub fn get_source_and_code_occurence_as_string(
+    //     &self,
+    //     config: &crate::config_mods::config_struct::ConfigStruct,
+    // ) -> String {
+    //     format!(
+    //         "{}{}{}",
+    //         self.get_source_as_string(),
+    //         config.get_log_type().symbol(),
+    //         self.get_code_occurence_as_string(config)
+    //     )
+    // }
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         let log_type = config.get_log_type();
         log_type.console(
             &config.get_error_color_bold(),
-            self.get_source_and_code_occurence_as_string(config),
+            // self.get_source_and_code_occurence_as_string(config),
+            format!(
+                "{}{}{}",
+                self.get_source_as_string(),
+                config.get_log_type().symbol(),
+                self.get_code_occurence_as_string(config)
+            ),
         )
     }
 }
@@ -553,13 +555,24 @@ use crate::traits::readable_time_string::ReadableTimeString;
 // use crate::traits::prepare_log_source_and_code_occurence::PrepareLogSourceInnerAndCodeOccurence;
 
 // #[derive(ImplGetSourceFromCrate)]
-pub struct SixOriginError {
+pub struct SixWrapperError {
     source: Vec<SixWrapperErrorEnum>,
     // code_occurence: crate::common::code_occurence::CodeOccurence,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
+// 00[key: six_hashmap_key] ==error_seven
+// https://github.com/kuqmua/tufa_common/blob/031d2a364a21941c2742c95076f0d4fd5f2f5acf/src/dev.rs#L809==
+// ==error_eight
+// https://github.com/kuqmua/tufa_common/blob/031d2a364a21941c2742c95076f0d4fd5f2f5acf/src/dev.rs#L870==11
+//   https://github.com/kuqmua/tufa_common/blob/031d2a364a21941c2742c95076f0d4fd5f2f5acf/src/dev.rs#L69722
 
-impl SixOriginError {
+// [key: six_hashmap_key]
+//  error_seven
+//   https://github.com/kuqmua/tufa_common/blob/031d2a364a21941c2742c95076f0d4fd5f2f5acf/src/dev.rs#L809==
+//  error_eight
+//   https://github.com/kuqmua/tufa_common/blob/031d2a364a21941c2742c95076f0d4fd5f2f5acf/src/dev.rs#L870==11
+// https://github.com/kuqmua/tufa_common/blob/031d2a364a21941c2742c95076f0d4fd5f2f5acf/src/dev.rs#L697
+impl SixWrapperError {
     pub fn get_source_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
@@ -570,15 +583,21 @@ impl SixOriginError {
             self.source
                 .iter()
                 .fold(String::from(""), |mut acc, vec_element| {
-                    let source_and_code_occurence_as_string =
-                        vec_element.get_source_and_code_occurence_as_string(config);
+                    // let source_and_code_occurence_as_string =
+                    // vec_element.get_source_and_code_occurence_as_string(config);
+
+                    // self.get_code_occurence_as_string(config)
                     acc.push_str(&format!(
-                        "=={}=={}",
-                        source_and_code_occurence_as_string, symbol
+                        "{}{} {}{}",
+                        vec_element.get_source_as_string(config),
+                        symbol,
+                        vec_element.get_code_occurence_as_string(config),
+                        symbol
                     ));
                     acc
                 });
         log_type.pop_last(&mut source_as_string);
+        // source_as_string = format!("!{}!", source_as_string);
         source_as_string
     }
     pub fn get_code_occurence_as_string(
@@ -590,22 +609,74 @@ impl SixOriginError {
             config.get_source_place_type(),
         )
     }
-    pub fn get_source_and_code_occurence_as_string(
+    pub fn get_inner_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
-        format!(
-            "{}{}{}",
-            self.get_source_as_string(config),
-            config.get_log_type().symbol(),
-            self.get_code_occurence_as_string(config)
-        )
+    ) -> Option<Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString>> {
+        let len = self.source.len();
+        match len == 0 {
+            true => None,
+            false => {
+                let mut increment_value = 0;
+                self.source.iter().for_each(|element| {
+                    if let Some(vec) = element.get_inner_source_and_code_occurence_as_string(config)
+                    {
+                        vec.iter().for_each(|source_and_code_occurence_as_string| {
+                            if source_and_code_occurence_as_string.increment > increment_value {
+                                increment_value = source_and_code_occurence_as_string.increment;
+                            }
+                        });
+                    }
+                });
+                let mut vec =
+                    self.source
+                        .iter()
+                        .fold(Vec::with_capacity(len), |mut acc, vec_element| {
+                            if let Some(source_and_code_occurence_as_string_vec) =
+                                vec_element.get_inner_source_and_code_occurence_as_string(config)
+                            {
+                                //here must be some group
+                                source_and_code_occurence_as_string_vec
+                                    .into_iter()
+                                    .for_each(|source_and_code_occurence_as_string| {
+                                        acc.push(source_and_code_occurence_as_string);
+                                    });
+                            }
+                            acc
+                        });
+                vec.push(
+                    crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
+                        source: self.get_source_as_string(config),
+                        code_occurence: self.get_code_occurence_as_string(config),
+                        increment: increment_value,
+                    },
+                );
+                Some(vec)
+            }
+        }
     }
+    // pub fn get_source_and_code_occurence_as_string(
+    //     &self,
+    //     config: &crate::config_mods::config_struct::ConfigStruct,
+    // ) -> String {
+    //     format!(
+    //         "{}{}{}",
+    //         self.get_source_as_string(config),
+    //         config.get_log_type().symbol(),
+    //         self.get_code_occurence_as_string(config)
+    //     )
+    // }
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         let log_type = config.get_log_type();
         log_type.console(
             &config.get_error_color_bold(),
-            self.get_source_and_code_occurence_as_string(config),
+            // self.get_source_and_code_occurence_as_string(config),
+            format!(
+                "{}{}{}",
+                self.get_source_as_string(config),
+                config.get_log_type().symbol(),
+                self.get_code_occurence_as_string(config)
+            ),
         )
     }
 }
@@ -652,13 +723,13 @@ impl SixOriginError {
 // //
 //
 
-// impl crate::traits::get_source_value::GetSourceValue<String> for SixOriginError {
+// impl crate::traits::get_source_value::GetSourceValue<String> for SixWrapperError {
 //     fn get_source_value(&self) -> &String {
 //         &self.source
 //     }
 // }
 
-// impl crate::traits::init_error::InitError<String> for SixOriginError {
+// impl crate::traits::init_error::InitError<String> for SixWrapperError {
 //     fn init_error(
 //         source: String,
 //         code_occurence: crate::common::code_occurence::CodeOccurence,
@@ -670,13 +741,13 @@ impl SixOriginError {
 //     }
 // }
 
-// impl crate::traits::get_code_occurence::GetCodeOccurence for SixOriginError {
+// impl crate::traits::get_code_occurence::GetCodeOccurence for SixWrapperError {
 //     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
 //         &self.code_occurence
 //     }
 // }
 
-pub fn six(should_trace: bool) -> Result<(), Box<SixOriginError>> {
+pub fn six(should_trace: bool) -> Result<(), Box<SixWrapperError>> {
     // let arc_usage = crate::common::code_occurence::CodeOccurenceWithArcUsage::new(
     //     once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES_UNDER_ARC).clone(),
     //     String::from(file!()),
@@ -691,7 +762,7 @@ pub fn six(should_trace: bool) -> Result<(), Box<SixOriginError>> {
     // );
     // // println!("arc usage {}", std::mem::size_of_val(&arc_usage.occurences));
     // println!("typical {}", std::mem::size_of_val(&typical.occurences));
-    // return Err(Box::new(SixOriginError::something_test(
+    // return Err(Box::new(SixWrapperError::something_test(
     //     String::from("error_six"),
     //     once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG),
     //     once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES),
@@ -706,7 +777,7 @@ pub fn six(should_trace: bool) -> Result<(), Box<SixOriginError>> {
         (Ok(_), Err(_)) => todo!(),
         (Err(_), Ok(_)) => todo!(),
         (Err(seven_error), Err(eight_error)) => {
-            let f = SixOriginError {
+            let f = SixWrapperError {
                 source: vec![SixWrapperErrorEnum::SevenWrapper(*seven_error), SixWrapperErrorEnum::EightWrapper(*eight_error)],
                 // code_occurence: typical,
                 code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
@@ -764,20 +835,33 @@ impl SixWrapperErrorEnum {
             SixWrapperErrorEnum::EightWrapper(i) => i.get_code_occurence_as_string(config),
         }
     }
-    //does it need to be implemented here?
-    pub fn get_source_and_code_occurence_as_string(
+    pub fn get_inner_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
+    ) -> Option<Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString>> {
         match self {
             SixWrapperErrorEnum::SevenWrapper(i) => {
-                i.get_source_and_code_occurence_as_string(config)
+                i.get_inner_source_and_code_occurence_as_string(config)
             }
             SixWrapperErrorEnum::EightWrapper(i) => {
-                i.get_source_and_code_occurence_as_string(config)
+                i.get_inner_source_and_code_occurence_as_string(config)
             }
         }
     }
+    //does it need to be implemented here?
+    // pub fn get_source_and_code_occurence_as_string(
+    //     &self,
+    //     config: &crate::config_mods::config_struct::ConfigStruct,
+    // ) -> String {
+    //     match self {
+    //         SixWrapperErrorEnum::SevenWrapper(i) => {
+    //             i.get_source_and_code_occurence_as_string(config)
+    //         }
+    //         SixWrapperErrorEnum::EightWrapper(i) => {
+    //             i.get_source_and_code_occurence_as_string(config)
+    //         }
+    //     }
+    // }
 }
 ////////////////
 
@@ -800,22 +884,34 @@ impl SevenOriginError {
             config.get_source_place_type(),
         )
     }
-    pub fn get_source_and_code_occurence_as_string(
+    pub fn get_inner_source_and_code_occurence_as_string(
         &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
-        format!(
-            "{}{}{}",
-            self.get_source_as_string(),
-            config.get_log_type().symbol(),
-            self.get_code_occurence_as_string(config)
-        )
+        config: &crate::config_mods::config_struct::ConfigStruct, //todo maybe remove
+    ) -> Option<Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString>> {
+        None
     }
+    // pub fn get_source_and_code_occurence_as_string(
+    //     &self,
+    //     config: &crate::config_mods::config_struct::ConfigStruct,
+    // ) -> String {
+    //     format!(
+    //         "{}{} {}",
+    //         self.get_source_as_string(),
+    //         config.get_log_type().symbol(),
+    //         self.get_code_occurence_as_string(config)
+    //     )
+    // }
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         let log_type = config.get_log_type();
         log_type.console(
             &config.get_error_color_bold(),
-            self.get_source_and_code_occurence_as_string(config),
+            // self.get_source_and_code_occurence_as_string(config),
+            format!(
+                "{}{} {}",
+                self.get_source_as_string(),
+                config.get_log_type().symbol(),
+                self.get_code_occurence_as_string(config)
+            ),
         )
     }
 }
@@ -863,22 +959,34 @@ impl EightOriginError {
             config.get_source_place_type(),
         )
     }
-    pub fn get_source_and_code_occurence_as_string(
+    pub fn get_inner_source_and_code_occurence_as_string(
         &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
-        format!(
-            "{}{}{}",
-            self.get_source_as_string(),
-            config.get_log_type().symbol(),
-            self.get_code_occurence_as_string(config)
-        )
+        config: &crate::config_mods::config_struct::ConfigStruct, //todo maybe remove
+    ) -> Option<Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString>> {
+        None
     }
+    // pub fn get_source_and_code_occurence_as_string(
+    //     &self,
+    //     config: &crate::config_mods::config_struct::ConfigStruct,
+    // ) -> String {
+    //     format!(
+    //         "{}{}({}",
+    //         self.get_source_as_string(),
+    //         config.get_log_type().symbol(),
+    //         self.get_code_occurence_as_string(config)
+    //     )
+    // }
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         let log_type = config.get_log_type();
         log_type.console(
             &config.get_error_color_bold(),
-            self.get_source_and_code_occurence_as_string(config),
+            // self.get_source_and_code_occurence_as_string(config),
+            format!(
+                "{}{}({}",
+                self.get_source_as_string(),
+                config.get_log_type().symbol(),
+                self.get_code_occurence_as_string(config)
+            ),
         )
     }
 }
