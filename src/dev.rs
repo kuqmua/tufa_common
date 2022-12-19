@@ -455,6 +455,19 @@ impl FiveOriginError {
             config.get_source_place_type(),
         )
     }
+    pub fn get_inner_source_and_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct, //todo maybe remove
+    ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
+        vec![
+            crate::dev::source_and_code_occurence::SourceAndCodeOccurenceAsString {
+                key: None,
+                source: Some(self.get_source_as_string()),
+                code_occurence: self.get_code_occurence_as_string(config),
+                increment: 0,
+            },
+        ]
+    }
     // pub fn get_source_and_code_occurence_as_string(
     //     &self,
     //     config: &crate::config_mods::config_struct::ConfigStruct,
@@ -633,7 +646,7 @@ impl SixWrapperError {
                     .get_inner_source_and_code_occurence_as_string(config)
                     .into_iter()
                     .for_each(|e| {
-                        acc.push(e);
+                        acc.push(e.add_one());
                     });
                 acc
             });

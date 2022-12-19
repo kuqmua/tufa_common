@@ -9,8 +9,20 @@ pub struct SourceAndCodeOccurenceAsString {
     pub key: Option<String>,
     pub source: Option<String>, //only original
     pub code_occurence: String,
-    pub increment: u64,
-    // maybe add another field like paralel index?
+    pub increment: u64, //i think its incorrect
+                        // maybe add another field like paralel index?
+}
+
+impl SourceAndCodeOccurenceAsString {
+    //todo later - optimize it
+    pub fn add_one(&self) -> Self {
+        SourceAndCodeOccurenceAsString {
+            key: self.key.clone(),
+            source: self.source.clone(),
+            code_occurence: self.code_occurence.clone(),
+            increment: self.increment + 1,
+        }
+    }
 }
 
 // #[derive(Debug, Clone)]
