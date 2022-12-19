@@ -247,6 +247,65 @@ impl FourOriginError {
             config.get_source_place_type(),
         )
     }
+    //
+    pub fn get_inner_source_and_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
+        let len = self.source.len() + 1;
+        let mut increment_value = 0;
+        self.source.values().for_each(|value| {
+            value
+                .get_inner_source_and_code_occurence_as_string(config)
+                .iter()
+                .for_each(|source_and_code_occurence_as_string| {
+                    if source_and_code_occurence_as_string.increment > increment_value {
+                        increment_value = source_and_code_occurence_as_string.increment;
+                    }
+                });
+        });
+        let mut vec = self
+            .source
+            .iter()
+            .fold(Vec::with_capacity(len), |mut acc, (key, value)| {
+                // [key: six_hashmap_key] error_eight
+                //  tufa_common/src/dev.rs:1036:17
+                //  tufa_common/src/dev.rs:808:25
+                //todo - must find highest increment value and put key there, for others  None - is it correct?     or maybe for one where source !== None ? if its more than one - spaces logic
+                // [key: six_hashmap_key]
+                //  error_seven
+                //   tufa_common/src/dev.rs:1036:17
+                //   tufa_common/src/dev.rs:808:25
+                //  error_eight
+                //   tufa_common/src/dev.rs:1036:17
+                //   tufa_common/src/dev.rs:808:25
+
+                // value
+                //     .get_inner_source_and_code_occurence_as_string(config)
+                //     .into_iter()
+                //     .for_each(|e| {
+                //         acc.push(
+                //             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
+                //                 key: key,//todo what to do with key?
+                //                 source: e.source.clone(),
+                //                 code_occurence: e.code_occurence.clone(),
+                //                 increment: e.increment + 1,
+                //             }
+                //         );
+                //     });
+                acc
+            });
+        vec.push(
+            crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
+                key: None,
+                source: None,
+                code_occurence: self.get_code_occurence_as_string(config),
+                increment: increment_value,
+            },
+        );
+        vec
+    }
+    //
     // pub fn get_source_and_code_occurence_as_string(
     //     &self,
     //     config: &crate::config_mods::config_struct::ConfigStruct,
@@ -325,6 +384,19 @@ impl FourWrapperErrorEnum {
         match self {
             FourWrapperErrorEnum::FiveWrapper(i) => i.get_code_occurence_as_string(config),
             FourWrapperErrorEnum::SixWrapper(i) => i.get_code_occurence_as_string(config),
+        }
+    }
+    pub fn get_inner_source_and_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
+        match self {
+            FourWrapperErrorEnum::FiveWrapper(i) => {
+                i.get_inner_source_and_code_occurence_as_string(config)
+            }
+            FourWrapperErrorEnum::SixWrapper(i) => {
+                i.get_inner_source_and_code_occurence_as_string(config)
+            }
         }
     }
     //does it need to be implemented here?
