@@ -13,11 +13,11 @@ pub struct SourceAndCodeOccurenceAsString {
     // maybe add another field like paralel index?
 }
 
-#[derive(Debug, Clone)]
-pub struct LogInfoStackPart {
-    pub inners:
-        Option<Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString>>,
-}
+// #[derive(Debug, Clone)]
+// pub struct LogInfoStackPart {
+//     pub inners:
+//         Option<Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString>>,
+// }
 
 // #[derive(Debug, Clone)]
 // pub struct InnerSourceAndCodeOccurenceWithCounter {

@@ -612,49 +612,40 @@ impl SixWrapperError {
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> crate::common::source_and_code_occurence::LogInfoStackPart {
-        let len = self.source.len();
-        match len == 0 {
-            true => crate::common::source_and_code_occurence::LogInfoStackPart { inners: None },
-            false => {
-                let mut increment_value = 0;
-                self.source.iter().for_each(|element| {
-                    if let Some(vec) = element
-                        .get_inner_source_and_code_occurence_as_string(config)
-                        .inners
-                    {
-                        vec.iter().for_each(|source_and_code_occurence_as_string| {
-                            if source_and_code_occurence_as_string.increment > increment_value {
-                                increment_value = source_and_code_occurence_as_string.increment;
-                            }
-                        });
+    ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
+        let len = self.source.len() + 1;
+        let mut increment_value = 0;
+        self.source.iter().for_each(|element| {
+            element
+                .get_inner_source_and_code_occurence_as_string(config)
+                .iter()
+                .for_each(|source_and_code_occurence_as_string| {
+                    if source_and_code_occurence_as_string.increment > increment_value {
+                        increment_value = source_and_code_occurence_as_string.increment;
                     }
                 });
-                let mut vec =
-                    self.source
-                        .iter()
-                        .fold(Vec::with_capacity(len), |mut acc, vec_element| {
-                            if let Some(vec) = vec_element
-                                .get_inner_source_and_code_occurence_as_string(config)
-                                .inners
-                            {
-                                vec.into_iter().for_each(|e| {
-                                    acc.push(e);
-                                });
-                            }
-                            acc
-                        });
-                vec.push(
-                    crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                        key: None,
-                        source: None,
-                        code_occurence: self.get_code_occurence_as_string(config),
-                        increment: increment_value,
-                    },
-                );
-                crate::common::source_and_code_occurence::LogInfoStackPart { inners: Some(vec) }
-            }
-        }
+        });
+        let mut vec = self
+            .source
+            .iter()
+            .fold(Vec::with_capacity(len), |mut acc, vec_element| {
+                vec_element
+                    .get_inner_source_and_code_occurence_as_string(config)
+                    .into_iter()
+                    .for_each(|e| {
+                        acc.push(e);
+                    });
+                acc
+            });
+        vec.push(
+            crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
+                key: None,
+                source: None,
+                code_occurence: self.get_code_occurence_as_string(config),
+                increment: increment_value,
+            },
+        );
+        vec
     }
     // pub fn get_source_and_code_occurence_as_string(
     //     &self,
@@ -839,7 +830,7 @@ impl SixWrapperErrorEnum {
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> crate::common::source_and_code_occurence::LogInfoStackPart {
+    ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         match self {
             SixWrapperErrorEnum::SevenWrapper(i) => {
                 i.get_inner_source_and_code_occurence_as_string(config)
@@ -888,17 +879,15 @@ impl SevenOriginError {
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct, //todo maybe remove
-    ) -> crate::common::source_and_code_occurence::LogInfoStackPart {
-        crate::common::source_and_code_occurence::LogInfoStackPart {
-            inners: Some(vec![
-                crate::dev::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                    key: None,
-                    source: Some(self.get_source_as_string()),
-                    code_occurence: self.get_code_occurence_as_string(config),
-                    increment: 0,
-                },
-            ]),
-        }
+    ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
+        vec![
+            crate::dev::source_and_code_occurence::SourceAndCodeOccurenceAsString {
+                key: None,
+                source: Some(self.get_source_as_string()),
+                code_occurence: self.get_code_occurence_as_string(config),
+                increment: 0,
+            },
+        ]
     }
     // pub fn get_source_and_code_occurence_as_string(
     //     &self,
@@ -972,17 +961,15 @@ impl EightOriginError {
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct, //todo maybe remove
-    ) -> crate::common::source_and_code_occurence::LogInfoStackPart {
-        crate::common::source_and_code_occurence::LogInfoStackPart {
-            inners: Some(vec![
-                crate::dev::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                    key: None,
-                    source: Some(self.get_source_as_string()),
-                    code_occurence: self.get_code_occurence_as_string(config),
-                    increment: 0,
-                },
-            ]),
-        }
+    ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
+        vec![
+            crate::dev::source_and_code_occurence::SourceAndCodeOccurenceAsString {
+                key: None,
+                source: Some(self.get_source_as_string()),
+                code_occurence: self.get_code_occurence_as_string(config),
+                increment: 0,
+            },
+        ]
     }
     // pub fn get_source_and_code_occurence_as_string(
     //     &self,
