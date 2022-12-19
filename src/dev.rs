@@ -144,6 +144,8 @@ pub fn three(should_trace: bool) -> Result<(), Box<ThreeWrapperError>> {
             }
         };
         println!("three f {}", std::mem::size_of_val(&f));
+        println!("three source {}", std::mem::size_of_val(&f.source));
+        println!("three source {}", std::mem::size_of_val(&f.code_occurence));
         println!("three-----");
         f.log(once_cell::sync::Lazy::force(
             &crate::global_variables::runtime::config::CONFIG,
@@ -424,6 +426,8 @@ pub fn four(should_trace: bool) -> Result<(), Box<FourOriginError>> {
                 }
             };
             println!("four f {}", std::mem::size_of_val(&f));
+            println!("four source {}", std::mem::size_of_val(&f.source));
+            println!("four source {}", std::mem::size_of_val(&f.code_occurence));
             println!("four-----");
             f.log(once_cell::sync::Lazy::force(
                 &crate::global_variables::runtime::config::CONFIG,
@@ -530,6 +534,8 @@ pub fn five(should_trace: bool) -> Result<(), Box<FiveOriginError>> {
         }
     };
     println!("five f {}", std::mem::size_of_val(&f));
+    println!("five source {}", std::mem::size_of_val(&f.source));
+    println!("five source {}", std::mem::size_of_val(&f.code_occurence));
     println!("five-----");
     f.log(once_cell::sync::Lazy::force(
         &crate::global_variables::runtime::config::CONFIG,
@@ -713,6 +719,8 @@ pub fn six(should_trace: bool) -> Result<(), Box<SixOriginError>> {
                 }
             };
             println!("six f {}", std::mem::size_of_val(&f));
+            println!("six source {}", std::mem::size_of_val(&f.source));
+            println!("six source {}", std::mem::size_of_val(&f.code_occurence));
             println!("six-----");
             f.log(once_cell::sync::Lazy::force(
                 &crate::global_variables::runtime::config::CONFIG,
@@ -825,6 +833,8 @@ pub fn seven(should_trace: bool) -> Result<(), Box<SevenOriginError>> {
         }
     };
     println!("seven f {}", std::mem::size_of_val(&f));
+    println!("seven source {}", std::mem::size_of_val(&f.source));
+    println!("seven source {}", std::mem::size_of_val(&f.code_occurence));
     println!("seven-----");
     f.log(once_cell::sync::Lazy::force(
         &crate::global_variables::runtime::config::CONFIG,
@@ -886,6 +896,8 @@ pub fn eight(should_trace: bool) -> Result<(), Box<EightOriginError>> {
         }
     };
     println!("eight f {}", std::mem::size_of_val(&f));
+    println!("eight source {}", std::mem::size_of_val(&f.source));
+    println!("eight source {}", std::mem::size_of_val(&f.code_occurence));
     println!("eight-----");
     f.log(once_cell::sync::Lazy::force(
         &crate::global_variables::runtime::config::CONFIG,
