@@ -6,9 +6,17 @@ pub struct SourceAndCodeOccurence {
 
 #[derive(Debug, Clone)]
 pub struct SourceAndCodeOccurenceAsString {
-    pub source: String,
+    pub key: Option<String>,
+    pub source: Option<String>, //only original
     pub code_occurence: String,
     pub increment: u64,
+    // maybe add another field like paralel index?
+}
+
+#[derive(Debug, Clone)]
+pub struct LogInfoStackPart {
+    pub inners:
+        Option<Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString>>,
 }
 
 // #[derive(Debug, Clone)]
