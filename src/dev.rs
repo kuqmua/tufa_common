@@ -279,25 +279,96 @@ impl FourOriginError {
                 //  error_eight
                 //   tufa_common/src/dev.rs:1036:17
                 //   tufa_common/src/dev.rs:808:25
-
-                // value
-                //     .get_inner_source_and_code_occurence_as_string(config)
-                //     .into_iter()
-                //     .for_each(|e| {
-                //         acc.push(
-                //             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                //                 key: key,//todo what to do with key?
-                //                 source: e.source.clone(),
-                //                 code_occurence: e.code_occurence.clone(),
-                //                 increment: e.increment + 1,
-                //             }
-                //         );
-                //     });
+                //
+                // 
+                //  [key: six_hashmap_key] error_seven
+                //   tufa_common/src/dev.rs:1036:17
+                //   tufa_common/src/dev.rs:808:25
+                //  [key: six_hashmap_key] error_eight
+                //   tufa_common/src/dev.rs:1036:17
+                //   tufa_common/src/dev.rs:808:25
+                //
+                value
+                    .get_inner_source_and_code_occurence_as_string(config)
+                    .into_iter()
+                    .for_each(|e| {
+                        match e.source {
+                            Some(source_enum) => {
+                                match source_enum {
+                                    source_and_code_occurence::SourceEnum::SourceWithKeys(source_with_keys) => {
+                                        let mut key_vec = source_with_keys.keys;
+                                        key_vec.push(key.clone());
+                                        acc.push(
+                                            crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
+                                                source: Some(crate::common::source_and_code_occurence::SourceEnum::SourceWithKeys(
+                                                    crate::common::source_and_code_occurence::SourceWithKeys {
+                                                        keys: key_vec,
+                                                        source: source_with_keys.source.clone(),
+                                                    }
+                                                )),
+                                                code_occurence: e.code_occurence.clone(),
+                                                increment: e.increment + 1,
+                                            }
+                                        );
+                                    },
+                                    source_and_code_occurence::SourceEnum::Source(source) => {
+                                        acc.push(
+                                            crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
+                                                source: Some(crate::common::source_and_code_occurence::SourceEnum::SourceWithKeys(
+                                                    crate::common::source_and_code_occurence::SourceWithKeys {
+                                                        keys: vec![key.clone()],
+                                                        source: source.clone(),
+                                                    }
+                                                )),
+                                                code_occurence: e.code_occurence.clone(),
+                                                increment: e.increment + 1,
+                                            }
+                                        );
+                                    },
+                                }
+                            },
+                            None => {
+                                acc.push(
+                                    crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
+                                        source: None,
+                                        code_occurence: e.code_occurence.clone(),
+                                        increment: e.increment + 1,
+                                    }
+                                );
+                            },
+                        }
+                        // match e.source.is_some() {
+                        //     true => {
+                        //         let mut key_vec = e.key;
+                        //         key_vec.push(key);
+                        //         acc.push(
+                        //             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
+                        //                 source: Some(crate::common::source_and_code_occurence::SourceEnum::SourceWithKeys(
+                        //                     crate::common::source_and_code_occurence::SourceWithKeys {
+                        //                         keys: key_vec,
+                        //                         source: e.source.clone(),
+                        //                     }
+                        //                 )),
+                        //                 code_occurence: e.code_occurence.clone(),
+                        //                 increment: e.increment + 1,
+                        //             }
+                        //         );
+                        //     },
+                        //     false => {
+                        //         acc.push(
+                        //             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
+                        //                 source: e.source.clone(),
+                        //                 code_occurence: e.code_occurence.clone(),
+                        //                 increment: e.increment + 1,
+                        //             }
+                        //         );
+                        //     },
+                        // }
+                    });
                 acc
             });
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                key: None,
                 source: None,
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: increment_value,
@@ -533,8 +604,11 @@ impl FiveOriginError {
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         vec![
             crate::dev::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                key: None,
-                source: Some(self.get_source_as_string()),
+                source: Some(
+                    crate::common::source_and_code_occurence::SourceEnum::Source(
+                        self.get_source_as_string(),
+                    ),
+                ),
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
@@ -724,7 +798,6 @@ impl SixWrapperError {
             });
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                key: None,
                 source: None,
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: increment_value,
@@ -967,8 +1040,11 @@ impl SevenOriginError {
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         vec![
             crate::dev::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                key: None,
-                source: Some(self.get_source_as_string()),
+                source: Some(
+                    crate::common::source_and_code_occurence::SourceEnum::Source(
+                        self.get_source_as_string(),
+                    ),
+                ),
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
@@ -1049,8 +1125,11 @@ impl EightOriginError {
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         vec![
             crate::dev::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                key: None,
-                source: Some(self.get_source_as_string()),
+                source: Some(
+                    crate::common::source_and_code_occurence::SourceEnum::Source(
+                        self.get_source_as_string(),
+                    ),
+                ),
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
