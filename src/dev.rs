@@ -58,6 +58,20 @@ impl ThreeWrapperError {
             config.get_source_place_type(),
         )
     }
+    pub fn get_inner_source_and_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct, //todo maybe remove
+    ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
+        let mut vec = self.get_inner_source_and_code_occurence_as_string(config);
+        vec.push(
+            crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
+                source: None,
+                code_occurence: self.get_code_occurence_as_string(config),
+                increment: 0,
+            },
+        );
+        vec
+    }
     // pub fn get_source_and_code_occurence_as_string(
     //     &self,
     //     config: &crate::config_mods::config_struct::ConfigStruct,
@@ -186,6 +200,16 @@ impl ThreeWrapperErrorEnum {
             ThreeWrapperErrorEnum::FourWrapper(i) => i.get_code_occurence_as_string(config),
         }
     }
+    pub fn get_inner_source_and_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
+        match self {
+            ThreeWrapperErrorEnum::FourWrapper(i) => {
+                i.get_inner_source_and_code_occurence_as_string(config)
+            }
+        }
+    }
     // //does it need to be implemented here?
     // pub fn get_source_and_code_occurence_as_string(
     //     &self,
@@ -247,7 +271,6 @@ impl FourOriginError {
             config.get_source_place_type(),
         )
     }
-    //
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
@@ -268,9 +291,6 @@ impl FourOriginError {
             .source
             .iter()
             .fold(Vec::with_capacity(len), |mut acc, (key, value)| {
-                // [key: six_hashmap_key] error_eight
-                //  tufa_common/src/dev.rs:1036:17
-                //  tufa_common/src/dev.rs:808:25
                 //todo - must find highest increment value and put key there, for others  None - is it correct?     or maybe for one where source !== None ? if its more than one - spaces logic
                 // [key: six_hashmap_key]
                 //  error_seven
@@ -337,33 +357,6 @@ impl FourOriginError {
                                 );
                             },
                         }
-                        // match e.source.is_some() {
-                        //     true => {
-                        //         let mut key_vec = e.key;
-                        //         key_vec.push(key);
-                        //         acc.push(
-                        //             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                        //                 source: Some(crate::common::source_and_code_occurence::SourceEnum::SourceWithKeys(
-                        //                     crate::common::source_and_code_occurence::SourceWithKeys {
-                        //                         keys: key_vec,
-                        //                         source: e.source.clone(),
-                        //                     }
-                        //                 )),
-                        //                 code_occurence: e.code_occurence.clone(),
-                        //                 increment: e.increment + 1,
-                        //             }
-                        //         );
-                        //     },
-                        //     false => {
-                        //         acc.push(
-                        //             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                        //                 source: e.source.clone(),
-                        //                 code_occurence: e.code_occurence.clone(),
-                        //                 increment: e.increment + 1,
-                        //             }
-                        //         );
-                        //     },
-                        // }
                     });
                 acc
             });
