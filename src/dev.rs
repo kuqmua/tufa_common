@@ -63,6 +63,7 @@ impl ThreeWrapperError {
         config: &crate::config_mods::config_struct::ConfigStruct, //todo maybe remove
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         let mut vec = self.get_inner_source_and_code_occurence_as_string(config);
+        vec.iter_mut().for_each(|n| n.increment += 1);
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
                 source: None,
@@ -327,7 +328,7 @@ impl FourOriginError {
                                                     }
                                                 )),
                                                 code_occurence: e.code_occurence.clone(),
-                                                increment: e.increment + 1,
+                                                increment: e.increment + 1,//change it to add_one()?
                                             }
                                         );
                                     },
@@ -341,7 +342,7 @@ impl FourOriginError {
                                                     }
                                                 )),
                                                 code_occurence: e.code_occurence.clone(),
-                                                increment: e.increment + 1,
+                                                increment: e.increment + 1,//change it to add_one()?
                                             }
                                         );
                                     },
@@ -352,7 +353,7 @@ impl FourOriginError {
                                     crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
                                         source: None,
                                         code_occurence: e.code_occurence.clone(),
-                                        increment: e.increment + 1,
+                                        increment: e.increment + 1,//change it to add_one()?
                                     }
                                 );
                             },
