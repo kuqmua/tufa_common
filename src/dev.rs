@@ -62,7 +62,9 @@ impl ThreeWrapperError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct, //todo maybe remove
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
-        let mut vec = self.get_inner_source_and_code_occurence_as_string(config);
+        let mut vec = self
+            .source
+            .get_inner_source_and_code_occurence_as_string(config);
         vec.iter_mut().for_each(|n| n.increment += 1);
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
