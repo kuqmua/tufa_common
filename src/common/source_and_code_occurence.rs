@@ -12,6 +12,23 @@ pub struct SourceAndCodeOccurenceAsString {
                         // maybe add another field like paralel index?
 }
 
+//
+#[derive(Debug, Clone)]
+pub struct SourceAndCodeOccurenceAsStringVersionOne {
+    pub source: Option<SourceWithKeys>,
+    pub code_occurence: String,
+    pub increment: u64, //i think its incorrect
+                        // maybe add another field like paralel index?
+}
+#[derive(Debug, Clone)]
+pub struct SourceAndCodeOccurenceAsStringVersionTwo {
+    pub source: Option<String>,
+    pub code_occurence: String,
+    pub increment: u64, //i think its incorrect
+                        // maybe add another field like paralel index?
+}
+//
+
 impl SourceAndCodeOccurenceAsString {
     //todo later - optimize it
     pub fn add_one(&self) -> Self {
