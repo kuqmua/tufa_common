@@ -4,7 +4,7 @@ pub struct SourceAndCodeOccurence {
     pub code_occurence: crate::common::code_occurence::CodeOccurence,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub struct SourceAndCodeOccurenceAsString {
     pub source: Option<SourceEnum>, //only original
     pub code_occurence: String,
@@ -40,13 +40,13 @@ impl SourceAndCodeOccurenceAsString {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub enum SourceEnum {
     SourceWithKeys(SourceWithKeys),
     Source(String),
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub struct SourceWithKeys {
     pub keys: Vec<String>,
     pub source: String,
