@@ -31,6 +31,7 @@ use std::fmt::{self, Display};
 use crate::traits::get_source_and_code_occurence::GetSourceAndCodeOccurence;
 
 // #[derive(ImplGetSourceFromCrate)]
+#[derive(Debug)]
 pub struct ThreeWrapperError {
     source: ThreeWrapperErrorEnum,
     // code_occurence: crate::common::code_occurence::CodeOccurence,
@@ -168,20 +169,21 @@ pub fn three(should_trace: bool) -> Result<(), Box<ThreeWrapperError>> {
                 ),
             }
         };
-        println!("three f {}", std::mem::size_of_val(&f));
-        println!("three source {}", std::mem::size_of_val(&f.source));
-        println!("three source {}", std::mem::size_of_val(&f.code_occurence));
-        println!("three-----");
-        f.log(once_cell::sync::Lazy::force(
-            &crate::global_variables::runtime::config::CONFIG,
-        ));
-        println!("three-----");
+        // println!("three f {}", std::mem::size_of_val(&f));
+        // println!("three source {}", std::mem::size_of_val(&f.source));
+        // println!("three source {}", std::mem::size_of_val(&f.code_occurence));
+        // println!("three-----");
+        // f.log(once_cell::sync::Lazy::force(
+        //     &crate::global_variables::runtime::config::CONFIG,
+        // ));
+        // println!("three-----");
         return Err(Box::new(f));
     };
     Ok(())
 }
 //
 // #[derive(ImplGetSourceFromCrate)]
+#[derive(Debug)]
 pub enum ThreeWrapperErrorEnum {
     FourWrapper(FourOriginError),
 }
@@ -235,6 +237,7 @@ impl ThreeWrapperErrorEnum {
 // }
 //
 // #[derive(ImplGetSourceFromCrate)]
+#[derive(Debug)]
 pub struct FourOriginError {
     source: HashMap<String, FourWrapperErrorEnum>,
     // code_occurence: crate::common::code_occurence::CodeOccurence,
@@ -428,6 +431,7 @@ impl FourOriginError {
 // }
 
 // #[derive(ImplGetSourceFromCrate)]
+#[derive(Debug)]
 pub enum FourWrapperErrorEnum {
     FiveWrapper(FiveOriginError),
     SixWrapper(SixWrapperError),
@@ -560,14 +564,14 @@ pub fn four(should_trace: bool) -> Result<(), Box<FourOriginError>> {
                     ),
                 }
             };
-            println!("four f {}", std::mem::size_of_val(&f));
-            println!("four source {}", std::mem::size_of_val(&f.source));
-            println!("four source {}", std::mem::size_of_val(&f.code_occurence));
-            println!("four-----");
-            f.log(once_cell::sync::Lazy::force(
-                &crate::global_variables::runtime::config::CONFIG,
-            ));
-            println!("four-----");
+            // println!("four f {}", std::mem::size_of_val(&f));
+            // println!("four source {}", std::mem::size_of_val(&f.source));
+            // println!("four source {}", std::mem::size_of_val(&f.code_occurence));
+            // println!("four-----");
+            // f.log(once_cell::sync::Lazy::force(
+            //     &crate::global_variables::runtime::config::CONFIG,
+            // ));
+            // println!("four-----");
             return Err(Box::new(f));
         }
     }
@@ -575,6 +579,7 @@ pub fn four(should_trace: bool) -> Result<(), Box<FourOriginError>> {
 }
 //
 // #[derive(ImplGetSourceFromCrate)]
+#[derive(Debug)]
 pub struct FiveOriginError {
     source: String,
     // code_occurence: crate::common::code_occurence::CodeOccurence,
@@ -690,14 +695,14 @@ pub fn five(should_trace: bool) -> Result<(), Box<FiveOriginError>> {
             ),
         }
     };
-    println!("five f {}", std::mem::size_of_val(&f));
-    println!("five source {}", std::mem::size_of_val(&f.source));
-    println!("five source {}", std::mem::size_of_val(&f.code_occurence));
-    println!("five-----");
-    f.log(once_cell::sync::Lazy::force(
-        &crate::global_variables::runtime::config::CONFIG,
-    ));
-    println!("five-----");
+    // println!("five f {}", std::mem::size_of_val(&f));
+    // println!("five source {}", std::mem::size_of_val(&f.source));
+    // println!("five source {}", std::mem::size_of_val(&f.code_occurence));
+    // println!("five-----");
+    // f.log(once_cell::sync::Lazy::force(
+    //     &crate::global_variables::runtime::config::CONFIG,
+    // ));
+    // println!("five-----");
     return Err(Box::new(f));
 }
 //
@@ -710,6 +715,7 @@ use crate::traits::readable_time_string::ReadableTimeString;
 // use crate::traits::prepare_log_source_and_code_occurence::PrepareLogSourceInnerAndCodeOccurence;
 
 // #[derive(ImplGetSourceFromCrate)]
+#[derive(Debug)]
 pub struct SixWrapperError {
     source: Vec<SixWrapperErrorEnum>,
     // code_occurence: crate::common::code_occurence::CodeOccurence,
@@ -935,14 +941,14 @@ pub fn six(should_trace: bool) -> Result<(), Box<SixWrapperError>> {
                     ),
                 }
             };
-            println!("six f {}", std::mem::size_of_val(&f));
-            println!("six source {}", std::mem::size_of_val(&f.source));
-            println!("six source {}", std::mem::size_of_val(&f.code_occurence));
-            println!("six-----");
-            f.log(once_cell::sync::Lazy::force(
-                &crate::global_variables::runtime::config::CONFIG,
-            ));
-            println!("six-----");
+            // println!("six f {}", std::mem::size_of_val(&f));
+            // println!("six source {}", std::mem::size_of_val(&f.source));
+            // println!("six source {}", std::mem::size_of_val(&f.code_occurence));
+            // println!("six-----");
+            // f.log(once_cell::sync::Lazy::force(
+            //     &crate::global_variables::runtime::config::CONFIG,
+            // ));
+            // println!("six-----");
             return Err(Box::new(f));
         }
     }
@@ -956,6 +962,7 @@ pub fn six(should_trace: bool) -> Result<(), Box<SixWrapperError>> {
 // }
 
 // #[derive(ImplGetSourceFromCrate)]
+#[derive(Debug)]
 pub enum SixWrapperErrorEnum {
     SevenWrapper(SevenOriginError),
     EightWrapper(EightOriginError),
@@ -1012,6 +1019,7 @@ impl SixWrapperErrorEnum {
 ////////////////
 
 // #[derive(ImplGetSourceFromCrate)]
+#[derive(Debug)]
 pub struct SevenOriginError {
     source: String,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
@@ -1084,19 +1092,20 @@ pub fn seven(should_trace: bool) -> Result<(), Box<SevenOriginError>> {
             ),
         }
     };
-    println!("seven f {}", std::mem::size_of_val(&f));
-    println!("seven source {}", std::mem::size_of_val(&f.source));
-    println!("seven source {}", std::mem::size_of_val(&f.code_occurence));
-    println!("seven-----");
-    f.log(once_cell::sync::Lazy::force(
-        &crate::global_variables::runtime::config::CONFIG,
-    ));
-    println!("seven-----");
+    // println!("seven f {}", std::mem::size_of_val(&f));
+    // println!("seven source {}", std::mem::size_of_val(&f.source));
+    // println!("seven source {}", std::mem::size_of_val(&f.code_occurence));
+    // println!("seven-----");
+    // f.log(once_cell::sync::Lazy::force(
+    //     &crate::global_variables::runtime::config::CONFIG,
+    // ));
+    // println!("seven-----");
     return Err(Box::new(f));
 }
 
 //
 // #[derive(ImplGetSourceFromCrate)]
+#[derive(Debug)]
 pub struct EightOriginError {
     source: String,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
@@ -1169,13 +1178,13 @@ pub fn eight(should_trace: bool) -> Result<(), Box<EightOriginError>> {
             ),
         }
     };
-    println!("eight f {}", std::mem::size_of_val(&f));
-    println!("eight source {}", std::mem::size_of_val(&f.source));
-    println!("eight source {}", std::mem::size_of_val(&f.code_occurence));
-    println!("eight-----");
-    f.log(once_cell::sync::Lazy::force(
-        &crate::global_variables::runtime::config::CONFIG,
-    ));
-    println!("eight-----");
+    // println!("eight f {}", std::mem::size_of_val(&f));
+    // println!("eight source {}", std::mem::size_of_val(&f.source));
+    // println!("eight source {}", std::mem::size_of_val(&f.code_occurence));
+    // println!("eight-----");
+    // f.log(once_cell::sync::Lazy::force(
+    //     &crate::global_variables::runtime::config::CONFIG,
+    // ));
+    // println!("eight-----");
     return Err(Box::new(f));
 }
