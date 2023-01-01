@@ -29,6 +29,7 @@ use std::fmt::{self, Display};
 // use crate::traits::prepare_log_source_and_code_occurence::PrepareLogSourceAndCodeOccurence;
 // use crate::traits::new_error_with_git_info_file_line_column::SomethingTest;
 use crate::traits::get_source_and_code_occurence::GetSourceAndCodeOccurence;
+use itertools::Itertools;
 
 // #[derive(ImplGetSourceFromCrate)]
 #[derive(Debug)]
@@ -63,13 +64,36 @@ impl ThreeWrapperError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct, //todo maybe remove
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
+        let mut keys_handle_vec = vec![]; //todo - make unique?
         let mut vec = self
             .source
             .get_inner_source_and_code_occurence_as_string(config);
-        vec.iter_mut().for_each(|n| n.increment += 1);
+        vec.iter_mut().for_each(|n| {
+            n.increment += 1;
+            if let Some(source_enum) = &n.source {
+                match &source_enum {
+                    source_and_code_occurence::SourceEnum::SourceWithKeys(source_with_keys) => {
+                        source_with_keys.keys.iter().for_each(|k| {
+                            keys_handle_vec.push(k.clone());
+                        });
+                    }
+                    source_and_code_occurence::SourceEnum::Source(_) => (),
+                    source_and_code_occurence::SourceEnum::Keys(keys) => {
+                        keys.iter().for_each(|k| {
+                            keys_handle_vec.push(k.clone());
+                        });
+                    }
+                }
+            }
+        });
+        keys_handle_vec = keys_handle_vec.into_iter().unique().collect();
+        let keys_handle = match keys_handle_vec.is_empty() {
+            true => None,
+            false => Some(source_and_code_occurence::SourceEnum::Keys(keys_handle_vec)),
+        };
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                source: None,
+                source: keys_handle,
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
@@ -282,27 +306,14 @@ impl FourWrapperError {
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         let len = self.source.len() + 1;
+        let mut keys_handle_vec = vec![]; //todo - make unique?
         let mut vec = self
             .source
             .iter()
             .fold(Vec::with_capacity(len), |mut acc, (key, value)| {
+                // println!("iter {}{:#?}", key, value);
+                let mut temp_keys_vec = vec![];
                 //todo - must find highest increment value and put key there, for others  None - is it correct?     or maybe for one where source !== None ? if its more than one - spaces logic
-                // [key: six_hashmap_key]
-                //  error_seven
-                //   tufa_common/src/dev.rs:1036:17
-                //   tufa_common/src/dev.rs:808:25
-                //  error_eight
-                //   tufa_common/src/dev.rs:1036:17
-                //   tufa_common/src/dev.rs:808:25
-                //
-                // 
-                //  [key: six_hashmap_key] error_seven
-                //   tufa_common/src/dev.rs:1036:17
-                //   tufa_common/src/dev.rs:808:25
-                //  [key: six_hashmap_key] error_eight
-                //   tufa_common/src/dev.rs:1036:17
-                //   tufa_common/src/dev.rs:808:25
-                //
                 value
                     .get_inner_source_and_code_occurence_as_string(config)
                     .into_iter()
@@ -312,6 +323,9 @@ impl FourWrapperError {
                                 match source_enum {
                                     source_and_code_occurence::SourceEnum::SourceWithKeys(source_with_keys) => {
                                         let mut key_vec = source_with_keys.keys;
+                                        key_vec.iter().for_each(|k|{
+                                            temp_keys_vec.push(k.clone())
+                                        });
                                         key_vec.push(key.clone());
                                         acc.push(
                                             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
@@ -342,6 +356,9 @@ impl FourWrapperError {
                                     },
                                     source_and_code_occurence::SourceEnum::Keys(keys) => {
                                         let mut key_vec = keys;
+                                        key_vec.iter().for_each(|k|{
+                                            keys_handle_vec.push(k.clone())
+                                        });
                                         key_vec.push(key.clone());
                                         acc.push(
                                             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
@@ -366,11 +383,18 @@ impl FourWrapperError {
                             },
                         }
                     });
+                temp_keys_vec.push(key.clone());
                 acc
             });
+        // println!("keys_handle_vec{:#?}keys_handle_vec", keys_handle_vec);
+        keys_handle_vec = keys_handle_vec.into_iter().unique().collect();
+        let keys_handle = match keys_handle_vec.is_empty() {
+            true => None,
+            false => Some(source_and_code_occurence::SourceEnum::Keys(keys_handle_vec)),
+        };
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                source: None,
+                source: keys_handle,
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
@@ -777,6 +801,7 @@ impl SixWrapperError {
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         let len = self.source.len() + 1;
+        let mut keys_handle_vec = vec![]; //todo - make unique?
         let mut vec = self
             .source
             .iter()
@@ -785,13 +810,35 @@ impl SixWrapperError {
                     .get_inner_source_and_code_occurence_as_string(config)
                     .into_iter()
                     .for_each(|e| {
+                        if let Some(source_enum) = &e.source {
+                            match source_enum {
+                                source_and_code_occurence::SourceEnum::SourceWithKeys(
+                                    source_with_keys,
+                                ) => {
+                                    source_with_keys.keys.iter().for_each(|k| {
+                                        keys_handle_vec.push(k.clone());
+                                    });
+                                }
+                                source_and_code_occurence::SourceEnum::Source(_) => (),
+                                source_and_code_occurence::SourceEnum::Keys(keys) => {
+                                    keys.iter().for_each(|k| {
+                                        keys_handle_vec.push(k.clone());
+                                    });
+                                }
+                            }
+                        }
                         acc.push(e.add_one());
                     });
                 acc
             });
+        keys_handle_vec = keys_handle_vec.into_iter().unique().collect();
+        let keys_handle = match keys_handle_vec.is_empty() {
+            true => None,
+            false => Some(source_and_code_occurence::SourceEnum::Keys(keys_handle_vec)),
+        };
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                source: None,
+                source: keys_handle,
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
