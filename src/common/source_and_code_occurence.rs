@@ -44,6 +44,7 @@ impl SourceAndCodeOccurenceAsString {
 pub enum SourceEnum {
     SourceWithKeys(SourceWithKeys),
     Source(String),
+    //todo - add here just keys
 }
 
 #[derive(Debug, Clone, Eq, PartialEq)]

@@ -144,7 +144,7 @@ impl ThreeWrapperError {
 use crate::traits::my_custom_display::DisplayError;
 pub fn three(should_trace: bool) -> Result<(), Box<ThreeWrapperError>> {
     if let Err(e) = four(false) {
-        // println!("{}", <FourOriginError as DisplayError<SourceGeneric, ConfigStruct, ConfigStruct>>::display_error(&*e, once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG)));
+        // println!("{}", <FourWrapperError as DisplayError<SourceGeneric, ConfigStruct, ConfigStruct>>::display_error(&*e, once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG)));
 
         // return Err(Box::new(ThreeWrapperError::new_error_with_one_addition(
         //     ThreeWrapperErrorEnum::FourWrapper(*e),
@@ -185,7 +185,7 @@ pub fn three(should_trace: bool) -> Result<(), Box<ThreeWrapperError>> {
 // #[derive(ImplGetSourceFromCrate)]
 #[derive(Debug)]
 pub enum ThreeWrapperErrorEnum {
-    FourWrapper(FourOriginError),
+    FourWrapper(FourWrapperError),
 }
 
 impl ThreeWrapperErrorEnum {
@@ -238,13 +238,13 @@ impl ThreeWrapperErrorEnum {
 //
 // #[derive(ImplGetSourceFromCrate)]
 #[derive(Debug)]
-pub struct FourOriginError {
+pub struct FourWrapperError {
     source: HashMap<String, FourWrapperErrorEnum>,
     // code_occurence: crate::common::code_occurence::CodeOccurence,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
-impl FourOriginError {
+impl FourWrapperError {
     pub fn get_source_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
@@ -282,17 +282,6 @@ impl FourOriginError {
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         let len = self.source.len() + 1;
-        let mut increment_value = 0;
-        self.source.values().for_each(|value| {
-            value
-                .get_inner_source_and_code_occurence_as_string(config)
-                .iter()
-                .for_each(|source_and_code_occurence_as_string| {
-                    if source_and_code_occurence_as_string.increment > increment_value {
-                        increment_value = source_and_code_occurence_as_string.increment;
-                    }
-                });
-        });
         let mut vec = self
             .source
             .iter()
@@ -370,7 +359,7 @@ impl FourOriginError {
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
                 source: None,
                 code_occurence: self.get_code_occurence_as_string(config),
-                increment: increment_value,
+                increment: 0,
             },
         );
         vec
@@ -402,7 +391,7 @@ impl FourOriginError {
 }
 
 // impl crate::traits::get_source_value::GetSourceValue<HashMap<String, FourWrapperErrorEnum>>
-//     for FourOriginError
+//     for FourWrapperError
 // {
 //     fn get_source_value(&self) -> &HashMap<String, FourWrapperErrorEnum> {
 //         &self.source
@@ -411,7 +400,7 @@ impl FourOriginError {
 
 //
 // impl crate::traits::init_error::InitError<HashMap<String, FourWrapperErrorEnum>>
-//     for FourOriginError
+//     for FourWrapperError
 // {
 //     fn init_error(
 //         source: HashMap<String, FourWrapperErrorEnum>,
@@ -424,7 +413,7 @@ impl FourOriginError {
 //     }
 // }
 
-// impl crate::traits::get_code_occurence::GetCodeOccurence for FourOriginError {
+// impl crate::traits::get_code_occurence::GetCodeOccurence for FourWrapperError {
 //     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
 //         &self.code_occurence
 //     }
@@ -506,9 +495,9 @@ use crate::traits::get_source::GetSource;
 // }
 //
 use crate::traits::code_occurence_methods::CodeOccurenceNew;
-pub fn four(should_trace: bool) -> Result<(), Box<FourOriginError>> {
+pub fn four(should_trace: bool) -> Result<(), Box<FourWrapperError>> {
     // if let Err(e) = six(false) {
-    //     return Err(Box::new(FourOriginError::new_error_with_one_addition(
+    //     return Err(Box::new(FourWrapperError::new_error_with_one_addition(
     //         FourWrapperErrorEnum::SixWrapper(*e),
     //         once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG),
     //         once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES),
@@ -523,7 +512,7 @@ pub fn four(should_trace: bool) -> Result<(), Box<FourOriginError>> {
         (Ok(_), Err(_)) => todo!(),
         (Err(_), Ok(_)) => todo!(),
         (Err(f), Err(s)) => {
-            //     return Err(Box::new(FourOriginError::new_error_with_one_addition(
+            //     return Err(Box::new(FourWrapperError::new_error_with_one_addition(
             //  HashMap::from([
             //             (
             //                 String::from("five_hashmap_key"),
@@ -541,7 +530,7 @@ pub fn four(should_trace: bool) -> Result<(), Box<FourOriginError>> {
             //         column!(),
             //         should_trace
             //     )));
-            let f = FourOriginError {
+            let f = FourWrapperError {
                 source: HashMap::from([
                     (
                         String::from("five_hashmap_key"),
@@ -775,17 +764,6 @@ impl SixWrapperError {
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         let len = self.source.len() + 1;
-        let mut increment_value = 0;
-        self.source.iter().for_each(|element| {
-            element
-                .get_inner_source_and_code_occurence_as_string(config)
-                .iter()
-                .for_each(|source_and_code_occurence_as_string| {
-                    if source_and_code_occurence_as_string.increment > increment_value {
-                        increment_value = source_and_code_occurence_as_string.increment;
-                    }
-                });
-        });
         let mut vec = self
             .source
             .iter()
@@ -802,7 +780,7 @@ impl SixWrapperError {
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
                 source: None,
                 code_occurence: self.get_code_occurence_as_string(config),
-                increment: increment_value,
+                increment: 0,
             },
         );
         vec
