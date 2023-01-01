@@ -42,9 +42,10 @@ impl SourceAndCodeOccurenceAsString {
 
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub enum SourceEnum {
+    //todo - rename it
     SourceWithKeys(SourceWithKeys),
     Source(String),
-    //todo - add here just keys
+    Keys(Vec<String>),
 }
 
 #[derive(Debug, Clone, Eq, PartialEq)]

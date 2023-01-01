@@ -340,6 +340,19 @@ impl FourWrapperError {
                                             }
                                         );
                                     },
+                                    source_and_code_occurence::SourceEnum::Keys(keys) => {
+                                        let mut key_vec = keys;
+                                        key_vec.push(key.clone());
+                                        acc.push(
+                                            crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
+                                                source: Some(crate::common::source_and_code_occurence::SourceEnum::Keys(
+                                                    key_vec
+                                                )),
+                                                code_occurence: e.code_occurence.clone(),
+                                                increment: e.increment + 1,//change it to add_one()?
+                                            }
+                                        );
+                                    }
                                 }
                             },
                             None => {
