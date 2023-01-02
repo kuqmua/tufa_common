@@ -45,13 +45,21 @@ pub enum SourceEnum {
     //todo - rename it
     SourceWithKeys(SourceWithKeys),
     Source(String),
-    Keys(Vec<String>),
+    SourcesForTracing(Vec<String>),
+    KeysForTracing(Vec<String>),
+    SourcesAndKeysForTracing(SourcesAndKeysForTracing),
+}
+
+#[derive(Debug, Clone, Eq, PartialEq)]
+pub struct SourcesAndKeysForTracing {
+    pub sources: Vec<String>,
+    pub keys: Vec<String>,
 }
 
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub struct SourceWithKeys {
-    pub keys: Vec<String>,
     pub source: String,
+    pub keys: Vec<String>,
 }
 
 // #[derive(Debug, Clone)]

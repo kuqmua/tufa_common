@@ -26,6 +26,7 @@ use impl_get_source::ImplGetSourceFromCrate;
 use std::collections::HashMap;
 use std::fmt::format;
 use std::fmt::{self, Display};
+use std::vec;
 // use crate::traits::prepare_log_source_and_code_occurence::PrepareLogSourceAndCodeOccurence;
 // use crate::traits::new_error_with_git_info_file_line_column::SomethingTest;
 use crate::traits::get_source_and_code_occurence::GetSourceAndCodeOccurence;
@@ -64,7 +65,8 @@ impl ThreeWrapperError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct, //todo maybe remove
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
-        let mut keys_handle_vec = vec![]; //todo - make unique?
+        let mut sources_for_tracing = vec![];
+        let mut keys_for_tracing = vec![];
         let mut vec = self
             .source
             .get_inner_source_and_code_occurence_as_string(config);
@@ -74,26 +76,57 @@ impl ThreeWrapperError {
                 match &source_enum {
                     source_and_code_occurence::SourceEnum::SourceWithKeys(source_with_keys) => {
                         source_with_keys.keys.iter().for_each(|k| {
-                            keys_handle_vec.push(k.clone());
+                            keys_for_tracing.push(k.clone());
                         });
                     }
-                    source_and_code_occurence::SourceEnum::Source(_) => (),
-                    source_and_code_occurence::SourceEnum::Keys(keys) => {
+                    source_and_code_occurence::SourceEnum::Source(s) => {
+                        sources_for_tracing.push(s.clone());
+                    }
+                    source_and_code_occurence::SourceEnum::SourcesForTracing(sources) => {
+                        sources.iter().for_each(|s| {
+                            sources_for_tracing.push(s.clone());
+                        });
+                    }
+                    source_and_code_occurence::SourceEnum::KeysForTracing(keys) => {
                         keys.iter().for_each(|k| {
-                            keys_handle_vec.push(k.clone());
+                            keys_for_tracing.push(k.clone());
+                        });
+                    }
+                    source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(
+                        sources_and_keys_for_tracing,
+                    ) => {
+                        sources_and_keys_for_tracing.sources.iter().for_each(|s| {
+                            sources_for_tracing.push(s.clone());
+                        });
+                        sources_and_keys_for_tracing.keys.iter().for_each(|k| {
+                            keys_for_tracing.push(k.clone());
                         });
                     }
                 }
             }
         });
-        keys_handle_vec = keys_handle_vec.into_iter().unique().collect();
-        let keys_handle = match keys_handle_vec.is_empty() {
-            true => None,
-            false => Some(source_and_code_occurence::SourceEnum::Keys(keys_handle_vec)),
+        sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
+        keys_for_tracing = keys_for_tracing.into_iter().unique().collect(); //todo - optimize it?
+        let source_handle = match (sources_for_tracing.is_empty(), keys_for_tracing.is_empty()) {
+            (true, true) => Some(
+                source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(
+                    source_and_code_occurence::SourcesAndKeysForTracing {
+                        sources: sources_for_tracing,
+                        keys: keys_for_tracing,
+                    },
+                ),
+            ),
+            (true, false) => Some(source_and_code_occurence::SourceEnum::SourcesForTracing(
+                sources_for_tracing,
+            )),
+            (false, true) => Some(source_and_code_occurence::SourceEnum::KeysForTracing(
+                keys_for_tracing,
+            )),
+            (false, false) => None,
         };
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                source: keys_handle,
+                source: source_handle,
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
@@ -306,13 +339,14 @@ impl FourWrapperError {
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         let len = self.source.len() + 1;
-        let mut keys_handle_vec = vec![]; //todo - make unique?
+        let mut sources_for_tracing = vec![];
+        let mut keys_for_tracing = vec![];
         let mut vec = self
             .source
             .iter()
             .fold(Vec::with_capacity(len), |mut acc, (key, value)| {
                 // println!("iter {}{:#?}", key, value);
-                let mut temp_keys_vec = vec![];
+                // let mut temp_keys_vec = vec![];
                 //todo - must find highest increment value and put key there, for others  None - is it correct?     or maybe for one where source !== None ? if its more than one - spaces logic
                 value
                     .get_inner_source_and_code_occurence_as_string(config)
@@ -324,9 +358,11 @@ impl FourWrapperError {
                                     source_and_code_occurence::SourceEnum::SourceWithKeys(source_with_keys) => {
                                         let mut key_vec = source_with_keys.keys;
                                         key_vec.iter().for_each(|k|{
-                                            temp_keys_vec.push(k.clone())
+                                            // temp_keys_vec.push(k.clone())
+                                            keys_for_tracing.push(k.clone());
                                         });
                                         key_vec.push(key.clone());
+                                        sources_for_tracing.push(source_with_keys.source.clone());
                                         acc.push(
                                             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
                                                 source: Some(crate::common::source_and_code_occurence::SourceEnum::SourceWithKeys(
@@ -341,6 +377,7 @@ impl FourWrapperError {
                                         );
                                     },
                                     source_and_code_occurence::SourceEnum::Source(source) => {
+                                        sources_for_tracing.push(source.clone());
                                         acc.push(
                                             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
                                                 source: Some(crate::common::source_and_code_occurence::SourceEnum::SourceWithKeys(
@@ -354,16 +391,52 @@ impl FourWrapperError {
                                             }
                                         );
                                     },
-                                    source_and_code_occurence::SourceEnum::Keys(keys) => {
+                                    source_and_code_occurence::SourceEnum::SourcesForTracing(sources) => {
+                                        sources.iter().for_each(|s|{
+                                            sources_for_tracing.push(s.clone())
+                                        });
+                                        acc.push(
+                                            crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
+                                                source: Some(crate::common::source_and_code_occurence::SourceEnum::SourcesForTracing(
+                                                    sources.clone()
+                                                )),
+                                                code_occurence: e.code_occurence.clone(),
+                                                increment: e.increment + 1,//change it to add_one()?
+                                            }
+                                        );   
+                                    }
+                                    source_and_code_occurence::SourceEnum::KeysForTracing(keys) => {
                                         let mut key_vec = keys;
                                         key_vec.iter().for_each(|k|{
-                                            keys_handle_vec.push(k.clone())
+                                            keys_for_tracing.push(k.clone())
                                         });
                                         key_vec.push(key.clone());
                                         acc.push(
                                             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                                                source: Some(crate::common::source_and_code_occurence::SourceEnum::Keys(
+                                                source: Some(crate::common::source_and_code_occurence::SourceEnum::KeysForTracing(
                                                     key_vec
+                                                )),
+                                                code_occurence: e.code_occurence.clone(),
+                                                increment: e.increment + 1,//change it to add_one()?
+                                            }
+                                        );
+                                    }
+                                    source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(sources_and_keys_for_tracing) => {
+                                        sources_and_keys_for_tracing.sources.iter().for_each(|s|{
+                                            sources_for_tracing.push(s.clone())
+                                        });
+                                        let mut key_vec = sources_and_keys_for_tracing.keys.clone();
+                                        key_vec.iter().for_each(|k|{
+                                            keys_for_tracing.push(k.clone())
+                                        });
+                                        key_vec.push(key.clone());
+                                        acc.push(
+                                            crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
+                                                source: Some(crate::common::source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(
+                                                    crate::dev::source_and_code_occurence::SourcesAndKeysForTracing {
+                                                        sources: sources_and_keys_for_tracing.sources.clone(),
+                                                        keys: key_vec.clone(),
+                                                    }
                                                 )),
                                                 code_occurence: e.code_occurence.clone(),
                                                 increment: e.increment + 1,//change it to add_one()?
@@ -383,18 +456,33 @@ impl FourWrapperError {
                             },
                         }
                     });
-                temp_keys_vec.push(key.clone());
+                // temp_keys_vec.push(key.clone());
+                keys_for_tracing.push(key.clone());
                 acc
             });
-        // println!("keys_handle_vec{:#?}keys_handle_vec", keys_handle_vec);
-        keys_handle_vec = keys_handle_vec.into_iter().unique().collect();
-        let keys_handle = match keys_handle_vec.is_empty() {
-            true => None,
-            false => Some(source_and_code_occurence::SourceEnum::Keys(keys_handle_vec)),
+        // println!("keys_for_tracing{:#?}keys_for_tracing", keys_for_tracing);
+        sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
+        keys_for_tracing = keys_for_tracing.into_iter().unique().collect(); //todo - optimize it?
+        let source_handle = match (sources_for_tracing.is_empty(), keys_for_tracing.is_empty()) {
+            (true, true) => Some(
+                source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(
+                    crate::dev::source_and_code_occurence::SourcesAndKeysForTracing {
+                        sources: sources_for_tracing,
+                        keys: keys_for_tracing,
+                    },
+                ),
+            ),
+            (true, false) => Some(source_and_code_occurence::SourceEnum::SourcesForTracing(
+                sources_for_tracing,
+            )),
+            (false, true) => Some(source_and_code_occurence::SourceEnum::KeysForTracing(
+                keys_for_tracing,
+            )),
+            (false, false) => None,
         };
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                source: keys_handle,
+                source: source_handle,
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
@@ -801,7 +889,8 @@ impl SixWrapperError {
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         let len = self.source.len() + 1;
-        let mut keys_handle_vec = vec![]; //todo - make unique?
+        let mut sources_for_tracing = vec![];
+        let mut keys_for_tracing = vec![];
         let mut vec = self
             .source
             .iter()
@@ -816,13 +905,30 @@ impl SixWrapperError {
                                     source_with_keys,
                                 ) => {
                                     source_with_keys.keys.iter().for_each(|k| {
-                                        keys_handle_vec.push(k.clone());
+                                        keys_for_tracing.push(k.clone());
                                     });
                                 }
-                                source_and_code_occurence::SourceEnum::Source(_) => (),
-                                source_and_code_occurence::SourceEnum::Keys(keys) => {
+                                source_and_code_occurence::SourceEnum::Source(string_handle) => {
+                                    sources_for_tracing.push(string_handle.clone());
+                                }
+                                source_and_code_occurence::SourceEnum::SourcesForTracing(
+                                    sources,
+                                ) => sources.iter().for_each(|s| {
+                                    sources_for_tracing.push(s.clone());
+                                }),
+                                source_and_code_occurence::SourceEnum::KeysForTracing(keys) => {
                                     keys.iter().for_each(|k| {
-                                        keys_handle_vec.push(k.clone());
+                                        keys_for_tracing.push(k.clone());
+                                    });
+                                }
+                                source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(
+                                    sources_and_keys_for_tracing,
+                                ) => {
+                                    sources_and_keys_for_tracing.keys.iter().for_each(|k| {
+                                        keys_for_tracing.push(k.clone());
+                                    });
+                                    sources_and_keys_for_tracing.keys.iter().for_each(|s| {
+                                        sources_for_tracing.push(s.clone());
                                     });
                                 }
                             }
@@ -831,14 +937,28 @@ impl SixWrapperError {
                     });
                 acc
             });
-        keys_handle_vec = keys_handle_vec.into_iter().unique().collect();
-        let keys_handle = match keys_handle_vec.is_empty() {
-            true => None,
-            false => Some(source_and_code_occurence::SourceEnum::Keys(keys_handle_vec)),
+        sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
+        keys_for_tracing = keys_for_tracing.into_iter().unique().collect(); //todo - optimize it?
+        let source_handle = match (sources_for_tracing.is_empty(), keys_for_tracing.is_empty()) {
+            (true, true) => Some(
+                source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(
+                    source_and_code_occurence::SourcesAndKeysForTracing {
+                        sources: sources_for_tracing,
+                        keys: keys_for_tracing,
+                    },
+                ),
+            ),
+            (true, false) => Some(source_and_code_occurence::SourceEnum::SourcesForTracing(
+                sources_for_tracing,
+            )),
+            (false, true) => Some(source_and_code_occurence::SourceEnum::KeysForTracing(
+                keys_for_tracing,
+            )),
+            (false, false) => None,
         };
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                source: keys_handle,
+                source: source_handle,
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
