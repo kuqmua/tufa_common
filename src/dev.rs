@@ -108,7 +108,14 @@ impl ThreeWrapperError {
         sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
         keys_for_tracing = keys_for_tracing.into_iter().unique().collect(); //todo - optimize it?
         let source_handle = match (sources_for_tracing.is_empty(), keys_for_tracing.is_empty()) {
-            (true, true) => Some(
+            (true, true) => None,
+            (true, false) => Some(source_and_code_occurence::SourceEnum::KeysForTracing(
+                keys_for_tracing,
+            )),
+            (false, true) => Some(source_and_code_occurence::SourceEnum::SourcesForTracing(
+                sources_for_tracing,
+            )),
+            (false, false) => Some(
                 source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(
                     source_and_code_occurence::SourcesAndKeysForTracing {
                         sources: sources_for_tracing,
@@ -116,14 +123,8 @@ impl ThreeWrapperError {
                     },
                 ),
             ),
-            (true, false) => Some(source_and_code_occurence::SourceEnum::SourcesForTracing(
-                sources_for_tracing,
-            )),
-            (false, true) => Some(source_and_code_occurence::SourceEnum::KeysForTracing(
-                keys_for_tracing,
-            )),
-            (false, false) => None,
         };
+        println!("!!{:#?}!!", source_handle);
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
                 source: source_handle,
@@ -464,21 +465,21 @@ impl FourWrapperError {
         sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
         keys_for_tracing = keys_for_tracing.into_iter().unique().collect(); //todo - optimize it?
         let source_handle = match (sources_for_tracing.is_empty(), keys_for_tracing.is_empty()) {
-            (true, true) => Some(
+            (true, true) => None,
+            (true, false) => Some(source_and_code_occurence::SourceEnum::KeysForTracing(
+                keys_for_tracing,
+            )),
+            (false, true) => Some(source_and_code_occurence::SourceEnum::SourcesForTracing(
+                sources_for_tracing,
+            )),
+            (false, false) => Some(
                 source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(
-                    crate::dev::source_and_code_occurence::SourcesAndKeysForTracing {
+                    source_and_code_occurence::SourcesAndKeysForTracing {
                         sources: sources_for_tracing,
                         keys: keys_for_tracing,
                     },
                 ),
             ),
-            (true, false) => Some(source_and_code_occurence::SourceEnum::SourcesForTracing(
-                sources_for_tracing,
-            )),
-            (false, true) => Some(source_and_code_occurence::SourceEnum::KeysForTracing(
-                keys_for_tracing,
-            )),
-            (false, false) => None,
         };
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
@@ -940,7 +941,14 @@ impl SixWrapperError {
         sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
         keys_for_tracing = keys_for_tracing.into_iter().unique().collect(); //todo - optimize it?
         let source_handle = match (sources_for_tracing.is_empty(), keys_for_tracing.is_empty()) {
-            (true, true) => Some(
+            (true, true) => None,
+            (true, false) => Some(source_and_code_occurence::SourceEnum::KeysForTracing(
+                keys_for_tracing,
+            )),
+            (false, true) => Some(source_and_code_occurence::SourceEnum::SourcesForTracing(
+                sources_for_tracing,
+            )),
+            (false, false) => Some(
                 source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(
                     source_and_code_occurence::SourcesAndKeysForTracing {
                         sources: sources_for_tracing,
@@ -948,13 +956,6 @@ impl SixWrapperError {
                     },
                 ),
             ),
-            (true, false) => Some(source_and_code_occurence::SourceEnum::SourcesForTracing(
-                sources_for_tracing,
-            )),
-            (false, true) => Some(source_and_code_occurence::SourceEnum::KeysForTracing(
-                keys_for_tracing,
-            )),
-            (false, false) => None,
         };
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
