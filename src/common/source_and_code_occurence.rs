@@ -12,6 +12,20 @@ pub struct SourceAndCodeOccurenceAsString {
                         // maybe add another field like paralel index?
 }
 
+#[derive(Debug, Clone, Eq, PartialEq)]
+pub struct SourceWithCodeOccurenceHandle {
+    pub source: SourceHandleEnum,
+    pub code_occurence: String,
+    pub increment: u64,
+}
+
+#[derive(Debug, Clone, Eq, PartialEq)]
+pub struct SourceWithCodeOccurenceFinder {
+    pub source: SourceFinderEnum,
+    pub code_occurence: String,
+    pub increment: u64,
+}
+
 //
 #[derive(Debug, Clone)]
 pub struct SourceAndCodeOccurenceAsStringVersionOne {
@@ -38,6 +52,20 @@ impl SourceAndCodeOccurenceAsString {
             increment: self.increment + 1,
         }
     }
+}
+
+#[derive(Debug, Clone, Eq, PartialEq)]
+pub enum SourceHandleEnum {
+    //todo - rename it
+    SourceWithKeys(SourceWithKeys),
+    Source(String),
+}
+
+#[derive(Debug, Clone, Eq, PartialEq)]
+pub enum SourceFinderEnum {
+    SourcesForTracing(Vec<String>),
+    KeysForTracing(Vec<String>),
+    SourcesAndKeysForTracing(SourcesAndKeysForTracing),
 }
 
 #[derive(Debug, Clone, Eq, PartialEq)]

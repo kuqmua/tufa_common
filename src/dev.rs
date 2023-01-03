@@ -124,7 +124,6 @@ impl ThreeWrapperError {
                 ),
             ),
         };
-        println!("!!{:#?}!!", source_handle);
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
                 source: source_handle,
