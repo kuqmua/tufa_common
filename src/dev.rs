@@ -441,18 +441,6 @@ impl FourWrapperError {
         );
         vec
     }
-    //
-    // pub fn get_source_and_code_occurence_as_string(
-    //     &self,
-    //     config: &crate::config_mods::config_struct::ConfigStruct,
-    // ) -> String {
-    //     format!(
-    //         "{}{}{}",
-    //         self.get_source_as_string(config),
-    //         config.get_log_type().symbol(),
-    //         self.get_code_occurence_as_string(config)
-    //     )
-    // }
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         let log_type = config.get_log_type();
         log_type.console(
@@ -467,39 +455,9 @@ impl FourWrapperError {
     }
 }
 
-// impl crate::traits::get_source_value::GetSourceValue<HashMap<String, FourWrapperErrorEnum>>
-//     for FourWrapperError
-// {
-//     fn get_source_value(&self) -> &HashMap<String, FourWrapperErrorEnum> {
-//         &self.source
-//     }
-// }
-
-//
-// impl crate::traits::init_error::InitError<HashMap<String, FourWrapperErrorEnum>>
-//     for FourWrapperError
-// {
-//     fn init_error(
-//         source: HashMap<String, FourWrapperErrorEnum>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence,
-//     ) -> Self {
-//         Self {
-//             source,
-//             code_occurence,
-//         }
-//     }
-// }
-
-// impl crate::traits::get_code_occurence::GetCodeOccurence for FourWrapperError {
-//     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
-//         &self.code_occurence
-//     }
-// }
-
-// #[derive(ImplGetSourceFromCrate)]
 #[derive(Debug)]
 pub enum FourWrapperErrorEnum {
-    FiveWrapper(FiveOriginError),
+    FiveWrapper(FiveWrapperError),
     SixWrapper(SixWrapperError),
 }
 //
@@ -510,7 +468,7 @@ impl FourWrapperErrorEnum {
     ) -> String {
         match self {
             //todo - if wrapper - with config, if origin - without
-            FourWrapperErrorEnum::FiveWrapper(i) => i.get_source_as_string(),
+            FourWrapperErrorEnum::FiveWrapper(i) => i.get_source_as_string(config),
             FourWrapperErrorEnum::SixWrapper(i) => i.get_source_as_string(config),
         }
     }
@@ -536,41 +494,9 @@ impl FourWrapperErrorEnum {
             }
         }
     }
-    //does it need to be implemented here?
-    // pub fn get_source_and_code_occurence_as_string(
-    //     &self,
-    //     config: &crate::config_mods::config_struct::ConfigStruct,
-    // ) -> String {
-    //     match self {
-    //         FourWrapperErrorEnum::FiveWrapper(i) => {
-    //             i.get_source_and_code_occurence_as_string(config)
-    //         }
-    //         FourWrapperErrorEnum::SixWrapper(i) => {
-    //             i.get_source_and_code_occurence_as_string(config)
-    //         }
-    //     }
-    // }
 }
-//
 use crate::traits::get_source::GetSource;
-// impl std::fmt::Display for FourWrapperErrorEnum {
-//     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-//         match self {
-//             FourWrapperErrorEnum::FiveWrapper(e) => write!(f, "{}", e.get_source()),
-//             FourWrapperErrorEnum::SixWrapper(e) => write!(f, "{}", e.get_source()),
-//         }
-//     }
-// }
 
-// impl crate::traits::get_code_occurence::GetCodeOccurence for FourWrapperErrorEnum {
-//     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
-//         match self {
-//             FourWrapperErrorEnum::FiveWrapper(e) => e.get_code_occurence(),
-//             FourWrapperErrorEnum::SixWrapper(e) => e.get_code_occurence(),
-//         }
-//     }
-// }
-//
 use crate::traits::code_occurence_methods::CodeOccurenceNew;
 pub fn four(should_trace: bool) -> Result<(), Box<FourWrapperError>> {
     // if let Err(e) = six(false) {
@@ -644,15 +570,257 @@ pub fn four(should_trace: bool) -> Result<(), Box<FourWrapperError>> {
     Ok(())
 }
 //
+//
+//
+#[derive(Debug)]
+pub struct FiveWrapperError {
+    source: HashMap<String, FiveWrapperErrorEnum>,
+    // code_occurence: crate::common::code_occurence::CodeOccurence,
+    code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+}
+
+impl FiveWrapperError {
+    pub fn get_source_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        let log_type = config.get_log_type();
+        let symbol = log_type.symbol();
+        let mut source_as_string =
+            self.source
+                .iter()
+                .fold(String::from(""), |mut acc, (key, value)| {
+                    let source_as_string = value.get_source_as_string(config);
+                    let get_code_occurence_as_string = value.get_code_occurence_as_string(config);
+                    //todo maybe space symbol
+                    acc.push_str(&format!(
+                        "[key: {}]{} {}{} {}{}",
+                        key, symbol, source_as_string, symbol, get_code_occurence_as_string, symbol
+                    ));
+                    acc
+                });
+        log_type.pop_last(&mut source_as_string);
+        // source_as_string = format!("@{}@", source_as_string);
+        source_as_string
+    }
+    pub fn get_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        self.code_occurence.time_file_line_column.get_code_path(
+            &self.code_occurence.git_info,
+            config.get_source_place_type(),
+        )
+    }
+    pub fn get_inner_source_and_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
+        let len = self.source.len() + 1;
+        let mut sources_for_tracing = vec![];
+        let mut keys_for_tracing = vec![];
+        let mut vec = self
+            .source
+            .iter()
+            .fold(Vec::with_capacity(len), |mut acc, (key, value)| {
+                // println!("iter {}{:#?}", key, value);
+                // let mut temp_keys_vec = vec![];
+                //todo - must find highest increment value and put key there, for others  None - is it correct?     or maybe for one where source !== None ? if its more than one - spaces logic
+                value
+                    .get_inner_source_and_code_occurence_as_string(config)
+                    .into_iter()
+                    .for_each(|e| {
+                        match e.source {
+                            source_and_code_occurence::SourceEnum::SourceWithKeys(source_with_keys) => {
+                                let mut key_vec = source_with_keys.keys;
+                                key_vec.iter().for_each(|k|{
+                                    // temp_keys_vec.push(k.clone())
+                                    keys_for_tracing.push(k.clone());
+                                });
+                                key_vec.push(key.clone());
+                                sources_for_tracing.push(source_with_keys.source.clone());
+                                acc.push(
+                                    crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
+                                        source: crate::common::source_and_code_occurence::SourceEnum::SourceWithKeys(
+                                            crate::common::source_and_code_occurence::SourceWithKeys {
+                                                keys: key_vec,
+                                                source: source_with_keys.source.clone(),
+                                            }
+                                        ),
+                                        code_occurence: e.code_occurence.clone(),
+                                        increment: e.increment + 1,//change it to add_one()?
+                                    }
+                                );
+                            },
+                            source_and_code_occurence::SourceEnum::Source(source) => {
+                                sources_for_tracing.push(source.clone());
+                                acc.push(
+                                    crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
+                                        source: crate::common::source_and_code_occurence::SourceEnum::SourceWithKeys(
+                                            crate::common::source_and_code_occurence::SourceWithKeys {
+                                                keys: vec![key.clone()],
+                                                source: source.clone(),
+                                            }
+                                        ),
+                                        code_occurence: e.code_occurence.clone(),
+                                        increment: e.increment + 1,//change it to add_one()?
+                                    }
+                                );
+                            },
+                            source_and_code_occurence::SourceEnum::SourcesForTracing(sources) => {
+                                sources.iter().for_each(|s|{
+                                    sources_for_tracing.push(s.clone())
+                                });
+                                acc.push(
+                                    crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
+                                        source: crate::common::source_and_code_occurence::SourceEnum::SourcesForTracing(
+                                            sources.clone()
+                                        ),
+                                        code_occurence: e.code_occurence.clone(),
+                                        increment: e.increment + 1,//change it to add_one()?
+                                    }
+                                );   
+                            }
+                            source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(sources_and_keys_for_tracing) => {
+                                sources_and_keys_for_tracing.sources.iter().for_each(|s|{
+                                    sources_for_tracing.push(s.clone())
+                                });
+                                let mut key_vec = sources_and_keys_for_tracing.keys.clone();
+                                key_vec.iter().for_each(|k|{
+                                    keys_for_tracing.push(k.clone())
+                                });
+                                key_vec.push(key.clone());
+                                acc.push(
+                                    crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
+                                        source: crate::common::source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(
+                                            crate::dev::source_and_code_occurence::SourcesAndKeysForTracing {
+                                                sources: sources_and_keys_for_tracing.sources.clone(),
+                                                keys: key_vec.clone(),
+                                            }
+                                        ),
+                                        code_occurence: e.code_occurence.clone(),
+                                        increment: e.increment + 1,//change it to add_one()?
+                                    }
+                                );
+                            }
+                        }
+                    });
+                // temp_keys_vec.push(key.clone());
+                keys_for_tracing.push(key.clone());
+                acc
+            });
+        // println!("keys_for_tracing{:#?}keys_for_tracing", keys_for_tracing);
+        sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
+        keys_for_tracing = keys_for_tracing.into_iter().unique().collect(); //todo - optimize it?
+        let source_handle = match keys_for_tracing.is_empty() {
+            true => source_and_code_occurence::SourceEnum::SourcesForTracing(
+                sources_for_tracing,
+            ),
+            false => source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(
+                    source_and_code_occurence::SourcesAndKeysForTracing {
+                        sources: sources_for_tracing,
+                        keys: keys_for_tracing,
+                    },
+                ),
+        };
+        vec.push(
+            crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
+                source: source_handle,
+                code_occurence: self.get_code_occurence_as_string(config),
+                increment: 0,
+            },
+        );
+        vec
+    }
+    pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
+        let log_type = config.get_log_type();
+        log_type.console(
+            &config.get_error_color_bold(),
+            format!(
+                "{}{}{}",
+                self.get_source_as_string(config),
+                log_type.symbol(),
+                self.get_code_occurence_as_string(config)
+            ),
+        )
+    }
+}
+//
+#[derive(Debug)]
+pub enum FiveWrapperErrorEnum {
+    FiveOneOrigin(FiveOneOriginError)
+}
+
+impl FiveWrapperErrorEnum {
+    pub fn get_source_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        match self {
+            FiveWrapperErrorEnum::FiveOneOrigin(i) => i.get_source_as_string(),
+        }
+    }
+    pub fn get_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        match self {
+            FiveWrapperErrorEnum::FiveOneOrigin(i) => i.get_code_occurence_as_string(config),
+        }
+    }
+    pub fn get_inner_source_and_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
+        match self {
+            FiveWrapperErrorEnum::FiveOneOrigin(i) => {
+                i.get_inner_source_and_code_occurence_as_string(config)
+            }
+        }
+    }
+}
+//
+
+pub fn five(should_trace: bool) -> Result<(), Box<FiveWrapperError>> {
+    let five_one_result = five_one(false);
+    if let Err(e) = five_one_result {
+        let mut hm = HashMap::new();
+        hm.insert(String::from("five_one key"), FiveWrapperErrorEnum::FiveOneOrigin(*e));
+        let f = FiveWrapperError {
+            source: hm,
+            code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
+                git_info: once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
+                time_file_line_column: crate::common::time_file_line_column::TimeFileLineColumn::new_file_line_column(
+                String::from(file!()),
+                line!(),
+                column!(),
+            ),
+        }
+    };
+    // println!("five f {}", std::mem::size_of_val(&f));
+    // println!("five source {}", std::mem::size_of_val(&f.source));
+    // println!("five source {}", std::mem::size_of_val(&f.code_occurence));
+    // println!("five-----");
+    // f.log(once_cell::sync::Lazy::force(
+    //     &crate::global_variables::runtime::config::CONFIG,
+    // ));
+    // println!("five-----");
+    return Err(Box::new(f));
+    }
+    Ok(())
+}
+
+//
 // #[derive(ImplGetSourceFromCrate)]
 #[derive(Debug)]
-pub struct FiveOriginError {
+pub struct FiveOneOriginError {
     source: String,
     // code_occurence: crate::common::code_occurence::CodeOccurence,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
-impl FiveOriginError {
+
+impl FiveOneOriginError {
     pub fn get_source_as_string(&self) -> String {
         format!("{}", self.source)
     }
@@ -680,17 +848,6 @@ impl FiveOriginError {
             },
         ]
     }
-    // pub fn get_source_and_code_occurence_as_string(
-    //     &self,
-    //     config: &crate::config_mods::config_struct::ConfigStruct,
-    // ) -> String {
-    //     format!(
-    //         "{}{}{}",
-    //         self.get_source_as_string(),
-    //         config.get_log_type().symbol(),
-    //         self.get_code_occurence_as_string(config)
-    //     )
-    // }
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         let log_type = config.get_log_type();
         log_type.console(
@@ -706,51 +863,9 @@ impl FiveOriginError {
     }
 }
 
-// impl crate::traits::get_source_value::GetSourceValue<String> for FiveOriginError {
-//     fn get_source_value(&self) -> &String {
-//         &self.source
-//     }
-// }
-
-// impl crate::traits::init_error::InitError<String> for FiveOriginError {
-//     fn init_error(
-//         source: String,
-//         code_occurence: crate::common::code_occurence::CodeOccurence,
-//     ) -> Self {
-//         Self {
-//             source,
-//             code_occurence,
-//         }
-//     }
-// }
-
-// impl crate::traits::get_code_occurence::GetCodeOccurence for FiveOriginError {
-//     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
-//         &self.code_occurence
-//     }
-// }
-//
-pub fn five(should_trace: bool) -> Result<(), Box<FiveOriginError>> {
-    // let f = FiveOriginError::new_error_with_git_info_file_line_column(
-    //     34,
-    //         crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES
-    //         .clone(),
-    //         String::from(file!()),
-    //         line!(),
-    //         column!(),
-    // );
-    // return Err(Box::new(FiveOriginError::something_test(
-    //             String::from("error_five"),
-    //     once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG),
-    //     once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES),
-    //     String::from(file!()),
-    //     line!(),
-    //     column!(),
-    //     false
-    // )));
-    //
-    let f = FiveOriginError {
-        source: String::from("error_five"),
+pub fn five_one(should_trace: bool) -> Result<(), Box<FiveOneOriginError>> {
+    let f = FiveOneOriginError {
+        source: String::from("five_one error"),
         code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
             git_info: once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
             time_file_line_column: crate::common::time_file_line_column::TimeFileLineColumn::new_file_line_column(
@@ -770,7 +885,7 @@ pub fn five(should_trace: bool) -> Result<(), Box<FiveOriginError>> {
     // println!("five-----");
     return Err(Box::new(f));
 }
-//
+
 use crate::traits::code_occurence_methods::CodeOccurenceToString;
 use crate::traits::fields::GetLogType;
 use crate::traits::fields::GetSourcePlaceType;
