@@ -6,46 +6,57 @@ pub struct SourceAndCodeOccurence {
 
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub struct SourceAndCodeOccurenceAsString {
-    pub source: Option<SourceEnum>, //only original
+    pub source: SourceEnum, //only original
     pub code_occurence: String,
     pub increment: u64, //i think its incorrect
                         // maybe add another field like paralel index?
 }
 
 #[derive(Debug, Clone, Eq, PartialEq)]
-pub struct SourceWithCodeOccurenceHandle {
-    pub source: SourceHandleEnum,
+pub struct SourceWithCodeOccurenceSourceWithKeys {
+    pub source: SourceWithKeys,
     pub code_occurence: String,
     pub increment: u64,
 }
 
-//
 #[derive(Debug, Clone, Eq, PartialEq)]
-pub struct SourceWithCodeOccurenceSourcesForTracing {
-    pub sources_for_tracing: Vec<String>,
+pub struct SourceWithCodeOccurenceSource {
+    pub source: String,
     pub code_occurence: String,
     pub increment: u64,
 }
+
 #[derive(Debug, Clone, Eq, PartialEq)]
-pub struct SourceWithCodeOccurenceKeysForTracing {
+pub struct SourceWithCodeOccurenceSourcesForTracing {
     pub source: Vec<String>,
     pub code_occurence: String,
     pub increment: u64,
 }
+
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub struct SourceWithCodeOccurenceSourcesAndKeysForTracing {
     pub source: SourcesAndKeysForTracing,
     pub code_occurence: String,
     pub increment: u64,
 }
+
+// #[derive(Debug, Clone, Eq, PartialEq)]
+// pub struct SourceWithCodeOccurenceHandle {
+//     pub source: SourceHandleEnum,
+//     pub code_occurence: String,
+//     pub increment: u64,
+// }
+
 //
 
-#[derive(Debug, Clone, Eq, PartialEq)]
-pub struct SourceWithCodeOccurenceFinder {
-    pub source: SourceFinderEnum,
-    pub code_occurence: String,
-    pub increment: u64,
-}
+//
+
+// #[derive(Debug, Clone, Eq, PartialEq)]
+// pub struct SourceWithCodeOccurenceFinder {
+//     pub source: SourceFinderEnum,
+//     pub code_occurence: String,
+//     pub increment: u64,
+// }
 
 //
 #[derive(Debug, Clone)]
