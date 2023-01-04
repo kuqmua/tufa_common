@@ -785,7 +785,7 @@ pub fn five(should_trace: bool) -> Result<(), Box<FiveWrapperError>> {
     let five_one_result = five_one(false);
     if let Err(e) = five_one_result {
         let mut hm = HashMap::new();
-        hm.insert(String::from("five_one key"), FiveWrapperErrorEnum::FiveOneOrigin(*e));
+        hm.insert(String::from("five_one_hashmap key"), FiveWrapperErrorEnum::FiveOneOrigin(*e));
         let f = FiveWrapperError {
             source: hm,
             code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
