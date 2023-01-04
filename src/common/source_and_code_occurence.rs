@@ -126,7 +126,7 @@ pub enum SourceHandleEnum {
     Source(String),
 }
 
-#[derive(Debug, Clone, Eq, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq, Hash)]
 pub enum SourceFinderEnum {
     SourcesForTracing(Vec<String>),
     SourcesAndKeysForTracing(SourcesAndKeysForTracing),
@@ -141,7 +141,7 @@ pub enum SourceEnum {
     SourcesAndKeysForTracing(SourcesAndKeysForTracing),
 }
 
-#[derive(Debug, Clone, Eq, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq, Hash)]
 pub struct SourcesAndKeysForTracing {
     pub sources: Vec<String>,
     pub keys: Vec<String>,
