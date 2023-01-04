@@ -12,51 +12,84 @@ pub struct SourceAndCodeOccurenceAsString {
                         // maybe add another field like paralel index?
 }
 
-#[derive(Debug, Clone, Eq, PartialEq)]
-pub struct SourceWithCodeOccurenceSourceWithKeys {
-    pub source: SourceWithKeys,
-    pub code_occurence: String,
-    pub increment: u64,
-}
+// #[derive(Debug, Clone, Eq, PartialEq)]
+// pub struct SourceWithCodeOccurenceSourceWithKeys {
+//     pub source: SourceWithKeys,
+//     pub code_occurence: String,
+//     pub increment: u64,
+// }
+
+// #[derive(Debug, Clone, Eq, PartialEq)]
+// pub struct SourceWithCodeOccurenceSource {
+//     pub source: String,
+//     pub code_occurence: String,
+//     pub increment: u64,
+// }
+
+// impl SourceWithCodeOccurenceSource {
+//     pub fn to_string(&self, symbol: &str) -> String {
+//         format!("{}{}{}{}", self.source, symbol, self.code_occurence, symbol)
+//     }
+// }
+
+// #[derive(Debug, Clone, Eq, PartialEq)]
+// pub struct SourceWithCodeOccurenceSourcesForTracing {
+//     pub source: Vec<String>,
+//     pub code_occurence: String,
+//     pub increment: u64,
+// }
+
+// #[derive(Debug, Clone, Eq, PartialEq)]
+// pub struct SourceWithCodeOccurenceSourcesAndKeysForTracing {
+//     pub source: SourcesAndKeysForTracing,
+//     pub code_occurence: String,
+//     pub increment: u64,
+// }
 
 #[derive(Debug, Clone, Eq, PartialEq)]
-pub struct SourceWithCodeOccurenceSource {
-    pub source: String,
-    pub code_occurence: String,
-    pub increment: u64,
-}
-
-#[derive(Debug, Clone, Eq, PartialEq)]
-pub struct SourceWithCodeOccurenceSourcesForTracing {
-    pub source: Vec<String>,
-    pub code_occurence: String,
-    pub increment: u64,
-}
-
-#[derive(Debug, Clone, Eq, PartialEq)]
-pub struct SourceWithCodeOccurenceSourcesAndKeysForTracing {
-    pub source: SourcesAndKeysForTracing,
+pub struct SourceWithCodeOccurenceHandle {
+    pub source: SourceHandleEnum,
     pub code_occurence: String,
     pub increment: u64,
 }
 
 // #[derive(Debug, Clone, Eq, PartialEq)]
-// pub struct SourceWithCodeOccurenceHandle {
+// pub struct SourceWithCodeOccurenceHandlePrepLog {
 //     pub source: SourceHandleEnum,
-//     pub code_occurence: String,
-//     pub increment: u64,
+//     pub prep_log: String,
+//     pub increment: u64, //maybe not need
 // }
 
-//
+#[derive(Debug, Clone, Eq, PartialEq)]
+pub struct SourceWithCodeOccurenceFinder {
+    pub source: SourceFinderEnum,
+    pub code_occurence: String,
+    pub increment: u64,
+}
 
-//
-
+#[derive(Debug, Clone, Eq, PartialEq)]
+pub struct SourceWithCodeOccurenceFinderPrepLog {
+    pub source: SourceFinderEnum,
+    pub prep_log: String,
+    pub increment: u64, //maybe not need
+}
+// //
 // #[derive(Debug, Clone, Eq, PartialEq)]
-// pub struct SourceWithCodeOccurenceFinder {
-//     pub source: SourceFinderEnum,
-//     pub code_occurence: String,
-//     pub increment: u64,
+// pub struct SourceWithCodeOccurenceFinderPrepLogSourcesForTracing {
+//     pub source: Vec<String>,
+//     pub prep_log: String,
+//     pub increment: u64, //maybe not need
 // }
+// #[derive(Debug, Clone, Eq, PartialEq)]
+// pub struct SourceWithCodeOccurenceFinderPrepLogSourcesAndKeysForTracing {
+//     pub source: SourcesAndKeysForTracing,
+//     pub prep_log: String,
+//     pub increment: u64, //maybe not need
+// }
+//     SourcesForTracing(),
+//     SourcesAndKeysForTracing(),
+
+//
 
 //
 #[derive(Debug, Clone)]
