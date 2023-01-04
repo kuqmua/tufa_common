@@ -87,11 +87,6 @@ impl ThreeWrapperError {
                             sources_for_tracing.push(s.clone());
                         });
                     }
-                    source_and_code_occurence::SourceEnum::KeysForTracing(keys) => {
-                        keys.iter().for_each(|k| {
-                            keys_for_tracing.push(k.clone());
-                        });
-                    }
                     source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(
                         sources_and_keys_for_tracing,
                     ) => {
@@ -109,9 +104,7 @@ impl ThreeWrapperError {
         keys_for_tracing = keys_for_tracing.into_iter().unique().collect(); //todo - optimize it?
         let source_handle = match (sources_for_tracing.is_empty(), keys_for_tracing.is_empty()) {
             (true, true) => None,
-            (true, false) => Some(source_and_code_occurence::SourceEnum::KeysForTracing(
-                keys_for_tracing,
-            )),
+            (true, false) => todo!(),
             (false, true) => Some(source_and_code_occurence::SourceEnum::SourcesForTracing(
                 sources_for_tracing,
             )),
@@ -405,22 +398,6 @@ impl FourWrapperError {
                                             }
                                         );   
                                     }
-                                    source_and_code_occurence::SourceEnum::KeysForTracing(keys) => {
-                                        let mut key_vec = keys;
-                                        key_vec.iter().for_each(|k|{
-                                            keys_for_tracing.push(k.clone())
-                                        });
-                                        key_vec.push(key.clone());
-                                        acc.push(
-                                            crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                                                source: Some(crate::common::source_and_code_occurence::SourceEnum::KeysForTracing(
-                                                    key_vec
-                                                )),
-                                                code_occurence: e.code_occurence.clone(),
-                                                increment: e.increment + 1,//change it to add_one()?
-                                            }
-                                        );
-                                    }
                                     source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(sources_and_keys_for_tracing) => {
                                         sources_and_keys_for_tracing.sources.iter().for_each(|s|{
                                             sources_for_tracing.push(s.clone())
@@ -465,9 +442,7 @@ impl FourWrapperError {
         keys_for_tracing = keys_for_tracing.into_iter().unique().collect(); //todo - optimize it?
         let source_handle = match (sources_for_tracing.is_empty(), keys_for_tracing.is_empty()) {
             (true, true) => None,
-            (true, false) => Some(source_and_code_occurence::SourceEnum::KeysForTracing(
-                keys_for_tracing,
-            )),
+            (true, false) => todo!(),
             (false, true) => Some(source_and_code_occurence::SourceEnum::SourcesForTracing(
                 sources_for_tracing,
             )),
@@ -916,11 +891,6 @@ impl SixWrapperError {
                                 ) => sources.iter().for_each(|s| {
                                     sources_for_tracing.push(s.clone());
                                 }),
-                                source_and_code_occurence::SourceEnum::KeysForTracing(keys) => {
-                                    keys.iter().for_each(|k| {
-                                        keys_for_tracing.push(k.clone());
-                                    });
-                                }
                                 source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(
                                     sources_and_keys_for_tracing,
                                 ) => {
@@ -941,9 +911,7 @@ impl SixWrapperError {
         keys_for_tracing = keys_for_tracing.into_iter().unique().collect(); //todo - optimize it?
         let source_handle = match (sources_for_tracing.is_empty(), keys_for_tracing.is_empty()) {
             (true, true) => None,
-            (true, false) => Some(source_and_code_occurence::SourceEnum::KeysForTracing(
-                keys_for_tracing,
-            )),
+            (true, false) => todo!(),
             (false, true) => Some(source_and_code_occurence::SourceEnum::SourcesForTracing(
                 sources_for_tracing,
             )),

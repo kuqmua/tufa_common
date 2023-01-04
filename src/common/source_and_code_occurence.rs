@@ -19,6 +19,27 @@ pub struct SourceWithCodeOccurenceHandle {
     pub increment: u64,
 }
 
+//
+#[derive(Debug, Clone, Eq, PartialEq)]
+pub struct SourceWithCodeOccurenceSourcesForTracing {
+    pub sources_for_tracing: Vec<String>,
+    pub code_occurence: String,
+    pub increment: u64,
+}
+#[derive(Debug, Clone, Eq, PartialEq)]
+pub struct SourceWithCodeOccurenceKeysForTracing {
+    pub source: Vec<String>,
+    pub code_occurence: String,
+    pub increment: u64,
+}
+#[derive(Debug, Clone, Eq, PartialEq)]
+pub struct SourceWithCodeOccurenceSourcesAndKeysForTracing {
+    pub source: SourcesAndKeysForTracing,
+    pub code_occurence: String,
+    pub increment: u64,
+}
+//
+
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub struct SourceWithCodeOccurenceFinder {
     pub source: SourceFinderEnum,
@@ -64,7 +85,6 @@ pub enum SourceHandleEnum {
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub enum SourceFinderEnum {
     SourcesForTracing(Vec<String>),
-    KeysForTracing(Vec<String>),
     SourcesAndKeysForTracing(SourcesAndKeysForTracing),
 }
 
@@ -74,7 +94,6 @@ pub enum SourceEnum {
     SourceWithKeys(SourceWithKeys),
     Source(String),
     SourcesForTracing(Vec<String>),
-    KeysForTracing(Vec<String>),
     SourcesAndKeysForTracing(SourcesAndKeysForTracing),
 }
 
