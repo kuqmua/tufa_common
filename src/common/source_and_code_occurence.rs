@@ -6,7 +6,7 @@ pub struct SourceAndCodeOccurence {
 
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub struct SourceAndCodeOccurenceAsString {
-    pub source: SourceEnum, //only original
+    pub source: Vec<std::collections::HashMap<String, Vec<String>>>, //only original
     pub code_occurence: String,
     pub increment: u64, //i think its incorrect
                         // maybe add another field like paralel index?
@@ -60,7 +60,7 @@ pub struct SourceWithCodeOccurenceHandle {
 //     pub increment: u64, //maybe not need
 // }
 
-#[derive(Debug, Clone, Eq, PartialEq, Hash)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub struct SourceWithCodeOccurenceFinder {
     pub source: SourceFinderEnum,
     pub code_occurence: String,
@@ -94,7 +94,7 @@ pub struct SourceWithCodeOccurenceFinderPrepLog {
 //
 #[derive(Debug, Clone)]
 pub struct SourceAndCodeOccurenceAsStringVersionOne {
-    pub source: Option<SourceWithKeys>,
+    pub source: Option<std::collections::HashMap<String, Vec<String>>>,
     pub code_occurence: String,
     pub increment: u64, //i think its incorrect
                         // maybe add another field like paralel index?
@@ -122,35 +122,14 @@ impl SourceAndCodeOccurenceAsString {
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub enum SourceHandleEnum {
     //todo - rename it
-    SourceWithKeys(SourceWithKeys),
+    SourceWithKeys(std::collections::HashMap<String, Vec<String>>),
     Source(String),
 }
 
-#[derive(Debug, Clone, Eq, PartialEq, Hash)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub enum SourceFinderEnum {
     SourcesForTracing(Vec<String>), //todo - add here code_occurence
-    SourcesAndKeysForTracing(SourcesAndKeysForTracing), //todo - add here code_occurence
-}
-
-#[derive(Debug, Clone, Eq, PartialEq)]
-pub enum SourceEnum {
-    //todo - rename it
-    SourceWithKeys(SourceWithKeys),
-    Source(String),
-    SourcesForTracing(Vec<String>),
-    SourcesAndKeysForTracing(SourcesAndKeysForTracing),
-}
-
-#[derive(Debug, Clone, Eq, PartialEq, Hash)]
-pub struct SourcesAndKeysForTracing {
-    pub sources: Vec<String>,
-    pub keys: Vec<String>,
-}
-
-#[derive(Debug, Clone, Eq, PartialEq)]
-pub struct SourceWithKeys {
-    pub source: String,
-    pub keys: Vec<String>,
+    SourcesAndKeysForTracing(Vec<std::collections::HashMap<String, Vec<String>>>), //todo - add here code_occurence
 }
 
 // #[derive(Debug, Clone)]

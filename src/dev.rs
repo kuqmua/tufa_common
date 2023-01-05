@@ -65,55 +65,20 @@ impl ThreeWrapperError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct, //todo maybe remove
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
-        let mut sources_for_tracing = vec![];
-        let mut keys_for_tracing = vec![];
+        let mut sources_for_tracing: Vec<std::collections::HashMap<String, Vec<String>>> = vec![];
         let mut vec = self
             .source
             .get_inner_source_and_code_occurence_as_string(config);
         vec.iter_mut().for_each(|n| {
             n.increment += 1;
-                match &n.source {
-                    source_and_code_occurence::SourceEnum::SourceWithKeys(source_with_keys) => {
-                        source_with_keys.keys.iter().for_each(|k| {
-                            keys_for_tracing.push(k.clone());
-                        });
-                    }
-                    source_and_code_occurence::SourceEnum::Source(s) => {
-                        sources_for_tracing.push(s.clone());
-                    }
-                    source_and_code_occurence::SourceEnum::SourcesForTracing(sources) => {
-                        sources.iter().for_each(|s| {
-                            sources_for_tracing.push(s.clone());
-                        });
-                    }
-                    source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(
-                        sources_and_keys_for_tracing,
-                    ) => {
-                        sources_and_keys_for_tracing.sources.iter().for_each(|s| {
-                            sources_for_tracing.push(s.clone());
-                        });
-                        sources_and_keys_for_tracing.keys.iter().for_each(|k| {
-                            keys_for_tracing.push(k.clone());
-                        });
-                    }
-                }
+            n.source.iter().for_each(|f| {
+                sources_for_tracing.push(f.clone());
+            });
         });
-        sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
-        keys_for_tracing = keys_for_tracing.into_iter().unique().collect(); //todo - optimize it?
-        let source_handle = match keys_for_tracing.is_empty() {
-            true => source_and_code_occurence::SourceEnum::SourcesForTracing(
-                sources_for_tracing,
-            ),
-            false => source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(
-                    source_and_code_occurence::SourcesAndKeysForTracing {
-                        sources: sources_for_tracing,
-                        keys: keys_for_tracing,
-                    },
-                ),
-        };
+        // sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                source: source_handle,
+                source: sources_for_tracing.clone(),
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
@@ -326,115 +291,36 @@ impl FourWrapperError {
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         let len = self.source.len() + 1;
-        let mut sources_for_tracing = vec![];
-        let mut keys_for_tracing = vec![];
+        let mut sources_for_tracing: Vec<std::collections::HashMap<String, Vec<String>>> = vec![];
         let mut vec = self
             .source
             .iter()
             .fold(Vec::with_capacity(len), |mut acc, (key, value)| {
-                // println!("iter {}{:#?}", key, value);
                 // let mut temp_keys_vec = vec![];
                 //todo - must find highest increment value and put key there, for others  None - is it correct?     or maybe for one where source !== None ? if its more than one - spaces logic
                 value
                     .get_inner_source_and_code_occurence_as_string(config)
-                    .into_iter()
+                    .iter()
                     .for_each(|e| {
-                        match e.source {
-                            source_and_code_occurence::SourceEnum::SourceWithKeys(source_with_keys) => {
-                                let mut key_vec = source_with_keys.keys;
-                                key_vec.iter().for_each(|k|{
-                                    // temp_keys_vec.push(k.clone())
-                                    keys_for_tracing.push(k.clone());
-                                });
-                                key_vec.push(key.clone());
-                                sources_for_tracing.push(source_with_keys.source.clone());
-                                acc.push(
-                                    crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                                        source: crate::common::source_and_code_occurence::SourceEnum::SourceWithKeys(
-                                            crate::common::source_and_code_occurence::SourceWithKeys {
-                                                keys: key_vec,
-                                                source: source_with_keys.source.clone(),
-                                            }
-                                        ),
-                                        code_occurence: e.code_occurence.clone(),
-                                        increment: e.increment + 1,//change it to add_one()?
-                                    }
-                                );
-                            },
-                            source_and_code_occurence::SourceEnum::Source(source) => {
-                                sources_for_tracing.push(source.clone());
-                                acc.push(
-                                    crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                                        source: crate::common::source_and_code_occurence::SourceEnum::SourceWithKeys(
-                                            crate::common::source_and_code_occurence::SourceWithKeys {
-                                                keys: vec![key.clone()],
-                                                source: source.clone(),
-                                            }
-                                        ),
-                                        code_occurence: e.code_occurence.clone(),
-                                        increment: e.increment + 1,//change it to add_one()?
-                                    }
-                                );
-                            },
-                            source_and_code_occurence::SourceEnum::SourcesForTracing(sources) => {
-                                sources.iter().for_each(|s|{
-                                    sources_for_tracing.push(s.clone())
-                                });
-                                acc.push(
-                                    crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                                        source: crate::common::source_and_code_occurence::SourceEnum::SourcesForTracing(
-                                            sources.clone()
-                                        ),
-                                        code_occurence: e.code_occurence.clone(),
-                                        increment: e.increment + 1,//change it to add_one()?
-                                    }
-                                );   
-                            }
-                            source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(sources_and_keys_for_tracing) => {
-                                sources_and_keys_for_tracing.sources.iter().for_each(|s|{
-                                    sources_for_tracing.push(s.clone())
-                                });
-                                let mut key_vec = sources_and_keys_for_tracing.keys.clone();
-                                key_vec.iter().for_each(|k|{
-                                    keys_for_tracing.push(k.clone())
-                                });
-                                key_vec.push(key.clone());
-                                acc.push(
-                                    crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                                        source: crate::common::source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(
-                                            crate::dev::source_and_code_occurence::SourcesAndKeysForTracing {
-                                                sources: sources_and_keys_for_tracing.sources.clone(),
-                                                keys: key_vec.clone(),
-                                            }
-                                        ),
-                                        code_occurence: e.code_occurence.clone(),
-                                        increment: e.increment + 1,//change it to add_one()?
-                                    }
-                                );
-                            }
-                        }
+                        e.source.iter().for_each(|hm| {
+                            let mut hm_handle = HashMap::new(); //todo optimize
+                            let mut hm_clone = hm.clone();
+                            hm_clone.iter_mut().for_each(|(k, v)| {
+                                let mut vv = v.clone();
+                                vv.push(key.clone());
+                                hm_handle.insert(k.clone(), v.clone());
+                            });
+                            sources_for_tracing.push(hm_handle.clone());
+                        });
+
+                        acc.push(e.clone().add_one());
                     });
-                // temp_keys_vec.push(key.clone());
-                keys_for_tracing.push(key.clone());
                 acc
             });
-        // println!("keys_for_tracing{:#?}keys_for_tracing", keys_for_tracing);
-        sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
-        keys_for_tracing = keys_for_tracing.into_iter().unique().collect(); //todo - optimize it?
-        let source_handle = match keys_for_tracing.is_empty() {
-            true => source_and_code_occurence::SourceEnum::SourcesForTracing(
-                sources_for_tracing,
-            ),
-            false => source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(
-                    source_and_code_occurence::SourcesAndKeysForTracing {
-                        sources: sources_for_tracing,
-                        keys: keys_for_tracing,
-                    },
-                ),
-        };
+        // sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                source: source_handle,
+                source: sources_for_tracing.clone(),
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
@@ -617,8 +503,7 @@ impl FiveWrapperError {
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         let len = self.source.len() + 1;
-        let mut sources_for_tracing = vec![];
-        let mut keys_for_tracing = vec![];
+        let mut sources_for_tracing: Vec<std::collections::HashMap<String, Vec<String>>> = vec![];
         let mut vec = self
             .source
             .iter()
@@ -630,102 +515,23 @@ impl FiveWrapperError {
                     .get_inner_source_and_code_occurence_as_string(config)
                     .into_iter()
                     .for_each(|e| {
-                        match e.source {
-                            source_and_code_occurence::SourceEnum::SourceWithKeys(source_with_keys) => {
-                                let mut key_vec = source_with_keys.keys;
-                                key_vec.iter().for_each(|k|{
-                                    // temp_keys_vec.push(k.clone())
-                                    keys_for_tracing.push(k.clone());
-                                });
-                                key_vec.push(key.clone());
-                                sources_for_tracing.push(source_with_keys.source.clone());
-                                acc.push(
-                                    crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                                        source: crate::common::source_and_code_occurence::SourceEnum::SourceWithKeys(
-                                            crate::common::source_and_code_occurence::SourceWithKeys {
-                                                keys: key_vec,
-                                                source: source_with_keys.source.clone(),
-                                            }
-                                        ),
-                                        code_occurence: e.code_occurence.clone(),
-                                        increment: e.increment + 1,//change it to add_one()?
-                                    }
-                                );
-                            },
-                            source_and_code_occurence::SourceEnum::Source(source) => {
-                                sources_for_tracing.push(source.clone());
-                                acc.push(
-                                    crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                                        source: crate::common::source_and_code_occurence::SourceEnum::SourceWithKeys(
-                                            crate::common::source_and_code_occurence::SourceWithKeys {
-                                                keys: vec![key.clone()],
-                                                source: source.clone(),
-                                            }
-                                        ),
-                                        code_occurence: e.code_occurence.clone(),
-                                        increment: e.increment + 1,//change it to add_one()?
-                                    }
-                                );
-                            },
-                            source_and_code_occurence::SourceEnum::SourcesForTracing(sources) => {
-                                sources.iter().for_each(|s|{
-                                    sources_for_tracing.push(s.clone())
-                                });
-                                acc.push(
-                                    crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                                        source: crate::common::source_and_code_occurence::SourceEnum::SourcesForTracing(
-                                            sources.clone()
-                                        ),
-                                        code_occurence: e.code_occurence.clone(),
-                                        increment: e.increment + 1,//change it to add_one()?
-                                    }
-                                );   
-                            }
-                            source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(sources_and_keys_for_tracing) => {
-                                sources_and_keys_for_tracing.sources.iter().for_each(|s|{
-                                    sources_for_tracing.push(s.clone())
-                                });
-                                let mut key_vec = sources_and_keys_for_tracing.keys.clone();
-                                key_vec.iter().for_each(|k|{
-                                    keys_for_tracing.push(k.clone())
-                                });
-                                key_vec.push(key.clone());
-                                acc.push(
-                                    crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                                        source: crate::common::source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(
-                                            crate::dev::source_and_code_occurence::SourcesAndKeysForTracing {
-                                                sources: sources_and_keys_for_tracing.sources.clone(),
-                                                keys: key_vec.clone(),
-                                            }
-                                        ),
-                                        code_occurence: e.code_occurence.clone(),
-                                        increment: e.increment + 1,//change it to add_one()?
-                                    }
-                                );
-                            }
-                        }
+                        e.source.iter().for_each(|hm| {
+                            let mut hm_handle = HashMap::new(); //todo optimize
+                            hm.iter().for_each(|(source_error, key_v)| {
+                                let mut key_vv = key_v.clone();
+                                key_vv.push(key.clone());
+                                hm_handle.insert(source_error.clone(), key_vv.clone());
+                            });
+                            sources_for_tracing.push(hm_handle.clone());
+                        });
+                        acc.push(e.add_one());
                     });
-                // temp_keys_vec.push(key.clone());
-                keys_for_tracing.push(key.clone());
                 acc
             });
-        // println!("keys_for_tracing{:#?}keys_for_tracing", keys_for_tracing);
-        sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
-        keys_for_tracing = keys_for_tracing.into_iter().unique().collect(); //todo - optimize it?
-        let source_handle = match keys_for_tracing.is_empty() {
-            true => source_and_code_occurence::SourceEnum::SourcesForTracing(
-                sources_for_tracing,
-            ),
-            false => source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(
-                    source_and_code_occurence::SourcesAndKeysForTracing {
-                        sources: sources_for_tracing,
-                        keys: keys_for_tracing,
-                    },
-                ),
-        };
+        // sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                source: source_handle,
+                source: sources_for_tracing.clone(),
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
@@ -748,7 +554,7 @@ impl FiveWrapperError {
 //
 #[derive(Debug)]
 pub enum FiveWrapperErrorEnum {
-    FiveOneOrigin(FiveOneOriginError)
+    FiveOneOrigin(FiveOneOriginError),
 }
 
 impl FiveWrapperErrorEnum {
@@ -785,7 +591,10 @@ pub fn five(should_trace: bool) -> Result<(), Box<FiveWrapperError>> {
     let five_one_result = five_one(false);
     if let Err(e) = five_one_result {
         let mut hm = HashMap::new();
-        hm.insert(String::from("five_one_hashmap key"), FiveWrapperErrorEnum::FiveOneOrigin(*e));
+        hm.insert(
+            String::from("five_one_hashmap key"),
+            FiveWrapperErrorEnum::FiveOneOrigin(*e),
+        );
         let f = FiveWrapperError {
             source: hm,
             code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
@@ -797,15 +606,15 @@ pub fn five(should_trace: bool) -> Result<(), Box<FiveWrapperError>> {
             ),
         }
     };
-    // println!("five f {}", std::mem::size_of_val(&f));
-    // println!("five source {}", std::mem::size_of_val(&f.source));
-    // println!("five source {}", std::mem::size_of_val(&f.code_occurence));
-    // println!("five-----");
-    // f.log(once_cell::sync::Lazy::force(
-    //     &crate::global_variables::runtime::config::CONFIG,
-    // ));
-    // println!("five-----");
-    return Err(Box::new(f));
+        // println!("five f {}", std::mem::size_of_val(&f));
+        // println!("five source {}", std::mem::size_of_val(&f.source));
+        // println!("five source {}", std::mem::size_of_val(&f.code_occurence));
+        // println!("five-----");
+        // f.log(once_cell::sync::Lazy::force(
+        //     &crate::global_variables::runtime::config::CONFIG,
+        // ));
+        // println!("five-----");
+        return Err(Box::new(f));
     }
     Ok(())
 }
@@ -818,7 +627,6 @@ pub struct FiveOneOriginError {
     // code_occurence: crate::common::code_occurence::CodeOccurence,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
-
 
 impl FiveOneOriginError {
     pub fn get_source_as_string(&self) -> String {
@@ -839,10 +647,7 @@ impl FiveOneOriginError {
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         vec![
             crate::dev::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                source: 
-                    crate::common::source_and_code_occurence::SourceEnum::Source(
-                        self.get_source_as_string(),
-                    ),
+                source: vec![HashMap::from([(self.get_source_as_string(), vec![])])],
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
@@ -955,8 +760,7 @@ impl SixWrapperError {
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         let len = self.source.len() + 1;
-        let mut sources_for_tracing = vec![];
-        let mut keys_for_tracing = vec![];
+        let mut sources_for_tracing: Vec<std::collections::HashMap<String, Vec<String>>> = vec![];
         let mut vec = self
             .source
             .iter()
@@ -965,53 +769,17 @@ impl SixWrapperError {
                     .get_inner_source_and_code_occurence_as_string(config)
                     .into_iter()
                     .for_each(|e| {
-                        match &e.source {
-                            source_and_code_occurence::SourceEnum::SourceWithKeys(
-                                source_with_keys,
-                            ) => {
-                                source_with_keys.keys.iter().for_each(|k| {
-                                    keys_for_tracing.push(k.clone());
-                                });
-                            }
-                            source_and_code_occurence::SourceEnum::Source(string_handle) => {
-                                sources_for_tracing.push(string_handle.clone());
-                            }
-                            source_and_code_occurence::SourceEnum::SourcesForTracing(
-                                sources,
-                            ) => sources.iter().for_each(|s| {
-                                sources_for_tracing.push(s.clone());
-                            }),
-                            source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(
-                                sources_and_keys_for_tracing,
-                            ) => {
-                                sources_and_keys_for_tracing.keys.iter().for_each(|k| {
-                                    keys_for_tracing.push(k.clone());
-                                });
-                                sources_and_keys_for_tracing.keys.iter().for_each(|s| {
-                                    sources_for_tracing.push(s.clone());
-                                });
-                            }
-                        }
+                        e.source.iter().for_each(|f| {
+                            sources_for_tracing.push(f.clone());
+                        });
                         acc.push(e.add_one());
                     });
                 acc
             });
-        sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
-        keys_for_tracing = keys_for_tracing.into_iter().unique().collect(); //todo - optimize it?
-        let source_handle = match keys_for_tracing.is_empty() {
-            true => source_and_code_occurence::SourceEnum::SourcesForTracing(
-                sources_for_tracing,
-            ),
-            false => source_and_code_occurence::SourceEnum::SourcesAndKeysForTracing(
-                    source_and_code_occurence::SourcesAndKeysForTracing {
-                        sources: sources_for_tracing,
-                        keys: keys_for_tracing,
-                    },
-                ),
-        };
+        // sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                source: source_handle,
+                source: sources_for_tracing,
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
@@ -1043,10 +811,6 @@ impl SixWrapperError {
         )
     }
 }
-//
-
-// //
-
 //     let mut vec: Vec<crate::common::code_occurence::OccurenceFilter> =
 //         Vec::with_capacity(capacity);
 //     self.occurences.iter().for_each(|(git_info, v)| {
@@ -1255,10 +1019,7 @@ impl SevenOriginError {
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         vec![
             crate::dev::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                source: 
-                    crate::common::source_and_code_occurence::SourceEnum::Source(
-                        self.get_source_as_string(),
-                    ),
+                source: vec![HashMap::from([(self.get_source_as_string(), vec![])])],
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
@@ -1340,10 +1101,7 @@ impl EightOriginError {
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         vec![
             crate::dev::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                source: 
-                    crate::common::source_and_code_occurence::SourceEnum::Source(
-                        self.get_source_as_string(),
-                    ),
+                source: vec![HashMap::from([(self.get_source_as_string(), vec![])])],
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
