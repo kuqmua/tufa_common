@@ -60,7 +60,7 @@ pub struct SourceWithCodeOccurenceHandle {
 //     pub increment: u64, //maybe not need
 // }
 
-#[derive(Debug, Clone, Eq, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq, Hash)]
 pub struct SourceWithCodeOccurenceFinder {
     pub source: SourceFinderEnum,
     pub code_occurence: String,
@@ -128,8 +128,8 @@ pub enum SourceHandleEnum {
 
 #[derive(Debug, Clone, Eq, PartialEq, Hash)]
 pub enum SourceFinderEnum {
-    SourcesForTracing(Vec<String>),
-    SourcesAndKeysForTracing(SourcesAndKeysForTracing),
+    SourcesForTracing(Vec<String>), //todo - add here code_occurence
+    SourcesAndKeysForTracing(SourcesAndKeysForTracing), //todo - add here code_occurence
 }
 
 #[derive(Debug, Clone, Eq, PartialEq)]
