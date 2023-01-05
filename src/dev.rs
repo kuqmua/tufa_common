@@ -303,16 +303,71 @@ impl FourWrapperError {
                     .iter()
                     .for_each(|e| {
                         e.source.iter().for_each(|hm| {
-                            let mut hm_handle = HashMap::new(); //todo optimize
-                            let mut hm_clone = hm.clone();
-                            hm_clone.iter_mut().for_each(|(k, v)| {
-                                let mut vv = v.clone();
-                                vv.push(key.clone());
-                                hm_handle.insert(k.clone(), v.clone());
+                            let mut handle_hm_indexes = HashMap::new();
+                            let mut handle_hm = HashMap::new();
+                            hm.iter().for_each(|(k, v)| {
+                                let mut option_key_index = None;
+                                for i in 0..sources_for_tracing.len() {
+                                    for (hm_k, hm_v) in &sources_for_tracing[0] {
+                                        match hm_k == k {
+                                            true => {
+                                                option_key_index = Some((hm_k.clone(), i.clone()));
+                                                break;
+                                            }
+                                            false => (),
+                                        }
+                                    }
+                                    match option_key_index {
+                                        Some(_) => {
+                                            break;
+                                        }
+                                        None => (),
+                                    }
+                                }
+                                match option_key_index {
+                                    Some(key_index) => {
+                                        let mut g = sources_for_tracing[key_index.1].clone();
+                                        let mut original_vec = g.get(&key_index.0).unwrap().clone();
+                                        v.iter().for_each(|sss| match original_vec.contains(sss) {
+                                            true => (),
+                                            false => {
+                                                original_vec.push(sss.clone());
+                                            }
+                                        });
+                                        handle_hm_indexes.insert(
+                                            key_index.1,
+                                            (key_index.0.clone(), original_vec.clone()),
+                                        );
+                                    }
+                                    None => {
+                                        handle_hm.insert(k.clone(), v.clone());
+                                    }
+                                }
                             });
-                            sources_for_tracing.push(hm_handle.clone());
+                            match (handle_hm_indexes.is_empty(), handle_hm.is_empty()) {
+                                (true, true) => (),
+                                (true, false) => {
+                                    sources_for_tracing.push(handle_hm);
+                                }
+                                (false, true) => {
+                                    handle_hm_indexes.iter().for_each(|(index, (k, v))| {
+                                        let mut dd =
+                                            sources_for_tracing.get(index.clone()).unwrap().clone();
+                                        *dd.entry(k.clone()).or_insert(vec![]) = v.clone();
+                                        sources_for_tracing[index.clone()] = dd.clone();
+                                    });
+                                }
+                                (false, false) => {
+                                    sources_for_tracing.push(handle_hm);
+                                    handle_hm_indexes.iter().for_each(|(index, (k, v))| {
+                                        let mut dd =
+                                            sources_for_tracing.get(index.clone()).unwrap().clone();
+                                        *dd.entry(k.clone()).or_insert(vec![]) = v.clone();
+                                        sources_for_tracing[index.clone()] = dd.clone();
+                                    });
+                                }
+                            }
                         });
-
                         acc.push(e.clone().add_one());
                     });
                 acc
@@ -325,6 +380,7 @@ impl FourWrapperError {
                 increment: 0,
             },
         );
+        println!("###{:#?}###", sources_for_tracing);
         vec
     }
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
