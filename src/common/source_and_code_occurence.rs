@@ -4,13 +4,23 @@ pub struct SourceAndCodeOccurence {
     pub code_occurence: crate::common::code_occurence::CodeOccurence,
 }
 
-#[derive(Debug, Clone, Eq, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq, Hash)]
 pub struct SourceAndCodeOccurenceAsString {
-    pub source: Vec<std::collections::HashMap<String, Vec<String>>>, //only original
+    pub source: Vec<Vec<(String, Vec<String>)>>, //only original
     pub code_occurence: String,
     pub increment: u64, //i think its incorrect
                         // maybe add another field like paralel index?
 }
+
+// #[derive(Debug, Clone, Eq, PartialEq, Hash)]
+// pub struct SourceTracingVec {
+//     pub vec: Vec<std::collections::HashMap<String, Vec<String>>>,
+// }
+
+// #[derive(Debug, Clone, Eq, PartialEq, Hash)]
+// pub struct SourceTracingVecHm {
+//     pub vec: Vec<(String, Vec<String>)>,
+// }
 
 // #[derive(Debug, Clone, Eq, PartialEq)]
 // pub struct SourceWithCodeOccurenceSourceWithKeys {

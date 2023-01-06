@@ -65,7 +65,7 @@ impl ThreeWrapperError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct, //todo maybe remove
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
-        let mut sources_for_tracing: Vec<std::collections::HashMap<String, Vec<String>>> = vec![];
+        let mut sources_for_tracing: Vec<Vec<(String, Vec<String>)>> = vec![];
         let mut vec = self
             .source
             .get_inner_source_and_code_occurence_as_string(config);
@@ -75,7 +75,7 @@ impl ThreeWrapperError {
                 sources_for_tracing.push(f.clone());
             });
         });
-        // sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
+        sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
                 source: sources_for_tracing.clone(),
@@ -291,88 +291,99 @@ impl FourWrapperError {
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         let len = self.source.len() + 1;
-        let mut sources_for_tracing: Vec<std::collections::HashMap<String, Vec<String>>> = vec![];
+        let mut sources_for_tracing: Vec<Vec<(String, Vec<String>)>> = vec![];
         let mut vec = self
             .source
             .iter()
             .fold(Vec::with_capacity(len), |mut acc, (key, value)| {
                 // let mut temp_keys_vec = vec![];
                 //todo - must find highest increment value and put key there, for others  None - is it correct?     or maybe for one where source !== None ? if its more than one - spaces logic
+                // println!(
+                //     "^^^{:#?}^^^",
+                //     value.get_inner_source_and_code_occurence_as_string(config)
+                // );
                 value
                     .get_inner_source_and_code_occurence_as_string(config)
                     .iter()
                     .for_each(|e| {
                         e.source.iter().for_each(|hm| {
-                            let mut handle_hm_indexes = HashMap::new();
-                            let mut handle_hm = HashMap::new();
+                            let mut new_hm = Vec::new();
                             hm.iter().for_each(|(k, v)| {
-                                let mut option_key_index = None;
-                                for i in 0..sources_for_tracing.len() {
-                                    for (hm_k, hm_v) in &sources_for_tracing[0] {
-                                        match hm_k == k {
-                                            true => {
-                                                option_key_index = Some((hm_k.clone(), i.clone()));
-                                                break;
-                                            }
-                                            false => (),
-                                        }
-                                    }
-                                    match option_key_index {
-                                        Some(_) => {
-                                            break;
-                                        }
-                                        None => (),
-                                    }
-                                }
-                                match option_key_index {
-                                    Some(key_index) => {
-                                        let mut g = sources_for_tracing[key_index.1].clone();
-                                        let mut original_vec = g.get(&key_index.0).unwrap().clone();
-                                        v.iter().for_each(|sss| match original_vec.contains(sss) {
-                                            true => (),
-                                            false => {
-                                                original_vec.push(sss.clone());
-                                            }
-                                        });
-                                        handle_hm_indexes.insert(
-                                            key_index.1,
-                                            (key_index.0.clone(), original_vec.clone()),
-                                        );
-                                    }
-                                    None => {
-                                        handle_hm.insert(k.clone(), v.clone());
-                                    }
-                                }
+                                let mut new_v = v.clone();
+                                new_v.push(key.clone());
+                                new_hm.push((k.clone(), new_v.clone()));
                             });
-                            match (handle_hm_indexes.is_empty(), handle_hm.is_empty()) {
-                                (true, true) => (),
-                                (true, false) => {
-                                    sources_for_tracing.push(handle_hm);
-                                }
-                                (false, true) => {
-                                    handle_hm_indexes.iter().for_each(|(index, (k, v))| {
-                                        let mut dd =
-                                            sources_for_tracing.get(index.clone()).unwrap().clone();
-                                        *dd.entry(k.clone()).or_insert(vec![]) = v.clone();
-                                        sources_for_tracing[index.clone()] = dd.clone();
-                                    });
-                                }
-                                (false, false) => {
-                                    sources_for_tracing.push(handle_hm);
-                                    handle_hm_indexes.iter().for_each(|(index, (k, v))| {
-                                        let mut dd =
-                                            sources_for_tracing.get(index.clone()).unwrap().clone();
-                                        *dd.entry(k.clone()).or_insert(vec![]) = v.clone();
-                                        sources_for_tracing[index.clone()] = dd.clone();
-                                    });
-                                }
-                            }
+                            sources_for_tracing.push(new_hm.clone());
+                            // let mut handle_hm_indexes = HashMap::new();
+                            // let mut handle_hm = HashMap::new();
+                            // hm.iter().for_each(|(k, v)| {
+                            //     let mut option_key_index = None;
+                            //     for i in 0..sources_for_tracing.len() {
+                            //         for (hm_k, hm_v) in &sources_for_tracing[0] {
+                            //             match hm_k == k {
+                            //                 true => {
+                            //                     option_key_index = Some((hm_k.clone(), i.clone()));
+                            //                     break;
+                            //                 }
+                            //                 false => (),
+                            //             }
+                            //         }
+                            //         match option_key_index {
+                            //             Some(_) => {
+                            //                 break;
+                            //             }
+                            //             None => (),
+                            //         }
+                            //     }
+                            //     match option_key_index {
+                            //         Some(key_index) => {
+                            //             let mut g = sources_for_tracing[key_index.1].clone();
+                            //             let mut original_vec = g.get(&key_index.0).unwrap().clone();
+                            //             v.iter().for_each(|sss| match original_vec.contains(sss) {
+                            //                 true => (),
+                            //                 false => {
+                            //                     original_vec.push(sss.clone());
+                            //                 }
+                            //             });
+                            //             handle_hm_indexes.insert(
+                            //                 key_index.1,
+                            //                 (key_index.0.clone(), original_vec.clone()),
+                            //             );
+                            //         }
+                            //         None => {
+                            //             handle_hm.insert(k.clone(), v.clone());
+                            //         }
+                            //     }
+                            // });
+                            // match (handle_hm_indexes.is_empty(), handle_hm.is_empty()) {
+                            //     (true, true) => (),
+                            //     (true, false) => {
+                            //         sources_for_tracing.push(handle_hm);
+                            //     }
+                            //     (false, true) => {
+                            //         handle_hm_indexes.iter().for_each(|(index, (k, v))| {
+                            //             let mut dd =
+                            //                 sources_for_tracing.get(index.clone()).unwrap().clone();
+                            //             *dd.entry(k.clone()).or_insert(vec![]) = v.clone();
+                            //             sources_for_tracing[index.clone()] = dd.clone();
+                            //         });
+                            //     }
+                            //     (false, false) => {
+                            //         sources_for_tracing.push(handle_hm);
+                            //         handle_hm_indexes.iter().for_each(|(index, (k, v))| {
+                            //             let mut dd =
+                            //                 sources_for_tracing.get(index.clone()).unwrap().clone();
+                            //             *dd.entry(k.clone()).or_insert(vec![]) = v.clone();
+                            //             sources_for_tracing[index.clone()] = dd.clone();
+                            //         });
+                            //     }
+                            // }
                         });
                         acc.push(e.clone().add_one());
                     });
                 acc
             });
-        // sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
+        sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
                 source: sources_for_tracing.clone(),
@@ -380,7 +391,8 @@ impl FourWrapperError {
                 increment: 0,
             },
         );
-        println!("###{:#?}###", sources_for_tracing);
+        // println!("###{:#?}###", sources_for_tracing);
+        // println!("$$${:#?}$$$", vec);
         vec
     }
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
@@ -559,7 +571,7 @@ impl FiveWrapperError {
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         let len = self.source.len() + 1;
-        let mut sources_for_tracing: Vec<std::collections::HashMap<String, Vec<String>>> = vec![];
+        let mut sources_for_tracing: Vec<Vec<(String, Vec<String>)>> = vec![];
         let mut vec = self
             .source
             .iter()
@@ -572,11 +584,11 @@ impl FiveWrapperError {
                     .into_iter()
                     .for_each(|e| {
                         e.source.iter().for_each(|hm| {
-                            let mut hm_handle = HashMap::new(); //todo optimize
+                            let mut hm_handle = Vec::new(); //todo optimize
                             hm.iter().for_each(|(source_error, key_v)| {
                                 let mut key_vv = key_v.clone();
                                 key_vv.push(key.clone());
-                                hm_handle.insert(source_error.clone(), key_vv.clone());
+                                hm_handle.push((source_error.clone(), key_vv.clone()));
                             });
                             sources_for_tracing.push(hm_handle.clone());
                         });
@@ -584,7 +596,7 @@ impl FiveWrapperError {
                     });
                 acc
             });
-        // sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
+        sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
                 source: sources_for_tracing.clone(),
@@ -592,6 +604,7 @@ impl FiveWrapperError {
                 increment: 0,
             },
         );
+        // println!("!!!{:#?}!!!", vec);
         vec
     }
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
@@ -703,7 +716,7 @@ impl FiveOneOriginError {
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         vec![
             crate::dev::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                source: vec![HashMap::from([(self.get_source_as_string(), vec![])])],
+                source: vec![vec![(self.get_source_as_string(), vec![])]],
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
@@ -816,7 +829,7 @@ impl SixWrapperError {
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         let len = self.source.len() + 1;
-        let mut sources_for_tracing: Vec<std::collections::HashMap<String, Vec<String>>> = vec![];
+        let mut sources_for_tracing: Vec<Vec<(String, Vec<String>)>> = vec![];
         let mut vec = self
             .source
             .iter()
@@ -832,7 +845,7 @@ impl SixWrapperError {
                     });
                 acc
             });
-        // sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
+        sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
                 source: sources_for_tracing,
@@ -840,6 +853,7 @@ impl SixWrapperError {
                 increment: 0,
             },
         );
+        // println!("@@@{:#?}@@@", vec);
         vec
     }
     // pub fn get_source_and_code_occurence_as_string(
@@ -1075,7 +1089,7 @@ impl SevenOriginError {
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         vec![
             crate::dev::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                source: vec![HashMap::from([(self.get_source_as_string(), vec![])])],
+                source: vec![vec![(self.get_source_as_string(), vec![])]],
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
@@ -1157,7 +1171,7 @@ impl EightOriginError {
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         vec![
             crate::dev::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                source: vec![HashMap::from([(self.get_source_as_string(), vec![])])],
+                source: vec![vec![(self.get_source_as_string(), vec![])]],
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
