@@ -88,7 +88,7 @@ impl ThreeWrapperError {
             format!(
                 "{}{}{}",
                 self.get_source_as_string(config),
-                config.get_log_type().symbol(),
+                log_type.symbol(),
                 self.get_code_occurence_as_string(config)
             ),
         )
@@ -496,7 +496,7 @@ impl FiveOneOriginError {
             format!(
                 "{}{}{}",
                 self.get_source_as_string(),
-                config.get_log_type().symbol(),
+                log_type.symbol(),
                 self.get_code_occurence_as_string(config)
             ),
         )
@@ -594,7 +594,7 @@ impl SixWrapperError {
             format!(
                 "{}{}{}",
                 self.get_source_as_string(config),
-                config.get_log_type().symbol(),
+                log_type.symbol(),
                 self.get_code_occurence_as_string(config)
             ),
         )
@@ -700,11 +700,10 @@ impl SevenOriginError {
         let log_type = config.get_log_type();
         log_type.console(
             &config.get_error_color_bold(),
-            // self.get_source_and_code_occurence_as_string(config),
             format!(
-                "{}{} {}",
+                "{}{}{}",
                 self.get_source_as_string(),
-                config.get_log_type().symbol(),
+                log_type.symbol(),
                 self.get_code_occurence_as_string(config)
             ),
         )
@@ -762,9 +761,9 @@ impl EightOriginError {
         log_type.console(
             &config.get_error_color_bold(),
             format!(
-                "{}{}({}",
+                "{}{}{}",
                 self.get_source_as_string(),
-                config.get_log_type().symbol(),
+                log_type.symbol(),
                 self.get_code_occurence_as_string(config)
             ),
         )
