@@ -9,6 +9,7 @@ use crate::config_mods::log_type::LogType;
 use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::global_variables::runtime::config::CONFIG;
 use crate::traits::code_occurence_methods;
+use crate::traits::code_occurence_methods::CodeOccurenceNew;
 use crate::traits::code_occurence_methods::CodeOccurenceToString;
 use crate::traits::code_path::CodePath;
 use crate::traits::console::Console;
@@ -17,6 +18,7 @@ use crate::traits::fields::GetSourcePlaceType;
 use crate::traits::get_code_occurence::GetCodeOccurence;
 use crate::traits::get_color::ErrorColorBold;
 use crate::traits::get_git_source_file_link::GetGitSourceFileLink;
+use crate::traits::get_source::GetSource;
 use crate::traits::get_source_and_code_occurence;
 use crate::traits::get_source_and_code_occurence::GetSourceAndCodeOccurence;
 use crate::traits::get_source_value::GetSourceValue;
@@ -189,33 +191,32 @@ impl FourWrapperError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
-        let len = self.source.len() + 1;
         let mut sources_for_tracing: Vec<Vec<(String, Vec<String>)>> = vec![];
-        let mut vec = self
-            .source
-            .iter()
-            .fold(Vec::with_capacity(len), |mut acc, (key, value)| {
+        let mut vec = self.source.iter().fold(
+            Vec::with_capacity(self.source.len() + 1),
+            |mut acc, (key, value)| {
                 value
                     .get_inner_source_and_code_occurence_as_string(config)
                     .iter()
                     .for_each(|e| {
                         e.source.iter().for_each(|hm| {
-                            let mut new_hm = Vec::new();
+                            let mut new_hm = Vec::with_capacity(hm.len());
                             hm.iter().for_each(|(k, v)| {
                                 let mut new_v = v.clone();
                                 new_v.push(key.clone());
                                 new_hm.push((k.clone(), new_v.clone()));
                             });
-                            sources_for_tracing.push(new_hm.clone());
+                            sources_for_tracing.push(new_hm);
                         });
-                        acc.push(e.clone().add_one());
+                        acc.push(e.add_one());
                     });
                 acc
-            });
+            },
+        );
         sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                source: sources_for_tracing.clone(),
+                source: sources_for_tracing,
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
@@ -276,9 +277,7 @@ impl FourWrapperErrorEnum {
         }
     }
 }
-use crate::traits::get_source::GetSource;
 
-use crate::traits::code_occurence_methods::CodeOccurenceNew;
 pub fn four(should_trace: bool) -> Result<(), Box<FourWrapperError>> {
     match (five(false), six(false)) {
         (Ok(_), Ok(_)) => todo!(),
@@ -353,29 +352,31 @@ impl FiveWrapperError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
-        let len = self.source.len() + 1;
         let mut sources_for_tracing: Vec<Vec<(String, Vec<String>)>> = vec![];
-        let mut vec = self
-            .source
-            .iter()
-            .fold(Vec::with_capacity(len), |mut acc, (key, value)| {
+        let mut vec = self.source.iter().fold(
+            Vec::with_capacity(self.source.len() + 1),
+            |mut acc, (key, value)| {
                 value
                     .get_inner_source_and_code_occurence_as_string(config)
                     .into_iter()
                     .for_each(|e| {
                         e.source.iter().for_each(|hm| {
                             let mut hm_handle = Vec::with_capacity(hm.len());
-                            hm.iter().for_each(|(source_error, key_v)| {
-                                let mut key_vv = key_v.clone();
-                                key_vv.push(key.clone());
-                                hm_handle.push((source_error.clone(), key_vv.clone()));
+                            hm.iter().for_each(|(k, v)| {
+                                let mut keys_vec_handle = Vec::with_capacity(v.len() + 1);
+                                v.iter().for_each(|v_element| {
+                                    keys_vec_handle.push(v_element.clone());
+                                });
+                                keys_vec_handle.push(key.clone());
+                                hm_handle.push((k.clone(), keys_vec_handle));
                             });
                             sources_for_tracing.push(hm_handle);
                         });
                         acc.push(e.add_one());
                     });
                 acc
-            });
+            },
+        );
         sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
@@ -437,13 +438,13 @@ impl FiveWrapperErrorEnum {
 pub fn five(should_trace: bool) -> Result<(), Box<FiveWrapperError>> {
     let five_one_result = five_one(false);
     if let Err(e) = five_one_result {
-        let mut hm = HashMap::new();
-        hm.insert(
-            String::from("five_one_hashmap key"),
-            FiveWrapperErrorEnum::FiveOneOrigin(*e),
-        );
         let f = FiveWrapperError {
-            source: hm,
+            source: HashMap::from([
+                (
+                    String::from("five_one_hashmap key"),
+                    FiveWrapperErrorEnum::FiveOneOrigin(*e),
+                )
+            ]),
             code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
                 git_info: once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
                 time_file_line_column: crate::common::time_file_line_column::TimeFileLineColumn::new_file_line_column(
@@ -560,12 +561,10 @@ impl SixWrapperError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
-        let len = self.source.len() + 1;
         let mut sources_for_tracing: Vec<Vec<(String, Vec<String>)>> = vec![];
-        let mut vec = self
-            .source
-            .iter()
-            .fold(Vec::with_capacity(len), |mut acc, vec_element| {
+        let mut vec = self.source.iter().fold(
+            Vec::with_capacity(self.source.len() + 1),
+            |mut acc, vec_element| {
                 vec_element
                     .get_inner_source_and_code_occurence_as_string(config)
                     .into_iter()
@@ -576,7 +575,8 @@ impl SixWrapperError {
                         acc.push(e.add_one());
                     });
                 acc
-            });
+            },
+        );
         sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
