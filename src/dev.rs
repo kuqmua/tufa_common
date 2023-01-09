@@ -48,7 +48,7 @@ impl ThreeWrapperError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
-        format!("{}", self.source.get_source_as_string(config))
+        self.source.get_source_as_string(config)
     }
     pub fn get_code_occurence_as_string(
         &self,
@@ -63,25 +63,33 @@ impl ThreeWrapperError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct, //todo maybe remove
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
-        let mut sources_for_tracing: Vec<Vec<(String, Vec<String>)>> = vec![];
-        let mut vec = self
+        let vec = self
             .source
             .get_inner_source_and_code_occurence_as_string(config);
-        vec.iter_mut().for_each(|n| {
-            n.increment += 1;
-            n.source.iter().for_each(|f| {
+        let mut new_vec = Vec::with_capacity(vec.len() + 1);
+        let mut sources_for_tracing: Vec<Vec<(String, Vec<String>)>> = Vec::with_capacity(
+            vec.iter()
+                .map(|e| e.source.len())
+                .collect::<Vec<usize>>()
+                .iter()
+                .sum(),
+        );
+        vec.into_iter().for_each(|mut v| {
+            v.increment += 1;
+            v.source.iter().for_each(|f| {
                 sources_for_tracing.push(f.clone());
             });
+            new_vec.push(v);
         });
         sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
-        vec.push(
+        new_vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                source: sources_for_tracing.clone(),
+                source: sources_for_tracing,
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
         );
-        vec
+        new_vec
     }
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         let log_type = config.get_log_type();
@@ -157,6 +165,7 @@ pub struct FourWrapperError {
 }
 
 impl FourWrapperError {
+    //maybe not need?
     pub fn get_source_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
@@ -730,7 +739,7 @@ pub struct EightOriginError {
     source: String,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
-
+//todo - impl Display
 impl EightOriginError {
     pub fn get_source_as_string(&self) -> String {
         format!("{}", self.source)
