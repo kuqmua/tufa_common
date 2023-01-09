@@ -364,13 +364,13 @@ impl FiveWrapperError {
                     .into_iter()
                     .for_each(|e| {
                         e.source.iter().for_each(|hm| {
-                            let mut hm_handle = Vec::new(); //todo optimize
+                            let mut hm_handle = Vec::with_capacity(hm.len());
                             hm.iter().for_each(|(source_error, key_v)| {
                                 let mut key_vv = key_v.clone();
                                 key_vv.push(key.clone());
                                 hm_handle.push((source_error.clone(), key_vv.clone()));
                             });
-                            sources_for_tracing.push(hm_handle.clone());
+                            sources_for_tracing.push(hm_handle);
                         });
                         acc.push(e.add_one());
                     });
@@ -379,7 +379,7 @@ impl FiveWrapperError {
         sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                source: sources_for_tracing.clone(),
+                source: sources_for_tracing,
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
