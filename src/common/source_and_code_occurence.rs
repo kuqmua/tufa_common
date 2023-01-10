@@ -13,12 +13,7 @@ pub struct SourceAndCodeOccurenceAsString {
 }
 
 impl SourceAndCodeOccurenceAsString {
-    //todo later - optimize it
-    pub fn add_one(&self) -> Self {
-        SourceAndCodeOccurenceAsString {
-            source: self.source.clone(),
-            code_occurence: self.code_occurence.clone(),
-            increment: self.increment + 1,
-        }
+    pub fn add_one(&mut self) {
+        self.increment = self.increment + 1;
     }
 }

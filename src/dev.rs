@@ -23,6 +23,7 @@ use crate::traits::get_source_and_code_occurence;
 use crate::traits::get_source_and_code_occurence::GetSourceAndCodeOccurence;
 use crate::traits::get_source_value::GetSourceValue;
 use crate::traits::init_error::InitError;
+use crate::traits::my_custom_display::DisplayError;
 use crate::traits::new_error_with_one_addition::NewErrorWithOneAddition;
 use crate::traits::readable_time::ReadableTime;
 use crate::traits::readable_time_string::ReadableTimeString;
@@ -105,10 +106,9 @@ impl ThreeWrapperError {
     }
 }
 
-use crate::traits::my_custom_display::DisplayError;
 pub fn three(should_trace: bool) -> Result<(), Box<ThreeWrapperError>> {
     if let Err(e) = four(false) {
-        let f = ThreeWrapperError {
+        return Err(Box::new(ThreeWrapperError {
             source: ThreeWrapperErrorEnum::FourWrapper(*e),
             code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
                 git_info: once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
@@ -118,8 +118,7 @@ pub fn three(should_trace: bool) -> Result<(), Box<ThreeWrapperError>> {
                     column!(),
                 ),
             }
-        };
-        return Err(Box::new(f));
+        }));
     };
     Ok(())
 }
@@ -206,18 +205,22 @@ impl FourWrapperError {
             |mut acc, (key, value)| {
                 value
                     .get_inner_source_and_code_occurence_as_string(config)
-                    .iter()
-                    .for_each(|e| {
+                    .into_iter()
+                    .for_each(|mut e| {
                         e.source.iter().for_each(|hm| {
                             let mut new_hm = Vec::with_capacity(hm.len());
                             hm.iter().for_each(|(k, v)| {
-                                let mut new_v = v.clone();
+                                let mut new_v = Vec::with_capacity(v.len() + 1);
+                                v.iter().for_each(|v_element| {
+                                    new_v.push(v_element.clone());
+                                });
                                 new_v.push(key.clone());
                                 new_hm.push((k.clone(), new_v.clone()));
                             });
                             sources_for_tracing.push(new_hm);
                         });
-                        acc.push(e.add_one());
+                        e.add_one();
+                        acc.push(e);
                     });
                 acc
             },
@@ -293,7 +296,7 @@ pub fn four(should_trace: bool) -> Result<(), Box<FourWrapperError>> {
         (Ok(_), Err(_)) => todo!(),
         (Err(_), Ok(_)) => todo!(),
         (Err(f), Err(s)) => {
-            let f = FourWrapperError {
+            return Err(Box::new(FourWrapperError {
                 source: HashMap::from([
                     (
                         String::from("five_hashmap_key"),
@@ -312,8 +315,7 @@ pub fn four(should_trace: bool) -> Result<(), Box<FourWrapperError>> {
                         column!(),
                     ),
                 }
-            };
-            return Err(Box::new(f));
+            }));
         }
     }
     Ok(())
@@ -361,14 +363,14 @@ impl FiveWrapperError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
-        let mut sources_for_tracing: Vec<Vec<(String, Vec<String>)>> = vec![];
+        let mut sources_for_tracing: Vec<Vec<(String, Vec<String>)>> = Vec::new();
         let mut vec = self.source.iter().fold(
             Vec::with_capacity(self.source.len() + 1),
             |mut acc, (key, value)| {
                 value
                     .get_inner_source_and_code_occurence_as_string(config)
                     .into_iter()
-                    .for_each(|e| {
+                    .for_each(|mut e| {
                         e.source.iter().for_each(|hm| {
                             let mut hm_handle = Vec::with_capacity(hm.len());
                             hm.iter().for_each(|(k, v)| {
@@ -381,7 +383,8 @@ impl FiveWrapperError {
                             });
                             sources_for_tracing.push(hm_handle);
                         });
-                        acc.push(e.add_one());
+                        e.add_one();
+                        acc.push(e);
                     });
                 acc
             },
@@ -445,9 +448,8 @@ impl FiveWrapperErrorEnum {
 }
 
 pub fn five(should_trace: bool) -> Result<(), Box<FiveWrapperError>> {
-    let five_one_result = five_one(false);
-    if let Err(e) = five_one_result {
-        let f = FiveWrapperError {
+    if let Err(e) = five_one(false) {
+        return Err(Box::new(FiveWrapperError {
             source: HashMap::from([
                 (
                     String::from("five_one_hashmap key"),
@@ -462,8 +464,7 @@ pub fn five(should_trace: bool) -> Result<(), Box<FiveWrapperError>> {
                     column!(),
                 ),
             }
-        };
-        return Err(Box::new(f));
+        }));
     }
     Ok(())
 }
@@ -514,7 +515,7 @@ impl FiveOneOriginError {
 }
 
 pub fn five_one(should_trace: bool) -> Result<(), Box<FiveOneOriginError>> {
-    let f = FiveOneOriginError {
+    return Err(Box::new(FiveOneOriginError {
         source: String::from("five_one error"),
         code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
             git_info: once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
@@ -524,8 +525,7 @@ pub fn five_one(should_trace: bool) -> Result<(), Box<FiveOneOriginError>> {
                 column!(),
             ),
         }
-    };
-    return Err(Box::new(f));
+    }));
 }
 
 #[derive(Debug)]
@@ -570,18 +570,19 @@ impl SixWrapperError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
-        let mut sources_for_tracing: Vec<Vec<(String, Vec<String>)>> = vec![];
+        let mut sources_for_tracing: Vec<Vec<(String, Vec<String>)>> = Vec::new();
         let mut vec = self.source.iter().fold(
             Vec::with_capacity(self.source.len() + 1),
             |mut acc, vec_element| {
                 vec_element
                     .get_inner_source_and_code_occurence_as_string(config)
                     .into_iter()
-                    .for_each(|e| {
+                    .for_each(|mut e| {
                         e.source.iter().for_each(|f| {
                             sources_for_tracing.push(f.clone());
                         });
-                        acc.push(e.add_one());
+                        e.add_one();
+                        acc.push(e);
                     });
                 acc
             },
@@ -616,7 +617,7 @@ pub fn six(should_trace: bool) -> Result<(), Box<SixWrapperError>> {
         (Ok(_), Err(_)) => todo!(),
         (Err(_), Ok(_)) => todo!(),
         (Err(seven_error), Err(eight_error)) => {
-            let f = SixWrapperError {
+            return Err(Box::new(SixWrapperError {
                 source: vec![SixWrapperErrorEnum::SevenWrapper(*seven_error), SixWrapperErrorEnum::EightWrapper(*eight_error)],
                 code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
                     git_info: once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
@@ -626,8 +627,7 @@ pub fn six(should_trace: bool) -> Result<(), Box<SixWrapperError>> {
                         column!(),
                     ),
                 }
-            };
-            return Err(Box::new(f));
+            }));
         }
     }
     Ok(())
@@ -780,7 +780,7 @@ impl EightOriginError {
 }
 
 pub fn eight(should_trace: bool) -> Result<(), Box<EightOriginError>> {
-    let f = EightOriginError {
+    return Err(Box::new(EightOriginError {
         source: String::from("error_eight"),
         code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
             git_info: once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
@@ -790,6 +790,5 @@ pub fn eight(should_trace: bool) -> Result<(), Box<EightOriginError>> {
                 column!(),
             ),
         }
-    };
-    return Err(Box::new(f));
+    }));
 }
