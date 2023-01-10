@@ -76,10 +76,10 @@ impl ThreeWrapperError {
                 .sum(),
         );
         vec.into_iter().for_each(|mut v| {
-            v.increment += 1;
             v.source.iter().for_each(|f| {
                 sources_for_tracing.push(f.clone());
             });
+            v.add_one();
             new_vec.push(v);
         });
         sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
