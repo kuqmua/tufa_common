@@ -26,7 +26,7 @@ where
     }
     fn get_project_code_path(&self) -> String {
         format!(
-            "{}:{}:{}",
+            "src/{}:{}:{}", //todo "src" - hardcode, for some reason vscode stops following just {}:{}:{} path(without prefix "src")
             self.get_file(),
             self.get_line(),
             self.get_column()
