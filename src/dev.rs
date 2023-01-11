@@ -8,9 +8,6 @@ use crate::common::where_was::WhereWas;
 use crate::config_mods::log_type::LogType;
 use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::global_variables::runtime::config::CONFIG;
-use crate::traits::code_occurence_methods;
-use crate::traits::code_occurence_methods::CodeOccurenceNew;
-use crate::traits::code_occurence_methods::CodeOccurenceToString;
 use crate::traits::code_path::CodePath;
 use crate::traits::console::Console;
 use crate::traits::fields::GetLogType;
@@ -23,8 +20,6 @@ use crate::traits::get_source_and_code_occurence;
 use crate::traits::get_source_and_code_occurence::GetSourceAndCodeOccurence;
 use crate::traits::get_source_value::GetSourceValue;
 use crate::traits::init_error::InitError;
-use crate::traits::my_custom_display::DisplayError;
-use crate::traits::new_error_with_one_addition::NewErrorWithOneAddition;
 use crate::traits::readable_time::ReadableTime;
 use crate::traits::readable_time_string::ReadableTimeString;
 use crate::traits::separator_symbol::SeparatorSymbol;
@@ -55,10 +50,8 @@ impl ThreeWrapperError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
-        self.code_occurence.time_file_line_column.get_code_path(
-            &self.code_occurence.git_info,
-            config.get_source_place_type(),
-        )
+        self.code_occurence
+            .get_code_path(config.get_source_place_type())
     }
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
@@ -190,10 +183,8 @@ impl FourWrapperError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
-        self.code_occurence.time_file_line_column.get_code_path(
-            &self.code_occurence.git_info,
-            config.get_source_place_type(),
-        )
+        self.code_occurence
+            .get_code_path(config.get_source_place_type())
     }
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
@@ -354,10 +345,8 @@ impl FiveWrapperError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
-        self.code_occurence.time_file_line_column.get_code_path(
-            &self.code_occurence.git_info,
-            config.get_source_place_type(),
-        )
+        self.code_occurence
+            .get_code_path(config.get_source_place_type())
     }
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
@@ -483,10 +472,8 @@ impl FiveOneOriginError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
-        self.code_occurence.time_file_line_column.get_code_path(
-            &self.code_occurence.git_info,
-            config.get_source_place_type(),
-        )
+        self.code_occurence
+            .get_code_path(config.get_source_place_type())
     }
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
@@ -561,10 +548,8 @@ impl SixWrapperError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
-        self.code_occurence.time_file_line_column.get_code_path(
-            &self.code_occurence.git_info,
-            config.get_source_place_type(),
-        )
+        self.code_occurence
+            .get_code_path(config.get_source_place_type())
     }
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
@@ -688,10 +673,8 @@ impl SevenOriginError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
-        self.code_occurence.time_file_line_column.get_code_path(
-            &self.code_occurence.git_info,
-            config.get_source_place_type(),
-        )
+        self.code_occurence
+            .get_code_path(config.get_source_place_type())
     }
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
@@ -748,10 +731,8 @@ impl EightOriginError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
-        self.code_occurence.time_file_line_column.get_code_path(
-            &self.code_occurence.git_info,
-            config.get_source_place_type(),
-        )
+        self.code_occurence
+            .get_code_path(config.get_source_place_type())
     }
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,

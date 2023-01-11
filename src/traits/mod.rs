@@ -1,4 +1,3 @@
-pub mod code_occurence_methods;
 pub mod code_path;
 pub mod console;
 pub mod fields;
@@ -23,12 +22,8 @@ pub mod get_where_was_one_or_many;
 pub mod init_error;
 pub mod init_error_with_possible_trace;
 pub mod is_enabled_prints;
-pub mod log_error_code_occurence;
-pub mod my_custom_display;
 pub mod new_error;
 pub mod new_error_with_git_info_file_line_column;
-pub mod new_error_with_one_addition;
-pub mod prepare_log_source_and_code_occurence;
 pub mod print_type_methods;
 pub mod readable_time;
 pub mod readable_time_string;
