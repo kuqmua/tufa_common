@@ -6,10 +6,16 @@ pub struct SourceAndCodeOccurence {
 
 #[derive(Debug, Clone, Eq, PartialEq, Hash)]
 pub struct SourceAndCodeOccurenceAsString {
-    pub source: Vec<Vec<(String, Vec<String>)>>, //only original
+    pub source: Vec<Vec<(String, Vec<String>)>>,
+    // pub source: SourceType, //only original
     pub code_occurence: String,
     pub increment: u64, //i think its incorrect
                         // maybe add another field like paralel index?
+}
+#[derive(Debug, Clone, Eq, PartialEq, Hash)]
+pub enum SourceType {
+    Origin(String),
+    Wrapper(Vec<Vec<(String, Vec<String>)>>),
 }
 
 impl SourceAndCodeOccurenceAsString {
