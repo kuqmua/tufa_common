@@ -618,16 +618,12 @@ impl SixWrapperError {
         vec
     }
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
-        let log_type = config.get_log_type();
-        log_type.console(
-            &config.get_error_color_bold(),
-            format!(
-                "{}{}{}",
-                self.get_source_as_string(config),
-                log_type.symbol(),
-                self.get_code_occurence_as_string(config)
-            ),
-        )
+        config.log(format!(
+            "{}{}{}",
+            self.get_source_as_string(config),
+            config.get_log_type().symbol(),
+            self.get_code_occurence_as_string(config)
+        ));
     }
 }
 
@@ -730,16 +726,12 @@ impl SevenOriginError {
         ]
     }
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
-        let log_type = config.get_log_type();
-        log_type.console(
-            &config.get_error_color_bold(),
-            format!(
-                "{}{}{}",
-                self.get_source_as_string(),
-                log_type.symbol(),
-                self.get_code_occurence_as_string(config)
-            ),
-        )
+        config.log(format!(
+            "{}{}{}",
+            self.get_source_as_string(),
+            config.get_log_type().symbol(),
+            self.get_code_occurence_as_string(config)
+        ));
     }
 }
 
