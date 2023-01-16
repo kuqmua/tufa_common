@@ -1,37 +1,13 @@
-use crate::common::file_line_column::FileLineColumn;
-use crate::common::git::git_info::GitInformation;
-use crate::common::git::git_info::GitInformationWithoutLifetimes;
 use crate::common::source_and_code_occurence;
-use crate::common::time_file_line_column;
-use crate::common::time_file_line_column::TimeFileLineColumn;
-use crate::common::where_was::WhereWas;
-use crate::config_mods::log_type::LogType;
-use crate::config_mods::source_place_type::SourcePlaceType;
-use crate::global_variables::runtime::config::CONFIG;
 use crate::traits::code_path::CodePath;
 use crate::traits::config_log::ConfigLog;
 use crate::traits::console::Console;
 use crate::traits::fields::GetLogType;
 use crate::traits::fields::GetSourcePlaceType;
-use crate::traits::get_code_occurence::GetCodeOccurence;
 use crate::traits::get_color::ErrorColorBold;
-use crate::traits::get_git_source_file_link::GetGitSourceFileLink;
-use crate::traits::get_source::GetSource;
-use crate::traits::get_source_and_code_occurence;
-use crate::traits::get_source_and_code_occurence::GetSourceAndCodeOccurence;
-use crate::traits::get_source_value::GetSourceValue;
-use crate::traits::init_error::InitError;
-use crate::traits::readable_time::ReadableTime;
-use crate::traits::readable_time_string::ReadableTimeString;
 use crate::traits::separator_symbol::SeparatorSymbol;
-use ansi_term::Colour::RGB;
-use chrono::prelude::DateTime;
-use chrono::Utc;
-use impl_get_source::ImplGetSourceFromCrate;
 use itertools::Itertools;
 use std::collections::HashMap;
-use std::fmt::format;
-use std::fmt::{self, Display};
 use std::vec;
 
 #[derive(Debug)]
@@ -646,7 +622,6 @@ pub fn six(should_trace: bool) -> Result<(), Box<SixWrapperError>> {
             }));
         }
     }
-    Ok(())
 }
 
 #[derive(Debug)]
