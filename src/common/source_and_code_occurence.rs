@@ -13,6 +13,19 @@ pub struct SourceAndCodeOccurenceAsString {
     pub increment: u64, //i think its incorrect
                         // maybe add another field like paralel index?
 }
+
+#[derive(Debug, Clone, Eq, PartialEq, Hash)]
+pub struct Source {
+    pub source: String,
+    pub uuid: uuid::Uuid,
+}
+
+#[derive(Debug, Clone, Eq, PartialEq, Hash)]
+pub struct Key {
+    pub key: String,
+    pub uuid: uuid::Uuid,
+}
+
 #[derive(Debug, Clone, Eq, PartialEq, Hash)]
 pub enum SourceType {
     Origin(String),
