@@ -24,7 +24,6 @@ pub mod init_error;
 pub mod init_error_with_possible_trace;
 pub mod is_enabled_prints;
 pub mod new_error;
-pub mod new_error_with_git_info_file_line_column;
 pub mod print_type_methods;
 pub mod readable_time;
 pub mod readable_time_string;
