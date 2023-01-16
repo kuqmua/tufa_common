@@ -2,6 +2,8 @@ use crate::common::source_and_code_occurence;
 use crate::traits::code_path::CodePath;
 use crate::traits::config_log::ConfigLog;
 use crate::traits::fields::GetSourcePlaceType;
+use crate::traits::get_code_occurence::GetCodeOccurenceAsString;
+use crate::traits::get_source::GetSourceAsString;
 use crate::traits::separator_symbol::SeparatorSymbol;
 use itertools::Itertools;
 use std::collections::HashMap;
@@ -705,6 +707,22 @@ impl std::fmt::Display for EightOriginError {
             self.code_occurence
                 .get_code_path(config.get_source_place_type())
         )
+    }
+}
+
+impl GetSourceAsString for EightOriginError {
+    fn get_source_as_string(&self) -> String {
+        format!("{}", self.source)
+    }
+}
+
+impl GetCodeOccurenceAsString for EightOriginError {
+    fn get_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        self.code_occurence
+            .get_code_path(config.get_source_place_type())
     }
 }
 
