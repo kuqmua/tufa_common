@@ -1,11 +1,7 @@
 use crate::common::source_and_code_occurence;
-use crate::config_mods::source_place_type;
 use crate::traits::code_path::CodePath;
 use crate::traits::config_log::ConfigLog;
-use crate::traits::console::Console;
-use crate::traits::fields::GetLogType;
 use crate::traits::fields::GetSourcePlaceType;
-use crate::traits::get_color::ErrorColorBold;
 use crate::traits::separator_symbol::SeparatorSymbol;
 use itertools::Itertools;
 use std::collections::HashMap;
