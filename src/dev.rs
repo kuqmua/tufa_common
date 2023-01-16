@@ -9,6 +9,7 @@ use crate::config_mods::log_type::LogType;
 use crate::config_mods::source_place_type::SourcePlaceType;
 use crate::global_variables::runtime::config::CONFIG;
 use crate::traits::code_path::CodePath;
+use crate::traits::config_log::ConfigLog;
 use crate::traits::console::Console;
 use crate::traits::fields::GetLogType;
 use crate::traits::fields::GetSourcePlaceType;
@@ -793,16 +794,12 @@ impl EightOriginError {
         ]
     }
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
-        let log_type = config.get_log_type();
-        log_type.console(
-            &config.get_error_color_bold(),
-            format!(
-                "{}{}{}",
-                self.get_source_as_string(),
-                log_type.symbol(),
-                self.get_code_occurence_as_string(config)
-            ),
-        )
+        config.log(format!(
+            "{}{}{}",
+            self.get_source_as_string(),
+            config.get_log_type().symbol(),
+            self.get_code_occurence_as_string(config)
+        ));
     }
 }
 
