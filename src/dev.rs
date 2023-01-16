@@ -61,7 +61,12 @@ impl ThreeWrapperError {
             .source
             .get_inner_source_and_code_occurence_as_string(config);
         let mut new_vec = Vec::with_capacity(vec.len() + 1);
-        let mut sources_for_tracing: Vec<Vec<(String, Vec<String>)>> = Vec::with_capacity(
+        let mut sources_for_tracing: Vec<
+            Vec<(
+                crate::common::source_and_code_occurence::Source,
+                Vec<crate::common::source_and_code_occurence::Key>,
+            )>,
+        > = Vec::with_capacity(
             vec.iter()
                 .map(|e| e.source.len())
                 .collect::<Vec<usize>>()
@@ -190,7 +195,12 @@ impl FourWrapperError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
-        let mut sources_for_tracing: Vec<Vec<(String, Vec<String>)>> = vec![];
+        let mut sources_for_tracing: Vec<
+            Vec<(
+                crate::common::source_and_code_occurence::Source,
+                Vec<crate::common::source_and_code_occurence::Key>,
+            )>,
+        > = vec![];
         let mut vec = self.source.iter().fold(
             Vec::with_capacity(self.source.len() + 1),
             |mut acc, (key, value)| {
@@ -205,7 +215,10 @@ impl FourWrapperError {
                                 v.iter().for_each(|v_element| {
                                     new_v.push(v_element.clone());
                                 });
-                                new_v.push(key.clone());
+                                new_v.push(crate::common::source_and_code_occurence::Key {
+                                    key: key.clone(),
+                                    uuid: uuid::Uuid::new_v4(),
+                                });
                                 new_hm.push((k.clone(), new_v.clone()));
                             });
                             sources_for_tracing.push(new_hm);
@@ -352,7 +365,12 @@ impl FiveWrapperError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
-        let mut sources_for_tracing: Vec<Vec<(String, Vec<String>)>> = Vec::new();
+        let mut sources_for_tracing: Vec<
+            Vec<(
+                crate::common::source_and_code_occurence::Source,
+                Vec<crate::common::source_and_code_occurence::Key>,
+            )>,
+        > = Vec::new();
         let mut vec = self.source.iter().fold(
             Vec::with_capacity(self.source.len() + 1),
             |mut acc, (key, value)| {
@@ -367,7 +385,12 @@ impl FiveWrapperError {
                                 v.iter().for_each(|v_element| {
                                     keys_vec_handle.push(v_element.clone());
                                 });
-                                keys_vec_handle.push(key.clone());
+                                keys_vec_handle.push(
+                                    crate::common::source_and_code_occurence::Key {
+                                        key: key.clone(),
+                                        uuid: uuid::Uuid::new_v4(),
+                                    },
+                                );
                                 hm_handle.push((k.clone(), keys_vec_handle));
                             });
                             sources_for_tracing.push(hm_handle);
@@ -481,7 +504,13 @@ impl FiveOneOriginError {
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         vec![
             crate::dev::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                source: vec![vec![(self.get_source_as_string(), vec![])]],
+                source: vec![vec![(
+                    crate::common::source_and_code_occurence::Source {
+                        source: self.get_source_as_string(),
+                        uuid: uuid::Uuid::new_v4(),
+                    },
+                    vec![],
+                )]],
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
@@ -555,7 +584,12 @@ impl SixWrapperError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
-        let mut sources_for_tracing: Vec<Vec<(String, Vec<String>)>> = Vec::new();
+        let mut sources_for_tracing: Vec<
+            Vec<(
+                crate::common::source_and_code_occurence::Source,
+                Vec<crate::common::source_and_code_occurence::Key>,
+            )>,
+        > = Vec::new();
         let mut vec = self.source.iter().fold(
             Vec::with_capacity(self.source.len() + 1),
             |mut acc, vec_element| {
@@ -682,7 +716,13 @@ impl SevenOriginError {
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         vec![
             crate::dev::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                source: vec![vec![(self.get_source_as_string(), vec![])]],
+                source: vec![vec![(
+                    crate::common::source_and_code_occurence::Source {
+                        source: self.get_source_as_string(),
+                        uuid: uuid::Uuid::new_v4(),
+                    },
+                    vec![],
+                )]],
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
@@ -740,7 +780,13 @@ impl EightOriginError {
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         vec![
             crate::dev::source_and_code_occurence::SourceAndCodeOccurenceAsString {
-                source: vec![vec![(self.get_source_as_string(), vec![])]],
+                source: vec![vec![(
+                    crate::common::source_and_code_occurence::Source {
+                        source: self.get_source_as_string(),
+                        uuid: uuid::Uuid::new_v4(),
+                    },
+                    vec![],
+                )]],
                 code_occurence: self.get_code_occurence_as_string(config),
                 increment: 0,
             },
