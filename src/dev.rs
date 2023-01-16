@@ -299,7 +299,6 @@ pub fn four(should_trace: bool) -> Result<(), Box<FourWrapperError>> {
             }));
         }
     }
-    Ok(())
 }
 
 #[derive(Debug)]
