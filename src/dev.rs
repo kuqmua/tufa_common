@@ -257,6 +257,7 @@ pub fn four(should_trace: bool) -> Result<(), Box<FourWrapperError>> {
         (Ok(_), Err(_)) => todo!(),
         (Err(_), Ok(_)) => todo!(),
         (Err(f), Err(s)) => {
+            println!("{}", f);
             println!("{}", s);
             return Err(Box::new(FourWrapperError {
                 source: HashMap::from([
@@ -286,6 +287,37 @@ pub fn four(should_trace: bool) -> Result<(), Box<FourWrapperError>> {
 pub struct FiveWrapperError {
     source: HashMap<String, FiveWrapperErrorEnum>,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+}
+
+impl std::fmt::Display for FiveWrapperError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        let config =
+            once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
+        let symbol = config.symbol();
+        let source_as_string =
+            self.source
+                .iter()
+                .fold(String::from(""), |mut acc, (key, value)| {
+                    let source_element_as_string =
+                        value
+                            .to_string()
+                            .lines()
+                            .fold(String::from(""), |mut acc, line| {
+                                acc.push_str(&format!(" {}{}", line, symbol));
+                                acc
+                            });
+                    acc.push_str(&format!("{} [{}{}]", key, symbol, source_element_as_string));
+                    acc
+                });
+        write!(
+            f,
+            "{}{}{}",
+            source_as_string,
+            symbol,
+            self.code_occurence
+                .get_code_path(config.get_source_place_type())
+        )
+    }
 }
 
 impl FiveWrapperError {
@@ -377,6 +409,14 @@ pub enum FiveWrapperErrorEnum {
     FiveOneOrigin(FiveOneOriginError),
 }
 
+impl std::fmt::Display for FiveWrapperErrorEnum {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            FiveWrapperErrorEnum::FiveOneOrigin(e) => write!(f, "{}", e),
+        }
+    }
+}
+
 impl FiveWrapperErrorEnum {
     pub fn get_source_as_string(
         &self,
@@ -432,6 +472,21 @@ pub fn five(should_trace: bool) -> Result<(), Box<FiveWrapperError>> {
 pub struct FiveOneOriginError {
     source: String,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+}
+
+impl std::fmt::Display for FiveOneOriginError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        let config =
+            once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
+        write!(
+            f,
+            "{}{}{}",
+            self.source,
+            config.symbol(),
+            self.code_occurence
+                .get_code_path(config.get_source_place_type())
+        )
+    }
 }
 
 impl FiveOneOriginError {
