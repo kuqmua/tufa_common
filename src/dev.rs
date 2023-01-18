@@ -257,6 +257,7 @@ pub fn four(should_trace: bool) -> Result<(), Box<FourWrapperError>> {
         (Ok(_), Err(_)) => todo!(),
         (Err(_), Ok(_)) => todo!(),
         (Err(f), Err(s)) => {
+            println!("{}", s);
             return Err(Box::new(FourWrapperError {
                 source: HashMap::from([
                     (
@@ -492,6 +493,36 @@ pub struct SixWrapperError {
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
+impl std::fmt::Display for SixWrapperError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        let config =
+            once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
+        let symbol = config.symbol();
+        let source_as_string = self
+            .source
+            .iter()
+            .fold(String::from(""), |mut acc, vec_element| {
+                acc.push_str(&format!("{}{}", vec_element, symbol));
+                acc
+            });
+        let lines = source_as_string
+            .lines()
+            .fold(String::from(""), |mut acc, vec_element| {
+                acc.push_str(&format!(" {}{}", vec_element, symbol));
+                acc
+            });
+        write!(
+            f,
+            "[{}{}]{}{}",
+            symbol,
+            lines,
+            symbol,
+            self.code_occurence
+                .get_code_path(config.get_source_place_type())
+        )
+    }
+}
+
 impl SixWrapperError {
     pub fn get_source_as_string(
         &self,
@@ -573,6 +604,8 @@ pub fn six(should_trace: bool) -> Result<(), Box<SixWrapperError>> {
         (Ok(_), Err(_)) => todo!(),
         (Err(_), Ok(_)) => todo!(),
         (Err(seven_error), Err(eight_error)) => {
+            // println!("{}", seven_error);
+            // println!("{}", eight_error);
             return Err(Box::new(SixWrapperError {
                 source: vec![SixWrapperErrorEnum::SevenWrapper(*seven_error), SixWrapperErrorEnum::EightWrapper(*eight_error)],
                 code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
@@ -592,6 +625,15 @@ pub fn six(should_trace: bool) -> Result<(), Box<SixWrapperError>> {
 pub enum SixWrapperErrorEnum {
     SevenWrapper(SevenOriginError),
     EightWrapper(EightOriginError),
+}
+
+impl std::fmt::Display for SixWrapperErrorEnum {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            SixWrapperErrorEnum::SevenWrapper(e) => write!(f, "{}", e),
+            SixWrapperErrorEnum::EightWrapper(e) => write!(f, "{}", e),
+        }
+    }
 }
 
 impl SixWrapperErrorEnum {
@@ -633,6 +675,21 @@ impl SixWrapperErrorEnum {
 pub struct SevenOriginError {
     source: String,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+}
+
+impl std::fmt::Display for SevenOriginError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        let config =
+            once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
+        write!(
+            f,
+            "{}{}{}",
+            self.source,
+            config.symbol(),
+            self.code_occurence
+                .get_code_path(config.get_source_place_type())
+        )
+    }
 }
 
 impl SevenOriginError {
