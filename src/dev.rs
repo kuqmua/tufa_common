@@ -502,20 +502,20 @@ impl std::fmt::Display for SixWrapperError {
             .source
             .iter()
             .fold(String::from(""), |mut acc, vec_element| {
-                acc.push_str(&format!("{}{}", vec_element, symbol));
-                acc
-            });
-        let lines = source_as_string
-            .lines()
-            .fold(String::from(""), |mut acc, vec_element| {
-                acc.push_str(&format!(" {}{}", vec_element, symbol));
+                acc.push_str(&vec_element.to_string().lines().fold(
+                    String::from(""),
+                    |mut acc, vec_element| {
+                        acc.push_str(&format!(" {}{}", vec_element, symbol));
+                        acc
+                    },
+                ));
                 acc
             });
         write!(
             f,
             "[{}{}]{}{}",
             symbol,
-            lines,
+            source_as_string,
             symbol,
             self.code_occurence
                 .get_code_path(config.get_source_place_type())
