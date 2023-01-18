@@ -88,8 +88,6 @@ impl ThreeWrapperError {
 
 pub fn three(should_trace: bool) -> Result<(), Box<ThreeWrapperError>> {
     if let Err(e) = four(false) {
-        println!("{}", e);
-        println!("5-----------");
         return Err(Box::new(ThreeWrapperError {
             source: ThreeWrapperErrorEnum::FourWrapper(*e),
             code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
@@ -324,10 +322,6 @@ pub fn four(should_trace: bool) -> Result<(), Box<FourWrapperError>> {
         (Ok(_), Err(_)) => todo!(),
         (Err(_), Ok(_)) => todo!(),
         (Err(f), Err(s)) => {
-            println!("{}", f);
-            println!("6-----------");
-            println!("{}", s);
-            println!("7-----------");
             return Err(Box::new(FourWrapperError {
                 source: HashMap::from([
                     (
@@ -730,8 +724,6 @@ pub fn six(should_trace: bool) -> Result<(), Box<SixWrapperError>> {
         (Ok(_), Err(_)) => todo!(),
         (Err(_), Ok(_)) => todo!(),
         (Err(seven_error), Err(eight_error)) => {
-            // println!("{}", seven_error);
-            // println!("{}", eight_error);
             return Err(Box::new(SixWrapperError {
                 source: vec![SixWrapperErrorEnum::SevenWrapper(*seven_error), SixWrapperErrorEnum::EightWrapper(*eight_error)],
                 code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
