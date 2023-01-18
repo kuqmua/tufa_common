@@ -15,6 +15,21 @@ pub struct ThreeWrapperError {
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
+impl std::fmt::Display for ThreeWrapperError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        let config =
+            once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
+        write!(
+            f,
+            "{}{}{}",
+            self.source,
+            config.symbol(),
+            self.code_occurence
+                .get_code_path(config.get_source_place_type())
+        )
+    }
+}
+
 impl ThreeWrapperError {
     pub fn get_source_as_string(
         &self,
@@ -73,6 +88,8 @@ impl ThreeWrapperError {
 
 pub fn three(should_trace: bool) -> Result<(), Box<ThreeWrapperError>> {
     if let Err(e) = four(false) {
+        println!("{}", e);
+        println!("5-----------");
         return Err(Box::new(ThreeWrapperError {
             source: ThreeWrapperErrorEnum::FourWrapper(*e),
             code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
@@ -91,6 +108,14 @@ pub fn three(should_trace: bool) -> Result<(), Box<ThreeWrapperError>> {
 #[derive(Debug)]
 pub enum ThreeWrapperErrorEnum {
     FourWrapper(FourWrapperError),
+}
+
+impl std::fmt::Display for ThreeWrapperErrorEnum {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            ThreeWrapperErrorEnum::FourWrapper(e) => write!(f, "{}", e),
+        }
+    }
 }
 
 impl ThreeWrapperErrorEnum {
@@ -126,6 +151,39 @@ impl ThreeWrapperErrorEnum {
 pub struct FourWrapperError {
     source: HashMap<String, FourWrapperErrorEnum>,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+}
+
+impl std::fmt::Display for FourWrapperError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        let config =
+            once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
+        let symbol = config.symbol();
+        let source_as_string =
+            self.source
+                .iter()
+                .fold(String::from(""), |mut acc, (key, value)| {
+                    let source_element_as_string =
+                        value
+                            .to_string()
+                            .lines()
+                            .fold(String::from(""), |mut acc, line| {
+                                acc.push_str(&format!(" {}{}", line, symbol));
+                                acc
+                            });
+                    acc.push_str(&format!(
+                        "{} [{}{}]{}",
+                        key, symbol, source_element_as_string, symbol
+                    ));
+                    acc
+                });
+        write!(
+            f,
+            "{}{}",
+            source_as_string,
+            self.code_occurence
+                .get_code_path(config.get_source_place_type())
+        )
+    }
 }
 
 impl FourWrapperError {
@@ -216,6 +274,15 @@ pub enum FourWrapperErrorEnum {
     SixWrapper(SixWrapperError),
 }
 
+impl std::fmt::Display for FourWrapperErrorEnum {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            FourWrapperErrorEnum::FiveWrapper(e) => write!(f, "{}", e),
+            FourWrapperErrorEnum::SixWrapper(e) => write!(f, "{}", e),
+        }
+    }
+}
+
 impl FourWrapperErrorEnum {
     pub fn get_source_as_string(
         &self,
@@ -258,7 +325,9 @@ pub fn four(should_trace: bool) -> Result<(), Box<FourWrapperError>> {
         (Err(_), Ok(_)) => todo!(),
         (Err(f), Err(s)) => {
             println!("{}", f);
+            println!("6-----------");
             println!("{}", s);
+            println!("7-----------");
             return Err(Box::new(FourWrapperError {
                 source: HashMap::from([
                     (
@@ -306,14 +375,16 @@ impl std::fmt::Display for FiveWrapperError {
                                 acc.push_str(&format!(" {}{}", line, symbol));
                                 acc
                             });
-                    acc.push_str(&format!("{} [{}{}]", key, symbol, source_element_as_string));
+                    acc.push_str(&format!(
+                        "{} [{}{}]{}",
+                        key, symbol, source_element_as_string, symbol
+                    ));
                     acc
                 });
         write!(
             f,
-            "{}{}{}",
+            "{}{}",
             source_as_string,
-            symbol,
             self.code_occurence
                 .get_code_path(config.get_source_place_type())
         )
