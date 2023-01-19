@@ -47,8 +47,17 @@ impl ThreeWrapperError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
-        self.code_occurence
-            .get_code_path(config.get_source_place_type())
+        format!(
+            "{} {}",
+            self.code_occurence
+                .get_code_path(config.get_source_place_type()),
+            chrono::DateTime::<chrono::Utc>::from(
+                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
+            )
+            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
+            .format("%Y-%m-%d %H:%M:%S")
+            .to_string()
+        )
     }
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
@@ -222,8 +231,17 @@ impl FourWrapperError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
-        self.code_occurence
-            .get_code_path(config.get_source_place_type())
+        format!(
+            "{} {}",
+            self.code_occurence
+                .get_code_path(config.get_source_place_type()),
+            chrono::DateTime::<chrono::Utc>::from(
+                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
+            )
+            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
+            .format("%Y-%m-%d %H:%M:%S")
+            .to_string()
+        )
     }
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
@@ -429,8 +447,17 @@ impl FiveWrapperError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
-        self.code_occurence
-            .get_code_path(config.get_source_place_type())
+        format!(
+            "{} {}",
+            self.code_occurence
+                .get_code_path(config.get_source_place_type()),
+            chrono::DateTime::<chrono::Utc>::from(
+                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
+            )
+            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
+            .format("%Y-%m-%d %H:%M:%S")
+            .to_string()
+        )
     }
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
@@ -586,8 +613,17 @@ impl FiveOneOriginError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
-        self.code_occurence
-            .get_code_path(config.get_source_place_type())
+        format!(
+            "{} {}",
+            self.code_occurence
+                .get_code_path(config.get_source_place_type()),
+            chrono::DateTime::<chrono::Utc>::from(
+                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
+            )
+            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
+            .format("%Y-%m-%d %H:%M:%S")
+            .to_string()
+        )
     }
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
@@ -699,8 +735,17 @@ impl SixWrapperError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
-        self.code_occurence
-            .get_code_path(config.get_source_place_type())
+        format!(
+            "{} {}",
+            self.code_occurence
+                .get_code_path(config.get_source_place_type()),
+            chrono::DateTime::<chrono::Utc>::from(
+                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
+            )
+            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
+            .format("%Y-%m-%d %H:%M:%S")
+            .to_string()
+        )
     }
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
@@ -854,8 +899,17 @@ impl SevenOriginError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
-        self.code_occurence
-            .get_code_path(config.get_source_place_type())
+        format!(
+            "{} {}",
+            self.code_occurence
+                .get_code_path(config.get_source_place_type()),
+            chrono::DateTime::<chrono::Utc>::from(
+                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
+            )
+            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
+            .format("%Y-%m-%d %H:%M:%S")
+            .to_string()
+        )
     }
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
@@ -938,8 +992,17 @@ impl GetCodeOccurenceAsString for EightOriginError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
-        self.code_occurence
-            .get_code_path(config.get_source_place_type())
+        format!(
+            "{} {}",
+            self.code_occurence
+                .get_code_path(config.get_source_place_type()),
+            chrono::DateTime::<chrono::Utc>::from(
+                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
+            )
+            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
+            .format("%Y-%m-%d %H:%M:%S")
+            .to_string()
+        )
     }
 }
 
@@ -951,8 +1014,17 @@ impl EightOriginError {
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
-        self.code_occurence
-            .get_code_path(config.get_source_place_type())
+        format!(
+            "{} {}",
+            self.code_occurence
+                .get_code_path(config.get_source_place_type()),
+            chrono::DateTime::<chrono::Utc>::from(
+                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
+            )
+            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
+            .format("%Y-%m-%d %H:%M:%S")
+            .to_string()
+        )
     }
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
