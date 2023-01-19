@@ -29,7 +29,7 @@ impl std::fmt::Display for ThreeWrapperError {
             chrono::DateTime::<chrono::Utc>::from(
                 std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
             )
-            .with_timezone(&chrono::FixedOffset::east_opt(3 * 3600).unwrap())
+            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
             .format("%Y-%m-%d %H:%M:%S")
             .to_string()
         )
@@ -189,7 +189,7 @@ impl std::fmt::Display for FourWrapperError {
             chrono::DateTime::<chrono::Utc>::from(
                 std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
             )
-            .with_timezone(&chrono::FixedOffset::east_opt(3 * 3600).unwrap())
+            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
             .format("%Y-%m-%d %H:%M:%S")
             .to_string()
         )
@@ -396,7 +396,7 @@ impl std::fmt::Display for FiveWrapperError {
             chrono::DateTime::<chrono::Utc>::from(
                 std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
             )
-            .with_timezone(&chrono::FixedOffset::east_opt(3 * 3600).unwrap())
+            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
             .format("%Y-%m-%d %H:%M:%S")
             .to_string()
         )
@@ -571,7 +571,7 @@ impl std::fmt::Display for FiveOneOriginError {
             chrono::DateTime::<chrono::Utc>::from(
                 std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
             )
-            .with_timezone(&chrono::FixedOffset::east_opt(3 * 3600).unwrap())
+            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
             .format("%Y-%m-%d %H:%M:%S")
             .to_string()
         )
@@ -666,7 +666,7 @@ impl std::fmt::Display for SixWrapperError {
             chrono::DateTime::<chrono::Utc>::from(
                 std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
             )
-            .with_timezone(&chrono::FixedOffset::east_opt(3 * 3600).unwrap())
+            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
             .format("%Y-%m-%d %H:%M:%S")
             .to_string()
         )
@@ -839,7 +839,7 @@ impl std::fmt::Display for SevenOriginError {
             chrono::DateTime::<chrono::Utc>::from(
                 std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
             )
-            .with_timezone(&chrono::FixedOffset::east_opt(3 * 3600).unwrap())
+            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
             .format("%Y-%m-%d %H:%M:%S")
             .to_string()
         )
@@ -920,7 +920,7 @@ impl std::fmt::Display for EightOriginError {
             chrono::DateTime::<chrono::Utc>::from(
                 std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
             )
-            .with_timezone(&chrono::FixedOffset::east_opt(3 * 3600).unwrap())
+            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
             .format("%Y-%m-%d %H:%M:%S")
             .to_string()
         )
