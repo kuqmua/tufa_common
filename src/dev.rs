@@ -36,14 +36,8 @@ impl std::fmt::Display for ThreeWrapperError {
     }
 }
 
-impl ThreeWrapperError {
-    pub fn get_source_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
-        self.source.get_source_as_string(config)
-    }
-    pub fn get_code_occurence_as_string(
+impl GetCodeOccurenceAsString for ThreeWrapperError {
+    fn get_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
@@ -58,6 +52,15 @@ impl ThreeWrapperError {
             .format("%Y-%m-%d %H:%M:%S")
             .to_string()
         )
+    }
+}
+
+impl ThreeWrapperError {
+    pub fn get_source_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        self.source.get_source_as_string(config)
     }
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
@@ -205,6 +208,25 @@ impl std::fmt::Display for FourWrapperError {
     }
 }
 
+impl GetCodeOccurenceAsString for FourWrapperError {
+    fn get_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        format!(
+            "{} {}",
+            self.code_occurence
+                .get_code_path(config.get_source_place_type()),
+            chrono::DateTime::<chrono::Utc>::from(
+                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
+            )
+            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
+            .format("%Y-%m-%d %H:%M:%S")
+            .to_string()
+        )
+    }
+}
+
 impl FourWrapperError {
     //maybe not need?
     pub fn get_source_as_string(
@@ -226,22 +248,6 @@ impl FourWrapperError {
                 });
         config.pop_last(&mut source_as_string);
         source_as_string
-    }
-    pub fn get_code_occurence_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
-        format!(
-            "{} {}",
-            self.code_occurence
-                .get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
-            )
-            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string()
-        )
     }
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
@@ -421,6 +427,25 @@ impl std::fmt::Display for FiveWrapperError {
     }
 }
 
+impl GetCodeOccurenceAsString for FiveWrapperError {
+    fn get_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        format!(
+            "{} {}",
+            self.code_occurence
+                .get_code_path(config.get_source_place_type()),
+            chrono::DateTime::<chrono::Utc>::from(
+                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
+            )
+            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
+            .format("%Y-%m-%d %H:%M:%S")
+            .to_string()
+        )
+    }
+}
+
 impl FiveWrapperError {
     pub fn get_source_as_string(
         &self,
@@ -442,22 +467,6 @@ impl FiveWrapperError {
                 });
         config.pop_last(&mut source_as_string);
         source_as_string
-    }
-    pub fn get_code_occurence_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
-        format!(
-            "{} {}",
-            self.code_occurence
-                .get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
-            )
-            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string()
-        )
     }
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
@@ -605,11 +614,14 @@ impl std::fmt::Display for FiveOneOriginError {
     }
 }
 
-impl FiveOneOriginError {
-    pub fn get_source_as_string(&self) -> String {
+impl GetSourceAsString for FiveOneOriginError {
+    fn get_source_as_string(&self) -> String {
         format!("{}", self.source)
     }
-    pub fn get_code_occurence_as_string(
+}
+
+impl GetCodeOccurenceAsString for FiveOneOriginError {
+    fn get_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
@@ -625,6 +637,9 @@ impl FiveOneOriginError {
             .to_string()
         )
     }
+}
+
+impl FiveOneOriginError {
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct, //todo maybe remove
@@ -709,6 +724,25 @@ impl std::fmt::Display for SixWrapperError {
     }
 }
 
+impl GetCodeOccurenceAsString for SixWrapperError {
+    fn get_code_occurence_as_string(
+        &self,
+        config: &crate::config_mods::config_struct::ConfigStruct,
+    ) -> String {
+        format!(
+            "{} {}",
+            self.code_occurence
+                .get_code_path(config.get_source_place_type()),
+            chrono::DateTime::<chrono::Utc>::from(
+                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
+            )
+            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
+            .format("%Y-%m-%d %H:%M:%S")
+            .to_string()
+        )
+    }
+}
+
 impl SixWrapperError {
     pub fn get_source_as_string(
         &self,
@@ -730,22 +764,6 @@ impl SixWrapperError {
                 });
         config.pop_last(&mut source_as_string);
         source_as_string
-    }
-    pub fn get_code_occurence_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
-        format!(
-            "{} {}",
-            self.code_occurence
-                .get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
-            )
-            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string()
-        )
     }
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
@@ -891,11 +909,14 @@ impl std::fmt::Display for SevenOriginError {
     }
 }
 
-impl SevenOriginError {
-    pub fn get_source_as_string(&self) -> String {
+impl GetSourceAsString for SevenOriginError {
+    fn get_source_as_string(&self) -> String {
         format!("{}", self.source)
     }
-    pub fn get_code_occurence_as_string(
+}
+
+impl GetCodeOccurenceAsString for SevenOriginError {
+    fn get_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
@@ -911,6 +932,9 @@ impl SevenOriginError {
             .to_string()
         )
     }
+}
+
+impl SevenOriginError {
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct, //todo maybe remove
@@ -1007,25 +1031,6 @@ impl GetCodeOccurenceAsString for EightOriginError {
 }
 
 impl EightOriginError {
-    pub fn get_source_as_string(&self) -> String {
-        format!("{}", self.source)
-    }
-    pub fn get_code_occurence_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
-        format!(
-            "{} {}",
-            self.code_occurence
-                .get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
-            )
-            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string()
-        )
-    }
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct, //todo maybe remove
