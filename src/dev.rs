@@ -542,7 +542,7 @@ impl FiveWrapperErrorEnum {
         config: &crate::config_mods::config_struct::ConfigStruct,
     ) -> String {
         match self {
-            FiveWrapperErrorEnum::FiveOneOrigin(i) => i.get_source_as_string(),
+            FiveWrapperErrorEnum::FiveOneOrigin(i) => i.get_source_as_string(config),
         }
     }
     pub fn get_code_occurence_as_string(
@@ -614,8 +614,11 @@ impl std::fmt::Display for FiveOneOriginError {
     }
 }
 
-impl GetSourceAsString for FiveOneOriginError {
-    fn get_source_as_string(&self) -> String {
+impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for FiveOneOriginError
+where
+    ConfigGeneric: crate::traits::fields::GetLogType + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         format!("{}", self.source)
     }
 }
@@ -648,7 +651,7 @@ impl FiveOneOriginError {
             crate::dev::source_and_code_occurence::SourceAndCodeOccurenceAsString {
                 source: vec![vec![(
                     crate::common::source_and_code_occurence::Source {
-                        source: self.get_source_as_string(),
+                        source: self.get_source_as_string(config),
                         uuid: uuid::Uuid::new_v4(),
                     },
                     vec![],
@@ -661,7 +664,7 @@ impl FiveOneOriginError {
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         config.log(format!(
             "{}{}{}",
-            self.get_source_as_string(),
+            self.get_source_as_string(config),
             config.symbol(),
             self.get_code_occurence_as_string(config)
         ));
@@ -854,8 +857,8 @@ impl SixWrapperErrorEnum {
     ) -> String {
         match self {
             //todo - if wrapper - with config, if origin - without
-            SixWrapperErrorEnum::SevenWrapper(i) => i.get_source_as_string(),
-            SixWrapperErrorEnum::EightWrapper(i) => i.get_source_as_string(),
+            SixWrapperErrorEnum::SevenWrapper(i) => i.get_source_as_string(config),
+            SixWrapperErrorEnum::EightWrapper(i) => i.get_source_as_string(config),
         }
     }
     pub fn get_code_occurence_as_string(
@@ -909,8 +912,11 @@ impl std::fmt::Display for SevenOriginError {
     }
 }
 
-impl GetSourceAsString for SevenOriginError {
-    fn get_source_as_string(&self) -> String {
+impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for SevenOriginError
+where
+    ConfigGeneric: crate::traits::fields::GetLogType + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         format!("{}", self.source)
     }
 }
@@ -943,7 +949,7 @@ impl SevenOriginError {
             crate::dev::source_and_code_occurence::SourceAndCodeOccurenceAsString {
                 source: vec![vec![(
                     crate::common::source_and_code_occurence::Source {
-                        source: self.get_source_as_string(),
+                        source: self.get_source_as_string(config),
                         uuid: uuid::Uuid::new_v4(),
                     },
                     vec![],
@@ -956,7 +962,7 @@ impl SevenOriginError {
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         config.log(format!(
             "{}{}{}",
-            self.get_source_as_string(),
+            self.get_source_as_string(config),
             config.symbol(),
             self.get_code_occurence_as_string(config)
         ));
@@ -1005,8 +1011,11 @@ impl std::fmt::Display for EightOriginError {
     }
 }
 
-impl GetSourceAsString for EightOriginError {
-    fn get_source_as_string(&self) -> String {
+impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for EightOriginError
+where
+    ConfigGeneric: crate::traits::fields::GetLogType + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         format!("{}", self.source)
     }
 }
@@ -1039,7 +1048,7 @@ impl EightOriginError {
             crate::dev::source_and_code_occurence::SourceAndCodeOccurenceAsString {
                 source: vec![vec![(
                     crate::common::source_and_code_occurence::Source {
-                        source: self.get_source_as_string(),
+                        source: self.get_source_as_string(config),
                         uuid: uuid::Uuid::new_v4(),
                     },
                     vec![],
@@ -1052,7 +1061,7 @@ impl EightOriginError {
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         config.log(format!(
             "{}{}{}",
-            self.get_source_as_string(),
+            self.get_source_as_string(config),
             config.symbol(),
             self.get_code_occurence_as_string(config)
         ));

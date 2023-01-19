@@ -1,7 +1,7 @@
-pub trait GetSource {
+pub trait GetSource<ConfigGeneric> {
     fn get_source(&self) -> String;
 }
 
-pub trait GetSourceAsString {
-    fn get_source_as_string(&self) -> String;
+pub trait GetSourceAsString<ConfigGeneric> {
+    fn get_source_as_string(&self, config: ConfigGeneric) -> String;
 }
