@@ -3,6 +3,7 @@ use crate::traits::code_path::CodePath;
 use crate::traits::config_log::ConfigLog;
 use crate::traits::fields::GetSourcePlaceType;
 use crate::traits::get_code_occurence::GetCodeOccurenceAsString;
+use crate::traits::get_inner_source_and_code_occurence_vec::GetInnerSourceAndCodeOccurenceVecHelper;
 use crate::traits::get_source::GetSourceAsString;
 use crate::traits::separator_symbol::SeparatorSymbol;
 use itertools::Itertools;
@@ -53,14 +54,20 @@ where
     }
 }
 
-impl ThreeWrapperError {
-    pub fn get_inner_source_and_code_occurence_as_string(
+impl<ConfigGeneric>
+    crate::traits::get_inner_source_and_code_occurence_vec::GetInnerSourceAndCodeOccurenceVec<
+        ConfigGeneric,
+    > for ThreeWrapperError
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone
+        + crate::traits::fields::GetLogType
+        + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_inner_source_and_code_occurence_vec(
         &self,
-        config: &crate::config_mods::config_struct::ConfigStruct, //todo maybe remove
+        config: &ConfigGeneric,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
-        let vec = self
-            .source
-            .get_inner_source_and_code_occurence_as_string(config);
+        let vec = self.source.get_inner_source_and_code_occurence_vec(config);
         let mut new_vec = Vec::with_capacity(vec.len() + 1);
         let mut sources_for_tracing: Vec<
             Vec<(
@@ -91,6 +98,9 @@ impl ThreeWrapperError {
         );
         new_vec
     }
+}
+
+impl ThreeWrapperError {
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         todo!()
     }
@@ -150,14 +160,22 @@ where
     }
 }
 
-impl ThreeWrapperErrorEnum {
-    pub fn get_inner_source_and_code_occurence_as_string(
+impl<ConfigGeneric>
+    crate::traits::get_inner_source_and_code_occurence_vec::GetInnerSourceAndCodeOccurenceVec<
+        ConfigGeneric,
+    > for ThreeWrapperErrorEnum
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone
+        + crate::traits::fields::GetLogType
+        + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_inner_source_and_code_occurence_vec(
         &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
+        config: &ConfigGeneric,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         match self {
             ThreeWrapperErrorEnum::FourWrapper(i) => {
-                i.get_inner_source_and_code_occurence_as_string(config)
+                i.get_inner_source_and_code_occurence_vec(config)
             }
         }
     }
@@ -225,10 +243,18 @@ where
     }
 }
 
-impl FourWrapperError {
-    pub fn get_inner_source_and_code_occurence_as_string(
+impl<ConfigGeneric>
+    crate::traits::get_inner_source_and_code_occurence_vec::GetInnerSourceAndCodeOccurenceVec<
+        ConfigGeneric,
+    > for FourWrapperError
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone
+        + crate::traits::fields::GetLogType
+        + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_inner_source_and_code_occurence_vec(
         &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
+        config: &ConfigGeneric,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         let mut sources_for_tracing: Vec<
             Vec<(
@@ -240,7 +266,7 @@ impl FourWrapperError {
             Vec::with_capacity(self.source.len() + 1),
             |mut acc, (key, value)| {
                 value
-                    .get_inner_source_and_code_occurence_as_string(config)
+                    .get_inner_source_and_code_occurence_vec(config)
                     .into_iter()
                     .for_each(|mut e| {
                         e.source.iter().for_each(|hm| {
@@ -274,6 +300,9 @@ impl FourWrapperError {
         );
         vec
     }
+}
+
+impl FourWrapperError {
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         todo!()
     }
@@ -320,17 +349,25 @@ where
     }
 }
 
-impl FourWrapperErrorEnum {
-    pub fn get_inner_source_and_code_occurence_as_string(
+impl<ConfigGeneric>
+    crate::traits::get_inner_source_and_code_occurence_vec::GetInnerSourceAndCodeOccurenceVec<
+        ConfigGeneric,
+    > for FourWrapperErrorEnum
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone
+        + crate::traits::fields::GetLogType
+        + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_inner_source_and_code_occurence_vec(
         &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
+        config: &ConfigGeneric,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         match self {
             FourWrapperErrorEnum::FiveWrapper(i) => {
-                i.get_inner_source_and_code_occurence_as_string(config)
+                i.get_inner_source_and_code_occurence_vec(config)
             }
             FourWrapperErrorEnum::SixWrapper(i) => {
-                i.get_inner_source_and_code_occurence_as_string(config)
+                i.get_inner_source_and_code_occurence_vec(config)
             }
         }
     }
@@ -428,10 +465,18 @@ where
     }
 }
 
-impl FiveWrapperError {
-    pub fn get_inner_source_and_code_occurence_as_string(
+impl<ConfigGeneric>
+    crate::traits::get_inner_source_and_code_occurence_vec::GetInnerSourceAndCodeOccurenceVec<
+        ConfigGeneric,
+    > for FiveWrapperError
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone
+        + crate::traits::fields::GetLogType
+        + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_inner_source_and_code_occurence_vec(
         &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
+        config: &ConfigGeneric,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         let mut sources_for_tracing: Vec<
             Vec<(
@@ -443,7 +488,7 @@ impl FiveWrapperError {
             Vec::with_capacity(self.source.len() + 1),
             |mut acc, (key, value)| {
                 value
-                    .get_inner_source_and_code_occurence_as_string(config)
+                    .get_inner_source_and_code_occurence_vec(config)
                     .into_iter()
                     .for_each(|mut e| {
                         e.source.iter().for_each(|hm| {
@@ -479,6 +524,9 @@ impl FiveWrapperError {
         );
         vec
     }
+}
+
+impl FiveWrapperError {
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         todo!()
     }
@@ -519,14 +567,22 @@ where
     }
 }
 
-impl FiveWrapperErrorEnum {
-    pub fn get_inner_source_and_code_occurence_as_string(
+impl<ConfigGeneric>
+    crate::traits::get_inner_source_and_code_occurence_vec::GetInnerSourceAndCodeOccurenceVec<
+        ConfigGeneric,
+    > for FiveWrapperErrorEnum
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone
+        + crate::traits::fields::GetLogType
+        + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_inner_source_and_code_occurence_vec(
         &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
+        config: &ConfigGeneric,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         match self {
             FiveWrapperErrorEnum::FiveOneOrigin(i) => {
-                i.get_inner_source_and_code_occurence_as_string(config)
+                i.get_inner_source_and_code_occurence_vec(config)
             }
         }
     }
@@ -596,10 +652,18 @@ where
     }
 }
 
-impl FiveOneOriginError {
-    pub fn get_inner_source_and_code_occurence_as_string(
+impl<ConfigGeneric>
+    crate::traits::get_inner_source_and_code_occurence_vec::GetInnerSourceAndCodeOccurenceVec<
+        ConfigGeneric,
+    > for FiveOneOriginError
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone
+        + crate::traits::fields::GetLogType
+        + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_inner_source_and_code_occurence_vec(
         &self,
-        config: &crate::config_mods::config_struct::ConfigStruct, //todo maybe remove
+        config: &ConfigGeneric,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         vec![
             crate::dev::source_and_code_occurence::SourceAndCodeOccurenceAsString {
@@ -615,6 +679,9 @@ impl FiveOneOriginError {
             },
         ]
     }
+}
+
+impl FiveOneOriginError {
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         config.log(format!(
             "{}{}{}",
@@ -698,34 +765,22 @@ where
     }
 }
 
-impl SixWrapperError {
-    pub fn get_inner_source_and_code_occurence_as_string(
+impl<ConfigGeneric>
+    crate::traits::get_inner_source_and_code_occurence_vec::GetInnerSourceAndCodeOccurenceVec<
+        ConfigGeneric,
+    > for SixWrapperError
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone
+        + crate::traits::fields::GetLogType
+        + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_inner_source_and_code_occurence_vec(
         &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
+        config: &ConfigGeneric,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
-        let mut sources_for_tracing: Vec<
-            Vec<(
-                crate::common::source_and_code_occurence::Source,
-                Vec<crate::common::source_and_code_occurence::Key>,
-            )>,
-        > = Vec::new();
-        let mut vec = self.source.iter().fold(
-            Vec::with_capacity(self.source.len() + 1),
-            |mut acc, vec_element| {
-                vec_element
-                    .get_inner_source_and_code_occurence_as_string(config)
-                    .into_iter()
-                    .for_each(|mut e| {
-                        e.source.iter().for_each(|f| {
-                            sources_for_tracing.push(f.clone());
-                        });
-                        e.add_one();
-                        acc.push(e);
-                    });
-                acc
-            },
-        );
-        sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
+        let (sources_for_tracing, mut vec) = self
+            .source
+            .get_inner_source_and_code_occurence_vec_helper(config);
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
                 source: sources_for_tracing,
@@ -735,6 +790,9 @@ impl SixWrapperError {
         );
         vec
     }
+}
+
+impl SixWrapperError {
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         config.log(format!(
             "{}{}{}",
@@ -806,17 +864,25 @@ where
     }
 }
 
-impl SixWrapperErrorEnum {
-    pub fn get_inner_source_and_code_occurence_as_string(
+impl<ConfigGeneric>
+    crate::traits::get_inner_source_and_code_occurence_vec::GetInnerSourceAndCodeOccurenceVec<
+        ConfigGeneric,
+    > for SixWrapperErrorEnum
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone
+        + crate::traits::fields::GetLogType
+        + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_inner_source_and_code_occurence_vec(
         &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
+        config: &ConfigGeneric,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         match self {
             SixWrapperErrorEnum::SevenWrapper(i) => {
-                i.get_inner_source_and_code_occurence_as_string(config)
+                i.get_inner_source_and_code_occurence_vec(config)
             }
             SixWrapperErrorEnum::EightWrapper(i) => {
-                i.get_inner_source_and_code_occurence_as_string(config)
+                i.get_inner_source_and_code_occurence_vec(config)
             }
         }
     }
@@ -864,10 +930,18 @@ where
     }
 }
 
-impl SevenOriginError {
-    pub fn get_inner_source_and_code_occurence_as_string(
+impl<ConfigGeneric>
+    crate::traits::get_inner_source_and_code_occurence_vec::GetInnerSourceAndCodeOccurenceVec<
+        ConfigGeneric,
+    > for SevenOriginError
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone
+        + crate::traits::fields::GetLogType
+        + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_inner_source_and_code_occurence_vec(
         &self,
-        config: &crate::config_mods::config_struct::ConfigStruct, //todo maybe remove
+        config: &ConfigGeneric,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         vec![
             crate::dev::source_and_code_occurence::SourceAndCodeOccurenceAsString {
@@ -883,6 +957,9 @@ impl SevenOriginError {
             },
         ]
     }
+}
+
+impl SevenOriginError {
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         config.log(format!(
             "{}{}{}",
@@ -950,10 +1027,18 @@ where
     }
 }
 
-impl EightOriginError {
-    pub fn get_inner_source_and_code_occurence_as_string(
+impl<ConfigGeneric>
+    crate::traits::get_inner_source_and_code_occurence_vec::GetInnerSourceAndCodeOccurenceVec<
+        ConfigGeneric,
+    > for EightOriginError
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone
+        + crate::traits::fields::GetLogType
+        + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_inner_source_and_code_occurence_vec(
         &self,
-        config: &crate::config_mods::config_struct::ConfigStruct, //todo maybe remove
+        config: &ConfigGeneric,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
         vec![
             crate::dev::source_and_code_occurence::SourceAndCodeOccurenceAsString {
@@ -969,6 +1054,9 @@ impl EightOriginError {
             },
         ]
     }
+}
+
+impl EightOriginError {
     pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
         config.log(format!(
             "{}{}{}",
