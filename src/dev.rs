@@ -1,6 +1,5 @@
 use crate::common::source_and_code_occurence;
 use crate::traits::code_path::CodePath;
-use crate::traits::config_log::ConfigLog;
 use crate::traits::error_display::ToStringHandle;
 use crate::traits::fields::GetSourcePlaceType;
 use crate::traits::get_code_occurence::GetCodeOccurenceAsString;
@@ -23,17 +22,10 @@ impl std::fmt::Display for ThreeWrapperError {
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
         write!(
             f,
-            "{}{}{} {}",
+            "{}{}{}",
             self.source,
             config.symbol(),
-            self.code_occurence
-                .get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
-            )
-            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string()
+            self.get_code_occurence_as_string(config)
         )
     }
 }
@@ -189,16 +181,9 @@ impl std::fmt::Display for FourWrapperError {
         let source_as_string = self.source.to_string_handle(config);
         write!(
             f,
-            "{}{} {}",
+            "{}{}",
             source_as_string,
-            self.code_occurence
-                .get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
-            )
-            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string()
+            self.get_code_occurence_as_string(config)
         )
     }
 }
@@ -387,16 +372,9 @@ impl std::fmt::Display for FiveWrapperError {
         let source_as_string = self.source.to_string_handle(config);
         write!(
             f,
-            "{}{} {}",
+            "{}{}",
             source_as_string,
-            self.code_occurence
-                .get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
-            )
-            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string()
+            self.get_code_occurence_as_string(config)
         )
     }
 }
@@ -569,17 +547,10 @@ impl std::fmt::Display for FiveOneOriginError {
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
         write!(
             f,
-            "{}{}{} {}",
+            "{}{}{}",
             self.source,
             config.symbol(),
-            self.code_occurence
-                .get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
-            )
-            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string()
+            self.get_code_occurence_as_string(config)
         )
     }
 }
@@ -656,18 +627,11 @@ impl std::fmt::Display for SixWrapperError {
         let source_as_string = self.source.to_string_handle(config);
         write!(
             f,
-            "[{}{}]{}{} {}",
+            "[{}{}]{}{}",
             symbol,
             source_as_string,
             symbol,
-            self.code_occurence
-                .get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
-            )
-            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string()
+            self.get_code_occurence_as_string(config)
         )
     }
 }
@@ -813,17 +777,10 @@ impl std::fmt::Display for SevenOriginError {
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
         write!(
             f,
-            "{}{}{} {}",
+            "{}{}{}",
             self.source,
             config.symbol(),
-            self.code_occurence
-                .get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
-            )
-            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string()
+            self.get_code_occurence_as_string(config)
         )
     }
 }
@@ -899,17 +856,10 @@ impl std::fmt::Display for EightOriginError {
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
         write!(
             f,
-            "{}{}{} {}",
+            "{}{}{}",
             self.source,
             config.symbol(),
-            self.code_occurence
-                .get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
-            )
-            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string()
+            self.get_code_occurence_as_string(config)
         )
     }
 }

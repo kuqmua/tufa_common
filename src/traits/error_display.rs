@@ -38,6 +38,18 @@ pub trait ToStringHandle<ConfigGeneric> {
     fn to_string_handle(&self, config: &ConfigGeneric) -> String;
 }
 
+// impl<SelfGeneric, ConfigGeneric> ToStringHandle<ConfigGeneric> for SelfGeneric
+// where
+//     ConfigGeneric: crate::traits::fields::GetLogType
+//         + crate::traits::fields::GetSourcePlaceType
+//         + crate::traits::fields::GetTimezone,
+//     SelfGeneric: crate::traits::get_source::GetSourceAsString<ConfigGeneric>,
+// {
+//     fn to_string_handle(&self, config: &ConfigGeneric) -> String {
+//         self.get_source_as_string(config)
+//     }
+// }
+
 impl<VecElementGeneric, ConfigGeneric> ToStringHandle<ConfigGeneric> for Vec<VecElementGeneric>
 where
     ConfigGeneric: crate::traits::fields::GetLogType,

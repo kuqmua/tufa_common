@@ -1,4 +1,4 @@
-use crate::traits::code_path::CodePath;
+use super::error_display::ToStringHandle;
 
 pub trait GetCodeOccurence {
     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence;
@@ -18,16 +18,6 @@ where
     SelfGeneric: crate::traits::get_code_occurence::GetCodeOccurenceOldWay,
 {
     fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
-        let code_occurence = self.get_code_occurence_old_way();
-        format!(
-            "{} {}",
-            code_occurence.get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + code_occurence.time_file_line_column.time,
-            )
-            .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string()
-        )
+        self.get_code_occurence_old_way().to_string_handle(config)
     }
 }

@@ -22,10 +22,31 @@
 //     }
 // }
 
+use crate::traits::code_path::CodePath;
+
 #[derive(Debug, Clone)]
 pub struct CodeOccurenceOldWay {
     pub git_info: crate::common::git::git_info::GitInformationWithoutLifetimes,
     pub time_file_line_column: crate::common::time_file_line_column::TimeFileLineColumn,
+}
+
+impl<ConfigGeneric> crate::traits::error_display::ToStringHandle<ConfigGeneric>
+    for crate::common::code_occurence::CodeOccurenceOldWay
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone + crate::traits::fields::GetSourcePlaceType,
+{
+    fn to_string_handle(&self, config: &ConfigGeneric) -> String {
+        format!(
+            "{} {}",
+            self.get_code_path(config.get_source_place_type()),
+            chrono::DateTime::<chrono::Utc>::from(
+                std::time::UNIX_EPOCH + self.time_file_line_column.time,
+            )
+            .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
+            .format("%Y-%m-%d %H:%M:%S")
+            .to_string()
+        )
+    }
 }
 
 impl crate::traits::get_git_info::GetGitInfoWithoutLifetimes for CodeOccurenceOldWay {
