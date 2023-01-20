@@ -221,21 +221,7 @@ where
         + crate::traits::fields::GetTimezone,
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        let symbol = config.symbol();
-        let mut source_as_string =
-            self.source
-                .iter()
-                .fold(String::from(""), |mut acc, (key, value)| {
-                    let source_as_string = value.get_source_as_string(config);
-                    let get_code_occurence_as_string = value.get_code_occurence_as_string(config);
-                    acc.push_str(&format!(
-                        "[key: {}]{} {}{} {}{}",
-                        key, symbol, source_as_string, symbol, get_code_occurence_as_string, symbol
-                    ));
-                    acc
-                });
-        config.pop_last(&mut source_as_string);
-        source_as_string
+        self.source.get_source_as_string(config)
     }
 }
 
@@ -438,22 +424,7 @@ where
         + crate::traits::fields::GetTimezone,
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        let symbol = config.symbol();
-        let mut source_as_string =
-            self.source
-                .iter()
-                .fold(String::from(""), |mut acc, (key, value)| {
-                    let source_as_string = value.get_source_as_string(config);
-                    let get_code_occurence_as_string = value.get_code_occurence_as_string(config);
-                    //todo maybe space symbol
-                    acc.push_str(&format!(
-                        "[key: {}]{} {}{} {}{}",
-                        key, symbol, source_as_string, symbol, get_code_occurence_as_string, symbol
-                    ));
-                    acc
-                });
-        config.pop_last(&mut source_as_string);
-        source_as_string
+        self.source.get_source_as_string(config)
     }
 }
 
