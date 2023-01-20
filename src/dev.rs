@@ -178,11 +178,10 @@ impl std::fmt::Display for FourWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         let config =
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
-        let source_as_string = self.source.to_string_handle(config);
         write!(
             f,
             "{}{}",
-            source_as_string,
+            self.source.to_string_handle(config),
             self.get_code_occurence_as_string(config)
         )
     }
@@ -369,11 +368,10 @@ impl std::fmt::Display for FiveWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         let config =
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
-        let source_as_string = self.source.to_string_handle(config);
         write!(
             f,
             "{}{}",
-            source_as_string,
+            self.source.to_string_handle(config),
             self.get_code_occurence_as_string(config)
         )
     }
@@ -548,7 +546,7 @@ impl std::fmt::Display for FiveOneOriginError {
         write!(
             f,
             "{}{}{}",
-            self.source,
+            self.get_source_as_string(config),
             config.symbol(),
             self.get_code_occurence_as_string(config)
         )
@@ -624,12 +622,11 @@ impl std::fmt::Display for SixWrapperError {
         let config =
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
         let symbol = config.symbol();
-        let source_as_string = self.source.to_string_handle(config);
         write!(
             f,
             "[{}{}]{}{}",
             symbol,
-            source_as_string,
+            self.source.to_string_handle(config),
             symbol,
             self.get_code_occurence_as_string(config)
         )
@@ -778,7 +775,7 @@ impl std::fmt::Display for SevenOriginError {
         write!(
             f,
             "{}{}{}",
-            self.source,
+            self.get_source_as_string(config),
             config.symbol(),
             self.get_code_occurence_as_string(config)
         )
@@ -857,7 +854,7 @@ impl std::fmt::Display for EightOriginError {
         write!(
             f,
             "{}{}{}",
-            self.source,
+            self.get_source_as_string(config),
             config.symbol(),
             self.get_code_occurence_as_string(config)
         )
