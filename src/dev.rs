@@ -694,22 +694,7 @@ where
         + crate::traits::fields::GetTimezone,
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        let symbol = config.symbol();
-        let mut source_as_string =
-            self.source
-                .iter()
-                .fold(String::from(""), |mut acc, vec_element| {
-                    acc.push_str(&format!(
-                        "{}{} {}{}",
-                        vec_element.get_source_as_string(config),
-                        symbol,
-                        vec_element.get_code_occurence_as_string(config),
-                        symbol
-                    ));
-                    acc
-                });
-        config.pop_last(&mut source_as_string);
-        source_as_string
+        self.source.get_source_as_string(config)
     }
 }
 
