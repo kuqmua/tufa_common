@@ -195,45 +195,45 @@ where
                                     .collect::<Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString>>();
                                 o.source.iter_mut().for_each(|v| {
                                 v.iter_mut().for_each(|(source, vec)| {
-                                let mut equals = None;
-                                if let Some(additions_all_first_element) = additions_all.get(0) {
-                                    for vv in &additions_all_first_element.source {
-                                        let mut contains = None;
-                                        for (source_in_all, vec_in_all) in vv {
-                                            if let true = source == source_in_all {
-                                                contains = Some(vec_in_all);
+                                    let mut equals = None;
+                                    if let Some(additions_all_first_element) = additions_all.get(0) {
+                                        for vv in &additions_all_first_element.source {
+                                            let mut contains = None;
+                                            for (source_in_all, vec_in_all) in vv {
+                                                if let true = source == source_in_all {
+                                                    contains = Some(vec_in_all);
+                                                    break;
+                                                }
+                                            }
+                                            if let Some(vf) = contains {
+                                                equals = Some(vf);
                                                 break;
                                             }
                                         }
-                                        if let Some(vf) = contains {
-                                            equals = Some(vf);
-                                            break;
-                                        }
                                     }
-                                }
-                                if let Some(vvv) = equals {
-                                    //not sure about ordering
-                                    vvv.iter().for_each(|vvve| {
-                                        if let false = vec.contains(vvve) {
-                                            vec.push(vvve.clone());
-                                        }
-                                    });
-                                }
-                            });
-                        });
-                        let mut local_keys = o.source.iter().fold(Vec::new(), |mut acc, v| {
-                            v.iter().for_each(|(_source, vecc)| {
-                                vecc.iter().for_each(|ve| {
-                                    acc.push(ve.clone());
+                                    if let Some(vvv) = equals {
+                                        //not sure about ordering
+                                        vvv.iter().for_each(|vvve| {
+                                            if let false = vec.contains(vvve) {
+                                                vec.push(vvve.clone());
+                                            }
+                                        });
+                                    }
                                 });
                             });
-                            acc
-                        });
-                        local_keys = local_keys.into_iter().unique().collect(); //todo - optimize it
-                        match local_keys.is_empty() {
-                            true => {
-                                let fold_original_source_lines =
-                                    vec_of_origins.iter().fold(String::from(""), |mut acc, o| {
+                            let mut local_keys = o.source.iter().fold(Vec::new(), |mut acc, v| {
+                                v.iter().for_each(|(_source, vecc)| {
+                                    vecc.iter().for_each(|ve| {
+                                        acc.push(ve.clone());
+                                 });
+                                });
+                                acc
+                            });
+                            local_keys = local_keys.into_iter().unique().collect(); //todo - optimize it
+                            match local_keys.is_empty() {
+                                true => {
+                                    let fold_original_source_lines =
+                                        vec_of_origins.iter().fold(String::from(""), |mut acc, o| {
                                         let source = match o.source.first() {
                                             Some(first_element) => match first_element.first() {
                                                 Some(first_inner_element) => &first_inner_element.0,
@@ -247,88 +247,88 @@ where
                                         ));
                                         acc
                                     });
-                                acccc.push_str(&format!(
-                                    " [{}{} ]{} {}{}",
-                                    symbol,
-                                    fold_original_source_lines,
-                                    symbol,
-                                    o.code_occurence,
-                                    symbol
-                                ))
-                            }
-                            false => {
-                                let mut first = true;
-                                let handle = local_keys.into_iter().fold(
-                                    String::from(""),
-                                    |mut acc, local_key| {
-                                        match first {
-                                            true => {
-                                                let fold_lines = vec_of_origins.iter().fold(
-                                                    String::from(""),
-                                                    |mut acc, o| {
-                                                        let source = match o.source.first() {
-                                                            Some(first_element) => {
-                                                                match first_element.first() {
-                                                                    Some(first_inner_element) => {
-                                                                        &first_inner_element.0
-                                                                    }
-                                                                    None => {
-                                                                        &cannot_get_source_handle
+                                    acccc.push_str(&format!(
+                                        "[{}{}]{}{}{}",
+                                        symbol,
+                                        fold_original_source_lines,
+                                        symbol,
+                                        o.code_occurence,
+                                        symbol
+                                    ))
+                                }
+                                false => {
+                                    let mut first = true;
+                                    let handle = local_keys.into_iter().fold(
+                                        String::from(""),
+                                        |mut acc, local_key| {
+                                            match first {
+                                                true => {
+                                                    let fold_lines = vec_of_origins.iter().fold(
+                                                        String::from(""),
+                                                        |mut acc, o| {
+                                                            let source = match o.source.first() {
+                                                                Some(first_element) => {
+                                                                    match first_element.first() {
+                                                                        Some(first_inner_element) => {
+                                                                            &first_inner_element.0
+                                                                        }
+                                                                        None => {
+                                                                            &cannot_get_source_handle
+                                                                        }
                                                                     }
                                                                 }
-                                                            }
-                                                            None => &cannot_get_source_handle,
-                                                        };
-                                                        acc.push_str(&format!(
-                                                            "  {}{}  {}{}",
-                                                            source.source,
-                                                            symbol,
-                                                            o.code_occurence,
-                                                            symbol
-                                                        ));
-                                                        acc
-                                                    },
-                                                );
-                                                acc.push_str(&format!(
-                                                    " {} [{}{} ]{} {}",
-                                                    local_key.key,
-                                                    symbol,
-                                                    fold_lines,
-                                                    symbol,
-                                                    o.code_occurence
-                                                ));
-                                                first = false;
-                                            }
-                                            false => {
-                                                acc = format!(
-                                                    " {} [{}{} ]",
-                                                    local_key.key,
-                                                    symbol,
-                                                    acc.lines()
-                                                        .collect::<Vec<&str>>()
-                                                        .into_iter()
-                                                        .fold(
-                                                            String::from(""),
-                                                            |mut acc_inner, element| {
-                                                                acc_inner.push_str(&format!(
-                                                                    " {}{}",
-                                                                    element, symbol
-                                                                ));
-                                                                acc_inner
-                                                            }
-                                                        )
+                                                                None => &cannot_get_source_handle,
+                                                            };
+                                                            acc.push_str(&format!(
+                                                                "  {}{}  {}{}",
+                                                                source.source,
+                                                                symbol,
+                                                                o.code_occurence,
+                                                                symbol
+                                                            ));
+                                                            acc
+                                                        },
                                                     );
+                                                    acc.push_str(&format!(
+                                                        "{} [{}{}]{}{}",
+                                                        local_key.key,
+                                                        symbol,
+                                                        fold_lines,
+                                                        symbol,
+                                                        o.code_occurence
+                                                    ));
+                                                    first = false;
                                                 }
-                                            }
-                                            acc
-                                        },
-                                    );
-                                    acccc.push_str(&format!("{}{}", handle, symbol));
+                                                false => {
+                                                    acc = format!(
+                                                        "{} [{}{}]",
+                                                        local_key.key,
+                                                        symbol,
+                                                        acc.lines()
+                                                            .collect::<Vec<&str>>()
+                                                            .into_iter()
+                                                            .fold(
+                                                                String::from(""),
+                                                                |mut acc_inner, element| {
+                                                                    acc_inner.push_str(&format!(
+                                                                        " {}{}",
+                                                                        element, symbol
+                                                                    ));
+                                                                    acc_inner
+                                                                }
+                                                            )
+                                                        );
+                                                    }
+                                                }
+                                                acc
+                                            },
+                                        );
+                                        acccc.push_str(&format!("{}{}", handle, symbol));
+                                    }
                                 }
-                            }
-                            acccc
-                        });
-                        let mut prepared_log = format!("[{}{}]{}", symbol, lined, symbol);
+                                acccc
+                            });
+                        let mut prepared_log = lined;
                         additions_all.into_iter().for_each(|value| {
                             prepared_log.push_str(&format!("{}{}", value.code_occurence, symbol));
                         });
