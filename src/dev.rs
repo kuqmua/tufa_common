@@ -1,6 +1,7 @@
 use crate::common::source_and_code_occurence;
 use crate::traits::code_path::CodePath;
 use crate::traits::config_log::ConfigLog;
+use crate::traits::error_display::ToStringHandle;
 use crate::traits::fields::GetSourcePlaceType;
 use crate::traits::get_code_occurence::GetCodeOccurenceAsString;
 use crate::traits::get_inner_source_and_code_occurence_vec::GetInnerSourceAndCodeOccurenceVecHelper;
@@ -14,12 +15,6 @@ use std::vec;
 pub struct ThreeWrapperError {
     source: ThreeWrapperErrorEnum,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
-}
-
-impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for ThreeWrapperError {
-    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
-        &self.code_occurence
-    }
 }
 
 impl std::fmt::Display for ThreeWrapperError {
@@ -51,6 +46,12 @@ where
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         self.source.get_source_as_string(config)
+    }
+}
+
+impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for ThreeWrapperError {
+    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+        &self.code_occurence
     }
 }
 
@@ -181,35 +182,11 @@ pub struct FourWrapperError {
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
-impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FourWrapperError {
-    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
-        &self.code_occurence
-    }
-}
-
 impl std::fmt::Display for FourWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         let config =
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
-        let symbol = config.symbol();
-        let source_as_string =
-            self.source
-                .iter()
-                .fold(String::from(""), |mut acc, (key, value)| {
-                    let source_element_as_string =
-                        value
-                            .to_string()
-                            .lines()
-                            .fold(String::from(""), |mut acc, line| {
-                                acc.push_str(&format!(" {}{}", line, symbol));
-                                acc
-                            });
-                    acc.push_str(&format!(
-                        "{} [{}{}]{}",
-                        key, symbol, source_element_as_string, symbol
-                    ));
-                    acc
-                });
+        let source_as_string = self.source.to_string_handle(config);
         write!(
             f,
             "{}{} {}",
@@ -234,6 +211,12 @@ where
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         self.source.get_source_as_string(config)
+    }
+}
+
+impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FourWrapperError {
+    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+        &self.code_occurence
     }
 }
 
@@ -397,35 +380,11 @@ pub struct FiveWrapperError {
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
-impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FiveWrapperError {
-    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
-        &self.code_occurence
-    }
-}
-
 impl std::fmt::Display for FiveWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         let config =
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
-        let symbol = config.symbol();
-        let source_as_string =
-            self.source
-                .iter()
-                .fold(String::from(""), |mut acc, (key, value)| {
-                    let source_element_as_string =
-                        value
-                            .to_string()
-                            .lines()
-                            .fold(String::from(""), |mut acc, line| {
-                                acc.push_str(&format!(" {}{}", line, symbol));
-                                acc
-                            });
-                    acc.push_str(&format!(
-                        "{} [{}{}]{}",
-                        key, symbol, source_element_as_string, symbol
-                    ));
-                    acc
-                });
+        let source_as_string = self.source.to_string_handle(config);
         write!(
             f,
             "{}{} {}",
@@ -450,6 +409,12 @@ where
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         self.source.get_source_as_string(config)
+    }
+}
+
+impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FiveWrapperError {
+    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+        &self.code_occurence
     }
 }
 
@@ -598,12 +563,6 @@ pub struct FiveOneOriginError {
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
-impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FiveOneOriginError {
-    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
-        &self.code_occurence
-    }
-}
-
 impl std::fmt::Display for FiveOneOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         let config =
@@ -631,6 +590,12 @@ where
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         format!("{}", self.source)
+    }
+}
+
+impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FiveOneOriginError {
+    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+        &self.code_occurence
     }
 }
 
@@ -683,30 +648,12 @@ pub struct SixWrapperError {
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
-impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for SixWrapperError {
-    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
-        &self.code_occurence
-    }
-}
-
 impl std::fmt::Display for SixWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         let config =
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
         let symbol = config.symbol();
-        let source_as_string = self
-            .source
-            .iter()
-            .fold(String::from(""), |mut acc, vec_element| {
-                acc.push_str(&vec_element.to_string().lines().fold(
-                    String::from(""),
-                    |mut acc, vec_element| {
-                        acc.push_str(&format!(" {}{}", vec_element, symbol));
-                        acc
-                    },
-                ));
-                acc
-            });
+        let source_as_string = self.source.to_string_handle(config);
         write!(
             f,
             "[{}{}]{}{} {}",
@@ -733,6 +680,12 @@ where
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         self.source.get_source_as_string(config)
+    }
+}
+
+impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for SixWrapperError {
+    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+        &self.code_occurence
     }
 }
 
@@ -854,12 +807,6 @@ pub struct SevenOriginError {
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
-impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for SevenOriginError {
-    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
-        &self.code_occurence
-    }
-}
-
 impl std::fmt::Display for SevenOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         let config =
@@ -887,6 +834,12 @@ where
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         format!("{}", self.source)
+    }
+}
+
+impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for SevenOriginError {
+    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+        &self.code_occurence
     }
 }
 
@@ -940,12 +893,6 @@ pub struct EightOriginError {
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
-impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for EightOriginError {
-    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
-        &self.code_occurence
-    }
-}
-
 impl std::fmt::Display for EightOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         let config =
@@ -973,6 +920,12 @@ where
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         format!("{}", self.source)
+    }
+}
+
+impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for EightOriginError {
+    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+        &self.code_occurence
     }
 }
 
