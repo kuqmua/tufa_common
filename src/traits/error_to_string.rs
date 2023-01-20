@@ -2,7 +2,7 @@ use crate::traits::separator_symbol::SeparatorSymbol;
 use itertools::Itertools;
 
 pub trait ErrorToString<ConfigGeneric> {
-    fn log(&self, config: &ConfigGeneric) -> String;
+    fn error_to_string(&self, config: &ConfigGeneric) -> String;
 }
 
 impl<ConfigGeneric, SelfGeneric> ErrorToString<ConfigGeneric> for SelfGeneric
@@ -19,7 +19,7 @@ where
         + crate::traits::get_code_occurence::GetCodeOccurenceAsString<ConfigGeneric>
         + crate::traits::get_source::GetSourceAsString<ConfigGeneric>,
 {
-    fn log(&self, config: &ConfigGeneric) -> String {
+    fn error_to_string(&self, config: &ConfigGeneric) -> String {
         let code_occurence_as_string_vec = self.get_inner_source_and_code_occurence_vec(config);
         match code_occurence_as_string_vec.last() {
             Some(last) => {
