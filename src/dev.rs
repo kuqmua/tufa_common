@@ -15,6 +15,12 @@ pub struct ThreeWrapperError {
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
+impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for ThreeWrapperError {
+    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+        &self.code_occurence
+    }
+}
+
 impl std::fmt::Display for ThreeWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         let config =
@@ -44,25 +50,6 @@ where
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         self.source.get_source_as_string(config)
-    }
-}
-
-impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for ThreeWrapperError
-where
-    ConfigGeneric: crate::traits::fields::GetTimezone + crate::traits::fields::GetSourcePlaceType,
-{
-    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
-        format!(
-            "{} {}",
-            self.code_occurence
-                .get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
-            )
-            .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string()
-        )
     }
 }
 
@@ -182,6 +169,12 @@ pub struct FourWrapperError {
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
+impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FourWrapperError {
+    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+        &self.code_occurence
+    }
+}
+
 impl std::fmt::Display for FourWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         let config =
@@ -243,25 +236,6 @@ where
                 });
         config.pop_last(&mut source_as_string);
         source_as_string
-    }
-}
-
-impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for FourWrapperError
-where
-    ConfigGeneric: crate::traits::fields::GetTimezone + crate::traits::fields::GetSourcePlaceType,
-{
-    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
-        format!(
-            "{} {}",
-            self.code_occurence
-                .get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
-            )
-            .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string()
-        )
     }
 }
 
@@ -412,6 +386,12 @@ pub struct FiveWrapperError {
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
+impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FiveWrapperError {
+    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+        &self.code_occurence
+    }
+}
+
 impl std::fmt::Display for FiveWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         let config =
@@ -474,25 +454,6 @@ where
                 });
         config.pop_last(&mut source_as_string);
         source_as_string
-    }
-}
-
-impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for FiveWrapperError
-where
-    ConfigGeneric: crate::traits::fields::GetTimezone + crate::traits::fields::GetSourcePlaceType,
-{
-    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
-        format!(
-            "{} {}",
-            self.code_occurence
-                .get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
-            )
-            .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string()
-        )
     }
 }
 
@@ -628,6 +589,12 @@ pub struct FiveOneOriginError {
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
+impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FiveOneOriginError {
+    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+        &self.code_occurence
+    }
+}
+
 impl std::fmt::Display for FiveOneOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         let config =
@@ -655,25 +622,6 @@ where
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         format!("{}", self.source)
-    }
-}
-
-impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for FiveOneOriginError
-where
-    ConfigGeneric: crate::traits::fields::GetTimezone + crate::traits::fields::GetSourcePlaceType,
-{
-    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
-        format!(
-            "{} {}",
-            self.code_occurence
-                .get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
-            )
-            .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string()
-        )
     }
 }
 
@@ -724,6 +672,12 @@ pub fn five_one(should_trace: bool) -> Result<(), Box<FiveOneOriginError>> {
 pub struct SixWrapperError {
     source: Vec<SixWrapperErrorEnum>,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+}
+
+impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for SixWrapperError {
+    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+        &self.code_occurence
+    }
 }
 
 impl std::fmt::Display for SixWrapperError {
@@ -785,25 +739,6 @@ where
                 });
         config.pop_last(&mut source_as_string);
         source_as_string
-    }
-}
-
-impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for SixWrapperError
-where
-    ConfigGeneric: crate::traits::fields::GetTimezone + crate::traits::fields::GetSourcePlaceType,
-{
-    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
-        format!(
-            "{} {}",
-            self.code_occurence
-                .get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
-            )
-            .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string()
-        )
     }
 }
 
@@ -937,6 +872,12 @@ pub struct SevenOriginError {
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
+impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for SevenOriginError {
+    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+        &self.code_occurence
+    }
+}
+
 impl std::fmt::Display for SevenOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         let config =
@@ -964,25 +905,6 @@ where
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         format!("{}", self.source)
-    }
-}
-
-impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for SevenOriginError
-where
-    ConfigGeneric: crate::traits::fields::GetTimezone + crate::traits::fields::GetSourcePlaceType,
-{
-    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
-        format!(
-            "{} {}",
-            self.code_occurence
-                .get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
-            )
-            .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string()
-        )
     }
 }
 
@@ -1036,6 +958,12 @@ pub struct EightOriginError {
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
+impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for EightOriginError {
+    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+        &self.code_occurence
+    }
+}
+
 impl std::fmt::Display for EightOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         let config =
@@ -1063,25 +991,6 @@ where
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         format!("{}", self.source)
-    }
-}
-
-impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for EightOriginError
-where
-    ConfigGeneric: crate::traits::fields::GetTimezone + crate::traits::fields::GetSourcePlaceType,
-{
-    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
-        format!(
-            "{} {}",
-            self.code_occurence
-                .get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
-            )
-            .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string()
-        )
     }
 }
 
