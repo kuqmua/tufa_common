@@ -2,11 +2,8 @@ pub trait GetCodeOccurence {
     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence;
 }
 //
-pub trait GetCodeOccurenceAsString {
-    fn get_code_occurence_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String;
+pub trait GetCodeOccurenceAsString<ConfigGeneric> {
+    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String;
 }
 
 // pub fn get_code_occurence_as_string(

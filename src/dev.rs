@@ -36,11 +36,22 @@ impl std::fmt::Display for ThreeWrapperError {
     }
 }
 
-impl GetCodeOccurenceAsString for ThreeWrapperError {
-    fn get_code_occurence_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
+impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for ThreeWrapperError
+where
+    ConfigGeneric: crate::traits::fields::GetLogType
+        + crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone,
+{
+    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
+        self.source.get_source_as_string(config)
+    }
+}
+
+impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for ThreeWrapperError
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
         format!(
             "{} {}",
             self.code_occurence
@@ -48,7 +59,7 @@ impl GetCodeOccurenceAsString for ThreeWrapperError {
             chrono::DateTime::<chrono::Utc>::from(
                 std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
             )
-            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
+            .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
             .format("%Y-%m-%d %H:%M:%S")
             .to_string()
         )
@@ -56,12 +67,6 @@ impl GetCodeOccurenceAsString for ThreeWrapperError {
 }
 
 impl ThreeWrapperError {
-    pub fn get_source_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
-        self.source.get_source_as_string(config)
-    }
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct, //todo maybe remove
@@ -134,23 +139,31 @@ impl std::fmt::Display for ThreeWrapperErrorEnum {
     }
 }
 
-impl ThreeWrapperErrorEnum {
-    pub fn get_source_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
+impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for ThreeWrapperErrorEnum
+where
+    ConfigGeneric: crate::traits::fields::GetLogType
+        + crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone,
+{
+    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         match self {
             ThreeWrapperErrorEnum::FourWrapper(i) => i.get_source_as_string(config),
         }
     }
-    pub fn get_code_occurence_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
+}
+
+impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for ThreeWrapperErrorEnum
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
         match self {
             ThreeWrapperErrorEnum::FourWrapper(i) => i.get_code_occurence_as_string(config),
         }
     }
+}
+
+impl ThreeWrapperErrorEnum {
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
@@ -208,31 +221,13 @@ impl std::fmt::Display for FourWrapperError {
     }
 }
 
-impl GetCodeOccurenceAsString for FourWrapperError {
-    fn get_code_occurence_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
-        format!(
-            "{} {}",
-            self.code_occurence
-                .get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
-            )
-            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string()
-        )
-    }
-}
-
-impl FourWrapperError {
-    //maybe not need?
-    pub fn get_source_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
+impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for FourWrapperError
+where
+    ConfigGeneric: crate::traits::fields::GetLogType
+        + crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone,
+{
+    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         let symbol = config.symbol();
         let mut source_as_string =
             self.source
@@ -249,6 +244,28 @@ impl FourWrapperError {
         config.pop_last(&mut source_as_string);
         source_as_string
     }
+}
+
+impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for FourWrapperError
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
+        format!(
+            "{} {}",
+            self.code_occurence
+                .get_code_path(config.get_source_place_type()),
+            chrono::DateTime::<chrono::Utc>::from(
+                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
+            )
+            .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
+            .format("%Y-%m-%d %H:%M:%S")
+            .to_string()
+        )
+    }
+}
+
+impl FourWrapperError {
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
@@ -317,26 +334,33 @@ impl std::fmt::Display for FourWrapperErrorEnum {
     }
 }
 
-impl FourWrapperErrorEnum {
-    pub fn get_source_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
+impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for FourWrapperErrorEnum
+where
+    ConfigGeneric: crate::traits::fields::GetLogType
+        + crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone,
+{
+    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         match self {
-            //todo - if wrapper - with config, if origin - without
             FourWrapperErrorEnum::FiveWrapper(i) => i.get_source_as_string(config),
             FourWrapperErrorEnum::SixWrapper(i) => i.get_source_as_string(config),
         }
     }
-    pub fn get_code_occurence_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
+}
+
+impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for FourWrapperErrorEnum
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
         match self {
             FourWrapperErrorEnum::FiveWrapper(i) => i.get_code_occurence_as_string(config),
             FourWrapperErrorEnum::SixWrapper(i) => i.get_code_occurence_as_string(config),
         }
     }
+}
+
+impl FourWrapperErrorEnum {
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
@@ -427,30 +451,13 @@ impl std::fmt::Display for FiveWrapperError {
     }
 }
 
-impl GetCodeOccurenceAsString for FiveWrapperError {
-    fn get_code_occurence_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
-        format!(
-            "{} {}",
-            self.code_occurence
-                .get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
-            )
-            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string()
-        )
-    }
-}
-
-impl FiveWrapperError {
-    pub fn get_source_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
+impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for FiveWrapperError
+where
+    ConfigGeneric: crate::traits::fields::GetLogType
+        + crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone,
+{
+    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         let symbol = config.symbol();
         let mut source_as_string =
             self.source
@@ -468,6 +475,28 @@ impl FiveWrapperError {
         config.pop_last(&mut source_as_string);
         source_as_string
     }
+}
+
+impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for FiveWrapperError
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
+        format!(
+            "{} {}",
+            self.code_occurence
+                .get_code_path(config.get_source_place_type()),
+            chrono::DateTime::<chrono::Utc>::from(
+                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
+            )
+            .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
+            .format("%Y-%m-%d %H:%M:%S")
+            .to_string()
+        )
+    }
+}
+
+impl FiveWrapperError {
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
@@ -536,23 +565,29 @@ impl std::fmt::Display for FiveWrapperErrorEnum {
     }
 }
 
-impl FiveWrapperErrorEnum {
-    pub fn get_source_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
+impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for FiveWrapperErrorEnum
+where
+    ConfigGeneric: crate::traits::fields::GetLogType + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         match self {
             FiveWrapperErrorEnum::FiveOneOrigin(i) => i.get_source_as_string(config),
         }
     }
-    pub fn get_code_occurence_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
+}
+
+impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for FiveWrapperErrorEnum
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
         match self {
             FiveWrapperErrorEnum::FiveOneOrigin(i) => i.get_code_occurence_as_string(config),
         }
     }
+}
+
+impl FiveWrapperErrorEnum {
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
@@ -623,11 +658,11 @@ where
     }
 }
 
-impl GetCodeOccurenceAsString for FiveOneOriginError {
-    fn get_code_occurence_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
+impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for FiveOneOriginError
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
         format!(
             "{} {}",
             self.code_occurence
@@ -635,7 +670,7 @@ impl GetCodeOccurenceAsString for FiveOneOriginError {
             chrono::DateTime::<chrono::Utc>::from(
                 std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
             )
-            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
+            .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
             .format("%Y-%m-%d %H:%M:%S")
             .to_string()
         )
@@ -727,30 +762,13 @@ impl std::fmt::Display for SixWrapperError {
     }
 }
 
-impl GetCodeOccurenceAsString for SixWrapperError {
-    fn get_code_occurence_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
-        format!(
-            "{} {}",
-            self.code_occurence
-                .get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
-            )
-            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string()
-        )
-    }
-}
-
-impl SixWrapperError {
-    pub fn get_source_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
+impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for SixWrapperError
+where
+    ConfigGeneric: crate::traits::fields::GetLogType
+        + crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone,
+{
+    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         let symbol = config.symbol();
         let mut source_as_string =
             self.source
@@ -768,6 +786,28 @@ impl SixWrapperError {
         config.pop_last(&mut source_as_string);
         source_as_string
     }
+}
+
+impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for SixWrapperError
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
+        format!(
+            "{} {}",
+            self.code_occurence
+                .get_code_path(config.get_source_place_type()),
+            chrono::DateTime::<chrono::Utc>::from(
+                std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
+            )
+            .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
+            .format("%Y-%m-%d %H:%M:%S")
+            .to_string()
+        )
+    }
+}
+
+impl SixWrapperError {
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
@@ -850,26 +890,32 @@ impl std::fmt::Display for SixWrapperErrorEnum {
     }
 }
 
-impl SixWrapperErrorEnum {
-    pub fn get_source_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
+impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for SixWrapperErrorEnum
+where
+    ConfigGeneric: crate::traits::fields::GetLogType + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         match self {
             //todo - if wrapper - with config, if origin - without
             SixWrapperErrorEnum::SevenWrapper(i) => i.get_source_as_string(config),
             SixWrapperErrorEnum::EightWrapper(i) => i.get_source_as_string(config),
         }
     }
-    pub fn get_code_occurence_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
+}
+
+impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for SixWrapperErrorEnum
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
         match self {
             SixWrapperErrorEnum::SevenWrapper(i) => i.get_code_occurence_as_string(config),
             SixWrapperErrorEnum::EightWrapper(i) => i.get_code_occurence_as_string(config),
         }
     }
+}
+
+impl SixWrapperErrorEnum {
     pub fn get_inner_source_and_code_occurence_as_string(
         &self,
         config: &crate::config_mods::config_struct::ConfigStruct,
@@ -921,11 +967,11 @@ where
     }
 }
 
-impl GetCodeOccurenceAsString for SevenOriginError {
-    fn get_code_occurence_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
+impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for SevenOriginError
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
         format!(
             "{} {}",
             self.code_occurence
@@ -933,7 +979,7 @@ impl GetCodeOccurenceAsString for SevenOriginError {
             chrono::DateTime::<chrono::Utc>::from(
                 std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
             )
-            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
+            .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
             .format("%Y-%m-%d %H:%M:%S")
             .to_string()
         )
@@ -1020,11 +1066,11 @@ where
     }
 }
 
-impl GetCodeOccurenceAsString for EightOriginError {
-    fn get_code_occurence_as_string(
-        &self,
-        config: &crate::config_mods::config_struct::ConfigStruct,
-    ) -> String {
+impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for EightOriginError
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
         format!(
             "{} {}",
             self.code_occurence
@@ -1032,7 +1078,7 @@ impl GetCodeOccurenceAsString for EightOriginError {
             chrono::DateTime::<chrono::Utc>::from(
                 std::time::UNIX_EPOCH + self.code_occurence.time_file_line_column.time,
             )
-            .with_timezone(&chrono::FixedOffset::east_opt(config.timezone).unwrap())
+            .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
             .format("%Y-%m-%d %H:%M:%S")
             .to_string()
         )
