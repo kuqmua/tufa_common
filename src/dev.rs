@@ -959,17 +959,6 @@ where
     }
 }
 
-impl SevenOriginError {
-    pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
-        config.log(format!(
-            "{}{}{}",
-            self.get_source_as_string(config),
-            config.symbol(),
-            self.get_code_occurence_as_string(config)
-        ));
-    }
-}
-
 pub fn seven(should_trace: bool) -> Result<(), Box<SevenOriginError>> {
     let f = SevenOriginError {
         source: String::from("error_seven"),
@@ -1080,4 +1069,3 @@ pub fn eight(should_trace: bool) -> Result<(), Box<EightOriginError>> {
         }
     }));
 }
-//add something
