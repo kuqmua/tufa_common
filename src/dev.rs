@@ -100,12 +100,6 @@ where
     }
 }
 
-impl ThreeWrapperError {
-    pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
-        todo!()
-    }
-}
-
 pub fn three(should_trace: bool) -> Result<(), Box<ThreeWrapperError>> {
     if let Err(e) = four(false) {
         return Err(Box::new(ThreeWrapperError {
@@ -299,12 +293,6 @@ where
             },
         );
         vec
-    }
-}
-
-impl FourWrapperError {
-    pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
-        todo!()
     }
 }
 
@@ -526,12 +514,6 @@ where
     }
 }
 
-impl FiveWrapperError {
-    pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
-        todo!()
-    }
-}
-
 #[derive(Debug)]
 pub enum FiveWrapperErrorEnum {
     FiveOneOrigin(FiveOneOriginError),
@@ -681,17 +663,6 @@ where
     }
 }
 
-impl FiveOneOriginError {
-    pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
-        config.log(format!(
-            "{}{}{}",
-            self.get_source_as_string(config),
-            config.symbol(),
-            self.get_code_occurence_as_string(config)
-        ));
-    }
-}
-
 pub fn five_one(should_trace: bool) -> Result<(), Box<FiveOneOriginError>> {
     return Err(Box::new(FiveOneOriginError {
         source: String::from("five_one error"),
@@ -789,17 +760,6 @@ where
             },
         );
         vec
-    }
-}
-
-impl SixWrapperError {
-    pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
-        config.log(format!(
-            "{}{}{}",
-            self.get_source_as_string(config),
-            config.symbol(),
-            self.get_code_occurence_as_string(config)
-        ));
     }
 }
 
@@ -1042,17 +1002,6 @@ where
                 increment: 0,
             },
         ]
-    }
-}
-
-impl EightOriginError {
-    pub fn log(&self, config: &crate::config_mods::config_struct::ConfigStruct) {
-        config.log(format!(
-            "{}{}{}",
-            self.get_source_as_string(config),
-            config.symbol(),
-            self.get_code_occurence_as_string(config)
-        ));
     }
 }
 
