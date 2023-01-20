@@ -38,18 +38,6 @@ pub trait ToStringHandle<ConfigGeneric> {
     fn to_string_handle(&self, config: &ConfigGeneric) -> String;
 }
 
-// impl<SelfGeneric, ConfigGeneric> ToStringHandle<ConfigGeneric> for SelfGeneric
-// where
-//     ConfigGeneric: crate::traits::fields::GetLogType
-//         + crate::traits::fields::GetSourcePlaceType
-//         + crate::traits::fields::GetTimezone,
-//     SelfGeneric: crate::traits::get_source::GetSourceAsString<ConfigGeneric>,
-// {
-//     fn to_string_handle(&self, config: &ConfigGeneric) -> String {
-//         self.get_source_as_string(config)
-//     }
-// }
-
 impl<VecElementGeneric, ConfigGeneric> ToStringHandle<ConfigGeneric> for Vec<VecElementGeneric>
 where
     ConfigGeneric: crate::traits::fields::GetLogType,
@@ -70,7 +58,7 @@ where
             );
             acc
         });
-        source_as_string
+        format!("[{}{}]", symbol, source_as_string)
     }
 }
 
@@ -100,4 +88,39 @@ where
         });
         source_as_string
     }
+}
+
+pub trait OriginSourceToString {
+    fn origin_source_to_string(&self) -> String;
+}
+
+#[derive(Debug)]
+pub struct ErrorOrigin<SourceGeneric, CodeOccurenceGeneric> {
+    source: SourceGeneric,
+    code_occurence: CodeOccurenceGeneric,
+}
+
+impl<SourceGeneric, CodeOccurenceGeneric, ConfigGeneric> ErrorDisplayInner<ConfigGeneric>
+    for ErrorOrigin<SourceGeneric, CodeOccurenceGeneric>
+where
+    ConfigGeneric: crate::traits::fields::GetLogType
+        + crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone,
+    SourceGeneric: crate::traits::error_display::OriginSourceToString,
+    CodeOccurenceGeneric: crate::traits::error_display::ToStringHandle<ConfigGeneric>,
+{
+    fn error_display_inner(&self, config: &ConfigGeneric) -> String {
+        format!(
+            "{}{}{}",
+            self.source.origin_source_to_string(),
+            config.symbol(),
+            self.code_occurence.to_string_handle(config),
+        )
+    }
+}
+
+#[derive(Debug)]
+pub struct ErrorWrapper<SourceGeneric, CodeOccurenceGeneric> {
+    source: SourceGeneric,
+    code_occurence: CodeOccurenceGeneric,
 }

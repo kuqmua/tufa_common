@@ -1,6 +1,6 @@
 use crate::common::source_and_code_occurence;
 use crate::traits::code_path::CodePath;
-use crate::traits::error_display::ToStringHandle;
+use crate::traits::error_display::{ErrorDisplayInner, ToStringHandle};
 use crate::traits::fields::GetSourcePlaceType;
 use crate::traits::get_code_occurence::GetCodeOccurenceAsString;
 use crate::traits::get_inner_source_and_code_occurence_vec::GetInnerSourceAndCodeOccurenceVecHelper;
@@ -624,8 +624,7 @@ impl std::fmt::Display for SixWrapperError {
         let symbol = config.symbol();
         write!(
             f,
-            "[{}{}]{}{}",
-            symbol,
+            "{}{}{}",
             self.source.to_string_handle(config),
             symbol,
             self.get_code_occurence_as_string(config)
@@ -768,17 +767,22 @@ pub struct SevenOriginError {
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
+//must be written as proc_macro
 impl std::fmt::Display for SevenOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        let config =
-            once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
         write!(
             f,
-            "{}{}{}",
-            self.get_source_as_string(config),
-            config.symbol(),
-            self.get_code_occurence_as_string(config)
+            "{}",
+            self.error_display_inner(once_cell::sync::Lazy::force(
+                &crate::global_variables::runtime::config::CONFIG
+            ))
         )
+    }
+}
+
+impl crate::traits::error_display::OriginSourceToString for SevenOriginError {
+    fn origin_source_to_string(&self) -> String {
+        format!("{}", self.source)
     }
 }
 
@@ -847,17 +851,22 @@ pub struct EightOriginError {
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
+//must be written as proc_macro
 impl std::fmt::Display for EightOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        let config =
-            once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
         write!(
             f,
-            "{}{}{}",
-            self.get_source_as_string(config),
-            config.symbol(),
-            self.get_code_occurence_as_string(config)
+            "{}",
+            self.error_display_inner(once_cell::sync::Lazy::force(
+                &crate::global_variables::runtime::config::CONFIG
+            ))
         )
+    }
+}
+
+impl crate::traits::error_display::OriginSourceToString for EightOriginError {
+    fn origin_source_to_string(&self) -> String {
+        format!("{}", self.source)
     }
 }
 
