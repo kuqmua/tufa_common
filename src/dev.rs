@@ -20,10 +20,12 @@ impl std::fmt::Display for ThreeWrapperError {
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
         write!(
             f,
-            "{}{}{}",
+            "{}{}{} host: {:?} pid: {}",
             self.source,
             config.symbol(),
-            self.get_code_occurence_as_string(config)
+            self.get_code_occurence_as_string(config),
+            gethostname::gethostname(),
+            std::process::id()
         )
     }
 }
@@ -178,9 +180,11 @@ impl std::fmt::Display for FourWrapperError {
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
         write!(
             f,
-            "{}{}",
+            "{}{} host: {:?} pid: {}",
             self.source.to_string_handle(config),
-            self.get_code_occurence_as_string(config)
+            self.get_code_occurence_as_string(config),
+            gethostname::gethostname(),
+            std::process::id()
         )
     }
 }
@@ -336,9 +340,11 @@ impl std::fmt::Display for FiveWrapperError {
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
         write!(
             f,
-            "{}{}",
+            "{}{} host: {:?} pid: {}",
             self.source.to_string_handle(config),
-            self.get_code_occurence_as_string(config)
+            self.get_code_occurence_as_string(config),
+            gethostname::gethostname(),
+            std::process::id()
         )
     }
 }
@@ -561,10 +567,12 @@ impl std::fmt::Display for SixWrapperError {
         let symbol = config.symbol();
         write!(
             f,
-            "{}{}{}",
+            "{}{}{} host: {:?} pid: {}",
             self.source.to_string_handle(config),
             symbol,
-            self.get_code_occurence_as_string(config)
+            self.get_code_occurence_as_string(config),
+            gethostname::gethostname(),
+            std::process::id()
         )
     }
 }
