@@ -1,4 +1,4 @@
-use crate::common::{code_occurence, source_and_code_occurence};
+use crate::common::source_and_code_occurence;
 use crate::traits::error_display::{ErrorDisplayInner, ToStringHandle};
 use crate::traits::get_code_occurence::GetCodeOccurenceAsString;
 use crate::traits::get_inner_source_and_code_occurence_vec::GetInnerSourceAndCodeOccurenceVecHelper;
@@ -20,11 +20,10 @@ impl std::fmt::Display for ThreeWrapperError {
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
         write!(
             f,
-            "{}{}{} host: {:?}",
+            "{}{}{}",
             self.source,
             config.symbol(),
             self.get_code_occurence_as_string(config),
-            gethostname::gethostname(),
         )
     }
 }
@@ -179,10 +178,9 @@ impl std::fmt::Display for FourWrapperError {
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
         write!(
             f,
-            "{}{} host: {:?}",
+            "{}{}",
             self.source.to_string_handle(config),
             self.get_code_occurence_as_string(config),
-            gethostname::gethostname(),
         )
     }
 }
@@ -338,10 +336,9 @@ impl std::fmt::Display for FiveWrapperError {
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
         write!(
             f,
-            "{}{} host: {:?}",
+            "{}{}",
             self.source.to_string_handle(config),
             self.get_code_occurence_as_string(config),
-            gethostname::gethostname(),
         )
     }
 }
@@ -564,11 +561,10 @@ impl std::fmt::Display for SixWrapperError {
         let symbol = config.symbol();
         write!(
             f,
-            "{}{}{} host: {:?}",
+            "{}{}{}",
             self.source.to_string_handle(config),
             symbol,
             self.get_code_occurence_as_string(config),
-            gethostname::gethostname(),
         )
     }
 }

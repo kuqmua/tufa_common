@@ -20,7 +20,7 @@ where
     fn error_display_inner(&self, config: &ConfigGeneric) -> String {
         let code_occurence = self.get_code_occurence_old_way();
         format!(
-            "{}{}{} {} pid: {} host: {:?}",
+            "{}{}{} {} pid: {} host: {}",
             self.get_source_as_string(config),
             config.symbol(),
             code_occurence.get_code_path(config.get_source_place_type()),
@@ -31,7 +31,7 @@ where
             .format("%Y-%m-%d %H:%M:%S")
             .to_string(),
             code_occurence.pid_time_file_line_column.process_id,
-            gethostname::gethostname()
+            once_cell::sync::Lazy::force(&crate::global_variables::runtime::hostname::HOSTNAME),
         )
     }
 }
