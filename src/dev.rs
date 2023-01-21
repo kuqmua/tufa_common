@@ -1,7 +1,5 @@
 use crate::common::source_and_code_occurence;
-use crate::traits::code_path::CodePath;
-use crate::traits::error_display::{ErrorDisplayInner, GetSourcesForTracingAndVec, ToStringHandle};
-use crate::traits::fields::GetSourcePlaceType;
+use crate::traits::error_display::{ErrorDisplayInner, ToStringHandle};
 use crate::traits::get_code_occurence::GetCodeOccurenceAsString;
 use crate::traits::get_inner_source_and_code_occurence_vec::GetInnerSourceAndCodeOccurenceVecHelper;
 use crate::traits::get_source::GetSourceAsString;
@@ -217,7 +215,9 @@ where
         &self,
         config: &ConfigGeneric,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
-        let (sources_for_tracing, mut vec) = self.source.get_sources_for_tracing_and_vec(config);
+        let (sources_for_tracing, mut vec) = self
+            .source
+            .get_inner_source_and_code_occurence_vec_helper(config);
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
                 source: sources_for_tracing,
@@ -373,7 +373,9 @@ where
         &self,
         config: &ConfigGeneric,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
-        let (sources_for_tracing, mut vec) = self.source.get_sources_for_tracing_and_vec(config);
+        let (sources_for_tracing, mut vec) = self
+            .source
+            .get_inner_source_and_code_occurence_vec_helper(config);
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
                 source: sources_for_tracing,
@@ -469,17 +471,22 @@ pub struct FiveOneOriginError {
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
+//must be written as proc_macro
 impl std::fmt::Display for FiveOneOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        let config =
-            once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
         write!(
             f,
-            "{}{}{}",
-            self.get_source_as_string(config),
-            config.symbol(),
-            self.get_code_occurence_as_string(config)
+            "{}",
+            self.error_display_inner(once_cell::sync::Lazy::force(
+                &crate::global_variables::runtime::config::CONFIG
+            ))
         )
+    }
+}
+
+impl crate::traits::error_display::OriginSourceToString for FiveOneOriginError {
+    fn origin_source_to_string(&self) -> String {
+        format!("{}", self.source)
     }
 }
 
