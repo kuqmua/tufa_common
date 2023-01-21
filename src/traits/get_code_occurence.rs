@@ -14,7 +14,9 @@ pub trait GetCodeOccurenceAsString<ConfigGeneric> {
 
 impl<ConfigGeneric, SelfGeneric> GetCodeOccurenceAsString<ConfigGeneric> for SelfGeneric
 where
-    ConfigGeneric: crate::traits::fields::GetTimezone + crate::traits::fields::GetSourcePlaceType,
+    ConfigGeneric: crate::traits::fields::GetTimezone
+        + crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetServerPort,
     SelfGeneric: crate::traits::get_code_occurence::GetCodeOccurenceOldWay,
 {
     fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
