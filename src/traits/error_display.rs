@@ -1,3 +1,6 @@
+use itertools::Itertools;
+
+use crate::global_variables::runtime::config;
 use crate::traits::code_path::CodePath;
 use crate::traits::separator_symbol::SeparatorSymbol;
 
@@ -65,9 +68,9 @@ where
 impl<HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric> ToStringHandle<ConfigGeneric>
     for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
 where
-    ConfigGeneric: crate::traits::fields::GetLogType,
     HashMapKeyGeneric: std::fmt::Display,
     HashMapValueGeneric: std::fmt::Display, //ToStringHandle<ConfigGeneric>,
+    ConfigGeneric: crate::traits::fields::GetLogType,
 {
     fn to_string_handle(&self, config: &ConfigGeneric) -> String {
         let symbol = config.symbol();
@@ -94,33 +97,80 @@ pub trait OriginSourceToString {
     fn origin_source_to_string(&self) -> String;
 }
 
-#[derive(Debug)]
-pub struct ErrorOrigin<SourceGeneric, CodeOccurenceGeneric> {
-    source: SourceGeneric,
-    code_occurence: CodeOccurenceGeneric,
+pub trait GetSourcesForTracingAndVec<ConfigGeneric> {
+    fn get_sources_for_tracing_and_vec(
+        &self,
+        config: &ConfigGeneric,
+    ) -> (
+        Vec<
+            Vec<(
+                crate::common::source_and_code_occurence::Source,
+                Vec<crate::common::source_and_code_occurence::Key>,
+            )>,
+        >,
+        Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString>,
+    );
 }
 
-impl<SourceGeneric, CodeOccurenceGeneric, ConfigGeneric> ErrorDisplayInner<ConfigGeneric>
-    for ErrorOrigin<SourceGeneric, CodeOccurenceGeneric>
+impl<HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric>
+    GetSourcesForTracingAndVec<ConfigGeneric>
+    for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
 where
-    ConfigGeneric: crate::traits::fields::GetLogType
-        + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone,
-    SourceGeneric: crate::traits::error_display::OriginSourceToString,
-    CodeOccurenceGeneric: crate::traits::error_display::ToStringHandle<ConfigGeneric>,
+    HashMapKeyGeneric: std::fmt::Display,
+    HashMapValueGeneric:
+        crate::traits::get_inner_source_and_code_occurence_vec::GetInnerSourceAndCodeOccurenceVec<
+            ConfigGeneric,
+        >,
+    ConfigGeneric: crate::traits::fields::GetLogType,
 {
-    fn error_display_inner(&self, config: &ConfigGeneric) -> String {
-        format!(
-            "{}{}{}",
-            self.source.origin_source_to_string(),
-            config.symbol(),
-            self.code_occurence.to_string_handle(config),
-        )
+    fn get_sources_for_tracing_and_vec(
+        &self,
+        config: &ConfigGeneric,
+    ) -> (
+        Vec<
+            Vec<(
+                crate::common::source_and_code_occurence::Source,
+                Vec<crate::common::source_and_code_occurence::Key>,
+            )>,
+        >,
+        Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString>,
+    ) {
+        let mut sources_for_tracing: Vec<
+            Vec<(
+                crate::common::source_and_code_occurence::Source,
+                Vec<crate::common::source_and_code_occurence::Key>,
+            )>,
+        > = vec![];
+        let vec = self.iter().fold(
+            Vec::with_capacity(self.len() + 1),
+            |mut acc, (key, value)| {
+                value
+                    .get_inner_source_and_code_occurence_vec(config)
+                    .into_iter()
+                    .for_each(|mut e| {
+                        e.source.iter().for_each(|hm| {
+                            let mut new_hm = Vec::with_capacity(hm.len());
+                            hm.iter().for_each(|(k, v)| {
+                                let mut new_v = Vec::with_capacity(v.len() + 1);
+                                v.iter().for_each(|v_element| {
+                                    new_v.push(v_element.clone());
+                                });
+                                new_v.push(crate::common::source_and_code_occurence::Key {
+                                    key: key.to_string(),
+                                    uuid: uuid::Uuid::new_v4(),
+                                });
+                                new_hm.push((k.clone(), new_v.clone()));
+                            });
+                            sources_for_tracing.push(new_hm);
+                        });
+                        e.add_one();
+                        acc.push(e);
+                    });
+                acc
+            },
+        );
+        sources_for_tracing = sources_for_tracing.into_iter().unique().collect();
+        //todo - optimize it?
+        (sources_for_tracing, vec)
     }
-}
-
-#[derive(Debug)]
-pub struct ErrorWrapper<SourceGeneric, CodeOccurenceGeneric> {
-    source: SourceGeneric,
-    code_occurence: CodeOccurenceGeneric,
 }

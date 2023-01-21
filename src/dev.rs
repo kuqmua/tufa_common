@@ -1,6 +1,6 @@
 use crate::common::source_and_code_occurence;
 use crate::traits::code_path::CodePath;
-use crate::traits::error_display::{ErrorDisplayInner, ToStringHandle};
+use crate::traits::error_display::{ErrorDisplayInner, GetSourcesForTracingAndVec, ToStringHandle};
 use crate::traits::fields::GetSourcePlaceType;
 use crate::traits::get_code_occurence::GetCodeOccurenceAsString;
 use crate::traits::get_inner_source_and_code_occurence_vec::GetInnerSourceAndCodeOccurenceVecHelper;
@@ -217,41 +217,7 @@ where
         &self,
         config: &ConfigGeneric,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
-        let mut sources_for_tracing: Vec<
-            Vec<(
-                crate::common::source_and_code_occurence::Source,
-                Vec<crate::common::source_and_code_occurence::Key>,
-            )>,
-        > = vec![];
-        let mut vec = self.source.iter().fold(
-            Vec::with_capacity(self.source.len() + 1),
-            |mut acc, (key, value)| {
-                value
-                    .get_inner_source_and_code_occurence_vec(config)
-                    .into_iter()
-                    .for_each(|mut e| {
-                        e.source.iter().for_each(|hm| {
-                            let mut new_hm = Vec::with_capacity(hm.len());
-                            hm.iter().for_each(|(k, v)| {
-                                let mut new_v = Vec::with_capacity(v.len() + 1);
-                                v.iter().for_each(|v_element| {
-                                    new_v.push(v_element.clone());
-                                });
-                                new_v.push(crate::common::source_and_code_occurence::Key {
-                                    key: key.clone(),
-                                    uuid: uuid::Uuid::new_v4(),
-                                });
-                                new_hm.push((k.clone(), new_v.clone()));
-                            });
-                            sources_for_tracing.push(new_hm);
-                        });
-                        e.add_one();
-                        acc.push(e);
-                    });
-                acc
-            },
-        );
-        sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
+        let (sources_for_tracing, mut vec) = self.source.get_sources_for_tracing_and_vec(config);
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
                 source: sources_for_tracing,
@@ -407,43 +373,7 @@ where
         &self,
         config: &ConfigGeneric,
     ) -> Vec<crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString> {
-        let mut sources_for_tracing: Vec<
-            Vec<(
-                crate::common::source_and_code_occurence::Source,
-                Vec<crate::common::source_and_code_occurence::Key>,
-            )>,
-        > = Vec::new();
-        let mut vec = self.source.iter().fold(
-            Vec::with_capacity(self.source.len() + 1),
-            |mut acc, (key, value)| {
-                value
-                    .get_inner_source_and_code_occurence_vec(config)
-                    .into_iter()
-                    .for_each(|mut e| {
-                        e.source.iter().for_each(|hm| {
-                            let mut hm_handle = Vec::with_capacity(hm.len());
-                            hm.iter().for_each(|(k, v)| {
-                                let mut keys_vec_handle = Vec::with_capacity(v.len() + 1);
-                                v.iter().for_each(|v_element| {
-                                    keys_vec_handle.push(v_element.clone());
-                                });
-                                keys_vec_handle.push(
-                                    crate::common::source_and_code_occurence::Key {
-                                        key: key.clone(),
-                                        uuid: uuid::Uuid::new_v4(),
-                                    },
-                                );
-                                hm_handle.push((k.clone(), keys_vec_handle));
-                            });
-                            sources_for_tracing.push(hm_handle);
-                        });
-                        e.add_one();
-                        acc.push(e);
-                    });
-                acc
-            },
-        );
-        sources_for_tracing = sources_for_tracing.into_iter().unique().collect(); //todo - optimize it?
+        let (sources_for_tracing, mut vec) = self.source.get_sources_for_tracing_and_vec(config);
         vec.push(
             crate::common::source_and_code_occurence::SourceAndCodeOccurenceAsString {
                 source: sources_for_tracing,
