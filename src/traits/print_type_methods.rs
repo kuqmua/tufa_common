@@ -1,7 +1,6 @@
 use crate::config_mods::config_struct::ConfigStruct;
 use crate::config_mods::print_type::PrintType;
 use crate::traits::get_color::CleaningColor;
-use crate::traits::get_color::ErrorColor;
 use crate::traits::get_color::InfoColor;
 use crate::traits::get_color::PartialSuccessColor;
 use crate::traits::get_color::SuccessColor;

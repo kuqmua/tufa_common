@@ -1,10 +1,6 @@
 use crate::traits::code_path::CodePath;
 use crate::traits::separator_symbol::SeparatorSymbol;
 
-pub trait ErrorDisplay {
-    fn error_display(&self) -> String;
-}
-
 pub trait ErrorDisplayInner<ConfigGeneric> {
     fn error_display_inner(&self, config: &ConfigGeneric) -> String;
 }
@@ -92,8 +88,4 @@ where
         });
         source_as_string
     }
-}
-
-pub trait OriginSourceToString {
-    fn origin_source_to_string(&self) -> String;
 }

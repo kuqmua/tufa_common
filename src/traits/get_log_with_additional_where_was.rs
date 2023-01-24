@@ -1,7 +1,6 @@
 use crate::common::where_was::WhereWas;
 use crate::config_mods::log_type::LogType;
 use crate::config_mods::source_place_type::SourcePlaceType;
-use crate::traits::get_git_info::GetGitInfo;
 use crate::traits::where_was_methods::WhereWasMethods;
 
 pub trait GetLogWithAdditionalWhereWas<SelfGeneric> {
