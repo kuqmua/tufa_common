@@ -2,10 +2,12 @@ use crate::traits::error_display::{ErrorDisplayInner, ToStringHandle};
 use crate::traits::get_code_occurence::GetCodeOccurenceAsString;
 use crate::traits::get_source::GetSourceAsString;
 use crate::traits::separator_symbol::SeparatorSymbol;
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::vec;
+use thiserror::Error;
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct ThreeWrapperError {
     source: ThreeWrapperErrorEnum,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
@@ -60,7 +62,7 @@ pub fn three() -> Result<(), Box<ThreeWrapperError>> {
     Ok(())
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub enum ThreeWrapperErrorEnum {
     FourWrapper(FourWrapperError),
 }
@@ -100,7 +102,7 @@ where
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct FourWrapperError {
     source: HashMap<String, FourWrapperErrorEnum>,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
@@ -137,7 +139,7 @@ impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FourWrapperEr
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub enum FourWrapperErrorEnum {
     FiveWrapper(FiveWrapperError),
     SixWrapper(SixWrapperError),
@@ -211,7 +213,7 @@ pub fn four() -> Result<(), Box<FourWrapperError>> {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct FiveWrapperError {
     source: HashMap<String, FiveWrapperErrorEnum>,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
@@ -248,7 +250,7 @@ impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FiveWrapperEr
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub enum FiveWrapperErrorEnum {
     FiveOneOrigin(FiveOneOriginError),
 }
@@ -307,7 +309,7 @@ pub fn five() -> Result<(), Box<FiveWrapperError>> {
     Ok(())
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct FiveOneOriginError {
     source: String,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
@@ -355,7 +357,7 @@ pub fn five_one() -> Result<(), Box<FiveOneOriginError>> {
     }));
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct SixWrapperError {
     source: Vec<SixWrapperErrorEnum>,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
@@ -418,7 +420,7 @@ pub fn six() -> Result<(), Box<SixWrapperError>> {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub enum SixWrapperErrorEnum {
     SevenWrapper(SevenOriginError),
     EightWrapper(EightOriginError),
@@ -460,7 +462,7 @@ where
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct SevenOriginError {
     source: String,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
@@ -508,7 +510,7 @@ pub fn seven() -> Result<(), Box<SevenOriginError>> {
     }));
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct EightOriginError {
     source: String,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,

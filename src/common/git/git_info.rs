@@ -69,7 +69,16 @@ impl GitInformation<'static> {
     }
 }
 
-#[derive(Debug, Clone, Eq, Hash, PartialEq, GenerateGetterTraitsForStructFieldsFromCrate)]
+#[derive(
+    Debug,
+    Clone,
+    Eq,
+    Hash,
+    PartialEq,
+    GenerateGetterTraitsForStructFieldsFromCrate,
+    Serialize,
+    Deserialize,
+)]
 pub struct GitInformationWithoutLifetimes {
     pub git_commit_id: String,
     pub git_repo_link: String,

@@ -22,9 +22,11 @@
 //     }
 // }
 
+use serde::{Deserialize, Serialize};
+
 use crate::traits::code_path::CodePath;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct CodeOccurenceOldWay {
     pub git_info: crate::common::git::git_info::GitInformationWithoutLifetimes,
     pub pid_time_file_line_column: crate::common::pid_time_file_line_column::PidTimeFileLineColumn,

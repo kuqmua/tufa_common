@@ -1,4 +1,6 @@
-#[derive(Debug, Clone)]
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PidTimeFileLineColumn {
     pub time: std::time::Duration,
     pub file_line_column: crate::common::file_line_column::FileLineColumn,
