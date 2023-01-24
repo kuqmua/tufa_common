@@ -501,12 +501,6 @@ impl std::fmt::Display for FiveOneOriginError {
     }
 }
 
-impl crate::traits::error_display::OriginSourceToString for FiveOneOriginError {
-    fn origin_source_to_string(&self) -> String {
-        format!("{}", self.source)
-    }
-}
-
 impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for FiveOneOriginError
 where
     ConfigGeneric: crate::traits::fields::GetLogType + crate::traits::fields::GetSourcePlaceType,
@@ -743,12 +737,6 @@ impl std::fmt::Display for SevenOriginError {
     }
 }
 
-impl crate::traits::error_display::OriginSourceToString for SevenOriginError {
-    fn origin_source_to_string(&self) -> String {
-        format!("{}", self.source)
-    }
-}
-
 impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for SevenOriginError
 where
     ConfigGeneric: crate::traits::fields::GetLogType + crate::traits::fields::GetSourcePlaceType,
@@ -825,12 +813,6 @@ impl std::fmt::Display for EightOriginError {
                 &crate::global_variables::runtime::config::CONFIG
             ))
         )
-    }
-}
-
-impl crate::traits::error_display::OriginSourceToString for EightOriginError {
-    fn origin_source_to_string(&self) -> String {
-        format!("{}", self.source)
     }
 }
 
