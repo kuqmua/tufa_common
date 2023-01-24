@@ -16,7 +16,7 @@ impl<ConfigGeneric, SelfGeneric> GetCodeOccurenceAsString<ConfigGeneric> for Sel
 where
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetServerPort,
+        + crate::traits::get_server_address::GetServerAddress,
     SelfGeneric: crate::traits::get_code_occurence::GetCodeOccurenceOldWay,
 {
     fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {

@@ -33,7 +33,7 @@ where
     ConfigGeneric: crate::traits::fields::GetLogType
         + crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
-        + crate::traits::fields::GetServerPort,
+        + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         self.source.get_source_as_string(config)
@@ -54,7 +54,7 @@ where
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetLogType
         + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetServerPort,
+        + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_inner_source_and_code_occurence_vec(
         &self,
@@ -128,7 +128,7 @@ where
     ConfigGeneric: crate::traits::fields::GetLogType
         + crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
-        + crate::traits::fields::GetServerPort,
+        + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         match self {
@@ -141,7 +141,7 @@ impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for ThreeWrapperErro
 where
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetServerPort,
+        + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
         match self {
@@ -158,7 +158,7 @@ where
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetLogType
         + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetServerPort,
+        + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_inner_source_and_code_occurence_vec(
         &self,
@@ -196,7 +196,7 @@ where
     ConfigGeneric: crate::traits::fields::GetLogType
         + crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
-        + crate::traits::fields::GetServerPort,
+        + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         self.source.get_source_as_string(config)
@@ -217,7 +217,7 @@ where
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetLogType
         + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetServerPort,
+        + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_inner_source_and_code_occurence_vec(
         &self,
@@ -257,7 +257,7 @@ where
     ConfigGeneric: crate::traits::fields::GetLogType
         + crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
-        + crate::traits::fields::GetServerPort,
+        + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         match self {
@@ -271,7 +271,7 @@ impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for FourWrapperError
 where
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetServerPort,
+        + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
         match self {
@@ -289,7 +289,7 @@ where
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetLogType
         + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetServerPort,
+        + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_inner_source_and_code_occurence_vec(
         &self,
@@ -360,7 +360,7 @@ where
     ConfigGeneric: crate::traits::fields::GetLogType
         + crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
-        + crate::traits::fields::GetServerPort,
+        + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         self.source.get_source_as_string(config)
@@ -381,7 +381,7 @@ where
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetLogType
         + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetServerPort,
+        + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_inner_source_and_code_occurence_vec(
         &self,
@@ -429,7 +429,7 @@ impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for FiveWrapperError
 where
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetServerPort,
+        + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
         match self {
@@ -446,7 +446,7 @@ where
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetLogType
         + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetServerPort,
+        + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_inner_source_and_code_occurence_vec(
         &self,
@@ -530,7 +530,7 @@ where
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetLogType
         + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetServerPort,
+        + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_inner_source_and_code_occurence_vec(
         &self,
@@ -592,7 +592,7 @@ where
     ConfigGeneric: crate::traits::fields::GetLogType
         + crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
-        + crate::traits::fields::GetServerPort,
+        + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         self.source.get_source_as_string(config)
@@ -613,7 +613,7 @@ where
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetLogType
         + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetServerPort,
+        + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_inner_source_and_code_occurence_vec(
         &self,
@@ -689,7 +689,7 @@ impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for SixWrapperErrorE
 where
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetServerPort,
+        + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
         match self {
@@ -707,7 +707,7 @@ where
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetLogType
         + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetServerPort,
+        + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_inner_source_and_code_occurence_vec(
         &self,
@@ -772,7 +772,7 @@ where
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetLogType
         + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetServerPort,
+        + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_inner_source_and_code_occurence_vec(
         &self,
@@ -857,7 +857,7 @@ where
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetLogType
         + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetServerPort,
+        + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_inner_source_and_code_occurence_vec(
         &self,

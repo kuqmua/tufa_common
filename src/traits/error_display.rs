@@ -14,14 +14,14 @@ where
     ConfigGeneric: crate::traits::fields::GetLogType
         + crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
-        + crate::traits::fields::GetServerPort,
+        + crate::traits::get_server_address::GetServerAddress,
     SelfGeneric: crate::traits::get_source::GetSourceAsString<ConfigGeneric>
         + crate::traits::get_code_occurence::GetCodeOccurenceOldWay,
 {
     fn error_display_inner(&self, config: &ConfigGeneric) -> String {
         let code_occurence = self.get_code_occurence_old_way();
         format!(
-            "{}{}{} {} pid: {} host: {:?} port: {}",
+            "{}{}{} {} pid {} on {} {:?}",
             self.get_source_as_string(config),
             config.symbol(),
             code_occurence.get_code_path(config.get_source_place_type()),
@@ -32,8 +32,8 @@ where
             .format("%Y-%m-%d %H:%M:%S")
             .to_string(),
             code_occurence.pid_time_file_line_column.process_id,
+            config.get_server_address(),
             gethostname::gethostname(),
-            config.get_server_port()
         )
     }
 }
