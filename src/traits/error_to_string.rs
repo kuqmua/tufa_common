@@ -11,7 +11,7 @@ where
         + crate::traits::fields::GetLogType
         + crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetLogType 
-        ,
+        + crate::traits::fields::GetServerPort,
     SelfGeneric:
         crate::traits::get_inner_source_and_code_occurence_vec::GetInnerSourceAndCodeOccurenceVec<
             ConfigGeneric,
@@ -137,11 +137,12 @@ where
                             match additions_partial.is_empty() {
                                 true => {
                                     format!(
-                                        "{}{}{} host: {}",
+                                        "{}{}{} host: {:?} port: {}",
                                         self.get_source_as_string(config),
                                         config.symbol(),
                                         self.get_code_occurence_as_string(config),
-                                        once_cell::sync::Lazy::force(&crate::global_variables::runtime::hostname::HOSTNAME),
+                                        gethostname::gethostname(),
+                                        config.get_server_port()
                                     )
                                 },
                                 false => {

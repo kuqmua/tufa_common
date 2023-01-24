@@ -13,14 +13,15 @@ impl<SelfGeneric, ConfigGeneric> ErrorDisplayInner<ConfigGeneric> for SelfGeneri
 where
     ConfigGeneric: crate::traits::fields::GetLogType
         + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone,
+        + crate::traits::fields::GetTimezone
+        + crate::traits::fields::GetServerPort,
     SelfGeneric: crate::traits::get_source::GetSourceAsString<ConfigGeneric>
         + crate::traits::get_code_occurence::GetCodeOccurenceOldWay,
 {
     fn error_display_inner(&self, config: &ConfigGeneric) -> String {
         let code_occurence = self.get_code_occurence_old_way();
         format!(
-            "{}{}{} {} pid: {} host: {}",
+            "{}{}{} {} pid: {} host: {:?} port: {}",
             self.get_source_as_string(config),
             config.symbol(),
             code_occurence.get_code_path(config.get_source_place_type()),
@@ -31,7 +32,8 @@ where
             .format("%Y-%m-%d %H:%M:%S")
             .to_string(),
             code_occurence.pid_time_file_line_column.process_id,
-            once_cell::sync::Lazy::force(&crate::global_variables::runtime::hostname::HOSTNAME),
+            gethostname::gethostname(),
+            config.get_server_port()
         )
     }
 }
