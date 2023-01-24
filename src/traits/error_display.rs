@@ -21,7 +21,7 @@ where
     fn error_display_inner(&self, config: &ConfigGeneric) -> String {
         let code_occurence = self.get_code_occurence_old_way();
         format!(
-            "{}{}{} {} pid {} on {} {:?}",
+            "{}{}{} {} on {} {:?} pid: {}",
             self.get_source_as_string(config),
             config.symbol(),
             code_occurence.get_code_path(config.get_source_place_type()),
@@ -31,9 +31,9 @@ where
             .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
             .format("%Y-%m-%d %H:%M:%S")
             .to_string(),
-            code_occurence.pid_time_file_line_column.process_id,
             config.get_server_address(),
             gethostname::gethostname(),
+            code_occurence.pid_time_file_line_column.process_id,
         )
     }
 }

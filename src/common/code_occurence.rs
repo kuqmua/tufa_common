@@ -39,7 +39,7 @@ where
 {
     fn to_string_handle(&self, config: &ConfigGeneric) -> String {
         format!(
-            "{} {} pid {} on {} {:?}",
+            "{} {} on {} {:?} pid: {}",
             self.get_code_path(config.get_source_place_type()),
             chrono::DateTime::<chrono::Utc>::from(
                 std::time::UNIX_EPOCH + self.pid_time_file_line_column.time,
@@ -47,9 +47,9 @@ where
             .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
             .format("%Y-%m-%d %H:%M:%S")
             .to_string(),
-            self.pid_time_file_line_column.process_id,
             config.get_server_address(),
             gethostname::gethostname(),
+            self.pid_time_file_line_column.process_id,
         )
     }
 }
