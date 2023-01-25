@@ -16,8 +16,12 @@ where
 {
     fn error_display_inner(&self, config: &ConfigGeneric) -> String {
         let code_occurence = self.get_code_occurence_old_way();
+        let hostname_handle = match hostname::get() {
+            Ok(os_string) => format!("{os_string:?}"),
+            Err(_) => String::from("\"hostname::get() failed \""),
+        };
         format!(
-            "{}{}{} {} on {} {:?} pid: {}",
+            "{}{}{} {} on {} {} pid: {}",
             self.get_source_as_string(config),
             config.symbol(),
             code_occurence.get_code_path(config.get_source_place_type()),
@@ -28,7 +32,7 @@ where
             .format("%Y-%m-%d %H:%M:%S")
             .to_string(),
             config.get_server_address(),
-            gethostname::gethostname(),
+            hostname_handle,
             code_occurence.pid_time_file_line_column.process_id,
         )
     }

@@ -5,23 +5,19 @@ pub struct PidTimeFileLineColumn {
     pub time: std::time::Duration,
     pub file_line_column: crate::common::file_line_column::FileLineColumn,
     pub process_id: u32,
+    pub hostname: String,
 }
 
 impl PidTimeFileLineColumn {
-    pub fn new(file_line_column: crate::common::file_line_column::FileLineColumn) -> Self {
-        Self {
-            time: std::time::SystemTime::now()
-                .duration_since(std::time::UNIX_EPOCH)
-                .expect("cannot convert time to unix_epoch"),
-            file_line_column,
-            process_id: std::process::id(),
-        }
-    }
     pub fn new_file_line_column(
         file: String, //&'a str
         line: u32,
         column: u32,
     ) -> Self {
+        let hostname_handle = match hostname::get() {
+            Ok(os_string) => format!("{os_string:?}"),
+            Err(_) => String::from("\"hostname::get() failed \""),
+        };
         Self {
             time: std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
@@ -32,6 +28,7 @@ impl PidTimeFileLineColumn {
                 column,
             },
             process_id: std::process::id(),
+            hostname: hostname_handle,
         }
     }
 }

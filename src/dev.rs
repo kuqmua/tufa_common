@@ -510,13 +510,12 @@ pub fn seven() -> Result<(), Box<SevenOriginError>> {
     }));
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Error)]
 pub struct EightOriginError {
-    source: String,
+    source: EightOriginErrorEnum,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
-//must be written as proc_macro
 impl std::fmt::Display for EightOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(
@@ -544,9 +543,39 @@ impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for EightOriginEr
     }
 }
 
+#[derive(Debug, Serialize, Deserialize, Error)]
+pub enum EightOriginErrorEnum {
+    #[error("{0}")]
+    ErrorEight(String),
+}
+
+impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for EightOriginErrorEnum
+where
+    ConfigGeneric: crate::traits::fields::GetLogType + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
+        match self {
+            EightOriginErrorEnum::ErrorEight(i) => format!("{}", i),
+        }
+    }
+}
+
+impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for EightOriginErrorEnum
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone
+        + crate::traits::fields::GetSourcePlaceType
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
+        match self {
+            EightOriginErrorEnum::ErrorEight(i) => format!("{}", i),
+        }
+    }
+}
+
 pub fn eight() -> Result<(), Box<EightOriginError>> {
     return Err(Box::new(EightOriginError {
-        source: String::from("error_eight"),
+        source: EightOriginErrorEnum::ErrorEight(String::from("error_eight")),
         code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
             git_info: once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
             pid_time_file_line_column: crate::common::pid_time_file_line_column::PidTimeFileLineColumn::new_file_line_column(

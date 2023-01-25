@@ -15,9 +15,11 @@ impl IncrementPidTimeFileLineColumn {
             increment: 0, //potential overflow?
             concurrent_or_parallel_execution_index: None,
             pid_time_file_line_column:
-                crate::common::pid_time_file_line_column::PidTimeFileLineColumn::new(
-                    crate::common::file_line_column::FileLineColumn { file, line, column },
-                ),
+                crate::common::pid_time_file_line_column::PidTimeFileLineColumn::new_file_line_column(
+                    file,
+                    line,
+                    column,
+            ),
         }
     }
 }
