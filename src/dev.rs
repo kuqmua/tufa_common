@@ -7,7 +7,7 @@ use std::collections::HashMap;
 use std::vec;
 use thiserror::Error;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Error)]
 pub struct ThreeWrapperError {
     source: ThreeWrapperErrorEnum,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
@@ -60,7 +60,7 @@ pub fn three() -> Result<(), Box<ThreeWrapperError>> {
     Ok(())
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Error)]
 pub enum ThreeWrapperErrorEnum {
     FourWrapper(FourWrapperError),
 }
@@ -100,7 +100,7 @@ where
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Error)]
 pub struct FourWrapperError {
     source: HashMap<String, FourWrapperErrorEnum>,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
@@ -137,7 +137,7 @@ impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FourWrapperEr
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Error)]
 pub enum FourWrapperErrorEnum {
     FiveWrapper(FiveWrapperError),
     SixWrapper(SixWrapperError),
@@ -209,7 +209,7 @@ pub fn four() -> Result<(), Box<FourWrapperError>> {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Error)]
 pub struct FiveWrapperError {
     source: HashMap<String, FiveWrapperErrorEnum>,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
@@ -246,7 +246,7 @@ impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FiveWrapperEr
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Error)]
 pub enum FiveWrapperErrorEnum {
     FiveOneOrigin(FiveOneOriginError),
 }
@@ -303,10 +303,41 @@ pub fn five() -> Result<(), Box<FiveWrapperError>> {
     Ok(())
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Error)]
 pub struct FiveOneOriginError {
-    source: String,
+    source: FiveOneOriginErrorEnum,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+}
+
+//
+#[derive(Debug, Serialize, Deserialize, Error)]
+pub enum FiveOneOriginErrorEnum {
+    #[error("{0}")]
+    ErrorFiveOne(String),
+}
+
+impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for FiveOneOriginErrorEnum
+where
+    ConfigGeneric: crate::traits::fields::GetLogType + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
+        match self {
+            FiveOneOriginErrorEnum::ErrorFiveOne(i) => format!("{}", i),
+        }
+    }
+}
+
+impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for FiveOneOriginErrorEnum
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone
+        + crate::traits::fields::GetSourcePlaceType
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
+        match self {
+            FiveOneOriginErrorEnum::ErrorFiveOne(i) => format!("{}", i),
+        }
+    }
 }
 
 //must be written as proc_macro
@@ -339,7 +370,7 @@ impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FiveOneOrigin
 
 pub fn five_one() -> Result<(), Box<FiveOneOriginError>> {
     return Err(Box::new(FiveOneOriginError {
-        source: String::from("five_one error"),
+        source: FiveOneOriginErrorEnum::ErrorFiveOne(String::from("five_one error")),
         code_occurence: crate::common::code_occurence::CodeOccurenceOldWay::new(
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
                 String::from(file!()),
@@ -349,7 +380,7 @@ pub fn five_one() -> Result<(), Box<FiveOneOriginError>> {
     }));
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Error)]
 pub struct SixWrapperError {
     source: Vec<SixWrapperErrorEnum>,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
@@ -410,7 +441,7 @@ pub fn six() -> Result<(), Box<SixWrapperError>> {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Error)]
 pub enum SixWrapperErrorEnum {
     SevenWrapper(SevenOriginError),
     EightWrapper(EightOriginError),
@@ -452,9 +483,9 @@ where
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Error)]
 pub struct SevenOriginError {
-    source: String,
+    source: SevenOriginErrorEnum,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
@@ -486,9 +517,39 @@ impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for SevenOriginEr
     }
 }
 
+#[derive(Debug, Serialize, Deserialize, Error)]
+pub enum SevenOriginErrorEnum {
+    #[error("{0}")]
+    ErrorSeven(String),
+}
+
+impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for SevenOriginErrorEnum
+where
+    ConfigGeneric: crate::traits::fields::GetLogType + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
+        match self {
+            SevenOriginErrorEnum::ErrorSeven(i) => format!("{}", i),
+        }
+    }
+}
+
+impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for SevenOriginErrorEnum
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone
+        + crate::traits::fields::GetSourcePlaceType
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
+        match self {
+            SevenOriginErrorEnum::ErrorSeven(i) => format!("{}", i),
+        }
+    }
+}
+
 pub fn seven() -> Result<(), Box<SevenOriginError>> {
     return Err(Box::new(SevenOriginError {
-        source: String::from("error_seven"),
+        source: SevenOriginErrorEnum::ErrorSeven(String::from("error_seven")),
         code_occurence: crate::common::code_occurence::CodeOccurenceOldWay::new(
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
                 String::from(file!()),
