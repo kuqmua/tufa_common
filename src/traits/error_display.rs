@@ -1,4 +1,7 @@
 use crate::traits::code_path::CodePath;
+use crate::traits::get_hostname::GetHostname;
+use crate::traits::get_process_id::GetProcessId;
+use crate::traits::get_time::GetTime;
 use crate::traits::separator_symbol::SeparatorSymbol;
 
 pub trait ErrorDisplayInner<ConfigGeneric> {
@@ -22,14 +25,14 @@ where
             config.symbol(),
             code_occurence.get_code_path(config.get_source_place_type()),
             chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + code_occurence.pid_hostname_time_file_line_column.time,
+                std::time::UNIX_EPOCH + code_occurence.get_time(),
             )
             .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
             .format("%Y-%m-%d %H:%M:%S")
             .to_string(),
             config.get_server_address(),
-            code_occurence.pid_hostname_time_file_line_column.hostname,
-            code_occurence.pid_hostname_time_file_line_column.process_id,
+            code_occurence.get_hostname(),
+            code_occurence.get_process_id(),
         )
     }
 }
