@@ -51,7 +51,7 @@ pub fn three() -> Result<(), Box<ThreeWrapperError>> {
             source: ThreeWrapperErrorEnum::FourWrapper(*e),
             code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
                 git_info: once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
-                pid_time_file_line_column: crate::common::pid_time_file_line_column::PidTimeFileLineColumn::new_file_line_column(
+                pid_hostname_time_file_line_column: crate::common::pid_hostname_time_file_line_column::PidHostnameTimeFileLineColumn::new_file_line_column(
                     String::from(file!()),
                     line!(),
                     column!(),
@@ -202,7 +202,7 @@ pub fn four() -> Result<(), Box<FourWrapperError>> {
                 ]),
                 code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
                     git_info: once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
-                    pid_time_file_line_column: crate::common::pid_time_file_line_column::PidTimeFileLineColumn::new_file_line_column(
+                    pid_hostname_time_file_line_column: crate::common::pid_hostname_time_file_line_column::PidHostnameTimeFileLineColumn::new_file_line_column(
                         String::from(file!()),
                         line!(),
                         column!(),
@@ -298,7 +298,7 @@ pub fn five() -> Result<(), Box<FiveWrapperError>> {
             ]),
             code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
                 git_info: once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
-                pid_time_file_line_column: crate::common::pid_time_file_line_column::PidTimeFileLineColumn::new_file_line_column(
+                pid_hostname_time_file_line_column: crate::common::pid_hostname_time_file_line_column::PidHostnameTimeFileLineColumn::new_file_line_column(
                String::from(file!()),
                     line!(),
                     column!(),
@@ -348,7 +348,7 @@ pub fn five_one() -> Result<(), Box<FiveOneOriginError>> {
         source: String::from("five_one error"),
         code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
             git_info: once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
-            pid_time_file_line_column: crate::common::pid_time_file_line_column::PidTimeFileLineColumn::new_file_line_column(
+            pid_hostname_time_file_line_column: crate::common::pid_hostname_time_file_line_column::PidHostnameTimeFileLineColumn::new_file_line_column(
                 String::from(file!()),
                 line!(),
                 column!(),
@@ -409,7 +409,7 @@ pub fn six() -> Result<(), Box<SixWrapperError>> {
                 source: vec![SixWrapperErrorEnum::SevenWrapper(*seven_error), SixWrapperErrorEnum::EightWrapper(*eight_error)],
                 code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
                     git_info: once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
-                    pid_time_file_line_column: crate::common::pid_time_file_line_column::PidTimeFileLineColumn::new_file_line_column(
+                    pid_hostname_time_file_line_column: crate::common::pid_hostname_time_file_line_column::PidHostnameTimeFileLineColumn::new_file_line_column(
                         String::from(file!()),
                         line!(),
                         column!(),
@@ -501,7 +501,7 @@ pub fn seven() -> Result<(), Box<SevenOriginError>> {
         source: String::from("error_seven"),
         code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
             git_info: once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
-            pid_time_file_line_column: crate::common::pid_time_file_line_column::PidTimeFileLineColumn::new_file_line_column(
+            pid_hostname_time_file_line_column: crate::common::pid_hostname_time_file_line_column::PidHostnameTimeFileLineColumn::new_file_line_column(
                 String::from(file!()),
                 line!(),
                 column!(),
@@ -578,7 +578,7 @@ pub fn eight() -> Result<(), Box<EightOriginError>> {
         source: EightOriginErrorEnum::ErrorEight(String::from("error_eight")),
         code_occurence: crate::common::code_occurence::CodeOccurenceOldWay {
             git_info: once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
-            pid_time_file_line_column: crate::common::pid_time_file_line_column::PidTimeFileLineColumn::new_file_line_column(
+            pid_hostname_time_file_line_column: crate::common::pid_hostname_time_file_line_column::PidHostnameTimeFileLineColumn::new_file_line_column(
                 String::from(file!()),
                 line!(),
                 column!(),
