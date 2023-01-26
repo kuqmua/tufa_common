@@ -1,3 +1,4 @@
+use crate::common::code_occurence;
 use crate::traits::error_display::{ErrorDisplayInner, ToStringHandle};
 use crate::traits::get_code_occurence::GetCodeOccurenceAsString;
 use crate::traits::get_source::GetSourceAsString;
@@ -480,7 +481,7 @@ pub fn six() -> Result<(), Box<SixWrapperError>> {
 #[derive(Debug, Serialize, Deserialize, Error)]
 pub enum SixWrapperErrorEnum {
     SevenWrapper(SevenOriginError),
-    EightWrapper(EightOriginError),
+    EightWrapper(EightOriginErrorEnum),
 }
 
 impl std::fmt::Display for SixWrapperErrorEnum {
@@ -596,42 +597,23 @@ pub fn seven() -> Result<(), Box<SevenOriginError>> {
 }
 
 #[derive(Debug, Serialize, Deserialize, Error)]
-pub struct EightOriginError {
-    source: EightOriginErrorEnum,
-    code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+pub enum EightOriginErrorEnum {
+    ErrorEight{
+        error: String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+    },
 }
 
-impl std::fmt::Display for EightOriginError {
+impl std::fmt::Display for EightOriginErrorEnum {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(
-            f,
-            "{}",
-            self.error_display_inner(once_cell::sync::Lazy::force(
-                &crate::global_variables::runtime::config::CONFIG
-            ))
-        )
+                f,
+                "{}",
+                self.error_display_inner(once_cell::sync::Lazy::force(
+                    &crate::global_variables::runtime::config::CONFIG
+                ))
+            )
     }
-}
-
-impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for EightOriginError
-where
-    ConfigGeneric: crate::traits::fields::GetLogType + crate::traits::fields::GetSourcePlaceType,
-{
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        format!("{}", self.source)
-    }
-}
-
-impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for EightOriginError {
-    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
-        &self.code_occurence
-    }
-}
-
-#[derive(Debug, Serialize, Deserialize, Error)]
-pub enum EightOriginErrorEnum {
-    #[error("{0}")]
-    ErrorEight(String),
 }
 
 impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for EightOriginErrorEnum
@@ -640,32 +622,29 @@ where
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         match self {
-            EightOriginErrorEnum::ErrorEight(i) => format!("{}", i),
+            EightOriginErrorEnum::ErrorEight{ error, code_occurence} => format!("{}", error),
         }
     }
 }
 
-impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for EightOriginErrorEnum
-where
-    ConfigGeneric: crate::traits::fields::GetTimezone
-        + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
+impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for EightOriginErrorEnum {
+    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
         match self {
-            EightOriginErrorEnum::ErrorEight(i) => format!("{}", i),
+            EightOriginErrorEnum::ErrorEight{ error, code_occurence} => code_occurence,
         }
     }
 }
 
-pub fn eight() -> Result<(), Box<EightOriginError>> {
-    return Err(Box::new(EightOriginError {
-        source: EightOriginErrorEnum::ErrorEight(String::from("error_eight")),
-        code_occurence: crate::common::code_occurence::CodeOccurenceOldWay::new(
+pub fn eight() -> Result<(), Box<EightOriginErrorEnum>> {
+    return Err(Box::new(
+        EightOriginErrorEnum::ErrorEight{ 
+            error: String::from("error_eight"),
+                code_occurence: crate::common::code_occurence::CodeOccurenceOldWay::new(
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
                 String::from(file!()),
                 line!(),
                 column!(),
             )
-    }));
+        }
+    ));
 }
