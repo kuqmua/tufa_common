@@ -1,4 +1,3 @@
-use crate::common::code_occurence;
 use crate::traits::error_display::{ErrorDisplayInner, ToStringHandle};
 use crate::traits::get_code_occurence::GetCodeOccurenceAsString;
 use crate::traits::get_source::GetSourceAsString;
@@ -101,22 +100,11 @@ where
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Error)]
 pub struct FourWrapperError {
-    source: HashMap<String, FourWrapperErrorEnum>,
+    //todo how to implement from for it?
+    sources: HashMap<String, FourWrapperErrorEnum>,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
-}
-
-impl std::error::Error for FourWrapperError {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        todo!()
-    }
-    fn description(&self) -> &str {
-        "todo"
-    }
-    fn cause(&self) -> Option<&dyn std::error::Error> {
-        todo!()
-    }
 }
 
 impl std::fmt::Display for FourWrapperError {
@@ -126,7 +114,7 @@ impl std::fmt::Display for FourWrapperError {
         write!(
             f,
             "{}{}",
-            self.source.to_string_handle(config),
+            self.sources.to_string_handle(config),
             self.get_code_occurence_as_string(config),
         )
     }
@@ -140,7 +128,7 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        self.source.get_source_as_string(config)
+        self.sources.get_source_as_string(config)
     }
 }
 
@@ -201,7 +189,7 @@ pub fn four() -> Result<(), Box<FourWrapperError>> {
         (Err(_), Ok(_)) => todo!(),
         (Err(f), Err(s)) => {
             return Err(Box::new(FourWrapperError {
-                source: HashMap::from([
+                sources: HashMap::from([
                     (
                         String::from("five_hashmap_key"),
                         FourWrapperErrorEnum::FiveWrapper(*f),
@@ -224,7 +212,8 @@ pub fn four() -> Result<(), Box<FourWrapperError>> {
 
 #[derive(Debug, Serialize, Deserialize, Error)]
 pub struct FiveWrapperError {
-    error: HashMap<String, FiveWrapperErrorEnum>,
+    //todo how to implement from for it?
+    sources: HashMap<String, FiveWrapperErrorEnum>,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
@@ -235,7 +224,7 @@ impl std::fmt::Display for FiveWrapperError {
         write!(
             f,
             "{}{}",
-            self.error.to_string_handle(config),
+            self.sources.to_string_handle(config),
             self.get_code_occurence_as_string(config),
         )
     }
@@ -249,7 +238,7 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        self.error.get_source_as_string(config)
+        self.sources.get_source_as_string(config)
     }
 }
 
@@ -299,7 +288,7 @@ where
 pub fn five() -> Result<(), Box<FiveWrapperError>> {
     if let Err(e) = five_one() {
         return Err(Box::new(FiveWrapperError {
-            error: HashMap::from([
+            sources: HashMap::from([
                 (
                     String::from("five_one_hashmap key"),
                     FiveWrapperErrorEnum::FiveOneOrigin(*e),
@@ -322,7 +311,6 @@ pub struct FiveOneOriginError {
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
-//
 #[derive(Debug, Serialize, Deserialize, Error)]
 pub enum FiveOneOriginErrorEnum {
     #[error("{0}")]
@@ -394,11 +382,10 @@ pub fn five_one() -> Result<(), Box<FiveOneOriginError>> {
 }
 
 #[derive(Debug, Serialize, Deserialize, Error)]
-pub enum SixWrapperError {
-    SixWrapper{
-        error: Vec<SixWrapperErrorEnum>,
-        code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
-    },
+pub struct SixWrapperError {
+    //todo how to implement from for it?
+    sources: Vec<SixWrapperErrorEnum>,
+    code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
 impl std::fmt::Display for SixWrapperError {
@@ -406,15 +393,13 @@ impl std::fmt::Display for SixWrapperError {
         let config =
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
         let symbol = config.symbol();
-        match self {
-            SixWrapperError::SixWrapper { error, code_occurence } => write!(
-                f,
-                "{}{}{}",
-                error.to_string_handle(config),
-                symbol,
-                self.get_code_occurence_as_string(config),
-            ),
-        }
+        write!(
+            f,
+            "{}{}{}",
+            self.sources.to_string_handle(config),
+            symbol,
+            self.get_code_occurence_as_string(config),
+        )
     }
 }
 
@@ -426,17 +411,13 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        match self {
-            SixWrapperError::SixWrapper { error, code_occurence } => error.get_source_as_string(config),
-        }
+        self.sources.get_source_as_string(config)
     }
 }
 
 impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for SixWrapperError {
     fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
-        match self {
-            SixWrapperError::SixWrapper { error, code_occurence } => code_occurence,
-        }
+        &self.code_occurence
     }
 }
 
@@ -449,25 +430,23 @@ pub fn six() -> Result<(), Box<SixWrapperError>> {
         (Ok(_), Err(_)) => todo!(),
         (Err(_), Ok(_)) => todo!(),
         (Err(seven_error), Err(eight_error)) => {
-            return Err(Box::new(
-                SixWrapperError::SixWrapper { 
-                    error: vec![SixWrapperErrorEnum::SevenWrapper(*seven_error), SixWrapperErrorEnum::EightWrapper(*eight_error)], 
-                    code_occurence: crate::common::code_occurence::CodeOccurenceOldWay::new(
-                        once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
-                        String::from(file!()),
-                        line!(),
-                        column!(),
-                    ) 
-                },
-        ));
+            return Err(Box::new(SixWrapperError {
+                sources: vec![SixWrapperErrorEnum::SevenWrapper(*seven_error), SixWrapperErrorEnum::EightWrapper(*eight_error)],
+                code_occurence: crate::common::code_occurence::CodeOccurenceOldWay::new(
+                    once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
+                    String::from(file!()),
+                    line!(),
+                    column!(),
+                )
+            }));
         }
     }
 }
 
 #[derive(Debug, Serialize, Deserialize, Error)]
 pub enum SixWrapperErrorEnum {
-    SevenWrapper(SevenOriginErrorEnum),
-    EightWrapper(EightOriginErrorEnum),
+    SevenWrapper(SevenOriginError),
+    EightWrapper(EightOriginError),
 }
 
 impl std::fmt::Display for SixWrapperErrorEnum {
@@ -507,23 +486,43 @@ where
 }
 
 #[derive(Debug, Serialize, Deserialize, Error)]
-pub enum SevenOriginErrorEnum {
-    ErrorSeven{
-        error: String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
-    },
+pub struct SevenOriginError {
+    source: SevenOriginErrorEnum,
+    code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
 }
 
-impl std::fmt::Display for SevenOriginErrorEnum {
+//must be written as proc_macro
+impl std::fmt::Display for SevenOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(
-                f,
-                "{}",
-                self.error_display_inner(once_cell::sync::Lazy::force(
-                    &crate::global_variables::runtime::config::CONFIG
-                ))
-            )
+            f,
+            "{}",
+            self.error_display_inner(once_cell::sync::Lazy::force(
+                &crate::global_variables::runtime::config::CONFIG
+            ))
+        )
     }
+}
+
+impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for SevenOriginError
+where
+    ConfigGeneric: crate::traits::fields::GetLogType + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
+        format!("{}", self.source)
+    }
+}
+
+impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for SevenOriginError {
+    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+        &self.code_occurence
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize, Error)]
+pub enum SevenOriginErrorEnum {
+    #[error("{0}")]
+    ErrorSeven(String),
 }
 
 impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for SevenOriginErrorEnum
@@ -532,51 +531,73 @@ where
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         match self {
-            SevenOriginErrorEnum::ErrorSeven{ error, code_occurence} => format!("{}", error),
+            SevenOriginErrorEnum::ErrorSeven(i) => format!("{}", i),
         }
     }
 }
 
-impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for SevenOriginErrorEnum {
-    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for SevenOriginErrorEnum
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone
+        + crate::traits::fields::GetSourcePlaceType
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
         match self {
-            SevenOriginErrorEnum::ErrorSeven{ error, code_occurence} => code_occurence,
+            SevenOriginErrorEnum::ErrorSeven(i) => format!("{}", i),
         }
     }
 }
 
-pub fn seven() -> Result<(), Box<SevenOriginErrorEnum>> {
-    return Err(Box::new(
-        SevenOriginErrorEnum::ErrorSeven{ 
-            error: String::from("error_seven"),
-                code_occurence: crate::common::code_occurence::CodeOccurenceOldWay::new(
+pub fn seven() -> Result<(), Box<SevenOriginError>> {
+    return Err(Box::new(SevenOriginError {
+        source: SevenOriginErrorEnum::ErrorSeven(String::from("error_seven")),
+        code_occurence: crate::common::code_occurence::CodeOccurenceOldWay::new(
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
                 String::from(file!()),
                 line!(),
                 column!(),
             )
-        }
-    ));
+    }));
+}
+
+#[derive(Debug, Serialize, Deserialize, Error)]
+pub struct EightOriginError {
+    source: EightOriginErrorEnum,
+    code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+}
+
+impl std::fmt::Display for EightOriginError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            self.error_display_inner(once_cell::sync::Lazy::force(
+                &crate::global_variables::runtime::config::CONFIG
+            ))
+        )
+    }
+}
+
+impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for EightOriginError
+where
+    ConfigGeneric: crate::traits::fields::GetLogType + crate::traits::fields::GetSourcePlaceType,
+{
+    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
+        format!("{}", self.source)
+    }
+}
+
+impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for EightOriginError {
+    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+        &self.code_occurence
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize, Error)]
 pub enum EightOriginErrorEnum {
-    ErrorEight{
-        error: String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
-    },
-}
-
-impl std::fmt::Display for EightOriginErrorEnum {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(
-                f,
-                "{}",
-                self.error_display_inner(once_cell::sync::Lazy::force(
-                    &crate::global_variables::runtime::config::CONFIG
-                ))
-            )
-    }
+    #[error("{0}")]
+    ErrorEight(String),
 }
 
 impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for EightOriginErrorEnum
@@ -585,29 +606,32 @@ where
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
         match self {
-            EightOriginErrorEnum::ErrorEight{ error, code_occurence} => format!("{}", error),
+            EightOriginErrorEnum::ErrorEight(i) => format!("{}", i),
         }
     }
 }
 
-impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for EightOriginErrorEnum {
-    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for EightOriginErrorEnum
+where
+    ConfigGeneric: crate::traits::fields::GetTimezone
+        + crate::traits::fields::GetSourcePlaceType
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
         match self {
-            EightOriginErrorEnum::ErrorEight{ error, code_occurence} => code_occurence,
+            EightOriginErrorEnum::ErrorEight(i) => format!("{}", i),
         }
     }
 }
 
-pub fn eight() -> Result<(), Box<EightOriginErrorEnum>> {
-    return Err(Box::new(
-        EightOriginErrorEnum::ErrorEight{ 
-            error: String::from("error_eight"),
-                code_occurence: crate::common::code_occurence::CodeOccurenceOldWay::new(
+pub fn eight() -> Result<(), Box<EightOriginError>> {
+    return Err(Box::new(EightOriginError {
+        source: EightOriginErrorEnum::ErrorEight(String::from("error_eight")),
+        code_occurence: crate::common::code_occurence::CodeOccurenceOldWay::new(
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
                 String::from(file!()),
                 line!(),
                 column!(),
             )
-        }
-    ));
+    }));
 }
