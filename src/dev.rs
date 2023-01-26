@@ -100,10 +100,22 @@ where
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, Error)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct FourWrapperError {
     source: HashMap<String, FourWrapperErrorEnum>,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+}
+
+impl std::error::Error for FourWrapperError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        todo!()
+    }
+    fn description(&self) -> &str {
+        "todo"
+    }
+    fn cause(&self) -> Option<&dyn std::error::Error> {
+        todo!()
+    }
 }
 
 impl std::fmt::Display for FourWrapperError {
@@ -209,10 +221,22 @@ pub fn four() -> Result<(), Box<FourWrapperError>> {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, Error)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct FiveWrapperError {
     source: HashMap<String, FiveWrapperErrorEnum>,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+}
+
+impl std::error::Error for FiveWrapperError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        todo!()
+    }
+    fn description(&self) -> &str {
+        "todo"
+    }
+    fn cause(&self) -> Option<&dyn std::error::Error> {
+        todo!()
+    }
 }
 
 impl std::fmt::Display for FiveWrapperError {
@@ -380,10 +404,22 @@ pub fn five_one() -> Result<(), Box<FiveOneOriginError>> {
     }));
 }
 
-#[derive(Debug, Serialize, Deserialize, Error)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct SixWrapperError {
     source: Vec<SixWrapperErrorEnum>,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+}
+
+impl std::error::Error for SixWrapperError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        todo!()
+    }
+    fn description(&self) -> &str {
+        "todo"
+    }
+    fn cause(&self) -> Option<&dyn std::error::Error> {
+        todo!()
+    }
 }
 
 impl std::fmt::Display for SixWrapperError {
