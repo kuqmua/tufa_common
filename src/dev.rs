@@ -222,22 +222,10 @@ pub fn four() -> Result<(), Box<FourWrapperError>> {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Error)]
 pub struct FiveWrapperError {
-    source: HashMap<String, FiveWrapperErrorEnum>,
+    error: HashMap<String, FiveWrapperErrorEnum>,
     code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
-}
-
-impl std::error::Error for FiveWrapperError {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        todo!()
-    }
-    fn description(&self) -> &str {
-        "todo"
-    }
-    fn cause(&self) -> Option<&dyn std::error::Error> {
-        todo!()
-    }
 }
 
 impl std::fmt::Display for FiveWrapperError {
@@ -247,7 +235,7 @@ impl std::fmt::Display for FiveWrapperError {
         write!(
             f,
             "{}{}",
-            self.source.to_string_handle(config),
+            self.error.to_string_handle(config),
             self.get_code_occurence_as_string(config),
         )
     }
@@ -261,7 +249,7 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        self.source.get_source_as_string(config)
+        self.error.get_source_as_string(config)
     }
 }
 
@@ -311,7 +299,7 @@ where
 pub fn five() -> Result<(), Box<FiveWrapperError>> {
     if let Err(e) = five_one() {
         return Err(Box::new(FiveWrapperError {
-            source: HashMap::from([
+            error: HashMap::from([
                 (
                     String::from("five_one_hashmap key"),
                     FiveWrapperErrorEnum::FiveOneOrigin(*e),
