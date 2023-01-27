@@ -25,6 +25,5 @@ pub mod is_enabled_prints;
 pub mod new_error;
 pub mod print_type_methods;
 pub mod readable_time;
-pub mod separator_symbol;
 pub mod where_was_methods;
 pub mod with_tracing;

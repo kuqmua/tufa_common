@@ -1,60 +1,48 @@
-use crate::traits::separator_symbol::SeparatorSymbol;
-
 pub trait GetSource {
     fn get_source(&self) -> String;
 }
 
-pub trait GetSourceAsString<ConfigGeneric> {
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String;
+pub trait GetSourceAsString {
+    fn get_source_as_string(&self) -> String;
 }
 
-impl<ConfigGeneric, HashMapKeyGeneric, HashMapValueGeneric> GetSourceAsString<ConfigGeneric>
+impl<HashMapKeyGeneric, HashMapValueGeneric> GetSourceAsString
     for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
 where
-    ConfigGeneric: crate::traits::fields::GetLogType
-        + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone,
     HashMapKeyGeneric: std::fmt::Display,
-    HashMapValueGeneric: crate::traits::get_source::GetSourceAsString<ConfigGeneric>
-        + crate::traits::get_code_occurence::GetCodeOccurenceAsString<ConfigGeneric>,
+    HashMapValueGeneric: crate::traits::get_source::GetSourceAsString
+        + crate::traits::get_code_occurence::GetCodeOccurenceAsString,
 {
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        let symbol = config.symbol();
+    fn get_source_as_string(&self) -> String {
         let mut source_as_string = self.iter().fold(String::from(""), |mut acc, (key, value)| {
-            let source_as_string = value.get_source_as_string(config);
-            let get_code_occurence_as_string = value.get_code_occurence_as_string(config);
             acc.push_str(&format!(
-                "[key: {}]{} {}{} {}{}",
-                key, symbol, source_as_string, symbol, get_code_occurence_as_string, symbol
+                "[key: \n]{} \n{} {}\n",
+                key,
+                value.get_source_as_string(),
+                value.get_code_occurence_as_string()
             ));
             acc
         });
-        config.pop_last(&mut source_as_string);
+        source_as_string.pop();
         source_as_string
     }
 }
 
-impl<ConfigGeneric, VecElementGeneric> GetSourceAsString<ConfigGeneric> for Vec<VecElementGeneric>
+impl<VecElementGeneric> GetSourceAsString for Vec<VecElementGeneric>
 where
-    ConfigGeneric: crate::traits::fields::GetLogType
-        + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone,
-    VecElementGeneric: crate::traits::get_source::GetSourceAsString<ConfigGeneric>
-        + crate::traits::get_code_occurence::GetCodeOccurenceAsString<ConfigGeneric>,
+    VecElementGeneric: crate::traits::get_source::GetSourceAsString
+        + crate::traits::get_code_occurence::GetCodeOccurenceAsString,
 {
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        let symbol = config.symbol();
+    fn get_source_as_string(&self) -> String {
         let mut source_as_string = self.iter().fold(String::from(""), |mut acc, vec_element| {
             acc.push_str(&format!(
-                "{}{} {}{}",
-                vec_element.get_source_as_string(config),
-                symbol,
-                vec_element.get_code_occurence_as_string(config),
-                symbol
+                "{}\n {}\n",
+                vec_element.get_source_as_string(),
+                vec_element.get_code_occurence_as_string(),
             ));
             acc
         });
-        config.pop_last(&mut source_as_string);
+        source_as_string.pop();
         source_as_string
     }
 }

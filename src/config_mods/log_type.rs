@@ -46,36 +46,3 @@ impl std::str::FromStr for LogType {
         }
     }
 }
-
-impl crate::traits::separator_symbol::SeparatorSymbol for LogType {
-    fn symbol(&self) -> &str {
-        match self {
-            LogType::Tracing => ", ",
-            LogType::Stack => "\n",
-            LogType::None => "", //todo is it correct?
-        }
-    }
-    fn pop_last(&self, string: &mut String) {
-        for _ in 0..self.symbol().len() {
-            string.pop();
-        }
-    }
-}
-
-impl<SelfGeneric> crate::traits::separator_symbol::SeparatorSymbol for SelfGeneric
-where
-    SelfGeneric: crate::traits::fields::GetLogType,
-{
-    fn symbol(&self) -> &str {
-        match self.get_log_type() {
-            LogType::Tracing => ", ",
-            LogType::Stack => "\n",
-            LogType::None => "", //todo is it correct?
-        }
-    }
-    fn pop_last(&self, string: &mut String) {
-        for _ in 0..self.get_log_type().symbol().len() {
-            string.pop();
-        }
-    }
-}

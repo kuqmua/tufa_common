@@ -1,7 +1,6 @@
 use crate::traits::error_display::{ErrorDisplayInner, ToStringHandle};
 use crate::traits::get_code_occurence::GetCodeOccurenceAsString;
 use crate::traits::get_source::GetSourceAsString;
-use crate::traits::separator_symbol::SeparatorSymbol;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::vec;
@@ -15,27 +14,18 @@ pub struct ThreeWrapperError {
 
 impl std::fmt::Display for ThreeWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        let config =
-            once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
         write!(
             f,
-            "{}{}{}",
+            "{}\n{}",
             self.source,
-            config.symbol(),
-            self.get_code_occurence_as_string(config),
+            self.get_code_occurence_as_string(),
         )
     }
 }
 
-impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for ThreeWrapperError
-where
-    ConfigGeneric: crate::traits::fields::GetLogType
-        + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        self.source.get_source_as_string(config)
+impl GetSourceAsString for ThreeWrapperError {
+    fn get_source_as_string(&self) -> String {
+        self.source.get_source_as_string()
     }
 }
 
@@ -73,29 +63,18 @@ impl std::fmt::Display for ThreeWrapperErrorEnum {
     }
 }
 
-impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for ThreeWrapperErrorEnum
-where
-    ConfigGeneric: crate::traits::fields::GetLogType
-        + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
+impl GetSourceAsString for ThreeWrapperErrorEnum {
+    fn get_source_as_string(&self) -> String {
         match self {
-            ThreeWrapperErrorEnum::FourWrapper(i) => i.get_source_as_string(config),
+            ThreeWrapperErrorEnum::FourWrapper(i) => i.get_source_as_string(),
         }
     }
 }
 
-impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for ThreeWrapperErrorEnum
-where
-    ConfigGeneric: crate::traits::fields::GetTimezone
-        + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
+impl GetCodeOccurenceAsString for ThreeWrapperErrorEnum {
+    fn get_code_occurence_as_string(&self) -> String {
         match self {
-            ThreeWrapperErrorEnum::FourWrapper(i) => i.get_code_occurence_as_string(config),
+            ThreeWrapperErrorEnum::FourWrapper(i) => i.get_code_occurence_as_string(),
         }
     }
 }
@@ -109,26 +88,18 @@ pub struct FourWrapperError {
 
 impl std::fmt::Display for FourWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        let config =
-            once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
         write!(
             f,
             "{}{}",
-            self.sources.to_string_handle(config),
-            self.get_code_occurence_as_string(config),
+            self.sources.to_string_handle(),
+            self.get_code_occurence_as_string(),
         )
     }
 }
 
-impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for FourWrapperError
-where
-    ConfigGeneric: crate::traits::fields::GetLogType
-        + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        self.sources.get_source_as_string(config)
+impl GetSourceAsString for FourWrapperError {
+    fn get_source_as_string(&self) -> String {
+        self.sources.get_source_as_string()
     }
 }
 
@@ -153,31 +124,20 @@ impl std::fmt::Display for FourWrapperErrorEnum {
     }
 }
 
-impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for FourWrapperErrorEnum
-where
-    ConfigGeneric: crate::traits::fields::GetLogType
-        + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
+impl GetSourceAsString for FourWrapperErrorEnum {
+    fn get_source_as_string(&self) -> String {
         match self {
-            FourWrapperErrorEnum::FiveWrapper(i) => i.get_source_as_string(config),
-            FourWrapperErrorEnum::SixWrapper(i) => i.get_source_as_string(config),
+            FourWrapperErrorEnum::FiveWrapper(i) => i.get_source_as_string(),
+            FourWrapperErrorEnum::SixWrapper(i) => i.get_source_as_string(),
         }
     }
 }
 
-impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for FourWrapperErrorEnum
-where
-    ConfigGeneric: crate::traits::fields::GetTimezone
-        + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
+impl GetCodeOccurenceAsString for FourWrapperErrorEnum {
+    fn get_code_occurence_as_string(&self) -> String {
         match self {
-            FourWrapperErrorEnum::FiveWrapper(i) => i.get_code_occurence_as_string(config),
-            FourWrapperErrorEnum::SixWrapper(i) => i.get_code_occurence_as_string(config),
+            FourWrapperErrorEnum::FiveWrapper(i) => i.get_code_occurence_as_string(),
+            FourWrapperErrorEnum::SixWrapper(i) => i.get_code_occurence_as_string(),
         }
     }
 }
@@ -219,26 +179,18 @@ pub struct FiveWrapperError {
 
 impl std::fmt::Display for FiveWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        let config =
-            once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
         write!(
             f,
             "{}{}",
-            self.sources.to_string_handle(config),
-            self.get_code_occurence_as_string(config),
+            self.sources.to_string_handle(),
+            self.get_code_occurence_as_string(),
         )
     }
 }
 
-impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for FiveWrapperError
-where
-    ConfigGeneric: crate::traits::fields::GetLogType
-        + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        self.sources.get_source_as_string(config)
+impl GetSourceAsString for FiveWrapperError {
+    fn get_source_as_string(&self) -> String {
+        self.sources.get_source_as_string()
     }
 }
 
@@ -261,26 +213,18 @@ impl std::fmt::Display for FiveWrapperErrorEnum {
     }
 }
 
-impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for FiveWrapperErrorEnum
-where
-    ConfigGeneric: crate::traits::fields::GetLogType + crate::traits::fields::GetSourcePlaceType,
-{
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
+impl GetSourceAsString for FiveWrapperErrorEnum {
+    fn get_source_as_string(&self) -> String {
         match self {
-            FiveWrapperErrorEnum::FiveOneOrigin(i) => i.get_source_as_string(config),
+            FiveWrapperErrorEnum::FiveOneOrigin(i) => i.get_source_as_string(),
         }
     }
 }
 
-impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for FiveWrapperErrorEnum
-where
-    ConfigGeneric: crate::traits::fields::GetTimezone
-        + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
+impl GetCodeOccurenceAsString for FiveWrapperErrorEnum {
+    fn get_code_occurence_as_string(&self) -> String {
         match self {
-            FiveWrapperErrorEnum::FiveOneOrigin(i) => i.get_code_occurence_as_string(config),
+            FiveWrapperErrorEnum::FiveOneOrigin(i) => i.get_code_occurence_as_string(),
         }
     }
 }
@@ -323,11 +267,8 @@ impl std::fmt::Display for FiveOneOriginError {
     }
 }
 
-impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for FiveOneOriginError
-where
-    ConfigGeneric: crate::traits::fields::GetLogType + crate::traits::fields::GetSourcePlaceType,
-{
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
+impl GetSourceAsString for FiveOneOriginError {
+    fn get_source_as_string(&self) -> String {
         format!("{}", self.error)
     }
 }
@@ -359,28 +300,18 @@ pub struct SixWrapperError {
 
 impl std::fmt::Display for SixWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        let config =
-            once_cell::sync::Lazy::force(&crate::global_variables::runtime::config::CONFIG);
-        let symbol = config.symbol();
         write!(
             f,
-            "{}{}{}",
-            self.sources.to_string_handle(config),
-            symbol,
-            self.get_code_occurence_as_string(config),
+            "{}\n{}",
+            self.sources.to_string_handle(),
+            self.get_code_occurence_as_string(),
         )
     }
 }
 
-impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for SixWrapperError
-where
-    ConfigGeneric: crate::traits::fields::GetLogType
-        + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        self.sources.get_source_as_string(config)
+impl GetSourceAsString for SixWrapperError {
+    fn get_source_as_string(&self) -> String {
+        self.sources.get_source_as_string()
     }
 }
 
@@ -427,29 +358,21 @@ impl std::fmt::Display for SixWrapperErrorEnum {
     }
 }
 
-impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for SixWrapperErrorEnum
-where
-    ConfigGeneric: crate::traits::fields::GetLogType + crate::traits::fields::GetSourcePlaceType,
-{
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
+impl GetSourceAsString for SixWrapperErrorEnum {
+    fn get_source_as_string(&self) -> String {
         match self {
             //todo - if wrapper - with config, if origin - without
-            SixWrapperErrorEnum::SevenWrapper(i) => i.get_source_as_string(config),
-            SixWrapperErrorEnum::EightWrapper(i) => i.get_source_as_string(config),
+            SixWrapperErrorEnum::SevenWrapper(i) => i.get_source_as_string(),
+            SixWrapperErrorEnum::EightWrapper(i) => i.get_source_as_string(),
         }
     }
 }
 
-impl<ConfigGeneric> GetCodeOccurenceAsString<ConfigGeneric> for SixWrapperErrorEnum
-where
-    ConfigGeneric: crate::traits::fields::GetTimezone
-        + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn get_code_occurence_as_string(&self, config: &ConfigGeneric) -> String {
+impl GetCodeOccurenceAsString for SixWrapperErrorEnum {
+    fn get_code_occurence_as_string(&self) -> String {
         match self {
-            SixWrapperErrorEnum::SevenWrapper(i) => i.get_code_occurence_as_string(config),
-            SixWrapperErrorEnum::EightWrapper(i) => i.get_code_occurence_as_string(config),
+            SixWrapperErrorEnum::SevenWrapper(i) => i.get_code_occurence_as_string(),
+            SixWrapperErrorEnum::EightWrapper(i) => i.get_code_occurence_as_string(),
         }
     }
 }
@@ -472,11 +395,8 @@ impl std::fmt::Display for SevenOriginError {
     }
 }
 
-impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for SevenOriginError
-where
-    ConfigGeneric: crate::traits::fields::GetLogType + crate::traits::fields::GetSourcePlaceType,
-{
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
+impl GetSourceAsString for SevenOriginError {
+    fn get_source_as_string(&self) -> String {
         format!("{}", self.error)
     }
 }
@@ -517,11 +437,8 @@ impl std::fmt::Display for EightOriginError {
     }
 }
 
-impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for EightOriginError
-where
-    ConfigGeneric: crate::traits::fields::GetLogType + crate::traits::fields::GetSourcePlaceType,
-{
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
+impl GetSourceAsString for EightOriginError {
+    fn get_source_as_string(&self) -> String {
         format!("{}", self.error)
     }
 }
@@ -542,4 +459,16 @@ pub fn eight() -> Result<(), Box<EightOriginError>> {
                 column!(),
             )
     }));
+}
+
+#[derive(Error, Debug)]
+pub enum DataStoreError {
+    #[error("data store disconnected")]
+    Disconnect(#[from] std::io::Error),
+    #[error("the data for key `{0}` is not available")]
+    Redaction(String),
+    #[error("invalid header (expected {expected:?}, found {found:?})")]
+    InvalidHeader { expected: String, found: String },
+    #[error("unknown data store error")]
+    Unknown,
 }
