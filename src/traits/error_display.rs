@@ -62,32 +62,32 @@ where
     }
 }
 
-// impl<HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric> ToStringHandle<ConfigGeneric>
-//     for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric>
-// where
-//     HashMapKeyGeneric: std::fmt::Display,
-//     HashMapValueGeneric: ToStringHandle<ConfigGeneric>,
-//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-//         + crate::traits::fields::GetTimezone
-//         + crate::traits::get_server_address::GetServerAddress,
-// {
-//     fn to_string_handle(&self, config: &ConfigGeneric) -> String {
-//         self.iter().fold(String::from(""), |mut acc, (key, value)| {
-//             acc.push_str(&format!(
-//                 "{} [\n{}]\n",
-//                 key,
-//                 value
-//                     .to_string_handle(config)
-//                     .lines()
-//                     .fold(String::from(""), |mut acc, line| {
-//                         acc.push_str(&format!(" {}\n", line));
-//                         acc
-//                     })
-//             ));
-//             acc
-//         })
-//     }
-// }
+impl<HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric> ToStringHandle<ConfigGeneric>
+    for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
+where
+    HashMapKeyGeneric: std::fmt::Display,
+    HashMapValueGeneric: ToStringHandle<ConfigGeneric>,
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn to_string_handle(&self, config: &ConfigGeneric) -> String {
+        self.iter().fold(String::from(""), |mut acc, (key, value)| {
+            acc.push_str(&format!(
+                "{} [\n{}]\n",
+                key,
+                value
+                    .to_string_handle(config)
+                    .lines()
+                    .fold(String::from(""), |mut acc, line| {
+                        acc.push_str(&format!(" {}\n", line));
+                        acc
+                    })
+            ));
+            acc
+        })
+    }
+}
 
 pub trait ToStringHandleCodeOccurence<ConfigGeneric> {
     fn to_string_handle_code_occurence(&self, config: &ConfigGeneric) -> String;

@@ -190,34 +190,11 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn to_string_handle(&self, config: &ConfigGeneric) -> String {
-        let test = self
-            .sources
-            .iter()
-            .fold(String::from(""), |mut acc, (key, value)| {
-                acc.push_str(&format!(
-                    "{} [\n{}]\n",
-                    key,
-                    value.to_string_handle(config).lines().fold(
-                        String::from(""),
-                        |mut acc, line| {
-                            acc.push_str(&format!(" {}\n", line));
-                            acc
-                        }
-                    )
-                ));
-                acc
-            });
         format!(
             "{}{}",
-            // self.sources.to_string_handle(config),
-            test,
+            self.sources.to_string_handle(config),
             self.get_code_occurence_as_string(config),
         )
-        // format!(
-        //     "{}{}",
-        //     self.sources.to_string_handle(config),
-        //     self.get_code_occurence_as_string(config),
-        // )
     }
 }
 
@@ -376,27 +353,9 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn to_string_handle(&self, config: &ConfigGeneric) -> String {
-        let test = self
-            .sources
-            .iter()
-            .fold(String::from(""), |mut acc, (key, value)| {
-                acc.push_str(&format!(
-                    "{} [\n{}]\n",
-                    key,
-                    value.to_string_handle(config).lines().fold(
-                        String::from(""),
-                        |mut acc, line| {
-                            acc.push_str(&format!(" {}\n", line));
-                            acc
-                        }
-                    )
-                ));
-                acc
-            });
         format!(
             "{}{}",
-            // self.sources.to_string_handle(config),
-            test,
+            self.sources.to_string_handle(config),
             self.get_code_occurence_as_string(config),
         )
     }
