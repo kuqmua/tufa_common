@@ -19,24 +19,6 @@ impl std::fmt::Display for ThreeWrapperError {
     }
 }
 
-impl<ConfigGeneric> crate::traits::error_log::ErrorLog<ConfigGeneric> for ThreeWrapperError
-where
-    ConfigGeneric: crate::traits::get_color::ErrorColorBold
-        + crate::traits::fields::GetServerPort
-        + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::fields::GetServerIp,
-{
-    fn error_log(&self, config: &ConfigGeneric) {
-        eprintln!(
-            "{}",
-            config
-                .get_error_color_bold()
-                .paint(self.to_string_handle(config))
-        );
-    }
-}
-
 impl<ConfigGeneric> crate::traits::error_display::ToStringHandle<ConfigGeneric>
     for ThreeWrapperError
 where
@@ -162,24 +144,6 @@ impl std::fmt::Display for FourWrapperError {
                 });
         source_as_string.pop();
         write!(f, "{}", source_as_string)
-    }
-}
-
-impl<ConfigGeneric> crate::traits::error_log::ErrorLog<ConfigGeneric> for FourWrapperError
-where
-    ConfigGeneric: crate::traits::get_color::ErrorColorBold
-        + crate::traits::fields::GetServerPort
-        + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::fields::GetServerIp,
-{
-    fn error_log(&self, config: &ConfigGeneric) {
-        eprintln!(
-            "{}",
-            config
-                .get_error_color_bold()
-                .paint(self.to_string_handle(config))
-        );
     }
 }
 
@@ -328,24 +292,6 @@ impl std::fmt::Display for FiveWrapperError {
     }
 }
 
-impl<ConfigGeneric> crate::traits::error_log::ErrorLog<ConfigGeneric> for FiveWrapperError
-where
-    ConfigGeneric: crate::traits::get_color::ErrorColorBold
-        + crate::traits::fields::GetServerPort
-        + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::fields::GetServerIp,
-{
-    fn error_log(&self, config: &ConfigGeneric) {
-        eprintln!(
-            "{}",
-            config
-                .get_error_color_bold()
-                .paint(self.to_string_handle(config))
-        );
-    }
-}
-
 impl<ConfigGeneric> crate::traits::error_display::ToStringHandle<ConfigGeneric> for FiveWrapperError
 where
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
@@ -467,24 +413,6 @@ impl std::fmt::Display for FiveOneOriginError {
     }
 }
 
-impl<ConfigGeneric> crate::traits::error_log::ErrorLog<ConfigGeneric> for FiveOneOriginError
-where
-    ConfigGeneric: crate::traits::get_color::ErrorColorBold
-        + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::fields::GetServerIp
-        + crate::traits::fields::GetServerPort,
-{
-    fn error_log(&self, config: &ConfigGeneric) {
-        eprintln!(
-            "{}",
-            config
-                .get_error_color_bold()
-                .paint(self.to_string_handle(config))
-        );
-    }
-}
-
 impl<ConfigGeneric> crate::traits::error_display::ToStringHandle<ConfigGeneric>
     for FiveOneOriginError
 where
@@ -539,24 +467,6 @@ impl std::fmt::Display for SixWrapperError {
                 });
         source_as_string.pop();
         write!(f, "{}", source_as_string)
-    }
-}
-
-impl<ConfigGeneric> crate::traits::error_log::ErrorLog<ConfigGeneric> for SixWrapperError
-where
-    ConfigGeneric: crate::traits::get_color::ErrorColorBold
-        + crate::traits::fields::GetServerPort
-        + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::fields::GetServerIp, // + crate::traits::get_server_address::GetServerAddress
-{
-    fn error_log(&self, config: &ConfigGeneric) {
-        eprintln!(
-            "{}",
-            config
-                .get_error_color_bold()
-                .paint(self.to_string_handle(config))
-        );
     }
 }
 
@@ -689,24 +599,6 @@ impl std::fmt::Display for SevenOriginError {
     }
 }
 
-impl<ConfigGeneric> crate::traits::error_log::ErrorLog<ConfigGeneric> for SevenOriginError
-where
-    ConfigGeneric: crate::traits::get_color::ErrorColorBold
-        + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::fields::GetServerIp
-        + crate::traits::fields::GetServerPort,
-{
-    fn error_log(&self, config: &ConfigGeneric) {
-        eprintln!(
-            "{}",
-            config
-                .get_error_color_bold()
-                .paint(self.to_string_handle(config))
-        );
-    }
-}
-
 impl<ConfigGeneric> crate::traits::error_display::ToStringHandle<ConfigGeneric> for SevenOriginError
 where
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
@@ -751,24 +643,6 @@ pub struct EightOriginError {
 impl std::fmt::Display for EightOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "{}", self.error)
-    }
-}
-
-impl<ConfigGeneric> crate::traits::error_log::ErrorLog<ConfigGeneric> for EightOriginError
-where
-    ConfigGeneric: crate::traits::get_color::ErrorColorBold
-        + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::fields::GetServerIp
-        + crate::traits::fields::GetServerPort,
-{
-    fn error_log(&self, config: &ConfigGeneric) {
-        eprintln!(
-            "{}",
-            config
-                .get_error_color_bold()
-                .paint(self.to_string_handle(config))
-        );
     }
 }
 
