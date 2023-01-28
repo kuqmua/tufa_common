@@ -8,14 +8,11 @@ use std::vec;
 use thiserror::Error;
 
 #[derive(Debug, Serialize, Deserialize, Error)]
-pub struct ThreeWrapperError {
-    source: ThreeWrapperErrorEnum,
-    code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
-}
-
-impl std::fmt::Display for ThreeWrapperError {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.source)
+pub enum ThreeWrapperError {
+    #[error("{source}\n{code_occurence}")]
+    Something {
+        source: ThreeWrapperErrorEnum,
+        code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
     }
 }
 
@@ -27,11 +24,13 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn to_string_handle(&self, config: &ConfigGeneric) -> String {
-        format!(
-            "{}\n{}",
-            self.source.to_string_handle(config),
-            self.get_code_occurence_as_string(config),
-        )
+        match self {
+            ThreeWrapperError::Something { source, code_occurence } => format!(
+                "{}\n{}",
+                source.to_string_handle(config),
+                self.get_code_occurence_as_string(config),
+            ),
+        }
     }
 }
 
@@ -42,20 +41,24 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        self.source.get_source_as_string(config)
+        match self {
+            ThreeWrapperError::Something { source, code_occurence } => source.get_source_as_string(config),
+        }
     }
 }
 
 impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for ThreeWrapperError {
     fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
-        &self.code_occurence
+        match self {
+            ThreeWrapperError::Something { source, code_occurence } => code_occurence,
+        }
     }
 }
 
 pub fn three() -> Result<(), Box<ThreeWrapperError>> {
     if let Err(e) = four() {
-        let f = ThreeWrapperError {
-            source: ThreeWrapperErrorEnum::FourWrapper(*e),
+        let f = ThreeWrapperError::Something { 
+            source: ThreeWrapperErrorEnum::FourWrapper(*e), 
             code_occurence: crate::common::code_occurence::CodeOccurenceOldWay::new(
                 once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
                     String::from(file!()),
@@ -120,23 +123,29 @@ where
 }
 
 #[derive(Debug, Serialize, Deserialize, Error)]
-pub struct FourWrapperError {
-    //todo how to implement from for it?
-    sources: HashMap<String, FourWrapperErrorEnum>,
-    code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+pub enum FourWrapperError {
+    Something {
+        //todo how to implement from for it?
+        sources: HashMap<String, FourWrapperErrorEnum>,
+        code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+    }
 }
 
 impl std::fmt::Display for FourWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        let mut source_as_string =
-            self.sources
-                .iter()
-                .fold(String::from(""), |mut acc, (key, value)| {
-                    acc.push_str(&format!("[key: {}]\n {}\n", key, value));
-                    acc
-                });
-        source_as_string.pop();
-        write!(f, "{}", source_as_string)
+        match self {
+            FourWrapperError::Something { sources, code_occurence } => {
+                let mut source_as_string =
+                    sources
+                        .iter()
+                        .fold(String::from(""), |mut acc, (key, value)| {
+                            acc.push_str(&format!("[key: {}]\n {}\n", key, value));
+                            acc
+                        });
+                source_as_string.pop();
+                write!(f, "{}", source_as_string)
+            },
+        }
     }
 }
 
@@ -147,11 +156,15 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn to_string_handle(&self, config: &ConfigGeneric) -> String {
-        format!(
-            "{}{}",
-            self.sources.to_string_handle(config),
-            self.get_code_occurence_as_string(config),
-        )
+        match self {
+            FourWrapperError::Something { sources, code_occurence } => {
+                format!(
+                    "{}{}",
+                    sources.to_string_handle(config),
+                    self.get_code_occurence_as_string(config),
+                )
+            },
+        }
     }
 }
 
@@ -162,13 +175,17 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        self.sources.get_source_as_string(config)
+        match self {
+            FourWrapperError::Something { sources, code_occurence } => sources.get_source_as_string(config),
+        }
     }
 }
 
 impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FourWrapperError {
     fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
-        &self.code_occurence
+        match self {
+            FourWrapperError::Something { sources, code_occurence } => code_occurence,
+        }
     }
 }
 
@@ -229,7 +246,7 @@ pub fn four() -> Result<(), Box<FourWrapperError>> {
         (Ok(_), Err(_)) => todo!(),
         (Err(_), Ok(_)) => todo!(),
         (Err(f), Err(s)) => {
-            let f = FourWrapperError {
+            let f = FourWrapperError::Something { 
                 sources: HashMap::from([
                     (
                         String::from("five_hashmap_key"),
@@ -239,7 +256,7 @@ pub fn four() -> Result<(), Box<FourWrapperError>> {
                         String::from("six_hashmap_key"),
                         FourWrapperErrorEnum::SixWrapper(*s),
                     ),
-                ]),
+                ]), 
                 code_occurence: crate::common::code_occurence::CodeOccurenceOldWay::new(
                     once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
                         String::from(file!()),
@@ -258,23 +275,29 @@ pub fn four() -> Result<(), Box<FourWrapperError>> {
 }
 
 #[derive(Debug, Serialize, Deserialize, Error)]
-pub struct FiveWrapperError {
-    //todo how to implement from for it?
-    sources: HashMap<String, FiveWrapperErrorEnum>,
-    code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+pub enum FiveWrapperError {
+    Something{
+        //todo how to implement from for it?
+        sources: HashMap<String, FiveWrapperErrorEnum>,
+        code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+    }
 }
 
 impl std::fmt::Display for FiveWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        let mut source_as_string =
-            self.sources
-                .iter()
-                .fold(String::from(""), |mut acc, (key, value)| {
-                    acc.push_str(&format!("[key: \n]{} \n{}", key, value));
-                    acc
-                });
-        source_as_string.pop();
-        write!(f, "{}", source_as_string)
+        match self {
+            FiveWrapperError::Something { sources, code_occurence } => {
+                let mut source_as_string =
+                    sources
+                        .iter()
+                        .fold(String::from(""), |mut acc, (key, value)| {
+                            acc.push_str(&format!("[key: \n]{} \n{}", key, value));
+                            acc
+                        });
+                source_as_string.pop();
+                write!(f, "{}", source_as_string)
+            },
+        }
     }
 }
 
@@ -285,11 +308,13 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn to_string_handle(&self, config: &ConfigGeneric) -> String {
-        format!(
-            "{}{}",
-            self.sources.to_string_handle(config),
-            self.get_code_occurence_as_string(config),
-        )
+        match self {
+            FiveWrapperError::Something { sources, code_occurence } => format!(
+                "{}{}",
+                sources.to_string_handle(config),
+                self.get_code_occurence_as_string(config),
+            ),
+        }
     }
 }
 
@@ -300,13 +325,17 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        self.sources.get_source_as_string(config)
+        match self {
+            FiveWrapperError::Something { sources, code_occurence } => sources.get_source_as_string(config),
+        }
     }
 }
 
 impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FiveWrapperError {
     fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
-        &self.code_occurence
+        match self {
+            FiveWrapperError::Something { sources, code_occurence } => code_occurence
+        }
     }
 }
 
@@ -356,19 +385,19 @@ where
 
 pub fn five() -> Result<(), Box<FiveWrapperError>> {
     if let Err(e) = five_one() {
-        let f = FiveWrapperError {
+        let f = FiveWrapperError::Something { 
             sources: HashMap::from([
                 (
                     String::from("five_one_hashmap key"),
                     FiveWrapperErrorEnum::FiveOneOrigin(*e),
                 )
-            ]),
+            ]), 
             code_occurence: crate::common::code_occurence::CodeOccurenceOldWay::new(
                 once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
                     String::from(file!()),
                     line!(),
                     column!(),
-                )
+                ) 
         };
         // println!("five");
         // f.error_log(once_cell::sync::Lazy::force(
@@ -382,7 +411,7 @@ pub fn five() -> Result<(), Box<FiveWrapperError>> {
 
 #[derive(Debug, Serialize, Deserialize, Error)]
 pub enum FiveOneOriginError {
-    #[error("{error}")]
+    #[error("{error}\n{code_occurence}")]
     Something {
         error: String,
         code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
