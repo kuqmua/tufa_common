@@ -36,19 +36,6 @@ where
     }
 }
 
-impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for ThreeWrapperError
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        match self {
-            ThreeWrapperError::Something { source, code_occurence } => source.get_source_as_string(config),
-        }
-    }
-}
-
 impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for ThreeWrapperError {
     fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
         match self {
@@ -98,19 +85,6 @@ where
     }
 }
 
-impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for ThreeWrapperErrorEnum
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        match self {
-            ThreeWrapperErrorEnum::FourWrapper(i) => i.get_source_as_string(config),
-        }
-    }
-}
-
 impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for ThreeWrapperErrorEnum
 {
     fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
@@ -156,19 +130,6 @@ where
     }
 }
 
-impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for FourWrapperError
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        match self {
-            FourWrapperError::Something { sources, code_occurence } => sources.get_source_as_string(config),
-        }
-    }
-}
-
 impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FourWrapperError {
     fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
         match self {
@@ -196,20 +157,6 @@ where
         match self {
             FourWrapperErrorEnum::FiveWrapper(i) => i.to_string_handle(config),
             FourWrapperErrorEnum::SixWrapper(i) => i.to_string_handle(config),
-        }
-    }
-}
-
-impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for FourWrapperErrorEnum
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        match self {
-            FourWrapperErrorEnum::FiveWrapper(i) => i.get_source_as_string(config),
-            FourWrapperErrorEnum::SixWrapper(i) => i.get_source_as_string(config),
         }
     }
 }
@@ -293,19 +240,6 @@ where
     }
 }
 
-impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for FiveWrapperError
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        match self {
-            FiveWrapperError::Something { sources, code_occurence } => sources.get_source_as_string(config),
-        }
-    }
-}
-
 impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FiveWrapperError {
     fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
         match self {
@@ -330,17 +264,6 @@ where
     fn to_string_handle(&self, config: &ConfigGeneric) -> String {
         match self {
             FiveWrapperErrorEnum::FiveOneOrigin(i) => i.to_string_handle(config),
-        }
-    }
-}
-
-impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for FiveWrapperErrorEnum
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType,
-{
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        match self {
-            FiveWrapperErrorEnum::FiveOneOrigin(i) => i.get_source_as_string(config),
         }
     }
 }
@@ -464,19 +387,6 @@ where
     }
 }
 
-impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for SixWrapperError
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        match self {
-            SixWrapperError::Something { sources, code_occurence } => sources.get_source_as_string(config),
-        }
-    }
-}
-
 impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for SixWrapperError {
     fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
         match self {
@@ -504,19 +414,6 @@ where
         match self {
             SixWrapperErrorEnum::SevenWrapper(i) => i.to_string_handle(config),
             SixWrapperErrorEnum::EightWrapper(i) => i.to_string_handle(config),
-        }
-    }
-}
-
-impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for SixWrapperErrorEnum
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType,
-{
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
-        match self {
-            //todo - if wrapper - with config, if origin - without
-            SixWrapperErrorEnum::SevenWrapper(i) => i.get_source_as_string(config),
-            SixWrapperErrorEnum::EightWrapper(i) => i.get_source_as_string(config),
         }
     }
 }
