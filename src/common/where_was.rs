@@ -53,7 +53,7 @@ pub struct WhereWas {
 impl WhereWasMethods for WhereWas {
     fn readable_time(&self, timezone: i32) -> String {
         let datetime = chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.time)
-            .with_timezone(&chrono::FixedOffset::east(timezone));
+            .with_timezone(&chrono::FixedOffset::east_opt(timezone).unwrap());
         datetime.format("%Y-%m-%d %H:%M:%S").to_string()
     }
     //todo make it const fn

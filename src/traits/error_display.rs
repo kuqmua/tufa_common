@@ -34,19 +34,22 @@ where
     }
 }
 
-pub trait ToStringHandle {
-    fn to_string_handle(&self) -> String;
+pub trait ToStringHandle<ConfigGeneric> {
+    fn to_string_handle(&self, config: &ConfigGeneric) -> String;
 }
 
-impl<VecElementGeneric> ToStringHandle for Vec<VecElementGeneric>
+impl<VecElementGeneric, ConfigGeneric> ToStringHandle<ConfigGeneric> for Vec<VecElementGeneric>
 where
-    VecElementGeneric: std::fmt::Display, //ToStringHandle<ConfigGeneric>,
+    VecElementGeneric: ToStringHandle<ConfigGeneric>,
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
 {
-    fn to_string_handle(&self) -> String {
+    fn to_string_handle(&self, config: &ConfigGeneric) -> String {
         format!(
             "[\n{}]",
             self.iter().fold(String::from(""), |mut acc, vec_element| {
-                acc.push_str(&vec_element.to_string().lines().fold(
+                acc.push_str(&vec_element.to_string_handle(config).lines().fold(
                     String::from(""),
                     |mut acc, vec_element| {
                         acc.push_str(&format!(" {}\n", vec_element));
@@ -59,29 +62,32 @@ where
     }
 }
 
-impl<HashMapKeyGeneric, HashMapValueGeneric> ToStringHandle
-    for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
-where
-    HashMapKeyGeneric: std::fmt::Display,
-    HashMapValueGeneric: std::fmt::Display,
-{
-    fn to_string_handle(&self) -> String {
-        self.iter().fold(String::from(""), |mut acc, (key, value)| {
-            acc.push_str(&format!(
-                "{} [\n{}]\n",
-                key,
-                value
-                    .to_string()
-                    .lines()
-                    .fold(String::from(""), |mut acc, line| {
-                        acc.push_str(&format!(" {}\n", line));
-                        acc
-                    })
-            ));
-            acc
-        })
-    }
-}
+// impl<HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric> ToStringHandle<ConfigGeneric>
+//     for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric>
+// where
+//     HashMapKeyGeneric: std::fmt::Display,
+//     HashMapValueGeneric: ToStringHandle<ConfigGeneric>,
+//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+//         + crate::traits::fields::GetTimezone
+//         + crate::traits::get_server_address::GetServerAddress,
+// {
+//     fn to_string_handle(&self, config: &ConfigGeneric) -> String {
+//         self.iter().fold(String::from(""), |mut acc, (key, value)| {
+//             acc.push_str(&format!(
+//                 "{} [\n{}]\n",
+//                 key,
+//                 value
+//                     .to_string_handle(config)
+//                     .lines()
+//                     .fold(String::from(""), |mut acc, line| {
+//                         acc.push_str(&format!(" {}\n", line));
+//                         acc
+//                     })
+//             ));
+//             acc
+//         })
+//     }
+// }
 
 pub trait ToStringHandleCodeOccurence<ConfigGeneric> {
     fn to_string_handle_code_occurence(&self, config: &ConfigGeneric) -> String;
