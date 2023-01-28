@@ -2,6 +2,7 @@ use crate::traits::error_display::{ErrorDisplayInner, ToStringHandle};
 use crate::traits::error_log::ErrorLog;
 use crate::traits::get_code_occurence::GetCodeOccurenceAsString;
 use crate::traits::get_source::GetSourceAsString;
+use crate::traits::error_display::ToStringHandleWithoutConfig;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::vec;
@@ -134,24 +135,7 @@ pub enum FourWrapperError {
 impl std::fmt::Display for FourWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
-            FourWrapperError::Something { sources, code_occurence } => {
-                let mut source_as_string = sources.iter().fold(String::from(""), |mut acc, (key, value)| {
-                    acc.push_str(&format!(
-                        "{} [\n{}]\n",
-                        key,
-                        value
-                        .to_string()
-                        .lines()
-                        .fold(String::from(""), |mut acc, line| {
-                            acc.push_str(&format!(" {}\n", line));
-                            acc
-                        })
-                    ));
-                    acc
-                });
-                source_as_string.pop();
-                write!(f, "{}\n{}", source_as_string, code_occurence)
-            },
+            FourWrapperError::Something { sources, code_occurence } => write!(f, "{}{}", sources.to_string_handle_without_config(), code_occurence),
         }
     }
 }
@@ -294,24 +278,7 @@ pub enum FiveWrapperError {
 impl std::fmt::Display for FiveWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
-            FiveWrapperError::Something { sources, code_occurence } => {
-                let mut source_as_string = sources.iter().fold(String::from(""), |mut acc, (key, value)| {
-                    acc.push_str(&format!(
-                        "{} [\n{}]\n",
-                        key,
-                        value
-                        .to_string()
-                        .lines()
-                        .fold(String::from(""), |mut acc, line| {
-                            acc.push_str(&format!(" {}\n", line));
-                            acc
-                        })
-                    ));
-                    acc
-                });
-                source_as_string.pop();
-                write!(f, "{}\n{}", source_as_string, code_occurence)
-            },
+            FiveWrapperError::Something { sources, code_occurence } => write!(f, "{}{}", sources.to_string_handle_without_config(), code_occurence),
         }
     }
 }
@@ -486,26 +453,7 @@ pub enum SixWrapperError {
 impl std::fmt::Display for SixWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
-            SixWrapperError::Something { sources, code_occurence } => {
-                write!(
-                    f, 
-                    "{}", 
-                    format!(
-                        "[\n{}]\n{}",
-                        sources.iter().fold(String::from(""), |mut acc, vec_element| {
-                            acc.push_str(&vec_element.to_string().lines().fold(
-                                String::from(""),
-                                |mut acc, vec_element| {
-                                    acc.push_str(&format!(" {}\n", vec_element));
-                                    acc
-                                },
-                            ));
-                            acc
-                        }),
-                        code_occurence
-                    )
-                )
-            },
+            SixWrapperError::Something { sources, code_occurence } => write!(f, "{}", sources.to_string_handle_without_config()),
         }
     }
 }
