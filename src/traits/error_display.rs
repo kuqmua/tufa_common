@@ -12,14 +12,14 @@ where
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
-    SelfGeneric: crate::traits::get_source::GetSourceAsString<ConfigGeneric>
+    SelfGeneric: crate::traits::get_source::GetOriginSourceAsString<ConfigGeneric>
         + crate::traits::get_code_occurence::GetCodeOccurenceOldWay,
 {
     fn error_display_inner(&self, config: &ConfigGeneric) -> String {
         let code_occurence = self.get_code_occurence_old_way();
         format!(
             "{}\n{} {} on {} {} pid: {}",
-            self.get_source_as_string(config),
+            self.get_origin_source_as_string(config),
             code_occurence.get_code_path(config.get_source_place_type()),
             chrono::DateTime::<chrono::Utc>::from(
                 std::time::UNIX_EPOCH + code_occurence.get_time(),

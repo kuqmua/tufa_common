@@ -1,7 +1,7 @@
 use crate::traits::error_display::{ErrorDisplayInner, ToStringHandle};
 use crate::traits::error_log::ErrorLog;
 use crate::traits::get_code_occurence::GetCodeOccurenceOldWay;
-use crate::traits::get_source::GetSourceAsString;
+use crate::traits::get_source::GetOriginSourceAsString;
 use crate::traits::error_display::ToStringHandleWithoutConfig;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -324,8 +324,8 @@ where
     }
 }
 
-impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for FiveOneOriginError {
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
+impl<ConfigGeneric> GetOriginSourceAsString<ConfigGeneric> for FiveOneOriginError {
+    fn get_origin_source_as_string(&self, config: &ConfigGeneric) -> String {
         match self {
             FiveOneOriginError::Something { error, code_occurence } => format!("{}", error),
         }
@@ -477,8 +477,8 @@ where
     }
 }
 
-impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for SevenOriginError {
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
+impl<ConfigGeneric> GetOriginSourceAsString<ConfigGeneric> for SevenOriginError {
+    fn get_origin_source_as_string(&self, config: &ConfigGeneric) -> String {
         match self {
             SevenOriginError::Something { error, code_occurence } => format!("{}", error),
         }
@@ -526,8 +526,8 @@ where
     }
 }
 
-impl<ConfigGeneric> GetSourceAsString<ConfigGeneric> for EightOriginError {
-    fn get_source_as_string(&self, config: &ConfigGeneric) -> String {
+impl<ConfigGeneric> GetOriginSourceAsString<ConfigGeneric> for EightOriginError {
+    fn get_origin_source_as_string(&self, config: &ConfigGeneric) -> String {
         match self {
             EightOriginError::Something { error, code_occurence } => format!("{}", error),
         }
