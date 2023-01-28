@@ -38,14 +38,14 @@ impl CodeOccurenceOldWay {
     }
 }
 
-impl<ConfigGeneric> crate::traits::error_display::ToStringHandle<ConfigGeneric>
+impl<ConfigGeneric> crate::traits::error_display::ToStringHandleCodeOccurence<ConfigGeneric>
     for crate::common::code_occurence::CodeOccurenceOldWay
 where
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetSourcePlaceType
         + crate::traits::get_server_address::GetServerAddress,
 {
-    fn to_string_handle(&self, config: &ConfigGeneric) -> String {
+    fn to_string_handle_code_occurence(&self, config: &ConfigGeneric) -> String {
         format!(
             "{} {} on {} {} pid: {}",
             self.get_code_path(config.get_source_place_type()),
