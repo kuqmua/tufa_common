@@ -135,15 +135,22 @@ impl std::fmt::Display for FourWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
             FourWrapperError::Something { sources, code_occurence } => {
-                let mut source_as_string =
-                    sources
-                        .iter()
-                        .fold(String::from(""), |mut acc, (key, value)| {
-                            acc.push_str(&format!("[key: {}]\n {}\n", key, value));
+                let mut source_as_string = sources.iter().fold(String::from(""), |mut acc, (key, value)| {
+                    acc.push_str(&format!(
+                        "{} [\n{}]\n",
+                        key,
+                        value
+                        .to_string()
+                        .lines()
+                        .fold(String::from(""), |mut acc, line| {
+                            acc.push_str(&format!(" {}\n", line));
                             acc
-                        });
+                        })
+                    ));
+                    acc
+                });
                 source_as_string.pop();
-                write!(f, "{}", source_as_string)
+                write!(f, "{}\n{}", source_as_string, code_occurence)
             },
         }
     }
@@ -264,11 +271,12 @@ pub fn four() -> Result<(), Box<FourWrapperError>> {
                         column!(),
                     )
             };
-            // println!("four");
+            // println!("=======");
+            // println!("{}", f);
             // f.error_log(once_cell::sync::Lazy::force(
             //     &crate::global_variables::runtime::config::CONFIG,
             // ));
-            // println!("fourend");
+            // println!("=======");
             return Err(Box::new(f));
         }
     }
@@ -287,15 +295,22 @@ impl std::fmt::Display for FiveWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
             FiveWrapperError::Something { sources, code_occurence } => {
-                let mut source_as_string =
-                    sources
-                        .iter()
-                        .fold(String::from(""), |mut acc, (key, value)| {
-                            acc.push_str(&format!("[key: \n]{} \n{}", key, value));
+                let mut source_as_string = sources.iter().fold(String::from(""), |mut acc, (key, value)| {
+                    acc.push_str(&format!(
+                        "{} [\n{}]\n",
+                        key,
+                        value
+                        .to_string()
+                        .lines()
+                        .fold(String::from(""), |mut acc, line| {
+                            acc.push_str(&format!(" {}\n", line));
                             acc
-                        });
+                        })
+                    ));
+                    acc
+                });
                 source_as_string.pop();
-                write!(f, "{}", source_as_string)
+                write!(f, "{}\n{}", source_as_string, code_occurence)
             },
         }
     }
@@ -388,7 +403,7 @@ pub fn five() -> Result<(), Box<FiveWrapperError>> {
         let f = FiveWrapperError::Something { 
             sources: HashMap::from([
                 (
-                    String::from("five_one_hashmap key"),
+                    String::from("five_one_hashmap_key"),
                     FiveWrapperErrorEnum::FiveOneOrigin(*e),
                 )
             ]), 
@@ -399,11 +414,12 @@ pub fn five() -> Result<(), Box<FiveWrapperError>> {
                     column!(),
                 ) 
         };
-        // println!("five");
+        // println!("++++++++++");
+        // println!("{}", f);
         // f.error_log(once_cell::sync::Lazy::force(
         //     &crate::global_variables::runtime::config::CONFIG,
         // ));
-        // println!("fiveend");
+        // println!("+++++++++");
         return Err(Box::new(f));
     }
     Ok(())
@@ -471,15 +487,24 @@ impl std::fmt::Display for SixWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
             SixWrapperError::Something { sources, code_occurence } => {
-                let mut source_as_string =
-                    sources
-                        .iter()
-                        .fold(String::from(""), |mut acc, vec_element| {
-                            acc.push_str(&format!("{}\n", vec_element));
+                write!(
+                    f, 
+                    "{}", 
+                    format!(
+                        "[\n{}]\n{}",
+                        sources.iter().fold(String::from(""), |mut acc, vec_element| {
+                            acc.push_str(&vec_element.to_string().lines().fold(
+                                String::from(""),
+                                |mut acc, vec_element| {
+                                    acc.push_str(&format!(" {}\n", vec_element));
+                                    acc
+                                },
+                            ));
                             acc
-                        });
-                source_as_string.pop();
-                write!(f, "{}", source_as_string)
+                        }),
+                        code_occurence
+                    )
+                )
             },
         }
     }
@@ -592,6 +617,7 @@ pub fn six() -> Result<(), Box<SixWrapperError>> {
                 ) 
             };
             // println!("------");
+            // println!("{}", f);
             // f.error_log(once_cell::sync::Lazy::force(
             //     &crate::global_variables::runtime::config::CONFIG,
             // ));
