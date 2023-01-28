@@ -324,8 +324,8 @@ where
     }
 }
 
-impl<ConfigGeneric> GetOriginSourceAsString<ConfigGeneric> for FiveOneOriginError {
-    fn get_origin_source_as_string(&self, config: &ConfigGeneric) -> String {
+impl crate::traits::get_source::GetOriginSourceAsString for FiveOneOriginError {
+    fn get_origin_source_as_string(&self) -> String {
         match self {
             FiveOneOriginError::Something { error, code_occurence } => format!("{}", error),
         }
@@ -477,8 +477,8 @@ where
     }
 }
 
-impl<ConfigGeneric> GetOriginSourceAsString<ConfigGeneric> for SevenOriginError {
-    fn get_origin_source_as_string(&self, config: &ConfigGeneric) -> String {
+impl crate::traits::get_source::GetOriginSourceAsString for SevenOriginError {
+    fn get_origin_source_as_string(&self) -> String {
         match self {
             SevenOriginError::Something { error, code_occurence } => format!("{}", error),
         }
@@ -526,8 +526,8 @@ where
     }
 }
 
-impl<ConfigGeneric> GetOriginSourceAsString<ConfigGeneric> for EightOriginError {
-    fn get_origin_source_as_string(&self, config: &ConfigGeneric) -> String {
+impl crate::traits::get_source::GetOriginSourceAsString for EightOriginError {
+    fn get_origin_source_as_string(&self) -> String {
         match self {
             EightOriginError::Something { error, code_occurence } => format!("{}", error),
         }
