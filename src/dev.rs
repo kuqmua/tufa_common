@@ -1,4 +1,4 @@
-use crate::traits::error_display::{ErrorDisplayInner, ToStringHandle};
+use crate::traits::error_display::ToStringHandle;
 use crate::traits::error_log::ErrorLog;
 use crate::traits::get_code_occurence::GetCodeOccurenceOldWay;
 use crate::traits::get_source::GetOriginSourceAsString;
@@ -313,17 +313,6 @@ pub enum FiveOneOriginError {
     },
 }
 
-impl<ConfigGeneric> crate::traits::error_display::ToStringHandle<ConfigGeneric> for FiveOneOriginError
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn to_string_handle(&self, config: &ConfigGeneric) -> String {
-        self.error_display_inner(config)
-    }
-}
-
 impl crate::traits::get_source::GetOriginSourceAsString for FiveOneOriginError {
     fn get_origin_source_as_string(&self) -> String {
         match self {
@@ -466,17 +455,6 @@ pub enum SevenOriginError {
     },
 }
 
-impl<ConfigGeneric> crate::traits::error_display::ToStringHandle<ConfigGeneric> for SevenOriginError
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn to_string_handle(&self, config: &ConfigGeneric) -> String {
-        self.error_display_inner(config)
-    }
-}
-
 impl crate::traits::get_source::GetOriginSourceAsString for SevenOriginError {
     fn get_origin_source_as_string(&self) -> String {
         match self {
@@ -513,17 +491,6 @@ pub enum EightOriginError {
         error: String,
         code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
     },
-}
-
-impl<ConfigGeneric> crate::traits::error_display::ToStringHandle<ConfigGeneric> for EightOriginError
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn to_string_handle(&self, config: &ConfigGeneric) -> String {
-        self.error_display_inner(config)
-    }
 }
 
 impl crate::traits::get_source::GetOriginSourceAsString for EightOriginError {

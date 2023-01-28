@@ -3,19 +3,19 @@ use crate::traits::get_hostname::GetHostname;
 use crate::traits::get_process_id::GetProcessId;
 use crate::traits::get_time::GetTime;
 
-pub trait ErrorDisplayInner<ConfigGeneric> {
-    fn error_display_inner(&self, config: &ConfigGeneric) -> String;
+pub trait ToStringHandle<ConfigGeneric> {
+    fn to_string_handle(&self, config: &ConfigGeneric) -> String;
 }
 
-impl<SelfGeneric, ConfigGeneric> ErrorDisplayInner<ConfigGeneric> for SelfGeneric
+impl<SelfGeneric, ConfigGeneric> ToStringHandle<ConfigGeneric> for SelfGeneric
 where
+    SelfGeneric: crate::traits::get_source::GetOriginSourceAsString
+        + crate::traits::get_code_occurence::GetCodeOccurenceOldWay,
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
-    SelfGeneric: crate::traits::get_source::GetOriginSourceAsString
-        + crate::traits::get_code_occurence::GetCodeOccurenceOldWay,
 {
-    fn error_display_inner(&self, config: &ConfigGeneric) -> String {
+    fn to_string_handle(&self, config: &ConfigGeneric) -> String {
         let code_occurence = self.get_code_occurence_old_way();
         format!(
             "{}\n{} {} on {} {} pid: {}",
@@ -33,40 +33,6 @@ where
         )
     }
 }
-
-pub trait ToStringHandle<ConfigGeneric> {
-    fn to_string_handle(&self, config: &ConfigGeneric) -> String;
-}
-// //
-// crate::traits::get_source::GetOriginSourceAsString<ConfigGeneric>
-
-// impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay
-
-// //
-// impl<SelfGeneric, ConfigGeneric> ToStringHandle<ConfigGeneric> for SelfGeneric
-// where
-//     SelfGeneric: ToStringHandle<ConfigGeneric>,
-//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-//         + crate::traits::fields::GetTimezone
-//         + crate::traits::get_server_address::GetServerAddress,
-// {
-//     fn to_string_handle(&self, config: &ConfigGeneric) -> String {
-//         format!(
-//             "[\n{}]",
-//             self.iter().fold(String::from(""), |mut acc, vec_element| {
-//                 acc.push_str(&vec_element.to_string_handle(config).lines().fold(
-//                     String::from(""),
-//                     |mut acc, vec_element| {
-//                         acc.push_str(&format!(" {}\n", vec_element));
-//                         acc
-//                     },
-//                 ));
-//                 acc
-//             })
-//         )
-//     }
-// }
-// //
 
 impl<VecElementGeneric, ConfigGeneric> ToStringHandle<ConfigGeneric> for Vec<VecElementGeneric>
 where
