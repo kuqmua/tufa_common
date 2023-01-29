@@ -5,5 +5,4 @@ pub mod git;
 pub mod numeric;
 pub mod pid_hostname_time_file_line_column;
 pub mod postgres_credentials;
-pub mod source_and_code_occurence;
 pub mod where_was;

@@ -1,6 +1,6 @@
 use crate::traits::error_display::ToStringHandle;
 use crate::traits::error_log::ErrorLog;
-use crate::traits::get_code_occurence::GetCodeOccurenceOldWay;
+use crate::traits::get_code_occurence::GetCodeOccurence;
 use crate::traits::get_source::GetOriginSourceAsString;
 use crate::traits::error_display::ToStringHandleWithoutConfig;
 use actix_web::cookie::Display;
@@ -15,7 +15,7 @@ pub enum ThreeWrapperError {
     #[error("{source}\n{code_occurence}")]
     Something {
         source: ThreeWrapperErrorEnum,
-        code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     }
 }
 
@@ -31,14 +31,14 @@ where
             ThreeWrapperError::Something { source, code_occurence } => format!(
                 "{}\n{}",
                 source.to_string_handle(config),
-                self.get_code_occurence_old_way().to_string_handle_code_occurence(config),
+                self.get_code_occurence().to_string_handle_code_occurence(config),
             ),
         }
     }
 }
 
-impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for ThreeWrapperError {
-    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+impl crate::traits::get_code_occurence::GetCodeOccurence for ThreeWrapperError {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
         match self {
             ThreeWrapperError::Something { source, code_occurence } => code_occurence,
         }
@@ -49,7 +49,7 @@ pub fn three() -> Result<(), Box<ThreeWrapperError>> {
     if let Err(e) = four() {
         let f = ThreeWrapperError::Something { 
             source: ThreeWrapperErrorEnum::FourWrapper(*e), 
-            code_occurence: crate::common::code_occurence::CodeOccurenceOldWay::new(
+            code_occurence: crate::common::code_occurence::CodeOccurence::new(
                 once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
                     String::from(file!()),
                     line!(),
@@ -86,11 +86,11 @@ where
     }
 }
 
-impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for ThreeWrapperErrorEnum
+impl crate::traits::get_code_occurence::GetCodeOccurence for ThreeWrapperErrorEnum
 {
-    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
         match self {
-            ThreeWrapperErrorEnum::FourWrapper(i) => i.get_code_occurence_old_way(),
+            ThreeWrapperErrorEnum::FourWrapper(i) => i.get_code_occurence(),
         }
     }
 }
@@ -100,7 +100,7 @@ pub enum FourWrapperError {
     Something {
         //todo how to implement from for it?
         sources: HashMap<String, FourWrapperErrorEnum>,
-        code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     }
 }
 
@@ -124,15 +124,15 @@ where
                 format!(
                     "{}{}",
                     sources.to_string_handle(config),
-                    self.get_code_occurence_old_way().to_string_handle_code_occurence(config),
+                    self.get_code_occurence().to_string_handle_code_occurence(config),
                 )
             },
         }
     }
 }
 
-impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FourWrapperError {
-    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+impl crate::traits::get_code_occurence::GetCodeOccurence for FourWrapperError {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
         match self {
             FourWrapperError::Something { sources, code_occurence } => code_occurence,
         }
@@ -162,12 +162,12 @@ where
     }
 }
 
-impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FourWrapperErrorEnum
+impl crate::traits::get_code_occurence::GetCodeOccurence for FourWrapperErrorEnum
 {
-    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
         match self {
-            FourWrapperErrorEnum::FiveWrapper(i) => i.get_code_occurence_old_way(),
-            FourWrapperErrorEnum::SixWrapper(i) => i.get_code_occurence_old_way(),
+            FourWrapperErrorEnum::FiveWrapper(i) => i.get_code_occurence(),
+            FourWrapperErrorEnum::SixWrapper(i) => i.get_code_occurence(),
         }
     }
 }
@@ -189,7 +189,7 @@ pub fn four() -> Result<(), Box<FourWrapperError>> {
                         FourWrapperErrorEnum::SixWrapper(*s),
                     ),
                 ]), 
-                code_occurence: crate::common::code_occurence::CodeOccurenceOldWay::new(
+                code_occurence: crate::common::code_occurence::CodeOccurence::new(
                     once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
                         String::from(file!()),
                         line!(),
@@ -212,7 +212,7 @@ pub enum FiveWrapperError {
     Something{
         //todo how to implement from for it?
         sources: HashMap<String, FiveWrapperErrorEnum>,
-        code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     }
 }
 
@@ -235,14 +235,14 @@ where
             FiveWrapperError::Something { sources, code_occurence } => format!(
                 "{}{}",
                 sources.to_string_handle(config),
-                self.get_code_occurence_old_way().to_string_handle_code_occurence(config),
+                self.get_code_occurence().to_string_handle_code_occurence(config),
             ),
         }
     }
 }
 
-impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FiveWrapperError {
-    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+impl crate::traits::get_code_occurence::GetCodeOccurence for FiveWrapperError {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
         match self {
             FiveWrapperError::Something { sources, code_occurence } => code_occurence
         }
@@ -269,11 +269,11 @@ where
     }
 }
 
-impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FiveWrapperErrorEnum
+impl crate::traits::get_code_occurence::GetCodeOccurence for FiveWrapperErrorEnum
 {
-    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
         match self {
-            FiveWrapperErrorEnum::FiveOneOrigin(i) => i.get_code_occurence_old_way(),
+            FiveWrapperErrorEnum::FiveOneOrigin(i) => i.get_code_occurence(),
         }
     }
 }
@@ -287,7 +287,7 @@ pub fn five() -> Result<(), Box<FiveWrapperError>> {
                     FiveWrapperErrorEnum::FiveOneOrigin(*e),
                 )
             ]), 
-            code_occurence: crate::common::code_occurence::CodeOccurenceOldWay::new(
+            code_occurence: crate::common::code_occurence::CodeOccurence::new(
                 once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
                     String::from(file!()),
                     line!(),
@@ -310,7 +310,7 @@ pub enum FiveOneOriginError {
     #[error("{error}\n{code_occurence}")]
     Something {
         error: String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
 
@@ -322,8 +322,8 @@ impl crate::traits::get_source::GetOriginSourceAsString for FiveOneOriginError {
     }
 }
 
-impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FiveOneOriginError {
-    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+impl crate::traits::get_code_occurence::GetCodeOccurence for FiveOneOriginError {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
         match self {
             FiveOneOriginError::Something { error, code_occurence } => code_occurence,
         }
@@ -333,7 +333,7 @@ impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for FiveOneOrigin
 pub fn five_one() -> Result<(), Box<FiveOneOriginError>> {
     return Err(Box::new(FiveOneOriginError::Something { 
         error: String::from("five_one error"), 
-        code_occurence: crate::common::code_occurence::CodeOccurenceOldWay::new(
+        code_occurence: crate::common::code_occurence::CodeOccurence::new(
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
                 String::from(file!()),
                 line!(),
@@ -348,7 +348,7 @@ pub enum SixWrapperError {
     Something {
         //todo how to implement from for it?
         sources: Vec<SixWrapperErrorEnum>,
-        code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     }
 }
 
@@ -371,14 +371,14 @@ where
             SixWrapperError::Something { sources, code_occurence } => format!(
                 "{}\n{}",
                 sources.to_string_handle(config),
-                self.get_code_occurence_old_way().to_string_handle_code_occurence(config),
+                self.get_code_occurence().to_string_handle_code_occurence(config),
             ),
         }
     }
 }
 
-impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for SixWrapperError {
-    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+impl crate::traits::get_code_occurence::GetCodeOccurence for SixWrapperError {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
         match self {
             SixWrapperError::Something { sources, code_occurence } => code_occurence,
         }
@@ -408,12 +408,12 @@ where
     }
 }
 
-impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for SixWrapperErrorEnum
+impl crate::traits::get_code_occurence::GetCodeOccurence for SixWrapperErrorEnum
 {
-    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
         match self {
-            SixWrapperErrorEnum::SevenWrapper(i) => i.get_code_occurence_old_way(),
-            SixWrapperErrorEnum::EightWrapper(i) => i.get_code_occurence_old_way(),
+            SixWrapperErrorEnum::SevenWrapper(i) => i.get_code_occurence(),
+            SixWrapperErrorEnum::EightWrapper(i) => i.get_code_occurence(),
         }
     }
 }
@@ -429,7 +429,7 @@ pub fn six() -> Result<(), Box<SixWrapperError>> {
         (Err(seven_error), Err(eight_error)) => {
             let f = SixWrapperError::Something { 
                 sources: vec![SixWrapperErrorEnum::SevenWrapper(*seven_error), SixWrapperErrorEnum::EightWrapper(*eight_error)], 
-                code_occurence: crate::common::code_occurence::CodeOccurenceOldWay::new(
+                code_occurence: crate::common::code_occurence::CodeOccurence::new(
                     once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
                     String::from(file!()),
                     line!(),
@@ -452,7 +452,7 @@ pub enum SevenOriginError {
     #[error("{error}\n{code_occurence}")]
     Something {
         error: String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
 
@@ -464,8 +464,8 @@ impl crate::traits::get_source::GetOriginSourceAsString for SevenOriginError {
     }
 }
 
-impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for SevenOriginError {
-    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+impl crate::traits::get_code_occurence::GetCodeOccurence for SevenOriginError {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
         match self {
             SevenOriginError::Something { error, code_occurence } => code_occurence,
         }
@@ -475,7 +475,7 @@ impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for SevenOriginEr
 pub fn seven() -> Result<(), Box<SevenOriginError>> {
     return Err(
         Box::new(
-            SevenOriginError::Something { error: String::from("error_seven"), code_occurence: crate::common::code_occurence::CodeOccurenceOldWay::new(
+            SevenOriginError::Something { error: String::from("error_seven"), code_occurence: crate::common::code_occurence::CodeOccurence::new(
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
                 String::from(file!()),
                 line!(),
@@ -490,7 +490,7 @@ pub enum EightOriginError {
     #[error("{error}\n{code_occurence}")]
     Something {
         error: String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
 
@@ -502,8 +502,8 @@ impl crate::traits::get_source::GetOriginSourceAsString for EightOriginError {
     }
 }
 
-impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for EightOriginError {
-    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+impl crate::traits::get_code_occurence::GetCodeOccurence for EightOriginError {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
         match self {
             EightOriginError::Something { error, code_occurence } => code_occurence,
         }
@@ -513,7 +513,7 @@ impl crate::traits::get_code_occurence::GetCodeOccurenceOldWay for EightOriginEr
 pub fn eight() -> Result<(), Box<EightOriginError>> {
     return Err(
         Box::new(
-            EightOriginError::Something { error: String::from("error_eight"), code_occurence: crate::common::code_occurence::CodeOccurenceOldWay::new(
+            EightOriginError::Something { error: String::from("error_eight"), code_occurence: crate::common::code_occurence::CodeOccurence::new(
             once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
                 String::from(file!()),
                 line!(),
@@ -521,37 +521,4 @@ pub fn eight() -> Result<(), Box<EightOriginError>> {
             )} 
         )
     );
-}
-////
-#[derive(Debug, Serialize, Deserialize, Error)]
-pub struct OriginError<OriginGeneric> 
-where 
-    OriginGeneric: std::fmt::Display
-{
-    error: OriginGeneric,
-    code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
-}
-
-impl<OriginGeneric: std::fmt::Display> crate::traits::get_source::GetOriginSourceAsString for OriginError<OriginGeneric>
-where
-    OriginGeneric: std::fmt::Display,
-{
-    fn get_origin_source_as_string(&self) -> String {
-        format!("{}", self.error)
-    }
-}
-
-impl<OriginGeneric: std::fmt::Display> crate::traits::get_code_occurence::GetCodeOccurenceOldWay for OriginError<OriginGeneric> {
-    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
-        &self.code_occurence
-    }
-}
-
-impl<OriginGeneric: std::fmt::Display> std::fmt::Display for OriginError<OriginGeneric> 
-where
-    OriginGeneric: crate::traits::get_source::GetOriginSourceAsString + crate::traits::get_code_occurence::GetCodeOccurenceOldWay + std::fmt::Display,
-{
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}\n{}", self.get_origin_source_as_string(), self.get_code_occurence_old_way())
-    }
 }

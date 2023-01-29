@@ -1,3 +1,3 @@
-pub trait GetCodeOccurenceOldWay {
-    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay;
+pub trait GetCodeOccurence {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence;
 }

@@ -10,13 +10,13 @@ pub trait ToStringHandle<ConfigGeneric> {
 impl<SelfGeneric, ConfigGeneric> ToStringHandle<ConfigGeneric> for SelfGeneric
 where
     SelfGeneric: crate::traits::get_source::GetOriginSourceAsString
-        + crate::traits::get_code_occurence::GetCodeOccurenceOldWay,
+        + crate::traits::get_code_occurence::GetCodeOccurence,
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn to_string_handle(&self, config: &ConfigGeneric) -> String {
-        let code_occurence = self.get_code_occurence_old_way();
+        let code_occurence = self.get_code_occurence();
         format!(
             "{}\n{} {} on {} {} pid: {}",
             self.get_origin_source_as_string(),
