@@ -7,7 +7,9 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CodeOccurence {
-    pub file_line_column: crate::common::file_line_column::FileLineColumn,
+    pub file: String, //&'a str
+    pub line: u32,
+    pub column: u32,
     pub git_info: crate::common::git::git_info::GitInformationWithoutLifetimes,
     pub duration: std::time::Duration,
     pub hostname: String,
@@ -26,11 +28,9 @@ impl CodeOccurence {
             Err(_) => String::from("\"hostname::get() failed \""),
         };
         Self {
-            file_line_column: crate::common::file_line_column::FileLineColumn {
-                file,
-                line,
-                column,
-            },
+            file,
+            line,
+            column,
             git_info,
             duration: std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
@@ -81,19 +81,19 @@ where
 
 impl crate::traits::fields::GetFile for CodeOccurence {
     fn get_file(&self) -> &String {
-        self.file_line_column.get_file()
+        &self.file
     }
 }
 
 impl crate::traits::fields::GetLine for CodeOccurence {
     fn get_line(&self) -> &u32 {
-        self.file_line_column.get_line()
+        &self.line
     }
 }
 
 impl crate::traits::fields::GetColumn for CodeOccurence {
     fn get_column(&self) -> &u32 {
-        self.file_line_column.get_column()
+        &self.column
     }
 }
 
