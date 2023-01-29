@@ -3,6 +3,7 @@ use crate::traits::error_log::ErrorLog;
 use crate::traits::get_code_occurence::GetCodeOccurenceOldWay;
 use crate::traits::get_source::GetOriginSourceAsString;
 use crate::traits::error_display::ToStringHandleWithoutConfig;
+use actix_web::cookie::Display;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::vec;
@@ -520,4 +521,37 @@ pub fn eight() -> Result<(), Box<EightOriginError>> {
             )} 
         )
     );
+}
+////
+#[derive(Debug, Serialize, Deserialize, Error)]
+pub struct OriginError<OriginGeneric> 
+where 
+    OriginGeneric: std::fmt::Display
+{
+    error: OriginGeneric,
+    code_occurence: crate::common::code_occurence::CodeOccurenceOldWay,
+}
+
+impl<OriginGeneric: std::fmt::Display> crate::traits::get_source::GetOriginSourceAsString for OriginError<OriginGeneric>
+where
+    OriginGeneric: std::fmt::Display,
+{
+    fn get_origin_source_as_string(&self) -> String {
+        format!("{}", self.error)
+    }
+}
+
+impl<OriginGeneric: std::fmt::Display> crate::traits::get_code_occurence::GetCodeOccurenceOldWay for OriginError<OriginGeneric> {
+    fn get_code_occurence_old_way(&self) -> &crate::common::code_occurence::CodeOccurenceOldWay {
+        &self.code_occurence
+    }
+}
+
+impl<OriginGeneric: std::fmt::Display> std::fmt::Display for OriginError<OriginGeneric> 
+where
+    OriginGeneric: crate::traits::get_source::GetOriginSourceAsString + crate::traits::get_code_occurence::GetCodeOccurenceOldWay + std::fmt::Display,
+{
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}\n{}", self.get_origin_source_as_string(), self.get_code_occurence_old_way())
+    }
 }
