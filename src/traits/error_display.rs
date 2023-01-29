@@ -1,7 +1,7 @@
 use crate::traits::code_path::CodePath;
+use crate::traits::get_duration::GetDuration;
 use crate::traits::get_hostname::GetHostname;
 use crate::traits::get_process_id::GetProcessId;
-use crate::traits::get_time::GetTime;
 
 pub trait ToStringHandle<ConfigGeneric> {
     fn to_string_handle(&self, config: &ConfigGeneric) -> String;
@@ -22,7 +22,7 @@ where
             self.get_origin_source_as_string(),
             code_occurence.get_code_path(config.get_source_place_type()),
             chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + code_occurence.get_time(),
+                std::time::UNIX_EPOCH + code_occurence.get_duration(),
             )
             .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
             .format("%Y-%m-%d %H:%M:%S")

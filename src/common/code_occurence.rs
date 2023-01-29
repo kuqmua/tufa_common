@@ -1,12 +1,15 @@
 //todo use std::sync::Arc<crate::common::git::git_info::GitInformationWithoutLifetimes> ?
 use crate::traits::code_path::CodePath;
+use crate::traits::get_duration::GetDuration;
+use crate::traits::get_hostname::GetHostname;
+use crate::traits::get_process_id::GetProcessId;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CodeOccurence {
     pub file_line_column: crate::common::file_line_column::FileLineColumn,
     pub git_info: crate::common::git::git_info::GitInformationWithoutLifetimes,
-    pub time: std::time::Duration,
+    pub duration: std::time::Duration,
     pub hostname: String,
     pub process_id: u32,
 }
@@ -29,7 +32,7 @@ impl CodeOccurence {
                 column,
             },
             git_info,
-            time: std::time::SystemTime::now()
+            duration: std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("cannot convert time to unix_epoch"),
             hostname: hostname_handle,
@@ -44,12 +47,12 @@ impl std::fmt::Display for crate::common::code_occurence::CodeOccurence {
             f,
             "{} {} {} pid: {}",
             self.get_project_code_path(),
-            chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.time,)
+            chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
                 .with_timezone(&chrono::FixedOffset::east_opt(10800).unwrap())
                 .format("%Y-%m-%d %H:%M:%S")
                 .to_string(),
-            self.hostname,
-            self.process_id
+            self.get_hostname(),
+            self.get_process_id()
         )
     }
 }
@@ -65,13 +68,13 @@ where
         format!(
             "{} {} on {} {} pid: {}",
             self.get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.time,)
+            chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
                 .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
                 .format("%Y-%m-%d %H:%M:%S")
                 .to_string(),
             config.get_server_address(),
-            self.hostname,
-            self.process_id,
+            self.get_hostname(),
+            self.get_process_id(),
         )
     }
 }
@@ -102,9 +105,9 @@ impl crate::traits::get_git_info::GetGitInfoWithoutLifetimes for CodeOccurence {
     }
 }
 
-impl crate::traits::get_time::GetTime for CodeOccurence {
-    fn get_time(&self) -> std::time::Duration {
-        self.time
+impl crate::traits::get_duration::GetDuration for CodeOccurence {
+    fn get_duration(&self) -> std::time::Duration {
+        self.duration
     }
 }
 

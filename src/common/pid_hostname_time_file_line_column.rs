@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PidHostnameTimeFileLineColumn {
-    pub time: std::time::Duration,
+    pub duration: std::time::Duration,
     pub file_line_column: crate::common::file_line_column::FileLineColumn,
     pub process_id: u32,
     pub hostname: String,
@@ -19,7 +19,7 @@ impl PidHostnameTimeFileLineColumn {
             Err(_) => String::from("\"hostname::get() failed \""),
         };
         Self {
-            time: std::time::SystemTime::now()
+            duration: std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("cannot convert time to unix_epoch"),
             file_line_column: crate::common::file_line_column::FileLineColumn {
@@ -45,9 +45,9 @@ impl crate::traits::get_process_id::GetProcessId for PidHostnameTimeFileLineColu
     }
 }
 
-impl crate::traits::get_time::GetTime for PidHostnameTimeFileLineColumn {
-    fn get_time(&self) -> std::time::Duration {
-        self.time
+impl crate::traits::get_duration::GetDuration for PidHostnameTimeFileLineColumn {
+    fn get_duration(&self) -> std::time::Duration {
+        self.duration
     }
 }
 
