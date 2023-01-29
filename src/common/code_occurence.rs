@@ -57,16 +57,16 @@ impl std::fmt::Display for crate::common::code_occurence::CodeOccurence {
     }
 }
 
-impl<ConfigGeneric> crate::traits::error_display::ToStringHandleCodeOccurence<ConfigGeneric>
+impl<ConfigGeneric> crate::traits::to_string_with_config::ToStringWithConfig<ConfigGeneric>
     for crate::common::code_occurence::CodeOccurence
 where
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetSourcePlaceType
         + crate::traits::get_server_address::GetServerAddress,
 {
-    fn to_string_handle_code_occurence(&self, config: &ConfigGeneric) -> String {
+    fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
         format!(
-            "{} {} on {} {} pid: {}",
+            "{} {} {} {} pid: {}",
             self.get_code_path(config.get_source_place_type()),
             chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
                 .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())

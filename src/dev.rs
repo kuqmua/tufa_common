@@ -8,7 +8,6 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::vec;
 use thiserror::Error;
-use crate::traits::error_display::ToStringHandleCodeOccurence;
 
 #[derive(Debug, Serialize, Deserialize, Error)]
 pub enum ThreeWrapperError {
@@ -31,7 +30,7 @@ where
             ThreeWrapperError::Something { source, code_occurence } => format!(
                 "{}\n{}",
                 source.to_string_with_config(config),
-                self.get_code_occurence().to_string_handle_code_occurence(config),
+                self.get_code_occurence().to_string_with_config(config),
             ),
         }
     }
@@ -124,7 +123,7 @@ where
                 format!(
                     "{}{}",
                     sources.to_string_with_config(config),
-                    self.get_code_occurence().to_string_handle_code_occurence(config),
+                    self.get_code_occurence().to_string_with_config(config),
                 )
             },
         }
@@ -235,7 +234,7 @@ where
             FiveWrapperError::Something { sources, code_occurence } => format!(
                 "{}{}",
                 sources.to_string_with_config(config),
-                self.get_code_occurence().to_string_handle_code_occurence(config),
+                self.get_code_occurence().to_string_with_config(config),
             ),
         }
     }
@@ -371,7 +370,7 @@ where
             SixWrapperError::Something { sources, code_occurence } => format!(
                 "{}\n{}",
                 sources.to_string_with_config(config),
-                self.get_code_occurence().to_string_handle_code_occurence(config),
+                self.get_code_occurence().to_string_with_config(config),
             ),
         }
     }

@@ -18,7 +18,7 @@ where
     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
         let code_occurence = self.get_code_occurence();
         format!(
-            "{}\n{} {} on {} {} pid: {}",
+            "{}\n{} {} {} {} pid: {}",
             self.get_origin_source_as_string(),
             code_occurence.get_code_path(config.get_source_place_type()),
             chrono::DateTime::<chrono::Utc>::from(
