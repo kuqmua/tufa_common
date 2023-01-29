@@ -122,11 +122,3 @@ impl crate::traits::get_process_id::GetProcessId for CodeOccurence {
         &self.process_id
     }
 }
-
-// #[derive(Debug, Clone)]
-// pub struct CodeOccurence {
-//     pub occurences: std::collections::HashMap<
-//         crate::common::git::git_info::GitInformationWithoutLifetimes,
-//         Vec<crate::common::pid_hostname_time_file_line_column::PidHostnameTimeFileLineColumn>,
-//     >,
-// }
