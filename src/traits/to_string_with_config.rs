@@ -18,18 +18,20 @@ where
     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
         let code_occurence = self.get_code_occurence();
         format!(
-            "{}\n{} {} {} {} pid: {}",
+            "{}\n{} {}",
             self.get_origin_source_as_string(),
-            code_occurence.get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(
-                std::time::UNIX_EPOCH + code_occurence.get_duration(),
-            )
-            .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
-            .format("%Y-%m-%d %H:%M:%S")
-            .to_string(),
+            code_occurence.prepare_for_log(
+                code_occurence.get_code_path(config.get_source_place_type()),
+                chrono::DateTime::<chrono::Utc>::from(
+                    std::time::UNIX_EPOCH + code_occurence.get_duration(),
+                )
+                .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
+                .format("%Y-%m-%d %H:%M:%S")
+                .to_string(),
+                code_occurence.get_hostname(),
+                code_occurence.get_process_id(),
+            ),
             config.get_server_address(),
-            code_occurence.get_hostname(),
-            code_occurence.get_process_id(),
         )
     }
 }

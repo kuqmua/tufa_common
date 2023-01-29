@@ -4,6 +4,7 @@ use crate::traits::get_duration::GetDuration;
 use crate::traits::get_hostname::GetHostname;
 use crate::traits::get_process_id::GetProcessId;
 use serde::{Deserialize, Serialize};
+use std::os::unix::process;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CodeOccurence {
@@ -39,20 +40,31 @@ impl CodeOccurence {
             process_id: std::process::id(),
         }
     }
+    pub fn prepare_for_log(
+        &self,
+        path: String,
+        time: String,
+        hostname: &String,
+        process_id: &u32,
+    ) -> String {
+        format!("{} {} {} pid: {}", path, time, hostname, process_id,)
+    }
 }
 
 impl std::fmt::Display for crate::common::code_occurence::CodeOccurence {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(
             f,
-            "{} {} {} pid: {}",
-            self.get_project_code_path(),
-            chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
-                .with_timezone(&chrono::FixedOffset::east_opt(10800).unwrap())
-                .format("%Y-%m-%d %H:%M:%S")
-                .to_string(),
-            self.get_hostname(),
-            self.get_process_id()
+            "{}",
+            self.prepare_for_log(
+                self.get_project_code_path(),
+                chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
+                    .with_timezone(&chrono::FixedOffset::east_opt(10800).unwrap())
+                    .format("%Y-%m-%d %H:%M:%S")
+                    .to_string(),
+                self.get_hostname(),
+                self.get_process_id()
+            )
         )
     }
 }
@@ -66,15 +78,17 @@ where
 {
     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
         format!(
-            "{} {} {} {} pid: {}",
-            self.get_code_path(config.get_source_place_type()),
-            chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
-                .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
-                .format("%Y-%m-%d %H:%M:%S")
-                .to_string(),
+            "{} {}",
+            self.prepare_for_log(
+                self.get_code_path(config.get_source_place_type()),
+                chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
+                    .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
+                    .format("%Y-%m-%d %H:%M:%S")
+                    .to_string(),
+                self.get_hostname(),
+                self.get_process_id(),
+            ),
             config.get_server_address(),
-            self.get_hostname(),
-            self.get_process_id(),
         )
     }
 }
