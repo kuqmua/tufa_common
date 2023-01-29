@@ -1,12 +1,12 @@
-pub trait ErrorToStringWithoutConfig {
-    fn error_to_string_without_config(&self) -> String;
+pub trait ToStringWithoutConfig {
+    fn to_string_without_config(&self) -> String;
 }
 
-impl<VecElementGeneric> ErrorToStringWithoutConfig for Vec<VecElementGeneric>
+impl<VecElementGeneric> ToStringWithoutConfig for Vec<VecElementGeneric>
 where
     VecElementGeneric: std::fmt::Display,
 {
-    fn error_to_string_without_config(&self) -> String {
+    fn to_string_without_config(&self) -> String {
         format!(
             "[\n{}]",
             self.iter().fold(String::from(""), |mut acc, vec_element| {
@@ -23,13 +23,13 @@ where
     }
 }
 
-impl<HashMapKeyGeneric, HashMapValueGeneric> ErrorToStringWithoutConfig
+impl<HashMapKeyGeneric, HashMapValueGeneric> ToStringWithoutConfig
     for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
 where
     HashMapKeyGeneric: std::fmt::Display,
     HashMapValueGeneric: std::fmt::Display,
 {
-    fn error_to_string_without_config(&self) -> String {
+    fn to_string_without_config(&self) -> String {
         self.iter().fold(String::from(""), |mut acc, (key, value)| {
             acc.push_str(&format!(
                 "{} [\n{}]\n",

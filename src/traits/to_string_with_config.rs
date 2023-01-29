@@ -3,11 +3,11 @@ use crate::traits::get_duration::GetDuration;
 use crate::traits::get_hostname::GetHostname;
 use crate::traits::get_process_id::GetProcessId;
 
-pub trait ErrorToStringWithConfig<ConfigGeneric> {
-    fn error_to_string_with_config(&self, config: &ConfigGeneric) -> String;
+pub trait ToStringWithConfig<ConfigGeneric> {
+    fn to_string_with_config(&self, config: &ConfigGeneric) -> String;
 }
 
-impl<SelfGeneric, ConfigGeneric> ErrorToStringWithConfig<ConfigGeneric> for SelfGeneric
+impl<SelfGeneric, ConfigGeneric> ToStringWithConfig<ConfigGeneric> for SelfGeneric
 where
     SelfGeneric: crate::traits::get_source::GetOriginSourceAsString
         + crate::traits::get_code_occurence::GetCodeOccurence,
@@ -15,7 +15,7 @@ where
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
-    fn error_to_string_with_config(&self, config: &ConfigGeneric) -> String {
+    fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
         let code_occurence = self.get_code_occurence();
         format!(
             "{}\n{} {} on {} {} pid: {}",
@@ -34,48 +34,45 @@ where
     }
 }
 
-impl<VecElementGeneric, ConfigGeneric> ErrorToStringWithConfig<ConfigGeneric>
-    for Vec<VecElementGeneric>
+impl<VecElementGeneric, ConfigGeneric> ToStringWithConfig<ConfigGeneric> for Vec<VecElementGeneric>
 where
-    VecElementGeneric: ErrorToStringWithConfig<ConfigGeneric>,
+    VecElementGeneric: ToStringWithConfig<ConfigGeneric>,
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
-    fn error_to_string_with_config(&self, config: &ConfigGeneric) -> String {
+    fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
         format!(
             "[\n{}]",
             self.iter().fold(String::from(""), |mut acc, vec_element| {
-                acc.push_str(
-                    &vec_element
-                        .error_to_string_with_config(config)
-                        .lines()
-                        .fold(String::from(""), |mut acc, vec_element| {
-                            acc.push_str(&format!(" {}\n", vec_element));
-                            acc
-                        }),
-                );
+                acc.push_str(&vec_element.to_string_with_config(config).lines().fold(
+                    String::from(""),
+                    |mut acc, vec_element| {
+                        acc.push_str(&format!(" {}\n", vec_element));
+                        acc
+                    },
+                ));
                 acc
             })
         )
     }
 }
 
-impl<HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric> ErrorToStringWithConfig<ConfigGeneric>
+impl<HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric> ToStringWithConfig<ConfigGeneric>
     for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
 where
     HashMapKeyGeneric: std::fmt::Display,
-    HashMapValueGeneric: ErrorToStringWithConfig<ConfigGeneric>,
+    HashMapValueGeneric: ToStringWithConfig<ConfigGeneric>,
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
-    fn error_to_string_with_config(&self, config: &ConfigGeneric) -> String {
+    fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
         self.iter().fold(String::from(""), |mut acc, (key, value)| {
             acc.push_str(&format!(
                 "{} [\n{}]\n",
                 key,
-                value.error_to_string_with_config(config).lines().fold(
+                value.to_string_with_config(config).lines().fold(
                     String::from(""),
                     |mut acc, line| {
                         acc.push_str(&format!(" {}\n", line));
