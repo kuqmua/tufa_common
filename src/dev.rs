@@ -2,7 +2,7 @@ use crate::traits::error_to_string_with_config::ErrorToStringWithConfig;
 use crate::traits::error_log::ErrorLog;
 use crate::traits::get_code_occurence::GetCodeOccurence;
 use crate::traits::get_source::GetOriginSourceAsString;
-use crate::traits::error_display::ToStringHandleWithoutConfig;
+use crate::traits::error_to_string_without_config::ErrorToStringWithoutConfig;
 use actix_web::cookie::Display;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -107,7 +107,7 @@ pub enum FourWrapperError {
 impl std::fmt::Display for FourWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
-            FourWrapperError::Something { sources, code_occurence } => write!(f, "{}{}", sources.to_string_handle_without_config(), code_occurence),
+            FourWrapperError::Something { sources, code_occurence } => write!(f, "{}{}", sources.error_to_string_without_config(), code_occurence),
         }
     }
 }
@@ -219,7 +219,7 @@ pub enum FiveWrapperError {
 impl std::fmt::Display for FiveWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
-            FiveWrapperError::Something { sources, code_occurence } => write!(f, "{}{}", sources.to_string_handle_without_config(), code_occurence),
+            FiveWrapperError::Something { sources, code_occurence } => write!(f, "{}{}", sources.error_to_string_without_config(), code_occurence),
         }
     }
 }
@@ -355,7 +355,7 @@ pub enum SixWrapperError {
 impl std::fmt::Display for SixWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
-            SixWrapperError::Something { sources, code_occurence } => write!(f, "{}", sources.to_string_handle_without_config()),
+            SixWrapperError::Something { sources, code_occurence } => write!(f, "{}", sources.error_to_string_without_config()),
         }
     }
 }
