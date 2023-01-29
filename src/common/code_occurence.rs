@@ -40,15 +40,10 @@ impl CodeOccurence {
 
 impl std::fmt::Display for crate::common::code_occurence::CodeOccurence {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        //todo - its copypaste - remove it later
-        let code_path = format!(
-            "src/{}:{}:{}", //todo "src" - hardcode, for some reason vscode stops following just {}:{}:{} path(without prefix "src")
-            self.file_line_column.file, self.file_line_column.line, self.file_line_column.column
-        );
         write!(
             f,
             "{} {} {} pid: {}",
-            code_path,
+            self.get_project_code_path(),
             chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.time,)
                 .with_timezone(&chrono::FixedOffset::east_opt(10800).unwrap())
                 .format("%Y-%m-%d %H:%M:%S")
