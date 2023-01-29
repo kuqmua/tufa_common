@@ -7,13 +7,13 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CodeOccurence {
-    pub file: String, //&'a str
-    pub line: u32,
-    pub column: u32,
-    pub git_info: crate::common::git::git_info::GitInformationWithoutLifetimes,
-    pub duration: std::time::Duration,
-    pub hostname: String,
-    pub process_id: u32,
+    file: String, //&'a str
+    line: u32,
+    column: u32,
+    git_info: crate::common::git::git_info::GitInformationWithoutLifetimes,
+    duration: std::time::Duration,
+    hostname: String,
+    process_id: u32,
 }
 
 impl CodeOccurence {

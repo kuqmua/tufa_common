@@ -2,6 +2,7 @@ pub mod code_path;
 pub mod console;
 pub mod error_display;
 pub mod error_log;
+pub mod error_to_string_with_config;
 pub mod fields;
 pub mod get_bunyan_where_was;
 pub mod get_code_occurence;
