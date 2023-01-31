@@ -46,3 +46,21 @@ where
         })
     }
 }
+
+pub trait OriginToStringWithoutConfig {
+    fn origin_to_string_without_config(&self) -> String;
+}
+
+impl<SelfGeneric> OriginToStringWithoutConfig for SelfGeneric
+where
+    SelfGeneric: crate::traits::get_source::GetOriginSourceAsString
+        + crate::traits::get_code_occurence::GetCodeOccurence,
+{
+    fn origin_to_string_without_config(&self) -> String {
+        format!(
+            "{}{}",
+            self.get_origin_source_as_string(),
+            self.get_code_occurence()
+        )
+    }
+}

@@ -23,7 +23,6 @@ pub mod get_where_was_one_or_many;
 pub mod init_error_with_possible_trace;
 pub mod is_enabled_prints;
 pub mod new_error;
-pub mod prepare_origin_error_display;
 pub mod print_type_methods;
 pub mod readable_time;
 pub mod to_string_with_config;

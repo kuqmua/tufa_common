@@ -1,8 +1,8 @@
-use crate::traits::prepare_origin_error_display::PrepareOriginErrorDisplay;
 use crate::traits::to_string_with_config::ToStringWithConfig;
 use crate::traits::error_log::ErrorLog;
 use crate::traits::get_code_occurence::GetCodeOccurence;
 use crate::traits::to_string_without_config::ToStringWithoutConfig;
+use crate::traits::to_string_without_config::OriginToStringWithoutConfig;
 use crate::traits::get_source::GetErrorWrapperSourceAsSting;
 use actix_web::cookie::Display;
 use serde::{Deserialize, Serialize};
@@ -18,6 +18,17 @@ pub enum ThreeWrapperError {
         code_occurence: crate::common::code_occurence::CodeOccurence,
     }
 }
+
+// impl std::fmt::Display for ThreeWrapperError {
+//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+//         match self {
+//             ThreeWrapperError::Something { 
+//                 source, 
+//                 code_occurence 
+//             } => write!(f, "{}{}", source.to_string_without_config(), code_occurence),
+//         }
+//     }
+// }
 
 impl<ConfigGeneric> crate::traits::to_string_with_config::ToStringWithConfig<ConfigGeneric>
     for ThreeWrapperError
@@ -58,27 +69,6 @@ impl crate::traits::get_code_occurence::GetCodeOccurence for ThreeWrapperError {
     }
 }
 
-pub fn three() -> Result<(), Box<ThreeWrapperError>> {
-    if let Err(e) = four() {
-        let f = ThreeWrapperError::Something { 
-            source: ThreeWrapperErrorEnum::FourWrapper(*e), 
-            code_occurence: crate::common::code_occurence::CodeOccurence::new(
-                once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
-                    String::from(file!()),
-                    line!(),
-                    column!(),
-                )
-        };
-        // println!("three");
-        // f.error_log(once_cell::sync::Lazy::force(
-        //     &crate::global_variables::runtime::config::CONFIG,
-        // ));
-        // println!("threeend");
-        return Err(Box::new(f));
-    };
-    Ok(())
-}
-
 #[derive(Debug, Serialize, Deserialize, Error)]
 pub enum ThreeWrapperErrorEnum {
     #[error("{0}")]
@@ -99,6 +89,14 @@ where
     }
 }
 
+// impl crate::traits::to_string_without_config::ToStringWithoutConfig for ThreeWrapperErrorEnum {
+//     fn to_string_without_config(&self) -> String {
+//         match self {
+//             ThreeWrapperErrorEnum::FourWrapper(i) => i.to_string_without_config(),
+//         }
+//     }
+// }
+
 impl crate::traits::get_code_occurence::GetCodeOccurence for ThreeWrapperErrorEnum
 {
     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
@@ -106,6 +104,27 @@ impl crate::traits::get_code_occurence::GetCodeOccurence for ThreeWrapperErrorEn
             ThreeWrapperErrorEnum::FourWrapper(i) => i.get_code_occurence(),
         }
     }
+}
+
+pub fn three() -> Result<(), Box<ThreeWrapperError>> {
+    if let Err(e) = four() {
+        let f = ThreeWrapperError::Something { 
+            source: ThreeWrapperErrorEnum::FourWrapper(*e), 
+            code_occurence: crate::common::code_occurence::CodeOccurence::new(
+                once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
+                    String::from(file!()),
+                    line!(),
+                    column!(),
+                )
+        };
+        // println!("three");
+        // f.error_log(once_cell::sync::Lazy::force(
+        //     &crate::global_variables::runtime::config::CONFIG,
+        // ));
+        // println!("threeend");
+        return Err(Box::new(f));
+    };
+    Ok(())
 }
 
 #[derive(Debug, Serialize, Deserialize, Error)]
@@ -354,12 +373,12 @@ pub enum FiveOneOriginError {
 //cannot make it with generics
 impl std::fmt::Display for FiveOneOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.prepare_origin_error_display())
+        write!(f, "{}", self.origin_to_string_without_config())
     }
 }
 
-impl crate::traits::to_string_without_config::ToStringWithoutConfig for FiveOneOriginError {
-    fn to_string_without_config(&self) -> String {
+impl crate::traits::get_source::GetOriginSourceAsString for FiveOneOriginError {
+    fn get_origin_source_as_string(&self) -> String {
         match self {
             FiveOneOriginError::Something { error, code_occurence } => format!("{}\n", error),
         }
@@ -388,7 +407,6 @@ pub fn five_one() -> Result<(), Box<FiveOneOriginError>> {
 
 #[derive(Debug, Serialize, Deserialize, Error)]
 pub enum SixWrapperError {
-    // #[error("{sources:#?}")]
     Something {
         //todo how to implement from for it?
         sources: Vec<SixWrapperErrorEnum>,
@@ -514,12 +532,12 @@ pub enum SevenOriginError {
 //cannot make it with generics
 impl std::fmt::Display for SevenOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.prepare_origin_error_display())
+        write!(f, "{}", self.origin_to_string_without_config())
     }
 }
 
-impl crate::traits::to_string_without_config::ToStringWithoutConfig for SevenOriginError {
-    fn to_string_without_config(&self) -> String {
+impl crate::traits::get_source::GetOriginSourceAsString for SevenOriginError {
+    fn get_origin_source_as_string(&self) -> String {
         match self {
             SevenOriginError::Something { error, code_occurence } => format!("{}\n", error),
         }
@@ -557,12 +575,12 @@ pub enum EightOriginError {
 //cannot make it with generics
 impl std::fmt::Display for EightOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.prepare_origin_error_display())
+        write!(f, "{}", self.origin_to_string_without_config())
     }
 }
 
-impl crate::traits::to_string_without_config::ToStringWithoutConfig for EightOriginError {
-    fn to_string_without_config(&self) -> String {
+impl crate::traits::get_source::GetOriginSourceAsString for EightOriginError {
+    fn get_origin_source_as_string(&self) -> String {
         match self {
             EightOriginError::Something { error, code_occurence } => format!("{}\n", error),
         }
