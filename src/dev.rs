@@ -1,7 +1,7 @@
 use crate::traits::to_string_with_config::ToStringWithConfig;
 use crate::traits::error_log::ErrorLog;
 use crate::traits::get_code_occurence::GetCodeOccurence;
-use crate::traits::get_source::GetOriginSourceAsString;
+// use crate::traits::to_string_without_config::ToStringWithoutConfig;
 use crate::traits::to_string_without_config::ToStringWithoutConfig;
 use actix_web::cookie::Display;
 use serde::{Deserialize, Serialize};
@@ -306,17 +306,22 @@ pub fn five() -> Result<(), Box<FiveWrapperError>> {
 
 #[derive(Debug, Serialize, Deserialize, Error)]
 pub enum FiveOneOriginError {
-    #[error("{error}\n{code_occurence}")]
     Something {
         error: String,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
+//cannot make it with generics
+impl std::fmt::Display for FiveOneOriginError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}{}", self.to_string_without_config(), self.get_code_occurence())
+    }
+}
 
-impl crate::traits::get_source::GetOriginSourceAsString for FiveOneOriginError {
-    fn get_origin_source_as_string(&self) -> String {
+impl crate::traits::to_string_without_config::ToStringWithoutConfig for FiveOneOriginError {
+    fn to_string_without_config(&self) -> String {
         match self {
-            FiveOneOriginError::Something { error, code_occurence } => format!("{}", error),
+            FiveOneOriginError::Something { error, code_occurence } => format!("{}\n", error),
         }
     }
 }
@@ -354,7 +359,7 @@ pub enum SixWrapperError {
 impl std::fmt::Display for SixWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
-            SixWrapperError::Something { sources, code_occurence } => write!(f, "{}", sources.to_string_without_config()),
+            SixWrapperError::Something { sources, code_occurence } => write!(f, "{}\n{}", sources.to_string_without_config(), code_occurence),
         }
     }
 }
@@ -448,17 +453,22 @@ pub fn six() -> Result<(), Box<SixWrapperError>> {
 
 #[derive(Debug, Serialize, Deserialize, Error)]
 pub enum SevenOriginError {
-    #[error("{error}\n{code_occurence}")]
     Something {
         error: String,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
+//cannot make it with generics
+impl std::fmt::Display for SevenOriginError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}{}", self.to_string_without_config(), self.get_code_occurence())
+    }
+}
 
-impl crate::traits::get_source::GetOriginSourceAsString for SevenOriginError {
-    fn get_origin_source_as_string(&self) -> String {
+impl crate::traits::to_string_without_config::ToStringWithoutConfig for SevenOriginError {
+    fn to_string_without_config(&self) -> String {
         match self {
-            SevenOriginError::Something { error, code_occurence } => format!("{}", error),
+            SevenOriginError::Something { error, code_occurence } => format!("{}\n", error),
         }
     }
 }
@@ -486,17 +496,22 @@ pub fn seven() -> Result<(), Box<SevenOriginError>> {
 
 #[derive(Debug, Serialize, Deserialize, Error)]
 pub enum EightOriginError {
-    #[error("{error}\n{code_occurence}")]
     Something {
         error: String,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
+//cannot make it with generics
+impl std::fmt::Display for EightOriginError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}{}", self.to_string_without_config(), self.get_code_occurence())
+    }
+}
 
-impl crate::traits::get_source::GetOriginSourceAsString for EightOriginError {
-    fn get_origin_source_as_string(&self) -> String {
+impl crate::traits::to_string_without_config::ToStringWithoutConfig for EightOriginError {
+    fn to_string_without_config(&self) -> String {
         match self {
-            EightOriginError::Something { error, code_occurence } => format!("{}", error),
+            EightOriginError::Something { error, code_occurence } => format!("{}\n", error),
         }
     }
 }

@@ -9,7 +9,7 @@ pub trait ToStringWithConfig<ConfigGeneric> {
 
 impl<SelfGeneric, ConfigGeneric> ToStringWithConfig<ConfigGeneric> for SelfGeneric
 where
-    SelfGeneric: crate::traits::get_source::GetOriginSourceAsString
+    SelfGeneric: crate::traits::to_string_without_config::ToStringWithoutConfig
         + crate::traits::get_code_occurence::GetCodeOccurence,
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
@@ -18,8 +18,8 @@ where
     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
         let code_occurence = self.get_code_occurence();
         format!(
-            "{}\n{} {}",
-            self.get_origin_source_as_string(),
+            "{}{} {}",
+            self.to_string_without_config(),
             code_occurence.prepare_for_log(
                 code_occurence.get_code_path(config.get_source_place_type()),
                 chrono::DateTime::<chrono::Utc>::from(
@@ -86,3 +86,55 @@ where
         })
     }
 }
+
+//
+// impl<VecElementGeneric, ConfigGeneric> ToStringWithConfig<ConfigGeneric> for Vec<VecElementGeneric>
+// where
+//     VecElementGeneric: ToStringWithConfig<ConfigGeneric>,
+//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+//         + crate::traits::fields::GetTimezone
+//         + crate::traits::get_server_address::GetServerAddress,
+// {
+//     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
+//         format!(
+//             "[\n{}]",
+//             self.iter().fold(String::from(""), |mut acc, vec_element| {
+//                 acc.push_str(&vec_element.to_string_with_config(config).lines().fold(
+//                     String::from(""),
+//                     |mut acc, vec_element| {
+//                         acc.push_str(&format!(" {}\n", vec_element));
+//                         acc
+//                     },
+//                 ));
+//                 acc
+//             })
+//         )
+//     }
+// }
+
+// impl<HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric> ToStringWithConfig<ConfigGeneric>
+//     for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
+// where
+//     HashMapKeyGeneric: std::fmt::Display,
+//     HashMapValueGeneric: ToStringWithConfig<ConfigGeneric>,
+//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+//         + crate::traits::fields::GetTimezone
+//         + crate::traits::get_server_address::GetServerAddress,
+// {
+//     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
+//         self.iter().fold(String::from(""), |mut acc, (key, value)| {
+//             acc.push_str(&format!(
+//                 "{} [\n{}]\n",
+//                 key,
+//                 value.to_string_with_config(config).lines().fold(
+//                     String::from(""),
+//                     |mut acc, line| {
+//                         acc.push_str(&format!(" {}\n", line));
+//                         acc
+//                     }
+//                 )
+//             ));
+//             acc
+//         })
+//     }
+// }
