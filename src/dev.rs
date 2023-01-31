@@ -1,3 +1,4 @@
+use crate::traits::prepare_origin_error_display::PrepareOriginErrorDisplay;
 use crate::traits::to_string_with_config::ToStringWithConfig;
 use crate::traits::error_log::ErrorLog;
 use crate::traits::get_code_occurence::GetCodeOccurence;
@@ -314,7 +315,7 @@ pub enum FiveOneOriginError {
 //cannot make it with generics
 impl std::fmt::Display for FiveOneOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}{}", self.to_string_without_config(), self.get_code_occurence())
+        write!(f, "{}", self.prepare_origin_error_display())
     }
 }
 
@@ -461,7 +462,7 @@ pub enum SevenOriginError {
 //cannot make it with generics
 impl std::fmt::Display for SevenOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}{}", self.to_string_without_config(), self.get_code_occurence())
+        write!(f, "{}", self.prepare_origin_error_display())
     }
 }
 
@@ -504,7 +505,7 @@ pub enum EightOriginError {
 //cannot make it with generics
 impl std::fmt::Display for EightOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}{}", self.to_string_without_config(), self.get_code_occurence())
+        write!(f, "{}", self.prepare_origin_error_display())
     }
 }
 
