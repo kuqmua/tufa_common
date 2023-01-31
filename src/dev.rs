@@ -2,8 +2,8 @@ use crate::traits::prepare_origin_error_display::PrepareOriginErrorDisplay;
 use crate::traits::to_string_with_config::ToStringWithConfig;
 use crate::traits::error_log::ErrorLog;
 use crate::traits::get_code_occurence::GetCodeOccurence;
-// use crate::traits::to_string_without_config::ToStringWithoutConfig;
 use crate::traits::to_string_without_config::ToStringWithoutConfig;
+use crate::traits::get_source::GetErrorWrapperSourceAsSting;
 use actix_web::cookie::Display;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -29,10 +29,23 @@ where
     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
         match self {
             ThreeWrapperError::Something { source, code_occurence } => format!(
-                "{}\n{}",
-                source.to_string_with_config(config),
+                "{}{}",
+                self.get_error_wrapper_source_as_string(config),
                 self.get_code_occurence().to_string_with_config(config),
             ),
+        }
+    }
+}
+
+impl<ConfigGeneric> crate::traits::get_source::GetErrorWrapperSourceAsSting<ConfigGeneric> for ThreeWrapperError
+where
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn get_error_wrapper_source_as_string(&self, config: &ConfigGeneric) -> String {
+        match self {
+            ThreeWrapperError::Something { source, code_occurence } => format!("{}\n", source.to_string_with_config(config)),
         }
     }
 }
@@ -123,10 +136,23 @@ where
             FourWrapperError::Something { sources, code_occurence } => {
                 format!(
                     "{}{}",
-                    sources.to_string_with_config(config),
+                    self.get_error_wrapper_source_as_string(config),
                     self.get_code_occurence().to_string_with_config(config),
                 )
             },
+        }
+    }
+}
+
+impl<ConfigGeneric> crate::traits::get_source::GetErrorWrapperSourceAsSting<ConfigGeneric> for FourWrapperError
+where
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn get_error_wrapper_source_as_string(&self, config: &ConfigGeneric) -> String {
+        match self {
+            FourWrapperError::Something { sources, code_occurence } => sources.to_string_with_config(config),
         }
     }
 }
@@ -234,9 +260,22 @@ where
         match self {
             FiveWrapperError::Something { sources, code_occurence } => format!(
                 "{}{}",
-                sources.to_string_with_config(config),
+                self.get_error_wrapper_source_as_string(config),
                 self.get_code_occurence().to_string_with_config(config),
             ),
+        }
+    }
+}
+
+impl<ConfigGeneric> crate::traits::get_source::GetErrorWrapperSourceAsSting<ConfigGeneric> for FiveWrapperError
+where
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn get_error_wrapper_source_as_string(&self, config: &ConfigGeneric) -> String {
+        match self {
+            FiveWrapperError::Something { sources, code_occurence } => sources.to_string_with_config(config),
         }
     }
 }
@@ -374,10 +413,23 @@ where
     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
         match self {
             SixWrapperError::Something { sources, code_occurence } => format!(
-                "{}\n{}",
-                sources.to_string_with_config(config),
+                "{}{}",
+                self.get_error_wrapper_source_as_string(config),
                 self.get_code_occurence().to_string_with_config(config),
             ),
+        }
+    }
+}
+
+impl<ConfigGeneric> crate::traits::get_source::GetErrorWrapperSourceAsSting<ConfigGeneric> for SixWrapperError
+where
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn get_error_wrapper_source_as_string(&self, config: &ConfigGeneric) -> String {
+        match self {
+            SixWrapperError::Something { sources, code_occurence } => format!("{}\n", sources.to_string_with_config(config)),
         }
     }
 }

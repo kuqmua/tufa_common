@@ -7,6 +7,24 @@ pub trait ToStringWithConfig<ConfigGeneric> {
     fn to_string_with_config(&self, config: &ConfigGeneric) -> String;
 }
 
+// impl<SelfGeneric, ConfigGeneric>
+//     crate::traits::to_string_with_config::ToStringWithConfig<ConfigGeneric> for SelfGeneric
+// where
+//     SelfGeneric: crate::traits::get_source::GetErrorWrapperSourceAsSting<ConfigGeneric>
+//         + crate::traits::get_code_occurence::GetCodeOccurence,
+//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+//         + crate::traits::fields::GetTimezone
+//         + crate::traits::get_server_address::GetServerAddress,
+// {
+//     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
+//         format!(
+//             "{}{}",
+//             self.get_error_wrapper_source_as_string(config),
+//             self.get_code_occurence().to_string_with_config(config),
+//         )
+//     }
+// }
+
 impl<SelfGeneric, ConfigGeneric> ToStringWithConfig<ConfigGeneric> for SelfGeneric
 where
     SelfGeneric: crate::traits::to_string_without_config::ToStringWithoutConfig
