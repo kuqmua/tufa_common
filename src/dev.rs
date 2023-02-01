@@ -1,9 +1,14 @@
-use crate::traits::to_string_with_config::ToStringWithConfig;
+// use crate::traits::to_string_with_config::ToStringWithConfig;
 use crate::traits::error_log::ErrorLog;
 use crate::traits::get_code_occurence::GetCodeOccurence;
-use crate::traits::to_string_without_config::OriginSourceToStringWithoutConfig;
-use crate::traits::to_string_without_config::OriginToStringWithoutConfig;
+// use crate::traits::to_string_without_config::OriginSourceToStringWithoutConfig;
+// use crate::traits::to_string_without_config::OriginToStringWithoutConfig;
 use crate::traits::get_source::GetErrorWrapperSourceAsSting;
+// use crate::traits::to_string_with_config::OriginToStringWithConfig;
+use crate::traits::to_string_without_config::SourceToStringWithoutConfig;
+use crate::traits::to_string_without_config::ToStringWithoutConfig;
+use crate::traits::to_string_with_config::ToStringWithConfig;
+use crate::traits::to_string_with_config::SourceToStringWithConfig;
 use actix_web::cookie::Display;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -384,17 +389,41 @@ pub enum FiveOneOriginError {
 //cannot make it with generics
 impl std::fmt::Display for FiveOneOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        todo!()
-        // write!(f, "{}", self.origin_to_string_without_config())
+        write!(f, "{}", self.to_string_without_config())
     }
 }
 
-impl crate::traits::to_string_without_config::OriginSourceToStringWithoutConfig for FiveOneOriginError {
-    fn origin_source_to_string_without_config(&self) -> String {
-        todo!()
-        // match self {
-        //     FiveOneOriginError::Something { error, code_occurence } => format!("{}", error),
-        // }
+impl<ConfigGeneric> crate::traits::to_string_with_config::ToStringWithConfig<ConfigGeneric> for FiveOneOriginError
+where
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
+        format!(
+            "{}{}",
+            self.source_to_string_without_config(),//- difference origin\wrapper, for origin source_to_string_with_config can be not implemented 
+            self.get_code_occurence().to_string_with_config(config),
+        )
+    }
+}
+
+impl crate::traits::to_string_without_config::ToStringWithoutConfig for FiveOneOriginError
+{
+    fn to_string_without_config(&self) -> String {
+        format!(
+            "{}{}",
+            self.source_to_string_without_config(),
+            self.get_code_occurence()
+        )
+    }
+}
+
+impl crate::traits::to_string_without_config::SourceToStringWithoutConfig for FiveOneOriginError {
+    fn source_to_string_without_config(&self) -> String {
+        match self {
+            FiveOneOriginError::Something { error, code_occurence } => format!("{}", error),
+        }
     }
 }
 
@@ -426,13 +455,10 @@ pub enum SixWrapperError {
         code_occurence: crate::common::code_occurence::CodeOccurence,
     }
 }
-
+//cannot make it with generics
 impl std::fmt::Display for SixWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        todo!()
-        // match self {
-        //     SixWrapperError::Something { sources, code_occurence } => write!(f, "{}\n{}", sources.to_string_without_config(), code_occurence),
-        // }
+        write!(f, "{}", self.to_string_without_config())
     }
 }
 
@@ -443,28 +469,71 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
-        todo!()
-        // match self {
-        //     SixWrapperError::Something { sources, code_occurence } => format!(
-        //         "{}{}",
-        //         self.get_error_wrapper_source_as_string(config),
-        //         self.get_code_occurence().to_string_with_config(config),
-        //     ),
-        // }
+        format!(
+            "{}{}",
+            self.source_to_string_with_config(config),//- difference origin\wrapper, for origin source_to_string_with_config can be not implemented 
+            self.get_code_occurence().to_string_with_config(config),
+        )
     }
 }
 
-impl<ConfigGeneric> crate::traits::get_source::GetErrorWrapperSourceAsSting<ConfigGeneric> for SixWrapperError
+impl crate::traits::to_string_without_config::ToStringWithoutConfig for SixWrapperError
+{
+    fn to_string_without_config(&self) -> String {
+        format!(
+            "{}{}",
+            self.source_to_string_without_config(),
+            self.get_code_occurence()
+        )
+    }
+}
+
+impl<ConfigGeneric> crate::traits::to_string_with_config::SourceToStringWithConfig<ConfigGeneric> for SixWrapperError 
 where
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
-    fn get_error_wrapper_source_as_string(&self, config: &ConfigGeneric) -> String {
-        todo!()
-        // match self {
-        //     SixWrapperError::Something { sources, code_occurence } => format!("{}\n", sources.to_string_with_config(config)),
-        // }
+    fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
+        match self {
+            SixWrapperError::Something { sources, code_occurence } => format!(
+                "[\n{}]\n",
+                sources.iter().fold(String::from(""), |mut acc, vec_element| {
+                    acc.push_str(
+                        &vec_element
+                        .to_string_with_config(config)
+                        .lines()
+                        .fold(String::from(""), |mut acc, vec_element| {
+                            acc.push_str(&format!(" {}\n", vec_element));
+                            acc
+                        }),
+                    );
+                    acc
+                })
+            ),
+        }
+    }
+}
+
+impl crate::traits::to_string_without_config::SourceToStringWithoutConfig for SixWrapperError {
+    fn source_to_string_without_config(&self) -> String {
+        match self {
+            SixWrapperError::Something { sources, code_occurence } => {
+                format!(
+                    "[\n{}]\n",
+                    sources.iter().fold(String::from(""), |mut acc, vec_element| {
+                        acc.push_str(&vec_element.to_string_without_config().lines().fold(
+                            String::from(""),
+                            |mut acc, vec_element| {
+                                acc.push_str(&format!(" {}\n", vec_element));
+                                acc
+                            },
+                        ));
+                        acc
+                    })
+                )
+            },
+        }
     }
 }
 
@@ -478,34 +547,35 @@ impl crate::traits::get_code_occurence::GetCodeOccurence for SixWrapperError {
 
 #[derive(Debug, Serialize, Deserialize, Error)]
 pub enum SixWrapperErrorEnum {
-    #[error("{0}")]
     SevenWrapper(SevenOriginError),
-    #[error("{0}")]
     EightWrapper(EightOriginError),
 }
 
-impl<ConfigGeneric> crate::traits::to_string_with_config::ToStringWithConfig<ConfigGeneric>
-    for SixWrapperErrorEnum
+impl std::fmt::Display for SixWrapperErrorEnum {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.to_string_without_config())
+    }
+}
+
+impl<ConfigGeneric> crate::traits::to_string_with_config::ToStringWithConfig<ConfigGeneric> for SixWrapperErrorEnum 
 where
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
-        todo!()
-        // match self {
-        //     SixWrapperErrorEnum::SevenWrapper(i) => i.to_string_with_config(config),
-        //     SixWrapperErrorEnum::EightWrapper(i) => i.to_string_with_config(config),
-        // }
+        match self {
+            SixWrapperErrorEnum::SevenWrapper(i) => i.to_string_with_config(config),
+            SixWrapperErrorEnum::EightWrapper(i) => i.to_string_with_config(config),
+        }
     }
 }
 
-impl crate::traits::get_code_occurence::GetCodeOccurence for SixWrapperErrorEnum
-{
-    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
+impl crate::traits::to_string_without_config::ToStringWithoutConfig for SixWrapperErrorEnum {
+    fn to_string_without_config(&self) -> String {
         match self {
-            SixWrapperErrorEnum::SevenWrapper(i) => i.get_code_occurence(),
-            SixWrapperErrorEnum::EightWrapper(i) => i.get_code_occurence(),
+            SixWrapperErrorEnum::SevenWrapper(i) => i.to_string_without_config(),
+            SixWrapperErrorEnum::EightWrapper(i) => i.to_string_without_config(),
         }
     }
 }
@@ -549,17 +619,41 @@ pub enum SevenOriginError {
 //cannot make it with generics
 impl std::fmt::Display for SevenOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        todo!()
-        // write!(f, "{}", self.origin_to_string_without_config())
+        write!(f, "{}", self.to_string_without_config())
     }
 }
 
-impl crate::traits::to_string_without_config::OriginSourceToStringWithoutConfig for SevenOriginError {
-    fn origin_source_to_string_without_config(&self) -> String {
-        todo!()
-        // match self {
-        //     SevenOriginError::Something { error, code_occurence } => format!("{}", error),
-        // }
+impl<ConfigGeneric> crate::traits::to_string_with_config::ToStringWithConfig<ConfigGeneric> for SevenOriginError
+where
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
+        format!(
+            "{}{}",
+            self.source_to_string_without_config(),//- difference origin\wrapper, for origin source_to_string_with_config can be not implemented 
+            self.get_code_occurence().to_string_with_config(config),
+        )
+    }
+}
+
+impl crate::traits::to_string_without_config::ToStringWithoutConfig for SevenOriginError
+{
+    fn to_string_without_config(&self) -> String {
+        format!(
+            "{}{}",
+            self.source_to_string_without_config(),
+            self.get_code_occurence()
+        )
+    }
+}
+
+impl crate::traits::to_string_without_config::SourceToStringWithoutConfig for SevenOriginError {
+    fn source_to_string_without_config(&self) -> String {
+        match self {
+            SevenOriginError::Something { error, code_occurence } => format!("{}", error),
+        }
     }
 }
 
@@ -594,14 +688,38 @@ pub enum EightOriginError {
 //cannot make it with generics
 impl std::fmt::Display for EightOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        todo!()
-        // write!(f, "{}", self.origin_to_string_without_config())
+        write!(f, "{}", self.to_string_without_config())
     }
 }
 
-impl crate::traits::to_string_without_config::OriginSourceToStringWithoutConfig for EightOriginError {
-    fn origin_source_to_string_without_config(&self) -> String {
-        // todo!()
+impl<ConfigGeneric> crate::traits::to_string_with_config::ToStringWithConfig<ConfigGeneric> for EightOriginError
+where
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
+        format!(
+            "{}{}",
+            self.source_to_string_without_config(),//- difference origin\wrapper, for origin source_to_string_with_config can be not implemented 
+            self.get_code_occurence().to_string_with_config(config),
+        )
+    }
+}
+
+impl crate::traits::to_string_without_config::ToStringWithoutConfig for EightOriginError
+{
+    fn to_string_without_config(&self) -> String {
+        format!(
+            "{}{}",
+            self.source_to_string_without_config(),
+            self.get_code_occurence()
+        )
+    }
+}
+
+impl crate::traits::to_string_without_config::SourceToStringWithoutConfig for EightOriginError {
+    fn source_to_string_without_config(&self) -> String {
         match self {
             EightOriginError::Something { error, code_occurence } => format!("{}", error),
         }

@@ -7,254 +7,13 @@ use crate::traits::get_process_id::GetProcessId;
 // pub trait OriginSourceToStringWithConfig<ConfigGeneric> {
 //     fn origin_source_to_string_with_config(&self, config: &ConfigGeneric) -> String;
 // }
-pub trait OriginToStringWithConfig<ConfigGeneric> {
-    fn origin_to_string_with_config(&self, config: &ConfigGeneric) -> String;
-}
-
-impl<SelfGeneric, ConfigGeneric> OriginToStringWithConfig<ConfigGeneric> for SelfGeneric
-where
-    SelfGeneric: crate::traits::to_string_without_config::OriginSourceToStringWithoutConfig
-        + crate::traits::get_code_occurence::GetCodeOccurence,
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn origin_to_string_with_config(&self, config: &ConfigGeneric) -> String {
-        format!(
-            "{}{}",
-            self.origin_source_to_string_without_config(),
-            self.get_code_occurence().to_string_with_config(config),
-        )
-    }
-}
-////////////////
-pub trait WrapperSourceToStringWithConfigFromOrigin<ConfigGeneric> {
-    fn wrapper_source_to_string_with_config_from_origin(&self, config: &ConfigGeneric) -> String;
-}
-
-// impl<SelfGeneric, ConfigGeneric> WrapperSourceToStringWithConfigFromOrigin<ConfigGeneric>
-//     for SelfGeneric
-// where
-//     SelfGeneric: crate::traits::to_string_with_config::OriginToStringWithConfig<ConfigGeneric>,
-//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-//         + crate::traits::fields::GetTimezone
-//         + crate::traits::get_server_address::GetServerAddress,
-// {
-//     fn wrapper_source_to_string_with_config_from_origin(&self, config: &ConfigGeneric) -> String {
-//         format!("{}", self.origin_to_string_with_config(config))
-//     }
-// }
-
-impl<VecElementGeneric, ConfigGeneric> WrapperSourceToStringWithConfigFromOrigin<ConfigGeneric>
-    for Vec<VecElementGeneric>
-where
-    VecElementGeneric:
-        crate::traits::to_string_with_config::OriginToStringWithConfig<ConfigGeneric>,
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn wrapper_source_to_string_with_config_from_origin(&self, config: &ConfigGeneric) -> String {
-        format!(
-            "[\n{}]\n",
-            self.iter().fold(String::from(""), |mut acc, vec_element| {
-                acc.push_str(
-                    &vec_element
-                        .origin_to_string_with_config(config)
-                        .lines()
-                        .fold(String::from(""), |mut acc, vec_element| {
-                            acc.push_str(&format!(" {}\n", vec_element));
-                            acc
-                        }),
-                );
-                acc
-            })
-        )
-    }
-}
-
-impl<HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric>
-    WrapperSourceToStringWithConfigFromOrigin<ConfigGeneric>
-    for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
-where
-    HashMapKeyGeneric: std::fmt::Display,
-    HashMapValueGeneric:
-        crate::traits::to_string_with_config::OriginToStringWithConfig<ConfigGeneric>,
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn wrapper_source_to_string_with_config_from_origin(&self, config: &ConfigGeneric) -> String {
-        // format!("{}\n")
-        self.iter().fold(String::from(""), |mut acc, (key, value)| {
-            acc.push_str(&format!(
-                "{} [\n{}]\n",
-                key,
-                value.origin_to_string_with_config(config).lines().fold(
-                    String::from(""),
-                    |mut acc, line| {
-                        acc.push_str(&format!(" {}\n", line));
-                        acc
-                    }
-                )
-            ));
-            acc
-        })
-    }
-}
-
-pub trait WrapperToStringWithConfigFromWrapperOrigin<ConfigGeneric> {
-    fn wrapper_to_string_with_config_from_wrapper_origin(&self, config: &ConfigGeneric) -> String;
-}
-
-impl<SelfGeneric, ConfigGeneric> WrapperToStringWithConfigFromWrapperOrigin<ConfigGeneric>
-    for SelfGeneric
-where
-    SelfGeneric: crate::traits::to_string_with_config::WrapperSourceToStringWithConfigFromOrigin<
-            ConfigGeneric,
-        > + crate::traits::get_code_occurence::GetCodeOccurence,
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn wrapper_to_string_with_config_from_wrapper_origin(&self, config: &ConfigGeneric) -> String {
-        format!(
-            "{}{}",
-            self.wrapper_source_to_string_with_config_from_origin(config),
-            self.get_code_occurence()
-        )
-    }
-}
-
-pub trait WrapperSourceToStringWithConfigFromWrapperWrapper<ConfigGeneric> {
-    fn wrapper_source_to_string_with_config_from_wrapper_wrapper(
-        &self,
-        config: &ConfigGeneric,
-    ) -> String;
-}
-
-// impl<SelfGeneric, ConfigGeneric> WrapperSourceToStringWithConfigFromWrapperWrapper<ConfigGeneric>
-//     for SelfGeneric
-// where
-//     SelfGeneric: crate::traits::to_string_with_config::WrapperToStringWithConfigFromWrapperOrigin<
-//         ConfigGeneric,
-//     >,
-//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-//         + crate::traits::fields::GetTimezone
-//         + crate::traits::get_server_address::GetServerAddress,
-// {
-//     fn wrapper_source_to_string_with_config_from_wrapper_wrapper(
-//         &self,
-//         config: &ConfigGeneric,
-//     ) -> String {
-//         format!(
-//             "{}",
-//             self.wrapper_to_string_with_config_from_wrapper_origin(config)
-//         )
-//     }
-// }
-
-impl<VecElementGeneric, ConfigGeneric>
-    WrapperSourceToStringWithConfigFromWrapperWrapper<ConfigGeneric> for Vec<VecElementGeneric>
-where
-    VecElementGeneric:
-        crate::traits::to_string_with_config::WrapperToStringWithConfigFromWrapperOrigin<
-            ConfigGeneric,
-        >,
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn wrapper_source_to_string_with_config_from_wrapper_wrapper(
-        &self,
-        config: &ConfigGeneric,
-    ) -> String {
-        format!(
-            "[\n{}]\n",
-            self.iter().fold(String::from(""), |mut acc, vec_element| {
-                acc.push_str(
-                    &vec_element
-                        .wrapper_to_string_with_config_from_wrapper_origin(config)
-                        .lines()
-                        .fold(String::from(""), |mut acc, vec_element| {
-                            acc.push_str(&format!(" {}\n", vec_element));
-                            acc
-                        }),
-                );
-                acc
-            })
-        )
-    }
-}
-
-impl<HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric>
-    WrapperSourceToStringWithConfigFromWrapperWrapper<ConfigGeneric>
-    for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
-where
-    HashMapKeyGeneric: std::fmt::Display,
-    HashMapValueGeneric:
-        crate::traits::to_string_with_config::WrapperToStringWithConfigFromWrapperOrigin<
-            ConfigGeneric,
-        >,
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn wrapper_source_to_string_with_config_from_wrapper_wrapper(
-        &self,
-        config: &ConfigGeneric,
-    ) -> String {
-        // format!("{}\n")
-        self.iter().fold(String::from(""), |mut acc, (key, value)| {
-            acc.push_str(&format!(
-                "{} [\n{}]\n",
-                key,
-                value
-                    .wrapper_to_string_with_config_from_wrapper_origin(config)
-                    .lines()
-                    .fold(String::from(""), |mut acc, line| {
-                        acc.push_str(&format!(" {}\n", line));
-                        acc
-                    })
-            ));
-            acc
-        })
-    }
-}
-
-pub trait WrapperToStringWithConfigFromWrapperWrapper<ConfigGeneric> {
-    fn wrapper_to_string_with_config_from_wrapper_wrapper(&self, config: &ConfigGeneric) -> String;
-}
-
-impl<SelfGeneric, ConfigGeneric> WrapperToStringWithConfigFromWrapperWrapper<ConfigGeneric>
-    for SelfGeneric
-where
-    SelfGeneric:
-        crate::traits::to_string_with_config::WrapperSourceToStringWithConfigFromWrapperWrapper<
-                ConfigGeneric,
-            > + crate::traits::get_code_occurence::GetCodeOccurence,
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn wrapper_to_string_with_config_from_wrapper_wrapper(&self, config: &ConfigGeneric) -> String {
-        format!(
-            "{}{}",
-            self.wrapper_source_to_string_with_config_from_wrapper_wrapper(config),
-            self.get_code_occurence()
-        )
-    }
-}
-
-//
 pub trait ToStringWithConfig<ConfigGeneric> {
     fn to_string_with_config(&self, config: &ConfigGeneric) -> String;
 }
 
-// impl<SelfGeneric, ConfigGeneric>
-//     crate::traits::to_string_with_config::ToStringWithConfig<ConfigGeneric> for SelfGeneric
+// impl<SelfGeneric, ConfigGeneric> ToStringWithConfig<ConfigGeneric> for SelfGeneric
 // where
-//     SelfGeneric: crate::traits::get_source::GetErrorWrapperSourceAsSting<ConfigGeneric>
+//     SelfGeneric: crate::traits::to_string_with_config::SourceToStringWithConfig<ConfigGeneric>
 //         + crate::traits::get_code_occurence::GetCodeOccurence,
 //     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
 //         + crate::traits::fields::GetTimezone
@@ -263,82 +22,113 @@ pub trait ToStringWithConfig<ConfigGeneric> {
 //     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
 //         format!(
 //             "{}{}",
-//             self.get_error_wrapper_source_as_string(config),
+//             self.source_to_string_with_config(config),
 //             self.get_code_occurence().to_string_with_config(config),
 //         )
 //     }
 // }
-///////////////////////////
+
 // impl<SelfGeneric, ConfigGeneric> ToStringWithConfig<ConfigGeneric> for SelfGeneric
 // where
-//     SelfGeneric: crate::traits::get_source::GetOriginSourceAsString
-//         // crate::traits::to_string_without_config::ToStringWithoutConfig
+//     SelfGeneric: crate::traits::to_string_without_config::ToStringWithoutConfig
 //         + crate::traits::get_code_occurence::GetCodeOccurence,
 //     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
 //         + crate::traits::fields::GetTimezone
 //         + crate::traits::get_server_address::GetServerAddress,
 // {
 //     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
-//         let code_occurence = self.get_code_occurence();
 //         format!(
-//             "{}{} {}",
-//             // self.to_string_without_config(),
-//             self.get_origin_source_as_string(),
-//             code_occurence.prepare_for_log(
-//                 code_occurence.get_code_path(config.get_source_place_type()),
-//                 chrono::DateTime::<chrono::Utc>::from(
-//                     std::time::UNIX_EPOCH + code_occurence.get_duration(),
-//                 )
-//                 .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
-//                 .format("%Y-%m-%d %H:%M:%S")
-//                 .to_string(),
-//                 code_occurence.get_hostname(),
-//                 code_occurence.get_process_id(),
-//             ),
-//             config.get_server_address(),
+//             "{}{}",
+//             self.source_to_string_with_config(config),
+//             self.get_code_occurence().to_string_with_config(config),
 //         )
 //     }
 // }
 
-// impl<VecElementGeneric, ConfigGeneric> ToStringWithConfig<ConfigGeneric> for Vec<VecElementGeneric>
+pub trait SourceToStringWithConfig<ConfigGeneric> {
+    fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String;
+}
+
+// impl<SelfGeneric, ConfigGeneric> OriginToStringWithConfig<ConfigGeneric> for SelfGeneric
 // where
-//     VecElementGeneric: ToStringWithConfig<ConfigGeneric>,
+//     SelfGeneric: crate::traits::to_string_without_config::OriginSourceToStringWithoutConfig
+//         + crate::traits::get_code_occurence::GetCodeOccurence,
 //     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
 //         + crate::traits::fields::GetTimezone
 //         + crate::traits::get_server_address::GetServerAddress,
 // {
-//     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
+//     fn origin_to_string_with_config(&self, config: &ConfigGeneric) -> String {
 //         format!(
-//             "[\n{}]",
+//             "{}{}",
+//             self.origin_source_to_string_without_config(),
+//             self.get_code_occurence().to_string_with_config(config),
+//         )
+//     }
+// }
+// ////////////////
+// pub trait WrapperSourceToStringWithConfigFromOrigin<ConfigGeneric> {
+//     fn wrapper_source_to_string_with_config_from_origin(&self, config: &ConfigGeneric) -> String;
+// }
+
+// // impl<SelfGeneric, ConfigGeneric> WrapperSourceToStringWithConfigFromOrigin<ConfigGeneric>
+// //     for SelfGeneric
+// // where
+// //     SelfGeneric: crate::traits::to_string_with_config::OriginToStringWithConfig<ConfigGeneric>,
+// //     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+// //         + crate::traits::fields::GetTimezone
+// //         + crate::traits::get_server_address::GetServerAddress,
+// // {
+// //     fn wrapper_source_to_string_with_config_from_origin(&self, config: &ConfigGeneric) -> String {
+// //         format!("{}", self.origin_to_string_with_config(config))
+// //     }
+// // }
+
+// impl<VecElementGeneric, ConfigGeneric> WrapperSourceToStringWithConfigFromOrigin<ConfigGeneric>
+//     for Vec<VecElementGeneric>
+// where
+//     VecElementGeneric:
+//         crate::traits::to_string_with_config::OriginToStringWithConfig<ConfigGeneric>,
+//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+//         + crate::traits::fields::GetTimezone
+//         + crate::traits::get_server_address::GetServerAddress,
+// {
+//     fn wrapper_source_to_string_with_config_from_origin(&self, config: &ConfigGeneric) -> String {
+//         format!(
+//             "[\n{}]\n",
 //             self.iter().fold(String::from(""), |mut acc, vec_element| {
-//                 acc.push_str(&vec_element.to_string_with_config(config).lines().fold(
-//                     String::from(""),
-//                     |mut acc, vec_element| {
-//                         acc.push_str(&format!(" {}\n", vec_element));
-//                         acc
-//                     },
-//                 ));
+//                 acc.push_str(
+//                     &vec_element
+//                         .origin_to_string_with_config(config)
+//                         .lines()
+//                         .fold(String::from(""), |mut acc, vec_element| {
+//                             acc.push_str(&format!(" {}\n", vec_element));
+//                             acc
+//                         }),
+//                 );
 //                 acc
 //             })
 //         )
 //     }
 // }
 
-// impl<HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric> ToStringWithConfig<ConfigGeneric>
+// impl<HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric>
+//     WrapperSourceToStringWithConfigFromOrigin<ConfigGeneric>
 //     for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
 // where
 //     HashMapKeyGeneric: std::fmt::Display,
-//     HashMapValueGeneric: ToStringWithConfig<ConfigGeneric>,
+//     HashMapValueGeneric:
+//         crate::traits::to_string_with_config::OriginToStringWithConfig<ConfigGeneric>,
 //     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
 //         + crate::traits::fields::GetTimezone
 //         + crate::traits::get_server_address::GetServerAddress,
 // {
-//     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
+//     fn wrapper_source_to_string_with_config_from_origin(&self, config: &ConfigGeneric) -> String {
+//         // format!("{}\n")
 //         self.iter().fold(String::from(""), |mut acc, (key, value)| {
 //             acc.push_str(&format!(
 //                 "{} [\n{}]\n",
 //                 key,
-//                 value.to_string_with_config(config).lines().fold(
+//                 value.origin_to_string_with_config(config).lines().fold(
 //                     String::from(""),
 //                     |mut acc, line| {
 //                         acc.push_str(&format!(" {}\n", line));
@@ -350,55 +140,164 @@ pub trait ToStringWithConfig<ConfigGeneric> {
 //         })
 //     }
 // }
-////////////////////////
-//
-// impl<VecElementGeneric, ConfigGeneric> ToStringWithConfig<ConfigGeneric> for Vec<VecElementGeneric>
-// where
-//     VecElementGeneric: ToStringWithConfig<ConfigGeneric>,
-//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-//         + crate::traits::fields::GetTimezone
-//         + crate::traits::get_server_address::GetServerAddress,
-// {
-//     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
-//         format!(
-//             "[\n{}]",
-//             self.iter().fold(String::from(""), |mut acc, vec_element| {
-//                 acc.push_str(&vec_element.to_string_with_config(config).lines().fold(
-//                     String::from(""),
-//                     |mut acc, vec_element| {
-//                         acc.push_str(&format!(" {}\n", vec_element));
-//                         acc
-//                     },
-//                 ));
-//                 acc
-//             })
-//         )
-//     }
+
+// //
+
+// //
+
+// //
+// pub trait ToStringWithConfig<ConfigGeneric> {
+//     fn to_string_with_config(&self, config: &ConfigGeneric) -> String;
 // }
 
-// impl<HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric> ToStringWithConfig<ConfigGeneric>
-//     for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
-// where
-//     HashMapKeyGeneric: std::fmt::Display,
-//     HashMapValueGeneric: ToStringWithConfig<ConfigGeneric>,
-//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-//         + crate::traits::fields::GetTimezone
-//         + crate::traits::get_server_address::GetServerAddress,
-// {
-//     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
-//         self.iter().fold(String::from(""), |mut acc, (key, value)| {
-//             acc.push_str(&format!(
-//                 "{} [\n{}]\n",
-//                 key,
-//                 value.to_string_with_config(config).lines().fold(
-//                     String::from(""),
-//                     |mut acc, line| {
-//                         acc.push_str(&format!(" {}\n", line));
-//                         acc
-//                     }
-//                 )
-//             ));
-//             acc
-//         })
-//     }
-// }
+// // impl<SelfGeneric, ConfigGeneric>
+// //     crate::traits::to_string_with_config::ToStringWithConfig<ConfigGeneric> for SelfGeneric
+// // where
+// //     SelfGeneric: crate::traits::get_source::GetErrorWrapperSourceAsSting<ConfigGeneric>
+// //         + crate::traits::get_code_occurence::GetCodeOccurence,
+// //     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+// //         + crate::traits::fields::GetTimezone
+// //         + crate::traits::get_server_address::GetServerAddress,
+// // {
+// //     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
+// //         format!(
+// //             "{}{}",
+// //             self.get_error_wrapper_source_as_string(config),
+// //             self.get_code_occurence().to_string_with_config(config),
+// //         )
+// //     }
+// // }
+// ///////////////////////////
+// // impl<SelfGeneric, ConfigGeneric> ToStringWithConfig<ConfigGeneric> for SelfGeneric
+// // where
+// //     SelfGeneric: crate::traits::get_source::GetOriginSourceAsString
+// //         // crate::traits::to_string_without_config::ToStringWithoutConfig
+// //         + crate::traits::get_code_occurence::GetCodeOccurence,
+// //     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+// //         + crate::traits::fields::GetTimezone
+// //         + crate::traits::get_server_address::GetServerAddress,
+// // {
+// //     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
+// //         let code_occurence = self.get_code_occurence();
+// //         format!(
+// //             "{}{} {}",
+// //             // self.to_string_without_config(),
+// //             self.get_origin_source_as_string(),
+// //             code_occurence.prepare_for_log(
+// //                 code_occurence.get_code_path(config.get_source_place_type()),
+// //                 chrono::DateTime::<chrono::Utc>::from(
+// //                     std::time::UNIX_EPOCH + code_occurence.get_duration(),
+// //                 )
+// //                 .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
+// //                 .format("%Y-%m-%d %H:%M:%S")
+// //                 .to_string(),
+// //                 code_occurence.get_hostname(),
+// //                 code_occurence.get_process_id(),
+// //             ),
+// //             config.get_server_address(),
+// //         )
+// //     }
+// // }
+
+// // impl<VecElementGeneric, ConfigGeneric> ToStringWithConfig<ConfigGeneric> for Vec<VecElementGeneric>
+// // where
+// //     VecElementGeneric: ToStringWithConfig<ConfigGeneric>,
+// //     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+// //         + crate::traits::fields::GetTimezone
+// //         + crate::traits::get_server_address::GetServerAddress,
+// // {
+// //     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
+// //         format!(
+// //             "[\n{}]",
+// //             self.iter().fold(String::from(""), |mut acc, vec_element| {
+// //                 acc.push_str(&vec_element.to_string_with_config(config).lines().fold(
+// //                     String::from(""),
+// //                     |mut acc, vec_element| {
+// //                         acc.push_str(&format!(" {}\n", vec_element));
+// //                         acc
+// //                     },
+// //                 ));
+// //                 acc
+// //             })
+// //         )
+// //     }
+// // }
+
+// // impl<HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric> ToStringWithConfig<ConfigGeneric>
+// //     for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
+// // where
+// //     HashMapKeyGeneric: std::fmt::Display,
+// //     HashMapValueGeneric: ToStringWithConfig<ConfigGeneric>,
+// //     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+// //         + crate::traits::fields::GetTimezone
+// //         + crate::traits::get_server_address::GetServerAddress,
+// // {
+// //     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
+// //         self.iter().fold(String::from(""), |mut acc, (key, value)| {
+// //             acc.push_str(&format!(
+// //                 "{} [\n{}]\n",
+// //                 key,
+// //                 value.to_string_with_config(config).lines().fold(
+// //                     String::from(""),
+// //                     |mut acc, line| {
+// //                         acc.push_str(&format!(" {}\n", line));
+// //                         acc
+// //                     }
+// //                 )
+// //             ));
+// //             acc
+// //         })
+// //     }
+// // }
+// ////////////////////////
+// //
+// // impl<VecElementGeneric, ConfigGeneric> ToStringWithConfig<ConfigGeneric> for Vec<VecElementGeneric>
+// // where
+// //     VecElementGeneric: ToStringWithConfig<ConfigGeneric>,
+// //     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+// //         + crate::traits::fields::GetTimezone
+// //         + crate::traits::get_server_address::GetServerAddress,
+// // {
+// //     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
+// //         format!(
+// //             "[\n{}]",
+// //             self.iter().fold(String::from(""), |mut acc, vec_element| {
+// //                 acc.push_str(&vec_element.to_string_with_config(config).lines().fold(
+// //                     String::from(""),
+// //                     |mut acc, vec_element| {
+// //                         acc.push_str(&format!(" {}\n", vec_element));
+// //                         acc
+// //                     },
+// //                 ));
+// //                 acc
+// //             })
+// //         )
+// //     }
+// // }
+
+// // impl<HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric> ToStringWithConfig<ConfigGeneric>
+// //     for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
+// // where
+// //     HashMapKeyGeneric: std::fmt::Display,
+// //     HashMapValueGeneric: ToStringWithConfig<ConfigGeneric>,
+// //     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+// //         + crate::traits::fields::GetTimezone
+// //         + crate::traits::get_server_address::GetServerAddress,
+// // {
+// //     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
+// //         self.iter().fold(String::from(""), |mut acc, (key, value)| {
+// //             acc.push_str(&format!(
+// //                 "{} [\n{}]\n",
+// //                 key,
+// //                 value.to_string_with_config(config).lines().fold(
+// //                     String::from(""),
+// //                     |mut acc, line| {
+// //                         acc.push_str(&format!(" {}\n", line));
+// //                         acc
+// //                     }
+// //                 )
+// //             ));
+// //             acc
+// //         })
+// //     }
+// // }
