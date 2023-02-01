@@ -1,11 +1,7 @@
-// use crate::traits::to_string_with_config::ToStringWithConfig;
 use crate::traits::error_log::ErrorLog;
 use crate::traits::get_code_occurence::GetCodeOccurence;
-// use crate::traits::to_string_without_config::OriginSourceToStringWithoutConfig;
-// use crate::traits::to_string_without_config::OriginToStringWithoutConfig;
 use crate::traits::get_source::GetErrorWrapperSourceAsSting;
 use crate::traits::to_string_with_config::FewToStringWithConfig;
-// use crate::traits::to_string_with_config::OriginToStringWithConfig;
 use crate::traits::to_string_without_config::FewToStringWithoutConfig;
 use crate::traits::to_string_without_config::SourceToStringWithoutConfig;
 use crate::traits::to_string_without_config::ToStringWithoutConfig;
@@ -19,14 +15,12 @@ use thiserror::Error;
 
 #[derive(Debug, Serialize, Deserialize, Error)]
 pub enum ThreeWrapperError {
-    // #[error("{source}\n{code_occurence}")]
     Something {
         source: ThreeWrapperErrorEnum,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     }
 }
 
-//
 //cannot make it with generics
 impl std::fmt::Display for ThreeWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
@@ -80,9 +74,6 @@ impl crate::traits::to_string_without_config::SourceToStringWithoutConfig for Th
         }
     }
 }
-//
-//
-
 
 impl crate::traits::get_code_occurence::GetCodeOccurence for ThreeWrapperError {
     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
@@ -154,7 +145,6 @@ pub enum FourWrapperError {
     }
 }
 
-//
 //cannot make it with generics
 impl std::fmt::Display for FourWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
@@ -208,7 +198,6 @@ impl crate::traits::to_string_without_config::SourceToStringWithoutConfig for Fo
         }
     }
 }
-//
 
 impl crate::traits::get_code_occurence::GetCodeOccurence for FourWrapperError {
     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
@@ -297,7 +286,6 @@ pub enum FiveWrapperError {
     }
 }
 
-//
 //cannot make it with generics
 impl std::fmt::Display for FiveWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
@@ -351,7 +339,6 @@ impl crate::traits::to_string_without_config::SourceToStringWithoutConfig for Fi
         }
     }
 }
-//
 
 impl crate::traits::get_code_occurence::GetCodeOccurence for FiveWrapperError {
     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
