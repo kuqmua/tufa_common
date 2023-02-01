@@ -4,7 +4,9 @@ use crate::traits::get_code_occurence::GetCodeOccurence;
 // use crate::traits::to_string_without_config::OriginSourceToStringWithoutConfig;
 // use crate::traits::to_string_without_config::OriginToStringWithoutConfig;
 use crate::traits::get_source::GetErrorWrapperSourceAsSting;
+use crate::traits::to_string_with_config::FewToStringWithConfig;
 // use crate::traits::to_string_with_config::OriginToStringWithConfig;
+use crate::traits::to_string_without_config::FewToStringWithoutConfig;
 use crate::traits::to_string_without_config::SourceToStringWithoutConfig;
 use crate::traits::to_string_without_config::ToStringWithoutConfig;
 use crate::traits::to_string_with_config::ToStringWithConfig;
@@ -194,23 +196,7 @@ where
 {
     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
         match self {
-            FourWrapperError::Something { sources, code_occurence } => sources.iter().fold(
-                String::from(""), 
-                |mut acc, (key, value)| {
-                    acc.push_str(&format!(
-                        "{} [\n{}]\n",
-                        key,
-                        value.to_string_with_config(config).lines().fold(
-                            String::from(""),
-                            |mut acc, line| {
-                                acc.push_str(&format!(" {}\n", line));
-                                acc
-                            }
-                        )
-                    ));
-                    acc
-                }
-            ),
+            FourWrapperError::Something { sources, code_occurence } => sources.few_to_string_with_config(config),
         }
     }
 }
@@ -218,23 +204,7 @@ where
 impl crate::traits::to_string_without_config::SourceToStringWithoutConfig for FourWrapperError {
     fn source_to_string_without_config(&self) -> String {
         match self {
-            FourWrapperError::Something { sources, code_occurence } => sources.iter().fold(
-                String::from(""), 
-                |mut acc, (key, value)| {
-                    acc.push_str(&format!(
-                        "{} [\n{}]\n",
-                        key,
-                        value
-                        .to_string()
-                        .lines()
-                        .fold(String::from(""), |mut acc, line| {
-                            acc.push_str(&format!(" {}\n", line));
-                            acc
-                        })
-                    ));
-                    acc
-                }
-            ),
+            FourWrapperError::Something { sources, code_occurence } => sources.few_to_string_without_config(),
         }
     }
 }
@@ -369,23 +339,7 @@ where
 {
     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
         match self {
-            FiveWrapperError::Something { sources, code_occurence } => sources.iter().fold(
-                String::from(""), 
-                |mut acc, (key, value)| {
-                    acc.push_str(&format!(
-                        "{} [\n{}]\n",
-                        key,
-                        value.to_string_with_config(config).lines().fold(
-                            String::from(""),
-                            |mut acc, line| {
-                                acc.push_str(&format!(" {}\n", line));
-                                acc
-                            }
-                        )
-                    ));
-                    acc
-                }
-            ),
+            FiveWrapperError::Something { sources, code_occurence } => sources.few_to_string_with_config(config),
         }
     }
 }
@@ -393,23 +347,7 @@ where
 impl crate::traits::to_string_without_config::SourceToStringWithoutConfig for FiveWrapperError {
     fn source_to_string_without_config(&self) -> String {
         match self {
-            FiveWrapperError::Something { sources, code_occurence } => sources.iter().fold(
-                String::from(""), 
-                |mut acc, (key, value)| {
-                    acc.push_str(&format!(
-                        "{} [\n{}]\n",
-                        key,
-                        value
-                        .to_string()
-                        .lines()
-                        .fold(String::from(""), |mut acc, line| {
-                            acc.push_str(&format!(" {}\n", line));
-                            acc
-                        })
-                    ));
-                    acc
-                }
-            ),
+            FiveWrapperError::Something { sources, code_occurence } => sources.few_to_string_without_config(),
         }
     }
 }
@@ -599,21 +537,7 @@ where
 {
     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
         match self {
-            SixWrapperError::Something { sources, code_occurence } => format!(
-                "[\n{}]\n",
-                sources.iter().fold(String::from(""), |mut acc, vec_element| {
-                    acc.push_str(
-                        &vec_element
-                        .to_string_with_config(config)
-                        .lines()
-                        .fold(String::from(""), |mut acc, vec_element| {
-                            acc.push_str(&format!(" {}\n", vec_element));
-                            acc
-                        }),
-                    );
-                    acc
-                })
-            ),
+            SixWrapperError::Something { sources, code_occurence } => sources.few_to_string_with_config(config),
         }
     }
 }
@@ -621,19 +545,7 @@ where
 impl crate::traits::to_string_without_config::SourceToStringWithoutConfig for SixWrapperError {
     fn source_to_string_without_config(&self) -> String {
         match self {
-            SixWrapperError::Something { sources, code_occurence } => format!(
-                "[\n{}]\n",
-                sources.iter().fold(String::from(""), |mut acc, vec_element| {
-                    acc.push_str(&vec_element.to_string_without_config().lines().fold(
-                        String::from(""),
-                        |mut acc, vec_element| {
-                            acc.push_str(&format!(" {}\n", vec_element));
-                            acc
-                        },
-                    ));
-                    acc
-                })
-            ),
+            SixWrapperError::Something { sources, code_occurence } => sources.few_to_string_without_config(),
         }
     }
 }
