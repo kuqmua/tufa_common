@@ -17,56 +17,70 @@ use thiserror::Error;
 
 #[derive(Debug, Serialize, Deserialize, Error)]
 pub enum ThreeWrapperError {
-    #[error("{source}\n{code_occurence}")]
+    // #[error("{source}\n{code_occurence}")]
     Something {
         source: ThreeWrapperErrorEnum,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     }
 }
 
-// impl std::fmt::Display for ThreeWrapperError {
-//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//         match self {
-//             ThreeWrapperError::Something { 
-//                 source, 
-//                 code_occurence 
-//             } => write!(f, "{}{}", source.to_string_without_config(), code_occurence),
-//         }
-//     }
-// }
+//
+//cannot make it with generics
+impl std::fmt::Display for ThreeWrapperError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.to_string_without_config())
+    }
+}
 
-impl<ConfigGeneric> crate::traits::to_string_with_config::ToStringWithConfig<ConfigGeneric>
-    for ThreeWrapperError
+impl<ConfigGeneric> crate::traits::to_string_with_config::ToStringWithConfig<ConfigGeneric> for ThreeWrapperError
 where
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
-        todo!()
-        // match self {
-        //     ThreeWrapperError::Something { source, code_occurence } => format!(
-        //         "{}{}",
-        //         self.get_error_wrapper_source_as_string(config),
-        //         self.get_code_occurence().to_string_with_config(config),
-        //     ),
-        // }
+        format!(
+            "{}\n{}",
+            self.source_to_string_with_config(config),//- difference origin\wrapper, for origin source_to_string_with_config can be not implemented 
+            self.get_code_occurence().to_string_with_config(config),
+        )
     }
 }
 
-impl<ConfigGeneric> crate::traits::get_source::GetErrorWrapperSourceAsSting<ConfigGeneric> for ThreeWrapperError
+impl crate::traits::to_string_without_config::ToStringWithoutConfig for ThreeWrapperError
+{
+    fn to_string_without_config(&self) -> String {
+        format!(
+            "{}\n{}",
+            self.source_to_string_without_config(),
+            self.get_code_occurence()
+        )
+    }
+}
+
+impl<ConfigGeneric> crate::traits::to_string_with_config::SourceToStringWithConfig<ConfigGeneric> for ThreeWrapperError 
 where
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
-    fn get_error_wrapper_source_as_string(&self, config: &ConfigGeneric) -> String {
-        todo!()
-        // match self {
-        //     ThreeWrapperError::Something { source, code_occurence } => format!("{}\n", source.to_string_with_config(config)),
-        // }
+    fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
+        match self {
+            ThreeWrapperError::Something { source, code_occurence } => source.to_string_with_config(config),
+        }
     }
 }
+
+impl crate::traits::to_string_without_config::SourceToStringWithoutConfig for ThreeWrapperError {
+    fn source_to_string_without_config(&self) -> String {
+        match self {
+            ThreeWrapperError::Something { source, code_occurence } => source.to_string_without_config(),
+        }
+    }
+}
+//
+//
+
 
 impl crate::traits::get_code_occurence::GetCodeOccurence for ThreeWrapperError {
     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
@@ -78,38 +92,32 @@ impl crate::traits::get_code_occurence::GetCodeOccurence for ThreeWrapperError {
 
 #[derive(Debug, Serialize, Deserialize, Error)]
 pub enum ThreeWrapperErrorEnum {
-    #[error("{0}")]
     FourWrapper(FourWrapperError),
 }
 
-impl<ConfigGeneric> crate::traits::to_string_with_config::ToStringWithConfig<ConfigGeneric>
-    for ThreeWrapperErrorEnum
+impl std::fmt::Display for ThreeWrapperErrorEnum {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.to_string_without_config())
+    }
+}
+
+impl<ConfigGeneric> crate::traits::to_string_with_config::ToStringWithConfig<ConfigGeneric> for ThreeWrapperErrorEnum 
 where
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
-        todo!()
-        // match self {
-        //     ThreeWrapperErrorEnum::FourWrapper(i) => i.to_string_with_config(config),
-        // }
+        match self {
+            ThreeWrapperErrorEnum::FourWrapper(i) => i.to_string_with_config(config),
+        }
     }
 }
 
-// impl crate::traits::to_string_without_config::ToStringWithoutConfig for ThreeWrapperErrorEnum {
-//     fn to_string_without_config(&self) -> String {
-//         match self {
-//             ThreeWrapperErrorEnum::FourWrapper(i) => i.to_string_without_config(),
-//         }
-//     }
-// }
-
-impl crate::traits::get_code_occurence::GetCodeOccurence for ThreeWrapperErrorEnum
-{
-    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
+impl crate::traits::to_string_without_config::ToStringWithoutConfig for ThreeWrapperErrorEnum {
+    fn to_string_without_config(&self) -> String {
         match self {
-            ThreeWrapperErrorEnum::FourWrapper(i) => i.get_code_occurence(),
+            ThreeWrapperErrorEnum::FourWrapper(i) => i.to_string_without_config(),
         }
     }
 }
@@ -144,12 +152,11 @@ pub enum FourWrapperError {
     }
 }
 
+//
+//cannot make it with generics
 impl std::fmt::Display for FourWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        todo!()
-        // match self {
-        //     FourWrapperError::Something { sources, code_occurence } => write!(f, "{}{}", sources.to_string_without_config(), code_occurence),
-        // }
+        write!(f, "{}", self.to_string_without_config())
     }
 }
 
@@ -160,32 +167,78 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
-        todo!()
-        // match self {
-        //     FourWrapperError::Something { sources, code_occurence } => {
-        //         format!(
-        //             "{}{}",
-        //             self.get_error_wrapper_source_as_string(config),
-        //             self.get_code_occurence().to_string_with_config(config),
-        //         )
-        //     },
-        // }
+        format!(
+            "{}{}",
+            self.source_to_string_with_config(config),//- difference origin\wrapper, for origin source_to_string_with_config can be not implemented 
+            self.get_code_occurence().to_string_with_config(config),
+        )
     }
 }
 
-impl<ConfigGeneric> crate::traits::get_source::GetErrorWrapperSourceAsSting<ConfigGeneric> for FourWrapperError
+impl crate::traits::to_string_without_config::ToStringWithoutConfig for FourWrapperError
+{
+    fn to_string_without_config(&self) -> String {
+        format!(
+            "{}{}",
+            self.source_to_string_without_config(),
+            self.get_code_occurence()
+        )
+    }
+}
+
+impl<ConfigGeneric> crate::traits::to_string_with_config::SourceToStringWithConfig<ConfigGeneric> for FourWrapperError 
 where
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
-    fn get_error_wrapper_source_as_string(&self, config: &ConfigGeneric) -> String {
-        todo!()
-        // match self {
-        //     FourWrapperError::Something { sources, code_occurence } => sources.to_string_with_config(config),
-        // }
+    fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
+        match self {
+            FourWrapperError::Something { sources, code_occurence } => sources.iter().fold(
+                String::from(""), 
+                |mut acc, (key, value)| {
+                    acc.push_str(&format!(
+                        "{} [\n{}]\n",
+                        key,
+                        value.to_string_with_config(config).lines().fold(
+                            String::from(""),
+                            |mut acc, line| {
+                                acc.push_str(&format!(" {}\n", line));
+                                acc
+                            }
+                        )
+                    ));
+                    acc
+                }
+            ),
+        }
     }
 }
+
+impl crate::traits::to_string_without_config::SourceToStringWithoutConfig for FourWrapperError {
+    fn source_to_string_without_config(&self) -> String {
+        match self {
+            FourWrapperError::Something { sources, code_occurence } => sources.iter().fold(
+                String::from(""), 
+                |mut acc, (key, value)| {
+                    acc.push_str(&format!(
+                        "{} [\n{}]\n",
+                        key,
+                        value
+                        .to_string()
+                        .lines()
+                        .fold(String::from(""), |mut acc, line| {
+                            acc.push_str(&format!(" {}\n", line));
+                            acc
+                        })
+                    ));
+                    acc
+                }
+            ),
+        }
+    }
+}
+//
 
 impl crate::traits::get_code_occurence::GetCodeOccurence for FourWrapperError {
     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
@@ -197,34 +250,35 @@ impl crate::traits::get_code_occurence::GetCodeOccurence for FourWrapperError {
 
 #[derive(Debug, Serialize, Deserialize, Error)]
 pub enum FourWrapperErrorEnum {
-    #[error("{0}")]
     FiveWrapper(FiveWrapperError),
-    #[error("{0}")]
     SixWrapper(SixWrapperError),
 }
 
-impl<ConfigGeneric> crate::traits::to_string_with_config::ToStringWithConfig<ConfigGeneric>
-    for FourWrapperErrorEnum
+impl std::fmt::Display for FourWrapperErrorEnum {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.to_string_without_config())
+    }
+}
+
+impl<ConfigGeneric> crate::traits::to_string_with_config::ToStringWithConfig<ConfigGeneric> for FourWrapperErrorEnum 
 where
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
-        todo!()
-        // match self {
-        //     FourWrapperErrorEnum::FiveWrapper(i) => i.to_string_with_config(config),
-        //     FourWrapperErrorEnum::SixWrapper(i) => i.to_string_with_config(config),
-        // }
+        match self {
+            FourWrapperErrorEnum::FiveWrapper(i) => i.to_string_with_config(config),
+            FourWrapperErrorEnum::SixWrapper(i) => i.to_string_with_config(config),
+        }
     }
 }
 
-impl crate::traits::get_code_occurence::GetCodeOccurence for FourWrapperErrorEnum
-{
-    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
+impl crate::traits::to_string_without_config::ToStringWithoutConfig for FourWrapperErrorEnum {
+    fn to_string_without_config(&self) -> String {
         match self {
-            FourWrapperErrorEnum::FiveWrapper(i) => i.get_code_occurence(),
-            FourWrapperErrorEnum::SixWrapper(i) => i.get_code_occurence(),
+            FourWrapperErrorEnum::FiveWrapper(i) => i.to_string_without_config(),
+            FourWrapperErrorEnum::SixWrapper(i) => i.to_string_without_config(),
         }
     }
 }
@@ -266,7 +320,6 @@ pub fn four() -> Result<(), Box<FourWrapperError>> {
 
 #[derive(Debug, Serialize, Deserialize, Error)]
 pub enum FiveWrapperError {
-    #[error("ddssdff")]
     Something{
         //todo how to implement from for it?
         sources: HashMap<String, FiveWrapperErrorEnum>,
@@ -275,7 +328,91 @@ pub enum FiveWrapperError {
 }
 
 //
+//cannot make it with generics
+impl std::fmt::Display for FiveWrapperError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.to_string_without_config())
+    }
+}
 
+impl<ConfigGeneric> crate::traits::to_string_with_config::ToStringWithConfig<ConfigGeneric> for FiveWrapperError
+where
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
+        format!(
+            "{}{}",
+            self.source_to_string_with_config(config),//- difference origin\wrapper, for origin source_to_string_with_config can be not implemented 
+            self.get_code_occurence().to_string_with_config(config),
+        )
+    }
+}
+
+impl crate::traits::to_string_without_config::ToStringWithoutConfig for FiveWrapperError
+{
+    fn to_string_without_config(&self) -> String {
+        format!(
+            "{}{}",
+            self.source_to_string_without_config(),
+            self.get_code_occurence()
+        )
+    }
+}
+
+impl<ConfigGeneric> crate::traits::to_string_with_config::SourceToStringWithConfig<ConfigGeneric> for FiveWrapperError 
+where
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
+        match self {
+            FiveWrapperError::Something { sources, code_occurence } => sources.iter().fold(
+                String::from(""), 
+                |mut acc, (key, value)| {
+                    acc.push_str(&format!(
+                        "{} [\n{}]\n",
+                        key,
+                        value.to_string_with_config(config).lines().fold(
+                            String::from(""),
+                            |mut acc, line| {
+                                acc.push_str(&format!(" {}\n", line));
+                                acc
+                            }
+                        )
+                    ));
+                    acc
+                }
+            ),
+        }
+    }
+}
+
+impl crate::traits::to_string_without_config::SourceToStringWithoutConfig for FiveWrapperError {
+    fn source_to_string_without_config(&self) -> String {
+        match self {
+            FiveWrapperError::Something { sources, code_occurence } => sources.iter().fold(
+                String::from(""), 
+                |mut acc, (key, value)| {
+                    acc.push_str(&format!(
+                        "{} [\n{}]\n",
+                        key,
+                        value
+                        .to_string()
+                        .lines()
+                        .fold(String::from(""), |mut acc, line| {
+                            acc.push_str(&format!(" {}\n", line));
+                            acc
+                        })
+                    ));
+                    acc
+                }
+            ),
+        }
+    }
+}
 //
 
 impl crate::traits::get_code_occurence::GetCodeOccurence for FiveWrapperError {
@@ -484,21 +621,19 @@ where
 impl crate::traits::to_string_without_config::SourceToStringWithoutConfig for SixWrapperError {
     fn source_to_string_without_config(&self) -> String {
         match self {
-            SixWrapperError::Something { sources, code_occurence } => {
-                format!(
-                    "[\n{}]\n",
-                    sources.iter().fold(String::from(""), |mut acc, vec_element| {
-                        acc.push_str(&vec_element.to_string_without_config().lines().fold(
-                            String::from(""),
-                            |mut acc, vec_element| {
-                                acc.push_str(&format!(" {}\n", vec_element));
-                                acc
-                            },
-                        ));
-                        acc
-                    })
-                )
-            },
+            SixWrapperError::Something { sources, code_occurence } => format!(
+                "[\n{}]\n",
+                sources.iter().fold(String::from(""), |mut acc, vec_element| {
+                    acc.push_str(&vec_element.to_string_without_config().lines().fold(
+                        String::from(""),
+                        |mut acc, vec_element| {
+                            acc.push_str(&format!(" {}\n", vec_element));
+                            acc
+                        },
+                    ));
+                    acc
+                })
+            ),
         }
     }
 }
@@ -565,10 +700,10 @@ pub fn six() -> Result<(), Box<SixWrapperError>> {
                 ) 
             };
             // println!("------");
-            println!("{}", f);
-            f.error_log(once_cell::sync::Lazy::force(
-                &crate::global_variables::runtime::config::CONFIG,
-            ));
+            // println!("{}", f);
+            // f.error_log(once_cell::sync::Lazy::force(
+            //     &crate::global_variables::runtime::config::CONFIG,
+            // ));
             // println!("------");
             return Err(Box::new(f));
         }
