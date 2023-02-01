@@ -141,9 +141,10 @@ pub enum FourWrapperError {
 
 impl std::fmt::Display for FourWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        match self {
-            FourWrapperError::Something { sources, code_occurence } => write!(f, "{}{}", sources.to_string_without_config(), code_occurence),
-        }
+        todo!()
+        // match self {
+        //     FourWrapperError::Something { sources, code_occurence } => write!(f, "{}{}", sources.to_string_without_config(), code_occurence),
+        // }
     }
 }
 
@@ -269,9 +270,10 @@ pub enum FiveWrapperError {
 
 impl std::fmt::Display for FiveWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        match self {
-            FiveWrapperError::Something { sources, code_occurence } => write!(f, "{}{}", sources.to_string_without_config(), code_occurence),
-        }
+        todo!()
+        // match self {
+        //     FiveWrapperError::Something { sources, code_occurence } => write!(f, "{}{}", sources.to_string_without_config(), code_occurence),
+        // }
     }
 }
 
@@ -382,15 +384,17 @@ pub enum FiveOneOriginError {
 //cannot make it with generics
 impl std::fmt::Display for FiveOneOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.origin_to_string_without_config())
+        todo!()
+        // write!(f, "{}", self.origin_to_string_without_config())
     }
 }
 
 impl crate::traits::to_string_without_config::OriginSourceToStringWithoutConfig for FiveOneOriginError {
     fn origin_source_to_string_without_config(&self) -> String {
-        match self {
-            FiveOneOriginError::Something { error, code_occurence } => error.origin_source_to_string_without_config(),
-        }
+        todo!()
+        // match self {
+        //     FiveOneOriginError::Something { error, code_occurence } => format!("{}", error),
+        // }
     }
 }
 
@@ -425,9 +429,10 @@ pub enum SixWrapperError {
 
 impl std::fmt::Display for SixWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        match self {
-            SixWrapperError::Something { sources, code_occurence } => write!(f, "{}\n{}", sources.to_string_without_config(), code_occurence),
-        }
+        todo!()
+        // match self {
+        //     SixWrapperError::Something { sources, code_occurence } => write!(f, "{}\n{}", sources.to_string_without_config(), code_occurence),
+        // }
     }
 }
 
@@ -544,15 +549,17 @@ pub enum SevenOriginError {
 //cannot make it with generics
 impl std::fmt::Display for SevenOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.origin_to_string_without_config())
+        todo!()
+        // write!(f, "{}", self.origin_to_string_without_config())
     }
 }
 
 impl crate::traits::to_string_without_config::OriginSourceToStringWithoutConfig for SevenOriginError {
     fn origin_source_to_string_without_config(&self) -> String {
-        match self {
-            SevenOriginError::Something { error, code_occurence } => error.origin_source_to_string_without_config(),
-        }
+        todo!()
+        // match self {
+        //     SevenOriginError::Something { error, code_occurence } => format!("{}", error),
+        // }
     }
 }
 
@@ -587,14 +594,16 @@ pub enum EightOriginError {
 //cannot make it with generics
 impl std::fmt::Display for EightOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.origin_to_string_without_config())
+        todo!()
+        // write!(f, "{}", self.origin_to_string_without_config())
     }
 }
 
 impl crate::traits::to_string_without_config::OriginSourceToStringWithoutConfig for EightOriginError {
     fn origin_source_to_string_without_config(&self) -> String {
+        // todo!()
         match self {
-            EightOriginError::Something { error, code_occurence } => error.origin_source_to_string_without_config(),
+            EightOriginError::Something { error, code_occurence } => format!("{}", error),
         }
     }
 }

@@ -3,7 +3,7 @@ pub trait OriginSourceToStringWithoutConfig {
     fn origin_source_to_string_without_config(&self) -> String;
 }
 
-//conflict impl
+// conflict impl
 // impl<SelfGeneric> OriginSourceToStringWithoutConfig for SelfGeneric
 // where
 //     SelfGeneric: std::fmt::Display,
@@ -77,11 +77,10 @@ where
     }
 }
 
-//variants with origin and wrapper must be implemented
 pub trait WrapperSourceToStringWithoutConfigFromOrigin {
     fn wrapper_source_to_string_without_config_from_origin(&self) -> String;
 }
-//
+
 impl<SelfGeneric> WrapperSourceToStringWithoutConfigFromOrigin for SelfGeneric
 where
     SelfGeneric: crate::traits::to_string_without_config::OriginToStringWithoutConfig,
@@ -137,36 +136,55 @@ where
     }
 }
 
-pub trait WrapperSourceToStringWithoutConfigFromWrapper {
-    fn wrapper_source_to_string_without_config_from_wrapper(&self) -> String;
+pub trait WrapperToStringWithoutConfigFromWrapperOrigin {
+    fn wrapper_to_string_without_config_from_wrapper_origin(&self) -> String;
 }
 
-//conflicting impl
-// impl<SelfGeneric> WrapperSourceToStringWithoutConfigFromWrapper for SelfGeneric
-// where
-//     SelfGeneric:
-//         crate::traits::to_string_without_config::WrapperSourceToStringWithoutConfigFromOrigin,
-// {
-//     fn wrapper_source_to_string_without_config_from_wrapper(&self) -> String {
-//         format!(
-//             "{}",
-//             self.wrapper_source_to_string_without_config_from_origin()
-//         )
-//     }
-// }
+impl<SelfGeneric> WrapperToStringWithoutConfigFromWrapperOrigin for SelfGeneric
+where
+    SelfGeneric:
+        crate::traits::to_string_without_config::WrapperSourceToStringWithoutConfigFromOrigin
+            + crate::traits::get_code_occurence::GetCodeOccurence,
+{
+    fn wrapper_to_string_without_config_from_wrapper_origin(&self) -> String {
+        format!(
+            "{}{}",
+            self.wrapper_source_to_string_without_config_from_origin(),
+            self.get_code_occurence()
+        )
+    }
+}
 
-impl<VecElementGeneric> WrapperSourceToStringWithoutConfigFromWrapper for Vec<VecElementGeneric>
+pub trait WrapperSourceToStringWithoutConfigFromWrapperWrapper {
+    fn wrapper_source_to_string_without_config_from_wrapper_wrapper(&self) -> String;
+}
+
+impl<SelfGeneric> WrapperSourceToStringWithoutConfigFromWrapperWrapper for SelfGeneric
+where
+    SelfGeneric:
+        crate::traits::to_string_without_config::WrapperToStringWithoutConfigFromWrapperOrigin,
+{
+    fn wrapper_source_to_string_without_config_from_wrapper_wrapper(&self) -> String {
+        format!(
+            "{}",
+            self.wrapper_to_string_without_config_from_wrapper_origin()
+        )
+    }
+}
+
+impl<VecElementGeneric> WrapperSourceToStringWithoutConfigFromWrapperWrapper
+    for Vec<VecElementGeneric>
 where
     VecElementGeneric:
-        crate::traits::to_string_without_config::WrapperSourceToStringWithoutConfigFromOrigin,
+        crate::traits::to_string_without_config::WrapperToStringWithoutConfigFromWrapperOrigin,
 {
-    fn wrapper_source_to_string_without_config_from_wrapper(&self) -> String {
+    fn wrapper_source_to_string_without_config_from_wrapper_wrapper(&self) -> String {
         format!(
             "[\n{}]\n",
             self.iter().fold(String::from(""), |mut acc, vec_element| {
                 acc.push_str(
                     &vec_element
-                        .wrapper_source_to_string_without_config_from_origin()
+                        .wrapper_to_string_without_config_from_wrapper_origin()
                         .lines()
                         .fold(String::from(""), |mut acc, vec_element| {
                             acc.push_str(&format!(" {}\n", vec_element));
@@ -179,21 +197,21 @@ where
     }
 }
 
-impl<HashMapKeyGeneric, HashMapValueGeneric> WrapperSourceToStringWithoutConfigFromWrapper
+impl<HashMapKeyGeneric, HashMapValueGeneric> WrapperSourceToStringWithoutConfigFromWrapperWrapper
     for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
 where
     HashMapKeyGeneric: std::fmt::Display,
     HashMapValueGeneric:
-        crate::traits::to_string_without_config::WrapperSourceToStringWithoutConfigFromOrigin,
+        crate::traits::to_string_without_config::WrapperToStringWithoutConfigFromWrapperOrigin,
 {
-    fn wrapper_source_to_string_without_config_from_wrapper(&self) -> String {
+    fn wrapper_source_to_string_without_config_from_wrapper_wrapper(&self) -> String {
         // format!("{}\n")
         self.iter().fold(String::from(""), |mut acc, (key, value)| {
             acc.push_str(&format!(
                 "{} [\n{}]\n",
                 key,
                 value
-                    .wrapper_source_to_string_without_config_from_origin()
+                    .wrapper_to_string_without_config_from_wrapper_origin()
                     .lines()
                     .fold(String::from(""), |mut acc, line| {
                         acc.push_str(&format!(" {}\n", line));
@@ -204,25 +222,26 @@ where
         })
     }
 }
-// diffrenet traits WrapperSourceToStringWithoutConfigFromWrapperOrigin
-// diffrenet traits WrapperSourceToStringWithoutConfigFromWrapperWrapper
-//todo impl WrapperSourceToStringWithoutConfigFromWrapper for crate::traits::to_string_without_config::WrapperSourceToStringWithoutConfigFromWrapper
 
-// pub trait WrapperToStringWithoutConfig {
-//     fn wrapper_to_string_without_config(&self) -> String;
-// }
+pub trait WrapperToStringWithoutConfigFromWrapperWrapper {
+    fn wrapper_to_string_without_config_from_wrapper_wrapper(&self) -> String;
+}
 
-// impl<SelfGeneric> WrapperToStringWithoutConfig for SelfGeneric
-// where
-//     SelfGeneric: crate::traits::to_string_without_config::WrapperSourceToStringWithoutConfig
-//         + crate::traits::get_code_occurence::GetCodeOccurence,
-// {
-//     fn wrapper_to_string_without_config(&self) -> String {
-//         format!(
-//             "{}{}",
-//             self.wrapper_source_to_string_without_config(),
-//             self.get_code_occurence()
-//         )
-//     }
-// }
-//
+impl<SelfGeneric> WrapperToStringWithoutConfigFromWrapperWrapper for SelfGeneric
+where
+    SelfGeneric:
+        crate::traits::to_string_without_config::WrapperSourceToStringWithoutConfigFromWrapperWrapper
+            + crate::traits::get_code_occurence::GetCodeOccurence,
+{
+    fn wrapper_to_string_without_config_from_wrapper_wrapper(&self) -> String {
+        format!(
+            "{}{}",
+            self.wrapper_source_to_string_without_config_from_wrapper_wrapper(),
+            self.get_code_occurence()
+        )
+    }
+}
+// // diffrenet traits WrapperSourceToStringWithoutConfigFromWrapperOrigin
+// // diffrenet traits WrapperToStringWithoutConfigFromWrapperOrigin
+// // diffrenet traits WrapperSourceToStringWithoutConfigFromWrapperWrapper
+// // diffrenet traits WrapperToStringWithoutConfigFromWrapperWrapper

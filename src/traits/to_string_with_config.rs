@@ -27,6 +27,225 @@ where
         )
     }
 }
+////////////////
+pub trait WrapperSourceToStringWithConfigFromOrigin<ConfigGeneric> {
+    fn wrapper_source_to_string_with_config_from_origin(&self, config: &ConfigGeneric) -> String;
+}
+
+// impl<SelfGeneric, ConfigGeneric> WrapperSourceToStringWithConfigFromOrigin<ConfigGeneric>
+//     for SelfGeneric
+// where
+//     SelfGeneric: crate::traits::to_string_with_config::OriginToStringWithConfig<ConfigGeneric>,
+//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+//         + crate::traits::fields::GetTimezone
+//         + crate::traits::get_server_address::GetServerAddress,
+// {
+//     fn wrapper_source_to_string_with_config_from_origin(&self, config: &ConfigGeneric) -> String {
+//         format!("{}", self.origin_to_string_with_config(config))
+//     }
+// }
+
+impl<VecElementGeneric, ConfigGeneric> WrapperSourceToStringWithConfigFromOrigin<ConfigGeneric>
+    for Vec<VecElementGeneric>
+where
+    VecElementGeneric:
+        crate::traits::to_string_with_config::OriginToStringWithConfig<ConfigGeneric>,
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn wrapper_source_to_string_with_config_from_origin(&self, config: &ConfigGeneric) -> String {
+        format!(
+            "[\n{}]\n",
+            self.iter().fold(String::from(""), |mut acc, vec_element| {
+                acc.push_str(
+                    &vec_element
+                        .origin_to_string_with_config(config)
+                        .lines()
+                        .fold(String::from(""), |mut acc, vec_element| {
+                            acc.push_str(&format!(" {}\n", vec_element));
+                            acc
+                        }),
+                );
+                acc
+            })
+        )
+    }
+}
+
+impl<HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric>
+    WrapperSourceToStringWithConfigFromOrigin<ConfigGeneric>
+    for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
+where
+    HashMapKeyGeneric: std::fmt::Display,
+    HashMapValueGeneric:
+        crate::traits::to_string_with_config::OriginToStringWithConfig<ConfigGeneric>,
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn wrapper_source_to_string_with_config_from_origin(&self, config: &ConfigGeneric) -> String {
+        // format!("{}\n")
+        self.iter().fold(String::from(""), |mut acc, (key, value)| {
+            acc.push_str(&format!(
+                "{} [\n{}]\n",
+                key,
+                value.origin_to_string_with_config(config).lines().fold(
+                    String::from(""),
+                    |mut acc, line| {
+                        acc.push_str(&format!(" {}\n", line));
+                        acc
+                    }
+                )
+            ));
+            acc
+        })
+    }
+}
+
+pub trait WrapperToStringWithConfigFromWrapperOrigin<ConfigGeneric> {
+    fn wrapper_to_string_with_config_from_wrapper_origin(&self, config: &ConfigGeneric) -> String;
+}
+
+impl<SelfGeneric, ConfigGeneric> WrapperToStringWithConfigFromWrapperOrigin<ConfigGeneric>
+    for SelfGeneric
+where
+    SelfGeneric: crate::traits::to_string_with_config::WrapperSourceToStringWithConfigFromOrigin<
+            ConfigGeneric,
+        > + crate::traits::get_code_occurence::GetCodeOccurence,
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn wrapper_to_string_with_config_from_wrapper_origin(&self, config: &ConfigGeneric) -> String {
+        format!(
+            "{}{}",
+            self.wrapper_source_to_string_with_config_from_origin(config),
+            self.get_code_occurence()
+        )
+    }
+}
+
+pub trait WrapperSourceToStringWithConfigFromWrapperWrapper<ConfigGeneric> {
+    fn wrapper_source_to_string_with_config_from_wrapper_wrapper(
+        &self,
+        config: &ConfigGeneric,
+    ) -> String;
+}
+
+// impl<SelfGeneric, ConfigGeneric> WrapperSourceToStringWithConfigFromWrapperWrapper<ConfigGeneric>
+//     for SelfGeneric
+// where
+//     SelfGeneric: crate::traits::to_string_with_config::WrapperToStringWithConfigFromWrapperOrigin<
+//         ConfigGeneric,
+//     >,
+//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+//         + crate::traits::fields::GetTimezone
+//         + crate::traits::get_server_address::GetServerAddress,
+// {
+//     fn wrapper_source_to_string_with_config_from_wrapper_wrapper(
+//         &self,
+//         config: &ConfigGeneric,
+//     ) -> String {
+//         format!(
+//             "{}",
+//             self.wrapper_to_string_with_config_from_wrapper_origin(config)
+//         )
+//     }
+// }
+
+impl<VecElementGeneric, ConfigGeneric>
+    WrapperSourceToStringWithConfigFromWrapperWrapper<ConfigGeneric> for Vec<VecElementGeneric>
+where
+    VecElementGeneric:
+        crate::traits::to_string_with_config::WrapperToStringWithConfigFromWrapperOrigin<
+            ConfigGeneric,
+        >,
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn wrapper_source_to_string_with_config_from_wrapper_wrapper(
+        &self,
+        config: &ConfigGeneric,
+    ) -> String {
+        format!(
+            "[\n{}]\n",
+            self.iter().fold(String::from(""), |mut acc, vec_element| {
+                acc.push_str(
+                    &vec_element
+                        .wrapper_to_string_with_config_from_wrapper_origin(config)
+                        .lines()
+                        .fold(String::from(""), |mut acc, vec_element| {
+                            acc.push_str(&format!(" {}\n", vec_element));
+                            acc
+                        }),
+                );
+                acc
+            })
+        )
+    }
+}
+
+impl<HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric>
+    WrapperSourceToStringWithConfigFromWrapperWrapper<ConfigGeneric>
+    for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
+where
+    HashMapKeyGeneric: std::fmt::Display,
+    HashMapValueGeneric:
+        crate::traits::to_string_with_config::WrapperToStringWithConfigFromWrapperOrigin<
+            ConfigGeneric,
+        >,
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn wrapper_source_to_string_with_config_from_wrapper_wrapper(
+        &self,
+        config: &ConfigGeneric,
+    ) -> String {
+        // format!("{}\n")
+        self.iter().fold(String::from(""), |mut acc, (key, value)| {
+            acc.push_str(&format!(
+                "{} [\n{}]\n",
+                key,
+                value
+                    .wrapper_to_string_with_config_from_wrapper_origin(config)
+                    .lines()
+                    .fold(String::from(""), |mut acc, line| {
+                        acc.push_str(&format!(" {}\n", line));
+                        acc
+                    })
+            ));
+            acc
+        })
+    }
+}
+
+pub trait WrapperToStringWithConfigFromWrapperWrapper<ConfigGeneric> {
+    fn wrapper_to_string_with_config_from_wrapper_wrapper(&self, config: &ConfigGeneric) -> String;
+}
+
+impl<SelfGeneric, ConfigGeneric> WrapperToStringWithConfigFromWrapperWrapper<ConfigGeneric>
+    for SelfGeneric
+where
+    SelfGeneric:
+        crate::traits::to_string_with_config::WrapperSourceToStringWithConfigFromWrapperWrapper<
+                ConfigGeneric,
+            > + crate::traits::get_code_occurence::GetCodeOccurence,
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn wrapper_to_string_with_config_from_wrapper_wrapper(&self, config: &ConfigGeneric) -> String {
+        format!(
+            "{}{}",
+            self.wrapper_source_to_string_with_config_from_wrapper_wrapper(config),
+            self.get_code_occurence()
+        )
+    }
+}
+
 //
 pub trait ToStringWithConfig<ConfigGeneric> {
     fn to_string_with_config(&self, config: &ConfigGeneric) -> String;
