@@ -9,8 +9,9 @@ pub trait OriginToStringWithConfig<ConfigGeneric> {
 
 impl<SelfGeneric, ConfigGeneric> OriginToStringWithConfig<ConfigGeneric> for SelfGeneric
 where
-    SelfGeneric: crate::traits::to_string_without_config::SourceToStringWithoutConfig
-        + crate::traits::get_code_occurence::GetCodeOccurence,
+    SelfGeneric:
+        crate::traits::error_logs_logic::to_string_without_config::SourceToStringWithoutConfig
+            + crate::traits::get_code_occurence::GetCodeOccurence,
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
@@ -29,8 +30,9 @@ pub trait ToStringWithConfig<ConfigGeneric> {
 
 impl<SelfGeneric, ConfigGeneric> ToStringWithConfig<ConfigGeneric> for SelfGeneric
 where
-    SelfGeneric: crate::traits::to_string_with_config::SourceToStringWithConfig<ConfigGeneric>
-        + crate::traits::get_code_occurence::GetCodeOccurence,
+    SelfGeneric: crate::traits::error_logs_logic::to_string_with_config::SourceToStringWithConfig<
+            ConfigGeneric,
+        > + crate::traits::get_code_occurence::GetCodeOccurence,
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
@@ -55,7 +57,8 @@ pub trait FewToStringWithConfig<ConfigGeneric> {
 impl<VecElementGeneric, ConfigGeneric> FewToStringWithConfig<ConfigGeneric>
     for Vec<VecElementGeneric>
 where
-    VecElementGeneric: crate::traits::to_string_with_config::ToStringWithConfig<ConfigGeneric>,
+    VecElementGeneric:
+        crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfig<ConfigGeneric>,
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
@@ -81,7 +84,8 @@ impl<HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric> FewToStringWithConfi
     for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
 where
     HashMapKeyGeneric: std::fmt::Display,
-    HashMapValueGeneric: crate::traits::to_string_with_config::ToStringWithConfig<ConfigGeneric>,
+    HashMapValueGeneric:
+        crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfig<ConfigGeneric>,
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,

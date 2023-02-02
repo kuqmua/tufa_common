@@ -69,7 +69,8 @@ impl std::fmt::Display for crate::common::code_occurence::CodeOccurence {
     }
 }
 
-impl<ConfigGeneric> crate::traits::to_string_with_config::ToStringWithConfig<ConfigGeneric>
+impl<ConfigGeneric>
+    crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfig<ConfigGeneric>
     for crate::common::code_occurence::CodeOccurence
 where
     ConfigGeneric: crate::traits::fields::GetTimezone

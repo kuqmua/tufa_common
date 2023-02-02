@@ -1,6 +1,6 @@
 pub mod code_path;
 pub mod console;
-pub mod error_log;
+pub mod error_logs_logic;
 pub mod fields;
 pub mod get_bunyan_where_was;
 pub mod get_code_occurence;
@@ -25,7 +25,5 @@ pub mod is_enabled_prints;
 pub mod new_error;
 pub mod print_type_methods;
 pub mod readable_time;
-pub mod to_string_with_config;
-pub mod to_string_without_config;
 pub mod where_was_methods;
 pub mod with_tracing;
