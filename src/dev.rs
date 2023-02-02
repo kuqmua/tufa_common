@@ -1,18 +1,6 @@
-use crate::traits::error_logs_logic::error_log::ErrorLog;
-use crate::traits::get_code_occurence::GetCodeOccurence;
-use crate::traits::get_source::GetErrorWrapperSourceAsSting;
-use crate::traits::error_logs_logic::to_string_with_config::FewToStringWithConfig;
-use crate::traits::error_logs_logic::to_string_without_config::FewToStringWithoutConfig;
-use crate::traits::error_logs_logic::to_string_without_config::SourceToStringWithoutConfig;
-use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfig;
-use crate::traits::error_logs_logic::to_string_with_config::SourceToStringWithConfig;
-use crate::traits::error_logs_logic::to_string_with_config::OriginToStringWithConfig;
-use actix_web::cookie::Display;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
-use std::vec;
 use thiserror::Error;
+// use crate::traits::error_logs_logic::error_log::ErrorLog;
 
 #[derive(Debug, Serialize, Deserialize, Error)]
 pub enum ThreeWrapperError {
@@ -24,6 +12,7 @@ pub enum ThreeWrapperError {
 //cannot make it with generics
 impl std::fmt::Display for ThreeWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
         write!(f, "{}", self.to_string_without_config())
     }
 }
@@ -35,6 +24,7 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
+        use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfig;
         match self {
             ThreeWrapperError::Something { source, code_occurence } => source.to_string_with_config(config),
         }
@@ -43,6 +33,7 @@ where
 
 impl crate::traits::error_logs_logic::to_string_without_config::SourceToStringWithoutConfig for ThreeWrapperError {
     fn source_to_string_without_config(&self) -> String {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
         match self {
             ThreeWrapperError::Something { source, code_occurence } => source.to_string_without_config(),
         }
@@ -64,6 +55,7 @@ pub enum ThreeWrapperErrorEnum {
 
 impl std::fmt::Display for ThreeWrapperErrorEnum {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
         write!(f, "{}", self.to_string_without_config())
     }
 }
@@ -114,7 +106,7 @@ pub fn three() -> Result<(), Box<ThreeWrapperError>> {
 pub enum FourWrapperError {
     Something {
         //todo how to implement from for it?
-        sources: HashMap<String, FourWrapperErrorEnum>,
+        sources: std::collections::HashMap<String, FourWrapperErrorEnum>,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     }
 }
@@ -122,6 +114,7 @@ pub enum FourWrapperError {
 //cannot make it with generics
 impl std::fmt::Display for FourWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
         write!(f, "{}", self.to_string_without_config())
     }
 }
@@ -133,6 +126,7 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
+        use crate::traits::error_logs_logic::to_string_with_config::FewToStringWithConfig;
         match self {
             FourWrapperError::Something { sources, code_occurence } => sources.few_to_string_with_config(config),
         }
@@ -141,6 +135,7 @@ where
 
 impl crate::traits::error_logs_logic::to_string_without_config::SourceToStringWithoutConfig for FourWrapperError {
     fn source_to_string_without_config(&self) -> String {
+        use crate::traits::error_logs_logic::to_string_without_config::FewToStringWithoutConfig;
         match self {
             FourWrapperError::Something { sources, code_occurence } => sources.few_to_string_without_config(),
         }
@@ -163,6 +158,7 @@ pub enum FourWrapperErrorEnum {
 
 impl std::fmt::Display for FourWrapperErrorEnum {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
         write!(f, "{}", self.to_string_without_config())
     }
 }
@@ -197,7 +193,7 @@ pub fn four() -> Result<(), Box<FourWrapperError>> {
         (Err(_), Ok(_)) => todo!(),
         (Err(f), Err(s)) => {
             let f = FourWrapperError::Something { 
-                sources: HashMap::from([
+                sources: std::collections::HashMap::from([
                     (
                         String::from("five_hashmap_key"),
                         FourWrapperErrorEnum::FiveWrapper(*f),
@@ -229,13 +225,14 @@ pub fn four() -> Result<(), Box<FourWrapperError>> {
 pub enum FiveWrapperError {
     Something{
         //todo how to implement from for it?
-        sources: HashMap<String, FiveWrapperErrorEnum>,
+        sources: std::collections::HashMap<String, FiveWrapperErrorEnum>,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     }
 }
 //cannot make it with generics
 impl std::fmt::Display for FiveWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
         write!(f, "{}", self.to_string_without_config())
     }
 }
@@ -247,6 +244,7 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
+        use crate::traits::error_logs_logic::to_string_with_config::FewToStringWithConfig;
         match self {
             FiveWrapperError::Something { sources, code_occurence } => sources.few_to_string_with_config(config),
         }
@@ -255,6 +253,7 @@ where
 
 impl crate::traits::error_logs_logic::to_string_without_config::SourceToStringWithoutConfig for FiveWrapperError {
     fn source_to_string_without_config(&self) -> String {
+        use crate::traits::error_logs_logic::to_string_without_config::FewToStringWithoutConfig;
         match self {
             FiveWrapperError::Something { sources, code_occurence } => sources.few_to_string_without_config(),
         }
@@ -276,6 +275,7 @@ pub enum FiveWrapperErrorEnum {
 
 impl std::fmt::Display for FiveWrapperErrorEnum {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
         write!(f, "{}", self.to_string_without_config())
     }
 }
@@ -287,6 +287,7 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
+        use crate::traits::error_logs_logic::to_string_with_config::OriginToStringWithConfig;
         match self {
             FiveWrapperErrorEnum::FiveOneOrigin(i) => i.origin_to_string_with_config(config),
         }
@@ -304,7 +305,7 @@ impl crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutC
 pub fn five() -> Result<(), Box<FiveWrapperError>> {
     if let Err(e) = five_one() {
         let f = FiveWrapperError::Something { 
-            sources: HashMap::from([
+            sources: std::collections::HashMap::from([
                 (
                     String::from("five_one_hashmap_key"),
                     FiveWrapperErrorEnum::FiveOneOrigin(*e),
@@ -338,6 +339,7 @@ pub enum FiveOneOriginError {
 //cannot make it with generics
 impl std::fmt::Display for FiveOneOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
         write!(f, "{}", self.to_string_without_config())
     }
 }
@@ -381,6 +383,7 @@ pub enum SixWrapperError {
 //cannot make it with generics
 impl std::fmt::Display for SixWrapperError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
         write!(f, "{}", self.to_string_without_config())
     }
 }
@@ -392,6 +395,7 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
+        use crate::traits::error_logs_logic::to_string_with_config::FewToStringWithConfig;
         match self {
             SixWrapperError::Something { sources, code_occurence } => sources.few_to_string_with_config(config),
         }
@@ -400,6 +404,7 @@ where
 
 impl crate::traits::error_logs_logic::to_string_without_config::SourceToStringWithoutConfig for SixWrapperError {
     fn source_to_string_without_config(&self) -> String {
+        use crate::traits::error_logs_logic::to_string_without_config::FewToStringWithoutConfig;
         match self {
             SixWrapperError::Something { sources, code_occurence } => sources.few_to_string_without_config(),
         }
@@ -422,6 +427,7 @@ pub enum SixWrapperErrorEnum {
 
 impl std::fmt::Display for SixWrapperErrorEnum {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
         write!(f, "{}", self.to_string_without_config())
     }
 }
@@ -433,6 +439,7 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
+        use crate::traits::error_logs_logic::to_string_with_config::OriginToStringWithConfig;
         match self {
             SixWrapperErrorEnum::SevenWrapper(i) => i.origin_to_string_with_config(config),
             SixWrapperErrorEnum::EightWrapper(i) => i.origin_to_string_with_config(config),
@@ -487,6 +494,7 @@ pub enum SevenOriginError {
 //cannot make it with generics
 impl std::fmt::Display for SevenOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
         write!(f, "{}", self.to_string_without_config())
     }
 }
@@ -530,6 +538,7 @@ pub enum EightOriginError {
 //cannot make it with generics
 impl std::fmt::Display for EightOriginError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
         write!(f, "{}", self.to_string_without_config())
     }
 }
