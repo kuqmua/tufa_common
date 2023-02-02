@@ -9,7 +9,7 @@ where
 {
     fn to_string_without_config(&self) -> String {
         format!(
-            "{}{}",
+            "{}\n{}",
             self.source_to_string_without_config(),
             self.get_code_occurence()
         )
@@ -30,7 +30,7 @@ where
 {
     fn few_to_string_without_config(&self) -> String {
         format!(
-            "[\n{}]\n",
+            "[\n{}]",
             self.iter().fold(String::from(""), |mut acc, vec_element| {
                 acc.push_str(&vec_element.to_string_without_config().lines().fold(
                     String::from(""),
@@ -52,7 +52,7 @@ where
     HashMapValueGeneric: ToStringWithoutConfig,
 {
     fn few_to_string_without_config(&self) -> String {
-        self.iter().fold(String::from(""), |mut acc, (key, value)| {
+        let mut stringified = self.iter().fold(String::from(""), |mut acc, (key, value)| {
             acc.push_str(&format!(
                 "{} [\n{}]\n",
                 key,
@@ -65,6 +65,8 @@ where
                     })
             ));
             acc
-        })
+        });
+        stringified.pop();
+        stringified
     }
 }

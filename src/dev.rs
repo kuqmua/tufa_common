@@ -36,7 +36,7 @@ where
 {
     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
         match self {
-            ThreeWrapperError::Something { source, code_occurence } => format!("{}\n", source.to_string_with_config(config)),
+            ThreeWrapperError::Something { source, code_occurence } => source.to_string_with_config(config),
         }
     }
 }
@@ -44,7 +44,7 @@ where
 impl crate::traits::to_string_without_config::SourceToStringWithoutConfig for ThreeWrapperError {
     fn source_to_string_without_config(&self) -> String {
         match self {
-            ThreeWrapperError::Something { source, code_occurence } => format!("{}\n", source.to_string_without_config()),
+            ThreeWrapperError::Something { source, code_occurence } => source.to_string_without_config(),
         }
     }
 }
@@ -345,7 +345,7 @@ impl std::fmt::Display for FiveOneOriginError {
 impl crate::traits::to_string_without_config::SourceToStringWithoutConfig for FiveOneOriginError {
     fn source_to_string_without_config(&self) -> String {
         match self {
-            FiveOneOriginError::Something { error, code_occurence } => format!("{}\n", error),
+            FiveOneOriginError::Something { error, code_occurence } => format!("{}", error),
         }
     }
 }
@@ -494,7 +494,7 @@ impl std::fmt::Display for SevenOriginError {
 impl crate::traits::to_string_without_config::SourceToStringWithoutConfig for SevenOriginError {
     fn source_to_string_without_config(&self) -> String {
         match self {
-            SevenOriginError::Something { error, code_occurence } => format!("{}\n", error),
+            SevenOriginError::Something { error, code_occurence } => format!("{}", error),
         }
     }
 }
@@ -537,7 +537,7 @@ impl std::fmt::Display for EightOriginError {
 impl crate::traits::to_string_without_config::SourceToStringWithoutConfig for EightOriginError {
     fn source_to_string_without_config(&self) -> String {
         match self {
-            EightOriginError::Something { error, code_occurence } => format!("{}\n", error),
+            EightOriginError::Something { error, code_occurence } => format!("{}", error),
         }
     }
 }

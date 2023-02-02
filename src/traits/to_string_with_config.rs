@@ -17,7 +17,7 @@ where
 {
     fn origin_to_string_with_config(&self, config: &ConfigGeneric) -> String {
         format!(
-            "{}{}",
+            "{}\n{}",
             self.source_to_string_without_config(),
             self.get_code_occurence().to_string_with_config(config),
         )
@@ -37,7 +37,7 @@ where
 {
     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
         format!(
-            "{}{}",
+            "{}\n{}",
             self.source_to_string_with_config(config),
             self.get_code_occurence().to_string_with_config(config),
         )
@@ -62,7 +62,7 @@ where
 {
     fn few_to_string_with_config(&self, config: &ConfigGeneric) -> String {
         format!(
-            "[\n{}]\n",
+            "[\n{}]",
             self.iter().fold(String::from(""), |mut acc, vec_element| {
                 acc.push_str(&vec_element.to_string_with_config(config).lines().fold(
                     String::from(""),
@@ -87,7 +87,7 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn few_to_string_with_config(&self, config: &ConfigGeneric) -> String {
-        self.iter().fold(String::from(""), |mut acc, (key, value)| {
+        let mut stringified = self.iter().fold(String::from(""), |mut acc, (key, value)| {
             acc.push_str(&format!(
                 "{} [\n{}]\n",
                 key,
@@ -100,6 +100,8 @@ where
                 )
             ));
             acc
-        })
+        });
+        stringified.pop();
+        stringified
     }
 }
