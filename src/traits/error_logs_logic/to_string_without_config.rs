@@ -30,19 +30,17 @@ where
     VecElementGeneric: ToStringWithoutConfig,
 {
     fn few_to_string_without_config(&self) -> String {
-        format!(
-            "[\n{}]",
-            self.iter().fold(String::from(""), |mut acc, vec_element| {
-                acc.push_str(&vec_element.to_string_without_config().lines().fold(
-                    String::from(""),
-                    |mut acc, vec_element| {
-                        acc.push_str(&format!(" {}\n", vec_element));
-                        acc
-                    },
-                ));
+        crate::traits::error_logs_logic::helpers::stringified_lines_error_vec(self.iter().fold(
+            String::from(""),
+            |mut acc, vec_element| {
+                acc.push_str(
+                    &crate::traits::error_logs_logic::helpers::stringified_lines_error_vec_element(
+                        vec_element.to_string_without_config(),
+                    ),
+                );
                 acc
-            })
-        )
+            },
+        ))
     }
 }
 
@@ -54,17 +52,12 @@ where
 {
     fn few_to_string_without_config(&self) -> String {
         let mut stringified = self.iter().fold(String::from(""), |mut acc, (key, value)| {
-            acc.push_str(&format!(
-                "{} [\n{}]\n",
-                key,
-                value
-                    .to_string_without_config()
-                    .lines()
-                    .fold(String::from(""), |mut acc, line| {
-                        acc.push_str(&format!(" {}\n", line));
-                        acc
-                    })
-            ));
+            acc.push_str(
+                &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
+                    key,
+                    value.to_string_without_config(),
+                ),
+            );
             acc
         });
         stringified.pop();
