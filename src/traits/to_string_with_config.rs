@@ -3,47 +3,46 @@ use crate::traits::get_duration::GetDuration;
 use crate::traits::get_hostname::GetHostname;
 use crate::traits::get_process_id::GetProcessId;
 
-// this doesnt make sense coz config not needed in this situation
-// pub trait OriginSourceToStringWithConfig<ConfigGeneric> {
-//     fn origin_source_to_string_with_config(&self, config: &ConfigGeneric) -> String;
-// }
+pub trait OriginToStringWithConfig<ConfigGeneric> {
+    fn origin_to_string_with_config(&self, config: &ConfigGeneric) -> String;
+}
+
+impl<SelfGeneric, ConfigGeneric> OriginToStringWithConfig<ConfigGeneric> for SelfGeneric
+where
+    SelfGeneric: crate::traits::to_string_without_config::SourceToStringWithoutConfig
+        + crate::traits::get_code_occurence::GetCodeOccurence,
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn origin_to_string_with_config(&self, config: &ConfigGeneric) -> String {
+        format!(
+            "{}{}",
+            self.source_to_string_without_config(),
+            self.get_code_occurence().to_string_with_config(config),
+        )
+    }
+}
 pub trait ToStringWithConfig<ConfigGeneric> {
     fn to_string_with_config(&self, config: &ConfigGeneric) -> String;
 }
 
-// impl<SelfGeneric, ConfigGeneric> ToStringWithConfig<ConfigGeneric> for SelfGeneric
-// where
-//     SelfGeneric: crate::traits::to_string_with_config::SourceToStringWithConfig<ConfigGeneric>
-//         + crate::traits::get_code_occurence::GetCodeOccurence,
-//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-//         + crate::traits::fields::GetTimezone
-//         + crate::traits::get_server_address::GetServerAddress,
-// {
-//     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
-//         format!(
-//             "{}{}",
-//             self.source_to_string_with_config(config),
-//             self.get_code_occurence().to_string_with_config(config),
-//         )
-//     }
-// }
-
-// impl<SelfGeneric, ConfigGeneric> ToStringWithConfig<ConfigGeneric> for SelfGeneric
-// where
-//     SelfGeneric: crate::traits::to_string_without_config::ToStringWithoutConfig
-//         + crate::traits::get_code_occurence::GetCodeOccurence,
-//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-//         + crate::traits::fields::GetTimezone
-//         + crate::traits::get_server_address::GetServerAddress,
-// {
-//     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
-//         format!(
-//             "{}{}",
-//             self.source_to_string_with_config(config),
-//             self.get_code_occurence().to_string_with_config(config),
-//         )
-//     }
-// }
+impl<SelfGeneric, ConfigGeneric> ToStringWithConfig<ConfigGeneric> for SelfGeneric
+where
+    SelfGeneric: crate::traits::to_string_with_config::SourceToStringWithConfig<ConfigGeneric>
+        + crate::traits::get_code_occurence::GetCodeOccurence,
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
+        format!(
+            "{}{}",
+            self.source_to_string_with_config(config),
+            self.get_code_occurence().to_string_with_config(config),
+        )
+    }
+}
 
 pub trait SourceToStringWithConfig<ConfigGeneric> {
     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String;
@@ -52,7 +51,7 @@ pub trait SourceToStringWithConfig<ConfigGeneric> {
 pub trait FewToStringWithConfig<ConfigGeneric> {
     fn few_to_string_with_config(&self, config: &ConfigGeneric) -> String;
 }
-//
+
 impl<VecElementGeneric, ConfigGeneric> FewToStringWithConfig<ConfigGeneric>
     for Vec<VecElementGeneric>
 where

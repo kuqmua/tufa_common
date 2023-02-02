@@ -2,19 +2,19 @@ pub trait ToStringWithoutConfig {
     fn to_string_without_config(&self) -> String;
 }
 
-// impl<SelfGeneric> ToStringWithoutConfig for SelfGeneric
-// where
-//     SelfGeneric: crate::traits::to_string_without_config::SourceToStringWithoutConfig
-//         + crate::traits::get_code_occurence::GetCodeOccurence,
-// {
-//     fn to_string_without_config(&self) -> String {
-//         format!(
-//             "{}{}",
-//             self.source_to_string_without_config(),
-//             self.get_code_occurence()
-//         )
-//     }
-// }
+impl<SelfGeneric> ToStringWithoutConfig for SelfGeneric
+where
+    SelfGeneric: crate::traits::to_string_without_config::SourceToStringWithoutConfig
+        + crate::traits::get_code_occurence::GetCodeOccurence,
+{
+    fn to_string_without_config(&self) -> String {
+        format!(
+            "{}{}",
+            self.source_to_string_without_config(),
+            self.get_code_occurence()
+        )
+    }
+}
 
 pub trait SourceToStringWithoutConfig {
     fn source_to_string_without_config(&self) -> String;
@@ -23,15 +23,6 @@ pub trait SourceToStringWithoutConfig {
 pub trait FewToStringWithoutConfig {
     fn few_to_string_without_config(&self) -> String;
 }
-//
-// impl<SelfGeneric> FewToStringWithoutConfig for SelfGeneric
-// where
-//     SelfGeneric: ToStringWithoutConfig,
-// {
-//     fn few_to_string_without_config(&self) -> String {
-//         self.to_string_without_config()
-//     }
-// }
 
 impl<VecElementGeneric> FewToStringWithoutConfig for Vec<VecElementGeneric>
 where
