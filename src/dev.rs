@@ -287,7 +287,7 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::to_string_with_config::OriginToStringWithConfig;
+        use crate::traits::error_logs_logic::origin_to_string_with_config::OriginToStringWithConfig;
         match self {
             FiveWrapperErrorEnum::FiveOneOrigin(i) => i.origin_to_string_with_config(config),
         }
@@ -439,7 +439,7 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::to_string_with_config::OriginToStringWithConfig;
+        use crate::traits::error_logs_logic::origin_to_string_with_config::OriginToStringWithConfig;
         match self {
             SixWrapperErrorEnum::SevenWrapper(i) => i.origin_to_string_with_config(config),
             SixWrapperErrorEnum::EightWrapper(i) => i.origin_to_string_with_config(config),
