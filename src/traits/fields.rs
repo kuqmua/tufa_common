@@ -836,3 +836,32 @@ pub trait GetGitTimezone {
 pub trait GetGitMessage {
     fn get_git_message(&self) -> &String;
 }
+
+//with lifetimes
+pub trait GetGitCommitIdLifeTime<'a> {
+    fn get_git_commit_id_lifetime(&self) -> &'a str;
+}
+
+pub trait GetGitRepoLinkLifeTime<'a> {
+    fn get_git_repo_link_lifetime(&self) -> &'a str;
+}
+
+pub trait GetGitAuthorLifeTime<'a> {
+    fn get_git_author_lifetime(&self) -> &'a str;
+}
+
+pub trait GetGitAuthorEmailLifeTime<'a> {
+    fn get_git_author_email_lifetime(&self) -> &'a str;
+}
+
+pub trait GetGitCommitUnixTimeLifeTime<'a> {
+    fn get_git_commit_unix_time_lifetime(&self) -> &'a str;
+}
+
+pub trait GetGitTimezoneLifeTime<'a> {
+    fn get_git_timezone_lifetime(&self) -> &'a str;
+}
+
+pub trait GetGitMessageLifetime<'a> {
+    fn get_git_message_lifetime(&self) -> &'a str;
+}
