@@ -10,7 +10,7 @@ pub trait OriginToStringWithConfig<ConfigGeneric> {
 impl<SelfGeneric, ConfigGeneric> OriginToStringWithConfig<ConfigGeneric> for SelfGeneric
 where
     SelfGeneric:
-        crate::traits::error_logs_logic::to_string_without_config::SourceToStringWithoutConfig
+        crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig
             + crate::traits::get_code_occurence::GetCodeOccurence,
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
@@ -29,9 +29,10 @@ pub trait ToStringWithConfig<ConfigGeneric> {
 
 impl<SelfGeneric, ConfigGeneric> ToStringWithConfig<ConfigGeneric> for SelfGeneric
 where
-    SelfGeneric: crate::traits::error_logs_logic::to_string_with_config::SourceToStringWithConfig<
-            ConfigGeneric,
-        > + crate::traits::get_code_occurence::GetCodeOccurence,
+    SelfGeneric:
+        crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
+                ConfigGeneric,
+            > + crate::traits::get_code_occurence::GetCodeOccurence,
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
@@ -42,8 +43,4 @@ where
             self.get_code_occurence().to_string_with_config(config),
         )
     }
-}
-
-pub trait SourceToStringWithConfig<ConfigGeneric> {
-    fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String;
 }

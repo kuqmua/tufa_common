@@ -5,7 +5,7 @@ pub trait ToStringWithoutConfig {
 impl<SelfGeneric> ToStringWithoutConfig for SelfGeneric
 where
     SelfGeneric:
-        crate::traits::error_logs_logic::to_string_without_config::SourceToStringWithoutConfig
+        crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig
             + crate::traits::get_code_occurence::GetCodeOccurence,
 {
     fn to_string_without_config(&self) -> String {
@@ -14,8 +14,4 @@ where
             self.get_code_occurence().to_string(),
         )
     }
-}
-
-pub trait SourceToStringWithoutConfig {
-    fn source_to_string_without_config(&self) -> String;
 }

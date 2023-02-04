@@ -17,7 +17,7 @@ impl std::fmt::Display for ThreeWrapperError {
     }
 }
 
-impl<ConfigGeneric> crate::traits::error_logs_logic::to_string_with_config::SourceToStringWithConfig<ConfigGeneric> for ThreeWrapperError 
+impl<ConfigGeneric> crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<ConfigGeneric> for ThreeWrapperError 
 where
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
@@ -31,7 +31,7 @@ where
     }
 }
 
-impl crate::traits::error_logs_logic::to_string_without_config::SourceToStringWithoutConfig for ThreeWrapperError {
+impl crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig for ThreeWrapperError {
     fn source_to_string_without_config(&self) -> String {
         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
         match self {
@@ -119,7 +119,7 @@ impl std::fmt::Display for FourWrapperError {
     }
 }
 
-impl<ConfigGeneric> crate::traits::error_logs_logic::to_string_with_config::SourceToStringWithConfig<ConfigGeneric> for FourWrapperError 
+impl<ConfigGeneric> crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<ConfigGeneric> for FourWrapperError 
 where
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
@@ -133,7 +133,7 @@ where
     }
 }
 
-impl crate::traits::error_logs_logic::to_string_without_config::SourceToStringWithoutConfig for FourWrapperError {
+impl crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig for FourWrapperError {
     fn source_to_string_without_config(&self) -> String {
         use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
         match self {
@@ -237,7 +237,7 @@ impl std::fmt::Display for FiveWrapperError {
     }
 }
 
-impl<ConfigGeneric> crate::traits::error_logs_logic::to_string_with_config::SourceToStringWithConfig<ConfigGeneric> for FiveWrapperError 
+impl<ConfigGeneric> crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<ConfigGeneric> for FiveWrapperError 
 where
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
@@ -251,7 +251,7 @@ where
     }
 }
 
-impl crate::traits::error_logs_logic::to_string_without_config::SourceToStringWithoutConfig for FiveWrapperError {
+impl crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig for FiveWrapperError {
     fn source_to_string_without_config(&self) -> String {
         use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
         match self {
@@ -344,7 +344,7 @@ impl std::fmt::Display for FiveOneOriginError {
     }
 }
 
-impl crate::traits::error_logs_logic::to_string_without_config::SourceToStringWithoutConfig for FiveOneOriginError {
+impl crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig for FiveOneOriginError {
     fn source_to_string_without_config(&self) -> String {
         match self {
             FiveOneOriginError::Something { error, code_occurence } => format!("{}", error),
@@ -388,7 +388,7 @@ impl std::fmt::Display for SixWrapperError {
     }
 }
 
-impl<ConfigGeneric> crate::traits::error_logs_logic::to_string_with_config::SourceToStringWithConfig<ConfigGeneric> for SixWrapperError 
+impl<ConfigGeneric> crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<ConfigGeneric> for SixWrapperError 
 where
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
@@ -402,7 +402,7 @@ where
     }
 }
 
-impl crate::traits::error_logs_logic::to_string_without_config::SourceToStringWithoutConfig for SixWrapperError {
+impl crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig for SixWrapperError {
     fn source_to_string_without_config(&self) -> String {
         use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
         match self {
@@ -499,7 +499,7 @@ impl std::fmt::Display for SevenOriginError {
     }
 }
 
-impl crate::traits::error_logs_logic::to_string_without_config::SourceToStringWithoutConfig for SevenOriginError {
+impl crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig for SevenOriginError {
     fn source_to_string_without_config(&self) -> String {
         match self {
             SevenOriginError::Something { error, code_occurence } => format!("{}", error),
@@ -543,7 +543,7 @@ impl std::fmt::Display for EightOriginError {
     }
 }
 
-impl crate::traits::error_logs_logic::to_string_without_config::SourceToStringWithoutConfig for EightOriginError {
+impl crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig for EightOriginError {
     fn source_to_string_without_config(&self) -> String {
         match self {
             EightOriginError::Something { error, code_occurence } => format!("{}", error),
