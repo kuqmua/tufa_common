@@ -528,8 +528,8 @@ use thiserror::Error;
 //     );
 // }
 
-//Serialize, Deserialize,,  Error
-#[derive(Debug)]
+//, Deserialize,
+#[derive(Debug, Serialize, Error)]
 pub enum EightOriginError<'a> {
     Something {
         error: String,
