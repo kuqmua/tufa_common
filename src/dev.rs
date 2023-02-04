@@ -126,7 +126,7 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::to_string_with_config::FewToStringWithConfig;
+        use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfig;
         match self {
             FourWrapperError::Something { sources, code_occurence } => sources.few_to_string_with_config(config),
         }
@@ -135,7 +135,7 @@ where
 
 impl crate::traits::error_logs_logic::to_string_without_config::SourceToStringWithoutConfig for FourWrapperError {
     fn source_to_string_without_config(&self) -> String {
-        use crate::traits::error_logs_logic::to_string_without_config::FewToStringWithoutConfig;
+        use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
         match self {
             FourWrapperError::Something { sources, code_occurence } => sources.few_to_string_without_config(),
         }
@@ -244,7 +244,7 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::to_string_with_config::FewToStringWithConfig;
+        use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfig;
         match self {
             FiveWrapperError::Something { sources, code_occurence } => sources.few_to_string_with_config(config),
         }
@@ -253,7 +253,7 @@ where
 
 impl crate::traits::error_logs_logic::to_string_without_config::SourceToStringWithoutConfig for FiveWrapperError {
     fn source_to_string_without_config(&self) -> String {
-        use crate::traits::error_logs_logic::to_string_without_config::FewToStringWithoutConfig;
+        use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
         match self {
             FiveWrapperError::Something { sources, code_occurence } => sources.few_to_string_without_config(),
         }
@@ -395,7 +395,7 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::to_string_with_config::FewToStringWithConfig;
+        use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfig;
         match self {
             SixWrapperError::Something { sources, code_occurence } => sources.few_to_string_with_config(config),
         }
@@ -404,7 +404,7 @@ where
 
 impl crate::traits::error_logs_logic::to_string_without_config::SourceToStringWithoutConfig for SixWrapperError {
     fn source_to_string_without_config(&self) -> String {
-        use crate::traits::error_logs_logic::to_string_without_config::FewToStringWithoutConfig;
+        use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
         match self {
             SixWrapperError::Something { sources, code_occurence } => sources.few_to_string_without_config(),
         }
