@@ -799,7 +799,7 @@ pub trait GetInfoBlue {
 }
 //FileLineColumn
 pub trait GetFile {
-    fn get_file(&self) -> &String;
+    fn get_file(&self) -> &str;
 }
 pub trait GetLine {
     fn get_line(&self) -> &u32;

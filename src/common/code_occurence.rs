@@ -7,8 +7,8 @@ use serde::{Deserialize, Serialize};
 use std::os::unix::process;
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct CodeOccurence {
-    file: String, //&'a str
+pub struct CodeOccurence<'a> {
+    file: &'a str,
     line: u32,
     column: u32,
     git_info: crate::common::git::git_info::GitInformationWithoutLifetimes,
@@ -17,10 +17,10 @@ pub struct CodeOccurence {
     process_id: u32,
 }
 
-impl CodeOccurence {
+impl<'a> CodeOccurence<'a> {
     pub fn new(
         git_info: crate::common::git::git_info::GitInformationWithoutLifetimes,
-        file: String, //&'a str
+        file: &'a str,
         line: u32,
         column: u32,
     ) -> Self {
@@ -51,7 +51,7 @@ impl CodeOccurence {
     }
 }
 
-impl std::fmt::Display for crate::common::code_occurence::CodeOccurence {
+impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurence<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(
             f,
@@ -69,9 +69,9 @@ impl std::fmt::Display for crate::common::code_occurence::CodeOccurence {
     }
 }
 
-impl<ConfigGeneric>
+impl<'a, ConfigGeneric>
     crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfig<ConfigGeneric>
-    for crate::common::code_occurence::CodeOccurence
+    for crate::common::code_occurence::CodeOccurence<'a>
 where
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetSourcePlaceType
@@ -94,25 +94,25 @@ where
     }
 }
 
-impl crate::traits::fields::GetFile for CodeOccurence {
-    fn get_file(&self) -> &String {
+impl<'a> crate::traits::fields::GetFile for CodeOccurence<'a> {
+    fn get_file(&self) -> &str {
         &self.file
     }
 }
 
-impl crate::traits::fields::GetLine for CodeOccurence {
+impl<'a> crate::traits::fields::GetLine for CodeOccurence<'a> {
     fn get_line(&self) -> &u32 {
         &self.line
     }
 }
 
-impl crate::traits::fields::GetColumn for CodeOccurence {
+impl<'a> crate::traits::fields::GetColumn for CodeOccurence<'a> {
     fn get_column(&self) -> &u32 {
         &self.column
     }
 }
 
-impl crate::traits::get_git_info::GetGitInfoWithoutLifetimes for CodeOccurence {
+impl<'a> crate::traits::get_git_info::GetGitInfoWithoutLifetimes for CodeOccurence<'a> {
     fn get_git_info_without_lifetimes(
         &self,
     ) -> &crate::common::git::git_info::GitInformationWithoutLifetimes {
@@ -120,19 +120,19 @@ impl crate::traits::get_git_info::GetGitInfoWithoutLifetimes for CodeOccurence {
     }
 }
 
-impl crate::traits::get_duration::GetDuration for CodeOccurence {
+impl<'a> crate::traits::get_duration::GetDuration for CodeOccurence<'a> {
     fn get_duration(&self) -> std::time::Duration {
         self.duration
     }
 }
 
-impl crate::traits::get_hostname::GetHostname for CodeOccurence {
+impl<'a> crate::traits::get_hostname::GetHostname for CodeOccurence<'a> {
     fn get_hostname(&self) -> &String {
         &self.hostname
     }
 }
 
-impl crate::traits::get_process_id::GetProcessId for CodeOccurence {
+impl<'a> crate::traits::get_process_id::GetProcessId for CodeOccurence<'a> {
     fn get_process_id(&self) -> &u32 {
         &self.process_id
     }
