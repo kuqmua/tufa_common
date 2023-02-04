@@ -534,7 +534,7 @@ pub enum EightOriginError<'a> {
     Something {
         error: String,
         #[serde(borrow)]
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurenceLifetime<'a>,
     },
 }
 //cannot make it with generics
@@ -553,8 +553,8 @@ impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::Sourc
     }
 }
 
-impl<'a> crate::traits::get_code_occurence::GetCodeOccurence for EightOriginError<'a> {
-    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
+impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime for EightOriginError<'a> {
+    fn get_code_occurence_lifetime(&self) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
         match self {
             EightOriginError::Something { error, code_occurence } => code_occurence,
         }
