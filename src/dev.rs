@@ -528,11 +528,12 @@ use thiserror::Error;
 //     );
 // }
 
-//, Deserialize,
-#[derive(Debug, Serialize, Error)]
+//
+#[derive(Debug, Serialize, Deserialize, Error)]
 pub enum EightOriginError<'a> {
     Something {
         error: String,
+        #[serde(borrow)]
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
