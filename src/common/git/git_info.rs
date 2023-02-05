@@ -13,15 +13,6 @@ pub struct GitInformation<'a> {
     pub git_message: &'a str,
 }
 
-impl<'a> GitInformation<'a> {
-    fn get_git_source_file_link_lifetime(&self, file: &str, line: u32) -> String {
-        format!(
-            "{}/blob/{}/{file}#L{line}",
-            self.git_repo_link, self.git_commit_id
-        )
-    }
-}
-
 impl<'a> crate::traits::fields::GetGitCommitIdLifetime<'a> for GitInformation<'a> {
     fn get_git_commit_id_lifetime(&self) -> &'a str {
         self.git_commit_id

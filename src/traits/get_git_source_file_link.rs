@@ -15,11 +15,11 @@ where
     }
 }
 
-pub trait GetGitSourceFileLinkLifetime {
+pub trait GetGitSourceFileLinkLifetime<'a> {
     fn get_git_source_file_link_lifetime(&self, file: &str, line: u32) -> String;
 }
 
-impl<'a, SelfGeneric> GetGitSourceFileLinkLifetime for SelfGeneric
+impl<'a, SelfGeneric> GetGitSourceFileLinkLifetime<'a> for SelfGeneric
 where
     Self: crate::traits::fields::GetGitRepoLinkLifetime<'a>
         + crate::traits::fields::GetGitCommitIdLifetime<'a>,
