@@ -530,8 +530,7 @@ use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutCo
 //     );
 // }
 
-//Deserialize,
-#[derive(Debug, Serialize, Error)]
+#[derive(Debug, Serialize, Error, Deserialize)]
 pub enum EightOriginError<'a> {
     Something {
         error: String,

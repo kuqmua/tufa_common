@@ -140,8 +140,7 @@ impl<'a> crate::traits::get_process_id::GetProcessId for CodeOccurence<'a> {
         &self.process_id
     }
 }
-//, Deserialize
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct CodeOccurenceLifetime<'a> {
     file: &'a str,
     line: u32,
