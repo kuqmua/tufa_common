@@ -70,14 +70,16 @@ impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurence<'a> 
 }
 
 impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfig<ConfigGeneric>
-    for crate::common::code_occurence::CodeOccurence<'a>
+    crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetime<
+        'a,
+        ConfigGeneric,
+    > for crate::common::code_occurence::CodeOccurence<'a>
 where
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetSourcePlaceType
         + crate::traits::get_server_address::GetServerAddress,
 {
-    fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
+    fn to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
         format!(
             "{} {}",
             self.prepare_for_log(
@@ -137,13 +139,14 @@ impl<'a> crate::traits::get_process_id::GetProcessId for CodeOccurence<'a> {
         &self.process_id
     }
 }
-
-#[derive(Debug, Serialize, Deserialize)]
+//, Deserialize
+#[derive(Debug, Serialize)]
 pub struct CodeOccurenceLifetime<'a> {
     file: &'a str,
     line: u32,
     column: u32,
-    git_info: crate::common::git::git_info::GitInformation<'a>,
+    #[serde(borrow)]
+    git_info: &'a crate::common::git::git_info::GitInformation<'a>,
     duration: std::time::Duration,
     hostname: String,
     process_id: u32,
@@ -151,7 +154,7 @@ pub struct CodeOccurenceLifetime<'a> {
 
 impl<'a> CodeOccurenceLifetime<'a> {
     pub fn new(
-        git_info: crate::common::git::git_info::GitInformation<'a>,
+        git_info: &'a crate::common::git::git_info::GitInformation<'a>,
         file: &'a str,
         line: u32,
         column: u32,
@@ -266,8 +269,10 @@ impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurenceLifet
 }
 
 impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfig<ConfigGeneric>
-    for crate::common::code_occurence::CodeOccurenceLifetime<'a>
+    crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetime<
+        'a,
+        ConfigGeneric,
+    > for crate::common::code_occurence::CodeOccurenceLifetime<'a>
 where
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetSourcePlaceType
@@ -276,7 +281,7 @@ where
     //
     // + crate::traits::get_git_info::GetGitInfo,
 {
-    fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
+    fn to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
         //     fn get_code_path_lifetime(&self, source_place_type: &SourcePlaceType) -> String {
 
         //     }
