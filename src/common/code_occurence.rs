@@ -146,7 +146,7 @@ pub struct CodeOccurenceLifetime<'a> {
     line: u32,
     column: u32,
     #[serde(borrow)]
-    git_info: &'a crate::common::git::git_info::GitInformation<'a>,
+    git_info: crate::common::git::git_info::GitInformation<'a>,
     duration: std::time::Duration,
     hostname: String,
     process_id: u32,
@@ -154,7 +154,7 @@ pub struct CodeOccurenceLifetime<'a> {
 
 impl<'a> CodeOccurenceLifetime<'a> {
     pub fn new(
-        git_info: &'a crate::common::git::git_info::GitInformation<'a>,
+        git_info: crate::common::git::git_info::GitInformation<'a>,
         file: &'a str,
         line: u32,
         column: u32,
