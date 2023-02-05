@@ -1,5 +1,6 @@
 //todo use std::sync::Arc<crate::common::git::git_info::GitInformationWithoutLifetimes> ?
 use crate::traits::code_path::CodePath;
+use crate::traits::get_code_path_without_config::GetCodePathWithoutConfig;
 use crate::traits::get_duration::GetDuration;
 use crate::traits::get_hostname::GetHostname;
 use crate::traits::get_process_id::GetProcessId;
@@ -182,7 +183,7 @@ impl<'a> CodeOccurenceLifetime<'a> {
         hostname: &String,
         process_id: &u32,
     ) -> String {
-        format!("{} {} {} pid: {}", path, time, hostname, process_id,)
+        format!("{} {} {} pid: {}", path, time, hostname, process_id)
     }
 }
 
@@ -237,26 +238,11 @@ use crate::traits::get_git_source_file_link::GetGitSourceFileLinkLifetime;
 
 impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurenceLifetime<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        let project_code_path = format!(
-            "src/{}:{}:{}", //todo "src" - hardcode, for some reason vscode stops following just {}:{}:{} path(without prefix "src")
-            self.get_file(),
-            self.get_line(),
-            self.get_column()
-        );
-        //     fn get_project_code_path_lifetime(&self) -> String {
-        //         format!(
-        //             "src/{}:{}:{}", //todo "src" - hardcode, for some reason vscode stops following just {}:{}:{} path(without prefix "src")
-        //             self.get_file(),
-        //             self.get_line(),
-        //             self.get_column()
-        //         )
-        //     }
         write!(
             f,
             "{}",
             self.prepare_for_log(
-                // self.get_project_code_path(),
-                project_code_path,
+                self.get_code_path_without_config(),
                 chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
                     .with_timezone(&chrono::FixedOffset::east_opt(10800).unwrap())
                     .format("%Y-%m-%d %H:%M:%S")

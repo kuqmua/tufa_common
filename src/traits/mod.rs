@@ -4,6 +4,7 @@ pub mod error_logs_logic;
 pub mod fields;
 pub mod get_bunyan_where_was;
 pub mod get_code_occurence;
+pub mod get_code_path_without_config;
 pub mod get_color;
 pub mod get_duration;
 pub mod get_git_commit_link;
