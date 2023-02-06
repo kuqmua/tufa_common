@@ -530,11 +530,10 @@ use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutCo
 //     );
 // }
 
-#[derive(Debug, Serialize, Error, Deserialize)]
+#[derive(Debug, Error)]
 pub enum EightOriginError<'a> {
     Something {
         error: String,
-        #[serde(borrow)]
         code_occurence: crate::common::code_occurence::CodeOccurenceLifetime<'a>,
     },
 }
@@ -577,7 +576,7 @@ pub fn eight() -> Result<(), Box<EightOriginError<'static>>> {
     return Err(Box::new(EightOriginError::Something {
         error: String::from("error_eight"),
         code_occurence: crate::common::code_occurence::CodeOccurenceLifetime::new(
-            crate::global_variables::compile_time::git_info::GIT_INFO.clone(),
+            &crate::global_variables::compile_time::git_info::GIT_INFO,
             // once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
             file!(),
             line!(),

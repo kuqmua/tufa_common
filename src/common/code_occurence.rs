@@ -140,13 +140,12 @@ use std::os::unix::process;
 //         &self.process_id
 //     }
 // }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)] //Serialize, Deserialize // #[serde(borrow)] - need for field with lifetime
 pub struct CodeOccurenceLifetime<'a> {
     file: &'a str,
     line: u32,
     column: u32,
-    #[serde(borrow)]
-    git_info: crate::common::git::git_info::GitInformation<'a>,//todo - make deserialize version as different struct( without using .clone() every time for gir_info
+    git_info: &'a crate::common::git::git_info::GitInformation<'a>, //todo - make deserialize version as different struct( without using .clone() every time for gir_info
     duration: std::time::Duration,
     hostname: String,
     process_id: u32,
@@ -154,7 +153,7 @@ pub struct CodeOccurenceLifetime<'a> {
 
 impl<'a> CodeOccurenceLifetime<'a> {
     pub fn new(
-        git_info: crate::common::git::git_info::GitInformation<'a>,//todo - maybe create trait what returns git_info in tufa_common, but implementation create inside tufa_server and others services
+        git_info: &'a crate::common::git::git_info::GitInformation<'a>, //todo - maybe create trait what returns git_info in tufa_common, but implementation create inside tufa_server and others services
         file: &'a str,
         line: u32,
         column: u32,
@@ -186,7 +185,6 @@ impl<'a> CodeOccurenceLifetime<'a> {
     }
 }
 
-//
 impl<'a> crate::traits::fields::GetFile for CodeOccurenceLifetime<'a> {
     fn get_file(&self) -> &str {
         &self.file
