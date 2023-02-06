@@ -154,7 +154,7 @@ pub struct CodeOccurenceLifetime<'a> {
 
 impl<'a> CodeOccurenceLifetime<'a> {
     pub fn new(
-        git_info: crate::common::git::git_info::GitInformation<'a>,
+        git_info: crate::common::git::git_info::GitInformation<'a>,//todo - maybe create trait what returns git_info in tufa_common, but implementation create inside tufa_server and others services
         file: &'a str,
         line: u32,
         column: u32,
