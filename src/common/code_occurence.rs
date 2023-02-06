@@ -146,7 +146,7 @@ pub struct CodeOccurenceLifetime<'a> {
     line: u32,
     column: u32,
     #[serde(borrow)]
-    git_info: crate::common::git::git_info::GitInformation<'a>,
+    git_info: crate::common::git::git_info::GitInformation<'a>,//todo - make deserialize version as different struct( without using .clone() every time for gir_info
     duration: std::time::Duration,
     hostname: String,
     process_id: u32,
