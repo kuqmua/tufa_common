@@ -1,8 +1,6 @@
 use crate::traits::get_git_source_file_link::GetGitSourceFileLinkLifetime;
 use std::str::FromStr;
 
-use crate::common::code_occurence;
-
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum SourcePlaceType {
     Source,
