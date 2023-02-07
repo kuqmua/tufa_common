@@ -572,49 +572,55 @@ impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for Eig
     }
 }
 
-// #[derive(Debug, Error, Serialize, Deserialize)]
-// pub enum EightOriginErrorWithSerializeDeserialize<'a> {
-//     Something {
-//         error: String,
-//         code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize<'a>,
-//     },
-// }
+#[derive(Debug, Error, Serialize, Deserialize)]
+pub enum EightOriginErrorWithSerializeDeserialize<'a> {
+    Something {
+        error: String,
+        #[serde(borrow)]
+        code_occurence:
+            crate::common::code_occurence::CodeOccurenceLifetimeWithSerializeDeserialize<'a>,
+    },
+}
 
-// impl<'a> std::fmt::Display for EightOriginErrorWithSerializeDeserialize<'a> {
-//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
-//         write!(f, "{}", self.to_string_without_config_lifetime())
-//     }
-// }
+impl<'a> std::fmt::Display for EightOriginErrorWithSerializeDeserialize<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithSerializeDeserialize;
+        write!(
+            f,
+            "{}",
+            self.to_string_without_config_lifetime_with_serialize_deserialize()
+        )
+    }
+}
 
-// impl<'a>
-//     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a>
-//     for EightOriginErrorWithSerializeDeserialize<'a>
-// {
-//     fn source_to_string_without_config_lifetime(&self) -> String {
-//         match self {
-//             EightOriginErrorWithSerializeDeserialize::Something {
-//                 error,
-//                 code_occurence,
-//             } => format!("{}", error),
-//         }
-//     }
-// }
+impl<'a>
+    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a>
+    for EightOriginErrorWithSerializeDeserialize<'a>
+{
+    fn source_to_string_without_config_lifetime(&self) -> String {
+        match self {
+            EightOriginErrorWithSerializeDeserialize::Something {
+                error,
+                code_occurence,
+            } => format!("{}", error),
+        }
+    }
+}
 
-// impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetimeWithSerializeDeserialize<'a>
-//     for EightOriginErrorWithSerializeDeserialize<'a>
-// {
-//     fn get_code_occurence_lifetime(
-//         &self,
-//     ) -> &crate::common::code_occurence::CodeOccurenceLifetimeWithSerializeDeserialize<'a> {
-//         match self {
-//             EightOriginErrorWithSerializeDeserialize::Something {
-//                 error,
-//                 code_occurence,
-//             } => code_occurence,
-//         }
-//     }
-// }
+impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetimeWithSerializeDeserialize<'a>
+    for EightOriginErrorWithSerializeDeserialize<'a>
+{
+    fn get_code_occurence_lifetime_with_serialize_deserialize(
+        &self,
+    ) -> &crate::common::code_occurence::CodeOccurenceLifetimeWithSerializeDeserialize<'a> {
+        match self {
+            EightOriginErrorWithSerializeDeserialize::Something {
+                error,
+                code_occurence,
+            } => code_occurence,
+        }
+    }
+}
 
 pub fn eight() -> Result<(), Box<EightOriginError<'static>>> {
     let g = crate::common::code_occurence::CodeOccurenceLifetime::new(
