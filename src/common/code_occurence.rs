@@ -4,6 +4,8 @@ use crate::traits::get_code_path_without_config::GetCodePathWithoutConfig;
 use crate::traits::get_duration::GetDuration;
 use crate::traits::get_hostname::GetHostname;
 use crate::traits::get_process_id::GetProcessId;
+use crate::traits::prepare_for_log::PrepareForLogWithConfig;
+use crate::traits::prepare_for_log::PrepareForLogWithoutConfig;
 use serde::{Deserialize, Serialize};
 use std::os::unix::process;
 
@@ -174,15 +176,6 @@ impl<'a> CodeOccurenceLifetime<'a> {
             process_id: std::process::id(),
         }
     }
-    pub fn prepare_for_log(
-        &self,
-        path: String,
-        time: String,
-        hostname: &String,
-        process_id: &u32,
-    ) -> String {
-        format!("{} {} {} pid: {}", path, time, hostname, process_id)
-    }
 }
 
 impl<'a> crate::traits::fields::GetFile for CodeOccurenceLifetime<'a> {
@@ -209,6 +202,12 @@ impl<'a> crate::traits::get_git_info::GetGitInfo<'a> for CodeOccurenceLifetime<'
     }
 }
 
+impl<'a> crate::traits::get_git_info::GetClonedGitInfo for CodeOccurenceLifetime<'a> {
+    fn get_cloned_git_info(&self) -> crate::common::git::git_info::GitInformation {
+        self.git_info.clone()
+    }
+}
+
 impl<'a> crate::traits::get_duration::GetDuration for CodeOccurenceLifetime<'a> {
     fn get_duration(&self) -> std::time::Duration {
         self.duration
@@ -227,32 +226,9 @@ impl<'a> crate::traits::get_process_id::GetProcessId for CodeOccurenceLifetime<'
     }
 }
 
-//
-
-// + crate::traits::get_git_source_file_link::GetGitSourceFileLinkLifetime<'a>,
-//
-
-use crate::traits::fields::GetColumn;
-use crate::traits::fields::GetFile;
-use crate::traits::fields::GetLine;
-use crate::traits::get_git_info::GetGitInfo;
-use crate::traits::get_git_source_file_link::GetGitSourceFileLinkLifetime;
-
 impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurenceLifetime<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(
-            f,
-            "{}",
-            self.prepare_for_log(
-                self.get_code_path_without_config(),
-                chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
-                    .with_timezone(&chrono::FixedOffset::east_opt(10800).unwrap())
-                    .format("%Y-%m-%d %H:%M:%S")
-                    .to_string(),
-                self.get_hostname(),
-                self.get_process_id()
-            )
-        )
+        write!(f, "{}", self.prepare_for_log_without_config())
     }
 }
 
@@ -265,52 +241,8 @@ where
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetSourcePlaceType
         + crate::traits::get_server_address::GetServerAddress,
-    // ,
-    //
-    // + crate::traits::get_git_info::GetGitInfo,
 {
     fn to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
-        //     fn get_code_path_lifetime(&self, source_place_type: &SourcePlaceType) -> String {
-
-        //     }
-        let f = match config.get_source_place_type() {
-            crate::config_mods::source_place_type::SourcePlaceType::Source => format!(
-                "src/{}:{}:{}", //todo "src" - hardcode, for some reason vscode stops following just {}:{}:{} path(without prefix "src")
-                self.get_file(),
-                self.get_line(),
-                self.get_column()
-            ),
-            crate::config_mods::source_place_type::SourcePlaceType::Github => {
-                let backslash = "/";
-                let file = self.get_file();
-                match file.find(backslash) {
-                    Some(index) => {
-                        let f = &self.git_info;
-                        let g = f.get_git_source_file_link_lifetime(
-                            &file[index + backslash.len()..],
-                            *self.get_line(),
-                        );
-                        g
-                    }
-                    None => String::from("cant find backslash symbol in file path of location"),
-                }
-            }
-            crate::config_mods::source_place_type::SourcePlaceType::None => String::from(""), //todo maybe incorrect?
-        };
-        format!(
-            "{} {}",
-            self.prepare_for_log(
-                // config.get_code_path_lifetime(config.get_source_place_type()),
-                f,
-                // String::from("kekw"),
-                chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
-                    .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
-                    .format("%Y-%m-%d %H:%M:%S")
-                    .to_string(),
-                self.get_hostname(),
-                self.get_process_id(),
-            ),
-            config.get_server_address(),
-        )
+        self.prepare_for_log_with_config(config)
     }
 }
