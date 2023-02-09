@@ -1,6 +1,3 @@
-use crate::traits::get_git_source_file_link::GetGitSourceFileLinkLifetime;
-use std::str::FromStr;
-
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum SourcePlaceType {
     Source,
@@ -17,24 +14,13 @@ impl SourcePlaceType {
               + crate::traits::get_git_info::GetClonedGitInfo),
     ) -> String {
         match self {
-            crate::config_mods::source_place_type::SourcePlaceType::Source => format!(
-                "src/{}:{}:{}", //todo "src" - hardcode, for some reason vscode stops following just {}:{}:{} path(without prefix "src")
-                code_occurence.get_file(),
-                code_occurence.get_line(),
-                code_occurence.get_column()
-            ),
+            crate::config_mods::source_place_type::SourcePlaceType::Source => {
+                use crate::traits::error_logs_logic::form_error_path::FormErrorPathDirectory;
+                code_occurence.form_error_path_directory()
+            }
             crate::config_mods::source_place_type::SourcePlaceType::Github => {
-                let backslash = "/";
-                let file = code_occurence.get_file();
-                match file.find(backslash) {
-                    Some(index) => code_occurence
-                        .get_cloned_git_info()
-                        .get_git_source_file_link_lifetime(
-                            &file[index + backslash.len()..],
-                            *code_occurence.get_line(),
-                        ),
-                    None => String::from("cant find backslash symbol in file path of location"),
-                }
+                use crate::traits::error_logs_logic::form_error_path::FormErrorPathGithub;
+                code_occurence.form_error_path_github()
             }
             crate::config_mods::source_place_type::SourcePlaceType::None => String::from(""), //todo maybe incorrect?
         }
@@ -51,7 +37,7 @@ pub struct ParseSourcePlaceTypeError {
     _incorrect_str: String,
 }
 
-impl FromStr for SourcePlaceType {
+impl std::str::FromStr for SourcePlaceType {
     type Err = ParseSourcePlaceTypeError;
     fn from_str(e: &str) -> Result<Self, ParseSourcePlaceTypeError> {
         match e {

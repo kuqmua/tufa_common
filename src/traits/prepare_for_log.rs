@@ -72,7 +72,7 @@ where
 //     fn prepare_for_github_log_without_config(&self) -> String;
 // }
 
-// impl<SelfGeneric> PrepareForLogWithoutConfig for SelfGeneric
+// impl<SelfGeneric> PrepareForGithubLogWithoutConfig for SelfGeneric
 // where
 //     SelfGeneric: crate::traits::fields::GetFile
 //         + crate::traits::fields::GetLine
@@ -83,7 +83,7 @@ where
 //         + crate::traits::get_hostname::GetHostname
 //         + crate::traits::get_process_id::GetProcessId,
 // {
-//     fn prepare_for_log_without_config(&self) -> String {
+//     fn prepare_for_github_log_without_config(&self) -> String {
 //         format!(
 //             "{} {} {} pid: {}",
 //             self.get_code_path_without_config(),
