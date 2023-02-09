@@ -1,5 +1,3 @@
-use crate::traits::get_git_source_file_link::GetGitSourceFileLinkLifetime;
-
 pub trait PrepareForLogWithConfig<
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetSourcePlaceType
@@ -67,32 +65,31 @@ where
     }
 }
 
-// //
-// pub trait PrepareForLogGithubWithoutConfig {
-//     fn prepare_for_github_log_without_config(&self) -> String;
-// }
+pub trait PrepareForGithubLogWithoutConfig {
+    fn prepare_for_github_log_without_config(&self) -> String;
+}
 
-// impl<SelfGeneric> PrepareForGithubLogWithoutConfig for SelfGeneric
-// where
-//     SelfGeneric: crate::traits::fields::GetFile
-//         + crate::traits::fields::GetLine
-//         + crate::traits::fields::GetColumn
-//         //above its for crate::traits::get_code_path_without_config::GetCodePathWithoutConfig
-//         + crate::traits::get_code_path_without_config::GetCodePathWithoutConfig
-//         + crate::traits::get_duration::GetDuration
-//         + crate::traits::get_hostname::GetHostname
-//         + crate::traits::get_process_id::GetProcessId,
-// {
-//     fn prepare_for_github_log_without_config(&self) -> String {
-//         format!(
-//             "{} {} {} pid: {}",
-//             self.get_code_path_without_config(),
-//             chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
-//                 .with_timezone(&chrono::FixedOffset::east_opt(10800).unwrap())
-//                 .format("%Y-%m-%d %H:%M:%S")
-//                 .to_string(),
-//             self.get_hostname(),
-//             self.get_process_id()
-//         )
-//     }
-// }
+impl<SelfGeneric> PrepareForGithubLogWithoutConfig for SelfGeneric
+where
+    SelfGeneric: crate::traits::fields::GetFile
+        + crate::traits::fields::GetLine
+        + crate::traits::fields::GetColumn
+        + crate::traits::get_duration::GetDuration
+        + crate::traits::get_hostname::GetHostname
+        + crate::traits::get_process_id::GetProcessId
+        + crate::traits::get_git_info::GetClonedGitInfo,
+{
+    fn prepare_for_github_log_without_config(&self) -> String {
+        use crate::traits::error_logs_logic::form_error_path::FormErrorPathGithub;
+        format!(
+            "{} {} {} pid: {}",
+            self.form_error_path_github(),
+            chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
+                .with_timezone(&chrono::FixedOffset::east_opt(10800).unwrap())
+                .format("%Y-%m-%d %H:%M:%S")
+                .to_string(),
+            self.get_hostname(),
+            self.get_process_id()
+        )
+    }
+}
