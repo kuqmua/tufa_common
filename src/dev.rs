@@ -1,8 +1,8 @@
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
+use crate::traits::error_logs_logic::error_log::ErrorLogLifetime;
 use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
-// use crate::traits::error_logs_logic::error_log::ErrorLog;
 
 // #[derive(Debug, Serialize, Deserialize, Error)]
 // pub enum ThreeWrapperError {
@@ -545,6 +545,22 @@ impl<'a> std::fmt::Display for EightOriginError<'a> {
     }
 }
 
+impl<'a, ConfigGeneric>
+    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfigLifetime<
+        'a,
+        ConfigGeneric,
+    > for EightOriginError<'a>
+where
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn source_to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
+        use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime;
+        self.source_to_string_without_config_lifetime()
+    }
+}
+
 impl<'a>
     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a>
     for EightOriginError<'a>
@@ -641,5 +657,11 @@ pub fn eight() -> Result<(), Box<EightOriginError<'static>>> {
     };
     println!("33 {}", std::mem::size_of::<EightOriginError>());
     println!("44 {}", std::mem::size_of_val(&f));
+    println!("----------");
+    println!("{}", f);
+    f.error_log_lifetime(once_cell::sync::Lazy::force(
+        &crate::global_variables::runtime::config::CONFIG,
+    ));
+    println!("----------");
     return Err(Box::new(f));
 }
