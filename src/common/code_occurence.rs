@@ -258,6 +258,31 @@ pub struct CodeOccurenceLifetimeWithSerializeDeserialize<'a> {
     hostname: String,
     process_id: u32,
 }
+//only for debug purposes
+impl<'a> CodeOccurenceLifetimeWithSerializeDeserialize<'a> {
+    pub fn new(
+        git_info: crate::common::git::git_info::GitInformation<'a>, //todo - maybe create trait what returns git_info in tufa_common, but implementation create inside tufa_server and others services
+        file: &'a str,
+        line: u32,
+        column: u32,
+    ) -> Self {
+        let hostname_handle = match hostname::get() {
+            Ok(os_string) => format!("{os_string:?}"),
+            Err(_) => String::from("\"hostname::get() failed \""),
+        };
+        Self {
+            file,
+            line,
+            column,
+            git_info,
+            duration: std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .expect("cannot convert time to unix_epoch"),
+            hostname: hostname_handle,
+            process_id: std::process::id(),
+        }
+    }
+}
 
 impl<'a> crate::traits::fields::GetFile for CodeOccurenceLifetimeWithSerializeDeserialize<'a> {
     fn get_file(&self) -> &str {
@@ -321,7 +346,8 @@ impl<'a> std::fmt::Display
     for crate::common::code_occurence::CodeOccurenceLifetimeWithSerializeDeserialize<'a>
 {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.prepare_for_log_without_config())
+        use crate::traits::prepare_for_log::PrepareForGithubLogWithoutConfig;
+        write!(f, "{}", self.prepare_for_github_log_without_config())
     }
 }
 

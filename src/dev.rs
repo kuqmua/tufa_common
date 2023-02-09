@@ -663,5 +663,35 @@ pub fn eight() -> Result<(), Box<EightOriginError<'static>>> {
         &crate::global_variables::runtime::config::CONFIG,
     ));
     println!("----------");
+    // println!("++++++++++");
+    // let o = EightOriginErrorWithSerializeDeserialize::Something {
+    //     error: String::from("error_eight"),
+    //     code_occurence:
+    //         crate::common::code_occurence::CodeOccurenceLifetimeWithSerializeDeserialize::new(
+    //             crate::global_variables::compile_time::git_info::GIT_INFO.clone(),
+    //             file!(),
+    //             line!(),
+    //             column!(),
+    //         ),
+    // };
+    // println!("{}", o);
+    // println!("++++++++++");
     return Err(Box::new(f));
+}
+
+pub fn eightds() -> Result<(), Box<EightOriginErrorWithSerializeDeserialize<'static>>> {
+    println!("++++++++++");
+    let o = EightOriginErrorWithSerializeDeserialize::Something {
+        error: String::from("error_eight"),
+        code_occurence:
+            crate::common::code_occurence::CodeOccurenceLifetimeWithSerializeDeserialize::new(
+                crate::global_variables::compile_time::git_info::GIT_INFO.clone(),
+                file!(),
+                line!(),
+                column!(),
+            ),
+    };
+    println!("{}", o);
+    println!("++++++++++");
+    return Err(Box::new(o));
 }
