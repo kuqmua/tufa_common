@@ -589,33 +589,32 @@ impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for Eig
 }
 
 #[derive(Debug, Error, Serialize, Deserialize)]
-pub enum EightOriginErrorWithSerializeDeserialize<'a> {
+pub enum EightOriginErrorWithDeserialize<'a> {
     Something {
         error: String,
         #[serde(borrow)]
-        code_occurence:
-            crate::common::code_occurence::CodeOccurenceLifetimeWithSerializeDeserialize<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a>,
     },
 }
 
-impl<'a> std::fmt::Display for EightOriginErrorWithSerializeDeserialize<'a> {
+impl<'a> std::fmt::Display for EightOriginErrorWithDeserialize<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithSerializeDeserialize;
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize;
         write!(
             f,
             "{}",
-            self.to_string_without_config_lifetime_with_serialize_deserialize()
+            self.to_string_without_config_lifetime_with_deserialize()
         )
     }
 }
 
 impl<'a>
     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a>
-    for EightOriginErrorWithSerializeDeserialize<'a>
+    for EightOriginErrorWithDeserialize<'a>
 {
     fn source_to_string_without_config_lifetime(&self) -> String {
         match self {
-            EightOriginErrorWithSerializeDeserialize::Something {
+            EightOriginErrorWithDeserialize::Something {
                 error,
                 code_occurence,
             } => format!("{}", error),
@@ -623,14 +622,14 @@ impl<'a>
     }
 }
 
-impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetimeWithSerializeDeserialize<'a>
-    for EightOriginErrorWithSerializeDeserialize<'a>
+impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetimeWithDeserialize<'a>
+    for EightOriginErrorWithDeserialize<'a>
 {
-    fn get_code_occurence_lifetime_with_serialize_deserialize(
+    fn get_code_occurence_lifetime_with_deserialize(
         &self,
-    ) -> &crate::common::code_occurence::CodeOccurenceLifetimeWithSerializeDeserialize<'a> {
+    ) -> &crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a> {
         match self {
-            EightOriginErrorWithSerializeDeserialize::Something {
+            EightOriginErrorWithDeserialize::Something {
                 error,
                 code_occurence,
             } => code_occurence,
@@ -639,13 +638,7 @@ impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetimeWithSerializ
 }
 
 pub fn eight() -> Result<(), Box<EightOriginError<'static>>> {
-    let g = crate::common::code_occurence::CodeOccurenceLifetime::new(
-        &crate::global_variables::compile_time::git_info::GIT_INFO,
-        // once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
-        file!(),
-        line!(),
-        column!(),
-    );
+    let g = crate::code_occurence_tufa_common!();
     println!(
         "11 {}",
         std::mem::size_of::<crate::common::code_occurence::CodeOccurenceLifetime>()
@@ -664,10 +657,10 @@ pub fn eight() -> Result<(), Box<EightOriginError<'static>>> {
     ));
     println!("----------");
     // println!("++++++++++");
-    // let o = EightOriginErrorWithSerializeDeserialize::Something {
+    // let o = EightOriginErrorWithDeserialize::Something {
     //     error: String::from("error_eight"),
     //     code_occurence:
-    //         crate::common::code_occurence::CodeOccurenceLifetimeWithSerializeDeserialize::new(
+    //         crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize::new(
     //             crate::global_variables::compile_time::git_info::GIT_INFO.clone(),
     //             file!(),
     //             line!(),
@@ -679,17 +672,16 @@ pub fn eight() -> Result<(), Box<EightOriginError<'static>>> {
     return Err(Box::new(f));
 }
 
-pub fn eightds() -> Result<(), Box<EightOriginErrorWithSerializeDeserialize<'static>>> {
+pub fn eightds() -> Result<(), Box<EightOriginErrorWithDeserialize<'static>>> {
     println!("++++++++++");
-    let o = EightOriginErrorWithSerializeDeserialize::Something {
+    let o = EightOriginErrorWithDeserialize::Something {
         error: String::from("error_eight"),
-        code_occurence:
-            crate::common::code_occurence::CodeOccurenceLifetimeWithSerializeDeserialize::new(
-                crate::global_variables::compile_time::git_info::GIT_INFO.clone(),
-                file!(),
-                line!(),
-                column!(),
-            ),
+        code_occurence: crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize::new(
+            crate::global_variables::compile_time::git_info::GIT_INFO.clone(),
+            file!(),
+            line!(),
+            column!(),
+        ),
     };
     println!("{}", o);
     println!("++++++++++");

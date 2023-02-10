@@ -34,20 +34,20 @@ where
     }
 }
 //implemented coz you cant deserialize field into &'a GitInformation(not implememnted in serde)
-pub trait ToStringWithoutConfigLifetimeWithSerializeDeserialize<'a> {
-    fn to_string_without_config_lifetime_with_serialize_deserialize(&self) -> String;
+pub trait ToStringWithoutConfigLifetimeWithDeserialize<'a> {
+    fn to_string_without_config_lifetime_with_deserialize(&self) -> String;
 }
 
-impl<'a, SelfGeneric> ToStringWithoutConfigLifetimeWithSerializeDeserialize<'a> for SelfGeneric
+impl<'a, SelfGeneric> ToStringWithoutConfigLifetimeWithDeserialize<'a> for SelfGeneric
 where
     SelfGeneric:
         crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a>
-            + crate::traits::get_code_occurence::GetCodeOccurenceLifetimeWithSerializeDeserialize<'a>,
+            + crate::traits::get_code_occurence::GetCodeOccurenceLifetimeWithDeserialize<'a>,
 {
-    fn to_string_without_config_lifetime_with_serialize_deserialize(&self) -> String {
+    fn to_string_without_config_lifetime_with_deserialize(&self) -> String {
         crate::traits::error_logs_logic::helpers::source_and_code_occurence_formatter(
             self.source_to_string_without_config_lifetime(),
-            self.get_code_occurence_lifetime_with_serialize_deserialize().to_string(),
+            self.get_code_occurence_lifetime_with_deserialize().to_string(),
         )
     }
 }

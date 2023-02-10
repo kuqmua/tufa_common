@@ -248,7 +248,7 @@ where
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct CodeOccurenceLifetimeWithSerializeDeserialize<'a> {
+pub struct CodeOccurenceLifetimeWithDeserialize<'a> {
     file: &'a str,
     line: u32,
     column: u32,
@@ -259,7 +259,7 @@ pub struct CodeOccurenceLifetimeWithSerializeDeserialize<'a> {
     process_id: u32,
 }
 //only for debug purposes
-impl<'a> CodeOccurenceLifetimeWithSerializeDeserialize<'a> {
+impl<'a> CodeOccurenceLifetimeWithDeserialize<'a> {
     pub fn new(
         git_info: crate::common::git::git_info::GitInformation<'a>, //todo - maybe create trait what returns git_info in tufa_common, but implementation create inside tufa_server and others services
         file: &'a str,
@@ -284,66 +284,58 @@ impl<'a> CodeOccurenceLifetimeWithSerializeDeserialize<'a> {
     }
 }
 
-impl<'a> crate::traits::fields::GetFile for CodeOccurenceLifetimeWithSerializeDeserialize<'a> {
+impl<'a> crate::traits::fields::GetFile for CodeOccurenceLifetimeWithDeserialize<'a> {
     fn get_file(&self) -> &str {
         &self.file
     }
 }
 
-impl<'a> crate::traits::fields::GetLine for CodeOccurenceLifetimeWithSerializeDeserialize<'a> {
+impl<'a> crate::traits::fields::GetLine for CodeOccurenceLifetimeWithDeserialize<'a> {
     fn get_line(&self) -> &u32 {
         &self.line
     }
 }
 
-impl<'a> crate::traits::fields::GetColumn for CodeOccurenceLifetimeWithSerializeDeserialize<'a> {
+impl<'a> crate::traits::fields::GetColumn for CodeOccurenceLifetimeWithDeserialize<'a> {
     fn get_column(&self) -> &u32 {
         &self.column
     }
 }
 
-impl<'a> crate::traits::get_git_info::GetGitInfo<'a>
-    for CodeOccurenceLifetimeWithSerializeDeserialize<'a>
-{
+impl<'a> crate::traits::get_git_info::GetGitInfo<'a> for CodeOccurenceLifetimeWithDeserialize<'a> {
     fn get_git_info(&self) -> &crate::common::git::git_info::GitInformation {
         &self.git_info
     }
 }
 
 impl<'a> crate::traits::get_git_info::GetClonedGitInfo
-    for CodeOccurenceLifetimeWithSerializeDeserialize<'a>
+    for CodeOccurenceLifetimeWithDeserialize<'a>
 {
     fn get_cloned_git_info(&self) -> crate::common::git::git_info::GitInformation {
         self.git_info.clone() //todo maybe do something later
     }
 }
 
-impl<'a> crate::traits::get_duration::GetDuration
-    for CodeOccurenceLifetimeWithSerializeDeserialize<'a>
-{
+impl<'a> crate::traits::get_duration::GetDuration for CodeOccurenceLifetimeWithDeserialize<'a> {
     fn get_duration(&self) -> std::time::Duration {
         self.duration
     }
 }
 
-impl<'a> crate::traits::get_hostname::GetHostname
-    for CodeOccurenceLifetimeWithSerializeDeserialize<'a>
-{
+impl<'a> crate::traits::get_hostname::GetHostname for CodeOccurenceLifetimeWithDeserialize<'a> {
     fn get_hostname(&self) -> &String {
         &self.hostname
     }
 }
 
-impl<'a> crate::traits::get_process_id::GetProcessId
-    for CodeOccurenceLifetimeWithSerializeDeserialize<'a>
-{
+impl<'a> crate::traits::get_process_id::GetProcessId for CodeOccurenceLifetimeWithDeserialize<'a> {
     fn get_process_id(&self) -> &u32 {
         &self.process_id
     }
 }
 
 impl<'a> std::fmt::Display
-    for crate::common::code_occurence::CodeOccurenceLifetimeWithSerializeDeserialize<'a>
+    for crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a>
 {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         use crate::traits::prepare_for_log::PrepareForGithubLogWithoutConfig;
@@ -355,7 +347,7 @@ impl<'a, ConfigGeneric>
     crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetime<
         'a,
         ConfigGeneric,
-    > for crate::common::code_occurence::CodeOccurenceLifetimeWithSerializeDeserialize<'a>
+    > for crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a>
 where
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetSourcePlaceType
