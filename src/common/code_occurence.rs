@@ -4,8 +4,6 @@ use crate::traits::get_code_path_without_config::GetCodePathWithoutConfig;
 use crate::traits::get_duration::GetDuration;
 use crate::traits::get_hostname::GetHostname;
 use crate::traits::get_process_id::GetProcessId;
-use crate::traits::prepare_for_log::PrepareForLogWithConfig;
-use crate::traits::prepare_for_log::PrepareForLogWithoutConfig;
 use serde::{Deserialize, Serialize};
 use std::os::unix::process;
 
@@ -43,7 +41,7 @@ use std::os::unix::process;
 //             process_id: std::process::id(),
 //         }
 //     }
-//     pub fn prepare_for_log(
+//     pub fn code_occurence_prepare_for_log(
 //         &self,
 //         path: String,
 //         time: String,
@@ -59,7 +57,7 @@ use std::os::unix::process;
 //         write!(
 //             f,
 //             "{}",
-//             self.prepare_for_log(
+//             self.code_occurence_prepare_for_log(
 //                 self.get_project_code_path(),
 //                 chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
 //                     .with_timezone(&chrono::FixedOffset::east_opt(10800).unwrap())
@@ -85,7 +83,7 @@ use std::os::unix::process;
 //     fn to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
 //         format!(
 //             "{} {}",
-//             self.prepare_for_log(
+//             self.code_occurence_prepare_for_log(
 //                 self.get_code_path(config.get_source_place_type()),
 //                 chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
 //                     .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
@@ -229,7 +227,12 @@ impl<'a> crate::traits::get_process_id::GetProcessId for CodeOccurenceLifetime<'
 
 impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurenceLifetime<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.prepare_for_log_without_config())
+        use crate::traits::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithoutConfig;
+        write!(
+            f,
+            "{}",
+            self.code_occurence_prepare_for_log_without_config()
+        )
     }
 }
 
@@ -244,7 +247,8 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
-        self.prepare_for_log_with_config(config)
+        use crate::traits::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithConfig;
+        self.code_occurence_prepare_for_log_with_config(config)
     }
 }
 
@@ -339,8 +343,12 @@ impl<'a> std::fmt::Display
     for crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a>
 {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::prepare_for_log::PrepareForGithubLogWithoutConfig;
-        write!(f, "{}", self.prepare_for_github_log_without_config())
+        use crate::traits::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForGithubLogWithoutConfig;
+        write!(
+            f,
+            "{}",
+            self.code_occurence_prepare_for_github_log_without_config()
+        )
     }
 }
 
@@ -355,6 +363,7 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
-        self.prepare_for_log_with_config(config)
+        use crate::traits::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithConfig;
+        self.code_occurence_prepare_for_log_with_config(config)
     }
 }

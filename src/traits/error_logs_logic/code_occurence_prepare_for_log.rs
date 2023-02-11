@@ -1,13 +1,13 @@
-pub trait PrepareForLogWithConfig<
+pub trait CodeOccurencePrepareForLogWithConfig<
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetSourcePlaceType
         + crate::traits::get_server_address::GetServerAddress,
 >
 {
-    fn prepare_for_log_with_config(&self, config: &ConfigGeneric) -> String;
+    fn code_occurence_prepare_for_log_with_config(&self, config: &ConfigGeneric) -> String;
 }
 
-impl<SelfGeneric, ConfigGeneric> PrepareForLogWithConfig<ConfigGeneric> for SelfGeneric
+impl<SelfGeneric, ConfigGeneric> CodeOccurencePrepareForLogWithConfig<ConfigGeneric> for SelfGeneric
 where
     SelfGeneric: crate::traits::fields::GetFile
         + crate::traits::fields::GetLine
@@ -21,7 +21,7 @@ where
         + crate::traits::fields::GetSourcePlaceType
         + crate::traits::get_server_address::GetServerAddress,
 {
-    fn prepare_for_log_with_config(&self, config: &ConfigGeneric) -> String {
+    fn code_occurence_prepare_for_log_with_config(&self, config: &ConfigGeneric) -> String {
         format!(
             "{} {} {} pid: {} {}",
             config.get_source_place_type().get_code_path(self),
@@ -36,11 +36,11 @@ where
     }
 }
 
-pub trait PrepareForLogWithoutConfig {
-    fn prepare_for_log_without_config(&self) -> String;
+pub trait CodeOccurencePrepareForLogWithoutConfig {
+    fn code_occurence_prepare_for_log_without_config(&self) -> String;
 }
 
-impl<SelfGeneric> PrepareForLogWithoutConfig for SelfGeneric
+impl<SelfGeneric> CodeOccurencePrepareForLogWithoutConfig for SelfGeneric
 where
     SelfGeneric: crate::traits::fields::GetFile
         + crate::traits::fields::GetLine
@@ -51,7 +51,7 @@ where
         + crate::traits::get_hostname::GetHostname
         + crate::traits::get_process_id::GetProcessId,
 {
-    fn prepare_for_log_without_config(&self) -> String {
+    fn code_occurence_prepare_for_log_without_config(&self) -> String {
         format!(
             "{} {} {} pid: {}",
             self.get_code_path_without_config(),
@@ -65,11 +65,11 @@ where
     }
 }
 
-pub trait PrepareForGithubLogWithoutConfig {
-    fn prepare_for_github_log_without_config(&self) -> String;
+pub trait CodeOccurencePrepareForGithubLogWithoutConfig {
+    fn code_occurence_prepare_for_github_log_without_config(&self) -> String;
 }
 
-impl<SelfGeneric> PrepareForGithubLogWithoutConfig for SelfGeneric
+impl<SelfGeneric> CodeOccurencePrepareForGithubLogWithoutConfig for SelfGeneric
 where
     SelfGeneric: crate::traits::fields::GetFile
         + crate::traits::fields::GetLine
@@ -79,7 +79,7 @@ where
         + crate::traits::get_process_id::GetProcessId
         + crate::traits::get_git_info::GetClonedGitInfo,
 {
-    fn prepare_for_github_log_without_config(&self) -> String {
+    fn code_occurence_prepare_for_github_log_without_config(&self) -> String {
         use crate::traits::error_logs_logic::form_error_path::FormErrorPathGithub;
         format!(
             "{} {} {} pid: {}",
