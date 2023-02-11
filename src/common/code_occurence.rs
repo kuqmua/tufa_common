@@ -147,23 +147,21 @@ pub struct CodeOccurenceLifetime<'a> {
     file: &'a str,
     line: u32,
     column: u32,
-    git_info: &'a crate::common::git::git_info::GitInformation<'a>, //todo - make deserialize version as different struct( without using .clone() every time for gir_info
+    git_info: &'a crate::common::git::git_info::GitInformation<'a>,
     duration: std::time::Duration,
     hostname: String,
     process_id: u32,
 }
 
-impl<'a> CodeOccurenceLifetime<'a> {
-    pub fn new(
-        git_info: &'a crate::common::git::git_info::GitInformation<'a>, //todo - maybe create trait what returns git_info in tufa_common, but implementation create inside tufa_server and others services
+impl<'a> crate::traits::error_logs_logic::code_occurence_new::CodeOccurenceNew<'a>
+    for CodeOccurenceLifetime<'a>
+{
+    fn new(
+        git_info: &'a crate::common::git::git_info::GitInformation<'a>,
         file: &'a str,
         line: u32,
         column: u32,
     ) -> Self {
-        let hostname_handle = match hostname::get() {
-            Ok(os_string) => format!("{os_string:?}"),
-            Err(_) => String::from("\"hostname::get() failed \""),
-        };
         Self {
             file,
             line,
@@ -172,7 +170,10 @@ impl<'a> CodeOccurenceLifetime<'a> {
             duration: std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("cannot convert time to unix_epoch"),
-            hostname: hostname_handle,
+            hostname: match hostname::get() {
+                Ok(os_string) => format!("{os_string:?}"),
+                Err(_) => String::from("\"hostname::get() failed \""),
+            },
             process_id: std::process::id(),
         }
     }
@@ -258,10 +259,10 @@ pub struct CodeOccurenceLifetimeWithDeserialize<'a> {
     hostname: String,
     process_id: u32,
 }
-//only for debug purposes
+//todo its only for debug purposes, remove later
 impl<'a> CodeOccurenceLifetimeWithDeserialize<'a> {
     pub fn new(
-        git_info: crate::common::git::git_info::GitInformation<'a>, //todo - maybe create trait what returns git_info in tufa_common, but implementation create inside tufa_server and others services
+        git_info: crate::common::git::git_info::GitInformation<'a>,
         file: &'a str,
         line: u32,
         column: u32,
