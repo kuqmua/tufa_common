@@ -646,8 +646,7 @@ pub fn eight<'a>() -> Result<(), Box<EightOriginError<'a>>> {
 }
 
 pub fn eightds<'a>() -> Result<(), Box<EightOriginErrorWithDeserialize<'a>>> {
-    println!("++++++++++");
-    let o = EightOriginErrorWithDeserialize::Something {
+    return Err(Box::new(EightOriginErrorWithDeserialize::Something {
         error: String::from("error_eight"),
         code_occurence: crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize::new(
             crate::global_variables::compile_time::git_info::GIT_INFO.clone(),
@@ -655,8 +654,5 @@ pub fn eightds<'a>() -> Result<(), Box<EightOriginErrorWithDeserialize<'a>>> {
             line!(),
             column!(),
         ),
-    };
-    println!("{}", o);
-    println!("++++++++++");
-    return Err(Box::new(o));
+    }));
 }
