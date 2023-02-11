@@ -2,7 +2,6 @@ use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
 use crate::traits::error_logs_logic::error_log::ErrorLogLifetime;
-use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
 
 // #[derive(Debug, Serialize, Deserialize, Error)]
 // pub enum ThreeWrapperError {
@@ -421,44 +420,54 @@ use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutCo
 //     }
 // }
 
-// #[derive(Debug, Serialize, Deserialize, Error)]
-// pub enum SixWrapperErrorEnum {
-//     SevenWrapper(SevenOriginError),
-//     EightWrapper(EightOriginError),
-// }
+#[derive(Debug, Error, Serialize)]
+pub enum SixWrapperErrorEnum<'a> {
+    #[serde(borrow)]
+    SevenWrapper(SevenOriginError<'a>),
+    #[serde(borrow)]
+    EightWrapper(EightOriginError<'a>),
+}
 
-// impl std::fmt::Display for SixWrapperErrorEnum {
-//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-//         write!(f, "{}", self.to_string_without_config())
-//     }
-// }
+impl<'a> std::fmt::Display for SixWrapperErrorEnum<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
+        write!(f, "{}", self.to_string_without_config_lifetime())
+    }
+}
 
-// impl<ConfigGeneric> crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfig<ConfigGeneric> for SixWrapperErrorEnum
-// where
-//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-//         + crate::traits::fields::GetTimezone
-//         + crate::traits::get_server_address::GetServerAddress,
-// {
-//     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
-//         use crate::traits::error_logs_logic::origin_to_string_with_config::OriginToStringWithConfig;
-//         match self {
-//             SixWrapperErrorEnum::SevenWrapper(i) => i.origin_to_string_with_config(config),
-//             SixWrapperErrorEnum::EightWrapper(i) => i.origin_to_string_with_config(config),
-//         }
-//     }
-// }
+impl<'a, ConfigGeneric>
+    crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetime<
+        'a,
+        ConfigGeneric,
+    > for SixWrapperErrorEnum<'a>
+where
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
+        use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetime;
+        match self {
+            SixWrapperErrorEnum::SevenWrapper(i) => i.to_string_with_config_lifetime(config),
+            SixWrapperErrorEnum::EightWrapper(i) => i.to_string_with_config_lifetime(config),
+        }
+    }
+}
 
-// impl crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig for SixWrapperErrorEnum {
-//     fn to_string_without_config(&self) -> String {
-//         match self {
-//             SixWrapperErrorEnum::SevenWrapper(i) => i.to_string_without_config(),
-//             SixWrapperErrorEnum::EightWrapper(i) => i.to_string_without_config(),
-//         }
-//     }
-// }
+impl<'a>
+    crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime<'a>
+    for SixWrapperErrorEnum<'a>
+{
+    fn to_string_without_config_lifetime(&self) -> String {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
+        match self {
+            SixWrapperErrorEnum::SevenWrapper(i) => i.to_string_without_config_lifetime(),
+            SixWrapperErrorEnum::EightWrapper(i) => i.to_string_without_config_lifetime(),
+        }
+    }
+}
 
-// pub fn six() -> Result<(), Box<SixWrapperError>> {
+// pub fn six<'a>() -> Result<(), Box<SixWrapperError<'a>>> {
 //     let thread_join_handle = std::thread::spawn(move || eight());
 //     let res = thread_join_handle.join().unwrap();
 //     match (seven(), res) {
@@ -486,49 +495,132 @@ use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutCo
 //     }
 // }
 
-// #[derive(Debug, Serialize, Deserialize, Error)]
-// pub enum SevenOriginError {
-//     Something {
-//         error: String,
-//         code_occurence: crate::common::code_occurence::CodeOccurence,
-//     },
-// }
-// //cannot make it with generics
-// impl std::fmt::Display for SevenOriginError {
-//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-//         write!(f, "{}", self.to_string_without_config())
-//     }
-// }
+#[derive(Debug, Error, Serialize)]
+pub enum SevenOriginError<'a> {
+    Something {
+        error: String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceLifetime<'a>,
+    },
+}
 
-// impl crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig for SevenOriginError {
-//     fn source_to_string_without_config(&self) -> String {
-//         match self {
-//             SevenOriginError::Something { error, code_occurence } => format!("{}", error),
-//         }
-//     }
-// }
+impl<'a> std::fmt::Display for SevenOriginError<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
+        write!(f, "{}", self.to_string_without_config_lifetime())
+    }
+}
 
-// impl crate::traits::get_code_occurence::GetCodeOccurence for SevenOriginError {
-//     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
-//         match self {
-//             SevenOriginError::Something { error, code_occurence } => code_occurence,
-//         }
-//     }
-// }
+impl<'a, ConfigGeneric>
+    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfigLifetime<
+        'a,
+        ConfigGeneric,
+    > for SevenOriginError<'a>
+where
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn source_to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
+        use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime;
+        self.source_to_string_without_config_lifetime()
+    }
+}
 
-// pub fn seven() -> Result<(), Box<SevenOriginError>> {
-//     return Err(
-//         Box::new(
-//             SevenOriginError::Something { error: String::from("error_seven"), code_occurence: crate::common::code_occurence::CodeOccurence::new(
-//             once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
-//                 String::from(file!()),
-//                 line!(),
-//                 column!(),
-//             )}
-//         )
-//     );
-// }
+impl<'a>
+    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a>
+    for SevenOriginError<'a>
+{
+    fn source_to_string_without_config_lifetime(&self) -> String {
+        match self {
+            SevenOriginError::Something {
+                error,
+                code_occurence,
+            } => format!("{}", error),
+        }
+    }
+}
+
+impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for SevenOriginError<'a> {
+    fn get_code_occurence_lifetime(
+        &self,
+    ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
+        match self {
+            SevenOriginError::Something {
+                error,
+                code_occurence,
+            } => code_occurence,
+        }
+    }
+}
+
+#[derive(Debug, Error, Serialize, Deserialize)]
+pub enum SevenOriginErrorWithDeserialize<'a> {
+    Something {
+        error: String,
+        #[serde(borrow)]
+        code_occurence: crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a>,
+    },
+}
+
+impl<'a> std::fmt::Display for SevenOriginErrorWithDeserialize<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize;
+        write!(
+            f,
+            "{}",
+            self.to_string_without_config_lifetime_with_deserialize()
+        )
+    }
+}
+
+impl<'a>
+    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a>
+    for SevenOriginErrorWithDeserialize<'a>
+{
+    fn source_to_string_without_config_lifetime(&self) -> String {
+        match self {
+            SevenOriginErrorWithDeserialize::Something {
+                error,
+                code_occurence,
+            } => format!("{}", error),
+        }
+    }
+}
+
+impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetimeWithDeserialize<'a>
+    for SevenOriginErrorWithDeserialize<'a>
+{
+    fn get_code_occurence_lifetime_with_deserialize(
+        &self,
+    ) -> &crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a> {
+        match self {
+            SevenOriginErrorWithDeserialize::Something {
+                error,
+                code_occurence,
+            } => code_occurence,
+        }
+    }
+}
+
+pub fn seven<'a>() -> Result<(), Box<SevenOriginError<'a>>> {
+    let f = SevenOriginError::Something {
+        error: String::from("error_eight"),
+        code_occurence: crate::code_occurence_tufa_common!(),
+    };
+    return Err(Box::new(f));
+}
+
+pub fn sevends<'a>() -> Result<(), Box<SevenOriginErrorWithDeserialize<'a>>> {
+    return Err(Box::new(SevenOriginErrorWithDeserialize::Something {
+        error: String::from("error_eight"),
+        code_occurence: crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize::new(
+            crate::global_variables::compile_time::git_info::GIT_INFO.clone(),
+            file!(),
+            line!(),
+            column!(),
+        ),
+    }));
+}
 
 #[derive(Debug, Error, Serialize)]
 pub enum EightOriginError<'a> {
