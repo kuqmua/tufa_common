@@ -85,6 +85,7 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
+        use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetime;
         match self {
             ThreeWrapperErrorEnum::FourWrapper(i) => i.to_string_with_config_lifetime(config),
         }
@@ -96,6 +97,7 @@ impl<'a>
     for ThreeWrapperErrorEnum<'a>
 {
     fn to_string_without_config_lifetime(&self) -> String {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
         match self {
             ThreeWrapperErrorEnum::FourWrapper(i) => i.to_string_without_config_lifetime(),
         }
@@ -196,6 +198,7 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
+        use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetime;
         match self {
             FourWrapperErrorEnum::FiveWrapper(i) => i.to_string_with_config_lifetime(config),
             FourWrapperErrorEnum::SixWrapper(i) => i.to_string_with_config_lifetime(config),
@@ -208,6 +211,7 @@ impl<'a>
     for FourWrapperErrorEnum<'a>
 {
     fn to_string_without_config_lifetime(&self) -> String {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
         match self {
             FourWrapperErrorEnum::FiveWrapper(i) => i.to_string_without_config_lifetime(),
             FourWrapperErrorEnum::SixWrapper(i) => i.to_string_without_config_lifetime(),
@@ -341,6 +345,7 @@ impl<'a>
     for FiveWrapperErrorEnum<'a>
 {
     fn to_string_without_config_lifetime(&self) -> String {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
         match self {
             FiveWrapperErrorEnum::FiveOneOrigin(i) => i.to_string_without_config_lifetime(),
         }
