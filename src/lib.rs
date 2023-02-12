@@ -16,3 +16,4 @@ pub mod common;
 pub mod server;
 
 pub mod dev;
+pub mod dev_with_deserialize;
