@@ -269,55 +269,57 @@ use crate::traits::error_logs_logic::error_log::ErrorLogLifetime;
 //     }
 // }
 
-// #[derive(Debug, Serialize, Deserialize, Error)]
-// pub enum FiveWrapperErrorEnum {
-//     FiveOneOrigin(FiveOneOriginError),
-// }
+#[derive(Debug, Error, Serialize)]
+pub enum FiveWrapperErrorEnum<'a> {
+    FiveOneOrigin(FiveOneOriginError<'a>),
+}
 
-// impl std::fmt::Display for FiveWrapperErrorEnum {
-//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-//         write!(f, "{}", self.to_string_without_config())
-//     }
-// }
+impl<'a> std::fmt::Display for FiveWrapperErrorEnum<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
+        write!(f, "{}", self.to_string_without_config_lifetime())
+    }
+}
 
-// impl<ConfigGeneric> crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfig<ConfigGeneric> for FiveWrapperErrorEnum
-// where
-//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-//         + crate::traits::fields::GetTimezone
-//         + crate::traits::get_server_address::GetServerAddress,
-// {
-//     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
-//         use crate::traits::error_logs_logic::origin_to_string_with_config::OriginToStringWithConfig;
-//         match self {
-//             FiveWrapperErrorEnum::FiveOneOrigin(i) => i.origin_to_string_with_config(config),
-//         }
-//     }
-// }
+impl<'a, ConfigGeneric>
+    crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetime<
+        'a,
+        ConfigGeneric,
+    > for FiveWrapperErrorEnum<'a>
+where
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
+        use crate::traits::error_logs_logic::origin_to_string_with_config::OriginToStringWithConfigLifetime;
+        match self {
+            FiveWrapperErrorEnum::FiveOneOrigin(i) => {
+                i.origin_to_string_with_config_lifetime(config)
+            }
+        }
+    }
+}
 
-// impl crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig for FiveWrapperErrorEnum {
-//     fn to_string_without_config(&self) -> String {
-//         match self {
-//             FiveWrapperErrorEnum::FiveOneOrigin(i) => i.to_string_without_config(),
-//         }
-//     }
-// }
+impl<'a>
+    crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime<'a>
+    for FiveWrapperErrorEnum<'a>
+{
+    fn to_string_without_config_lifetime(&self) -> String {
+        match self {
+            FiveWrapperErrorEnum::FiveOneOrigin(i) => i.to_string_without_config_lifetime(),
+        }
+    }
+}
 
-// pub fn five() -> Result<(), Box<FiveWrapperError>> {
+// pub fn five<'a>() -> Result<(), Box<FiveWrapperError<'a>>> {
 //     if let Err(e) = five_one() {
 //         let f = FiveWrapperError::Something {
-//             sources: std::collections::HashMap::from([
-//                 (
-//                     String::from("five_one_hashmap_key"),
-//                     FiveWrapperErrorEnum::FiveOneOrigin(*e),
-//                 )
-//             ]),
-//             code_occurence: crate::common::code_occurence::CodeOccurence::new(
-//                 once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
-//                     String::from(file!()),
-//                     line!(),
-//                     column!(),
-//                 )
+//             sources: std::collections::HashMap::from([(
+//                 String::from("five_one_hashmap_key"),
+//                 FiveWrapperErrorEnum::FiveOneOrigin(*e),
+//             )]),
+//             code_occurence: crate::code_occurence_tufa_common!(),
 //         };
 //         // println!("++++++++++");
 //         // println!("{}", f);
