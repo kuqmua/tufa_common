@@ -23,30 +23,6 @@ impl<'a> std::fmt::Display for ThreeWrapperErrorWithDeserialize<'a> {
     }
 }
 
-impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfigLifetimeWithDeserialize<
-        'a,
-        ConfigGeneric,
-    > for ThreeWrapperErrorWithDeserialize<'a>
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn source_to_string_with_config_lifetime_with_deserialize(
-        &self,
-        config: &ConfigGeneric,
-    ) -> String {
-        use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetimeWithDeserialize;
-        match self {
-            ThreeWrapperErrorWithDeserialize::Something {
-                inner_error,
-                code_occurence: _code_occurence,
-            } => inner_error.to_string_with_config_lifetime_with_deserialize(config),
-        }
-    }
-}
-
 impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetimeWithDeserialize<'a> for ThreeWrapperErrorWithDeserialize<'a> {
     fn source_to_string_without_config_lifetime_with_deserialize(&self) -> String {
         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize;
@@ -84,26 +60,6 @@ impl<'a> std::fmt::Display for ThreeWrapperErrorWithDeserializeEnumWithDeseriali
             "{}",
             self.to_string_without_config_lifetime_with_deserialize()
         )
-    }
-}
-
-impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetimeWithDeserialize<
-        'a,
-        ConfigGeneric,
-    > for ThreeWrapperErrorWithDeserializeEnumWithDeserialize<'a>
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn to_string_with_config_lifetime_with_deserialize(&self, config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetimeWithDeserialize;
-        match self {
-            ThreeWrapperErrorWithDeserializeEnumWithDeserialize::FourWrapper(i) => {
-                i.to_string_with_config_lifetime_with_deserialize(config)
-            }
-        }
     }
 }
 
@@ -155,30 +111,6 @@ impl<'a> std::fmt::Display for FourWrapperErrorWithDeserialize<'a> {
     }
 }
 
-impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfigLifetimeWithDeserialize<
-        'a,
-        ConfigGeneric,
-    > for FourWrapperErrorWithDeserialize<'a>
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn source_to_string_with_config_lifetime_with_deserialize(
-        &self,
-        config: &ConfigGeneric,
-    ) -> String {
-        use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfigLifetimeWithDeserialize;
-        match self {
-            FourWrapperErrorWithDeserialize::Something {
-                inner_errors,
-                code_occurence: _code_occurence,
-            } => inner_errors.few_to_string_with_config_lifetime_with_deserialize(config),
-        }
-    }
-}
-
 impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetimeWithDeserialize<'a> for FourWrapperErrorWithDeserialize<'a> {
     fn source_to_string_without_config_lifetime_with_deserialize(&self) -> String {
         use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigLifetimeWithDeserialize;
@@ -217,29 +149,6 @@ impl<'a> std::fmt::Display for FourWrapperErrorWithDeserializeEnumWithDeserializ
             "{}",
             self.to_string_without_config_lifetime_with_deserialize()
         )
-    }
-}
-
-impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetimeWithDeserialize<
-        'a,
-        ConfigGeneric,
-    > for FourWrapperErrorWithDeserializeEnumWithDeserialize<'a>
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn to_string_with_config_lifetime_with_deserialize(&self, config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetimeWithDeserialize;
-        match self {
-            FourWrapperErrorWithDeserializeEnumWithDeserialize::FiveWrapper(i) => {
-                i.to_string_with_config_lifetime_with_deserialize(config)
-            }
-            FourWrapperErrorWithDeserializeEnumWithDeserialize::SixWrapper(i) => {
-                i.to_string_with_config_lifetime_with_deserialize(config)
-            }
-        }
     }
 }
 
@@ -313,30 +222,6 @@ impl<'a> std::fmt::Display for FiveWrapperErrorWithDeserialize<'a> {
     }
 }
 
-impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfigLifetimeWithDeserialize<
-        'a,
-        ConfigGeneric,
-    > for FiveWrapperErrorWithDeserialize<'a>
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn source_to_string_with_config_lifetime_with_deserialize(
-        &self,
-        config: &ConfigGeneric,
-    ) -> String {
-        use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfigLifetimeWithDeserialize;
-        match self {
-            FiveWrapperErrorWithDeserialize::Something {
-                inner_errors,
-                code_occurence: _code_occurence,
-            } => inner_errors.few_to_string_with_config_lifetime_with_deserialize(config),
-        }
-    }
-}
-
 impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetimeWithDeserialize<'a> for FiveWrapperErrorWithDeserialize<'a> {
     fn source_to_string_without_config_lifetime_with_deserialize(&self) -> String {
         use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigLifetimeWithDeserialize;
@@ -374,26 +259,6 @@ impl<'a> std::fmt::Display for FiveWrapperErrorWithDeserializeEnumWithDeserializ
             "{}",
             self.to_string_without_config_lifetime_with_deserialize()
         )
-    }
-}
-
-impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetimeWithDeserialize<
-        'a,
-        ConfigGeneric,
-    > for FiveWrapperErrorWithDeserializeEnumWithDeserialize<'a>
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn to_string_with_config_lifetime_with_deserialize(&self, config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::origin_to_string_with_config::OriginToStringWithConfigLifetimeWithDeserialize;
-        match self {
-            FiveWrapperErrorWithDeserializeEnumWithDeserialize::FiveOneOrigin(i) => {
-                i.origin_to_string_with_config_lifetime_with_deserialize(config)
-            }
-        }
     }
 }
 
@@ -447,25 +312,6 @@ impl<'a> std::fmt::Display for FiveOneOriginErrorWithDeserialize<'a> {
             "{}",
             self.to_string_without_config_lifetime_with_deserialize()
         )
-    }
-}
-
-impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfigLifetimeWithDeserialize<
-        'a,
-        ConfigGeneric,
-    > for FiveOneOriginErrorWithDeserialize<'a>
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn source_to_string_with_config_lifetime_with_deserialize(
-        &self,
-        _config: &ConfigGeneric,
-    ) -> String {
-        use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetimeWithDeserialize;
-        self.source_to_string_without_config_lifetime_with_deserialize()
     }
 }
 
@@ -525,30 +371,6 @@ impl<'a> std::fmt::Display for SixWrapperErrorWithDeserialize<'a> {
     }
 }
 
-impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfigLifetimeWithDeserialize<
-        'a,
-        ConfigGeneric,
-    > for SixWrapperErrorWithDeserialize<'a>
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn source_to_string_with_config_lifetime_with_deserialize(
-        &self,
-        config: &ConfigGeneric,
-    ) -> String {
-        use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfigLifetimeWithDeserialize;
-        match self {
-            SixWrapperErrorWithDeserialize::Something {
-                inner_errors,
-                code_occurence: _code_occurence,
-            } => inner_errors.few_to_string_with_config_lifetime_with_deserialize(config),
-        }
-    }
-}
-
 impl<'a>
     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetimeWithDeserialize<
         'a,
@@ -596,29 +418,6 @@ impl<'a> std::fmt::Display for SixWrapperErrorWithDeserializeEnumWithDeserialize
             "{}",
             self.to_string_without_config_lifetime_with_deserialize()
         )
-    }
-}
-
-impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetimeWithDeserialize<
-        'a,
-        ConfigGeneric,
-    > for SixWrapperErrorWithDeserializeEnumWithDeserialize<'a>
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn to_string_with_config_lifetime_with_deserialize(&self, config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetimeWithDeserialize;
-        match self {
-            SixWrapperErrorWithDeserializeEnumWithDeserialize::SevenWrapper(i) => {
-                i.to_string_with_config_lifetime_with_deserialize(config)
-            }
-            SixWrapperErrorWithDeserializeEnumWithDeserialize::EightWrapper(i) => {
-                i.to_string_with_config_lifetime_with_deserialize(config)
-            }
-        }
     }
 }
 
@@ -684,25 +483,6 @@ impl<'a> std::fmt::Display for SevenOriginErrorWithDeserialize<'a> {
     }
 }
 
-impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfigLifetimeWithDeserialize<
-        'a,
-        ConfigGeneric,
-    > for SevenOriginErrorWithDeserialize<'a>
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn source_to_string_with_config_lifetime_with_deserialize(
-        &self,
-        _config: &ConfigGeneric,
-    ) -> String {
-        use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetimeWithDeserialize;
-        self.source_to_string_without_config_lifetime_with_deserialize()
-    }
-}
-
 impl<'a>
     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetimeWithDeserialize<'a>
     for SevenOriginErrorWithDeserialize<'a>
@@ -755,25 +535,6 @@ impl<'a> std::fmt::Display for EightOriginErrorWithDeserialize<'a> {
             "{}",
             self.to_string_without_config_lifetime_with_deserialize()
         )
-    }
-}
-
-impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfigLifetimeWithDeserialize<
-        'a,
-        ConfigGeneric,
-    > for EightOriginErrorWithDeserialize<'a>
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn source_to_string_with_config_lifetime_with_deserialize(
-        &self,
-        _config: &ConfigGeneric,
-    ) -> String {
-        use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetimeWithDeserialize;
-        self.source_to_string_without_config_lifetime_with_deserialize()
     }
 }
 

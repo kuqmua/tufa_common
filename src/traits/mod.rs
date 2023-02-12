@@ -1,4 +1,3 @@
-pub mod code_path;
 pub mod console;
 pub mod error_logs_logic;
 pub mod fields;

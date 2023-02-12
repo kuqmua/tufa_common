@@ -20,27 +20,3 @@ where
         )
     }
 }
-
-///////////////////////////////////////////
-pub trait ToStringWithConfigLifetimeWithDeserialize<'a, ConfigGeneric> {
-    fn to_string_with_config_lifetime_with_deserialize(&self, config: &ConfigGeneric) -> String;
-}
-
-impl<'a, SelfGeneric, ConfigGeneric> ToStringWithConfigLifetimeWithDeserialize<'a, ConfigGeneric> for SelfGeneric
-where
-    SelfGeneric:
-        crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfigLifetimeWithDeserialize<
-                'a,
-                ConfigGeneric,
-            > + crate::traits::get_code_occurence::GetCodeOccurenceLifetimeWithDeserialize<'a>,
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn to_string_with_config_lifetime_with_deserialize(&self, config: &ConfigGeneric) -> String {
-        crate::traits::error_logs_logic::helpers::source_and_code_occurence_formatter(
-            self.source_to_string_with_config_lifetime_with_deserialize(config),
-            self.get_code_occurence_lifetime_with_deserialize().to_string_with_config_lifetime_with_deserialize(config),
-        )
-    }
-}
