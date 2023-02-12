@@ -3,51 +3,64 @@ use thiserror::Error;
 
 use crate::traits::error_logs_logic::error_log::ErrorLogLifetime;
 
-// #[derive(Debug, Serialize, Deserialize, Error)]
-// pub enum ThreeWrapperError {
-//     Something {
-//         source: ThreeWrapperErrorEnum,
-//         code_occurence: crate::common::code_occurence::CodeOccurence,
-//     }
-// }
-// //cannot make it with generics
-// impl std::fmt::Display for ThreeWrapperError {
-//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-//         write!(f, "{}", self.to_string_without_config())
-//     }
-// }
+#[derive(Debug, Error, Serialize)]
+pub enum ThreeWrapperError<'a> {
+    Something {
+        //todo how to implement from for it?
+        inner_error: ThreeWrapperErrorEnum<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurenceLifetime<'a>,
+    },
+}
 
-// impl<ConfigGeneric> crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<ConfigGeneric> for ThreeWrapperError
-// where
-//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-//         + crate::traits::fields::GetTimezone
-//         + crate::traits::get_server_address::GetServerAddress,
-// {
-//     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
-//         use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfig;
-//         match self {
-//             ThreeWrapperError::Something { source, code_occurence } => source.to_string_with_config(config),
-//         }
-//     }
-// }
+impl<'a> std::fmt::Display for ThreeWrapperError<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
+        write!(f, "{}", self.to_string_without_config_lifetime())
+    }
+}
 
-// impl crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig for ThreeWrapperError {
-//     fn source_to_string_without_config(&self) -> String {
-//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-//         match self {
-//             ThreeWrapperError::Something { source, code_occurence } => source.to_string_without_config(),
-//         }
-//     }
-// }
+impl<'a, ConfigGeneric>
+    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfigLifetime<
+        'a,
+        ConfigGeneric,
+    > for ThreeWrapperError<'a>
+where
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn source_to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
+        use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetime;
+        match self {
+            ThreeWrapperError::Something {
+                inner_error,
+                code_occurence,
+            } => inner_error.to_string_with_config_lifetime(config),
+        }
+    }
+}
 
-// impl crate::traits::get_code_occurence::GetCodeOccurence for ThreeWrapperError {
-//     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
-//         match self {
-//             ThreeWrapperError::Something { source, code_occurence } => code_occurence,
-//         }
-//     }
-// }
+impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a> for ThreeWrapperError<'a> {
+    fn source_to_string_without_config_lifetime(&self) -> String {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
+        match self {
+            ThreeWrapperError::Something { inner_error, code_occurence } => inner_error.to_string_without_config_lifetime(),
+        }
+    }
+}
+
+impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for ThreeWrapperError<'a> {
+    fn get_code_occurence_lifetime(
+        &self,
+    ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
+        match self {
+            ThreeWrapperError::Something {
+                inner_error,
+                code_occurence,
+            } => code_occurence,
+        }
+    }
+}
 
 #[derive(Debug, Error, Serialize)]
 pub enum ThreeWrapperErrorEnum<'a> {
@@ -92,7 +105,7 @@ impl<'a>
 // pub fn three() -> Result<(), Box<ThreeWrapperError>> {
 //     if let Err(e) = four() {
 //         let f = ThreeWrapperError::Something {
-//             source: ThreeWrapperErrorEnum::FourWrapper(*e),
+//             inner_error: ThreeWrapperErrorEnum::FourWrapper(*e),
 //             code_occurence: crate::common::code_occurence::CodeOccurence::new(
 //                 once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
 //                     String::from(file!()),
@@ -114,7 +127,7 @@ impl<'a>
 pub enum FourWrapperError<'a> {
     Something {
         //todo how to implement from for it?
-        sources: std::collections::HashMap<String, FourWrapperErrorEnum<'a>>,
+        inner_errors: std::collections::HashMap<String, FourWrapperErrorEnum<'a>>,
         code_occurence: crate::common::code_occurence::CodeOccurenceLifetime<'a>,
     },
 }
@@ -140,9 +153,9 @@ where
         use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfigLifetime;
         match self {
             FourWrapperError::Something {
-                sources,
+                inner_errors,
                 code_occurence,
-            } => sources.few_to_string_with_config_lifetime(config),
+            } => inner_errors.few_to_string_with_config_lifetime(config),
         }
     }
 }
@@ -151,7 +164,7 @@ impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::Sourc
     fn source_to_string_without_config_lifetime(&self) -> String {
         use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigLifetime;
         match self {
-            FourWrapperError::Something { sources, code_occurence } => sources.few_to_string_without_config_lifetime(),
+            FourWrapperError::Something { inner_errors, code_occurence } => inner_errors.few_to_string_without_config_lifetime(),
         }
     }
 }
@@ -162,7 +175,7 @@ impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for Fou
     ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
         match self {
             FourWrapperError::Something {
-                sources,
+                inner_errors,
                 code_occurence,
             } => code_occurence,
         }
@@ -219,7 +232,7 @@ pub fn four<'a>() -> Result<(), Box<FourWrapperError<'a>>> {
         (Err(_), Ok(_)) => todo!(),
         (Err(f), Err(s)) => {
             let f = FourWrapperError::Something {
-                sources: std::collections::HashMap::from([
+                inner_errors: std::collections::HashMap::from([
                     (
                         String::from("five_hashmap_key"),
                         FourWrapperErrorEnum::FiveWrapper(*f),
@@ -246,7 +259,7 @@ pub fn four<'a>() -> Result<(), Box<FourWrapperError<'a>>> {
 pub enum FiveWrapperError<'a> {
     Something {
         //todo how to implement from for it?
-        sources: std::collections::HashMap<String, FiveWrapperErrorEnum<'a>>,
+        inner_errors: std::collections::HashMap<String, FiveWrapperErrorEnum<'a>>,
         code_occurence: crate::common::code_occurence::CodeOccurenceLifetime<'a>,
     },
 }
@@ -272,9 +285,9 @@ where
         use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfigLifetime;
         match self {
             FiveWrapperError::Something {
-                sources,
+                inner_errors,
                 code_occurence,
-            } => sources.few_to_string_with_config_lifetime(config),
+            } => inner_errors.few_to_string_with_config_lifetime(config),
         }
     }
 }
@@ -283,7 +296,7 @@ impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::Sourc
     fn source_to_string_without_config_lifetime(&self) -> String {
         use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigLifetime;
         match self {
-            FiveWrapperError::Something { sources, code_occurence } => sources.few_to_string_without_config_lifetime(),
+            FiveWrapperError::Something { inner_errors, code_occurence } => inner_errors.few_to_string_without_config_lifetime(),
         }
     }
 }
@@ -294,7 +307,7 @@ impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for Fiv
     ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
         match self {
             FiveWrapperError::Something {
-                sources,
+                inner_errors,
                 code_occurence,
             } => code_occurence,
         }
@@ -347,7 +360,7 @@ impl<'a>
 pub fn five<'a>() -> Result<(), Box<FiveWrapperError<'a>>> {
     if let Err(e) = five_one() {
         let f = FiveWrapperError::Something {
-            sources: std::collections::HashMap::from([(
+            inner_errors: std::collections::HashMap::from([(
                 String::from("five_one_hashmap_key"),
                 FiveWrapperErrorEnum::FiveOneOrigin(*e),
             )]),
@@ -411,7 +424,7 @@ pub fn five_one<'a>() -> Result<(), Box<FiveOneOriginError<'a>>> {
 pub enum SixWrapperError<'a> {
     Something {
         //todo how to implement from for it?
-        sources: Vec<SixWrapperErrorEnum<'a>>,
+        inner_errors: Vec<SixWrapperErrorEnum<'a>>,
         code_occurence: crate::common::code_occurence::CodeOccurenceLifetime<'a>,
     },
 }
@@ -437,9 +450,9 @@ where
         use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfigLifetime;
         match self {
             SixWrapperError::Something {
-                sources,
+                inner_errors,
                 code_occurence,
-            } => sources.few_to_string_with_config_lifetime(config),
+            } => inner_errors.few_to_string_with_config_lifetime(config),
         }
     }
 }
@@ -453,9 +466,9 @@ impl<'a>
         use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigLifetime;
         match self {
             SixWrapperError::Something {
-                sources,
+                inner_errors,
                 code_occurence,
-            } => sources.few_to_string_without_config_lifetime(),
+            } => inner_errors.few_to_string_without_config_lifetime(),
         }
     }
 }
@@ -466,7 +479,7 @@ impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for Six
     ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
         match self {
             SixWrapperError::Something {
-                sources,
+                inner_errors,
                 code_occurence,
             } => code_occurence,
         }
@@ -529,7 +542,7 @@ pub fn six<'a>() -> Result<(), Box<SixWrapperError<'a>>> {
         (Err(_), Ok(_)) => todo!(),
         (Err(seven_error), Err(eight_error)) => {
             let f = SixWrapperError::Something {
-                sources: vec![
+                inner_errors: vec![
                     SixWrapperErrorEnum::SevenWrapper(*seven_error),
                     SixWrapperErrorEnum::EightWrapper(*eight_error),
                 ],
