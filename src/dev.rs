@@ -1,9 +1,4 @@
-use serde::Serialize;
-use thiserror::Error;
-
-use crate::traits::error_logs_logic::error_log::ErrorLogLifetime;
-
-#[derive(Debug, Error, Serialize)]
+#[derive(Debug, thiserror::Error, serde::Serialize)]
 pub enum ThreeWrapperError<'a> {
     Something {
         //todo how to implement from for it?
@@ -62,7 +57,7 @@ impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for Thr
     }
 }
 
-#[derive(Debug, Error, Serialize)]
+#[derive(Debug, thiserror::Error, serde::Serialize)]
 pub enum ThreeWrapperErrorEnum<'a> {
     FourWrapper(FourWrapperError<'a>),
 }
@@ -115,7 +110,7 @@ pub fn three<'a>() -> Result<(), Box<ThreeWrapperError<'a>>> {
     Ok(())
 }
 
-#[derive(Debug, Error, Serialize)]
+#[derive(Debug, thiserror::Error, serde::Serialize)]
 pub enum FourWrapperError<'a> {
     Something {
         //todo how to implement from for it?
@@ -174,7 +169,7 @@ impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for Fou
     }
 }
 
-#[derive(Debug, Error, Serialize)]
+#[derive(Debug, thiserror::Error, serde::Serialize)]
 pub enum FourWrapperErrorEnum<'a> {
     FiveWrapper(FiveWrapperError<'a>),
     SixWrapper(SixWrapperError<'a>),
@@ -238,18 +233,12 @@ pub fn four<'a>() -> Result<(), Box<FourWrapperError<'a>>> {
                 ]),
                 code_occurence: crate::code_occurence_tufa_common!(),
             };
-            // println!("=======");
-            // println!("{}", f);
-            // f.error_log(once_cell::sync::Lazy::force(
-            //     &crate::global_variables::runtime::config::CONFIG,
-            // ));
-            // println!("=======");
             return Err(Box::new(f));
         }
     }
 }
 
-#[derive(Debug, Error, Serialize)]
+#[derive(Debug, thiserror::Error, serde::Serialize)]
 pub enum FiveWrapperError<'a> {
     Something {
         //todo how to implement from for it?
@@ -308,7 +297,7 @@ impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for Fiv
     }
 }
 
-#[derive(Debug, Error, Serialize)]
+#[derive(Debug, thiserror::Error, serde::Serialize)]
 pub enum FiveWrapperErrorEnum<'a> {
     FiveOneOrigin(FiveOneOriginError<'a>),
 }
@@ -361,18 +350,12 @@ pub fn five<'a>() -> Result<(), Box<FiveWrapperError<'a>>> {
             )]),
             code_occurence: crate::code_occurence_tufa_common!(),
         };
-        // println!("++++++++++");
-        // println!("{}", f);
-        // f.error_log(once_cell::sync::Lazy::force(
-        //     &crate::global_variables::runtime::config::CONFIG,
-        // ));
-        // println!("+++++++++");
         return Err(Box::new(f));
     }
     Ok(())
 }
 
-#[derive(Debug, Error, Serialize)]
+#[derive(Debug, thiserror::Error, serde::Serialize)]
 pub enum FiveOneOriginError<'a> {
     Something {
         error: String,
@@ -439,7 +422,7 @@ pub fn five_one<'a>() -> Result<(), Box<FiveOneOriginError<'a>>> {
     }));
 }
 
-#[derive(Debug, Error, Serialize)]
+#[derive(Debug, thiserror::Error, serde::Serialize)]
 pub enum SixWrapperError<'a> {
     Something {
         //todo how to implement from for it?
@@ -505,7 +488,7 @@ impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for Six
     }
 }
 
-#[derive(Debug, Error, Serialize)]
+#[derive(Debug, thiserror::Error, serde::Serialize)]
 pub enum SixWrapperErrorEnum<'a> {
     #[serde(borrow)]
     SevenWrapper(SevenOriginError<'a>),
@@ -567,18 +550,12 @@ pub fn six<'a>() -> Result<(), Box<SixWrapperError<'a>>> {
                 ],
                 code_occurence: crate::code_occurence_tufa_common!(),
             };
-            // println!("------");
-            // println!("{}", f);
-            // f.error_log(once_cell::sync::Lazy::force(
-            //     &crate::global_variables::runtime::config::CONFIG,
-            // ));
-            // println!("------");
             return Err(Box::new(f));
         }
     }
 }
 
-#[derive(Debug, Error, Serialize)]
+#[derive(Debug, thiserror::Error, serde::Serialize)]
 pub enum SevenOriginError<'a> {
     Something {
         error: String,
@@ -643,7 +620,7 @@ pub fn seven<'a>() -> Result<(), Box<SevenOriginError<'a>>> {
     }));
 }
 
-#[derive(Debug, Error, Serialize)]
+#[derive(Debug, thiserror::Error, serde::Serialize)]
 pub enum EightOriginError<'a> {
     Something {
         error: String,
@@ -707,126 +684,3 @@ pub fn eight<'a>() -> Result<(), Box<EightOriginError<'a>>> {
         code_occurence: crate::code_occurence_tufa_common!(),
     }));
 }
-///////////////////////////////////////////////////
-
-// pub fn sevends<'a>() -> Result<(), Box<SevenOriginErrorWithDeserialize<'a>>> {
-//     return Err(Box::new(SevenOriginErrorWithDeserialize::Something {
-//         error: String::from("error_eight"),
-//         code_occurence: crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize::new(
-//             crate::global_variables::compile_time::git_info::GIT_INFO.clone(),
-//             file!(),
-//             line!(),
-//             column!(),
-//         ),
-//     }));
-// }
-
-// #[derive(Debug, Error, Serialize, Deserialize)]
-// pub enum SevenOriginErrorWithDeserialize<'a> {
-//     Something {
-//         error: String,
-//         #[serde(borrow)]
-//         code_occurence: crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a>,
-//     },
-// }
-
-// impl<'a> std::fmt::Display for SevenOriginErrorWithDeserialize<'a> {
-//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize;
-//         write!(
-//             f,
-//             "{}",
-//             self.to_string_without_config_lifetime_with_deserialize()
-//         )
-//     }
-// }
-
-// impl<'a>
-//     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a>
-//     for SevenOriginErrorWithDeserialize<'a>
-// {
-//     fn source_to_string_without_config_lifetime(&self) -> String {
-//         match self {
-//             SevenOriginErrorWithDeserialize::Something {
-//                 error,
-//                 code_occurence,
-//             } => format!("{}", error),
-//         }
-//     }
-// }
-
-// impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetimeWithDeserialize<'a>
-//     for SevenOriginErrorWithDeserialize<'a>
-// {
-//     fn get_code_occurence_lifetime_with_deserialize(
-//         &self,
-//     ) -> &crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a> {
-//         match self {
-//             SevenOriginErrorWithDeserialize::Something {
-//                 error,
-//                 code_occurence,
-//             } => code_occurence,
-//         }
-//     }
-// }
-
-// #[derive(Debug, Error, Serialize, Deserialize)]
-// pub enum EightOriginErrorWithDeserialize<'a> {
-//     Something {
-//         error: String,
-//         #[serde(borrow)]
-//         code_occurence: crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a>,
-//     },
-// }
-
-// impl<'a> std::fmt::Display for EightOriginErrorWithDeserialize<'a> {
-//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize;
-//         write!(
-//             f,
-//             "{}",
-//             self.to_string_without_config_lifetime_with_deserialize()
-//         )
-//     }
-// }
-
-// impl<'a>
-//     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a>
-//     for EightOriginErrorWithDeserialize<'a>
-// {
-//     fn source_to_string_without_config_lifetime(&self) -> String {
-//         match self {
-//             EightOriginErrorWithDeserialize::Something {
-//                 error,
-//                 code_occurence,
-//             } => format!("{}", error),
-//         }
-//     }
-// }
-
-// impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetimeWithDeserialize<'a>
-//     for EightOriginErrorWithDeserialize<'a>
-// {
-//     fn get_code_occurence_lifetime_with_deserialize(
-//         &self,
-//     ) -> &crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a> {
-//         match self {
-//             EightOriginErrorWithDeserialize::Something {
-//                 error,
-//                 code_occurence,
-//             } => code_occurence,
-//         }
-//     }
-// }
-
-// pub fn eightds<'a>() -> Result<(), Box<EightOriginErrorWithDeserialize<'a>>> {
-//     return Err(Box::new(EightOriginErrorWithDeserialize::Something {
-//         error: String::from("error_eight"),
-//         code_occurence: crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize::new(
-//             crate::global_variables::compile_time::git_info::GIT_INFO.clone(),
-//             file!(),
-//             line!(),
-//             column!(),
-//         ),
-//     }));
-// }
