@@ -102,26 +102,16 @@ impl<'a>
     }
 }
 
-// pub fn three() -> Result<(), Box<ThreeWrapperError>> {
-//     if let Err(e) = four() {
-//         let f = ThreeWrapperError::Something {
-//             inner_error: ThreeWrapperErrorEnum::FourWrapper(*e),
-//             code_occurence: crate::common::code_occurence::CodeOccurence::new(
-//                 once_cell::sync::Lazy::force(&crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES).clone(),
-//                     String::from(file!()),
-//                     line!(),
-//                     column!(),
-//                 )
-//         };
-//         // println!("three");
-//         // f.error_log(once_cell::sync::Lazy::force(
-//         //     &crate::global_variables::runtime::config::CONFIG,
-//         // ));
-//         // println!("threeend");
-//         return Err(Box::new(f));
-//     };
-//     Ok(())
-// }
+pub fn three<'a>() -> Result<(), Box<ThreeWrapperError<'a>>> {
+    if let Err(e) = four() {
+        let f = ThreeWrapperError::Something {
+            inner_error: ThreeWrapperErrorEnum::FourWrapper(*e),
+            code_occurence: crate::code_occurence_tufa_common!(),
+        };
+        return Err(Box::new(f));
+    };
+    Ok(())
+}
 
 #[derive(Debug, Error, Serialize)]
 pub enum FourWrapperError<'a> {
