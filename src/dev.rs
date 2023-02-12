@@ -222,52 +222,64 @@ use crate::traits::error_logs_logic::error_log::ErrorLogLifetime;
 //     }
 // }
 
-// #[derive(Debug, Serialize, Deserialize, Error)]
-// pub enum FiveWrapperError {
-//     Something{
-//         //todo how to implement from for it?
-//         sources: std::collections::HashMap<String, FiveWrapperErrorEnum>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence,
-//     }
-// }
-// //cannot make it with generics
-// impl std::fmt::Display for FiveWrapperError {
-//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-//         write!(f, "{}", self.to_string_without_config())
-//     }
-// }
+#[derive(Debug, Error, Serialize)]
+pub enum FiveWrapperError<'a> {
+    Something {
+        //todo how to implement from for it?
+        sources: std::collections::HashMap<String, FiveWrapperErrorEnum<'a>>,
+        code_occurence: crate::common::code_occurence::CodeOccurenceLifetime<'a>,
+    },
+}
 
-// impl<ConfigGeneric> crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<ConfigGeneric> for FiveWrapperError
-// where
-//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-//         + crate::traits::fields::GetTimezone
-//         + crate::traits::get_server_address::GetServerAddress,
-// {
-//     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
-//         use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfig;
-//         match self {
-//             FiveWrapperError::Something { sources, code_occurence } => sources.few_to_string_with_config(config),
-//         }
-//     }
-// }
+impl<'a> std::fmt::Display for FiveWrapperError<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
+        write!(f, "{}", self.to_string_without_config_lifetime())
+    }
+}
 
-// impl crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig for FiveWrapperError {
-//     fn source_to_string_without_config(&self) -> String {
-//         use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
-//         match self {
-//             FiveWrapperError::Something { sources, code_occurence } => sources.few_to_string_without_config(),
-//         }
-//     }
-// }
+impl<'a, ConfigGeneric>
+    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfigLifetime<
+        'a,
+        ConfigGeneric,
+    > for FiveWrapperError<'a>
+where
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn source_to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
+        use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfigLifetime;
+        match self {
+            FiveWrapperError::Something {
+                sources,
+                code_occurence,
+            } => sources.few_to_string_with_config_lifetime(config),
+        }
+    }
+}
 
-// impl crate::traits::get_code_occurence::GetCodeOccurence for FiveWrapperError {
-//     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence {
-//         match self {
-//             FiveWrapperError::Something { sources, code_occurence } => code_occurence
-//         }
-//     }
-// }
+impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a> for FiveWrapperError<'a> {
+    fn source_to_string_without_config_lifetime(&self) -> String {
+        use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigLifetime;
+        match self {
+            FiveWrapperError::Something { sources, code_occurence } => sources.few_to_string_without_config_lifetime(),
+        }
+    }
+}
+
+impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for FiveWrapperError<'a> {
+    fn get_code_occurence_lifetime(
+        &self,
+    ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
+        match self {
+            FiveWrapperError::Something {
+                sources,
+                code_occurence,
+            } => code_occurence,
+        }
+    }
+}
 
 #[derive(Debug, Error, Serialize)]
 pub enum FiveWrapperErrorEnum<'a> {
@@ -312,25 +324,25 @@ impl<'a>
     }
 }
 
-// pub fn five<'a>() -> Result<(), Box<FiveWrapperError<'a>>> {
-//     if let Err(e) = five_one() {
-//         let f = FiveWrapperError::Something {
-//             sources: std::collections::HashMap::from([(
-//                 String::from("five_one_hashmap_key"),
-//                 FiveWrapperErrorEnum::FiveOneOrigin(*e),
-//             )]),
-//             code_occurence: crate::code_occurence_tufa_common!(),
-//         };
-//         // println!("++++++++++");
-//         // println!("{}", f);
-//         // f.error_log(once_cell::sync::Lazy::force(
-//         //     &crate::global_variables::runtime::config::CONFIG,
-//         // ));
-//         // println!("+++++++++");
-//         return Err(Box::new(f));
-//     }
-//     Ok(())
-// }
+pub fn five<'a>() -> Result<(), Box<FiveWrapperError<'a>>> {
+    if let Err(e) = five_one() {
+        let f = FiveWrapperError::Something {
+            sources: std::collections::HashMap::from([(
+                String::from("five_one_hashmap_key"),
+                FiveWrapperErrorEnum::FiveOneOrigin(*e),
+            )]),
+            code_occurence: crate::code_occurence_tufa_common!(),
+        };
+        // println!("++++++++++");
+        // println!("{}", f);
+        // f.error_log(once_cell::sync::Lazy::force(
+        //     &crate::global_variables::runtime::config::CONFIG,
+        // ));
+        // println!("+++++++++");
+        return Err(Box::new(f));
+    }
+    Ok(())
+}
 
 #[derive(Debug, Error, Serialize)]
 pub enum FiveOneOriginError<'a> {
