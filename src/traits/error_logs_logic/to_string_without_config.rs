@@ -33,3 +33,21 @@ where
 //         )
 //     }
 // }
+///////////////////////////////////////
+pub trait ToStringWithoutConfigLifetimeWithDeserialize<'a> {
+    fn to_string_without_config_lifetime_with_deserialize(&self) -> String;
+}
+
+impl<'a, SelfGeneric> ToStringWithoutConfigLifetimeWithDeserialize<'a> for SelfGeneric
+where
+    SelfGeneric:
+        crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetimeWithDeserialize<'a>
+            + crate::traits::get_code_occurence::GetCodeOccurenceLifetimeWithDeserialize<'a>,
+{
+    fn to_string_without_config_lifetime_with_deserialize(&self) -> String {
+        crate::traits::error_logs_logic::helpers::source_and_code_occurence_formatter(
+            self.source_to_string_without_config_lifetime_with_deserialize(),
+            self.get_code_occurence_lifetime_with_deserialize().to_string(),
+        )
+    }
+}
