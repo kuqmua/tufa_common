@@ -49,38 +49,45 @@ use crate::traits::error_logs_logic::error_log::ErrorLogLifetime;
 //     }
 // }
 
-// #[derive(Debug, Serialize, Deserialize, Error)]
-// pub enum ThreeWrapperErrorEnum {
-//     FourWrapper(FourWrapperError),
-// }
+#[derive(Debug, Error, Serialize)]
+pub enum ThreeWrapperErrorEnum<'a> {
+    FourWrapper(FourWrapperError<'a>),
+}
 
-// impl std::fmt::Display for ThreeWrapperErrorEnum {
-//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-//         write!(f, "{}", self.to_string_without_config())
-//     }
-// }
+impl<'a> std::fmt::Display for ThreeWrapperErrorEnum<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
+        write!(f, "{}", self.to_string_without_config_lifetime())
+    }
+}
 
-// impl<ConfigGeneric> crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfig<ConfigGeneric> for ThreeWrapperErrorEnum
-// where
-//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-//         + crate::traits::fields::GetTimezone
-//         + crate::traits::get_server_address::GetServerAddress,
-// {
-//     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
-//         match self {
-//             ThreeWrapperErrorEnum::FourWrapper(i) => i.to_string_with_config(config),
-//         }
-//     }
-// }
+impl<'a, ConfigGeneric>
+    crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetime<
+        'a,
+        ConfigGeneric,
+    > for ThreeWrapperErrorEnum<'a>
+where
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
+        match self {
+            ThreeWrapperErrorEnum::FourWrapper(i) => i.to_string_with_config_lifetime(config),
+        }
+    }
+}
 
-// impl crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig for ThreeWrapperErrorEnum {
-//     fn to_string_without_config(&self) -> String {
-//         match self {
-//             ThreeWrapperErrorEnum::FourWrapper(i) => i.to_string_without_config(),
-//         }
-//     }
-// }
+impl<'a>
+    crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime<'a>
+    for ThreeWrapperErrorEnum<'a>
+{
+    fn to_string_without_config_lifetime(&self) -> String {
+        match self {
+            ThreeWrapperErrorEnum::FourWrapper(i) => i.to_string_without_config_lifetime(),
+        }
+    }
+}
 
 // pub fn three() -> Result<(), Box<ThreeWrapperError>> {
 //     if let Err(e) = four() {
