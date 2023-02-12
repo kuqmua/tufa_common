@@ -319,27 +319,11 @@ impl<'a> std::fmt::Display
     for crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a>
 {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithoutConfig;
+        use crate::traits::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithoutConfigWithDeserialize;
         write!(
             f,
             "{}",
-            self.code_occurence_prepare_for_log_without_config()
+            self.code_occurence_prepare_for_log_without_config_with_deserialize()
         )
     }
 }
-
-// impl<'a, ConfigGeneric>
-//     crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetimeWithDeserialize<
-//         'a,
-//         ConfigGeneric,
-//     > for crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a>
-// where
-//     ConfigGeneric: crate::traits::fields::GetTimezone
-//         + crate::traits::fields::GetSourcePlaceType
-//         + crate::traits::get_server_address::GetServerAddress,
-// {
-//     fn to_string_with_config_lifetime_with_deserialize(&self, config: &ConfigGeneric) -> String {
-//         use crate::traits::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithConfigWithDeserialize;
-//         self.code_occurence_prepare_for_log_with_config_with_deserialize(config)
-//     }
-// }
