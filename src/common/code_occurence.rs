@@ -1,11 +1,4 @@
-//todo use std::sync::Arc<crate::common::git::git_info::GitInformationWithoutLifetimes> ?
-// use crate::traits::code_path::CodePathLifetime;
-use crate::traits::get_code_path_without_config::GetCodePathWithoutConfig;
-use crate::traits::get_duration::GetDuration;
-use crate::traits::get_hostname::GetHostname;
-use crate::traits::get_process_id::GetProcessId;
 use serde::{Deserialize, Serialize};
-use std::os::unix::process;
 
 #[derive(Debug, Serialize)] //Deserialize // #[serde(borrow)] - need for field with lifetime
 pub struct CodeOccurenceLifetime<'a> {

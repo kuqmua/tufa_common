@@ -1,4 +1,3 @@
-use crate::common::git::git_info::GitInformation;
 use crate::common::git::git_info::GitInformationWithoutLifetimes;
 use crate::traits::get_git_source_file_link::GetGitSourceFileLink;
 use crate::traits::where_was_methods::WhereWasMethods;

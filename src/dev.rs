@@ -1,4 +1,4 @@
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use thiserror::Error;
 
 use crate::traits::error_logs_logic::error_log::ErrorLogLifetime;
@@ -34,7 +34,7 @@ where
         match self {
             ThreeWrapperError::Something {
                 inner_error,
-                code_occurence,
+                code_occurence: _code_occurence,
             } => inner_error.to_string_with_config_lifetime(config),
         }
     }
@@ -44,7 +44,7 @@ impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::Sourc
     fn source_to_string_without_config_lifetime(&self) -> String {
         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
         match self {
-            ThreeWrapperError::Something { inner_error, code_occurence } => inner_error.to_string_without_config_lifetime(),
+            ThreeWrapperError::Something { inner_error, code_occurence: _code_occurence } => inner_error.to_string_without_config_lifetime(),
         }
     }
 }
@@ -55,7 +55,7 @@ impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for Thr
     ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
         match self {
             ThreeWrapperError::Something {
-                inner_error,
+                inner_error: _inner_error,
                 code_occurence,
             } => code_occurence,
         }
@@ -146,7 +146,7 @@ where
         match self {
             FourWrapperError::Something {
                 inner_errors,
-                code_occurence,
+                code_occurence: _code_occurence,
             } => inner_errors.few_to_string_with_config_lifetime(config),
         }
     }
@@ -156,7 +156,7 @@ impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::Sourc
     fn source_to_string_without_config_lifetime(&self) -> String {
         use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigLifetime;
         match self {
-            FourWrapperError::Something { inner_errors, code_occurence } => inner_errors.few_to_string_without_config_lifetime(),
+            FourWrapperError::Something { inner_errors, code_occurence: _code_occurence } => inner_errors.few_to_string_without_config_lifetime(),
         }
     }
 }
@@ -167,7 +167,7 @@ impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for Fou
     ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
         match self {
             FourWrapperError::Something {
-                inner_errors,
+                inner_errors: _inner_errors,
                 code_occurence,
             } => code_occurence,
         }
@@ -280,7 +280,7 @@ where
         match self {
             FiveWrapperError::Something {
                 inner_errors,
-                code_occurence,
+                code_occurence: _code_occurence,
             } => inner_errors.few_to_string_with_config_lifetime(config),
         }
     }
@@ -290,7 +290,7 @@ impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::Sourc
     fn source_to_string_without_config_lifetime(&self) -> String {
         use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigLifetime;
         match self {
-            FiveWrapperError::Something { inner_errors, code_occurence } => inner_errors.few_to_string_without_config_lifetime(),
+            FiveWrapperError::Something { inner_errors, code_occurence: _code_occurence } => inner_errors.few_to_string_without_config_lifetime(),
         }
     }
 }
@@ -301,7 +301,7 @@ impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for Fiv
     ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
         match self {
             FiveWrapperError::Something {
-                inner_errors,
+                inner_errors: _inner_error,
                 code_occurence,
             } => code_occurence,
         }
@@ -387,10 +387,32 @@ impl<'a> std::fmt::Display for FiveOneOriginError<'a> {
     }
 }
 
-impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a> for FiveOneOriginError<'a> {
+impl<'a, ConfigGeneric>
+    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfigLifetime<
+        'a,
+        ConfigGeneric,
+    > for FiveOneOriginError<'a>
+where
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn source_to_string_with_config_lifetime(&self, _config: &ConfigGeneric) -> String {
+        use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime;
+        self.source_to_string_without_config_lifetime()
+    }
+}
+
+impl<'a>
+    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a>
+    for FiveOneOriginError<'a>
+{
     fn source_to_string_without_config_lifetime(&self) -> String {
         match self {
-            FiveOneOriginError::Something { error, code_occurence } => format!("{}", error),
+            FiveOneOriginError::Something {
+                error,
+                code_occurence: _code_occurence,
+            } => format!("{}", error),
         }
     }
 }
@@ -398,10 +420,12 @@ impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::Sourc
 impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a>
     for FiveOneOriginError<'a>
 {
-    fn get_code_occurence_lifetime(&self) -> &crate::common::code_occurence::CodeOccurenceLifetime {
+    fn get_code_occurence_lifetime(
+        &self,
+    ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
         match self {
             FiveOneOriginError::Something {
-                error,
+                error: _error,
                 code_occurence,
             } => code_occurence,
         }
@@ -446,7 +470,7 @@ where
         match self {
             SixWrapperError::Something {
                 inner_errors,
-                code_occurence,
+                code_occurence: _code_occurence,
             } => inner_errors.few_to_string_with_config_lifetime(config),
         }
     }
@@ -462,7 +486,7 @@ impl<'a>
         match self {
             SixWrapperError::Something {
                 inner_errors,
-                code_occurence,
+                code_occurence: _code_occurence,
             } => inner_errors.few_to_string_without_config_lifetime(),
         }
     }
@@ -474,7 +498,7 @@ impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for Six
     ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
         match self {
             SixWrapperError::Something {
-                inner_errors,
+                inner_errors: _inner_errors,
                 code_occurence,
             } => code_occurence,
         }
@@ -579,7 +603,7 @@ where
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
-    fn source_to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
+    fn source_to_string_with_config_lifetime(&self, _config: &ConfigGeneric) -> String {
         use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime;
         self.source_to_string_without_config_lifetime()
     }
@@ -593,7 +617,7 @@ impl<'a>
         match self {
             SevenOriginError::Something {
                 error,
-                code_occurence,
+                code_occurence: _code_occurence,
             } => format!("{}", error),
         }
     }
@@ -605,7 +629,7 @@ impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for Sev
     ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
         match self {
             SevenOriginError::Something {
-                error,
+                error: _error,
                 code_occurence,
             } => code_occurence,
         }
@@ -644,7 +668,7 @@ where
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
-    fn source_to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
+    fn source_to_string_with_config_lifetime(&self, _config: &ConfigGeneric) -> String {
         use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime;
         self.source_to_string_without_config_lifetime()
     }
@@ -658,7 +682,7 @@ impl<'a>
         match self {
             EightOriginError::Something {
                 error,
-                code_occurence,
+                code_occurence: _code_occurence,
             } => format!("{}", error),
         }
     }
@@ -670,7 +694,7 @@ impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for Eig
     ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
         match self {
             EightOriginError::Something {
-                error,
+                error: _error,
                 code_occurence,
             } => code_occurence,
         }
