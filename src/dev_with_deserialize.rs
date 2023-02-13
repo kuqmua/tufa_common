@@ -20,8 +20,8 @@ impl<'a> std::fmt::Display for ThreeWrapperErrorWithDeserialize<'a> {
     }
 }
 
-impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetimeWithDeserialize<'a> for ThreeWrapperErrorWithDeserialize<'a> {
-    fn source_to_string_without_config_lifetime_with_deserialize(&self) -> String {
+impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a> for ThreeWrapperErrorWithDeserialize<'a> {
+    fn source_to_string_without_config_lifetime(&self) -> String {
         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize;
         match self {
             ThreeWrapperErrorWithDeserialize::Something { inner_error, code_occurence: _code_occurence } => inner_error.to_string_without_config_lifetime_with_deserialize(),
@@ -111,8 +111,8 @@ impl<'a> std::fmt::Display for FourWrapperErrorWithDeserialize<'a> {
     }
 }
 
-impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetimeWithDeserialize<'a> for FourWrapperErrorWithDeserialize<'a> {
-    fn source_to_string_without_config_lifetime_with_deserialize(&self) -> String {
+impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a> for FourWrapperErrorWithDeserialize<'a> {
+    fn source_to_string_without_config_lifetime(&self) -> String {
         use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigLifetimeWithDeserialize;
         match self {
             FourWrapperErrorWithDeserialize::Something { inner_errors, code_occurence: _code_occurence } => inner_errors.few_to_string_without_config_lifetime_with_deserialize(),
@@ -220,8 +220,8 @@ impl<'a> std::fmt::Display for FiveWrapperErrorWithDeserialize<'a> {
     }
 }
 
-impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetimeWithDeserialize<'a> for FiveWrapperErrorWithDeserialize<'a> {
-    fn source_to_string_without_config_lifetime_with_deserialize(&self) -> String {
+impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a> for FiveWrapperErrorWithDeserialize<'a> {
+    fn source_to_string_without_config_lifetime(&self) -> String {
         use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigLifetimeWithDeserialize;
         match self {
             FiveWrapperErrorWithDeserialize::Something { inner_errors, code_occurence: _code_occurence } => inner_errors.few_to_string_without_config_lifetime_with_deserialize(),
@@ -310,10 +310,10 @@ impl<'a> std::fmt::Display for FiveOneOriginErrorWithDeserialize<'a> {
 }
 
 impl<'a>
-    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetimeWithDeserialize<'a>
+    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a>
     for FiveOneOriginErrorWithDeserialize<'a>
 {
-    fn source_to_string_without_config_lifetime_with_deserialize(&self) -> String {
+    fn source_to_string_without_config_lifetime(&self) -> String {
         match self {
             FiveOneOriginErrorWithDeserialize::Something {
                 error,
@@ -368,11 +368,11 @@ impl<'a> std::fmt::Display for SixWrapperErrorWithDeserialize<'a> {
 }
 
 impl<'a>
-    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetimeWithDeserialize<
+    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<
         'a,
     > for SixWrapperErrorWithDeserialize<'a>
 {
-    fn source_to_string_without_config_lifetime_with_deserialize(&self) -> String {
+    fn source_to_string_without_config_lifetime(&self) -> String {
         use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigLifetimeWithDeserialize;
         match self {
             SixWrapperErrorWithDeserialize::Something {
@@ -475,10 +475,10 @@ impl<'a> std::fmt::Display for SevenOriginErrorWithDeserialize<'a> {
 }
 
 impl<'a>
-    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetimeWithDeserialize<'a>
+    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a>
     for SevenOriginErrorWithDeserialize<'a>
 {
-    fn source_to_string_without_config_lifetime_with_deserialize(&self) -> String {
+    fn source_to_string_without_config_lifetime(&self) -> String {
         match self {
             SevenOriginErrorWithDeserialize::Something {
                 error,
@@ -531,10 +531,10 @@ impl<'a> std::fmt::Display for EightOriginErrorWithDeserialize<'a> {
 }
 
 impl<'a>
-    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetimeWithDeserialize<'a>
+    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a>
     for EightOriginErrorWithDeserialize<'a>
 {
-    fn source_to_string_without_config_lifetime_with_deserialize(&self) -> String {
+    fn source_to_string_without_config_lifetime(&self) -> String {
         match self {
             EightOriginErrorWithDeserialize::Something {
                 error,
