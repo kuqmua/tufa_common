@@ -5,13 +5,13 @@ pub enum SourcePlaceType {
     None,
 }
 
-impl SourcePlaceType {
+impl<'a> SourcePlaceType {
     pub fn get_code_path(
         &self,
         code_occurence: &(impl crate::traits::fields::GetFile
               + crate::traits::fields::GetLine
               + crate::traits::fields::GetColumn
-              + crate::traits::get_git_info::GetClonedGitInfo),
+              + crate::traits::get_git_source_file_link::GetGitSourceFileLinkLifetime<'a>),
     ) -> String {
         match self {
             crate::config_mods::source_place_type::SourcePlaceType::Source => {

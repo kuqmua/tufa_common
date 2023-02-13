@@ -61,12 +61,6 @@ impl<'a> crate::traits::get_git_info::GetGitInfo<'a> for CodeOccurenceLifetime<'
     }
 }
 
-impl<'a> crate::traits::get_git_info::GetClonedGitInfo for CodeOccurenceLifetime<'a> {
-    fn get_cloned_git_info(&self) -> crate::common::git::git_info::GitInformation {
-        self.git_info.clone()
-    }
-}
-
 impl<'a> crate::traits::get_duration::GetDuration for CodeOccurenceLifetime<'a> {
     fn get_duration(&self) -> std::time::Duration {
         self.duration
@@ -109,6 +103,14 @@ where
     fn to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
         use crate::traits::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithConfig;
         self.code_occurence_prepare_for_log_with_config(config)
+    }
+}
+
+impl<'a> crate::traits::get_git_source_file_link::GetGitSourceFileLinkLifetime<'a>
+    for crate::common::code_occurence::CodeOccurenceLifetime<'a>
+{
+    fn get_git_source_file_link_lifetime(&self, file: &str, line: u32) -> String {
+        self.git_info.get_git_source_file_link_lifetime(file, line)
     }
 }
 
@@ -173,14 +175,6 @@ impl<'a> crate::traits::get_git_info::GetGitInfo<'a> for CodeOccurenceLifetimeWi
     }
 }
 
-impl<'a> crate::traits::get_git_info::GetClonedGitInfo
-    for CodeOccurenceLifetimeWithDeserialize<'a>
-{
-    fn get_cloned_git_info(&self) -> crate::common::git::git_info::GitInformation {
-        self.git_info.clone()
-    }
-}
-
 impl<'a> crate::traits::get_duration::GetDuration for CodeOccurenceLifetimeWithDeserialize<'a> {
     fn get_duration(&self) -> std::time::Duration {
         self.duration
@@ -209,5 +203,13 @@ impl<'a> std::fmt::Display
             "{}",
             self.code_occurence_prepare_for_log_without_config_with_deserialize()
         )
+    }
+}
+
+impl<'a> crate::traits::get_git_source_file_link::GetGitSourceFileLinkLifetime<'a>
+    for crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a>
+{
+    fn get_git_source_file_link_lifetime(&self, file: &str, line: u32) -> String {
+        self.git_info.get_git_source_file_link_lifetime(file, line)
     }
 }

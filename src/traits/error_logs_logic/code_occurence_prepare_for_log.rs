@@ -7,7 +7,8 @@ pub trait CodeOccurencePrepareForLogWithConfig<
     fn code_occurence_prepare_for_log_with_config(&self, config: &ConfigGeneric) -> String;
 }
 
-impl<SelfGeneric, ConfigGeneric> CodeOccurencePrepareForLogWithConfig<ConfigGeneric> for SelfGeneric
+impl<'a, SelfGeneric, ConfigGeneric> CodeOccurencePrepareForLogWithConfig<ConfigGeneric>
+    for SelfGeneric
 where
     SelfGeneric: crate::traits::fields::GetFile
         + crate::traits::fields::GetLine
@@ -16,7 +17,7 @@ where
         + crate::traits::get_duration::GetDuration
         + crate::traits::get_hostname::GetHostname
         + crate::traits::get_process_id::GetProcessId
-        + crate::traits::get_git_info::GetClonedGitInfo,
+        + crate::traits::get_git_source_file_link::GetGitSourceFileLinkLifetime<'a>,
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetSourcePlaceType
         + crate::traits::get_server_address::GetServerAddress,
@@ -69,17 +70,16 @@ pub trait CodeOccurencePrepareForLogWithoutConfigWithDeserialize {
     fn code_occurence_prepare_for_log_without_config_with_deserialize(&self) -> String;
 }
 
-impl<SelfGeneric> CodeOccurencePrepareForLogWithoutConfigWithDeserialize for SelfGeneric
+impl<'a, SelfGeneric> CodeOccurencePrepareForLogWithoutConfigWithDeserialize for SelfGeneric
 where
     SelfGeneric: crate::traits::fields::GetFile
         + crate::traits::fields::GetLine
         + crate::traits::fields::GetColumn
-        //above its for crate::traits::get_code_path_without_config::GetCodePathWithoutConfig
         + crate::traits::get_code_path_without_config::GetCodePathWithoutConfig
+        + crate::traits::get_git_source_file_link::GetGitSourceFileLinkLifetime<'a>
         + crate::traits::get_duration::GetDuration
         + crate::traits::get_hostname::GetHostname
-        + crate::traits::get_process_id::GetProcessId
-        + crate::traits::get_git_info::GetClonedGitInfo,
+        + crate::traits::get_process_id::GetProcessId,
 {
     fn code_occurence_prepare_for_log_without_config_with_deserialize(&self) -> String {
         use crate::traits::error_logs_logic::form_error_path::FormErrorPathGithub;
