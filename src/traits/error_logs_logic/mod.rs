@@ -1,4 +1,3 @@
-pub mod code_occurence_new;
 pub mod code_occurence_prepare_for_log;
 pub mod error_log;
 pub mod few_to_string_with_config;

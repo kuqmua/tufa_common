@@ -11,10 +11,8 @@ pub struct CodeOccurenceLifetime<'a> {
     process_id: u32,
 }
 
-impl<'a> crate::traits::error_logs_logic::code_occurence_new::CodeOccurenceNew<'a>
-    for CodeOccurenceLifetime<'a>
-{
-    fn new(
+impl<'a> CodeOccurenceLifetime<'a> {
+    pub fn new(
         git_info: &'a crate::common::git::git_info::GitInformation<'a>,
         file: &'a str,
         line: u32,
@@ -125,10 +123,8 @@ pub struct CodeOccurenceLifetimeWithDeserialize<'a> {
     process_id: u32,
 }
 
-impl<'a> crate::traits::error_logs_logic::code_occurence_new::CodeOccurenceNew<'a>
-    for CodeOccurenceLifetimeWithDeserialize<'a>
-{
-    fn new(
+impl<'a> CodeOccurenceLifetimeWithDeserialize<'a> {
+    pub fn new(
         git_info: &'a crate::common::git::git_info::GitInformation<'a>,
         file: &'a str,
         line: u32,
