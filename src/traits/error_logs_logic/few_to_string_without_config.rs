@@ -48,18 +48,18 @@ where
     }
 }
 ///////////////////////////////////////////////////
-pub trait FewToStringWithoutConfigLifetimeWithDeserialize<'a> {
-    fn few_to_string_without_config_lifetime_with_deserialize(&self) -> String;
+pub trait FewToStringWithoutConfigWithDeserialize<'a> {
+    fn few_to_string_without_config_with_deserialize(&self) -> String;
 }
 
-impl<'a, VecElementGeneric> FewToStringWithoutConfigLifetimeWithDeserialize<'a> for Vec<VecElementGeneric>
+impl<'a, VecElementGeneric> FewToStringWithoutConfigWithDeserialize<'a> for Vec<VecElementGeneric>
 where
     VecElementGeneric:
         crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize<
             'a,
         >,
 {
-    fn few_to_string_without_config_lifetime_with_deserialize(&self) -> String {
+    fn few_to_string_without_config_with_deserialize(&self) -> String {
         crate::traits::error_logs_logic::helpers::stringified_lines_error_vec(self.iter().fold(
             String::from(""),
             |mut acc, vec_element| {
@@ -74,7 +74,7 @@ where
     }
 }
 
-impl<'a, HashMapKeyGeneric, HashMapValueGeneric> FewToStringWithoutConfigLifetimeWithDeserialize<'a>
+impl<'a, HashMapKeyGeneric, HashMapValueGeneric> FewToStringWithoutConfigWithDeserialize<'a>
     for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
 where
     HashMapKeyGeneric: std::fmt::Display,
@@ -83,7 +83,7 @@ where
             'a,
         >,
 {
-    fn few_to_string_without_config_lifetime_with_deserialize(&self) -> String {
+    fn few_to_string_without_config_with_deserialize(&self) -> String {
         let mut stringified = self.iter().fold(String::from(""), |mut acc, (key, value)| {
             acc.push_str(
                 &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(

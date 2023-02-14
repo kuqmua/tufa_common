@@ -119,9 +119,9 @@ impl<'a> std::fmt::Display for FourWrapperErrorWithDeserialize<'a> {
 
 impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a> for FourWrapperErrorWithDeserialize<'a> {
     fn source_to_string_without_config_lifetime(&self) -> String {
-        use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigLifetimeWithDeserialize;
+        use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigWithDeserialize;
         match self {
-            FourWrapperErrorWithDeserialize::Something { inner_errors, code_occurence: _code_occurence } => inner_errors.few_to_string_without_config_lifetime_with_deserialize(),
+            FourWrapperErrorWithDeserialize::Something { inner_errors, code_occurence: _code_occurence } => inner_errors.few_to_string_without_config_with_deserialize(),
         }
     }
 }
@@ -234,9 +234,9 @@ impl<'a> std::fmt::Display for FiveWrapperErrorWithDeserialize<'a> {
 
 impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a> for FiveWrapperErrorWithDeserialize<'a> {
     fn source_to_string_without_config_lifetime(&self) -> String {
-        use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigLifetimeWithDeserialize;
+        use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigWithDeserialize;
         match self {
-            FiveWrapperErrorWithDeserialize::Something { inner_errors, code_occurence: _code_occurence } => inner_errors.few_to_string_without_config_lifetime_with_deserialize(),
+            FiveWrapperErrorWithDeserialize::Something { inner_errors, code_occurence: _code_occurence } => inner_errors.few_to_string_without_config_with_deserialize(),
         }
     }
 }
@@ -397,12 +397,12 @@ impl<'a>
     > for SixWrapperErrorWithDeserialize<'a>
 {
     fn source_to_string_without_config_lifetime(&self) -> String {
-        use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigLifetimeWithDeserialize;
+        use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigWithDeserialize;
         match self {
             SixWrapperErrorWithDeserialize::Something {
                 inner_errors,
                 code_occurence: _code_occurence,
-            } => inner_errors.few_to_string_without_config_lifetime_with_deserialize(),
+            } => inner_errors.few_to_string_without_config_with_deserialize(),
         }
     }
 }
