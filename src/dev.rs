@@ -94,7 +94,6 @@ impl<'a>
     for ThreeWrapperErrorEnum<'a>
 {
     fn to_string_without_config_lifetime(&self) -> String {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
         match self {
             ThreeWrapperErrorEnum::FourWrapper(i) => i.to_string_without_config_lifetime(),
         }
@@ -210,7 +209,6 @@ impl<'a>
     for FourWrapperErrorEnum<'a>
 {
     fn to_string_without_config_lifetime(&self) -> String {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
         match self {
             FourWrapperErrorEnum::FiveWrapper(i) => i.to_string_without_config_lifetime(),
             FourWrapperErrorEnum::SixWrapper(i) => i.to_string_without_config_lifetime(),
@@ -340,7 +338,6 @@ impl<'a>
     for FiveWrapperErrorEnum<'a>
 {
     fn to_string_without_config_lifetime(&self) -> String {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
         match self {
             FiveWrapperErrorEnum::FiveOneOrigin(i) => i.to_string_without_config_lifetime(),
         }
@@ -535,7 +532,6 @@ impl<'a>
     for SixWrapperErrorEnum<'a>
 {
     fn to_string_without_config_lifetime(&self) -> String {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
         match self {
             SixWrapperErrorEnum::SevenWrapper(i) => i.to_string_without_config_lifetime(),
             SixWrapperErrorEnum::EightWrapper(i) => i.to_string_without_config_lifetime(),
