@@ -149,9 +149,9 @@ where
 
 impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a> for FourWrapperError<'a> {
     fn source_to_string_without_config_lifetime(&self) -> String {
-        use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigLifetime;
+        use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
         match self {
-            FourWrapperError::Something { inner_errors, code_occurence: _code_occurence } => inner_errors.few_to_string_without_config_lifetime(),
+            FourWrapperError::Something { inner_errors, code_occurence: _code_occurence } => inner_errors.few_to_string_without_config(),
         }
     }
 }
@@ -277,9 +277,9 @@ where
 
 impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a> for FiveWrapperError<'a> {
     fn source_to_string_without_config_lifetime(&self) -> String {
-        use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigLifetime;
+        use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
         match self {
-            FiveWrapperError::Something { inner_errors, code_occurence: _code_occurence } => inner_errors.few_to_string_without_config_lifetime(),
+            FiveWrapperError::Something { inner_errors, code_occurence: _code_occurence } => inner_errors.few_to_string_without_config(),
         }
     }
 }
@@ -466,12 +466,12 @@ impl<'a>
     > for SixWrapperError<'a>
 {
     fn source_to_string_without_config_lifetime(&self) -> String {
-        use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigLifetime;
+        use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
         match self {
             SixWrapperError::Something {
                 inner_errors,
                 code_occurence: _code_occurence,
-            } => inner_errors.few_to_string_without_config_lifetime(),
+            } => inner_errors.few_to_string_without_config(),
         }
     }
 }
