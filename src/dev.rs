@@ -44,7 +44,9 @@ impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::Sourc
     }
 }
 
-impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for ThreeWrapperError<'a> {
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetime<'a>
+    for ThreeWrapperError<'a>
+{
     fn get_code_occurence_lifetime(
         &self,
     ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
@@ -156,7 +158,9 @@ impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::Sourc
     }
 }
 
-impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for FourWrapperError<'a> {
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetime<'a>
+    for FourWrapperError<'a>
+{
     fn get_code_occurence_lifetime(
         &self,
     ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
@@ -284,7 +288,9 @@ impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::Sourc
     }
 }
 
-impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for FiveWrapperError<'a> {
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetime<'a>
+    for FiveWrapperError<'a>
+{
     fn get_code_occurence_lifetime(
         &self,
     ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
@@ -400,7 +406,7 @@ impl<'a>
     }
 }
 
-impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a>
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetime<'a>
     for FiveOneOriginError<'a>
 {
     fn get_code_occurence_lifetime(
@@ -475,7 +481,9 @@ impl<'a>
     }
 }
 
-impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for SixWrapperError<'a> {
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetime<'a>
+    for SixWrapperError<'a>
+{
     fn get_code_occurence_lifetime(
         &self,
     ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
@@ -600,7 +608,9 @@ impl<'a>
     }
 }
 
-impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for SevenOriginError<'a> {
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetime<'a>
+    for SevenOriginError<'a>
+{
     fn get_code_occurence_lifetime(
         &self,
     ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
@@ -665,7 +675,9 @@ impl<'a>
     }
 }
 
-impl<'a> crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a> for EightOriginError<'a> {
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetime<'a>
+    for EightOriginError<'a>
+{
     fn get_code_occurence_lifetime(
         &self,
     ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {

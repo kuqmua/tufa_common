@@ -6,7 +6,7 @@ impl<'a, SelfGeneric, ConfigGeneric> OriginToStringWithConfigLifetime<'a, Config
 where
     SelfGeneric:
         crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a>
-            + crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a>,
+            + crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetime<'a>,
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
@@ -31,7 +31,7 @@ where
 // where
 //     SelfGeneric:
 //         crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a>
-//             + crate::traits::get_code_occurence::GetCodeOccurenceLifetimeWithDeserialize<'a>,
+//             + crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetimeWithDeserialize<'a>,
 //     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
 //         + crate::traits::fields::GetTimezone
 //         + crate::traits::get_server_address::GetServerAddress,

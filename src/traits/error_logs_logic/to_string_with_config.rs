@@ -8,7 +8,7 @@ where
         crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfigLifetime<
                 'a,
                 ConfigGeneric,
-            > + crate::traits::get_code_occurence::GetCodeOccurenceLifetime<'a>,
+            > + crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetime<'a>,
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
