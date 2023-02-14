@@ -29,11 +29,10 @@ impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::Sourc
     }
 }
 
-impl<'a>
-    crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetimeWithDeserialize<'a>
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWithDeserialize<'a>
     for ThreeWrapperErrorWithDeserialize<'a>
 {
-    fn get_code_occurence_lifetime_with_deserialize(
+    fn get_code_occurence_with_deserialize(
         &self,
     ) -> &crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a> {
         match self {
@@ -126,11 +125,10 @@ impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::Sourc
     }
 }
 
-impl<'a>
-    crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetimeWithDeserialize<'a>
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWithDeserialize<'a>
     for FourWrapperErrorWithDeserialize<'a>
 {
-    fn get_code_occurence_lifetime_with_deserialize(
+    fn get_code_occurence_with_deserialize(
         &self,
     ) -> &crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a> {
         match self {
@@ -241,11 +239,10 @@ impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::Sourc
     }
 }
 
-impl<'a>
-    crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetimeWithDeserialize<'a>
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWithDeserialize<'a>
     for FiveWrapperErrorWithDeserialize<'a>
 {
-    fn get_code_occurence_lifetime_with_deserialize(
+    fn get_code_occurence_with_deserialize(
         &self,
     ) -> &crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a> {
         match self {
@@ -341,11 +338,10 @@ impl<'a>
     }
 }
 
-impl<'a>
-    crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetimeWithDeserialize<'a>
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWithDeserialize<'a>
     for FiveOneOriginErrorWithDeserialize<'a>
 {
-    fn get_code_occurence_lifetime_with_deserialize(
+    fn get_code_occurence_with_deserialize(
         &self,
     ) -> &crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a> {
         match self {
@@ -407,11 +403,10 @@ impl<'a>
     }
 }
 
-impl<'a>
-    crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetimeWithDeserialize<'a>
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWithDeserialize<'a>
     for SixWrapperErrorWithDeserialize<'a>
 {
-    fn get_code_occurence_lifetime_with_deserialize(
+    fn get_code_occurence_with_deserialize(
         &self,
     ) -> &crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a> {
         match self {
@@ -518,11 +513,10 @@ impl<'a>
     }
 }
 
-impl<'a>
-    crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetimeWithDeserialize<'a>
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWithDeserialize<'a>
     for SevenOriginErrorWithDeserialize<'a>
 {
-    fn get_code_occurence_lifetime_with_deserialize(
+    fn get_code_occurence_with_deserialize(
         &self,
     ) -> &crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a> {
         match self {
@@ -580,11 +574,10 @@ impl<'a>
     }
 }
 
-impl<'a>
-    crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetimeWithDeserialize<'a>
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWithDeserialize<'a>
     for EightOriginErrorWithDeserialize<'a>
 {
-    fn get_code_occurence_lifetime_with_deserialize(
+    fn get_code_occurence_with_deserialize(
         &self,
     ) -> &crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a> {
         match self {

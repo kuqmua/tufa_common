@@ -44,12 +44,10 @@ impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::Sourc
     }
 }
 
-impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetime<'a>
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
     for ThreeWrapperError<'a>
 {
-    fn get_code_occurence_lifetime(
-        &self,
-    ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
         match self {
             ThreeWrapperError::Something {
                 inner_error: _inner_error,
@@ -156,12 +154,10 @@ impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::Sourc
     }
 }
 
-impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetime<'a>
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
     for FourWrapperError<'a>
 {
-    fn get_code_occurence_lifetime(
-        &self,
-    ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
         match self {
             FourWrapperError::Something {
                 inner_errors: _inner_errors,
@@ -284,12 +280,10 @@ impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::Sourc
     }
 }
 
-impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetime<'a>
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
     for FiveWrapperError<'a>
 {
-    fn get_code_occurence_lifetime(
-        &self,
-    ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
         match self {
             FiveWrapperError::Something {
                 inner_errors: _inner_error,
@@ -401,12 +395,10 @@ impl<'a>
     }
 }
 
-impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetime<'a>
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
     for FiveOneOriginError<'a>
 {
-    fn get_code_occurence_lifetime(
-        &self,
-    ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
         match self {
             FiveOneOriginError::Something {
                 error: _error,
@@ -476,12 +468,10 @@ impl<'a>
     }
 }
 
-impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetime<'a>
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
     for SixWrapperError<'a>
 {
-    fn get_code_occurence_lifetime(
-        &self,
-    ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
         match self {
             SixWrapperError::Something {
                 inner_errors: _inner_errors,
@@ -601,12 +591,10 @@ impl<'a>
     }
 }
 
-impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetime<'a>
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
     for SevenOriginError<'a>
 {
-    fn get_code_occurence_lifetime(
-        &self,
-    ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
         match self {
             SevenOriginError::Something {
                 error: _error,
@@ -668,12 +656,10 @@ impl<'a>
     }
 }
 
-impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetime<'a>
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
     for EightOriginError<'a>
 {
-    fn get_code_occurence_lifetime(
-        &self,
-    ) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
         match self {
             EightOriginError::Something {
                 error: _error,

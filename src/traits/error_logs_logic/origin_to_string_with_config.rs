@@ -6,7 +6,7 @@ impl<'a, SelfGeneric, ConfigGeneric> OriginToStringWithConfigLifetime<'a, Config
 where
     SelfGeneric:
         crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a>
-            + crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetime<'a>,
+            + crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>,
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
@@ -15,7 +15,7 @@ where
         use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetime;
         crate::traits::error_logs_logic::helpers::source_and_code_occurence_formatter(
             self.source_to_string_without_config_lifetime(),
-            self.get_code_occurence_lifetime().to_string_with_config_lifetime(config),
+            self.get_code_occurence().to_string_with_config_lifetime(config),
         )
     }
 }
@@ -31,7 +31,7 @@ where
 // where
 //     SelfGeneric:
 //         crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a>
-//             + crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceLifetimeWithDeserialize<'a>,
+//             + crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWithDeserialize<'a>,
 //     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
 //         + crate::traits::fields::GetTimezone
 //         + crate::traits::get_server_address::GetServerAddress,
@@ -40,7 +40,7 @@ where
 //         use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetime;
 //         crate::traits::error_logs_logic::helpers::source_and_code_occurence_formatter(
 //             self.source_to_string_without_config_lifetime(),
-//             self.get_code_occurence_lifetime_with_deserialize().to_string_with_config_lifetime(config),
+//             self.get_code_occurence_with_deserialize().to_string_with_config_lifetime(config),
 //         )
 //     }
 // }
