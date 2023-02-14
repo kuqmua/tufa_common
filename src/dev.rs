@@ -137,12 +137,12 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn source_to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfigLifetime;
+        use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfig;
         match self {
             FourWrapperError::Something {
                 inner_errors,
                 code_occurence: _code_occurence,
-            } => inner_errors.few_to_string_with_config_lifetime(config),
+            } => inner_errors.few_to_string_with_config(config),
         }
     }
 }
@@ -265,12 +265,12 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn source_to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfigLifetime;
+        use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfig;
         match self {
             FiveWrapperError::Something {
                 inner_errors,
                 code_occurence: _code_occurence,
-            } => inner_errors.few_to_string_with_config_lifetime(config),
+            } => inner_errors.few_to_string_with_config(config),
         }
     }
 }
@@ -450,12 +450,12 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn source_to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfigLifetime;
+        use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfig;
         match self {
             SixWrapperError::Something {
                 inner_errors,
                 code_occurence: _code_occurence,
-            } => inner_errors.few_to_string_with_config_lifetime(config),
+            } => inner_errors.few_to_string_with_config(config),
         }
     }
 }
