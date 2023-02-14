@@ -1,9 +1,9 @@
-pub trait ErrorLogLifetime<'a, ConfigGeneric> {
-    fn error_log_lifetime(&self, config: &ConfigGeneric);
+pub trait ErrorLog<'a, ConfigGeneric> {
+    fn error_log(&self, config: &ConfigGeneric);
 }
 
 impl<'a, SelfGeneric, ConfigGeneric>
-    crate::traits::error_logs_logic::error_log::ErrorLogLifetime<'a, ConfigGeneric> for SelfGeneric
+    crate::traits::error_logs_logic::error_log::ErrorLog<'a, ConfigGeneric> for SelfGeneric
 where
     ConfigGeneric: crate::traits::get_color::ErrorColorBold
         + crate::traits::fields::GetServerPort
@@ -15,7 +15,7 @@ where
         ConfigGeneric,
     >,
 {
-    fn error_log_lifetime(&self, config: &ConfigGeneric) {
+    fn error_log(&self, config: &ConfigGeneric) {
         eprintln!(
             "{}",
             config
