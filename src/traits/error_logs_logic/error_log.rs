@@ -10,7 +10,7 @@ where
         + crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
         + crate::traits::fields::GetServerIp,
-    SelfGeneric: crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetime<
+    SelfGeneric: crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithConfig<
         'a,
         ConfigGeneric,
     >,
@@ -20,7 +20,7 @@ where
             "{}",
             config
                 .get_error_color_bold()
-                .paint(self.to_string_with_config_lifetime(config))
+                .paint(self.to_string_with_config_for_source_to_string_with_config(config))
         );
     }
 }

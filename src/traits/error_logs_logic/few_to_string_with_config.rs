@@ -6,7 +6,7 @@ impl<'a, VecElementGeneric, ConfigGeneric> FewToStringWithConfig<'a, ConfigGener
     for Vec<VecElementGeneric>
 where
     VecElementGeneric:
-        crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetime<
+        crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithConfig<
             'a,
             ConfigGeneric,
         >,
@@ -20,7 +20,7 @@ where
             |mut acc, vec_element| {
                 acc.push_str(
                     &crate::traits::error_logs_logic::helpers::lines_space_backslash_addition(
-                        vec_element.to_string_with_config_lifetime(config),
+                        vec_element.to_string_with_config_for_source_to_string_with_config(config),
                     ),
                 );
                 acc
@@ -35,7 +35,7 @@ impl<'a, HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric>
 where
     HashMapKeyGeneric: std::fmt::Display,
     HashMapValueGeneric:
-        crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetime<
+        crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithConfig<
             'a,
             ConfigGeneric,
         >,
@@ -48,7 +48,7 @@ where
             acc.push_str(
                 &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
                     key,
-                    value.to_string_with_config_lifetime(config),
+                    value.to_string_with_config_for_source_to_string_with_config(config),
                 ),
             );
             acc

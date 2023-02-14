@@ -88,22 +88,6 @@ impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurenceLifet
     }
 }
 
-impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetime<
-        'a,
-        ConfigGeneric,
-    > for crate::common::code_occurence::CodeOccurenceLifetime<'a>
-where
-    ConfigGeneric: crate::traits::fields::GetTimezone
-        + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithConfig;
-        self.code_occurence_prepare_for_log_with_config(config)
-    }
-}
-
 impl<'a> crate::traits::get_git_source_file_link::GetGitSourceFileLinkLifetime<'a>
     for crate::common::code_occurence::CodeOccurenceLifetime<'a>
 {

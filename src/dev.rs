@@ -25,12 +25,12 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn source_to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetime;
+        use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithConfig;
         match self {
             ThreeWrapperError::Something {
                 inner_error,
                 code_occurence: _code_occurence,
-            } => inner_error.to_string_with_config_lifetime(config),
+            } => inner_error.to_string_with_config_for_source_to_string_with_config(config),
         }
     }
 }
@@ -70,7 +70,7 @@ impl<'a> std::fmt::Display for ThreeWrapperErrorEnum<'a> {
 }
 
 impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetime<
+    crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithConfig<
         'a,
         ConfigGeneric,
     > for ThreeWrapperErrorEnum<'a>
@@ -79,9 +79,9 @@ where
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
-    fn to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
+    fn to_string_with_config_for_source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
         match self {
-            ThreeWrapperErrorEnum::FourWrapper(i) => i.to_string_with_config_lifetime(config),
+            ThreeWrapperErrorEnum::FourWrapper(i) => i.to_string_with_config_for_source_to_string_with_config(config),
         }
     }
 }
@@ -181,7 +181,7 @@ impl<'a> std::fmt::Display for FourWrapperErrorEnum<'a> {
 }
 
 impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetime<
+    crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithConfig<
         'a,
         ConfigGeneric,
     > for FourWrapperErrorEnum<'a>
@@ -190,10 +190,10 @@ where
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
-    fn to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
+    fn to_string_with_config_for_source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
         match self {
-            FourWrapperErrorEnum::FiveWrapper(i) => i.to_string_with_config_lifetime(config),
-            FourWrapperErrorEnum::SixWrapper(i) => i.to_string_with_config_lifetime(config),
+            FourWrapperErrorEnum::FiveWrapper(i) => i.to_string_with_config_for_source_to_string_with_config(config),
+            FourWrapperErrorEnum::SixWrapper(i) => i.to_string_with_config_for_source_to_string_with_config(config),
         }
     }
 }
@@ -306,7 +306,7 @@ impl<'a> std::fmt::Display for FiveWrapperErrorEnum<'a> {
 }
 
 impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetime<
+    crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithConfig<
         'a,
         ConfigGeneric,
     > for FiveWrapperErrorEnum<'a>
@@ -315,12 +315,10 @@ where
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
-    fn to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::origin_to_string_with_config::OriginToStringWithConfigLifetime;
+    fn to_string_with_config_for_source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
+        use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithoutConfig;
         match self {
-            FiveWrapperErrorEnum::FiveOneOrigin(i) => {
-                i.origin_to_string_with_config_lifetime(config)
-            }
+            FiveWrapperErrorEnum::FiveOneOrigin(i) => i.to_string_with_config_for_source_to_string_without_config(config),
         }
     }
 }
@@ -497,7 +495,7 @@ impl<'a> std::fmt::Display for SixWrapperErrorEnum<'a> {
 }
 
 impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigLifetime<
+    crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithConfig<
         'a,
         ConfigGeneric,
     > for SixWrapperErrorEnum<'a>
@@ -506,10 +504,12 @@ where
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
-    fn to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
+    fn to_string_with_config_for_source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
+        //todo this logic must generate to_string_with_config_for_source_to_string_with_config for wrapper and to_string_with_config_for_source_to_string_without_config for origin, and maybe add trait usage if there is\are origins
+        use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithoutConfig;
         match self {
-            SixWrapperErrorEnum::SevenWrapper(i) => i.to_string_with_config_lifetime(config),
-            SixWrapperErrorEnum::EightWrapper(i) => i.to_string_with_config_lifetime(config),
+            SixWrapperErrorEnum::SevenWrapper(i) => i.to_string_with_config_for_source_to_string_without_config(config),
+            SixWrapperErrorEnum::EightWrapper(i) => i.to_string_with_config_for_source_to_string_without_config(config),
         }
     }
 }
