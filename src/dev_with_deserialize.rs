@@ -11,12 +11,8 @@ pub enum ThreeWrapperErrorWithDeserialize<'a> {
 
 impl<'a> std::fmt::Display for ThreeWrapperErrorWithDeserialize<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize;
-        write!(
-            f,
-            "{}",
-            self.to_string_without_config_lifetime_with_deserialize()
-        )
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
+        write!(f, "{}", self.to_string_without_config_with_deserialize())
     }
 }
 
@@ -26,12 +22,12 @@ impl<'a>
     > for ThreeWrapperErrorWithDeserialize<'a>
 {
     fn source_to_string_without_config(&self) -> String {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize;
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
         match self {
             ThreeWrapperErrorWithDeserialize::Something {
                 inner_error,
                 code_occurence: _code_occurence,
-            } => inner_error.to_string_without_config_lifetime_with_deserialize(),
+            } => inner_error.to_string_without_config_with_deserialize(),
         }
     }
 }
@@ -59,23 +55,20 @@ pub enum ThreeWrapperErrorWithDeserializeEnumWithDeserialize<'a> {
 
 impl<'a> std::fmt::Display for ThreeWrapperErrorWithDeserializeEnumWithDeserialize<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize;
-        write!(
-            f,
-            "{}",
-            self.to_string_without_config_lifetime_with_deserialize()
-        )
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
+        write!(f, "{}", self.to_string_without_config_with_deserialize())
     }
 }
 
 impl<'a>
-    crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize<'a>
-    for ThreeWrapperErrorWithDeserializeEnumWithDeserialize<'a>
+    crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize<
+        'a,
+    > for ThreeWrapperErrorWithDeserializeEnumWithDeserialize<'a>
 {
-    fn to_string_without_config_lifetime_with_deserialize(&self) -> String {
+    fn to_string_without_config_with_deserialize(&self) -> String {
         match self {
             ThreeWrapperErrorWithDeserializeEnumWithDeserialize::FourWrapper(i) => {
-                i.to_string_without_config_lifetime_with_deserialize()
+                i.to_string_without_config_with_deserialize()
             }
         }
     }
@@ -114,12 +107,8 @@ pub enum FourWrapperErrorWithDeserialize<'a> {
 
 impl<'a> std::fmt::Display for FourWrapperErrorWithDeserialize<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize;
-        write!(
-            f,
-            "{}",
-            self.to_string_without_config_lifetime_with_deserialize()
-        )
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
+        write!(f, "{}", self.to_string_without_config_with_deserialize())
     }
 }
 
@@ -164,26 +153,23 @@ pub enum FourWrapperErrorWithDeserializeEnumWithDeserialize<'a> {
 
 impl<'a> std::fmt::Display for FourWrapperErrorWithDeserializeEnumWithDeserialize<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize;
-        write!(
-            f,
-            "{}",
-            self.to_string_without_config_lifetime_with_deserialize()
-        )
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
+        write!(f, "{}", self.to_string_without_config_with_deserialize())
     }
 }
 
 impl<'a>
-    crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize<'a>
-    for FourWrapperErrorWithDeserializeEnumWithDeserialize<'a>
+    crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize<
+        'a,
+    > for FourWrapperErrorWithDeserializeEnumWithDeserialize<'a>
 {
-    fn to_string_without_config_lifetime_with_deserialize(&self) -> String {
+    fn to_string_without_config_with_deserialize(&self) -> String {
         match self {
             FourWrapperErrorWithDeserializeEnumWithDeserialize::FiveWrapper(i) => {
-                i.to_string_without_config_lifetime_with_deserialize()
+                i.to_string_without_config_with_deserialize()
             }
             FourWrapperErrorWithDeserializeEnumWithDeserialize::SixWrapper(i) => {
-                i.to_string_without_config_lifetime_with_deserialize()
+                i.to_string_without_config_with_deserialize()
             }
         }
     }
@@ -235,12 +221,8 @@ pub enum FiveWrapperErrorWithDeserialize<'a> {
 
 impl<'a> std::fmt::Display for FiveWrapperErrorWithDeserialize<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize;
-        write!(
-            f,
-            "{}",
-            self.to_string_without_config_lifetime_with_deserialize()
-        )
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
+        write!(f, "{}", self.to_string_without_config_with_deserialize())
     }
 }
 
@@ -283,23 +265,20 @@ pub enum FiveWrapperErrorWithDeserializeEnumWithDeserialize<'a> {
 
 impl<'a> std::fmt::Display for FiveWrapperErrorWithDeserializeEnumWithDeserialize<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize;
-        write!(
-            f,
-            "{}",
-            self.to_string_without_config_lifetime_with_deserialize()
-        )
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
+        write!(f, "{}", self.to_string_without_config_with_deserialize())
     }
 }
 
 impl<'a>
-    crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize<'a>
-    for FiveWrapperErrorWithDeserializeEnumWithDeserialize<'a>
+    crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize<
+        'a,
+    > for FiveWrapperErrorWithDeserializeEnumWithDeserialize<'a>
 {
-    fn to_string_without_config_lifetime_with_deserialize(&self) -> String {
+    fn to_string_without_config_with_deserialize(&self) -> String {
         match self {
             FiveWrapperErrorWithDeserializeEnumWithDeserialize::FiveOneOrigin(i) => {
-                i.to_string_without_config_lifetime_with_deserialize()
+                i.to_string_without_config_with_deserialize()
             }
         }
     }
@@ -336,12 +315,8 @@ pub enum FiveOneOriginErrorWithDeserialize<'a> {
 
 impl<'a> std::fmt::Display for FiveOneOriginErrorWithDeserialize<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize;
-        write!(
-            f,
-            "{}",
-            self.to_string_without_config_lifetime_with_deserialize()
-        )
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
+        write!(f, "{}", self.to_string_without_config_with_deserialize())
     }
 }
 
@@ -400,12 +375,8 @@ pub enum SixWrapperErrorWithDeserialize<'a> {
 
 impl<'a> std::fmt::Display for SixWrapperErrorWithDeserialize<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize;
-        write!(
-            f,
-            "{}",
-            self.to_string_without_config_lifetime_with_deserialize()
-        )
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
+        write!(f, "{}", self.to_string_without_config_with_deserialize())
     }
 }
 
@@ -450,26 +421,23 @@ pub enum SixWrapperErrorWithDeserializeEnumWithDeserialize<'a> {
 
 impl<'a> std::fmt::Display for SixWrapperErrorWithDeserializeEnumWithDeserialize<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize;
-        write!(
-            f,
-            "{}",
-            self.to_string_without_config_lifetime_with_deserialize()
-        )
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
+        write!(f, "{}", self.to_string_without_config_with_deserialize())
     }
 }
 
 impl<'a>
-    crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize<'a>
-    for SixWrapperErrorWithDeserializeEnumWithDeserialize<'a>
+    crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize<
+        'a,
+    > for SixWrapperErrorWithDeserializeEnumWithDeserialize<'a>
 {
-    fn to_string_without_config_lifetime_with_deserialize(&self) -> String {
+    fn to_string_without_config_with_deserialize(&self) -> String {
         match self {
             SixWrapperErrorWithDeserializeEnumWithDeserialize::SevenWrapper(i) => {
-                i.to_string_without_config_lifetime_with_deserialize()
+                i.to_string_without_config_with_deserialize()
             }
             SixWrapperErrorWithDeserializeEnumWithDeserialize::EightWrapper(i) => {
-                i.to_string_without_config_lifetime_with_deserialize()
+                i.to_string_without_config_with_deserialize()
             }
         }
     }
@@ -512,12 +480,8 @@ pub enum SevenOriginErrorWithDeserialize<'a> {
 
 impl<'a> std::fmt::Display for SevenOriginErrorWithDeserialize<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize;
-        write!(
-            f,
-            "{}",
-            self.to_string_without_config_lifetime_with_deserialize()
-        )
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
+        write!(f, "{}", self.to_string_without_config_with_deserialize())
     }
 }
 
@@ -574,12 +538,8 @@ pub enum EightOriginErrorWithDeserialize<'a> {
 
 impl<'a> std::fmt::Display for EightOriginErrorWithDeserialize<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize;
-        write!(
-            f,
-            "{}",
-            self.to_string_without_config_lifetime_with_deserialize()
-        )
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
+        write!(f, "{}", self.to_string_without_config_with_deserialize())
     }
 }
 

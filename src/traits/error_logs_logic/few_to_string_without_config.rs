@@ -55,7 +55,7 @@ pub trait FewToStringWithoutConfigWithDeserialize<'a> {
 impl<'a, VecElementGeneric> FewToStringWithoutConfigWithDeserialize<'a> for Vec<VecElementGeneric>
 where
     VecElementGeneric:
-        crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize<
+        crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize<
             'a,
         >,
 {
@@ -65,7 +65,7 @@ where
             |mut acc, vec_element| {
                 acc.push_str(
                     &crate::traits::error_logs_logic::helpers::lines_space_backslash_addition(
-                        vec_element.to_string_without_config_lifetime_with_deserialize(),
+                        vec_element.to_string_without_config_with_deserialize(),
                     ),
                 );
                 acc
@@ -79,7 +79,7 @@ impl<'a, HashMapKeyGeneric, HashMapValueGeneric> FewToStringWithoutConfigWithDes
 where
     HashMapKeyGeneric: std::fmt::Display,
     HashMapValueGeneric:
-        crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetimeWithDeserialize<
+        crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize<
             'a,
         >,
 {
@@ -88,7 +88,7 @@ where
             acc.push_str(
                 &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
                     key,
-                    value.to_string_without_config_lifetime_with_deserialize(),
+                    value.to_string_without_config_with_deserialize(),
                 ),
             );
             acc
