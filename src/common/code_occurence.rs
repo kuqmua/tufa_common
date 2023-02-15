@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize)] //Deserialize // #[serde(borrow)] - need for field with lifetime
-pub struct CodeOccurenceLifetime<'a> {
+pub struct CodeOccurence<'a> {
     file: &'a str,
     line: u32,
     column: u32,
@@ -11,7 +11,7 @@ pub struct CodeOccurenceLifetime<'a> {
     process_id: u32,
 }
 
-impl<'a> CodeOccurenceLifetime<'a> {
+impl<'a> CodeOccurence<'a> {
     pub fn new(
         git_info: &'a crate::common::git::git_info::GitInformation<'a>,
         file: &'a str,
@@ -35,49 +35,49 @@ impl<'a> CodeOccurenceLifetime<'a> {
     }
 }
 
-impl<'a> crate::traits::fields::GetFile for CodeOccurenceLifetime<'a> {
+impl<'a> crate::traits::fields::GetFile for CodeOccurence<'a> {
     fn get_file(&self) -> &str {
         &self.file
     }
 }
 
-impl<'a> crate::traits::fields::GetLine for CodeOccurenceLifetime<'a> {
+impl<'a> crate::traits::fields::GetLine for CodeOccurence<'a> {
     fn get_line(&self) -> &u32 {
         &self.line
     }
 }
 
-impl<'a> crate::traits::fields::GetColumn for CodeOccurenceLifetime<'a> {
+impl<'a> crate::traits::fields::GetColumn for CodeOccurence<'a> {
     fn get_column(&self) -> &u32 {
         &self.column
     }
 }
 
-impl<'a> crate::traits::get_git_info::GetGitInfo<'a> for CodeOccurenceLifetime<'a> {
+impl<'a> crate::traits::get_git_info::GetGitInfo<'a> for CodeOccurence<'a> {
     fn get_git_info(&self) -> &crate::common::git::git_info::GitInformation {
         &self.git_info
     }
 }
 
-impl<'a> crate::traits::get_duration::GetDuration for CodeOccurenceLifetime<'a> {
+impl<'a> crate::traits::get_duration::GetDuration for CodeOccurence<'a> {
     fn get_duration(&self) -> std::time::Duration {
         self.duration
     }
 }
 
-impl<'a> crate::traits::get_hostname::GetHostname for CodeOccurenceLifetime<'a> {
+impl<'a> crate::traits::get_hostname::GetHostname for CodeOccurence<'a> {
     fn get_hostname(&self) -> &String {
         &self.hostname
     }
 }
 
-impl<'a> crate::traits::get_process_id::GetProcessId for CodeOccurenceLifetime<'a> {
+impl<'a> crate::traits::get_process_id::GetProcessId for CodeOccurence<'a> {
     fn get_process_id(&self) -> &u32 {
         &self.process_id
     }
 }
 
-impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurenceLifetime<'a> {
+impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurence<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         use crate::traits::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithoutConfig;
         write!(
@@ -89,7 +89,7 @@ impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurenceLifet
 }
 
 impl<'a> crate::traits::get_git_source_file_link::GetGitSourceFileLinkLifetime<'a>
-    for crate::common::code_occurence::CodeOccurenceLifetime<'a>
+    for crate::common::code_occurence::CodeOccurence<'a>
 {
     fn get_git_source_file_link_lifetime(&self, file: &str, line: u32) -> String {
         self.git_info.get_git_source_file_link_lifetime(file, line)
@@ -97,7 +97,7 @@ impl<'a> crate::traits::get_git_source_file_link::GetGitSourceFileLinkLifetime<'
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct CodeOccurenceLifetimeWithDeserialize<'a> {
+pub struct CodeOccurenceWithDeserialize<'a> {
     file: &'a str,
     line: u32,
     column: u32,
@@ -107,7 +107,7 @@ pub struct CodeOccurenceLifetimeWithDeserialize<'a> {
     process_id: u32,
 }
 
-impl<'a> CodeOccurenceLifetimeWithDeserialize<'a> {
+impl<'a> CodeOccurenceWithDeserialize<'a> {
     pub fn new(
         git_info: &'a crate::common::git::git_info::GitInformation<'a>,
         file: &'a str,
@@ -131,51 +131,49 @@ impl<'a> CodeOccurenceLifetimeWithDeserialize<'a> {
     }
 }
 
-impl<'a> crate::traits::fields::GetFile for CodeOccurenceLifetimeWithDeserialize<'a> {
+impl<'a> crate::traits::fields::GetFile for CodeOccurenceWithDeserialize<'a> {
     fn get_file(&self) -> &str {
         &self.file
     }
 }
 
-impl<'a> crate::traits::fields::GetLine for CodeOccurenceLifetimeWithDeserialize<'a> {
+impl<'a> crate::traits::fields::GetLine for CodeOccurenceWithDeserialize<'a> {
     fn get_line(&self) -> &u32 {
         &self.line
     }
 }
 
-impl<'a> crate::traits::fields::GetColumn for CodeOccurenceLifetimeWithDeserialize<'a> {
+impl<'a> crate::traits::fields::GetColumn for CodeOccurenceWithDeserialize<'a> {
     fn get_column(&self) -> &u32 {
         &self.column
     }
 }
 
-impl<'a> crate::traits::get_git_info::GetGitInfo<'a> for CodeOccurenceLifetimeWithDeserialize<'a> {
+impl<'a> crate::traits::get_git_info::GetGitInfo<'a> for CodeOccurenceWithDeserialize<'a> {
     fn get_git_info(&self) -> &crate::common::git::git_info::GitInformation {
         &self.git_info
     }
 }
 
-impl<'a> crate::traits::get_duration::GetDuration for CodeOccurenceLifetimeWithDeserialize<'a> {
+impl<'a> crate::traits::get_duration::GetDuration for CodeOccurenceWithDeserialize<'a> {
     fn get_duration(&self) -> std::time::Duration {
         self.duration
     }
 }
 
-impl<'a> crate::traits::get_hostname::GetHostname for CodeOccurenceLifetimeWithDeserialize<'a> {
+impl<'a> crate::traits::get_hostname::GetHostname for CodeOccurenceWithDeserialize<'a> {
     fn get_hostname(&self) -> &String {
         &self.hostname
     }
 }
 
-impl<'a> crate::traits::get_process_id::GetProcessId for CodeOccurenceLifetimeWithDeserialize<'a> {
+impl<'a> crate::traits::get_process_id::GetProcessId for CodeOccurenceWithDeserialize<'a> {
     fn get_process_id(&self) -> &u32 {
         &self.process_id
     }
 }
 
-impl<'a> std::fmt::Display
-    for crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a>
-{
+impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurenceWithDeserialize<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         use crate::traits::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithoutConfigWithDeserialize;
         write!(
@@ -187,7 +185,7 @@ impl<'a> std::fmt::Display
 }
 
 impl<'a> crate::traits::get_git_source_file_link::GetGitSourceFileLinkLifetime<'a>
-    for crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a>
+    for crate::common::code_occurence::CodeOccurenceWithDeserialize<'a>
 {
     fn get_git_source_file_link_lifetime(&self, file: &str, line: u32) -> String {
         self.git_info.get_git_source_file_link_lifetime(file, line)

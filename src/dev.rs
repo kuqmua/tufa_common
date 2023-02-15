@@ -3,7 +3,7 @@ pub enum ThreeWrapperError<'a> {
     Something {
         //todo how to implement from for it?
         inner_error: ThreeWrapperErrorEnum<'a>,
-        code_occurence: crate::common::code_occurence::CodeOccurenceLifetime<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
 
@@ -54,7 +54,7 @@ impl<'a>
 impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
     for ThreeWrapperError<'a>
 {
-    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
         match self {
             ThreeWrapperError::Something {
                 inner_error: _inner_error,
@@ -119,7 +119,7 @@ pub enum FourWrapperError<'a> {
     Something {
         //todo how to implement from for it?
         inner_errors: std::collections::HashMap<String, FourWrapperErrorEnum<'a>>,
-        code_occurence: crate::common::code_occurence::CodeOccurenceLifetime<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
 
@@ -170,7 +170,7 @@ impl<'a>
 impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
     for FourWrapperError<'a>
 {
-    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
         match self {
             FourWrapperError::Something {
                 inner_errors: _inner_errors,
@@ -251,7 +251,7 @@ pub enum FiveWrapperError<'a> {
     Something {
         //todo how to implement from for it?
         inner_errors: std::collections::HashMap<String, FiveWrapperErrorEnum<'a>>,
-        code_occurence: crate::common::code_occurence::CodeOccurenceLifetime<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
 
@@ -302,7 +302,7 @@ impl<'a>
 impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
     for FiveWrapperError<'a>
 {
-    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
         match self {
             FiveWrapperError::Something {
                 inner_errors: _inner_error,
@@ -370,7 +370,7 @@ pub fn five<'a>() -> Result<(), Box<FiveWrapperError<'a>>> {
 pub enum FiveOneOriginError<'a> {
     Something {
         error: String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceLifetime<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
 
@@ -415,7 +415,7 @@ impl<'a>
 impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
     for FiveOneOriginError<'a>
 {
-    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
         match self {
             FiveOneOriginError::Something {
                 error: _error,
@@ -437,7 +437,7 @@ pub enum SixWrapperError<'a> {
     Something {
         //todo how to implement from for it?
         inner_errors: Vec<SixWrapperErrorEnum<'a>>,
-        code_occurence: crate::common::code_occurence::CodeOccurenceLifetime<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
 
@@ -488,7 +488,7 @@ impl<'a>
 impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
     for SixWrapperError<'a>
 {
-    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
         match self {
             SixWrapperError::Something {
                 inner_errors: _inner_errors,
@@ -568,7 +568,7 @@ pub fn six<'a>() -> Result<(), Box<SixWrapperError<'a>>> {
 pub enum SevenOriginError<'a> {
     Something {
         error: String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceLifetime<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
 
@@ -613,7 +613,7 @@ impl<'a>
 impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
     for SevenOriginError<'a>
 {
-    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
         match self {
             SevenOriginError::Something {
                 error: _error,
@@ -634,7 +634,7 @@ pub fn seven<'a>() -> Result<(), Box<SevenOriginError<'a>>> {
 pub enum EightOriginError<'a> {
     Something {
         error: String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceLifetime<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
 
@@ -679,7 +679,7 @@ impl<'a>
 impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
     for EightOriginError<'a>
 {
-    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurenceLifetime<'a> {
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
         match self {
             EightOriginError::Something {
                 error: _error,

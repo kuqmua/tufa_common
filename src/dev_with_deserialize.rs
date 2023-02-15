@@ -5,7 +5,7 @@ pub enum ThreeWrapperErrorWithDeserialize<'a> {
         #[serde(borrow)]
         inner_error: ThreeWrapperErrorWithDeserializeEnumWithDeserialize<'a>,
         #[serde(borrow)]
-        code_occurence: crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize<'a>,
     },
 }
 
@@ -37,7 +37,7 @@ impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWi
 {
     fn get_code_occurence_with_deserialize(
         &self,
-    ) -> &crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a> {
+    ) -> &crate::common::code_occurence::CodeOccurenceWithDeserialize<'a> {
         match self {
             ThreeWrapperErrorWithDeserialize::Something {
                 inner_error: _inner_error,
@@ -78,13 +78,12 @@ pub fn three_with_deserialize<'a>() -> Result<(), Box<ThreeWrapperErrorWithDeser
     if let Err(e) = four_with_deserialize() {
         let f = ThreeWrapperErrorWithDeserialize::Something {
             inner_error: ThreeWrapperErrorWithDeserializeEnumWithDeserialize::FourWrapper(*e),
-            code_occurence:
-                crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize::new(
-                    &crate::global_variables::compile_time::git_info::GIT_INFO,
-                    file!(),
-                    line!(),
-                    column!(),
-                ),
+            code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize::new(
+                &crate::global_variables::compile_time::git_info::GIT_INFO,
+                file!(),
+                line!(),
+                column!(),
+            ),
         };
         return Err(Box::new(f));
     };
@@ -101,7 +100,7 @@ pub enum FourWrapperErrorWithDeserialize<'a> {
             FourWrapperErrorWithDeserializeEnumWithDeserialize<'a>,
         >,
         #[serde(borrow)]
-        code_occurence: crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize<'a>,
     },
 }
 
@@ -133,7 +132,7 @@ impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWi
 {
     fn get_code_occurence_with_deserialize(
         &self,
-    ) -> &crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a> {
+    ) -> &crate::common::code_occurence::CodeOccurenceWithDeserialize<'a> {
         match self {
             FourWrapperErrorWithDeserialize::Something {
                 inner_errors: _inner_errors,
@@ -192,13 +191,12 @@ pub fn four_with_deserialize<'a>() -> Result<(), Box<FourWrapperErrorWithDeseria
                         FourWrapperErrorWithDeserializeEnumWithDeserialize::SixWrapper(*s),
                     ),
                 ]),
-                code_occurence:
-                    crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize::new(
-                        &crate::global_variables::compile_time::git_info::GIT_INFO,
-                        file!(),
-                        line!(),
-                        column!(),
-                    ),
+                code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize::new(
+                    &crate::global_variables::compile_time::git_info::GIT_INFO,
+                    file!(),
+                    line!(),
+                    column!(),
+                ),
             };
             return Err(Box::new(f));
         }
@@ -215,7 +213,7 @@ pub enum FiveWrapperErrorWithDeserialize<'a> {
             FiveWrapperErrorWithDeserializeEnumWithDeserialize<'a>,
         >,
         #[serde(borrow)]
-        code_occurence: crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize<'a>,
     },
 }
 
@@ -247,7 +245,7 @@ impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWi
 {
     fn get_code_occurence_with_deserialize(
         &self,
-    ) -> &crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a> {
+    ) -> &crate::common::code_occurence::CodeOccurenceWithDeserialize<'a> {
         match self {
             FiveWrapperErrorWithDeserialize::Something {
                 inner_errors: _inner_error,
@@ -291,13 +289,12 @@ pub fn five_with_deserialize<'a>() -> Result<(), Box<FiveWrapperErrorWithDeseria
                 String::from("five_one_hashmap_key"),
                 FiveWrapperErrorWithDeserializeEnumWithDeserialize::FiveOneOrigin(*e),
             )]),
-            code_occurence:
-                crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize::new(
-                    &crate::global_variables::compile_time::git_info::GIT_INFO,
-                    file!(),
-                    line!(),
-                    column!(),
-                ),
+            code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize::new(
+                &crate::global_variables::compile_time::git_info::GIT_INFO,
+                file!(),
+                line!(),
+                column!(),
+            ),
         };
         return Err(Box::new(f));
     }
@@ -309,7 +306,7 @@ pub enum FiveOneOriginErrorWithDeserialize<'a> {
     Something {
         error: String,
         #[serde(borrow)]
-        code_occurence: crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize<'a>,
     },
 }
 
@@ -340,7 +337,7 @@ impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWi
 {
     fn get_code_occurence_with_deserialize(
         &self,
-    ) -> &crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a> {
+    ) -> &crate::common::code_occurence::CodeOccurenceWithDeserialize<'a> {
         match self {
             FiveOneOriginErrorWithDeserialize::Something {
                 error: _error,
@@ -353,7 +350,7 @@ impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWi
 pub fn five_one_with_deserialize<'a>() -> Result<(), Box<FiveOneOriginErrorWithDeserialize<'a>>> {
     return Err(Box::new(FiveOneOriginErrorWithDeserialize::Something {
         error: String::from("five_one error"),
-        code_occurence: crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize::new(
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize::new(
             &crate::global_variables::compile_time::git_info::GIT_INFO,
             file!(),
             line!(),
@@ -369,7 +366,7 @@ pub enum SixWrapperErrorWithDeserialize<'a> {
         #[serde(borrow)]
         inner_errors: Vec<SixWrapperErrorWithDeserializeEnumWithDeserialize<'a>>,
         #[serde(borrow)]
-        code_occurence: crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize<'a>,
     },
 }
 
@@ -401,7 +398,7 @@ impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWi
 {
     fn get_code_occurence_with_deserialize(
         &self,
-    ) -> &crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a> {
+    ) -> &crate::common::code_occurence::CodeOccurenceWithDeserialize<'a> {
         match self {
             SixWrapperErrorWithDeserialize::Something {
                 inner_errors: _inner_errors,
@@ -456,13 +453,12 @@ pub fn six_with_deserialize<'a>() -> Result<(), Box<SixWrapperErrorWithDeseriali
                     SixWrapperErrorWithDeserializeEnumWithDeserialize::SevenWrapper(*seven_error),
                     SixWrapperErrorWithDeserializeEnumWithDeserialize::EightWrapper(*eight_error),
                 ],
-                code_occurence:
-                    crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize::new(
-                        &crate::global_variables::compile_time::git_info::GIT_INFO,
-                        file!(),
-                        line!(),
-                        column!(),
-                    ),
+                code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize::new(
+                    &crate::global_variables::compile_time::git_info::GIT_INFO,
+                    file!(),
+                    line!(),
+                    column!(),
+                ),
             };
             return Err(Box::new(f));
         }
@@ -474,7 +470,7 @@ pub enum SevenOriginErrorWithDeserialize<'a> {
     Something {
         error: String,
         #[serde(borrow)]
-        code_occurence: crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize<'a>,
     },
 }
 
@@ -505,7 +501,7 @@ impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWi
 {
     fn get_code_occurence_with_deserialize(
         &self,
-    ) -> &crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a> {
+    ) -> &crate::common::code_occurence::CodeOccurenceWithDeserialize<'a> {
         match self {
             SevenOriginErrorWithDeserialize::Something {
                 error: _error,
@@ -518,7 +514,7 @@ impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWi
 pub fn seven_with_deserialize<'a>() -> Result<(), Box<SevenOriginErrorWithDeserialize<'a>>> {
     return Err(Box::new(SevenOriginErrorWithDeserialize::Something {
         error: String::from("error_eight"),
-        code_occurence: crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize::new(
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize::new(
             &crate::global_variables::compile_time::git_info::GIT_INFO,
             file!(),
             line!(),
@@ -532,7 +528,7 @@ pub enum EightOriginErrorWithDeserialize<'a> {
     Something {
         error: String,
         #[serde(borrow)]
-        code_occurence: crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize<'a>,
     },
 }
 
@@ -563,7 +559,7 @@ impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWi
 {
     fn get_code_occurence_with_deserialize(
         &self,
-    ) -> &crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize<'a> {
+    ) -> &crate::common::code_occurence::CodeOccurenceWithDeserialize<'a> {
         match self {
             EightOriginErrorWithDeserialize::Something {
                 error: _error,
@@ -576,7 +572,7 @@ impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWi
 pub fn eight_with_deserialize<'a>() -> Result<(), Box<EightOriginErrorWithDeserialize<'a>>> {
     return Err(Box::new(EightOriginErrorWithDeserialize::Something {
         error: String::from("error_eight"),
-        code_occurence: crate::common::code_occurence::CodeOccurenceLifetimeWithDeserialize::new(
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize::new(
             &crate::global_variables::compile_time::git_info::GIT_INFO,
             file!(),
             line!(),

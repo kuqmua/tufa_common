@@ -1,3 +1,4 @@
+//todo remove it after removing where was
 pub trait GetGitSourceFileLink {
     fn get_git_source_file_link(&self, file: &str, line: u32) -> String;
 }
@@ -15,6 +16,7 @@ where
     }
 }
 
+//todo remove lifetime from name after removing where was
 pub trait GetGitSourceFileLinkLifetime<'a> {
     fn get_git_source_file_link_lifetime(&self, file: &str, line: u32) -> String;
 }
