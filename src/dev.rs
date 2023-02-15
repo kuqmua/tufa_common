@@ -15,7 +15,7 @@ impl<'a> std::fmt::Display for ThreeWrapperError<'a> {
 }
 
 impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfigLifetime<
+    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
         'a,
         ConfigGeneric,
     > for ThreeWrapperError<'a>
@@ -24,7 +24,7 @@ where
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
-    fn source_to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
+    fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
         use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithConfig;
         match self {
             ThreeWrapperError::Something {
@@ -125,7 +125,7 @@ impl<'a> std::fmt::Display for FourWrapperError<'a> {
 }
 
 impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfigLifetime<
+    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
         'a,
         ConfigGeneric,
     > for FourWrapperError<'a>
@@ -134,7 +134,7 @@ where
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
-    fn source_to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
+    fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
         use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfig;
         match self {
             FourWrapperError::Something {
@@ -251,7 +251,7 @@ impl<'a> std::fmt::Display for FiveWrapperError<'a> {
 }
 
 impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfigLifetime<
+    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
         'a,
         ConfigGeneric,
     > for FiveWrapperError<'a>
@@ -260,7 +260,7 @@ where
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
-    fn source_to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
+    fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
         use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfig;
         match self {
             FiveWrapperError::Something {
@@ -364,7 +364,7 @@ impl<'a> std::fmt::Display for FiveOneOriginError<'a> {
 }
 
 impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfigLifetime<
+    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
         'a,
         ConfigGeneric,
     > for FiveOneOriginError<'a>
@@ -373,7 +373,7 @@ where
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
-    fn source_to_string_with_config_lifetime(&self, _config: &ConfigGeneric) -> String {
+    fn source_to_string_with_config(&self, _config: &ConfigGeneric) -> String {
         use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime;
         self.source_to_string_without_config_lifetime()
     }
@@ -430,7 +430,7 @@ impl<'a> std::fmt::Display for SixWrapperError<'a> {
 }
 
 impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfigLifetime<
+    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
         'a,
         ConfigGeneric,
     > for SixWrapperError<'a>
@@ -439,7 +439,7 @@ where
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
-    fn source_to_string_with_config_lifetime(&self, config: &ConfigGeneric) -> String {
+    fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
         use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfig;
         match self {
             SixWrapperError::Something {
@@ -562,7 +562,7 @@ impl<'a> std::fmt::Display for SevenOriginError<'a> {
 }
 
 impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfigLifetime<
+    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
         'a,
         ConfigGeneric,
     > for SevenOriginError<'a>
@@ -571,7 +571,7 @@ where
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
-    fn source_to_string_with_config_lifetime(&self, _config: &ConfigGeneric) -> String {
+    fn source_to_string_with_config(&self, _config: &ConfigGeneric) -> String {
         use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime;
         self.source_to_string_without_config_lifetime()
     }
@@ -627,7 +627,7 @@ impl<'a> std::fmt::Display for EightOriginError<'a> {
 }
 
 impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfigLifetime<
+    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
         'a,
         ConfigGeneric,
     > for EightOriginError<'a>
@@ -636,7 +636,7 @@ where
         + crate::traits::fields::GetTimezone
         + crate::traits::get_server_address::GetServerAddress,
 {
-    fn source_to_string_with_config_lifetime(&self, _config: &ConfigGeneric) -> String {
+    fn source_to_string_with_config(&self, _config: &ConfigGeneric) -> String {
         use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime;
         self.source_to_string_without_config_lifetime()
     }
