@@ -17,7 +17,7 @@ where
         + crate::traits::get_duration::GetDuration
         + crate::traits::get_hostname::GetHostname
         + crate::traits::get_process_id::GetProcessId
-        + crate::traits::get_git_source_file_link::GetGitSourceFileLinkLifetime<'a>,
+        + crate::traits::get_git_source_file_link::GetGitSourceFileLink<'a>,
     ConfigGeneric: crate::traits::fields::GetTimezone
         + crate::traits::fields::GetSourcePlaceType
         + crate::traits::get_server_address::GetServerAddress,
@@ -76,7 +76,7 @@ where
         + crate::traits::fields::GetLine
         + crate::traits::fields::GetColumn
         + crate::traits::get_code_path_without_config::GetCodePathWithoutConfig
-        + crate::traits::get_git_source_file_link::GetGitSourceFileLinkLifetime<'a>
+        + crate::traits::get_git_source_file_link::GetGitSourceFileLink<'a>
         + crate::traits::get_duration::GetDuration
         + crate::traits::get_hostname::GetHostname
         + crate::traits::get_process_id::GetProcessId,

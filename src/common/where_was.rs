@@ -1,5 +1,4 @@
 use crate::common::git::git_info::GitInformationWithoutLifetimes;
-use crate::traits::get_git_source_file_link::GetGitSourceFileLink;
 use crate::traits::where_was_methods::WhereWasMethods;
 
 #[derive(Debug, Clone)]
@@ -69,7 +68,18 @@ impl WhereWasMethods for WhereWas {
         let index = file
             .find(backslash)
             .expect("cant find backslash symbol in file path of location"); //todo - bad code ?
-        git_info.get_git_source_file_link(&file[index + backslash.len()..], self.line)
+                                                                            //it was get_git_source_file_link trait, but it was removed coz its worse solution and must be removed
+        use crate::traits::fields::GetGitCommitId;
+        use crate::traits::fields::GetGitRepoLink;
+        let git_repo_link = git_info.get_git_repo_link();
+        let git_commit_id = git_info.get_git_commit_id();
+        format!(
+            "{}/blob/{}/{}#L{}",
+            git_repo_link,
+            git_commit_id,
+            &file[index + backslash.len()..],
+            self.line
+        )
     }
 }
 

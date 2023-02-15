@@ -11,7 +11,7 @@ impl<'a> SourcePlaceType {
         code_occurence: &(impl crate::traits::fields::GetFile
               + crate::traits::fields::GetLine
               + crate::traits::fields::GetColumn
-              + crate::traits::get_git_source_file_link::GetGitSourceFileLinkLifetime<'a>),
+              + crate::traits::get_git_source_file_link::GetGitSourceFileLink<'a>),
     ) -> String {
         match self {
             crate::config_mods::source_place_type::SourcePlaceType::Source => {

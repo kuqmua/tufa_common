@@ -1,6 +1,4 @@
-use serde::{Deserialize, Serialize};
-
-#[derive(Debug, Serialize)] //Deserialize // #[serde(borrow)] - need for field with lifetime
+#[derive(Debug, serde::Serialize)]
 pub struct CodeOccurence<'a> {
     file: &'a str,
     line: u32,
@@ -88,15 +86,15 @@ impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurence<'a> 
     }
 }
 
-impl<'a> crate::traits::get_git_source_file_link::GetGitSourceFileLinkLifetime<'a>
+impl<'a> crate::traits::get_git_source_file_link::GetGitSourceFileLink<'a>
     for crate::common::code_occurence::CodeOccurence<'a>
 {
-    fn get_git_source_file_link_lifetime(&self, file: &str, line: u32) -> String {
-        self.git_info.get_git_source_file_link_lifetime(file, line)
+    fn get_git_source_file_link(&self, file: &str, line: u32) -> String {
+        self.git_info.get_git_source_file_link(file, line)
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct CodeOccurenceWithDeserialize<'a> {
     file: &'a str,
     line: u32,
@@ -184,10 +182,10 @@ impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurenceWithD
     }
 }
 
-impl<'a> crate::traits::get_git_source_file_link::GetGitSourceFileLinkLifetime<'a>
+impl<'a> crate::traits::get_git_source_file_link::GetGitSourceFileLink<'a>
     for crate::common::code_occurence::CodeOccurenceWithDeserialize<'a>
 {
-    fn get_git_source_file_link_lifetime(&self, file: &str, line: u32) -> String {
-        self.git_info.get_git_source_file_link_lifetime(file, line)
+    fn get_git_source_file_link(&self, file: &str, line: u32) -> String {
+        self.git_info.get_git_source_file_link(file, line)
     }
 }
