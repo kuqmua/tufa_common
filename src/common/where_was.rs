@@ -69,10 +69,8 @@ impl WhereWasMethods for WhereWas {
             .find(backslash)
             .expect("cant find backslash symbol in file path of location"); //todo - bad code ?
                                                                             //it was get_git_source_file_link trait, but it was removed coz its worse solution and must be removed
-        use crate::traits::fields::GetGitCommitId;
-        use crate::traits::fields::GetGitRepoLink;
-        let git_repo_link = git_info.get_git_repo_link();
-        let git_commit_id = git_info.get_git_commit_id();
+        let git_repo_link = &git_info.git_repo_link;
+        let git_commit_id = &git_info.git_commit_id;
         format!(
             "{}/blob/{}/{}#L{}",
             git_repo_link,
