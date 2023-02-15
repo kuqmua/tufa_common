@@ -35,11 +35,18 @@ where
     }
 }
 
-impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a> for ThreeWrapperError<'a> {
-    fn source_to_string_without_config_lifetime(&self) -> String {
+impl<'a>
+    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
+        'a,
+    > for ThreeWrapperError<'a>
+{
+    fn source_to_string_without_config(&self) -> String {
         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
         match self {
-            ThreeWrapperError::Something { inner_error, code_occurence: _code_occurence } => inner_error.to_string_without_config_lifetime(),
+            ThreeWrapperError::Something {
+                inner_error,
+                code_occurence: _code_occurence,
+            } => inner_error.to_string_without_config_lifetime(),
         }
     }
 }
@@ -145,11 +152,18 @@ where
     }
 }
 
-impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a> for FourWrapperError<'a> {
-    fn source_to_string_without_config_lifetime(&self) -> String {
+impl<'a>
+    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
+        'a,
+    > for FourWrapperError<'a>
+{
+    fn source_to_string_without_config(&self) -> String {
         use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
         match self {
-            FourWrapperError::Something { inner_errors, code_occurence: _code_occurence } => inner_errors.few_to_string_without_config(),
+            FourWrapperError::Something {
+                inner_errors,
+                code_occurence: _code_occurence,
+            } => inner_errors.few_to_string_without_config(),
         }
     }
 }
@@ -271,11 +285,18 @@ where
     }
 }
 
-impl<'a> crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a> for FiveWrapperError<'a> {
-    fn source_to_string_without_config_lifetime(&self) -> String {
+impl<'a>
+    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
+        'a,
+    > for FiveWrapperError<'a>
+{
+    fn source_to_string_without_config(&self) -> String {
         use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
         match self {
-            FiveWrapperError::Something { inner_errors, code_occurence: _code_occurence } => inner_errors.few_to_string_without_config(),
+            FiveWrapperError::Something {
+                inner_errors,
+                code_occurence: _code_occurence,
+            } => inner_errors.few_to_string_without_config(),
         }
     }
 }
@@ -374,16 +395,17 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn source_to_string_with_config(&self, _config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime;
-        self.source_to_string_without_config_lifetime()
+        use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig;
+        self.source_to_string_without_config()
     }
 }
 
 impl<'a>
-    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a>
-    for FiveOneOriginError<'a>
+    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
+        'a,
+    > for FiveOneOriginError<'a>
 {
-    fn source_to_string_without_config_lifetime(&self) -> String {
+    fn source_to_string_without_config(&self) -> String {
         match self {
             FiveOneOriginError::Something {
                 error,
@@ -451,11 +473,11 @@ where
 }
 
 impl<'a>
-    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<
+    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
         'a,
     > for SixWrapperError<'a>
 {
-    fn source_to_string_without_config_lifetime(&self) -> String {
+    fn source_to_string_without_config(&self) -> String {
         use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
         match self {
             SixWrapperError::Something {
@@ -572,16 +594,17 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn source_to_string_with_config(&self, _config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime;
-        self.source_to_string_without_config_lifetime()
+        use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig;
+        self.source_to_string_without_config()
     }
 }
 
 impl<'a>
-    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a>
-    for SevenOriginError<'a>
+    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
+        'a,
+    > for SevenOriginError<'a>
 {
-    fn source_to_string_without_config_lifetime(&self) -> String {
+    fn source_to_string_without_config(&self) -> String {
         match self {
             SevenOriginError::Something {
                 error,
@@ -637,16 +660,17 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn source_to_string_with_config(&self, _config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime;
-        self.source_to_string_without_config_lifetime()
+        use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig;
+        self.source_to_string_without_config()
     }
 }
 
 impl<'a>
-    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfigLifetime<'a>
-    for EightOriginError<'a>
+    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
+        'a,
+    > for EightOriginError<'a>
 {
-    fn source_to_string_without_config_lifetime(&self) -> String {
+    fn source_to_string_without_config(&self) -> String {
         match self {
             EightOriginError::Something {
                 error,

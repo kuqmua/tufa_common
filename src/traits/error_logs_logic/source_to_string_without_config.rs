@@ -1,3 +1,3 @@
-pub trait SourceToStringWithoutConfigLifetime<'a> {
-    fn source_to_string_without_config_lifetime(&self) -> String;
+pub trait SourceToStringWithoutConfig<'a> {
+    fn source_to_string_without_config(&self) -> String;
 }
