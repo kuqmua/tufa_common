@@ -1,14 +1,14 @@
-pub trait ToStringWithoutConfigLifetime<'a> {
-    fn to_string_without_config_lifetime(&self) -> String;
+pub trait ToStringWithoutConfig<'a> {
+    fn to_string_without_config(&self) -> String;
 }
 
-impl<'a, SelfGeneric> ToStringWithoutConfigLifetime<'a> for SelfGeneric
+impl<'a, SelfGeneric> ToStringWithoutConfig<'a> for SelfGeneric
 where
     SelfGeneric:
         crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<'a>
             + crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>,
 {
-    fn to_string_without_config_lifetime(&self) -> String {
+    fn to_string_without_config(&self) -> String {
         crate::traits::error_logs_logic::helpers::source_and_code_occurence_formatter(
             self.source_to_string_without_config(),
             self.get_code_occurence().to_string(),

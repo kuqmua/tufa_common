@@ -9,8 +9,8 @@ pub enum ThreeWrapperError<'a> {
 
 impl<'a> std::fmt::Display for ThreeWrapperError<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
-        write!(f, "{}", self.to_string_without_config_lifetime())
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+        write!(f, "{}", self.to_string_without_config())
     }
 }
 
@@ -41,12 +41,12 @@ impl<'a>
     > for ThreeWrapperError<'a>
 {
     fn source_to_string_without_config(&self) -> String {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
         match self {
             ThreeWrapperError::Something {
                 inner_error,
                 code_occurence: _code_occurence,
-            } => inner_error.to_string_without_config_lifetime(),
+            } => inner_error.to_string_without_config(),
         }
     }
 }
@@ -71,8 +71,8 @@ pub enum ThreeWrapperErrorEnum<'a> {
 
 impl<'a> std::fmt::Display for ThreeWrapperErrorEnum<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
-        write!(f, "{}", self.to_string_without_config_lifetime())
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+        write!(f, "{}", self.to_string_without_config())
     }
 }
 
@@ -93,13 +93,12 @@ where
     }
 }
 
-impl<'a>
-    crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime<'a>
+impl<'a> crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig<'a>
     for ThreeWrapperErrorEnum<'a>
 {
-    fn to_string_without_config_lifetime(&self) -> String {
+    fn to_string_without_config(&self) -> String {
         match self {
-            ThreeWrapperErrorEnum::FourWrapper(i) => i.to_string_without_config_lifetime(),
+            ThreeWrapperErrorEnum::FourWrapper(i) => i.to_string_without_config(),
         }
     }
 }
@@ -126,8 +125,8 @@ pub enum FourWrapperError<'a> {
 
 impl<'a> std::fmt::Display for FourWrapperError<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
-        write!(f, "{}", self.to_string_without_config_lifetime())
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+        write!(f, "{}", self.to_string_without_config())
     }
 }
 
@@ -189,8 +188,8 @@ pub enum FourWrapperErrorEnum<'a> {
 
 impl<'a> std::fmt::Display for FourWrapperErrorEnum<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
-        write!(f, "{}", self.to_string_without_config_lifetime())
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+        write!(f, "{}", self.to_string_without_config())
     }
 }
 
@@ -212,14 +211,13 @@ where
     }
 }
 
-impl<'a>
-    crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime<'a>
+impl<'a> crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig<'a>
     for FourWrapperErrorEnum<'a>
 {
-    fn to_string_without_config_lifetime(&self) -> String {
+    fn to_string_without_config(&self) -> String {
         match self {
-            FourWrapperErrorEnum::FiveWrapper(i) => i.to_string_without_config_lifetime(),
-            FourWrapperErrorEnum::SixWrapper(i) => i.to_string_without_config_lifetime(),
+            FourWrapperErrorEnum::FiveWrapper(i) => i.to_string_without_config(),
+            FourWrapperErrorEnum::SixWrapper(i) => i.to_string_without_config(),
         }
     }
 }
@@ -259,8 +257,8 @@ pub enum FiveWrapperError<'a> {
 
 impl<'a> std::fmt::Display for FiveWrapperError<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
-        write!(f, "{}", self.to_string_without_config_lifetime())
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+        write!(f, "{}", self.to_string_without_config())
     }
 }
 
@@ -321,8 +319,8 @@ pub enum FiveWrapperErrorEnum<'a> {
 
 impl<'a> std::fmt::Display for FiveWrapperErrorEnum<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
-        write!(f, "{}", self.to_string_without_config_lifetime())
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+        write!(f, "{}", self.to_string_without_config())
     }
 }
 
@@ -344,13 +342,12 @@ where
     }
 }
 
-impl<'a>
-    crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime<'a>
+impl<'a> crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig<'a>
     for FiveWrapperErrorEnum<'a>
 {
-    fn to_string_without_config_lifetime(&self) -> String {
+    fn to_string_without_config(&self) -> String {
         match self {
-            FiveWrapperErrorEnum::FiveOneOrigin(i) => i.to_string_without_config_lifetime(),
+            FiveWrapperErrorEnum::FiveOneOrigin(i) => i.to_string_without_config(),
         }
     }
 }
@@ -379,8 +376,8 @@ pub enum FiveOneOriginError<'a> {
 
 impl<'a> std::fmt::Display for FiveOneOriginError<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
-        write!(f, "{}", self.to_string_without_config_lifetime())
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+        write!(f, "{}", self.to_string_without_config())
     }
 }
 
@@ -446,8 +443,8 @@ pub enum SixWrapperError<'a> {
 
 impl<'a> std::fmt::Display for SixWrapperError<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
-        write!(f, "{}", self.to_string_without_config_lifetime())
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+        write!(f, "{}", self.to_string_without_config())
     }
 }
 
@@ -511,8 +508,8 @@ pub enum SixWrapperErrorEnum<'a> {
 
 impl<'a> std::fmt::Display for SixWrapperErrorEnum<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
-        write!(f, "{}", self.to_string_without_config_lifetime())
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+        write!(f, "{}", self.to_string_without_config())
     }
 }
 
@@ -536,14 +533,13 @@ where
     }
 }
 
-impl<'a>
-    crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime<'a>
+impl<'a> crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig<'a>
     for SixWrapperErrorEnum<'a>
 {
-    fn to_string_without_config_lifetime(&self) -> String {
+    fn to_string_without_config(&self) -> String {
         match self {
-            SixWrapperErrorEnum::SevenWrapper(i) => i.to_string_without_config_lifetime(),
-            SixWrapperErrorEnum::EightWrapper(i) => i.to_string_without_config_lifetime(),
+            SixWrapperErrorEnum::SevenWrapper(i) => i.to_string_without_config(),
+            SixWrapperErrorEnum::EightWrapper(i) => i.to_string_without_config(),
         }
     }
 }
@@ -578,8 +574,8 @@ pub enum SevenOriginError<'a> {
 
 impl<'a> std::fmt::Display for SevenOriginError<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
-        write!(f, "{}", self.to_string_without_config_lifetime())
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+        write!(f, "{}", self.to_string_without_config())
     }
 }
 
@@ -644,8 +640,8 @@ pub enum EightOriginError<'a> {
 
 impl<'a> std::fmt::Display for EightOriginError<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigLifetime;
-        write!(f, "{}", self.to_string_without_config_lifetime())
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+        write!(f, "{}", self.to_string_without_config())
     }
 }
 
