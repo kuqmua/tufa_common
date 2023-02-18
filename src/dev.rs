@@ -25,12 +25,14 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithConfig;
         match self {
             ThreeWrapperError::Something {
                 inner_error,
                 code_occurence: _code_occurence,
-            } => inner_error.to_string_with_config_for_source_to_string_with_config(config),
+            } => {
+                use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithConfig;
+                inner_error.to_string_with_config_for_source_to_string_with_config(config)
+            }
         }
     }
 }
@@ -41,12 +43,14 @@ impl<'a>
     > for ThreeWrapperError<'a>
 {
     fn source_to_string_without_config(&self) -> String {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
         match self {
             ThreeWrapperError::Something {
                 inner_error,
                 code_occurence: _code_occurence,
-            } => inner_error.to_string_without_config(),
+            } => {
+                use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+                inner_error.to_string_without_config()
+            }
         }
     }
 }
@@ -141,12 +145,14 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfig;
         match self {
             FourWrapperError::Something {
                 inner_errors,
                 code_occurence: _code_occurence,
-            } => inner_errors.few_to_string_with_config(config),
+            } => {
+                use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfig;
+                inner_errors.few_to_string_with_config(config)
+            }
         }
     }
 }
@@ -157,12 +163,14 @@ impl<'a>
     > for FourWrapperError<'a>
 {
     fn source_to_string_without_config(&self) -> String {
-        use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
         match self {
             FourWrapperError::Something {
                 inner_errors,
                 code_occurence: _code_occurence,
-            } => inner_errors.few_to_string_without_config(),
+            } => {
+                use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
+                inner_errors.few_to_string_without_config()
+            }
         }
     }
 }
@@ -273,12 +281,14 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfig;
         match self {
             FiveWrapperError::Something {
                 inner_errors,
                 code_occurence: _code_occurence,
-            } => inner_errors.few_to_string_with_config(config),
+            } => {
+                use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfig;
+                inner_errors.few_to_string_with_config(config)
+            }
         }
     }
 }
@@ -289,12 +299,14 @@ impl<'a>
     > for FiveWrapperError<'a>
 {
     fn source_to_string_without_config(&self) -> String {
-        use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
         match self {
             FiveWrapperError::Something {
                 inner_errors,
                 code_occurence: _code_occurence,
-            } => inner_errors.few_to_string_without_config(),
+            } => {
+                use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
+                inner_errors.few_to_string_without_config()
+            }
         }
     }
 }
@@ -335,9 +347,11 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn to_string_with_config_for_source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithoutConfig;
         match self {
-            FiveWrapperErrorEnum::FiveOneOrigin(i) => i.to_string_with_config_for_source_to_string_without_config(config),
+            FiveWrapperErrorEnum::FiveOneOrigin(i) => {
+                use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithoutConfig;
+                i.to_string_with_config_for_source_to_string_without_config(config)
+            },
         }
     }
 }
@@ -459,12 +473,14 @@ where
         + crate::traits::get_server_address::GetServerAddress,
 {
     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfig;
         match self {
             SixWrapperError::Something {
                 inner_errors,
                 code_occurence: _code_occurence,
-            } => inner_errors.few_to_string_with_config(config),
+            } => {
+                use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfig;
+                inner_errors.few_to_string_with_config(config)
+            }
         }
     }
 }
@@ -475,12 +491,14 @@ impl<'a>
     > for SixWrapperError<'a>
 {
     fn source_to_string_without_config(&self) -> String {
-        use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
         match self {
             SixWrapperError::Something {
                 inner_errors,
                 code_occurence: _code_occurence,
-            } => inner_errors.few_to_string_without_config(),
+            } => {
+                use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
+                inner_errors.few_to_string_without_config()
+            }
         }
     }
 }
@@ -525,10 +543,15 @@ where
 {
     fn to_string_with_config_for_source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
         //todo this logic must generate to_string_with_config_for_source_to_string_with_config for wrapper and to_string_with_config_for_source_to_string_without_config for origin, and maybe add trait usage if there is\are origins
-        use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithoutConfig;
         match self {
-            SixWrapperErrorEnum::SevenWrapper(i) => i.to_string_with_config_for_source_to_string_without_config(config),
-            SixWrapperErrorEnum::EightWrapper(i) => i.to_string_with_config_for_source_to_string_without_config(config),
+            SixWrapperErrorEnum::SevenWrapper(i) => {
+                use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithoutConfig;
+                i.to_string_with_config_for_source_to_string_without_config(config)
+            },
+            SixWrapperErrorEnum::EightWrapper(i) => {
+                use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithoutConfig;
+                i.to_string_with_config_for_source_to_string_without_config(config)
+            },
         }
     }
 }
@@ -630,7 +653,11 @@ pub fn seven<'a>() -> Result<(), Box<SevenOriginError<'a>>> {
     }));
 }
 
-#[derive(Debug, thiserror::Error, serde::Serialize)]
+#[derive(
+    Debug,
+    thiserror::Error,
+    serde::Serialize, //error_occurence::ImplErrorOccurenceFromCrate,
+)]
 pub enum EightOriginError<'a> {
     Something {
         error: String,
@@ -690,8 +717,13 @@ impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'
 }
 
 pub fn eight<'a>() -> Result<(), Box<EightOriginError<'a>>> {
-    return Err(Box::new(EightOriginError::Something {
+    let f = EightOriginError::Something {
         error: String::from("error_eight"),
         code_occurence: crate::code_occurence_tufa_common!(),
-    }));
+    };
+    // use crate::traits::error_logs_logic::error_log::ErrorLog;
+    // f.error_log(once_cell::sync::Lazy::force(
+    //     &crate::global_variables::runtime::config::CONFIG,
+    // ));
+    return Err(Box::new(f));
 }
