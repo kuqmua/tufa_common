@@ -654,9 +654,7 @@ pub fn seven<'a>() -> Result<(), Box<SevenOriginError<'a>>> {
 }
 
 #[derive(
-    Debug,
-    thiserror::Error,
-    serde::Serialize, //error_occurence::ImplErrorOccurenceFromCrate,
+    Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurenceFromCrate,
 )]
 pub enum EightOriginError<'a> {
     Something {
@@ -665,56 +663,56 @@ pub enum EightOriginError<'a> {
     },
 }
 
-impl<'a> std::fmt::Display for EightOriginError<'a> {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-        write!(f, "{}", self.to_string_without_config())
-    }
-}
+// impl<'a> std::fmt::Display for EightOriginError<'a> {
+//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+//         write!(f, "{}", self.to_string_without_config())
+//     }
+// }
 
-impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
-        'a,
-        ConfigGeneric,
-    > for EightOriginError<'a>
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn source_to_string_with_config(&self, _config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig;
-        self.source_to_string_without_config()
-    }
-}
+// impl<'a, ConfigGeneric>
+//     crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
+//         'a,
+//         ConfigGeneric,
+//     > for EightOriginError<'a>
+// where
+//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+//         + crate::traits::fields::GetTimezone
+//         + crate::traits::get_server_address::GetServerAddress,
+// {
+//     fn source_to_string_with_config(&self, _config: &ConfigGeneric) -> String {
+//         use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig;
+//         self.source_to_string_without_config()
+//     }
+// }
 
-impl<'a>
-    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
-        'a,
-    > for EightOriginError<'a>
-{
-    fn source_to_string_without_config(&self) -> String {
-        match self {
-            EightOriginError::Something {
-                error,
-                code_occurence: _code_occurence,
-            } => format!("{}", error),
-        }
-    }
-}
+// impl<'a>
+//     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
+//         'a,
+//     > for EightOriginError<'a>
+// {
+//     fn source_to_string_without_config(&self) -> String {
+//         match self {
+//             EightOriginError::Something {
+//                 error,
+//                 code_occurence: _code_occurence,
+//             } => format!("{}", error),
+//         }
+//     }
+// }
 
-impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
-    for EightOriginError<'a>
-{
-    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
-        match self {
-            EightOriginError::Something {
-                error: _error,
-                code_occurence,
-            } => code_occurence,
-        }
-    }
-}
+// impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
+//     for EightOriginError<'a>
+// {
+//     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
+//         match self {
+//             EightOriginError::Something {
+//                 error: _error,
+//                 code_occurence,
+//             } => code_occurence,
+//         }
+//     }
+// }
 
 pub fn eight<'a>() -> Result<(), Box<EightOriginError<'a>>> {
     let f = EightOriginError::Something {
