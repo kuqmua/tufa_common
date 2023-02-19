@@ -517,58 +517,55 @@ impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'
 }
 
 #[derive(
-    Debug,
-    thiserror::Error,
-    serde::Serialize,
-    //error_occurence::ImplErrorOccurenceFromCrate,
+    Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurenceFromCrate,
 )]
 pub enum SixWrapperErrorEnum<'a> {
-    SevenWrapper(SevenOriginError<'a>),
+    SevenWrapper(crate::dev::SevenOriginError<'a>),
     EightWrapper(EightOriginError<'a>),
 }
 
-impl<'a> std::fmt::Display for SixWrapperErrorEnum<'a> {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-        write!(f, "{}", self.to_string_without_config())
-    }
-}
+// impl<'a> std::fmt::Display for SixWrapperErrorEnum<'a> {
+//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+//         write!(f, "{}", self.to_string_without_config())
+//     }
+// }
 
-impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithConfig<
-        'a,
-        ConfigGeneric,
-    > for SixWrapperErrorEnum<'a>
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn to_string_with_config_for_source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
-        //todo this logic must generate to_string_with_config_for_source_to_string_with_config for wrapper and to_string_with_config_for_source_to_string_without_config for origin, and maybe add trait usage if there is\are origins
-        match self {
-            SixWrapperErrorEnum::SevenWrapper(i) => {
-                use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithoutConfig;
-                i.to_string_with_config_for_source_to_string_without_config(config)
-            },
-            SixWrapperErrorEnum::EightWrapper(i) => {
-                use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithoutConfig;
-                i.to_string_with_config_for_source_to_string_without_config(config)
-            },
-        }
-    }
-}
+// impl<'a, ConfigGeneric>
+//     crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithConfig<
+//         'a,
+//         ConfigGeneric,
+//     > for SixWrapperErrorEnum<'a>
+// where
+//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+//         + crate::traits::fields::GetTimezone
+//         + crate::traits::get_server_address::GetServerAddress,
+// {
+//     fn to_string_with_config_for_source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
+//         //todo this logic must generate to_string_with_config_for_source_to_string_with_config for wrapper and to_string_with_config_for_source_to_string_without_config for origin, and maybe add trait usage if there is\are origins
+//         match self {
+//             SixWrapperErrorEnum::SevenWrapper(i) => {
+//                 use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithoutConfig;
+//                 i.to_string_with_config_for_source_to_string_without_config(config)
+//             },
+//             SixWrapperErrorEnum::EightWrapper(i) => {
+//                 use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithoutConfig;
+//                 i.to_string_with_config_for_source_to_string_without_config(config)
+//             },
+//         }
+//     }
+// }
 
-impl<'a> crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig<'a>
-    for SixWrapperErrorEnum<'a>
-{
-    fn to_string_without_config(&self) -> String {
-        match self {
-            SixWrapperErrorEnum::SevenWrapper(i) => i.to_string_without_config(),
-            SixWrapperErrorEnum::EightWrapper(i) => i.to_string_without_config(),
-        }
-    }
-}
+// impl<'a> crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig<'a>
+//     for SixWrapperErrorEnum<'a>
+// {
+//     fn to_string_without_config(&self) -> String {
+//         match self {
+//             SixWrapperErrorEnum::SevenWrapper(i) => i.to_string_without_config(),
+//             SixWrapperErrorEnum::EightWrapper(i) => i.to_string_without_config(),
+//         }
+//     }
+// }
 
 pub fn six<'a>() -> Result<(), Box<SixWrapperError<'a>>> {
     let thread_join_handle = std::thread::spawn(move || eight());
