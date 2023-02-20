@@ -446,7 +446,9 @@ pub fn five_one<'a>() -> Result<(), Box<FiveOneOriginError<'a>>> {
     }));
 }
 
-#[derive(Debug, thiserror::Error, serde::Serialize)]
+#[derive(
+    Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurenceFromCrate,
+)]
 pub enum SixWrapperError<'a> {
     Something {
         //todo how to implement from for it?
@@ -455,66 +457,66 @@ pub enum SixWrapperError<'a> {
     },
 }
 
-impl<'a> std::fmt::Display for SixWrapperError<'a> {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-        write!(f, "{}", self.to_string_without_config())
-    }
-}
+// impl<'a> std::fmt::Display for SixWrapperError<'a> {
+//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+//         write!(f, "{}", self.to_string_without_config())
+//     }
+// }
 
-impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
-        'a,
-        ConfigGeneric,
-    > for SixWrapperError<'a>
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
-        match self {
-            SixWrapperError::Something {
-                inner_errors,
-                code_occurence: _code_occurence,
-            } => {
-                use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfig;
-                inner_errors.few_to_string_with_config(config)
-            }
-        }
-    }
-}
+// impl<'a, ConfigGeneric>
+//     crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
+//         'a,
+//         ConfigGeneric,
+//     > for SixWrapperError<'a>
+// where
+//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+//         + crate::traits::fields::GetTimezone
+//         + crate::traits::get_server_address::GetServerAddress,
+// {
+//     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
+//         match self {
+//             SixWrapperError::Something {
+//                 inner_errors,
+//                 code_occurence: _code_occurence,
+//             } => {
+//                 use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfig;
+//                 inner_errors.few_to_string_with_config(config)
+//             }
+//         }
+//     }
+// }
 
-impl<'a>
-    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
-        'a,
-    > for SixWrapperError<'a>
-{
-    fn source_to_string_without_config(&self) -> String {
-        match self {
-            SixWrapperError::Something {
-                inner_errors,
-                code_occurence: _code_occurence,
-            } => {
-                use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
-                inner_errors.few_to_string_without_config()
-            }
-        }
-    }
-}
+// impl<'a>
+//     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
+//         'a,
+//     > for SixWrapperError<'a>
+// {
+//     fn source_to_string_without_config(&self) -> String {
+//         match self {
+//             SixWrapperError::Something {
+//                 inner_errors,
+//                 code_occurence: _code_occurence,
+//             } => {
+//                 use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
+//                 inner_errors.few_to_string_without_config()
+//             }
+//         }
+//     }
+// }
 
-impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
-    for SixWrapperError<'a>
-{
-    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
-        match self {
-            SixWrapperError::Something {
-                inner_errors: _inner_errors,
-                code_occurence,
-            } => code_occurence,
-        }
-    }
-}
+// impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
+//     for SixWrapperError<'a>
+// {
+//     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
+//         match self {
+//             SixWrapperError::Something {
+//                 inner_errors: _inner_errors,
+//                 code_occurence,
+//             } => code_occurence,
+//         }
+//     }
+// }
 
 #[derive(
     Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurenceFromCrate,
@@ -587,7 +589,9 @@ pub fn six<'a>() -> Result<(), Box<SixWrapperError<'a>>> {
     }
 }
 
-#[derive(Debug, thiserror::Error, serde::Serialize)]
+#[derive(
+    Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurenceFromCrate,
+)]
 pub enum SevenOriginError<'a> {
     Something {
         error: String,
@@ -595,56 +599,56 @@ pub enum SevenOriginError<'a> {
     },
 }
 
-impl<'a> std::fmt::Display for SevenOriginError<'a> {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-        write!(f, "{}", self.to_string_without_config())
-    }
-}
+// impl<'a> std::fmt::Display for SevenOriginError<'a> {
+//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+//         write!(f, "{}", self.to_string_without_config())
+//     }
+// }
 
-impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
-        'a,
-        ConfigGeneric,
-    > for SevenOriginError<'a>
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn source_to_string_with_config(&self, _config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig;
-        self.source_to_string_without_config()
-    }
-}
+// impl<'a, ConfigGeneric>
+//     crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
+//         'a,
+//         ConfigGeneric,
+//     > for SevenOriginError<'a>
+// where
+//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+//         + crate::traits::fields::GetTimezone
+//         + crate::traits::get_server_address::GetServerAddress,
+// {
+//     fn source_to_string_with_config(&self, _config: &ConfigGeneric) -> String {
+//         use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig;
+//         self.source_to_string_without_config()
+//     }
+// }
 
-impl<'a>
-    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
-        'a,
-    > for SevenOriginError<'a>
-{
-    fn source_to_string_without_config(&self) -> String {
-        match self {
-            SevenOriginError::Something {
-                error,
-                code_occurence: _code_occurence,
-            } => format!("{}", error),
-        }
-    }
-}
+// impl<'a>
+//     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
+//         'a,
+//     > for SevenOriginError<'a>
+// {
+//     fn source_to_string_without_config(&self) -> String {
+//         match self {
+//             SevenOriginError::Something {
+//                 error,
+//                 code_occurence: _code_occurence,
+//             } => format!("{}", error),
+//         }
+//     }
+// }
 
-impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
-    for SevenOriginError<'a>
-{
-    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
-        match self {
-            SevenOriginError::Something {
-                error: _error,
-                code_occurence,
-            } => code_occurence,
-        }
-    }
-}
+// impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
+//     for SevenOriginError<'a>
+// {
+//     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
+//         match self {
+//             SevenOriginError::Something {
+//                 error: _error,
+//                 code_occurence,
+//             } => code_occurence,
+//         }
+//     }
+// }
 
 pub fn seven<'a>() -> Result<(), Box<SevenOriginError<'a>>> {
     return Err(Box::new(SevenOriginError::Something {
@@ -654,10 +658,7 @@ pub fn seven<'a>() -> Result<(), Box<SevenOriginError<'a>>> {
 }
 
 #[derive(
-    Debug,
-    thiserror::Error,
-    serde::Serialize,
-    //  error_occurence::ImplErrorOccurenceFromCrate,
+    Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurenceFromCrate,
 )]
 pub enum EightOriginError<'a> {
     Something {
@@ -666,56 +667,56 @@ pub enum EightOriginError<'a> {
     },
 }
 
-impl<'a> std::fmt::Display for EightOriginError<'a> {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-        write!(f, "{}", self.to_string_without_config())
-    }
-}
+// impl<'a> std::fmt::Display for EightOriginError<'a> {
+//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+//         write!(f, "{}", self.to_string_without_config())
+//     }
+// }
 
-impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
-        'a,
-        ConfigGeneric,
-    > for EightOriginError<'a>
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn source_to_string_with_config(&self, _config: &ConfigGeneric) -> String {
-        use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig;
-        self.source_to_string_without_config()
-    }
-}
+// impl<'a, ConfigGeneric>
+//     crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
+//         'a,
+//         ConfigGeneric,
+//     > for EightOriginError<'a>
+// where
+//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+//         + crate::traits::fields::GetTimezone
+//         + crate::traits::get_server_address::GetServerAddress,
+// {
+//     fn source_to_string_with_config(&self, _config: &ConfigGeneric) -> String {
+//         use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig;
+//         self.source_to_string_without_config()
+//     }
+// }
 
-impl<'a>
-    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
-        'a,
-    > for EightOriginError<'a>
-{
-    fn source_to_string_without_config(&self) -> String {
-        match self {
-            EightOriginError::Something {
-                error,
-                code_occurence: _code_occurence,
-            } => format!("{}", error),
-        }
-    }
-}
+// impl<'a>
+//     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
+//         'a,
+//     > for EightOriginError<'a>
+// {
+//     fn source_to_string_without_config(&self) -> String {
+//         match self {
+//             EightOriginError::Something {
+//                 error,
+//                 code_occurence: _code_occurence,
+//             } => format!("{}", error),
+//         }
+//     }
+// }
 
-impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
-    for EightOriginError<'a>
-{
-    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
-        match self {
-            EightOriginError::Something {
-                error: _error,
-                code_occurence,
-            } => code_occurence,
-        }
-    }
-}
+// impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
+//     for EightOriginError<'a>
+// {
+//     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
+//         match self {
+//             EightOriginError::Something {
+//                 error: _error,
+//                 code_occurence,
+//             } => code_occurence,
+//         }
+//     }
+// }
 
 pub fn eight<'a>() -> Result<(), Box<EightOriginError<'a>>> {
     let f = EightOriginError::Something {
