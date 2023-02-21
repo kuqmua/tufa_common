@@ -452,7 +452,7 @@ pub fn five_one<'a>() -> Result<(), Box<FiveOneOriginError<'a>>> {
 pub enum SixWrapperError<'a> {
     Something {
         //todo how to implement from for it?
-        inner_errors: Vec<SixWrapperErrorEnum<'a>>,
+        inner_errors: Vec<crate::dev::SixWrapperErrorEnum<'a>>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
