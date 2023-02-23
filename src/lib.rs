@@ -9,6 +9,7 @@
 pub mod config_mods;
 pub mod global_variables;
 pub mod json_example;
+pub mod repositories_types;
 pub mod traits;
 
 pub mod client;
