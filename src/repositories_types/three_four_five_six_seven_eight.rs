@@ -1,6 +1,4 @@
-#[derive(
-    Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurenceFromCrate,
-)]
+#[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)]
 pub enum ThreeWrapperError<'a> {
     Something {
         //todo how to implement from for it?
@@ -121,9 +119,7 @@ pub enum ThreeWrapperError<'a> {
 //     }
 // }
 
-#[derive(
-    Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurenceFromCrate,
-)]
+#[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)]
 pub enum ThreeWrapperErrorEnum<'a> {
     Four(FourWrapperError<'a>),
 }
@@ -189,9 +185,7 @@ pub enum ThreeWrapperErrorEnum<'a> {
 //     }
 // }
 
-#[derive(
-    Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurenceFromCrate,
-)]
+#[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)]
 pub enum FourWrapperError<'a> {
     Something {
         //todo how to implement from for it?
@@ -315,9 +309,7 @@ pub enum FourWrapperError<'a> {
 //     }
 // }
 
-#[derive(
-    Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurenceFromCrate,
-)]
+#[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)]
 pub enum FourWrapperErrorEnum<'a> {
     Five(FiveWrapperError<'a>),
     Six(SixWrapperError<'a>),
@@ -391,9 +383,7 @@ pub enum FourWrapperErrorEnum<'a> {
 //     }
 // }
 
-#[derive(
-    Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurenceFromCrate,
-)]
+#[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)]
 pub enum FiveWrapperError<'a> {
     Something {
         //todo how to implement from for it?
@@ -517,9 +507,7 @@ pub enum FiveWrapperError<'a> {
 //     }
 // }
 
-#[derive(
-    Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurenceFromCrate,
-)]
+#[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)]
 pub enum FiveWrapperErrorEnum<'a> {
     FiveOne(FiveOneOriginError<'a>),
 }
@@ -588,9 +576,7 @@ pub enum FiveWrapperErrorEnum<'a> {
 //     }
 // }
 
-#[derive(
-    Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurenceFromCrate,
-)]
+#[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)]
 pub enum FiveOneOriginError<'a> {
     Something {
         error: String,
@@ -695,9 +681,7 @@ pub enum FiveOneOriginError<'a> {
 //     }
 // }
 
-#[derive(
-    Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurenceFromCrate,
-)]
+#[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)]
 pub enum SixWrapperError<'a> {
     Something {
         //todo how to implement from for it?
@@ -818,9 +802,7 @@ pub enum SixWrapperError<'a> {
 //     }
 // }
 
-#[derive(
-    Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurenceFromCrate,
-)]
+#[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)]
 pub enum SixWrapperErrorEnum<'a> {
     Seven(SevenOriginError<'a>),
     Eight(EightOriginError<'a>),
@@ -901,9 +883,7 @@ pub enum SixWrapperErrorEnum<'a> {
 //     }
 // }
 
-#[derive(
-    Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurenceFromCrate,
-)]
+#[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)]
 pub enum SevenOriginError<'a> {
     Something {
         error: String,
@@ -1008,9 +988,7 @@ pub enum SevenOriginError<'a> {
 //     }
 // }
 
-#[derive(
-    Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurenceFromCrate,
-)]
+#[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)]
 pub enum EightOriginError<'a> {
     Something {
         error: String,
