@@ -52,7 +52,7 @@ impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWi
 #[derive(Debug, thiserror::Error, serde::Serialize, serde::Deserialize)]
 pub enum ThreeWrapperErrorWithDeserializeEnumWithDeserialize<'a> {
     #[serde(borrow)]
-    FourWrapper(FourWrapperErrorWithDeserialize<'a>),
+    Four(FourWrapperErrorWithDeserialize<'a>),
 }
 
 impl<'a> std::fmt::Display for ThreeWrapperErrorWithDeserializeEnumWithDeserialize<'a> {
@@ -69,7 +69,7 @@ impl<'a>
 {
     fn to_string_without_config_with_deserialize(&self) -> String {
         match self {
-            ThreeWrapperErrorWithDeserializeEnumWithDeserialize::FourWrapper(i) => {
+            ThreeWrapperErrorWithDeserializeEnumWithDeserialize::Four(i) => {
                 i.to_string_without_config_with_deserialize()
             }
         }
@@ -79,7 +79,7 @@ impl<'a>
 pub fn three_with_deserialize<'a>() -> Result<(), Box<ThreeWrapperErrorWithDeserialize<'a>>> {
     if let Err(e) = four_with_deserialize() {
         let f = ThreeWrapperErrorWithDeserialize::Something {
-            inner_error: ThreeWrapperErrorWithDeserializeEnumWithDeserialize::FourWrapper(*e),
+            inner_error: ThreeWrapperErrorWithDeserializeEnumWithDeserialize::Four(*e),
             code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize::new(
                 &crate::global_variables::compile_time::git_info::GIT_INFO,
                 file!(),
@@ -149,9 +149,9 @@ impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWi
 #[derive(Debug, thiserror::Error, serde::Serialize, serde::Deserialize)]
 pub enum FourWrapperErrorWithDeserializeEnumWithDeserialize<'a> {
     #[serde(borrow)]
-    FiveWrapper(FiveWrapperErrorWithDeserialize<'a>),
+    Five(FiveWrapperErrorWithDeserialize<'a>),
     #[serde(borrow)]
-    SixWrapper(SixWrapperErrorWithDeserialize<'a>),
+    Six(SixWrapperErrorWithDeserialize<'a>),
 }
 
 impl<'a> std::fmt::Display for FourWrapperErrorWithDeserializeEnumWithDeserialize<'a> {
@@ -168,10 +168,10 @@ impl<'a>
 {
     fn to_string_without_config_with_deserialize(&self) -> String {
         match self {
-            FourWrapperErrorWithDeserializeEnumWithDeserialize::FiveWrapper(i) => {
+            FourWrapperErrorWithDeserializeEnumWithDeserialize::Five(i) => {
                 i.to_string_without_config_with_deserialize()
             }
-            FourWrapperErrorWithDeserializeEnumWithDeserialize::SixWrapper(i) => {
+            FourWrapperErrorWithDeserializeEnumWithDeserialize::Six(i) => {
                 i.to_string_without_config_with_deserialize()
             }
         }
@@ -188,11 +188,11 @@ pub fn four_with_deserialize<'a>() -> Result<(), Box<FourWrapperErrorWithDeseria
                 inner_errors: std::collections::HashMap::from([
                     (
                         String::from("five_hashmap_key"),
-                        FourWrapperErrorWithDeserializeEnumWithDeserialize::FiveWrapper(*f),
+                        FourWrapperErrorWithDeserializeEnumWithDeserialize::Five(*f),
                     ),
                     (
                         String::from("six_hashmap_key"),
-                        FourWrapperErrorWithDeserializeEnumWithDeserialize::SixWrapper(*s),
+                        FourWrapperErrorWithDeserializeEnumWithDeserialize::Six(*s),
                     ),
                 ]),
                 code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize::new(
@@ -264,7 +264,7 @@ impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWi
 #[derive(Debug, thiserror::Error, serde::Serialize, serde::Deserialize)]
 pub enum FiveWrapperErrorWithDeserializeEnumWithDeserialize<'a> {
     #[serde(borrow)]
-    FiveOneOrigin(FiveOneOriginErrorWithDeserialize<'a>),
+    FiveOne(FiveOneOriginErrorWithDeserialize<'a>),
 }
 
 impl<'a> std::fmt::Display for FiveWrapperErrorWithDeserializeEnumWithDeserialize<'a> {
@@ -281,7 +281,7 @@ impl<'a>
 {
     fn to_string_without_config_with_deserialize(&self) -> String {
         match self {
-            FiveWrapperErrorWithDeserializeEnumWithDeserialize::FiveOneOrigin(i) => {
+            FiveWrapperErrorWithDeserializeEnumWithDeserialize::FiveOne(i) => {
                 i.to_string_without_config_with_deserialize()
             }
         }
@@ -293,7 +293,7 @@ pub fn five_with_deserialize<'a>() -> Result<(), Box<FiveWrapperErrorWithDeseria
         let f = FiveWrapperErrorWithDeserialize::Something {
             inner_errors: std::collections::HashMap::from([(
                 String::from("five_one_hashmap_key"),
-                FiveWrapperErrorWithDeserializeEnumWithDeserialize::FiveOneOrigin(*e),
+                FiveWrapperErrorWithDeserializeEnumWithDeserialize::FiveOne(*e),
             )]),
             code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize::new(
                 &crate::global_variables::compile_time::git_info::GIT_INFO,
@@ -419,9 +419,9 @@ impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWi
 #[derive(Debug, thiserror::Error, serde::Serialize, serde::Deserialize)]
 pub enum SixWrapperErrorWithDeserializeEnumWithDeserialize<'a> {
     #[serde(borrow)]
-    SevenWrapper(SevenOriginErrorWithDeserialize<'a>),
+    Seven(SevenOriginErrorWithDeserialize<'a>),
     #[serde(borrow)]
-    EightWrapper(EightOriginErrorWithDeserialize<'a>),
+    Eight(EightOriginErrorWithDeserialize<'a>),
 }
 
 impl<'a> std::fmt::Display for SixWrapperErrorWithDeserializeEnumWithDeserialize<'a> {
@@ -438,10 +438,10 @@ impl<'a>
 {
     fn to_string_without_config_with_deserialize(&self) -> String {
         match self {
-            SixWrapperErrorWithDeserializeEnumWithDeserialize::SevenWrapper(i) => {
+            SixWrapperErrorWithDeserializeEnumWithDeserialize::Seven(i) => {
                 i.to_string_without_config_with_deserialize()
             }
-            SixWrapperErrorWithDeserializeEnumWithDeserialize::EightWrapper(i) => {
+            SixWrapperErrorWithDeserializeEnumWithDeserialize::Eight(i) => {
                 i.to_string_without_config_with_deserialize()
             }
         }
@@ -458,8 +458,8 @@ pub fn six_with_deserialize<'a>() -> Result<(), Box<SixWrapperErrorWithDeseriali
         (Err(seven_error), Err(eight_error)) => {
             let f = SixWrapperErrorWithDeserialize::Something {
                 inner_errors: vec![
-                    SixWrapperErrorWithDeserializeEnumWithDeserialize::SevenWrapper(*seven_error),
-                    SixWrapperErrorWithDeserializeEnumWithDeserialize::EightWrapper(*eight_error),
+                    SixWrapperErrorWithDeserializeEnumWithDeserialize::Seven(*seven_error),
+                    SixWrapperErrorWithDeserializeEnumWithDeserialize::Eight(*eight_error),
                 ],
                 code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize::new(
                     &crate::global_variables::compile_time::git_info::GIT_INFO,

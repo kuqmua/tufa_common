@@ -74,7 +74,7 @@ pub enum ThreeWrapperError<'a> {
     Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurenceFromCrate,
 )]
 pub enum ThreeWrapperErrorEnum<'a> {
-    FourWrapper(FourWrapperError<'a>),
+    Four(FourWrapperError<'a>),
 }
 
 // impl<'a> std::fmt::Display for ThreeWrapperErrorEnum<'a> {
@@ -96,7 +96,7 @@ pub enum ThreeWrapperErrorEnum<'a> {
 // {
 //     fn to_string_with_config_for_source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
 //         match self {
-//             ThreeWrapperErrorEnum::FourWrapper(i) => i.to_string_with_config_for_source_to_string_with_config(config),
+//             ThreeWrapperErrorEnum::Four(i) => i.to_string_with_config_for_source_to_string_with_config(config),
 //         }
 //     }
 // }
@@ -106,7 +106,7 @@ pub enum ThreeWrapperErrorEnum<'a> {
 // {
 //     fn to_string_without_config(&self) -> String {
 //         match self {
-//             ThreeWrapperErrorEnum::FourWrapper(i) => i.to_string_without_config(),
+//             ThreeWrapperErrorEnum::Four(i) => i.to_string_without_config(),
 //         }
 //     }
 // }
@@ -114,7 +114,7 @@ pub enum ThreeWrapperErrorEnum<'a> {
 pub fn three<'a>() -> Result<(), Box<ThreeWrapperError<'a>>> {
     if let Err(e) = four() {
         let f = ThreeWrapperError::Something {
-            inner_error: ThreeWrapperErrorEnum::FourWrapper(*e),
+            inner_error: ThreeWrapperErrorEnum::Four(*e),
             code_occurence: crate::code_occurence_tufa_common!(),
         };
         return Err(Box::new(f));
@@ -198,8 +198,8 @@ pub enum FourWrapperError<'a> {
     Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurenceFromCrate,
 )]
 pub enum FourWrapperErrorEnum<'a> {
-    FiveWrapper(FiveWrapperError<'a>),
-    SixWrapper(SixWrapperError<'a>),
+    Five(FiveWrapperError<'a>),
+    Six(SixWrapperError<'a>),
 }
 
 // impl<'a> std::fmt::Display for FourWrapperErrorEnum<'a> {
@@ -221,8 +221,8 @@ pub enum FourWrapperErrorEnum<'a> {
 // {
 //     fn to_string_with_config_for_source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
 //         match self {
-//             FourWrapperErrorEnum::FiveWrapper(i) => i.to_string_with_config_for_source_to_string_with_config(config),
-//             FourWrapperErrorEnum::SixWrapper(i) => i.to_string_with_config_for_source_to_string_with_config(config),
+//             FourWrapperErrorEnum::Five(i) => i.to_string_with_config_for_source_to_string_with_config(config),
+//             FourWrapperErrorEnum::Six(i) => i.to_string_with_config_for_source_to_string_with_config(config),
 //         }
 //     }
 // }
@@ -232,8 +232,8 @@ pub enum FourWrapperErrorEnum<'a> {
 // {
 //     fn to_string_without_config(&self) -> String {
 //         match self {
-//             FourWrapperErrorEnum::FiveWrapper(i) => i.to_string_without_config(),
-//             FourWrapperErrorEnum::SixWrapper(i) => i.to_string_without_config(),
+//             FourWrapperErrorEnum::Five(i) => i.to_string_without_config(),
+//             FourWrapperErrorEnum::Six(i) => i.to_string_without_config(),
 //         }
 //     }
 // }
@@ -248,11 +248,11 @@ pub fn four<'a>() -> Result<(), Box<FourWrapperError<'a>>> {
                 inner_errors: std::collections::HashMap::from([
                     (
                         String::from("five_hashmap_key"),
-                        FourWrapperErrorEnum::FiveWrapper(*f),
+                        FourWrapperErrorEnum::Five(*f),
                     ),
                     (
                         String::from("six_hashmap_key"),
-                        FourWrapperErrorEnum::SixWrapper(*s),
+                        FourWrapperErrorEnum::Six(*s),
                     ),
                 ]),
                 code_occurence: crate::code_occurence_tufa_common!(),
@@ -338,7 +338,7 @@ pub enum FiveWrapperError<'a> {
     Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurenceFromCrate,
 )]
 pub enum FiveWrapperErrorEnum<'a> {
-    FiveOneOrigin(FiveOneOriginError<'a>),
+    FiveOne(FiveOneOriginError<'a>),
 }
 
 // impl<'a> std::fmt::Display for FiveWrapperErrorEnum<'a> {
@@ -360,7 +360,7 @@ pub enum FiveWrapperErrorEnum<'a> {
 // {
 //     fn to_string_with_config_for_source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
 //         match self {
-//             FiveWrapperErrorEnum::FiveOneOrigin(i) => {
+//             FiveWrapperErrorEnum::FiveOne(i) => {
 //                 use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithoutConfig;
 //                 i.to_string_with_config_for_source_to_string_without_config(config)
 //             },
@@ -373,7 +373,7 @@ pub enum FiveWrapperErrorEnum<'a> {
 // {
 //     fn to_string_without_config(&self) -> String {
 //         match self {
-//             FiveWrapperErrorEnum::FiveOneOrigin(i) => i.to_string_without_config(),
+//             FiveWrapperErrorEnum::FiveOne(i) => i.to_string_without_config(),
 //         }
 //     }
 // }
@@ -383,7 +383,7 @@ pub fn five<'a>() -> Result<(), Box<FiveWrapperError<'a>>> {
         let f = FiveWrapperError::Something {
             inner_errors: std::collections::HashMap::from([(
                 String::from("five_one_hashmap_key"),
-                FiveWrapperErrorEnum::FiveOneOrigin(*e),
+                FiveWrapperErrorEnum::FiveOne(*e),
             )]),
             code_occurence: crate::code_occurence_tufa_common!(),
         };
@@ -536,8 +536,8 @@ pub enum SixWrapperError<'a> {
     Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurenceFromCrate,
 )]
 pub enum SixWrapperErrorEnum<'a> {
-    SevenWrapper(crate::dev::SevenOriginError<'a>),
-    EightWrapper(EightOriginError<'a>),
+    Seven(crate::dev::SevenOriginError<'a>),
+    Eight(EightOriginError<'a>),
 }
 
 // impl<'a> std::fmt::Display for SixWrapperErrorEnum<'a> {
@@ -560,11 +560,11 @@ pub enum SixWrapperErrorEnum<'a> {
 //     fn to_string_with_config_for_source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
 //         //todo this logic must generate to_string_with_config_for_source_to_string_with_config for wrapper and to_string_with_config_for_source_to_string_without_config for origin, and maybe add trait usage if there is\are origins
 //         match self {
-//             SixWrapperErrorEnum::SevenWrapper(i) => {
+//             SixWrapperErrorEnum::Seven(i) => {
 //                 use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithoutConfig;
 //                 i.to_string_with_config_for_source_to_string_without_config(config)
 //             },
-//             SixWrapperErrorEnum::EightWrapper(i) => {
+//             SixWrapperErrorEnum::Eight(i) => {
 //                 use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithoutConfig;
 //                 i.to_string_with_config_for_source_to_string_without_config(config)
 //             },
@@ -577,8 +577,8 @@ pub enum SixWrapperErrorEnum<'a> {
 // {
 //     fn to_string_without_config(&self) -> String {
 //         match self {
-//             SixWrapperErrorEnum::SevenWrapper(i) => i.to_string_without_config(),
-//             SixWrapperErrorEnum::EightWrapper(i) => i.to_string_without_config(),
+//             SixWrapperErrorEnum::Seven(i) => i.to_string_without_config(),
+//             SixWrapperErrorEnum::Eight(i) => i.to_string_without_config(),
 //         }
 //     }
 // }
@@ -593,8 +593,8 @@ pub fn six<'a>() -> Result<(), Box<SixWrapperError<'a>>> {
         (Err(seven_error), Err(eight_error)) => {
             let f = SixWrapperError::Something {
                 inner_errors: vec![
-                    SixWrapperErrorEnum::SevenWrapper(*seven_error),
-                    SixWrapperErrorEnum::EightWrapper(*eight_error),
+                    SixWrapperErrorEnum::Seven(*seven_error),
+                    SixWrapperErrorEnum::Eight(*eight_error),
                 ],
                 code_occurence: crate::code_occurence_tufa_common!(),
             };
