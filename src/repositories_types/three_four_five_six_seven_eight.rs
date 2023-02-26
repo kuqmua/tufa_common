@@ -1,5 +1,5 @@
 #[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)]
-pub enum ThreeWrapperError<'a> {
+pub enum ThreeError<'a> {
     Something {
         //todo how to implement from for it?
         inner_error: FourWrapperError<'a>,
@@ -7,7 +7,7 @@ pub enum ThreeWrapperError<'a> {
     },
 }
 
-// impl<'a> std::fmt::Display for ThreeWrapperError<'a> {
+// impl<'a> std::fmt::Display for ThreeError<'a> {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 //         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
 //         write!(f, "{}", self.to_string_without_config())
@@ -18,7 +18,7 @@ pub enum ThreeWrapperError<'a> {
 //     crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
 //         'a,
 //         ConfigGeneric,
-//     > for ThreeWrapperError<'a>
+//     > for ThreeError<'a>
 // where
 //     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
 //         + crate::traits::fields::GetTimezone
@@ -26,7 +26,7 @@ pub enum ThreeWrapperError<'a> {
 // {
 //     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
 //         match self {
-//             ThreeWrapperError::Something {
+//             ThreeError::Something {
 //                 inner_error,
 //                 code_occurence: _code_occurence,
 //             } => {
@@ -40,11 +40,11 @@ pub enum ThreeWrapperError<'a> {
 // impl<'a>
 //     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
 //         'a,
-//     > for ThreeWrapperError<'a>
+//     > for ThreeError<'a>
 // {
 //     fn source_to_string_without_config(&self) -> String {
 //         match self {
-//             ThreeWrapperError::Something {
+//             ThreeError::Something {
 //                 inner_error,
 //                 code_occurence: _code_occurence,
 //             } => {
@@ -56,11 +56,11 @@ pub enum ThreeWrapperError<'a> {
 // }
 
 // impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
-//     for ThreeWrapperError<'a>
+//     for ThreeError<'a>
 // {
 //     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
 //         match self {
-//             ThreeWrapperError::Something {
+//             ThreeError::Something {
 //                 inner_error: _inner_error,
 //                 code_occurence,
 //             } => code_occurence,
@@ -69,17 +69,17 @@ pub enum ThreeWrapperError<'a> {
 // }
 
 // #[derive(Debug, thiserror::Error, serde::Serialize, serde::Deserialize)]
-// pub enum ThreeWrapperErrorWithDeserialize<'a> {
+// pub enum ThreeErrorWithDeserialize<'a> {
 //     Something {
 //         //todo how to implement from for it?
 //         #[serde(borrow)]
-//         inner_error: ThreeWrapperErrorEnumWithDeserialize<'a>,
+//         inner_error: ThreeErrorEnumWithDeserialize<'a>,
 //         #[serde(borrow)]
 //         code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize<'a>,
 //     },
 // }
 
-// impl<'a> std::fmt::Display for ThreeWrapperErrorWithDeserialize<'a> {
+// impl<'a> std::fmt::Display for ThreeErrorWithDeserialize<'a> {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 //         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
 //         write!(f, "{}", self.to_string_without_config_with_deserialize())
@@ -89,11 +89,11 @@ pub enum ThreeWrapperError<'a> {
 // impl<'a>
 //     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
 //         'a,
-//     > for ThreeWrapperErrorWithDeserialize<'a>
+//     > for ThreeErrorWithDeserialize<'a>
 // {
 //     fn source_to_string_without_config(&self) -> String {
 //         match self {
-//             ThreeWrapperErrorWithDeserialize::Something {
+//             ThreeErrorWithDeserialize::Something {
 //                 inner_error,
 //                 code_occurence: _code_occurence,
 //             } => {
@@ -105,13 +105,13 @@ pub enum ThreeWrapperError<'a> {
 // }
 
 // impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWithDeserialize<'a>
-//     for ThreeWrapperErrorWithDeserialize<'a>
+//     for ThreeErrorWithDeserialize<'a>
 // {
 //     fn get_code_occurence_with_deserialize(
 //         &self,
 //     ) -> &crate::common::code_occurence::CodeOccurenceWithDeserialize<'a> {
 //         match self {
-//             ThreeWrapperErrorWithDeserialize::Something {
+//             ThreeErrorWithDeserialize::Something {
 //                 inner_error: _inner_error,
 //                 code_occurence,
 //             } => code_occurence,
@@ -123,7 +123,7 @@ pub enum ThreeWrapperError<'a> {
 pub enum FourWrapperError<'a> {
     Something {
         //todo how to implement from for it?
-        inner_errors: std::collections::HashMap<String, FourWrapperErrorEnum<'a>>,
+        inner_errors: std::collections::HashMap<String, FourErrorEnum<'a>>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
@@ -196,7 +196,7 @@ pub enum FourWrapperError<'a> {
 //         #[serde(borrow)]
 //         inner_errors: std::collections::HashMap<
 //             String,
-//             FourWrapperErrorEnumWithDeserialize<'a>,
+//             FourErrorEnumWithDeserialize<'a>,
 //         >,
 //         #[serde(borrow)]
 //         code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize<'a>,
@@ -244,12 +244,14 @@ pub enum FourWrapperError<'a> {
 // }
 
 #[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)]
-pub enum FourWrapperErrorEnum<'a> {
-    Five(FiveWrapperError<'a>),
-    Six(SixWrapperError<'a>),
+pub enum FourErrorEnum<'a> {
+    #[error_occurence_from_wrapper]
+    Five(FiveError<'a>),
+    #[error_occurence_from_wrapper]
+    Six(SixError<'a>),
 }
 
-// impl<'a> std::fmt::Display for FourWrapperErrorEnum<'a> {
+// impl<'a> std::fmt::Display for FourErrorEnum<'a> {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 //         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
 //         write!(f, "{}", self.to_string_without_config())
@@ -260,7 +262,7 @@ pub enum FourWrapperErrorEnum<'a> {
 //     crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithConfig<
 //         'a,
 //         ConfigGeneric,
-//     > for FourWrapperErrorEnum<'a>
+//     > for FourErrorEnum<'a>
 // where
 //     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
 //         + crate::traits::fields::GetTimezone
@@ -268,32 +270,32 @@ pub enum FourWrapperErrorEnum<'a> {
 // {
 //     fn to_string_with_config_for_source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
 //         match self {
-//             FourWrapperErrorEnum::Five(i) => i.to_string_with_config_for_source_to_string_with_config(config),
-//             FourWrapperErrorEnum::Six(i) => i.to_string_with_config_for_source_to_string_with_config(config),
+//             FourErrorEnum::Five(i) => i.to_string_with_config_for_source_to_string_with_config(config),
+//             FourErrorEnum::Six(i) => i.to_string_with_config_for_source_to_string_with_config(config),
 //         }
 //     }
 // }
 
 // impl<'a> crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig<'a>
-//     for FourWrapperErrorEnum<'a>
+//     for FourErrorEnum<'a>
 // {
 //     fn to_string_without_config(&self) -> String {
 //         match self {
-//             FourWrapperErrorEnum::Five(i) => i.to_string_without_config(),
-//             FourWrapperErrorEnum::Six(i) => i.to_string_without_config(),
+//             FourErrorEnum::Five(i) => i.to_string_without_config(),
+//             FourErrorEnum::Six(i) => i.to_string_without_config(),
 //         }
 //     }
 // }
 
 // #[derive(Debug, thiserror::Error, serde::Serialize, serde::Deserialize)]
-// pub enum FourWrapperErrorEnumWithDeserialize<'a> {
+// pub enum FourErrorEnumWithDeserialize<'a> {
 //     #[serde(borrow)]
-//     Five(FiveWrapperErrorWithDeserialize<'a>),
+//     Five(FiveErrorWithDeserialize<'a>),
 //     #[serde(borrow)]
-//     Six(SixWrapperErrorWithDeserialize<'a>),
+//     Six(SixErrorWithDeserialize<'a>),
 // }
 
-// impl<'a> std::fmt::Display for FourWrapperErrorEnumWithDeserialize<'a> {
+// impl<'a> std::fmt::Display for FourErrorEnumWithDeserialize<'a> {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 //         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
 //         write!(f, "{}", self.to_string_without_config_with_deserialize())
@@ -303,14 +305,14 @@ pub enum FourWrapperErrorEnum<'a> {
 // impl<'a>
 //     crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize<
 //         'a,
-//     > for FourWrapperErrorEnumWithDeserialize<'a>
+//     > for FourErrorEnumWithDeserialize<'a>
 // {
 //     fn to_string_without_config_with_deserialize(&self) -> String {
 //         match self {
-//             FourWrapperErrorEnumWithDeserialize::Five(i) => {
+//             FourErrorEnumWithDeserialize::Five(i) => {
 //                 i.to_string_without_config_with_deserialize()
 //             }
-//             FourWrapperErrorEnumWithDeserialize::Six(i) => {
+//             FourErrorEnumWithDeserialize::Six(i) => {
 //                 i.to_string_without_config_with_deserialize()
 //             }
 //         }
@@ -318,15 +320,15 @@ pub enum FourWrapperErrorEnum<'a> {
 // }
 
 #[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)]
-pub enum FiveWrapperError<'a> {
+pub enum FiveError<'a> {
     Something {
         //todo how to implement from for it?
-        inner_errors: std::collections::HashMap<String, FiveWrapperErrorEnum<'a>>,
+        inner_errors: std::collections::HashMap<String, FiveErrorEnum<'a>>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
 
-// impl<'a> std::fmt::Display for FiveWrapperError<'a> {
+// impl<'a> std::fmt::Display for FiveError<'a> {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 //         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
 //         write!(f, "{}", self.to_string_without_config())
@@ -337,7 +339,7 @@ pub enum FiveWrapperError<'a> {
 //     crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
 //         'a,
 //         ConfigGeneric,
-//     > for FiveWrapperError<'a>
+//     > for FiveError<'a>
 // where
 //     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
 //         + crate::traits::fields::GetTimezone
@@ -345,7 +347,7 @@ pub enum FiveWrapperError<'a> {
 // {
 //     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
 //         match self {
-//             FiveWrapperError::Something {
+//             FiveError::Something {
 //                 inner_errors,
 //                 code_occurence: _code_occurence,
 //             } => {
@@ -359,11 +361,11 @@ pub enum FiveWrapperError<'a> {
 // impl<'a>
 //     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
 //         'a,
-//     > for FiveWrapperError<'a>
+//     > for FiveError<'a>
 // {
 //     fn source_to_string_without_config(&self) -> String {
 //         match self {
-//             FiveWrapperError::Something {
+//             FiveError::Something {
 //                 inner_errors,
 //                 code_occurence: _code_occurence,
 //             } => {
@@ -375,11 +377,11 @@ pub enum FiveWrapperError<'a> {
 // }
 
 // impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
-//     for FiveWrapperError<'a>
+//     for FiveError<'a>
 // {
 //     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
 //         match self {
-//             FiveWrapperError::Something {
+//             FiveError::Something {
 //                 inner_errors: _inner_error,
 //                 code_occurence,
 //             } => code_occurence,
@@ -388,20 +390,20 @@ pub enum FiveWrapperError<'a> {
 // }
 
 // #[derive(Debug, thiserror::Error, serde::Serialize, serde::Deserialize)]
-// pub enum FiveWrapperErrorWithDeserialize<'a> {
+// pub enum FiveErrorWithDeserialize<'a> {
 //     Something {
 //         //todo how to implement from for it?
 //         #[serde(borrow)]
 //         inner_errors: std::collections::HashMap<
 //             String,
-//             FiveWrapperErrorEnumWithDeserialize<'a>,
+//             FiveErrorEnumWithDeserialize<'a>,
 //         >,
 //         #[serde(borrow)]
 //         code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize<'a>,
 //     },
 // }
 
-// impl<'a> std::fmt::Display for FiveWrapperErrorWithDeserialize<'a> {
+// impl<'a> std::fmt::Display for FiveErrorWithDeserialize<'a> {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 //         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
 //         write!(f, "{}", self.to_string_without_config_with_deserialize())
@@ -411,11 +413,11 @@ pub enum FiveWrapperError<'a> {
 // impl<'a>
 //     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
 //         'a,
-//     > for FiveWrapperErrorWithDeserialize<'a>
+//     > for FiveErrorWithDeserialize<'a>
 // {
 //     fn source_to_string_without_config(&self) -> String {
 //         match self {
-//             FiveWrapperErrorWithDeserialize::Something {
+//             FiveErrorWithDeserialize::Something {
 //                 inner_errors,
 //                 code_occurence: _code_occurence,
 //             } => {
@@ -427,13 +429,13 @@ pub enum FiveWrapperError<'a> {
 // }
 
 // impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWithDeserialize<'a>
-//     for FiveWrapperErrorWithDeserialize<'a>
+//     for FiveErrorWithDeserialize<'a>
 // {
 //     fn get_code_occurence_with_deserialize(
 //         &self,
 //     ) -> &crate::common::code_occurence::CodeOccurenceWithDeserialize<'a> {
 //         match self {
-//             FiveWrapperErrorWithDeserialize::Something {
+//             FiveErrorWithDeserialize::Something {
 //                 inner_errors: _inner_error,
 //                 code_occurence,
 //             } => code_occurence,
@@ -442,11 +444,12 @@ pub enum FiveWrapperError<'a> {
 // }
 
 #[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)]
-pub enum FiveWrapperErrorEnum<'a> {
-    FiveOne(FiveOneOriginError<'a>),
+pub enum FiveErrorEnum<'a> {
+    #[error_occurence_from_origin]
+    FiveOne(FiveOneError<'a>),
 }
 
-// impl<'a> std::fmt::Display for FiveWrapperErrorEnum<'a> {
+// impl<'a> std::fmt::Display for FiveErrorEnum<'a> {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 //         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
 //         write!(f, "{}", self.to_string_without_config())
@@ -457,7 +460,7 @@ pub enum FiveWrapperErrorEnum<'a> {
 //     crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithConfig<
 //         'a,
 //         ConfigGeneric,
-//     > for FiveWrapperErrorEnum<'a>
+//     > for FiveErrorEnum<'a>
 // where
 //     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
 //         + crate::traits::fields::GetTimezone
@@ -465,7 +468,7 @@ pub enum FiveWrapperErrorEnum<'a> {
 // {
 //     fn to_string_with_config_for_source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
 //         match self {
-//             FiveWrapperErrorEnum::FiveOne(i) => {
+//             FiveErrorEnum::FiveOne(i) => {
 //                 use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithoutConfig;
 //                 i.to_string_with_config_for_source_to_string_without_config(config)
 //             },
@@ -474,22 +477,22 @@ pub enum FiveWrapperErrorEnum<'a> {
 // }
 
 // impl<'a> crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig<'a>
-//     for FiveWrapperErrorEnum<'a>
+//     for FiveErrorEnum<'a>
 // {
 //     fn to_string_without_config(&self) -> String {
 //         match self {
-//             FiveWrapperErrorEnum::FiveOne(i) => i.to_string_without_config(),
+//             FiveErrorEnum::FiveOne(i) => i.to_string_without_config(),
 //         }
 //     }
 // }
 
 // #[derive(Debug, thiserror::Error, serde::Serialize, serde::Deserialize)]
-// pub enum FiveWrapperErrorWithEnumWithDeserialize<'a> {
+// pub enum FiveErrorWithEnumWithDeserialize<'a> {
 //     #[serde(borrow)]
-//     FiveOne(FiveOneOriginErrorWithDeserialize<'a>),
+//     FiveOne(FiveOneErrorWithDeserialize<'a>),
 // }
 
-// impl<'a> std::fmt::Display for FiveWrapperErrorEnumWithDeserialize<'a> {
+// impl<'a> std::fmt::Display for FiveErrorEnumWithDeserialize<'a> {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 //         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
 //         write!(f, "{}", self.to_string_without_config_with_deserialize())
@@ -499,11 +502,11 @@ pub enum FiveWrapperErrorEnum<'a> {
 // impl<'a>
 //     crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize<
 //         'a,
-//     > for FiveWrapperErrorEnumWithDeserialize<'a>
+//     > for FiveErrorEnumWithDeserialize<'a>
 // {
 //     fn to_string_without_config_with_deserialize(&self) -> String {
 //         match self {
-//             FiveWrapperErrorEnumWithDeserialize::FiveOne(i) => {
+//             FiveErrorEnumWithDeserialize::FiveOne(i) => {
 //                 i.to_string_without_config_with_deserialize()
 //             }
 //         }
@@ -511,14 +514,14 @@ pub enum FiveWrapperErrorEnum<'a> {
 // }
 
 #[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)]
-pub enum FiveOneOriginError<'a> {
+pub enum FiveOneError<'a> {
     Something {
         error: String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
 
-// impl<'a> std::fmt::Display for FiveOneOriginError<'a> {
+// impl<'a> std::fmt::Display for FiveOneError<'a> {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 //         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
 //         write!(f, "{}", self.to_string_without_config())
@@ -529,7 +532,7 @@ pub enum FiveOneOriginError<'a> {
 //     crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
 //         'a,
 //         ConfigGeneric,
-//     > for FiveOneOriginError<'a>
+//     > for FiveOneError<'a>
 // where
 //     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
 //         + crate::traits::fields::GetTimezone
@@ -544,11 +547,11 @@ pub enum FiveOneOriginError<'a> {
 // impl<'a>
 //     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
 //         'a,
-//     > for FiveOneOriginError<'a>
+//     > for FiveOneError<'a>
 // {
 //     fn source_to_string_without_config(&self) -> String {
 //         match self {
-//             FiveOneOriginError::Something {
+//             FiveOneError::Something {
 //                 error,
 //                 code_occurence: _code_occurence,
 //             } => error.to_string(),
@@ -557,11 +560,11 @@ pub enum FiveOneOriginError<'a> {
 // }
 
 // impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
-//     for FiveOneOriginError<'a>
+//     for FiveOneError<'a>
 // {
 //     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
 //         match self {
-//             FiveOneOriginError::Something {
+//             FiveOneError::Something {
 //                 error: _error,
 //                 code_occurence,
 //             } => code_occurence,
@@ -570,7 +573,7 @@ pub enum FiveOneOriginError<'a> {
 // }
 
 // #[derive(Debug, thiserror::Error, serde::Serialize, serde::Deserialize)]
-// pub enum FiveOneOriginErrorWithDeserialize<'a> {
+// pub enum FiveOneErrorWithDeserialize<'a> {
 //     Something {
 //         error: String,
 //         #[serde(borrow)]
@@ -578,7 +581,7 @@ pub enum FiveOneOriginError<'a> {
 //     },
 // }
 
-// impl<'a> std::fmt::Display for FiveOneOriginErrorWithDeserialize<'a> {
+// impl<'a> std::fmt::Display for FiveOneErrorWithDeserialize<'a> {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 //         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
 //         write!(f, "{}", self.to_string_without_config_with_deserialize())
@@ -588,11 +591,11 @@ pub enum FiveOneOriginError<'a> {
 // impl<'a>
 //     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
 //         'a,
-//     > for FiveOneOriginErrorWithDeserialize<'a>
+//     > for FiveOneErrorWithDeserialize<'a>
 // {
 //     fn source_to_string_without_config(&self) -> String {
 //         match self {
-//             FiveOneOriginErrorWithDeserialize::Something {
+//             FiveOneErrorWithDeserialize::Something {
 //                 error,
 //                 code_occurence: _code_occurence,
 //             } => error.to_string(),
@@ -601,13 +604,13 @@ pub enum FiveOneOriginError<'a> {
 // }
 
 // impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWithDeserialize<'a>
-//     for FiveOneOriginErrorWithDeserialize<'a>
+//     for FiveOneErrorWithDeserialize<'a>
 // {
 //     fn get_code_occurence_with_deserialize(
 //         &self,
 //     ) -> &crate::common::code_occurence::CodeOccurenceWithDeserialize<'a> {
 //         match self {
-//             FiveOneOriginErrorWithDeserialize::Something {
+//             FiveOneErrorWithDeserialize::Something {
 //                 error: _error,
 //                 code_occurence,
 //             } => code_occurence,
@@ -616,15 +619,15 @@ pub enum FiveOneOriginError<'a> {
 // }
 
 #[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)]
-pub enum SixWrapperError<'a> {
+pub enum SixError<'a> {
     Something {
         //todo how to implement from for it?
-        inner_errors: std::vec::Vec<SixWrapperErrorEnum<'a>>,
+        inner_errors: std::vec::Vec<SixErrorEnum<'a>>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
 
-// impl<'a> std::fmt::Display for SixWrapperError<'a> {
+// impl<'a> std::fmt::Display for SixError<'a> {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 //         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
 //         write!(f, "{}", self.to_string_without_config())
@@ -635,7 +638,7 @@ pub enum SixWrapperError<'a> {
 //     crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
 //         'a,
 //         ConfigGeneric,
-//     > for SixWrapperError<'a>
+//     > for SixError<'a>
 // where
 //     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
 //         + crate::traits::fields::GetTimezone
@@ -643,7 +646,7 @@ pub enum SixWrapperError<'a> {
 // {
 //     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
 //         match self {
-//             SixWrapperError::Something {
+//             SixError::Something {
 //                 inner_errors,
 //                 code_occurence: _code_occurence,
 //             } => {
@@ -657,11 +660,11 @@ pub enum SixWrapperError<'a> {
 // impl<'a>
 //     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
 //         'a,
-//     > for SixWrapperError<'a>
+//     > for SixError<'a>
 // {
 //     fn source_to_string_without_config(&self) -> String {
 //         match self {
-//             SixWrapperError::Something {
+//             SixError::Something {
 //                 inner_errors,
 //                 code_occurence: _code_occurence,
 //             } => {
@@ -673,11 +676,11 @@ pub enum SixWrapperError<'a> {
 // }
 
 // impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
-//     for SixWrapperError<'a>
+//     for SixError<'a>
 // {
 //     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
 //         match self {
-//             SixWrapperError::Something {
+//             SixError::Something {
 //                 inner_errors: _inner_errors,
 //                 code_occurence,
 //             } => code_occurence,
@@ -686,17 +689,17 @@ pub enum SixWrapperError<'a> {
 // }
 
 // #[derive(Debug, thiserror::Error, serde::Serialize, serde::Deserialize)]
-// pub enum SixWrapperErrorWithDeserialize<'a> {
+// pub enum SixErrorWithDeserialize<'a> {
 //     Something {
 //         //todo how to implement from for it?
 //         #[serde(borrow)]
-//         inner_errors: Vec<SixWrapperErrorEnumWithDeserialize<'a>>,
+//         inner_errors: Vec<SixErrorEnumWithDeserialize<'a>>,
 //         #[serde(borrow)]
 //         code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize<'a>,
 //     },
 // }
 
-// impl<'a> std::fmt::Display for SixWrapperErrorWithDeserialize<'a> {
+// impl<'a> std::fmt::Display for SixErrorWithDeserialize<'a> {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 //         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
 //         write!(f, "{}", self.to_string_without_config_with_deserialize())
@@ -706,11 +709,11 @@ pub enum SixWrapperError<'a> {
 // impl<'a>
 //     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
 //         'a,
-//     > for SixWrapperErrorWithDeserialize<'a>
+//     > for SixErrorWithDeserialize<'a>
 // {
 //     fn source_to_string_without_config(&self) -> String {
 //         match self {
-//             SixWrapperErrorWithDeserialize::Something {
+//             SixErrorWithDeserialize::Something {
 //                 inner_errors,
 //                 code_occurence: _code_occurence,
 //             } => {
@@ -722,13 +725,13 @@ pub enum SixWrapperError<'a> {
 // }
 
 // impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWithDeserialize<'a>
-//     for SixWrapperErrorWithDeserialize<'a>
+//     for SixErrorWithDeserialize<'a>
 // {
 //     fn get_code_occurence_with_deserialize(
 //         &self,
 //     ) -> &crate::common::code_occurence::CodeOccurenceWithDeserialize<'a> {
 //         match self {
-//             SixWrapperErrorWithDeserialize::Something {
+//             SixErrorWithDeserialize::Something {
 //                 inner_errors: _inner_errors,
 //                 code_occurence,
 //             } => code_occurence,
@@ -737,12 +740,14 @@ pub enum SixWrapperError<'a> {
 // }
 
 #[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)]
-pub enum SixWrapperErrorEnum<'a> {
-    Seven(SevenOriginError<'a>),
-    Eight(EightOriginError<'a>),
+pub enum SixErrorEnum<'a> {
+    #[error_occurence_from_origin]
+    Seven(SevenError<'a>),
+    #[error_occurence_from_origin]
+    Eight(EightError<'a>),
 }
 
-// impl<'a> std::fmt::Display for SixWrapperErrorEnum<'a> {
+// impl<'a> std::fmt::Display for SixErrorEnum<'a> {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 //         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
 //         write!(f, "{}", self.to_string_without_config())
@@ -753,7 +758,7 @@ pub enum SixWrapperErrorEnum<'a> {
 //     crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithConfig<
 //         'a,
 //         ConfigGeneric,
-//     > for SixWrapperErrorEnum<'a>
+//     > for SixErrorEnum<'a>
 // where
 //     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
 //         + crate::traits::fields::GetTimezone
@@ -762,11 +767,11 @@ pub enum SixWrapperErrorEnum<'a> {
 //     fn to_string_with_config_for_source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
 //         //todo this logic must generate to_string_with_config_for_source_to_string_with_config for wrapper and to_string_with_config_for_source_to_string_without_config for origin, and maybe add trait usage if there is\are origins
 //         match self {
-//             SixWrapperErrorEnum::Seven(i) => {
+//             SixErrorEnum::Seven(i) => {
 //                 use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithoutConfig;
 //                 i.to_string_with_config_for_source_to_string_without_config(config)
 //             },
-//             SixWrapperErrorEnum::Eight(i) => {
+//             SixErrorEnum::Eight(i) => {
 //                 use crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithoutConfig;
 //                 i.to_string_with_config_for_source_to_string_without_config(config)
 //             },
@@ -775,25 +780,25 @@ pub enum SixWrapperErrorEnum<'a> {
 // }
 
 // impl<'a> crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig<'a>
-//     for SixWrapperErrorEnum<'a>
+//     for SixErrorEnum<'a>
 // {
 //     fn to_string_without_config(&self) -> String {
 //         match self {
-//             SixWrapperErrorEnum::Seven(i) => i.to_string_without_config(),
-//             SixWrapperErrorEnum::Eight(i) => i.to_string_without_config(),
+//             SixErrorEnum::Seven(i) => i.to_string_without_config(),
+//             SixErrorEnum::Eight(i) => i.to_string_without_config(),
 //         }
 //     }
 // }
 
 // #[derive(Debug, thiserror::Error, serde::Serialize, serde::Deserialize)]
-// pub enum SixWrapperErrorEnumWithDeserialize<'a> {
+// pub enum SixErrorEnumWithDeserialize<'a> {
 //     #[serde(borrow)]
-//     Seven(SevenOriginErrorWithDeserialize<'a>),
+//     Seven(SevenErrorWithDeserialize<'a>),
 //     #[serde(borrow)]
-//     Eight(EightOriginErrorWithDeserialize<'a>),
+//     Eight(EightErrorWithDeserialize<'a>),
 // }
 
-// impl<'a> std::fmt::Display for SixWrapperErrorEnumWithDeserialize<'a> {
+// impl<'a> std::fmt::Display for SixErrorEnumWithDeserialize<'a> {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 //         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
 //         write!(f, "{}", self.to_string_without_config_with_deserialize())
@@ -803,14 +808,14 @@ pub enum SixWrapperErrorEnum<'a> {
 // impl<'a>
 //     crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize<
 //         'a,
-//     > for SixWrapperErrorEnumWithDeserialize<'a>
+//     > for SixErrorEnumWithDeserialize<'a>
 // {
 //     fn to_string_without_config_with_deserialize(&self) -> String {
 //         match self {
-//             SixWrapperErrorEnumWithDeserialize::Seven(i) => {
+//             SixErrorEnumWithDeserialize::Seven(i) => {
 //                 i.to_string_without_config_with_deserialize()
 //             }
-//             SixWrapperErrorEnumWithDeserialize::Eight(i) => {
+//             SixErrorEnumWithDeserialize::Eight(i) => {
 //                 i.to_string_without_config_with_deserialize()
 //             }
 //         }
@@ -818,14 +823,14 @@ pub enum SixWrapperErrorEnum<'a> {
 // }
 
 #[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)]
-pub enum SevenOriginError<'a> {
+pub enum SevenError<'a> {
     Something {
         error: String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
 
-// impl<'a> std::fmt::Display for SevenOriginError<'a> {
+// impl<'a> std::fmt::Display for SevenError<'a> {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 //         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
 //         write!(f, "{}", self.to_string_without_config())
@@ -836,7 +841,7 @@ pub enum SevenOriginError<'a> {
 //     crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
 //         'a,
 //         ConfigGeneric,
-//     > for SevenOriginError<'a>
+//     > for SevenError<'a>
 // where
 //     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
 //         + crate::traits::fields::GetTimezone
@@ -851,11 +856,11 @@ pub enum SevenOriginError<'a> {
 // impl<'a>
 //     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
 //         'a,
-//     > for SevenOriginError<'a>
+//     > for SevenError<'a>
 // {
 //     fn source_to_string_without_config(&self) -> String {
 //         match self {
-//             SevenOriginError::Something {
+//             SevenError::Something {
 //                 error,
 //                 code_occurence: _code_occurence,
 //             } => error.to_string(),
@@ -864,11 +869,11 @@ pub enum SevenOriginError<'a> {
 // }
 
 // impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
-//     for SevenOriginError<'a>
+//     for SevenError<'a>
 // {
 //     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
 //         match self {
-//             SevenOriginError::Something {
+//             SevenError::Something {
 //                 error: _error,
 //                 code_occurence,
 //             } => code_occurence,
@@ -877,7 +882,7 @@ pub enum SevenOriginError<'a> {
 // }
 
 // #[derive(Debug, thiserror::Error, serde::Serialize, serde::Deserialize)]
-// pub enum SevenOriginErrorWithDeserialize<'a> {
+// pub enum SevenErrorWithDeserialize<'a> {
 //     Something {
 //         error: String,
 //         #[serde(borrow)]
@@ -885,7 +890,7 @@ pub enum SevenOriginError<'a> {
 //     },
 // }
 
-// impl<'a> std::fmt::Display for SevenOriginErrorWithDeserialize<'a> {
+// impl<'a> std::fmt::Display for SevenErrorWithDeserialize<'a> {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 //         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
 //         write!(f, "{}", self.to_string_without_config_with_deserialize())
@@ -895,11 +900,11 @@ pub enum SevenOriginError<'a> {
 // impl<'a>
 //     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
 //         'a,
-//     > for SevenOriginErrorWithDeserialize<'a>
+//     > for SevenErrorWithDeserialize<'a>
 // {
 //     fn source_to_string_without_config(&self) -> String {
 //         match self {
-//             SevenOriginErrorWithDeserialize::Something {
+//             SevenErrorWithDeserialize::Something {
 //                 error,
 //                 code_occurence: _code_occurence,
 //             } => error.to_string(),
@@ -908,13 +913,13 @@ pub enum SevenOriginError<'a> {
 // }
 
 // impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWithDeserialize<'a>
-//     for SevenOriginErrorWithDeserialize<'a>
+//     for SevenErrorWithDeserialize<'a>
 // {
 //     fn get_code_occurence_with_deserialize(
 //         &self,
 //     ) -> &crate::common::code_occurence::CodeOccurenceWithDeserialize<'a> {
 //         match self {
-//             SevenOriginErrorWithDeserialize::Something {
+//             SevenErrorWithDeserialize::Something {
 //                 error: _error,
 //                 code_occurence,
 //             } => code_occurence,
@@ -923,20 +928,20 @@ pub enum SevenOriginError<'a> {
 // }
 
 #[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)] //
-pub enum EightOriginError<'a> {
+pub enum EightError<'a> {
     Something {
         error: String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     SomethingElse {
-        inner_error: NineOriginError<'a>,
+        inner_error: NineError<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
 ////////////////////////////////////////////////
 
 ///////////////////////////////+++=
-// impl<'a> std::fmt::Display for EightOriginError<'a> {
+// impl<'a> std::fmt::Display for EightError<'a> {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 //         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
 //         write!(f, "{}", self.to_string_without_config())
@@ -946,7 +951,7 @@ pub enum EightOriginError<'a> {
 //     crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
 //         'a,
 //         ConfigGeneric,
-//     > for EightOriginError<'a>
+//     > for EightError<'a>
 // where
 //     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
 //         + crate::traits::fields::GetTimezone
@@ -954,7 +959,7 @@ pub enum EightOriginError<'a> {
 // {
 //     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
 //         match self {
-//             EightOriginError::Something {
+//             EightError::Something {
 //                 error: _unused_first_argument,
 //                 code_occurence: _unused_second_argument,
 //             } => {
@@ -967,11 +972,11 @@ pub enum EightOriginError<'a> {
 // impl<'a>
 //     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
 //         'a,
-//     > for EightOriginError<'a>
+//     > for EightError<'a>
 // {
 //     fn source_to_string_without_config(&self) -> String {
 //         match self {
-//             EightOriginError::Something {
+//             EightError::Something {
 //                 error,
 //                 code_occurence: _unused_second_argument,
 //             } => error.to_string(),
@@ -979,11 +984,11 @@ pub enum EightOriginError<'a> {
 //     }
 // }
 // impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
-//     for EightOriginError<'a>
+//     for EightError<'a>
 // {
 //     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
 //         match self {
-//             EightOriginError::Something {
+//             EightError::Something {
 //                 error: _unused_first_argument,
 //                 code_occurence,
 //             } => code_occurence,
@@ -991,7 +996,7 @@ pub enum EightOriginError<'a> {
 //     }
 // }
 // #[derive(Debug, thiserror :: Error, serde :: Serialize, serde :: Deserialize)]
-// pub enum EightOriginErrorWithDeserialize<'a> {
+// pub enum EightErrorWithDeserialize<'a> {
 //     Something {
 //         error: String,
 //         #[serde(borrow)]
@@ -1001,11 +1006,11 @@ pub enum EightOriginError<'a> {
 // impl<'a>
 //     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
 //         'a,
-//     > for EightOriginErrorWithDeserialize<'a>
+//     > for EightErrorWithDeserialize<'a>
 // {
 //     fn source_to_string_without_config(&self) -> String {
 //         match self {
-//             EightOriginErrorWithDeserialize::Something {
+//             EightErrorWithDeserialize::Something {
 //                 error,
 //                 code_occurence: _unused_second_argument,
 //             } => error.to_string(),
@@ -1013,20 +1018,20 @@ pub enum EightOriginError<'a> {
 //     }
 // }
 // impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWithDeserialize<'a>
-//     for EightOriginErrorWithDeserialize<'a>
+//     for EightErrorWithDeserialize<'a>
 // {
 //     fn get_code_occurence_with_deserialize(
 //         &self,
 //     ) -> &crate::common::code_occurence::CodeOccurenceWithDeserialize<'a> {
 //         match self {
-//             EightOriginErrorWithDeserialize::Something {
+//             EightErrorWithDeserialize::Something {
 //                 error: _unused_first_argument,
 //                 code_occurence,
 //             } => code_occurence,
 //         }
 //     }
 // }
-// impl<'a> std::fmt::Display for EightOriginErrorWithDeserialize<'a> {
+// impl<'a> std::fmt::Display for EightErrorWithDeserialize<'a> {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 //         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
 //         write!(f, "{}", self.to_string_without_config_with_deserialize())
@@ -1035,7 +1040,7 @@ pub enum EightOriginError<'a> {
 ////////////////////////////////////////////////
 
 #[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)]
-pub enum NineOriginError<'a> {
+pub enum NineError<'a> {
     NineSomething {
         //todo how to implement from for it?
         error: String,
