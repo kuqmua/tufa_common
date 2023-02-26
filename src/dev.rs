@@ -4,7 +4,7 @@ pub fn three<'a>() -> Result<
 > {
     if let Err(e) = four() {
         let f = crate::repositories_types::three_four_five_six_seven_eight::ThreeWrapperError::Something {
-            inner_error: crate::repositories_types::three_four_five_six_seven_eight::ThreeWrapperErrorEnum::Four(*e),
+            inner_error: *e,
             code_occurence: crate::code_occurence_tufa_common!(),
         };
         return Err(Box::new(f));
@@ -15,7 +15,7 @@ pub fn three<'a>() -> Result<
 pub fn three_with_deserialize<'a>() -> Result<(), Box<crate::repositories_types::three_four_five_six_seven_eight::ThreeWrapperErrorWithDeserialize<'a>>>{
     if let Err(e) = four_with_deserialize() {
         let f = crate::repositories_types::three_four_five_six_seven_eight::ThreeWrapperErrorWithDeserialize::Something {
-            inner_error: crate::repositories_types::three_four_five_six_seven_eight::ThreeWrapperErrorEnumWithDeserialize::Four(*e),
+            inner_error: *e,
             code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize::new(
                 &crate::global_variables::compile_time::git_info::GIT_INFO,
                 file!(),
