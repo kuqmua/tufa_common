@@ -245,9 +245,7 @@ pub enum FourWrapperError<'a> {
 
 #[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)]
 pub enum FourErrorEnum<'a> {
-    #[error_occurence_from_wrapper]
     Five(FiveError<'a>),
-    #[error_occurence_from_wrapper]
     Six(SixError<'a>),
 }
 
@@ -445,7 +443,6 @@ pub enum FiveError<'a> {
 
 #[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)]
 pub enum FiveErrorEnum<'a> {
-    #[error_occurence_from_origin]
     FiveOne(FiveOneError<'a>),
 }
 
@@ -741,9 +738,7 @@ pub enum SixError<'a> {
 
 #[derive(Debug, thiserror::Error, serde::Serialize, error_occurence::ImplErrorOccurence)]
 pub enum SixErrorEnum<'a> {
-    #[error_occurence_from_origin]
     Seven(SevenError<'a>),
-    #[error_occurence_from_origin]
     Eight(EightError<'a>),
 }
 
@@ -939,14 +934,6 @@ pub enum EightError<'a> {
     },
 }
 ////////////////////////////////////////////////
-
-///////////////////////////////+++=
-// impl<'a> std::fmt::Display for EightError<'a> {
-//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-//         write!(f, "{}", self.to_string_without_config())
-//     }
-// }
 // impl<'a, ConfigGeneric>
 //     crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
 //         'a,
