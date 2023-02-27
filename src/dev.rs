@@ -17,12 +17,7 @@ pub fn three_with_deserialize<'a>() -> Result<
     if let Err(e) = four_with_deserialize() {
         let f = crate::repositories_types::three_four_five_six_seven_eight::ThreeErrorWithDeserialize::Something {
             inner_error: *e,
-            code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize::new(
-                &crate::global_variables::compile_time::git_info::GIT_INFO,
-                file!(),
-                line!(),
-                column!(),
-            ),
+            code_occurence: crate::code_occurence_tufa_common_with_deserialize!(),
         };
         return Err(Box::new(f));
     };
@@ -79,12 +74,7 @@ pub fn four_with_deserialize<'a>() -> Result<
                         crate::repositories_types::three_four_five_six_seven_eight::FourErrorEnumWithDeserialize::Six(*s),
                     ),
                 ]),
-                code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize::new(
-                    &crate::global_variables::compile_time::git_info::GIT_INFO,
-                    file!(),
-                    line!(),
-                    column!(),
-                ),
+                code_occurence: crate::code_occurence_tufa_common_with_deserialize!(),
             };
             return Err(Box::new(f));
         }
@@ -118,12 +108,7 @@ pub fn five_with_deserialize<'a>() -> Result<
                 String::from("five_one_hashmap_key"),
                 crate::repositories_types::three_four_five_six_seven_eight::FiveErrorEnumWithDeserialize::FiveOne(*e),
             )]),
-            code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize::new(
-                &crate::global_variables::compile_time::git_info::GIT_INFO,
-                file!(),
-                line!(),
-                column!(),
-            ),
+            code_occurence: crate::code_occurence_tufa_common_with_deserialize!(),
         };
         return Err(Box::new(f));
     }
@@ -148,12 +133,7 @@ pub fn five_one_with_deserialize<'a>() -> Result<
 > {
     return Err(Box::new(crate::repositories_types::three_four_five_six_seven_eight::FiveOneErrorWithDeserialize::Something {
         error: String::from("five_one error"),
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize::new(
-            &crate::global_variables::compile_time::git_info::GIT_INFO,
-            file!(),
-            line!(),
-            column!(),
-        ),
+        code_occurence: crate::code_occurence_tufa_common_with_deserialize!(),
     }));
 }
 
@@ -194,12 +174,7 @@ pub fn six_with_deserialize<'a>() -> Result<
                     crate::repositories_types::three_four_five_six_seven_eight::SixErrorEnumWithDeserialize::Seven(*seven_error),
                     crate::repositories_types::three_four_five_six_seven_eight::SixErrorEnumWithDeserialize::Eight(*eight_error),
                 ],
-                code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize::new(
-                    &crate::global_variables::compile_time::git_info::GIT_INFO,
-                    file!(),
-                    line!(),
-                    column!(),
-                ),
+                code_occurence: crate::code_occurence_tufa_common_with_deserialize!(),
             };
             return Err(Box::new(f));
         }
@@ -222,12 +197,7 @@ pub fn seven_with_deserialize<'a>() -> Result<
 > {
     return Err(Box::new(crate::repositories_types::three_four_five_six_seven_eight::SevenErrorWithDeserialize::Something {
         error: String::from("error_eight"),
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize::new(
-            &crate::global_variables::compile_time::git_info::GIT_INFO,
-            file!(),
-            line!(),
-            column!(),
-        ),
+        code_occurence: crate::code_occurence_tufa_common_with_deserialize!(),
     }));
 }
 
@@ -250,11 +220,6 @@ pub fn eight_with_deserialize<'a>() -> Result<
 > {
     return Err(Box::new(crate::repositories_types::three_four_five_six_seven_eight::EightErrorWithDeserialize::Something {
         error: String::from("error_eight"),
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize::new(
-            &crate::global_variables::compile_time::git_info::GIT_INFO,
-            file!(),
-            line!(),
-            column!(),
-        ),
+        code_occurence: crate::code_occurence_tufa_common_with_deserialize!(),
     }));
 }
