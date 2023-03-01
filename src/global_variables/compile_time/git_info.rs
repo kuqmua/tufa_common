@@ -1,2 +1,2 @@
-#[compile_time_git_info::generate_const_git_information(tufa_common, crate)]
-fn this_function_will_be_removed_and_instead_pub_const_git_info_will_be_generated_on_compile_time();
+pub static GIT_INFO: crate::common::git::git_info::GitInformation =
+    compile_time_git_info::compile_time_git_info!(tufa_common, crate);
