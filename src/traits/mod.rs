@@ -1,4 +1,5 @@
 pub mod console;
+pub mod display_foreign_type;
 pub mod error_logs_logic;
 pub mod fields;
 pub mod get_bunyan_where_was;
