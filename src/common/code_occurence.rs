@@ -94,6 +94,20 @@ impl<'a> crate::traits::get_git_source_file_link::GetGitSourceFileLink<'a>
     }
 }
 
+impl<'a> CodeOccurence<'a> {
+    pub fn into_serialize_deserialize_version(self) -> CodeOccurenceWithDeserialize<'a> {
+        CodeOccurenceWithDeserialize {
+            file: self.file,
+            line: self.line,
+            column: self.column,
+            git_info: self.git_info.clone(),
+            duration: self.duration,
+            hostname: self.hostname,
+            process_id: self.process_id,
+        }
+    }
+}
+
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct CodeOccurenceWithDeserialize<'a> {
     file: &'a str,
