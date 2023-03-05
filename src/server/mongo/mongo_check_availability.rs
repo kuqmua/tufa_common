@@ -13,68 +13,31 @@ use init_error::InitErrorFromCrate;
 use mongodb::options::ClientOptions;
 use mongodb::Client;
 
-#[derive(
-    Debug,
-    ImplGetSourceFromCrate,
-    ImplDisplayForError,
-    InitErrorFromCrate,
-    ImplErrorWithTracingFromCrate,
-    ImplGetWhereWasOriginOrWrapperFromCrate,
-)]
-pub struct MongoCheckAvailabilityWrapperError {
-    source: MongoCheckAvailabilityOriginErrorEnum,
-    where_was: WhereWas,
+#[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)]
+pub enum MongoCheckAvailabilityError<'a> {
+    Mongo {
+        error: mongodb::error::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
 }
 
-#[derive(
-    Debug, ImplGetSourceFromCrate, ImplDisplayForError, ImplGetWhereWasOriginOrWrapperFromCrate,
-)]
-pub enum MongoCheckAvailabilityOriginErrorEnum {
-    ClientWithOptionsOrigin(mongodb::error::Error),
-    ListCollectionNamesOrigin(mongodb::error::Error),
-}
-
-pub async fn mongo_check_availability(
+pub async fn mongo_check_availability<'a>(
     client_options: ClientOptions,
     db_name: &str,
     source_place_type: &SourcePlaceType,
     should_trace: bool,
-) -> Result<(), Box<MongoCheckAvailabilityWrapperError>> {
+) -> Result<(), Box<MongoCheckAvailabilityError<'a>>> {
     match Client::with_options(client_options) {
-        Err(e) => Err(Box::new(
-            MongoCheckAvailabilityWrapperError::init_error_with_possible_trace(
-                MongoCheckAvailabilityOriginErrorEnum::ClientWithOptionsOrigin(e),
-                WhereWas {
-                    time: std::time::SystemTime::now()
-                        .duration_since(std::time::UNIX_EPOCH)
-                        .expect("cannot convert time to unix_epoch"),
-                    file: String::from(file!()),
-                    line: line!(),
-                    column: column!(),
-                    git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-                },
-                source_place_type,
-                should_trace,
-            ),
-        )),
+        Err(e) => Err(Box::new(MongoCheckAvailabilityError::Mongo {
+            error: e,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        })),
         Ok(client) => {
             if let Err(e) = client.database(db_name).list_collection_names(None).await {
-                return Err(Box::new(
-                    MongoCheckAvailabilityWrapperError::init_error_with_possible_trace(
-                        MongoCheckAvailabilityOriginErrorEnum::ListCollectionNamesOrigin(e),
-                        WhereWas {
-                            time: std::time::SystemTime::now()
-                                .duration_since(std::time::UNIX_EPOCH)
-                                .expect("cannot convert time to unix_epoch"),
-                            file: String::from(file!()),
-                            line: line!(),
-                            column: column!(),
-                            git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-                        },
-                        source_place_type,
-                        should_trace,
-                    ),
-                ));
+                return Err(Box::new(MongoCheckAvailabilityError::Mongo {
+                    error: e,
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                }));
             }
             Ok(())
         }
