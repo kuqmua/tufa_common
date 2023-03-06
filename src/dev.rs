@@ -14,6 +14,8 @@ pub enum SixError<'a> {
     Something {
         //todo how to implement from for it?
         inner_errors: std::vec::Vec<SixErrorEnum<'a>>,
+        // TODO inner_errors: std::vec::Vec<String>,
+        // TODO inner_errors: std::collections::HashMap<String, String>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
@@ -23,7 +25,10 @@ pub enum SixErrorEnum<'a> {
     Seven(SevenError<'a>),
     Eight(EightError<'a>),
     Another(String),
-    // AnotherVec(Vec<String>),
+    //todo #[simple_display] and #[display_is_not_implemented - rename to display_foreign_type] support
+    AnotherVec(Vec<String>),
+    //todo #[simple_display] and #[display_is_not_implemented - rename to display_foreign_type] support
+    AnotherHashmap(std::collections::HashMap<String, String>),
 }
 
 #[derive(Debug, thiserror::Error, serde::Serialize)] //, error_occurence::ImplErrorOccurence
@@ -51,11 +56,16 @@ pub fn six<'a>() -> Result<(), Box<SixError<'a>>> {
         (Err(_), Ok(_)) => todo!(),
         (Err(seven_error), Err(eight_error)) => {
             let ss = String::from("kekw");
+            let yy = vec![String::from("vec1")];
+            let hh =
+                std::collections::HashMap::from([(String::from("key"), String::from("value"))]);
             let f = SixError::Something {
                 inner_errors: vec![
                     SixErrorEnum::Seven(*seven_error),
                     SixErrorEnum::Eight(*eight_error),
                     SixErrorEnum::Another(ss),
+                    SixErrorEnum::AnotherVec(yy),
+                    SixErrorEnum::AnotherHashmap(hh),
                 ],
                 code_occurence: crate::code_occurence_tufa_common!(),
             };
@@ -232,8 +242,29 @@ crate :: traits :: get_server_address :: GetServerAddress,
             }, SixErrorEnum :: Eight(i) =>
             {
                 i.to_string_with_config_for_source_to_string_with_config(config)
-            }
-            SixErrorEnum :: Another(i) => i.to_string()
+            },
+            SixErrorEnum :: Another(i) => i.to_string(),
+            SixErrorEnum::AnotherVec(i) => {
+                let stringified_vec = i.iter().fold(String::from(""), |mut acc, element| {
+                    let stringified_element = element.lines().fold(String::from(""), |mut acc, line| {
+                        acc.push_str(&format!(" {}\n", line));
+                        acc
+                    });
+                    acc.push_str(&stringified_element);
+                    acc
+                });
+                format!("[\n{}]", stringified_vec)
+            },
+            SixErrorEnum::AnotherHashmap(i) => {
+                i.iter().fold(String::from(""), |mut acc, (key, value)| {
+                    let stringified_value = value.lines().fold(String::from(""), |mut accc, line| {
+                        accc.push_str(&format!(" {}\n", line));
+                        accc
+                    });
+                    acc.push_str(&format!("{} [\n{}]\n", key, stringified_value));
+                    acc
+                })
+            },
         }
     }
 }
@@ -245,6 +276,29 @@ impl<'a> crate::traits::error_logs_logic::to_string_without_config::ToStringWith
             SixErrorEnum::Seven(i) => i.to_string_without_config(),
             SixErrorEnum::Eight(i) => i.to_string_without_config(),
             SixErrorEnum::Another(i) => i.to_string(),
+            SixErrorEnum::AnotherVec(i) => {
+                let stringified_vec = i.iter().fold(String::from(""), |mut acc, element| {
+                    let stringified_element =
+                        element.lines().fold(String::from(""), |mut acc, line| {
+                            acc.push_str(&format!(" {}\n", line));
+                            acc
+                        });
+                    acc.push_str(&stringified_element);
+                    acc
+                });
+                format!("[\n{}]", stringified_vec)
+            }
+            SixErrorEnum::AnotherHashmap(i) => {
+                i.iter().fold(String::from(""), |mut acc, (key, value)| {
+                    let stringified_value =
+                        value.lines().fold(String::from(""), |mut accc, line| {
+                            accc.push_str(&format!(" {}\n", line));
+                            accc
+                        });
+                    acc.push_str(&format!("{} [\n{}]\n", key, stringified_value));
+                    acc
+                })
+            }
         }
     }
 }
@@ -255,6 +309,8 @@ pub enum SixErrorEnumWithDeserialize<'a> {
     #[serde(borrow)]
     Eight(EightErrorWithDeserialize<'a>),
     Another(String),
+    AnotherVec(Vec<String>),
+    AnotherHashmap(std::collections::HashMap<String, String>),
 }
 impl<'a>
     crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize<
@@ -265,7 +321,32 @@ impl<'a>
         match self {
             SixErrorEnumWithDeserialize::Seven(i) => i.to_string_without_config_with_deserialize(),
             SixErrorEnumWithDeserialize::Eight(i) => i.to_string_without_config_with_deserialize(),
-            SixErrorEnumWithDeserialize::Another(i) => i.to_string(),
+            SixErrorEnumWithDeserialize::Another(i) => i.to_string(), //todo or to display_foreign_type()
+            SixErrorEnumWithDeserialize::AnotherVec(i) => {
+                //todo or to display_foreign_type()
+                let stringified_vec = i.iter().fold(String::from(""), |mut acc, element| {
+                    let stringified_element =
+                        element.lines().fold(String::from(""), |mut acc, line| {
+                            acc.push_str(&format!(" {}\n", line));
+                            acc
+                        });
+                    acc.push_str(&stringified_element);
+                    acc
+                });
+                format!("[\n{}]", stringified_vec)
+            }
+            SixErrorEnumWithDeserialize::AnotherHashmap(i) => {
+                //todo or to display_foreign_type()
+                i.iter().fold(String::from(""), |mut acc, (key, value)| {
+                    let stringified_value =
+                        value.lines().fold(String::from(""), |mut accc, line| {
+                            accc.push_str(&format!(" {}\n", line));
+                            accc
+                        });
+                    acc.push_str(&format!("{} [\n{}]\n", key, stringified_value));
+                    acc
+                })
+            }
         }
     }
 }
@@ -279,6 +360,34 @@ impl<'a> SixErrorEnum<'a> {
                 SixErrorEnumWithDeserialize::Eight(i.into_serialize_deserialize_version())
             }
             SixErrorEnum::Another(i) => SixErrorEnumWithDeserialize::Another(i.to_string()),
+            SixErrorEnum::AnotherVec(i) => {
+                //todo - display implemented or not
+                // let stringified_vec = i.iter().fold(String::from(""), |mut acc, element| {
+                //     let stringified_element =
+                //         element.lines().fold(String::from(""), |mut acc, line| {
+                //             acc.push_str(&format!(" {}\n", line));
+                //             acc
+                //         });
+                //     acc.push_str(&stringified_element);
+                //     acc
+                // });
+                // format!("[\n{}]", stringified_vec)
+                SixErrorEnumWithDeserialize::AnotherVec(i)
+            }
+            SixErrorEnum::AnotherHashmap(i) => {
+                //todo - display implemented or not
+                // let stringified_hashmap =
+                //     i.iter().fold(String::from(""), |mut acc, (key, value)| {
+                //         let stringified_value =
+                //             value.lines().fold(String::from(""), |mut accc, line| {
+                //                 accc.push_str(&format!(" {}\n", line));
+                //                 accc
+                //             });
+                //         acc.push_str(&format!("{} [\n{}]\n", key, stringified_value));
+                //         acc
+                //     });
+                SixErrorEnumWithDeserialize::AnotherHashmap(i)
+            }
         }
     }
 }
