@@ -11,11 +11,6 @@ pub enum PostgresInsertLinkPartsIntoProvidersTablesOriginError<'a> {
 
 #[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)]
 pub enum PostgresInsertLinkPartsIntoProvidersTablesOriginErrorEnum<'a> {
-    Postgres(PostgresInsertLinkPartsIntoProvidersTablesOriginErrorEnumError<'a>),
-}
-
-#[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)]
-pub enum PostgresInsertLinkPartsIntoProvidersTablesOriginErrorEnumError<'a> {
     Postgres {
         error: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
