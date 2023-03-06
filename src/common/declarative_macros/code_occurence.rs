@@ -45,15 +45,3 @@ macro_rules! code_occurence_tufa_common_with_deserialize {
         )
     }};
 }
-
-// #[macro_export]
-// macro_rules! code_occurence {
-//     ( $( $x:expr ),* ) => {{
-//         tufa_common::common::code_occurence::CodeOccurence::new(
-//             &tufa_common::global_variables::compile_time::git_info::GIT_INFO,
-//             file!(),
-//             line!(),
-//             column!(),
-//         )
-//     }};
-// }
