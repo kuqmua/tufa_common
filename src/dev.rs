@@ -23,6 +23,7 @@ pub enum SixErrorEnum<'a> {
     Seven(SevenError<'a>),
     Eight(EightError<'a>),
     Another(String),
+    // AnotherVec(Vec<String>),
 }
 
 #[derive(Debug, thiserror::Error, serde::Serialize)] //, error_occurence::ImplErrorOccurence
@@ -512,3 +513,89 @@ impl<'a> EightError<'a> {
         }
     }
 }
+
+//TODO - WHATS DO WITH THIS ? (JOIN ALL SUTIATION)
+
+// #[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)]
+// pub enum CheckAvailabilityError<'a> {
+//     Net {
+//         error: crate::server::net::net_check_availability::NetCheckAvailabilityError<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//     },
+//     Postgres {
+//         error: crate::server::postgres::postgres_check_availability::PostgresCheckAvailabilityError<
+//             'a,
+//         >,
+//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//     },
+//     Mongo {
+//         error: crate::server::mongo::mongo_check_availability::MongoCheckAvailabilityError<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//     },
+//     Many {
+//         inner_errors: Vec<CheckAvailabilityErrorEnum<'a>>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//     },
+// }
+
+// #[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)]
+// pub enum CheckAvailabilityErrorEnum<'a> {
+//     Net(crate::server::net::net_check_availability::NetCheckAvailabilityError<'a>),
+//     Postgres(
+//         crate::server::postgres::postgres_check_availability::PostgresCheckAvailabilityError<'a>,
+//     ),
+//     Mongo(crate::server::mongo::mongo_check_availability::MongoCheckAvailabilityError<'a>),
+// }
+
+//    match join!(
+//         net_check_availability(net_url, false),
+//         postgres_check_availability(postgres_url, false),
+//         mongo_check_availability(
+//             MONGO_CLIENT_OPTIONS.deref().to_owned(), //std::time::Duration::from_millis(CONFIG.mongo_connection_timeout),
+//             &CONFIG.mongo_providers_logs_db_name,
+//             &CONFIG.source_place_type,
+//             false,
+//         ),
+//     ) {
+//         (Ok(_), Ok(_), Ok(_)) => Ok(()),
+//         (Ok(_), Ok(_), Err(m)) => Err(Box::new(tufa_common::repositories_types::tufa_server::preparation::check_availability::CheckAvailabilityError::Mongo {
+//             error: *m,
+//             code_occurence: tufa_common::code_occurence!(),
+//         })),
+//         (Ok(_), Err(p), Ok(_)) => Err(Box::new(tufa_common::repositories_types::tufa_server::preparation::check_availability::CheckAvailabilityError::Postgres {
+//             error: *p,
+//             code_occurence: tufa_common::code_occurence!(),
+//         })),
+//         (Ok(_), Err(p), Err(m)) => Err(Box::new(tufa_common::repositories_types::tufa_server::preparation::check_availability::CheckAvailabilityError::Many {
+//             inner_errors: vec![
+//                 tufa_common::repositories_types::tufa_server::preparation::check_availability::CheckAvailabilityErrorEnum::Postgres(*p),
+//                 tufa_common::repositories_types::tufa_server::preparation::check_availability::CheckAvailabilityErrorEnum::Mongo(*m),
+//             ],
+//             code_occurence: tufa_common::code_occurence!(),
+//         })),
+//         (Err(n), Ok(_), Ok(_)) => Err(Box::new(tufa_common::repositories_types::tufa_server::preparation::check_availability::CheckAvailabilityError::Net {
+//             error: *n,
+//             code_occurence: tufa_common::code_occurence!(),
+//         })),
+//         (Err(n), Ok(_), Err(m)) => Err(Box::new(tufa_common::repositories_types::tufa_server::preparation::check_availability::CheckAvailabilityError::Many {
+//             inner_errors: vec![
+//                 tufa_common::repositories_types::tufa_server::preparation::check_availability::CheckAvailabilityErrorEnum::Net(*n),
+//                 tufa_common::repositories_types::tufa_server::preparation::check_availability::CheckAvailabilityErrorEnum::Mongo(*m),
+//             ],
+//             code_occurence: tufa_common::code_occurence!(),
+//         })),
+//         (Err(n), Err(p), Ok(_)) => Err(Box::new(tufa_common::repositories_types::tufa_server::preparation::check_availability::CheckAvailabilityError::Many {
+//             inner_errors: vec![
+//                 tufa_common::repositories_types::tufa_server::preparation::check_availability::CheckAvailabilityErrorEnum::Net(*n),
+//                 tufa_common::repositories_types::tufa_server::preparation::check_availability::CheckAvailabilityErrorEnum::Postgres(*p),
+//             ],
+//             code_occurence: tufa_common::code_occurence!(),
+//         })),
+//         (Err(n), Err(p), Err(m)) => Err(Box::new(tufa_common::repositories_types::tufa_server::preparation::check_availability::CheckAvailabilityError::Many {
+//             inner_errors: vec![
+//                 tufa_common::repositories_types::tufa_server::preparation::check_availability::CheckAvailabilityErrorEnum::Net(*n),
+//                 tufa_common::repositories_types::tufa_server::preparation::check_availability::CheckAvailabilityErrorEnum::Postgres(*p),
+//                 tufa_common::repositories_types::tufa_server::preparation::check_availability::CheckAvailabilityErrorEnum::Mongo(*m),
+//             ],
+//             code_occurence: tufa_common::code_occurence!(),
+//         })),
