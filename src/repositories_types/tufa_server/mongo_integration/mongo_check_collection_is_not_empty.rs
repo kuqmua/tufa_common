@@ -1,7 +1,7 @@
 #[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)]
 pub enum MongoClientWithOptionsOriginError<'a> {
     Mongo {
-        inner_errors: Vec<MongoClientWithOptionsOriginErrorEnum<'a>>,
+        inner_errors: std::collections::HashMap<String, MongoClientWithOptionsOriginErrorEnum<'a>>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
