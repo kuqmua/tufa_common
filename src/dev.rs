@@ -1,3 +1,5 @@
+use crate::traits::display_foreign_type;
+
 pub fn dev() {
     if let Err(e) = six() {
         //todo - this actually must be a config struct function, not an error - config.error_log(e)
@@ -24,10 +26,14 @@ pub enum SixError<'a> {
 pub enum SixErrorEnum<'a> {
     Seven(SevenError<'a>),
     Eight(EightError<'a>),
+    // //todo #[simple_display] and #[display_foreign_type] support
+    // // #[origin]
     Another(String),
     //todo #[simple_display] and #[display_foreign_type] support
+    // #[origin]
     AnotherVec(Vec<String>),
     //todo #[simple_display] and #[display_foreign_type] support
+    // #[origin]
     AnotherHashmap(std::collections::HashMap<String, String>),
 }
 
@@ -63,9 +69,9 @@ pub fn six<'a>() -> Result<(), Box<SixError<'a>>> {
                 inner_errors: vec![
                     SixErrorEnum::Seven(*seven_error),
                     SixErrorEnum::Eight(*eight_error),
-                    SixErrorEnum::Another(ss),
-                    SixErrorEnum::AnotherVec(yy),
-                    SixErrorEnum::AnotherHashmap(hh),
+                    // SixErrorEnum::Another(ss),
+                    // SixErrorEnum::AnotherVec(yy),
+                    // SixErrorEnum::AnotherHashmap(hh),
                 ],
                 code_occurence: crate::code_occurence_tufa_common!(),
             };
@@ -708,3 +714,191 @@ impl<'a> EightError<'a> {
 //             ],
 //             code_occurence: tufa_common::code_occurence!(),
 //         })),
+
+///////////////////////////////////////////////////
+#[derive(Debug)]
+pub struct Kekw {}
+#[derive(Debug, thiserror::Error)] //, error_occurence::ImplErrorOccurence
+pub enum OneErrorEnum<'a> {
+    Seven(SevenError<'a>),
+    // Eight(EightError<'a>),
+    //todo #[simple_display] and #[display_foreign_type] support
+    // #[origin]
+    Another(String),
+    Foreign(Kekw),
+    //todo #[simple_display] and #[display_foreign_type] support
+    // #[origin]
+    AnotherVec(Vec<String>),
+    // //todo #[simple_display] and #[display_foreign_type] support
+    // #[origin]
+    AnotherHashmap(std::collections::HashMap<String, String>),
+}
+
+impl crate::traits::display_foreign_type::DisplayForeignType for Kekw {
+    fn display_foreign_type(&self) -> String {
+        String::from("kekw")
+    }
+}
+//////////////
+impl<'a> std::fmt::Display for OneErrorEnum<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+        write!(f, "{}", self.to_string_without_config())
+    }
+}
+impl<'a> std::fmt::Display for OneErrorEnumWithDeserialize<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
+        write!(f, "{}", self.to_string_without_config_with_deserialize())
+    }
+}
+impl < 'a, ConfigGeneric > crate :: traits :: error_logs_logic ::
+to_string_with_config :: ToStringWithConfigForSourceToStringWithConfig < 'a,
+ConfigGeneric, > for OneErrorEnum < 'a > where ConfigGeneric : crate :: traits
+:: fields :: GetSourcePlaceType + crate :: traits :: fields :: GetTimezone +
+crate :: traits :: get_server_address :: GetServerAddress,
+{
+    fn
+    to_string_with_config_for_source_to_string_with_config(& self, config : &
+    ConfigGeneric) -> String
+    {
+        match self
+        {
+            OneErrorEnum :: Seven(i) =>
+            {
+                i.to_string_with_config_for_source_to_string_with_config(config)
+            }
+            //here
+            OneErrorEnum::Another(i) => {
+                i.to_string()
+            },
+            OneErrorEnum::Foreign(i) => {
+                use crate::traits::display_foreign_type::DisplayForeignType;
+                i.display_foreign_type()
+            },
+            OneErrorEnum::AnotherVec(i) => {
+                let stringified_vec = i.iter().fold(String::from(""), |mut acc, element| {
+                    let stringified_element = element.lines().fold(String::from(""), |mut acc, line| {
+                        acc.push_str(&format!(" {}\n", line));
+                        acc
+                    });
+                    acc.push_str(&stringified_element);
+                    acc
+                });
+                format!("[\n{}]", stringified_vec)
+            },
+            OneErrorEnum::AnotherHashmap(i) => {
+                i.iter().fold(String::from(""), |mut acc, (key, value)| {
+                    let stringified_value = value.lines().fold(String::from(""), |mut accc, line| {
+                        accc.push_str(&format!(" {}\n", line));
+                        accc
+                    });
+                    acc.push_str(&format!("{} [\n{}]\n", key, stringified_value));
+                    acc
+                })
+            },
+        }
+    }
+}
+impl<'a> crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig<'a>
+    for OneErrorEnum<'a>
+{
+    fn to_string_without_config(&self) -> String {
+        match self {
+            OneErrorEnum::Seven(i) => i.to_string_without_config(),
+            //here
+            OneErrorEnum::Another(i) => i.to_string(),
+            OneErrorEnum::Foreign(i) => {
+                use crate::traits::display_foreign_type::DisplayForeignType;
+                i.display_foreign_type()
+            }
+            OneErrorEnum::AnotherVec(i) => {
+                let stringified_vec = i.iter().fold(String::from(""), |mut acc, element| {
+                    let stringified_element =
+                        element.lines().fold(String::from(""), |mut acc, line| {
+                            acc.push_str(&format!(" {}\n", line));
+                            acc
+                        });
+                    acc.push_str(&stringified_element);
+                    acc
+                });
+                format!("[\n{}]", stringified_vec)
+            }
+            OneErrorEnum::AnotherHashmap(i) => {
+                i.iter().fold(String::from(""), |mut acc, (key, value)| {
+                    let stringified_value =
+                        value.lines().fold(String::from(""), |mut accc, line| {
+                            accc.push_str(&format!(" {}\n", line));
+                            accc
+                        });
+                    acc.push_str(&format!("{} [\n{}]\n", key, stringified_value));
+                    acc
+                })
+            }
+        }
+    }
+}
+#[derive(Debug, thiserror :: Error, serde :: Serialize, serde :: Deserialize)]
+pub enum OneErrorEnumWithDeserialize<'a> {
+    #[serde(borrow)]
+    Seven(SevenErrorWithDeserialize<'a>),
+    //here
+    Another(String),
+    Foreign(String),
+    AnotherVec(Vec<String>),
+    AnotherHashmap(std::collections::HashMap<String, String>),
+}
+impl<'a>
+    crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize<
+        'a,
+    > for OneErrorEnumWithDeserialize<'a>
+{
+    fn to_string_without_config_with_deserialize(&self) -> String {
+        match self {
+            OneErrorEnumWithDeserialize::Seven(i) => i.to_string_without_config_with_deserialize(),
+            //here
+            OneErrorEnumWithDeserialize::Another(i) => i.to_string(),
+            OneErrorEnumWithDeserialize::Foreign(i) => i.to_string(),
+            OneErrorEnumWithDeserialize::AnotherVec(i) => {
+                let stringified_vec = i.iter().fold(String::from(""), |mut acc, element| {
+                    let stringified_element =
+                        element.lines().fold(String::from(""), |mut acc, line| {
+                            acc.push_str(&format!(" {}\n", line));
+                            acc
+                        });
+                    acc.push_str(&stringified_element);
+                    acc
+                });
+                format!("[\n{}]", stringified_vec)
+            }
+            OneErrorEnumWithDeserialize::AnotherHashmap(i) => {
+                i.iter().fold(String::from(""), |mut acc, (key, value)| {
+                    let stringified_value =
+                        value.lines().fold(String::from(""), |mut accc, line| {
+                            accc.push_str(&format!(" {}\n", line));
+                            accc
+                        });
+                    acc.push_str(&format!("{} [\n{}]\n", key, stringified_value));
+                    acc
+                })
+            }
+        }
+    }
+}
+impl<'a> OneErrorEnum<'a> {
+    pub fn into_serialize_deserialize_version(self) -> OneErrorEnumWithDeserialize<'a> {
+        match self {
+            OneErrorEnum::Seven(i) => {
+                OneErrorEnumWithDeserialize::Seven(i.into_serialize_deserialize_version())
+            }
+            //here
+            OneErrorEnum::Another(i) => OneErrorEnumWithDeserialize::Another(i),
+            OneErrorEnum::Foreign(i) => OneErrorEnumWithDeserialize::Foreign({
+                use crate::traits::display_foreign_type::DisplayForeignType;
+                i.display_foreign_type()
+            }),
+            OneErrorEnum::AnotherVec(i) => OneErrorEnumWithDeserialize::AnotherVec(i),
+            OneErrorEnum::AnotherHashmap(i) => OneErrorEnumWithDeserialize::AnotherHashmap(i),
+        }
+    }
+}
