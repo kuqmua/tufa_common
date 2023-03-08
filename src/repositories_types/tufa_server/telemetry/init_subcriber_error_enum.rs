@@ -1,12 +1,12 @@
 #[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)]
 pub enum InitSubcriberErrorEnum<'a> {
     SetGlobalDefault {
-        #[display_is_not_implemented]
+        #[display_foreign_type]
         error: tracing::dispatcher::SetGlobalDefaultError,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     SetLogger {
-        #[display_is_not_implemented]
+        #[display_foreign_type]
         error: tracing::log::SetLoggerError,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },

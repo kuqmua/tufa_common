@@ -25,9 +25,9 @@ pub enum SixErrorEnum<'a> {
     Seven(SevenError<'a>),
     Eight(EightError<'a>),
     Another(String),
-    //todo #[simple_display] and #[display_is_not_implemented - rename to display_foreign_type] support
+    //todo #[simple_display] and #[display_foreign_type] support
     AnotherVec(Vec<String>),
-    //todo #[simple_display] and #[display_is_not_implemented - rename to display_foreign_type] support
+    //todo #[simple_display] and #[display_foreign_type] support
     AnotherHashmap(std::collections::HashMap<String, String>),
 }
 
