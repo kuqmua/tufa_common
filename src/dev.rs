@@ -719,24 +719,25 @@ impl<'a> EightError<'a> {
 ///////////////////////////////////////////////////
 #[derive(Debug, PartialEq, Eq, Hash)]
 pub struct Kekw {}
+
 #[derive(Debug, thiserror::Error)] //, error_occurence::ImplErrorOccurence
 pub enum OneErrorEnum<'a> {
     Seven(SevenError<'a>),
     // #[to_string]
     Another(String),
-    // #[to_string]
+    // #[display_foreign_type]
     Foreign(Kekw),
     // #[to_string]
     AnotherVec(std::vec::Vec<String>),
-    // #[to_string]
+    // #[hashmap_key_to_string_value_to_string]
     AnotherHashmap(std::collections::HashMap<String, String>),
     // #[display_foreign_type]
     ForeignVec(std::vec::Vec<Kekw>),
-    // #[display_foreign_type]  #[to_string]
-    ForeignHashmap(std::collections::HashMap<String, Kekw>), //todo - #[display_foreign_type] and #[to_string] for key
-    // #[display_foreign_type]  #[display_foreign_type]
+    // #[hashmap_key_to_string_value_display_foreign_type]
+    ForeignHashmap(std::collections::HashMap<String, Kekw>),
+    // #[hashmap_key_display_foreign_type_value_display_foreign_type]
     ForeignKVHashmap(std::collections::HashMap<Kekw, Kekw>),
-    // #[display_foreign_type]  #[to_string]
+    // #[hashmap_key_display_foreign_type_value_to_string]
     ForeignKHashmap(std::collections::HashMap<Kekw, String>),
 }
 
@@ -774,7 +775,6 @@ crate :: traits :: get_server_address :: GetServerAddress,
             {
                 i.to_string_with_config_for_source_to_string_with_config(config)
             }
-            //here
             OneErrorEnum::Another(i) => {
                 i.to_string()
             },
@@ -857,7 +857,6 @@ impl<'a> crate::traits::error_logs_logic::to_string_without_config::ToStringWith
     fn to_string_without_config(&self) -> String {
         match self {
             OneErrorEnum::Seven(i) => i.to_string_without_config(),
-            //here
             OneErrorEnum::Another(i) => i.to_string(),
             OneErrorEnum::Foreign(i) => {
                 use crate::traits::display_foreign_type::DisplayForeignType;
@@ -956,15 +955,14 @@ impl<'a> crate::traits::error_logs_logic::to_string_without_config::ToStringWith
 pub enum OneErrorEnumWithDeserialize<'a> {
     #[serde(borrow)]
     Seven(SevenErrorWithDeserialize<'a>),
-    //here
-    Another(String),
-    Foreign(String),
-    AnotherVec(std::vec::Vec<String>),
-    AnotherHashmap(std::collections::HashMap<String, String>),
-    ForeignVec(std::vec::Vec<String>),
-    ForeignHashmap(std::collections::HashMap<String, String>), //todo - #[display_foreign_type] and #[to_string] for key
-    ForeignKVHashmap(std::collections::HashMap<String, String>),
-    ForeignKHashmap(std::collections::HashMap<String, String>),
+    Another(String),                                             //todo - full path
+    Foreign(String),                                             //todo - full path
+    AnotherVec(std::vec::Vec<String>),                           //todo - full path
+    AnotherHashmap(std::collections::HashMap<String, String>),   //todo - full path
+    ForeignVec(std::vec::Vec<String>),                           //todo - full path
+    ForeignHashmap(std::collections::HashMap<String, String>),   //todo - full path
+    ForeignKVHashmap(std::collections::HashMap<String, String>), //todo - full path
+    ForeignKHashmap(std::collections::HashMap<String, String>),  //todo - full path
 }
 impl<'a>
     crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize<
@@ -974,7 +972,6 @@ impl<'a>
     fn to_string_without_config_with_deserialize(&self) -> String {
         match self {
             OneErrorEnumWithDeserialize::Seven(i) => i.to_string_without_config_with_deserialize(),
-            //here
             OneErrorEnumWithDeserialize::Another(i) => i.to_string(),
             OneErrorEnumWithDeserialize::Foreign(i) => i.to_string(),
             OneErrorEnumWithDeserialize::AnotherVec(i) => {
@@ -1054,7 +1051,6 @@ impl<'a> OneErrorEnum<'a> {
             OneErrorEnum::Seven(i) => {
                 OneErrorEnumWithDeserialize::Seven(i.into_serialize_deserialize_version())
             }
-            //here
             OneErrorEnum::Another(i) => OneErrorEnumWithDeserialize::Another(i),
             OneErrorEnum::Foreign(i) => OneErrorEnumWithDeserialize::Foreign({
                 use crate::traits::display_foreign_type::DisplayForeignType;
