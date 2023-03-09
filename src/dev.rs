@@ -6,6 +6,7 @@ pub fn dev() {
         println!("{}", *e);
         use crate::traits::error_logs_logic::error_log::ErrorLog;
         e.error_log(once_cell::sync::Lazy::force(
+            //todo - this must be call once on start of the program
             &crate::global_variables::runtime::config::CONFIG,
         ));
     }
@@ -716,25 +717,27 @@ impl<'a> EightError<'a> {
 //         })),
 
 ///////////////////////////////////////////////////
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq, Hash)]
 pub struct Kekw {}
 #[derive(Debug, thiserror::Error)] //, error_occurence::ImplErrorOccurence
 pub enum OneErrorEnum<'a> {
     Seven(SevenError<'a>),
-    // Eight(EightError<'a>),
-    //todo #[simple_display] and #[display_foreign_type] support
-    // #[origin]
+    // #[to_string]
     Another(String),
+    // #[to_string]
     Foreign(Kekw),
-    //todo #[simple_display] and #[display_foreign_type] support
-    // #[origin]
-    AnotherVec(Vec<String>),
-    // //todo #[simple_display] and #[display_foreign_type] support
-    // #[origin]
+    // #[to_string]
+    AnotherVec(std::vec::Vec<String>),
+    // #[to_string]
     AnotherHashmap(std::collections::HashMap<String, String>),
-    ForeignVec(Vec<Kekw>),
+    // #[display_foreign_type]
+    ForeignVec(std::vec::Vec<Kekw>),
+    // #[display_foreign_type]  #[to_string]
     ForeignHashmap(std::collections::HashMap<String, Kekw>), //todo - #[display_foreign_type] and #[to_string] for key
+    // #[display_foreign_type]  #[display_foreign_type]
     ForeignKVHashmap(std::collections::HashMap<Kekw, Kekw>),
+    // #[display_foreign_type]  #[to_string]
+    ForeignKHashmap(std::collections::HashMap<Kekw, String>),
 }
 
 impl crate::traits::display_foreign_type::DisplayForeignType for Kekw {
@@ -834,6 +837,17 @@ crate :: traits :: get_server_address :: GetServerAddress,
                     acc
                 })
             },
+            OneErrorEnum::ForeignKHashmap(i) => {
+                use crate::traits::display_foreign_type::DisplayForeignType;
+                i.iter().fold(String::from(""), |mut acc, (key, value)| {
+                    let stringified_value = value.lines().fold(String::from(""), |mut accc, line| {
+                        accc.push_str(&format!(" {}\n", line));
+                        accc
+                    });
+                    acc.push_str(&format!("{} [\n{}]\n", key.display_foreign_type(), stringified_value));
+                    acc
+                })
+            },
         }
     }
 }
@@ -919,6 +933,22 @@ impl<'a> crate::traits::error_logs_logic::to_string_without_config::ToStringWith
                     acc
                 })
             }
+            OneErrorEnum::ForeignKHashmap(i) => {
+                use crate::traits::display_foreign_type::DisplayForeignType;
+                i.iter().fold(String::from(""), |mut acc, (key, value)| {
+                    let stringified_value =
+                        value.lines().fold(String::from(""), |mut accc, line| {
+                            accc.push_str(&format!(" {}\n", line));
+                            accc
+                        });
+                    acc.push_str(&format!(
+                        "{} [\n{}]\n",
+                        key.display_foreign_type(),
+                        stringified_value
+                    ));
+                    acc
+                })
+            }
         }
     }
 }
@@ -929,11 +959,12 @@ pub enum OneErrorEnumWithDeserialize<'a> {
     //here
     Another(String),
     Foreign(String),
-    AnotherVec(Vec<String>),
+    AnotherVec(std::vec::Vec<String>),
     AnotherHashmap(std::collections::HashMap<String, String>),
-    ForeignVec(Vec<String>),
+    ForeignVec(std::vec::Vec<String>),
     ForeignHashmap(std::collections::HashMap<String, String>), //todo - #[display_foreign_type] and #[to_string] for key
     ForeignKVHashmap(std::collections::HashMap<String, String>),
+    ForeignKHashmap(std::collections::HashMap<String, String>),
 }
 impl<'a>
     crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize<
@@ -1003,6 +1034,17 @@ impl<'a>
                     acc
                 })
             }
+            OneErrorEnumWithDeserialize::ForeignKHashmap(i) => {
+                i.iter().fold(String::from(""), |mut acc, (key, value)| {
+                    let stringified_value =
+                        value.lines().fold(String::from(""), |mut accc, line| {
+                            accc.push_str(&format!(" {}\n", line));
+                            accc
+                        });
+                    acc.push_str(&format!("{} [\n{}]\n", key, stringified_value));
+                    acc
+                })
+            }
         }
     }
 }
@@ -1041,6 +1083,14 @@ impl<'a> OneErrorEnum<'a> {
                     .map(|(k, v)| {
                         use crate::traits::display_foreign_type::DisplayForeignType;
                         (k.display_foreign_type(), v.display_foreign_type())
+                    })
+                    .collect()
+            }),
+            OneErrorEnum::ForeignKHashmap(i) => OneErrorEnumWithDeserialize::ForeignKHashmap({
+                i.into_iter()
+                    .map(|(k, v)| {
+                        use crate::traits::display_foreign_type::DisplayForeignType;
+                        (k.display_foreign_type(), v)
                     })
                     .collect()
             }),
