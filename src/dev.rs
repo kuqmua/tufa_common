@@ -717,9 +717,29 @@ impl<'a> EightError<'a> {
 //         })),
 
 ///////////////////////////////////////////////////
+#[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)] //
+pub enum TwoErrorEnum<'a> {
+    Seven(SevenError<'a>),
+    // // #[to_string]
+    // Another(String),
+    // // #[display_foreign_type]
+    // Foreign(Kekw),
+    // // #[to_string]
+    // AnotherVec(std::vec::Vec<String>),
+    #[hashmap_key_to_string_value_to_string]
+    AnotherHashmap(std::collections::HashMap<std::string::String, std::string::String>),
+    // // #[display_foreign_type]
+    // ForeignVec(std::vec::Vec<Kekw>),
+    // // #[hashmap_key_to_string_value_display_foreign_type]
+    // ForeignHashmap(std::collections::HashMap<String, Kekw>),
+    // // #[hashmap_key_display_foreign_type_value_display_foreign_type]
+    // ForeignKVHashmap(std::collections::HashMap<Kekw, Kekw>),
+    // // #[hashmap_key_display_foreign_type_value_to_string]
+    // ForeignKHashmap(std::collections::HashMap<Kekw, String>),
+}
 #[derive(Debug, PartialEq, Eq, Hash)]
 pub struct Kekw {}
-
+//todo - check on lifetime - is it there or is it not - and generate/not generate it
 #[derive(Debug, thiserror::Error)] //, error_occurence::ImplErrorOccurence
 pub enum OneErrorEnum<'a> {
     Seven(SevenError<'a>),
@@ -963,6 +983,7 @@ pub enum OneErrorEnumWithDeserialize<'a> {
     ForeignHashmap(std::collections::HashMap<String, String>),   //todo - full path
     ForeignKVHashmap(std::collections::HashMap<String, String>), //todo - full path
     ForeignKHashmap(std::collections::HashMap<String, String>),  //todo - full path
+                                                                 //todo - what about Seven(Vec<SevenErrorWithDeserialize<'a>>), and Seven(HashMap<>),
 }
 impl<'a>
     crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize<
