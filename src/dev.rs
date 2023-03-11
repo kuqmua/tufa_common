@@ -38,7 +38,7 @@ pub enum SixErrorEnum<'a> {
     AnotherHashmap(std::collections::HashMap<String, String>),
 }
 
-#[derive(Debug, Hash, thiserror::Error, serde::Serialize)] //, error_occurence::ImplErrorOccurence
+#[derive(Debug, thiserror::Error, serde::Serialize)] //, error_occurence::ImplErrorOccurence
 pub enum SevenError<'a> {
     Something {
         error: String,
@@ -462,7 +462,7 @@ impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'
         }
     }
 }
-#[derive(Debug, Hash, thiserror :: Error, serde :: Serialize, serde :: Deserialize)]
+#[derive(Debug, thiserror :: Error, serde :: Serialize, serde :: Deserialize)]
 pub enum SevenErrorWithDeserialize<'a> {
     Something {
         error: String,
@@ -793,18 +793,6 @@ pub enum OneErrorEnum<'a> {
     HashMapKeyDisplayForeignTypeValueErrorOccurence(
         std::collections::HashMap<crate::dev::Kekw, crate::dev::SevenError<'a>>,
     ),
-    // // #[hashmap_key_error_occurence_value_to_string]
-    // HashMapKeyErrorOccurenceValueToString(
-    //     std::collections::HashMap<crate::dev::SevenError<'a>, crate::dev::Omegalul>,
-    // ),
-    // // #[hashmap_key_error_occurence_value_display_foreign_type]
-    // HashMapKeyErrorOccurenceValueDisplayForeignType(
-    //     std::collections::HashMap<crate::dev::SevenError<'a>, crate::dev::Kekw>,
-    // ),
-    // // #[hashmap_key_error_occurence_value_error_occurence]
-    // HashMapKeyErrorOccurenceValueErrorOccurence(
-    //     std::collections::HashMap<crate::dev::SevenError<'a>, crate::dev::SevenError<'a>>,
-    // ),
 }
 
 //////////////
@@ -941,37 +929,6 @@ crate :: traits :: get_server_address :: GetServerAddress,
                     acc
                 })
             }
-            // OneErrorEnum::HashMapKeyErrorOccurenceValueToString(i) => {
-            //     i.iter().fold(String::from(""), |mut acc, (key, value)| {
-            //         let stringified_value = value.to_string().lines().fold(String::from(""), |mut accc, line| {
-            //             accc.push_str(&format!(" {}\n", line));
-            //             accc
-            //         });
-            //         acc.push_str(&format!("{} [\n{}]\n", key.to_string_with_config_for_source_to_string_with_config(config), stringified_value));
-            //         acc
-            //     })
-            // },
-            // OneErrorEnum::HashMapKeyErrorOccurenceValueDisplayForeignType(i) => {
-            //     use crate::traits::display_foreign_type::DisplayForeignType;
-            //     i.iter().fold(String::from(""), |mut acc, (key, value)| {
-            //         let stringified_value = value.display_foreign_type().lines().fold(String::from(""), |mut accc, line| {
-            //             accc.push_str(&format!(" {}\n", line));
-            //             accc
-            //         });
-            //         acc.push_str(&format!("{} [\n{}]\n", key.to_string_with_config_for_source_to_string_with_config(config), stringified_value));
-            //         acc
-            //     })
-            // },
-            // OneErrorEnum::HashMapKeyErrorOccurenceValueErrorOccurence(i) => {
-            //     i.iter().fold(String::from(""), |mut acc, (key, value)| {
-            //         let stringified_value = value.to_string_with_config_for_source_to_string_with_config(config).lines().fold(String::from(""), |mut accc, line| {
-            //             accc.push_str(&format!(" {}\n", line));
-            //             accc
-            //         });
-            //         acc.push_str(&format!("{} [\n{}]\n", key.to_string_with_config_for_source_to_string_with_config(config), stringified_value));
-            //         acc
-            //     })
-            // },
         }
     }
 }
@@ -1125,59 +1082,7 @@ impl<'a> crate::traits::error_logs_logic::to_string_without_config::ToStringWith
                     ));
                     acc
                 })
-            } // OneErrorEnum::HashMapKeyErrorOccurenceValueToString(i) => {
-              //     i.iter().fold(String::from(""), |mut acc, (key, value)| {
-              //         let stringified_value =
-              //             value
-              //                 .to_string()
-              //                 .lines()
-              //                 .fold(String::from(""), |mut accc, line| {
-              //                     accc.push_str(&format!(" {}\n", line));
-              //                     accc
-              //                 });
-              //         acc.push_str(&format!(
-              //             "{} [\n{}]\n",
-              //             key.to_string_without_config(),
-              //             stringified_value
-              //         ));
-              //         acc
-              //     })
-              // }
-              // OneErrorEnum::HashMapKeyErrorOccurenceValueDisplayForeignType(i) => {
-              //     use crate::traits::display_foreign_type::DisplayForeignType;
-              //     i.iter().fold(String::from(""), |mut acc, (key, value)| {
-              //         let stringified_value = value.display_foreign_type().lines().fold(
-              //             String::from(""),
-              //             |mut accc, line| {
-              //                 accc.push_str(&format!(" {}\n", line));
-              //                 accc
-              //             },
-              //         );
-              //         acc.push_str(&format!(
-              //             "{} [\n{}]\n",
-              //             key.to_string_without_config(),
-              //             stringified_value
-              //         ));
-              //         acc
-              //     })
-              // }
-              // OneErrorEnum::HashMapKeyErrorOccurenceValueErrorOccurence(i) => {
-              //     i.iter().fold(String::from(""), |mut acc, (key, value)| {
-              //         let stringified_value = value.to_string_without_config().lines().fold(
-              //             String::from(""),
-              //             |mut accc, line| {
-              //                 accc.push_str(&format!(" {}\n", line));
-              //                 accc
-              //             },
-              //         );
-              //         acc.push_str(&format!(
-              //             "{} [\n{}]\n",
-              //             key.to_string_without_config(),
-              //             stringified_value
-              //         ));
-              //         acc
-              //     })
-              // }
+            }
         }
     }
 }
@@ -1208,21 +1113,6 @@ pub enum OneErrorEnumWithDeserialize<'a> {
     HashMapKeyDisplayForeignTypeValueErrorOccurence(
         std::collections::HashMap<String, crate::dev::SevenErrorWithDeserialize<'a>>,
     ),
-    // #[serde(borrow)]
-    // HashMapKeyErrorOccurenceValueToString(
-    //     std::collections::HashMap<crate::dev::SevenErrorWithDeserialize<'a>, crate::dev::Omegalul>,
-    // ),
-    // #[serde(borrow)]
-    // HashMapKeyErrorOccurenceValueDisplayForeignType(
-    //     std::collections::HashMap<crate::dev::SevenErrorWithDeserialize<'a>, String>,
-    // ),
-    // #[serde(borrow)]
-    // HashMapKeyErrorOccurenceValueErrorOccurence(
-    //     std::collections::HashMap<
-    //         crate::dev::SevenErrorWithDeserialize<'a>,
-    //         crate::dev::SevenErrorWithDeserialize<'a>,
-    //     >,
-    // ),
 }
 impl<'a>
     crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize<
@@ -1352,56 +1242,7 @@ impl<'a>
                     acc.push_str(&format!("{} [\n{}]\n", key, stringified_value));
                     acc
                 })
-            } // OneErrorEnumWithDeserialize::HashMapKeyErrorOccurenceValueToString(i) => {
-              //     i.iter().fold(String::from(""), |mut acc, (key, value)| {
-              //         let stringified_value =
-              //             value
-              //                 .to_string()
-              //                 .lines()
-              //                 .fold(String::from(""), |mut accc, line| {
-              //                     accc.push_str(&format!(" {}\n", line));
-              //                     accc
-              //                 });
-              //         acc.push_str(&format!(
-              //             "{} [\n{}]\n",
-              //             key.to_string_without_config_with_deserialize(),
-              //             stringified_value
-              //         ));
-              //         acc
-              //     })
-              // }
-              // OneErrorEnumWithDeserialize::HashMapKeyErrorOccurenceValueDisplayForeignType(i) => {
-              //     i.iter().fold(String::from(""), |mut acc, (key, value)| {
-              //         let stringified_value =
-              //             value.lines().fold(String::from(""), |mut accc, line| {
-              //                 accc.push_str(&format!(" {}\n", line));
-              //                 accc
-              //             });
-              //         acc.push_str(&format!(
-              //             "{} [\n{}]\n",
-              //             key.to_string_without_config_with_deserialize(),
-              //             stringified_value
-              //         ));
-              //         acc
-              //     })
-              // }
-              // OneErrorEnumWithDeserialize::HashMapKeyErrorOccurenceValueErrorOccurence(i) => {
-              //     i.iter().fold(String::from(""), |mut acc, (key, value)| {
-              //         let stringified_value = value
-              //             .to_string_without_config_with_deserialize()
-              //             .lines()
-              //             .fold(String::from(""), |mut accc, line| {
-              //                 accc.push_str(&format!(" {}\n", line));
-              //                 accc
-              //             });
-              //         acc.push_str(&format!(
-              //             "{} [\n{}]\n",
-              //             key.to_string_without_config_with_deserialize(),
-              //             stringified_value
-              //         ));
-              //         acc
-              //     })
-              // }
+            }
         }
     }
 }
@@ -1489,38 +1330,7 @@ impl<'a> OneErrorEnum<'a> {
                         })
                         .collect()
                 })
-            } // OneErrorEnum::HashMapKeyErrorOccurenceValueToString(i) => {
-              //     OneErrorEnumWithDeserialize::HashMapKeyErrorOccurenceValueToString({
-              //         i.into_iter()
-              //             .map(|(k, v)| (k.into_serialize_deserialize_version(), v))
-              //             .collect()
-              //     })
-              // }
-              // OneErrorEnum::HashMapKeyErrorOccurenceValueDisplayForeignType(i) => {
-              //     OneErrorEnumWithDeserialize::HashMapKeyErrorOccurenceValueDisplayForeignType({
-              //         i.into_iter()
-              //             .map(|(k, v)| {
-              //                 use crate::traits::display_foreign_type::DisplayForeignType;
-              //                 (
-              //                     k.into_serialize_deserialize_version(),
-              //                     v.display_foreign_type(),
-              //                 )
-              //             })
-              //             .collect()
-              //     })
-              // }
-              // OneErrorEnum::HashMapKeyErrorOccurenceValueErrorOccurence(i) => {
-              //     OneErrorEnumWithDeserialize::HashMapKeyErrorOccurenceValueErrorOccurence({
-              //         i.into_iter()
-              //             .map(|(k, v)| {
-              //                 (
-              //                     k.into_serialize_deserialize_version(),
-              //                     v.into_serialize_deserialize_version(),
-              //                 )
-              //             })
-              //             .collect()
-              //     })
-              // }
+            }
         }
     }
 }
