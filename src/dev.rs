@@ -38,7 +38,7 @@ pub enum SixErrorEnum<'a> {
     AnotherHashmap(std::collections::HashMap<String, String>),
 }
 
-#[derive(Debug, thiserror::Error, serde::Serialize)] //, error_occurence::ImplErrorOccurence
+#[derive(Debug, Hash, thiserror::Error, serde::Serialize)] //, error_occurence::ImplErrorOccurence
 pub enum SevenError<'a> {
     Something {
         error: String,
@@ -462,7 +462,7 @@ impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'
         }
     }
 }
-#[derive(Debug, thiserror :: Error, serde :: Serialize, serde :: Deserialize)]
+#[derive(Debug, Hash, thiserror :: Error, serde :: Serialize, serde :: Deserialize)]
 pub enum SevenErrorWithDeserialize<'a> {
     Something {
         error: String,
@@ -769,7 +769,7 @@ pub enum OneErrorEnum<'a> {
     VecDisplayForeignType(std::vec::Vec<crate::dev::Kekw>),
     // #[vec_error_occurence]
     VecErrorOccurence(std::vec::Vec<crate::dev::SevenError<'a>>),
-    // #[hashmap_key_to_string_value_to_string]
+    // // #[hashmap_key_to_string_value_to_string]
     HashMapKeyToStringValueToString(
         std::collections::HashMap<crate::dev::Omegalul, crate::dev::Omegalul>,
     ),
@@ -793,18 +793,18 @@ pub enum OneErrorEnum<'a> {
     HashMapKeyDisplayForeignTypeValueErrorOccurence(
         std::collections::HashMap<crate::dev::Kekw, crate::dev::SevenError<'a>>,
     ),
-    // #[hashmap_key_error_occurence_value_to_string]
-    HashMapKeyErrorOccurenceValueToString(
-        std::collections::HashMap<crate::dev::SevenError<'a>, crate::dev::Omegalul>,
-    ),
-    // #[hashmap_key_error_occurence_value_display_foreign_type]
-    HashMapKeyErrorOccurenceValueDisplayForeignType(
-        std::collections::HashMap<crate::dev::SevenError<'a>, crate::dev::Kekw>,
-    ),
-    // #[hashmap_key_error_occurence_value_error_occurence]
-    HashMapKeyErrorOccurenceValueErrorOccurence(
-        std::collections::HashMap<crate::dev::SevenError<'a>, crate::dev::SevenError<'a>>,
-    ),
+    // // #[hashmap_key_error_occurence_value_to_string]
+    // HashMapKeyErrorOccurenceValueToString(
+    //     std::collections::HashMap<crate::dev::SevenError<'a>, crate::dev::Omegalul>,
+    // ),
+    // // #[hashmap_key_error_occurence_value_display_foreign_type]
+    // HashMapKeyErrorOccurenceValueDisplayForeignType(
+    //     std::collections::HashMap<crate::dev::SevenError<'a>, crate::dev::Kekw>,
+    // ),
+    // // #[hashmap_key_error_occurence_value_error_occurence]
+    // HashMapKeyErrorOccurenceValueErrorOccurence(
+    //     std::collections::HashMap<crate::dev::SevenError<'a>, crate::dev::SevenError<'a>>,
+    // ),
 }
 
 //////////////
@@ -867,7 +867,15 @@ crate :: traits :: get_server_address :: GetServerAddress,
                 format!("[\n{}]", stringified_vec)
             },
             OneErrorEnum::VecErrorOccurence(i) => {
-
+                let stringified_vec = i.iter().fold(String::from(""), |mut acc, element| {
+                    let stringified_element = element.to_string_with_config_for_source_to_string_with_config(config).lines().fold(String::from(""), |mut acc, line| {
+                        acc.push_str(&format!(" {}\n", line));
+                        acc
+                    });
+                    acc.push_str(&stringified_element);
+                    acc
+                });
+                format!("[\n{}]", stringified_vec)
             },
             OneErrorEnum::HashMapKeyToStringValueToString(i) => {
                 i.iter().fold(String::from(""), |mut acc, (key, value)| {
@@ -891,7 +899,14 @@ crate :: traits :: get_server_address :: GetServerAddress,
                 })
             },
             OneErrorEnum::HashMapKeyToStringValueErrorOccurence(i) => {
-
+                i.iter().fold(String::from(""), |mut acc, (key, value)| {
+                    let stringified_value = value.to_string_with_config_for_source_to_string_with_config(config).lines().fold(String::from(""), |mut accc, line| {
+                        accc.push_str(&format!(" {}\n", line));
+                        accc
+                    });
+                    acc.push_str(&format!("{} [\n{}]\n", key, stringified_value));
+                    acc
+                })
             },
             OneErrorEnum::HashMapKeyDisplayForeignTypeValueToString(i) => {
                 use crate::traits::display_foreign_type::DisplayForeignType;
@@ -916,17 +931,47 @@ crate :: traits :: get_server_address :: GetServerAddress,
                 })
             },
             OneErrorEnum::HashMapKeyDisplayForeignTypeValueErrorOccurence(i) => {
-
+                use crate::traits::display_foreign_type::DisplayForeignType;
+                i.iter().fold(String::from(""), |mut acc, (key, value)| {
+                    let stringified_value = value.to_string_with_config_for_source_to_string_with_config(config).lines().fold(String::from(""), |mut accc, line| {
+                        accc.push_str(&format!(" {}\n", line));
+                        accc
+                    });
+                    acc.push_str(&format!("{} [\n{}]\n", key.display_foreign_type(), stringified_value));
+                    acc
+                })
             }
-            OneErrorEnum::HashMapKeyErrorOccurenceValueToString(i) => {
-
-            },
-            OneErrorEnum::HashMapKeyErrorOccurenceValueDisplayForeignType(i) => {
-
-            },
-            OneErrorEnum::HashMapKeyErrorOccurenceValueErrorOccurence(i) => {
-
-            },
+            // OneErrorEnum::HashMapKeyErrorOccurenceValueToString(i) => {
+            //     i.iter().fold(String::from(""), |mut acc, (key, value)| {
+            //         let stringified_value = value.to_string().lines().fold(String::from(""), |mut accc, line| {
+            //             accc.push_str(&format!(" {}\n", line));
+            //             accc
+            //         });
+            //         acc.push_str(&format!("{} [\n{}]\n", key.to_string_with_config_for_source_to_string_with_config(config), stringified_value));
+            //         acc
+            //     })
+            // },
+            // OneErrorEnum::HashMapKeyErrorOccurenceValueDisplayForeignType(i) => {
+            //     use crate::traits::display_foreign_type::DisplayForeignType;
+            //     i.iter().fold(String::from(""), |mut acc, (key, value)| {
+            //         let stringified_value = value.display_foreign_type().lines().fold(String::from(""), |mut accc, line| {
+            //             accc.push_str(&format!(" {}\n", line));
+            //             accc
+            //         });
+            //         acc.push_str(&format!("{} [\n{}]\n", key.to_string_with_config_for_source_to_string_with_config(config), stringified_value));
+            //         acc
+            //     })
+            // },
+            // OneErrorEnum::HashMapKeyErrorOccurenceValueErrorOccurence(i) => {
+            //     i.iter().fold(String::from(""), |mut acc, (key, value)| {
+            //         let stringified_value = value.to_string_with_config_for_source_to_string_with_config(config).lines().fold(String::from(""), |mut accc, line| {
+            //             accc.push_str(&format!(" {}\n", line));
+            //             accc
+            //         });
+            //         acc.push_str(&format!("{} [\n{}]\n", key.to_string_with_config_for_source_to_string_with_config(config), stringified_value));
+            //         acc
+            //     })
+            // },
         }
     }
 }
@@ -971,7 +1016,20 @@ impl<'a> crate::traits::error_logs_logic::to_string_without_config::ToStringWith
                 });
                 format!("[\n{}]", stringified_vec)
             }
-            OneErrorEnum::VecErrorOccurence(i) => {}
+            OneErrorEnum::VecErrorOccurence(i) => {
+                let stringified_vec = i.iter().fold(String::from(""), |mut acc, element| {
+                    let stringified_element = element.to_string_without_config().lines().fold(
+                        String::from(""),
+                        |mut acc, line| {
+                            acc.push_str(&format!(" {}\n", line));
+                            acc
+                        },
+                    );
+                    acc.push_str(&stringified_element);
+                    acc
+                });
+                format!("[\n{}]", stringified_vec)
+            }
             OneErrorEnum::HashMapKeyToStringValueToString(i) => {
                 i.iter().fold(String::from(""), |mut acc, (key, value)| {
                     let stringified_value =
@@ -1000,7 +1058,19 @@ impl<'a> crate::traits::error_logs_logic::to_string_without_config::ToStringWith
                     acc
                 })
             }
-            OneErrorEnum::HashMapKeyToStringValueErrorOccurence(i) => {}
+            OneErrorEnum::HashMapKeyToStringValueErrorOccurence(i) => {
+                i.iter().fold(String::from(""), |mut acc, (key, value)| {
+                    let stringified_value = value.to_string_without_config().lines().fold(
+                        String::from(""),
+                        |mut accc, line| {
+                            accc.push_str(&format!(" {}\n", line));
+                            accc
+                        },
+                    );
+                    acc.push_str(&format!("{} [\n{}]\n", key, stringified_value));
+                    acc
+                })
+            }
             OneErrorEnum::HashMapKeyDisplayForeignTypeValueToString(i) => {
                 use crate::traits::display_foreign_type::DisplayForeignType;
                 i.iter().fold(String::from(""), |mut acc, (key, value)| {
@@ -1038,21 +1108,88 @@ impl<'a> crate::traits::error_logs_logic::to_string_without_config::ToStringWith
                     acc
                 })
             }
-            OneErrorEnum::HashMapKeyDisplayForeignTypeValueErrorOccurence(i) => {}
-            OneErrorEnum::HashMapKeyErrorOccurenceValueToString(i) => {}
-            OneErrorEnum::HashMapKeyErrorOccurenceValueDisplayForeignType(i) => {}
-            OneErrorEnum::HashMapKeyErrorOccurenceValueErrorOccurence(i) => {}
+            OneErrorEnum::HashMapKeyDisplayForeignTypeValueErrorOccurence(i) => {
+                use crate::traits::display_foreign_type::DisplayForeignType;
+                i.iter().fold(String::from(""), |mut acc, (key, value)| {
+                    let stringified_value = value.to_string_without_config().lines().fold(
+                        String::from(""),
+                        |mut accc, line| {
+                            accc.push_str(&format!(" {}\n", line));
+                            accc
+                        },
+                    );
+                    acc.push_str(&format!(
+                        "{} [\n{}]\n",
+                        key.display_foreign_type(),
+                        stringified_value
+                    ));
+                    acc
+                })
+            } // OneErrorEnum::HashMapKeyErrorOccurenceValueToString(i) => {
+              //     i.iter().fold(String::from(""), |mut acc, (key, value)| {
+              //         let stringified_value =
+              //             value
+              //                 .to_string()
+              //                 .lines()
+              //                 .fold(String::from(""), |mut accc, line| {
+              //                     accc.push_str(&format!(" {}\n", line));
+              //                     accc
+              //                 });
+              //         acc.push_str(&format!(
+              //             "{} [\n{}]\n",
+              //             key.to_string_without_config(),
+              //             stringified_value
+              //         ));
+              //         acc
+              //     })
+              // }
+              // OneErrorEnum::HashMapKeyErrorOccurenceValueDisplayForeignType(i) => {
+              //     use crate::traits::display_foreign_type::DisplayForeignType;
+              //     i.iter().fold(String::from(""), |mut acc, (key, value)| {
+              //         let stringified_value = value.display_foreign_type().lines().fold(
+              //             String::from(""),
+              //             |mut accc, line| {
+              //                 accc.push_str(&format!(" {}\n", line));
+              //                 accc
+              //             },
+              //         );
+              //         acc.push_str(&format!(
+              //             "{} [\n{}]\n",
+              //             key.to_string_without_config(),
+              //             stringified_value
+              //         ));
+              //         acc
+              //     })
+              // }
+              // OneErrorEnum::HashMapKeyErrorOccurenceValueErrorOccurence(i) => {
+              //     i.iter().fold(String::from(""), |mut acc, (key, value)| {
+              //         let stringified_value = value.to_string_without_config().lines().fold(
+              //             String::from(""),
+              //             |mut accc, line| {
+              //                 accc.push_str(&format!(" {}\n", line));
+              //                 accc
+              //             },
+              //         );
+              //         acc.push_str(&format!(
+              //             "{} [\n{}]\n",
+              //             key.to_string_without_config(),
+              //             stringified_value
+              //         ));
+              //         acc
+              //     })
+              // }
         }
     }
 }
-#[derive(Debug, thiserror::Error, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, thiserror::Error, serde::Serialize, serde::Deserialize)] //PartialEq, Eq, Hash,
 pub enum OneErrorEnumWithDeserialize<'a> {
-    #[serde(borrow)]
     ToString(crate::dev::Omegalul),
     DisplayForeignType(String),
+    #[serde(borrow)]
     ErrorOccurence(crate::dev::SevenErrorWithDeserialize<'a>),
     VecToString(std::vec::Vec<crate::dev::Omegalul>),
     VecDisplayForeignType(std::vec::Vec<String>),
+    #[serde(borrow)]
     VecErrorOccurence(std::vec::Vec<crate::dev::SevenErrorWithDeserialize<'a>>),
     HashMapKeyToStringValueToString(
         std::collections::HashMap<crate::dev::Omegalul, crate::dev::Omegalul>,
@@ -1067,21 +1204,25 @@ pub enum OneErrorEnumWithDeserialize<'a> {
         std::collections::HashMap<String, crate::dev::Omegalul>,
     ),
     HashMapKeyDisplayForeignTypeValueDisplayForeignType(std::collections::HashMap<String, String>),
+    #[serde(borrow)]
     HashMapKeyDisplayForeignTypeValueErrorOccurence(
         std::collections::HashMap<String, crate::dev::SevenErrorWithDeserialize<'a>>,
     ),
-    HashMapKeyErrorOccurenceValueToString(
-        std::collections::HashMap<crate::dev::SevenErrorWithDeserialize<'a>, crate::dev::Omegalul>,
-    ),
-    HashMapKeyErrorOccurenceValueDisplayForeignType(
-        std::collections::HashMap<crate::dev::SevenErrorWithDeserialize<'a>, String>,
-    ),
-    HashMapKeyErrorOccurenceValueErrorOccurence(
-        std::collections::HashMap<
-            crate::dev::SevenErrorWithDeserialize<'a>,
-            crate::dev::SevenErrorWithDeserialize<'a>,
-        >,
-    ),
+    // #[serde(borrow)]
+    // HashMapKeyErrorOccurenceValueToString(
+    //     std::collections::HashMap<crate::dev::SevenErrorWithDeserialize<'a>, crate::dev::Omegalul>,
+    // ),
+    // #[serde(borrow)]
+    // HashMapKeyErrorOccurenceValueDisplayForeignType(
+    //     std::collections::HashMap<crate::dev::SevenErrorWithDeserialize<'a>, String>,
+    // ),
+    // #[serde(borrow)]
+    // HashMapKeyErrorOccurenceValueErrorOccurence(
+    //     std::collections::HashMap<
+    //         crate::dev::SevenErrorWithDeserialize<'a>,
+    //         crate::dev::SevenErrorWithDeserialize<'a>,
+    //     >,
+    // ),
 }
 impl<'a>
     crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize<
@@ -1122,7 +1263,20 @@ impl<'a>
                 });
                 format!("[\n{}]", stringified_vec)
             }
-            OneErrorEnumWithDeserialize::VecErrorOccurence(i) => {}
+            OneErrorEnumWithDeserialize::VecErrorOccurence(i) => {
+                let stringified_vec = i.iter().fold(String::from(""), |mut acc, element| {
+                    let stringified_element = element
+                        .to_string_without_config_with_deserialize()
+                        .lines()
+                        .fold(String::from(""), |mut acc, line| {
+                            acc.push_str(&format!(" {}\n", line));
+                            acc
+                        });
+                    acc.push_str(&stringified_element);
+                    acc
+                });
+                format!("[\n{}]", stringified_vec)
+            }
             OneErrorEnumWithDeserialize::HashMapKeyToStringValueToString(i) => {
                 i.iter().fold(String::from(""), |mut acc, (key, value)| {
                     let stringified_value =
@@ -1148,7 +1302,19 @@ impl<'a>
                     acc
                 })
             }
-            OneErrorEnumWithDeserialize::HashMapKeyToStringValueErrorOccurence(i) => {}
+            OneErrorEnumWithDeserialize::HashMapKeyToStringValueErrorOccurence(i) => {
+                i.iter().fold(String::from(""), |mut acc, (key, value)| {
+                    let stringified_value = value
+                        .to_string_without_config_with_deserialize()
+                        .lines()
+                        .fold(String::from(""), |mut accc, line| {
+                            accc.push_str(&format!(" {}\n", line));
+                            accc
+                        });
+                    acc.push_str(&format!("{} [\n{}]\n", key, stringified_value));
+                    acc
+                })
+            }
             OneErrorEnumWithDeserialize::HashMapKeyDisplayForeignTypeValueToString(i) => {
                 i.iter().fold(String::from(""), |mut acc, (key, value)| {
                     let stringified_value =
@@ -1174,10 +1340,68 @@ impl<'a>
                     acc
                 })
             }
-            OneErrorEnum::HashMapKeyDisplayForeignTypeValueErrorOccurence(i) => {}
-            OneErrorEnum::HashMapKeyErrorOccurenceValueToString(i) => {}
-            OneErrorEnum::HashMapKeyErrorOccurenceValueDisplayForeignType(i) => {}
-            OneErrorEnum::HashMapKeyErrorOccurenceValueErrorOccurence(i) => {}
+            OneErrorEnumWithDeserialize::HashMapKeyDisplayForeignTypeValueErrorOccurence(i) => {
+                i.iter().fold(String::from(""), |mut acc, (key, value)| {
+                    let stringified_value = value
+                        .to_string_without_config_with_deserialize()
+                        .lines()
+                        .fold(String::from(""), |mut accc, line| {
+                            accc.push_str(&format!(" {}\n", line));
+                            accc
+                        });
+                    acc.push_str(&format!("{} [\n{}]\n", key, stringified_value));
+                    acc
+                })
+            } // OneErrorEnumWithDeserialize::HashMapKeyErrorOccurenceValueToString(i) => {
+              //     i.iter().fold(String::from(""), |mut acc, (key, value)| {
+              //         let stringified_value =
+              //             value
+              //                 .to_string()
+              //                 .lines()
+              //                 .fold(String::from(""), |mut accc, line| {
+              //                     accc.push_str(&format!(" {}\n", line));
+              //                     accc
+              //                 });
+              //         acc.push_str(&format!(
+              //             "{} [\n{}]\n",
+              //             key.to_string_without_config_with_deserialize(),
+              //             stringified_value
+              //         ));
+              //         acc
+              //     })
+              // }
+              // OneErrorEnumWithDeserialize::HashMapKeyErrorOccurenceValueDisplayForeignType(i) => {
+              //     i.iter().fold(String::from(""), |mut acc, (key, value)| {
+              //         let stringified_value =
+              //             value.lines().fold(String::from(""), |mut accc, line| {
+              //                 accc.push_str(&format!(" {}\n", line));
+              //                 accc
+              //             });
+              //         acc.push_str(&format!(
+              //             "{} [\n{}]\n",
+              //             key.to_string_without_config_with_deserialize(),
+              //             stringified_value
+              //         ));
+              //         acc
+              //     })
+              // }
+              // OneErrorEnumWithDeserialize::HashMapKeyErrorOccurenceValueErrorOccurence(i) => {
+              //     i.iter().fold(String::from(""), |mut acc, (key, value)| {
+              //         let stringified_value = value
+              //             .to_string_without_config_with_deserialize()
+              //             .lines()
+              //             .fold(String::from(""), |mut accc, line| {
+              //                 accc.push_str(&format!(" {}\n", line));
+              //                 accc
+              //             });
+              //         acc.push_str(&format!(
+              //             "{} [\n{}]\n",
+              //             key.to_string_without_config_with_deserialize(),
+              //             stringified_value
+              //         ));
+              //         acc
+              //     })
+              // }
         }
     }
 }
@@ -1205,7 +1429,14 @@ impl<'a> OneErrorEnum<'a> {
                         .collect()
                 })
             }
-            OneErrorEnumWithDeserialize::VecErrorOccurence(i) => {}
+            OneErrorEnum::VecErrorOccurence(i) => OneErrorEnumWithDeserialize::VecErrorOccurence({
+                i.into_iter()
+                    .map(|e| {
+                        use crate::traits::display_foreign_type::DisplayForeignType;
+                        e.into_serialize_deserialize_version()
+                    })
+                    .collect()
+            }),
             OneErrorEnum::HashMapKeyToStringValueToString(i) => {
                 OneErrorEnumWithDeserialize::HashMapKeyToStringValueToString(i)
             }
@@ -1219,7 +1450,13 @@ impl<'a> OneErrorEnum<'a> {
                         .collect()
                 })
             }
-            OneErrorEnumWithDeserialize::HashMapKeyToStringValueErrorOccurence(i) => {}
+            OneErrorEnum::HashMapKeyToStringValueErrorOccurence(i) => {
+                OneErrorEnumWithDeserialize::HashMapKeyToStringValueErrorOccurence({
+                    i.into_iter()
+                        .map(|(k, v)| (k, v.into_serialize_deserialize_version()))
+                        .collect()
+                })
+            }
             OneErrorEnum::HashMapKeyDisplayForeignTypeValueToString(i) => {
                 OneErrorEnumWithDeserialize::HashMapKeyDisplayForeignTypeValueToString({
                     i.into_iter()
@@ -1240,10 +1477,50 @@ impl<'a> OneErrorEnum<'a> {
                         .collect()
                 })
             }
-            OneErrorEnum::HashMapKeyDisplayForeignTypeValueErrorOccurence(i) => {}
-            OneErrorEnum::HashMapKeyErrorOccurenceValueToString(i) => {}
-            OneErrorEnum::HashMapKeyErrorOccurenceValueDisplayForeignType(i) => {}
-            OneErrorEnum::HashMapKeyErrorOccurenceValueErrorOccurence(i) => {}
+            OneErrorEnum::HashMapKeyDisplayForeignTypeValueErrorOccurence(i) => {
+                OneErrorEnumWithDeserialize::HashMapKeyDisplayForeignTypeValueErrorOccurence({
+                    i.into_iter()
+                        .map(|(k, v)| {
+                            use crate::traits::display_foreign_type::DisplayForeignType;
+                            (
+                                k.display_foreign_type(),
+                                v.into_serialize_deserialize_version(),
+                            )
+                        })
+                        .collect()
+                })
+            } // OneErrorEnum::HashMapKeyErrorOccurenceValueToString(i) => {
+              //     OneErrorEnumWithDeserialize::HashMapKeyErrorOccurenceValueToString({
+              //         i.into_iter()
+              //             .map(|(k, v)| (k.into_serialize_deserialize_version(), v))
+              //             .collect()
+              //     })
+              // }
+              // OneErrorEnum::HashMapKeyErrorOccurenceValueDisplayForeignType(i) => {
+              //     OneErrorEnumWithDeserialize::HashMapKeyErrorOccurenceValueDisplayForeignType({
+              //         i.into_iter()
+              //             .map(|(k, v)| {
+              //                 use crate::traits::display_foreign_type::DisplayForeignType;
+              //                 (
+              //                     k.into_serialize_deserialize_version(),
+              //                     v.display_foreign_type(),
+              //                 )
+              //             })
+              //             .collect()
+              //     })
+              // }
+              // OneErrorEnum::HashMapKeyErrorOccurenceValueErrorOccurence(i) => {
+              //     OneErrorEnumWithDeserialize::HashMapKeyErrorOccurenceValueErrorOccurence({
+              //         i.into_iter()
+              //             .map(|(k, v)| {
+              //                 (
+              //                     k.into_serialize_deserialize_version(),
+              //                     v.into_serialize_deserialize_version(),
+              //                 )
+              //             })
+              //             .collect()
+              //     })
+              // }
         }
     }
 }
