@@ -737,6 +737,18 @@ impl<'a> EightError<'a> {
 //     // // #[hashmap_key_display_foreign_type_value_to_string]
 //     // ForeignKHashmap(std::collections::HashMap<Kekw, String>),
 // }
+
+#[derive(Debug, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
+pub struct KekwLifetime<'a> {
+    s: &'a str,
+}
+
+impl<'a> crate::traits::display_foreign_type::DisplayForeignType for KekwLifetime<'a> {
+    fn display_foreign_type(&self) -> String {
+        String::from("kekw")
+    }
+}
+
 #[derive(Debug, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
 pub struct Kekw {}
 
@@ -762,6 +774,8 @@ pub enum OneErrorEnum<'a> {
     ToString(crate::dev::Omegalul),
     #[display_foreign_type]
     DisplayForeignType(crate::dev::Kekw),
+    // #[display_foreign_type]
+    // DisplayForeignType(crate::dev::KekwLifetime<'a>),
     #[error_occurence]
     ErrorOccurence(crate::dev::SevenError<'a>),
     #[vec_to_string]
