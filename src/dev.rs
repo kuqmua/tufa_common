@@ -1094,7 +1094,6 @@ pub enum OneErrorEnumWithDeserialize<'a> {
     ErrorOccurence(crate::dev::SevenErrorWithDeserialize<'a>),
     VecToString(std::vec::Vec<crate::dev::Omegalul>),
     VecDisplayForeignType(std::vec::Vec<String>),
-    #[serde(borrow)]
     VecErrorOccurence(std::vec::Vec<crate::dev::SevenErrorWithDeserialize<'a>>),
     HashMapKeyToStringValueToString(
         std::collections::HashMap<crate::dev::Omegalul, crate::dev::Omegalul>,
@@ -1109,7 +1108,6 @@ pub enum OneErrorEnumWithDeserialize<'a> {
         std::collections::HashMap<String, crate::dev::Omegalul>,
     ),
     HashMapKeyDisplayForeignTypeValueDisplayForeignType(std::collections::HashMap<String, String>),
-    #[serde(borrow)]
     HashMapKeyDisplayForeignTypeValueErrorOccurence(
         std::collections::HashMap<String, crate::dev::SevenErrorWithDeserialize<'a>>,
     ),
