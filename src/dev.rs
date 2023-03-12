@@ -745,7 +745,7 @@ pub struct KekwLifetime<'a> {
 
 impl<'a> crate::traits::display_foreign_type::DisplayForeignType for KekwLifetime<'a> {
     fn display_foreign_type(&self) -> String {
-        String::from("kekw")
+        String::from("kekwlifetime")
     }
 }
 
@@ -766,16 +766,29 @@ impl std::fmt::Display for Omegalul {
         write!(f, "omegalul")
     }
 }
+
+#[derive(Debug, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
+pub struct OmegalulLifetime<'a> {
+    s: &'a str,
+}
+
+impl<'a> std::fmt::Display for OmegalulLifetime<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "omegalullifetime")
+    }
+}
 //todo - check on lifetime - is it there or is it not - and generate/not generate it
 #[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)] //, error_occurence::ImplErrorOccurence
 pub enum OneErrorEnum<'a> {
-    //todo - test crate::dev::Omegalul and crate::dev::Kekw on lifetime
+    //todo - test crate::dev::SevenError<'a> as variant but without lifetime
     #[to_string]
     ToString(crate::dev::Omegalul),
+    #[to_string]
+    ToStringLifetime(crate::dev::OmegalulLifetime<'a>),
     #[display_foreign_type]
     DisplayForeignType(crate::dev::Kekw),
-    // #[display_foreign_type]
-    // DisplayForeignType(crate::dev::KekwLifetime<'a>),
+    #[display_foreign_type]
+    DisplayForeignTypeLifeTime(crate::dev::KekwLifetime<'a>),
     #[error_occurence]
     ErrorOccurence(crate::dev::SevenError<'a>),
     #[vec_to_string]
