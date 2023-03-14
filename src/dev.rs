@@ -739,6 +739,13 @@ impl<'a> EightError<'a> {
 // }
 
 #[derive(Debug, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
+pub struct KekwLifetimess
+<
+//
+>
+{}
+
+#[derive(Debug, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
 pub struct KekwLifetime<'a> {
     s: &'a str,
 }
@@ -778,47 +785,118 @@ impl<'a> std::fmt::Display for OmegalulLifetime<'a> {
     }
 }
 //todo - check on lifetime - is it there or is it not - and generate/not generate it
-#[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)] //, error_occurence::ImplErrorOccurence
-pub enum OneErrorEnum<'a> {
+// #[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)] //, error_occurence::ImplErrorOccurence
+// pub enum OneErrorEnum<'a> {
+//     //todo - test crate::dev::SevenError<'a> as variant but without lifetime
+//     #[to_string]
+//     ToString(crate::dev::Omegalul),
+//     #[to_string]
+//     ToStringLifetime(crate::dev::OmegalulLifetime<'a>),
+//     #[display_foreign_type]
+//     DisplayForeignType(crate::dev::Kekw),
+//     #[display_foreign_type]
+//     DisplayForeignTypeLifeTime(crate::dev::KekwLifetime<'a>),
+//     #[error_occurence]
+//     ErrorOccurence(crate::dev::SevenError<'a>),
+//     #[vec_to_string]
+//     VecToString(std::vec::Vec<crate::dev::Omegalul>),
+//     #[vec_display_foreign_type]
+//     VecDisplayForeignType(std::vec::Vec<crate::dev::Kekw>),
+//     #[vec_error_occurence]
+//     VecErrorOccurence(std::vec::Vec<crate::dev::SevenError<'a>>),
+//     #[hashmap_key_to_string_value_to_string]
+//     HashMapKeyToStringValueToString(
+//         std::collections::HashMap<crate::dev::Omegalul, crate::dev::Omegalul>,
+//     ),
+//     #[hashmap_key_to_string_value_display_foreign_type]
+//     HashMapKeyToStringValueDisplayForeignType(
+//         std::collections::HashMap<crate::dev::Omegalul, crate::dev::Kekw>,
+//     ),
+//     #[hashmap_key_to_string_value_error_occurence]
+//     HashMapKeyToStringValueErrorOccurence(
+//         std::collections::HashMap<crate::dev::Omegalul, crate::dev::SevenError<'a>>,
+//     ),
+//     #[hashmap_key_display_foreign_type_value_to_string]
+//     HashMapKeyDisplayForeignTypeValueToString(
+//         std::collections::HashMap<crate::dev::Kekw, crate::dev::Omegalul>,
+//     ),
+//     #[hashmap_key_display_foreign_type_value_display_foreign_type]
+//     HashMapKeyDisplayForeignTypeValueDisplayForeignType(
+//         std::collections::HashMap<crate::dev::Kekw, crate::dev::Kekw>,
+//     ),
+//     #[hashmap_key_display_foreign_type_value_error_occurence]
+//     HashMapKeyDisplayForeignTypeValueErrorOccurence(
+//         std::collections::HashMap<crate::dev::Kekw, crate::dev::SevenError<'a>>,
+//     ),
+// }
+
+#[derive(Debug)] //, thiserror::Error, error_occurence::ImplErrorOccurence
+pub enum TestErrorEnum {
     //todo - test crate::dev::SevenError<'a> as variant but without lifetime
-    #[to_string]
+    // #[to_string]
     ToString(crate::dev::Omegalul),
-    #[to_string]
-    ToStringLifetime(crate::dev::OmegalulLifetime<'a>),
-    #[display_foreign_type]
-    DisplayForeignType(crate::dev::Kekw),
-    #[display_foreign_type]
-    DisplayForeignTypeLifeTime(crate::dev::KekwLifetime<'a>),
-    #[error_occurence]
-    ErrorOccurence(crate::dev::SevenError<'a>),
-    #[vec_to_string]
-    VecToString(std::vec::Vec<crate::dev::Omegalul>),
-    #[vec_display_foreign_type]
-    VecDisplayForeignType(std::vec::Vec<crate::dev::Kekw>),
-    #[vec_error_occurence]
-    VecErrorOccurence(std::vec::Vec<crate::dev::SevenError<'a>>),
-    #[hashmap_key_to_string_value_to_string]
-    HashMapKeyToStringValueToString(
-        std::collections::HashMap<crate::dev::Omegalul, crate::dev::Omegalul>,
-    ),
-    #[hashmap_key_to_string_value_display_foreign_type]
-    HashMapKeyToStringValueDisplayForeignType(
-        std::collections::HashMap<crate::dev::Omegalul, crate::dev::Kekw>,
-    ),
-    #[hashmap_key_to_string_value_error_occurence]
-    HashMapKeyToStringValueErrorOccurence(
-        std::collections::HashMap<crate::dev::Omegalul, crate::dev::SevenError<'a>>,
-    ),
-    #[hashmap_key_display_foreign_type_value_to_string]
-    HashMapKeyDisplayForeignTypeValueToString(
-        std::collections::HashMap<crate::dev::Kekw, crate::dev::Omegalul>,
-    ),
-    #[hashmap_key_display_foreign_type_value_display_foreign_type]
-    HashMapKeyDisplayForeignTypeValueDisplayForeignType(
-        std::collections::HashMap<crate::dev::Kekw, crate::dev::Kekw>,
-    ),
-    #[hashmap_key_display_foreign_type_value_error_occurence]
-    HashMapKeyDisplayForeignTypeValueErrorOccurence(
-        std::collections::HashMap<crate::dev::Kekw, crate::dev::SevenError<'a>>,
-    ),
+}
+
+impl std::fmt::Display for TestErrorEnum {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+        write!(f, "{}", self.to_string_without_config())
+    }
+}
+impl std::fmt::Display for TestErrorEnumWithDeserialize {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
+        write!(f, "{}", self.to_string_without_config_with_deserialize())
+    }
+}
+impl<'a, ConfigGeneric> 
+    crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithConfig<
+        'a,
+        ConfigGeneric,
+    > 
+    for 
+    TestErrorEnum<> 
+where 
+    ConfigGeneric: 
+        crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn to_string_with_config_for_source_to_string_with_config(&self, config: &ConfigGeneric) -> String
+    { 
+        match self { 
+            TestErrorEnum::ToString(i) => {
+                i.to_string() 
+            } 
+        } 
+    }
+}
+impl<'a> crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig<'a>
+    for TestErrorEnum
+{
+    fn to_string_without_config(&self) -> String {
+        match self {
+            TestErrorEnum::ToString(i) => i.to_string(),
+        }
+    }
+}
+#[derive(Debug, thiserror :: Error, serde :: Serialize, serde :: Deserialize)]
+pub enum TestErrorEnumWithDeserialize {
+    ToString(crate::dev::Omegalul),
+}
+impl<'a> crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize<'a>
+    for TestErrorEnumWithDeserialize
+{
+    fn to_string_without_config_with_deserialize(&self) -> String {
+        match self {
+            TestErrorEnumWithDeserialize::ToString(i) => i.to_string(),
+        }
+    }
+}
+impl TestErrorEnum {
+    pub fn into_serialize_deserialize_version(self) -> TestErrorEnumWithDeserialize {
+        match self {
+            TestErrorEnum::ToString(i) => TestErrorEnumWithDeserialize::ToString(i),
+        }
+    }
 }
