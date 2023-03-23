@@ -2016,19 +2016,47 @@ impl<'a>
         }
     }
 }
-// impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
-//     for NamedError<'a>
-// {
-//     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
-//         match self {
-//             NamedError::Something {
-//                 one: _unused_first_argument,
-//                 two: _unused_second_argument,
-//                 code_occurence,
-//             } => code_occurence,
-//         }
-//     }
-// }
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
+    for NamedError<'a>
+{
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
+        match self {
+            NamedError::Something {
+                a: _unused_argument_0,
+                b: _unused_argument_1,
+                c: _unused_argument_2,
+                d: _unused_argument_3,
+                e: _unused_argument_4,
+                f: _unused_argument_5,
+                g: _unused_argument_6,
+                h: _unused_argument_7,
+                j: _unused_argument_8,
+                k: _unused_argument_9,
+                l: _unused_argument_10,
+                m: _unused_argument_11,
+                n: _unused_argument_12,
+                o: _unused_argument_13,
+                p: _unused_argument_14,
+                q: _unused_argument_15,
+                r: _unused_argument_16,
+                s: _unused_argument_17,
+                t: _unused_argument_18,
+                u: _unused_argument_19,
+                v: _unused_argument_20,
+                w: _unused_argument_21,
+                x: _unused_argument_22,
+                y: _unused_argument_23,
+                z: _unused_argument_24,
+                aa: _unused_argument_25,
+                ab: _unused_argument_26,
+                ac: _unused_argument_27,
+                ad: _unused_argument_28,
+                af: _unused_argument_29,
+                code_occurence,
+            } => code_occurence,
+        }
+    }
+}
 #[derive(Debug, serde :: Serialize, serde :: Deserialize)]
 pub enum NamedErrorWithDeserialize<'a> {
     Something {
