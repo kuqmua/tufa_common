@@ -2962,15 +2962,15 @@ impl<'a> NamedError<'a> {
         }
     }
 }
-// impl<'a> std::fmt::Display for NamedError<'a> {
-//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-//         write!(f, "{}", self.to_string_without_config())
-//     }
-// }
-// impl<'a> std::fmt::Display for NamedErrorWithDeserialize<'a> {
-//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
-//         write!(f, "{}", self.to_string_without_config_with_deserialize())
-//     }
-// }
+impl<'a> std::fmt::Display for NamedError<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+        write!(f, "{}", self.to_string_without_config())
+    }
+}
+impl<'a> std::fmt::Display for NamedErrorWithDeserialize<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
+        write!(f, "{}", self.to_string_without_config_with_deserialize())
+    }
+}
