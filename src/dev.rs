@@ -2589,36 +2589,351 @@ impl<'a>
         }
     }
 }
-// impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWithDeserialize<'a>
-//     for NamedErrorWithDeserialize<'a>
-// {
-//     fn get_code_occurence_with_deserialize(
-//         &self,
-//     ) -> &crate::common::code_occurence::CodeOccurenceWithDeserialize<'a> {
-//         match self {
-//             NamedErrorWithDeserialize::Something {
-//                 one: _unused_first_argument,
-//                 two: _unused_second_argument,
-//                 code_occurence,
-//             } => code_occurence,
-//         }
-//     }
-// }
-// impl<'a> NamedError<'a> {
-//     pub fn into_serialize_deserialize_version(self) -> NamedErrorWithDeserialize<'a> {
-//         match self {
-//             NamedError::Something {
-//                 one,
-//                 two,
-//                 code_occurence,
-//             } => NamedErrorWithDeserialize::Something {
-//                 one: { one.to_string() },
-//                 two: { two.to_string() },
-//                 code_occurence: code_occurence.into_serialize_deserialize_version(),
-//             },
-//         }
-//     }
-// }
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWithDeserialize<'a>
+    for NamedErrorWithDeserialize<'a>
+{
+    fn get_code_occurence_with_deserialize(
+        &self,
+    ) -> &crate::common::code_occurence::CodeOccurenceWithDeserialize<'a> {
+        match self {
+            NamedErrorWithDeserialize::Something {
+                a: _unused_argument_0,
+                b: _unused_argument_1,
+                c: _unused_argument_2,
+                d: _unused_argument_3,
+                e: _unused_argument_4,
+                f: _unused_argument_5,
+                g: _unused_argument_6,
+                h: _unused_argument_7,
+                j: _unused_argument_8,
+                k: _unused_argument_9,
+                l: _unused_argument_10,
+                m: _unused_argument_11,
+                n: _unused_argument_12,
+                o: _unused_argument_13,
+                p: _unused_argument_14,
+                q: _unused_argument_15,
+                r: _unused_argument_16,
+                s: _unused_argument_17,
+                t: _unused_argument_18,
+                u: _unused_argument_19,
+                v: _unused_argument_20,
+                w: _unused_argument_21,
+                x: _unused_argument_22,
+                y: _unused_argument_23,
+                z: _unused_argument_24,
+                aa: _unused_argument_25,
+                ab: _unused_argument_26,
+                ac: _unused_argument_27,
+                ad: _unused_argument_28,
+                af: _unused_argument_29,
+                code_occurence,
+            } => code_occurence,
+        }
+    }
+}
+impl<'a> NamedError<'a> {
+    pub fn into_serialize_deserialize_version(self) -> NamedErrorWithDeserialize<'a> {
+        match self {
+            NamedError::Something {
+                a,
+                b,
+                c,
+                d,
+                e,
+                f,
+                g,
+                h,
+                j,
+                k,
+                l,
+                m,
+                n,
+                o,
+                p,
+                q,
+                r,
+                s,
+                t,
+                u,
+                v,
+                w,
+                x,
+                y,
+                z,
+                aa,
+                ab,
+                ac,
+                ad,
+                af,
+                code_occurence,
+            } => NamedErrorWithDeserialize::Something {
+                a: {
+                    a
+                },
+                b: {
+                    b
+                },
+                c: {
+                    use crate::traits::display_foreign_type::DisplayForeignType;
+                    c.display_foreign_type()
+                },
+                d: {
+                    use crate::traits::display_foreign_type::DisplayForeignType;
+                    d.display_foreign_type()
+                },
+                e: {
+                    e.into_serialize_deserialize_version()
+                },
+                f: {
+                    f
+                },
+                g: {
+                    g
+                },
+                h: {
+                    h.into_iter().map(|i|{
+                        use crate::traits::display_foreign_type::DisplayForeignType;
+                        i.display_foreign_type()
+                    })
+                    .collect()
+                },
+                j: {
+                    j.into_iter().map(|i|{
+                        use crate::traits::display_foreign_type::DisplayForeignType;
+                        i.display_foreign_type()
+                    })
+                    .collect()
+                },
+                k: {
+                    k.into_iter().map(|i|{
+                        i.into_serialize_deserialize_version()
+                    })
+                    .collect()
+                },
+                l: {
+                    l
+                },
+                m: {
+                    m
+                },
+                n: {
+                    n
+                },
+                o: {
+                    o
+                },
+                p: {
+                    p.into_iter().map(|(k, v)|{
+                        (
+                            k, 
+                            {
+                                use crate::traits::display_foreign_type::DisplayForeignType;
+                                v.display_foreign_type()
+                            }
+                        )
+                    })
+                    .collect()
+                },
+                q: {
+                    q.into_iter().map(|(k, v)|{
+                        (
+                            k, 
+                            {
+                                use crate::traits::display_foreign_type::DisplayForeignType;
+                                v.display_foreign_type()
+                            }
+                        )
+                    })
+                    .collect()
+                },
+                r: {
+                    r.into_iter().map(|(k, v)|{
+                        (
+                            k, 
+                            {
+                                use crate::traits::display_foreign_type::DisplayForeignType;
+                                v.display_foreign_type()
+                            }
+                        )
+                    })
+                    .collect()
+                },
+                s: {
+                    s.into_iter().map(|(k, v)|{
+                        (
+                            k, 
+                            {
+                                use crate::traits::display_foreign_type::DisplayForeignType;
+                                v.display_foreign_type()
+                            }
+                        )
+                    })
+                    .collect()
+                },
+                t: {
+                    t.into_iter().map(|(k,v)|{
+                        (
+                            k,
+                            {
+                                v.into_serialize_deserialize_version()
+                            }
+                        )
+                    })
+                    .collect()
+                },
+                u: {
+                    u.into_iter().map(|(k,v)|{
+                        (
+                            k,
+                            {
+                                v.into_serialize_deserialize_version()
+                            }
+                        )
+                    })
+                    .collect()
+                },
+                v: {
+                   v.into_iter().map(|(k, v)|{
+                        (
+                            {
+                                use crate::traits::display_foreign_type::DisplayForeignType;
+                                k.display_foreign_type()
+                            },
+                            v 
+                        )
+                    })
+                    .collect()
+                },
+                w: {
+                   w.into_iter().map(|(k, v)|{
+                        (
+                            {
+                                use crate::traits::display_foreign_type::DisplayForeignType;
+                                k.display_foreign_type()
+                            },
+                            v 
+                        )
+                    })
+                    .collect()
+                },
+                x: {
+                   x.into_iter().map(|(k, v)|{
+                        (
+                            {
+                                use crate::traits::display_foreign_type::DisplayForeignType;
+                                k.display_foreign_type()
+                            },
+                            v 
+                        )
+                    })
+                    .collect()
+                },
+                y: {
+                   y.into_iter().map(|(k, v)|{
+                        (
+                            {
+                                use crate::traits::display_foreign_type::DisplayForeignType;
+                                k.display_foreign_type()
+                            },
+                            v 
+                        )
+                    })
+                    .collect()
+                },
+                z: {
+                   z.into_iter().map(|(k, v)|{
+                        (
+                            {
+                                use crate::traits::display_foreign_type::DisplayForeignType;
+                                k.display_foreign_type()
+                            },
+                            {
+                                use crate::traits::display_foreign_type::DisplayForeignType;
+                                v.display_foreign_type()
+                            },
+                        )
+                    })
+                    .collect()
+                },
+                aa: {
+                   aa.into_iter().map(|(k, v)|{
+                        (
+                            {
+                                use crate::traits::display_foreign_type::DisplayForeignType;
+                                k.display_foreign_type()
+                            },
+                            {
+                                use crate::traits::display_foreign_type::DisplayForeignType;
+                                v.display_foreign_type()
+                            },
+                        )
+                    })
+                    .collect()
+                },
+                ab: {
+                   ab.into_iter().map(|(k, v)|{
+                        (
+                            {
+                                use crate::traits::display_foreign_type::DisplayForeignType;
+                                k.display_foreign_type()
+                            },
+                            {
+                                use crate::traits::display_foreign_type::DisplayForeignType;
+                                v.display_foreign_type()
+                            },
+                        )
+                    })
+                    .collect()
+                },
+                ac: {
+                   ac.into_iter().map(|(k, v)|{
+                        (
+                            {
+                                use crate::traits::display_foreign_type::DisplayForeignType;
+                                k.display_foreign_type()
+                            },
+                            {
+                                use crate::traits::display_foreign_type::DisplayForeignType;
+                                v.display_foreign_type()
+                            },
+                        )
+                    })
+                    .collect()
+                },
+                ad: {
+                   ad.into_iter().map(|(k, v)|{
+                        (
+                            {
+                                use crate::traits::display_foreign_type::DisplayForeignType;
+                                k.display_foreign_type()
+                            },
+                            {
+                                v.into_serialize_deserialize_version()
+                            }
+                        )
+                    })
+                    .collect()
+                },
+                af: {
+                   af.into_iter().map(|(k, v)|{
+                        (
+                            {
+                                use crate::traits::display_foreign_type::DisplayForeignType;
+                                k.display_foreign_type()
+                            },
+                            {
+                                v.into_serialize_deserialize_version()
+                            }
+                        )
+                    })
+                    .collect()
+                },
+                code_occurence: code_occurence.into_serialize_deserialize_version(),
+            },
+        }
+    }
+}
 // impl<'a> std::fmt::Display for NamedError<'a> {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 //         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
