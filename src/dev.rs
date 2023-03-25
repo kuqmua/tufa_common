@@ -1692,20 +1692,20 @@ impl<'a>
                     y.hashmap_to_string_display_foreign_type_impl_display()
                 };
                 let z_handle = {
-                    use crate::traits::error_logs_logic::hashmap_to_string_display_foreign_type_display_foreign_type::HashMapToStringDisplayForeignTypeDisplayForeignType;
-                    z.hashmap_to_string_display_foreign_type_display_foreign_type()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_string::HashMapDisplayForeignTypeDisplayForeignTypeToString;
+                    z.hashmap_display_foreign_type_display_foreign_type_to_string()
                 };
                 let aa_handle = {
-                    use crate::traits::error_logs_logic::hashmap_to_string_display_foreign_type_display_foreign_type::HashMapToStringDisplayForeignTypeDisplayForeignType;
-                    aa.hashmap_to_string_display_foreign_type_display_foreign_type()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_string::HashMapDisplayForeignTypeDisplayForeignTypeToString;
+                    aa.hashmap_display_foreign_type_display_foreign_type_to_string()
                 };
                 let ab_handle = {
-                    use crate::traits::error_logs_logic::hashmap_to_string_display_foreign_type_display_foreign_type::HashMapToStringDisplayForeignTypeDisplayForeignType;
-                    ab.hashmap_to_string_display_foreign_type_display_foreign_type()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_string::HashMapDisplayForeignTypeDisplayForeignTypeToString;
+                    ab.hashmap_display_foreign_type_display_foreign_type_to_string()
                 };
                 let ac_handle = {
-                    use crate::traits::error_logs_logic::hashmap_to_string_display_foreign_type_display_foreign_type::HashMapToStringDisplayForeignTypeDisplayForeignType;
-                    ab.hashmap_to_string_display_foreign_type_display_foreign_type()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_string::HashMapDisplayForeignTypeDisplayForeignTypeToString;
+                    ab.hashmap_display_foreign_type_display_foreign_type_to_string()
                 };
                 let ad_handle = {
                     use crate::traits::error_logs_logic::hashmap_to_string_display_foreign_type_to_string_without_config::HashMapToStringDisplayForeignTypeToStringWithoutConfig;
