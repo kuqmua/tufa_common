@@ -1708,12 +1708,12 @@ impl<'a>
                     ab.hashmap_display_foreign_type_display_foreign_type_to_string()
                 };
                 let ad_handle = {
-                    use crate::traits::error_logs_logic::hashmap_to_string_display_foreign_type_to_string_without_config::HashMapToStringDisplayForeignTypeToStringWithoutConfig;
-                    ad.hashmap_to_string_display_foreign_type_to_string_without_config()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_to_string_without_config_to_string::HashMapDisplayForeignTypeToStringWithoutConfigToString;
+                    ad.hashmap_display_foreign_type_to_string_without_config_to_string()
                 };
                 let af_handle = {
-                    use crate::traits::error_logs_logic::hashmap_to_string_display_foreign_type_to_string_without_config::HashMapToStringDisplayForeignTypeToStringWithoutConfig;
-                    af.hashmap_to_string_display_foreign_type_to_string_without_config()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_to_string_without_config_to_string::HashMapDisplayForeignTypeToStringWithoutConfigToString;
+                    af.hashmap_display_foreign_type_to_string_without_config_to_string()
                 };
                 format!(
                     "{{\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n}}",
