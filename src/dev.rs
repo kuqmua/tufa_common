@@ -1624,12 +1624,12 @@ impl<'a>
                     f.few_to_string_impl_display_impl_display()
                 };
                 let h_handle = {
-                    use crate::traits::error_logs_logic::vec_display_foreign_type_to_string::VecDisplayForeignTypeToString;
-                    h.vec_display_foreign_type_to_string()
+                    use crate::traits::error_logs_logic::vec_hashmap_display_foreign_type_display_foreign_type_to_string::VecHashMapDisplayForeignTypeDisplayForeignTypeToString;
+                    h.vec_hashmap_display_foreign_type_display_foreign_type_to_string()
                 };
                 let j_handle = {
-                    use crate::traits::error_logs_logic::vec_display_foreign_type_to_string::VecDisplayForeignTypeToString;
-                    j.vec_display_foreign_type_to_string()
+                    use crate::traits::error_logs_logic::vec_hashmap_display_foreign_type_display_foreign_type_to_string::VecHashMapDisplayForeignTypeDisplayForeignTypeToString;
+                    j.vec_hashmap_display_foreign_type_display_foreign_type_to_string()
                 };
                 let k_handle = {
                     use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
@@ -1692,20 +1692,20 @@ impl<'a>
                     y.hashmap_display_foreign_type_impl_display_to_string()
                 };
                 let z_handle = {
-                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_string::HashMapDisplayForeignTypeDisplayForeignTypeToString;
-                    z.hashmap_display_foreign_type_display_foreign_type_to_string()
+                    use crate::traits::error_logs_logic::vec_hashmap_display_foreign_type_display_foreign_type_to_string::VecHashMapDisplayForeignTypeDisplayForeignTypeToString;
+                    z.vec_hashmap_display_foreign_type_display_foreign_type_to_string()
                 };
                 let aa_handle = {
-                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_string::HashMapDisplayForeignTypeDisplayForeignTypeToString;
-                    aa.hashmap_display_foreign_type_display_foreign_type_to_string()
+                    use crate::traits::error_logs_logic::vec_hashmap_display_foreign_type_display_foreign_type_to_string::VecHashMapDisplayForeignTypeDisplayForeignTypeToString;
+                    aa.vec_hashmap_display_foreign_type_display_foreign_type_to_string()
                 };
                 let ab_handle = {
-                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_string::HashMapDisplayForeignTypeDisplayForeignTypeToString;
-                    ab.hashmap_display_foreign_type_display_foreign_type_to_string()
+                    use crate::traits::error_logs_logic::vec_hashmap_display_foreign_type_display_foreign_type_to_string::VecHashMapDisplayForeignTypeDisplayForeignTypeToString;
+                    ab.vec_hashmap_display_foreign_type_display_foreign_type_to_string()
                 };
                 let ac_handle = {
-                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_string::HashMapDisplayForeignTypeDisplayForeignTypeToString;
-                    ab.hashmap_display_foreign_type_display_foreign_type_to_string()
+                    use crate::traits::error_logs_logic::vec_hashmap_display_foreign_type_display_foreign_type_to_string::VecHashMapDisplayForeignTypeDisplayForeignTypeToString;
+                    ab.vec_hashmap_display_foreign_type_display_foreign_type_to_string()
                 };
                 let ad_handle = {
                     use crate::traits::error_logs_logic::hashmap_display_foreign_type_to_string_without_config_to_string::HashMapDisplayForeignTypeToStringWithoutConfigToString;
