@@ -2219,52 +2219,20 @@ impl<'a> NamedError<'a> {
                     .collect()
                 },
                 v: {
-                   v.into_iter().map(|(k, v)|{
-                        (
-                            {
-                                use crate::traits::display_foreign_type::DisplayForeignType;
-                                k.display_foreign_type()
-                            },
-                            v 
-                        )
-                    })
-                    .collect()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_vec_string::HashmapDisplayForeignTypeImplDisplayToVecString;
+                    v.hashmap_display_foreign_type_impl_display_to_vec_string()
                 },
                 w: {
-                   w.into_iter().map(|(k, v)|{
-                        (
-                            {
-                                use crate::traits::display_foreign_type::DisplayForeignType;
-                                k.display_foreign_type()
-                            },
-                            v 
-                        )
-                    })
-                    .collect()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_vec_string::HashmapDisplayForeignTypeImplDisplayToVecString;
+                    w.hashmap_display_foreign_type_impl_display_to_vec_string()
                 },
                 x: {
-                   x.into_iter().map(|(k, v)|{
-                        (
-                            {
-                                use crate::traits::display_foreign_type::DisplayForeignType;
-                                k.display_foreign_type()
-                            },
-                            v 
-                        )
-                    })
-                    .collect()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_vec_string::HashmapDisplayForeignTypeImplDisplayToVecString;
+                    x.hashmap_display_foreign_type_impl_display_to_vec_string()
                 },
                 y: {
-                   y.into_iter().map(|(k, v)|{
-                        (
-                            {
-                                use crate::traits::display_foreign_type::DisplayForeignType;
-                                k.display_foreign_type()
-                            },
-                            v 
-                        )
-                    })
-                    .collect()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_vec_string::HashmapDisplayForeignTypeImplDisplayToVecString;
+                    y.hashmap_display_foreign_type_impl_display_to_vec_string()
                 },
                 z: {
                    z.into_iter().map(|(k, v)|{
