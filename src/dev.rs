@@ -20,31 +20,31 @@ pub fn dev() {
 //     }));
 // }
 
-// #[derive(Debug, thiserror::Error, serde::Serialize)] //, error_occurence::ImplErrorOccurence
-// pub enum SixError<'a> {
-//     Something {
-//         //todo how to implement from for it?
-//         inner_errors: std::vec::Vec<SixErrorEnum<'a>>,
-//         // TODO inner_errors: std::vec::Vec<String>,
-//         // TODO inner_errors: std::collections::HashMap<String, String>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-//     },
-// }
+#[derive(Debug, thiserror::Error, serde::Serialize)] //, error_occurence::ImplErrorOccurence
+pub enum SixError<'a> {
+    Something {
+        //todo how to implement from for it?
+        inner_errors: std::vec::Vec<SixErrorEnum<'a>>,
+        // TODO inner_errors: std::vec::Vec<String>,
+        // TODO inner_errors: std::collections::HashMap<String, String>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
 
-// #[derive(Debug, thiserror::Error, serde::Serialize)] //, error_occurence::ImplErrorOccurence
-// pub enum SixErrorEnum<'a> {
-//     Seven(SevenError<'a>),
-//     Eight(EightError<'a>),
-//     // //todo #[simple_display] and #[display_foreign_type] support
-//     // // #[origin]
-//     Another(String),
-//     //todo #[simple_display] and #[display_foreign_type] support
-//     // #[origin]
-//     AnotherVec(Vec<String>),
-//     //todo #[simple_display] and #[display_foreign_type] support
-//     // #[origin]
-//     AnotherHashmap(std::collections::HashMap<String, String>),
-// }
+#[derive(Debug, thiserror::Error, serde::Serialize)] //, error_occurence::ImplErrorOccurence
+pub enum SixErrorEnum<'a> {
+    Seven(SevenError<'a>),
+    Eight(EightError<'a>),
+    // //todo #[simple_display] and #[display_foreign_type] support
+    // // #[origin]
+    Another(String),
+    //todo #[simple_display] and #[display_foreign_type] support
+    // #[origin]
+    AnotherVec(Vec<String>),
+    //todo #[simple_display] and #[display_foreign_type] support
+    // #[origin]
+    AnotherHashmap(std::collections::HashMap<String, String>),
+}
 
 #[derive(Debug, thiserror::Error, serde :: Serialize)] //, error_occurence::ImplErrorOccurence
 pub enum SevenError<'a> {
@@ -54,13 +54,13 @@ pub enum SevenError<'a> {
     },
 }
 
-// #[derive(Debug, thiserror::Error, serde::Serialize)] //, error_occurence::ImplErrorOccurence
-// pub enum EightError<'a> {
-//     Something {
-//         error: String,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-//     },
-// }
+#[derive(Debug, thiserror::Error, serde::Serialize)] //, error_occurence::ImplErrorOccurence
+pub enum EightError<'a> {
+    Something {
+        error: String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
 
 // pub fn six<'a>() -> Result<(), Box<SixError<'a>>> {
 //     let thread_join_handle = std::thread::spawn(move || eight());
@@ -108,304 +108,304 @@ pub enum SevenError<'a> {
 //     return Err(Box::new(f));
 // }
 
-// impl<'a> std::fmt::Display for SixError<'a> {
-//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-//         write!(f, "{}", self.to_string_without_config())
-//     }
-// }
-// impl<'a> std::fmt::Display for SixErrorWithDeserialize<'a> {
-//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
-//         write!(f, "{}", self.to_string_without_config_with_deserialize())
-//     }
-// }
-// impl<'a, ConfigGeneric>
-//     crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
-//         'a,
-//         ConfigGeneric,
-//     > for SixError<'a>
-// where
-//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-//         + crate::traits::fields::GetTimezone
-//         + crate::traits::get_server_address::GetServerAddress,
-// {
-//     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
-//         match self {
-//             SixError::Something {
-//                 inner_errors,
-//                 code_occurence: _unused_second_argument,
-//             } => {
-//                 use crate::traits::error_logs_logic::few_to_string_with_config::FewToStringWithConfig;
-//                 inner_errors.few_to_string_with_config(config)
-//             }
-//         }
-//     }
-// }
-// impl<'a>
-//     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
-//         'a,
-//     > for SixError<'a>
-// {
-//     fn source_to_string_without_config(&self) -> String {
-//         match self {
-//             SixError::Something {
-//                 inner_errors,
-//                 code_occurence: _unused_second_argument,
-//             } => {
-//                 use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
-//                 inner_errors.few_to_string_without_config()
-//             }
-//         }
-//     }
-// }
-// impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
-//     for SixError<'a>
-// {
-//     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
-//         match self {
-//             SixError::Something {
-//                 inner_errors: _unused_first_argument,
-//                 code_occurence,
-//             } => code_occurence,
-//         }
-//     }
-// }
-// #[derive(Debug, thiserror :: Error, serde :: Serialize, serde :: Deserialize)]
-// pub enum SixErrorWithDeserialize<'a> {
-//     Something {
-//         #[serde(borrow)]
-//         inner_errors: std::vec::Vec<SixErrorEnumWithDeserialize<'a>>,
-//         #[serde(borrow)]
-//         code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize<'a>,
-//     },
-// }
-// impl<'a>
-//     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
-//         'a,
-//     > for SixErrorWithDeserialize<'a>
-// {
-//     fn source_to_string_without_config(&self) -> String {
-//         match self {
-//             SixErrorWithDeserialize::Something {
-//                 inner_errors,
-//                 code_occurence: _unused_second_argument,
-//             } => {
-//                 use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigWithDeserialize;
-//                 inner_errors.few_to_string_without_config_with_deserialize()
-//             }
-//         }
-//     }
-// }
-// impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWithDeserialize<'a>
-//     for SixErrorWithDeserialize<'a>
-// {
-//     fn get_code_occurence_with_deserialize(
-//         &self,
-//     ) -> &crate::common::code_occurence::CodeOccurenceWithDeserialize<'a> {
-//         match self {
-//             SixErrorWithDeserialize::Something {
-//                 inner_errors: _unused_first_argument,
-//                 code_occurence,
-//             } => code_occurence,
-//         }
-//     }
-// }
-// impl<'a> SixError<'a> {
-//     pub fn into_serialize_deserialize_version(self) -> SixErrorWithDeserialize<'a> {
-//         match self {
-//             SixError::Something {
-//                 inner_errors,
-//                 code_occurence,
-//             } => SixErrorWithDeserialize::Something {
-//                 inner_errors: inner_errors
-//                     .into_iter()
-//                     .map(|e| e.into_serialize_deserialize_version())
-//                     .collect(),
-//                 code_occurence: code_occurence.into_serialize_deserialize_version(),
-//             },
-//         }
-//     }
-// }
-// impl<'a> std::fmt::Display for SixErrorEnum<'a> {
-//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-//         write!(f, "{}", self.to_string_without_config())
-//     }
-// }
-// impl<'a> std::fmt::Display for SixErrorEnumWithDeserialize<'a> {
-//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
-//         write!(f, "{}", self.to_string_without_config_with_deserialize())
-//     }
-// }
-// impl < 'a, ConfigGeneric > crate :: traits :: error_logs_logic ::
-// to_string_with_config :: ToStringWithConfigForSourceToStringWithConfig < 'a,
-// ConfigGeneric, > for SixErrorEnum < 'a > where ConfigGeneric : crate :: traits
-// :: fields :: GetSourcePlaceType + crate :: traits :: fields :: GetTimezone +
-// crate :: traits :: get_server_address :: GetServerAddress,
-// {
-//     fn
-//     to_string_with_config_for_source_to_string_with_config(& self, config : &
-//     ConfigGeneric) -> String
-//     {
-//         match self
-//         {
-//             SixErrorEnum :: Seven(i) =>
-//             {
-//                 i.to_string_with_config_for_source_to_string_with_config(config)
-//             }, SixErrorEnum :: Eight(i) =>
-//             {
-//                 i.to_string_with_config_for_source_to_string_with_config(config)
-//             },
-//             SixErrorEnum :: Another(i) => i.to_string(),
-//             SixErrorEnum::AnotherVec(i) => {
-//                 let stringified_vec = i.iter().fold(String::from(""), |mut acc, element| {
-//                     let stringified_element = element.lines().fold(String::from(""), |mut acc, line| {
-//                         acc.push_str(&format!(" {}\n", line));
-//                         acc
-//                     });
-//                     acc.push_str(&stringified_element);
-//                     acc
-//                 });
-//                 format!("[\n{}]", stringified_vec)
-//             },
-//             SixErrorEnum::AnotherHashmap(i) => {
-//                 i.iter().fold(String::from(""), |mut acc, (key, value)| {
-//                     let stringified_value = value.lines().fold(String::from(""), |mut accc, line| {
-//                         accc.push_str(&format!(" {}\n", line));
-//                         accc
-//                     });
-//                     acc.push_str(&format!("{} [\n{}]\n", key, stringified_value));
-//                     acc
-//                 })
-//             },
-//         }
-//     }
-// }
-// impl<'a> crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig<'a>
-//     for SixErrorEnum<'a>
-// {
-//     fn to_string_without_config(&self) -> String {
-//         match self {
-//             SixErrorEnum::Seven(i) => i.to_string_without_config(),
-//             SixErrorEnum::Eight(i) => i.to_string_without_config(),
-//             SixErrorEnum::Another(i) => i.to_string(),
-//             SixErrorEnum::AnotherVec(i) => {
-//                 let stringified_vec = i.iter().fold(String::from(""), |mut acc, element| {
-//                     let stringified_element =
-//                         element.lines().fold(String::from(""), |mut acc, line| {
-//                             acc.push_str(&format!(" {}\n", line));
-//                             acc
-//                         });
-//                     acc.push_str(&stringified_element);
-//                     acc
-//                 });
-//                 format!("[\n{}]", stringified_vec)
-//             }
-//             SixErrorEnum::AnotherHashmap(i) => {
-//                 i.iter().fold(String::from(""), |mut acc, (key, value)| {
-//                     let stringified_value =
-//                         value.lines().fold(String::from(""), |mut accc, line| {
-//                             accc.push_str(&format!(" {}\n", line));
-//                             accc
-//                         });
-//                     acc.push_str(&format!("{} [\n{}]\n", key, stringified_value));
-//                     acc
-//                 })
-//             }
-//         }
-//     }
-// }
-// #[derive(Debug, thiserror :: Error, serde :: Serialize, serde :: Deserialize)]
-// pub enum SixErrorEnumWithDeserialize<'a> {
-//     #[serde(borrow)]
-//     Seven(SevenErrorWithDeserialize<'a>),
-//     #[serde(borrow)]
-//     Eight(EightErrorWithDeserialize<'a>),
-//     Another(String),
-//     AnotherVec(Vec<String>),
-//     AnotherHashmap(std::collections::HashMap<String, String>),
-// }
-// impl<'a>
-//     crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize<
-//         'a,
-//     > for SixErrorEnumWithDeserialize<'a>
-// {
-//     fn to_string_without_config_with_deserialize(&self) -> String {
-//         match self {
-//             SixErrorEnumWithDeserialize::Seven(i) => i.to_string_without_config_with_deserialize(),
-//             SixErrorEnumWithDeserialize::Eight(i) => i.to_string_without_config_with_deserialize(),
-//             SixErrorEnumWithDeserialize::Another(i) => i.to_string(), //todo or to display_foreign_type()
-//             SixErrorEnumWithDeserialize::AnotherVec(i) => {
-//                 //todo or to display_foreign_type()
-//                 let stringified_vec = i.iter().fold(String::from(""), |mut acc, element| {
-//                     let stringified_element =
-//                         element.lines().fold(String::from(""), |mut acc, line| {
-//                             acc.push_str(&format!(" {}\n", line));
-//                             acc
-//                         });
-//                     acc.push_str(&stringified_element);
-//                     acc
-//                 });
-//                 format!("[\n{}]", stringified_vec)
-//             }
-//             SixErrorEnumWithDeserialize::AnotherHashmap(i) => {
-//                 //todo or to display_foreign_type()
-//                 i.iter().fold(String::from(""), |mut acc, (key, value)| {
-//                     let stringified_value =
-//                         value.lines().fold(String::from(""), |mut accc, line| {
-//                             accc.push_str(&format!(" {}\n", line));
-//                             accc
-//                         });
-//                     acc.push_str(&format!("{} [\n{}]\n", key, stringified_value));
-//                     acc
-//                 })
-//             }
-//         }
-//     }
-// }
-// impl<'a> SixErrorEnum<'a> {
-//     pub fn into_serialize_deserialize_version(self) -> SixErrorEnumWithDeserialize<'a> {
-//         match self {
-//             SixErrorEnum::Seven(i) => {
-//                 SixErrorEnumWithDeserialize::Seven(i.into_serialize_deserialize_version())
-//             }
-//             SixErrorEnum::Eight(i) => {
-//                 SixErrorEnumWithDeserialize::Eight(i.into_serialize_deserialize_version())
-//             }
-//             SixErrorEnum::Another(i) => SixErrorEnumWithDeserialize::Another(i.to_string()),
-//             SixErrorEnum::AnotherVec(i) => {
-//                 //todo - display implemented or not
-//                 // let stringified_vec = i.iter().fold(String::from(""), |mut acc, element| {
-//                 //     let stringified_element =
-//                 //         element.lines().fold(String::from(""), |mut acc, line| {
-//                 //             acc.push_str(&format!(" {}\n", line));
-//                 //             acc
-//                 //         });
-//                 //     acc.push_str(&stringified_element);
-//                 //     acc
-//                 // });
-//                 // format!("[\n{}]", stringified_vec)
-//                 SixErrorEnumWithDeserialize::AnotherVec(i)
-//             }
-//             SixErrorEnum::AnotherHashmap(i) => {
-//                 //todo - display implemented or not
-//                 // let stringified_hashmap =
-//                 //     i.iter().fold(String::from(""), |mut acc, (key, value)| {
-//                 //         let stringified_value =
-//                 //             value.lines().fold(String::from(""), |mut accc, line| {
-//                 //                 accc.push_str(&format!(" {}\n", line));
-//                 //                 accc
-//                 //             });
-//                 //         acc.push_str(&format!("{} [\n{}]\n", key, stringified_value));
-//                 //         acc
-//                 //     });
-//                 SixErrorEnumWithDeserialize::AnotherHashmap(i)
-//             }
-//         }
-//     }
-// }
+impl<'a> std::fmt::Display for SixError<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+        write!(f, "{}", self.to_string_without_config())
+    }
+}
+impl<'a> std::fmt::Display for SixErrorWithDeserialize<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
+        write!(f, "{}", self.to_string_without_config_with_deserialize())
+    }
+}
+impl<'a, ConfigGeneric>
+    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
+        'a,
+        ConfigGeneric,
+    > for SixError<'a>
+where
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
+        match self {
+            SixError::Something {
+                inner_errors,
+                code_occurence: _unused_second_argument,
+            } => {
+                use crate::traits::error_logs_logic::vec_to_string_with_config_to_string::VecToStringWithConfigToString;
+                inner_errors.vec_to_string_with_config_to_string(config)
+            }
+        }
+    }
+}
+impl<'a>
+    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
+        'a,
+    > for SixError<'a>
+{
+    fn source_to_string_without_config(&self) -> String {
+        match self {
+            SixError::Something {
+                inner_errors,
+                code_occurence: _unused_second_argument,
+            } => {
+                use crate::traits::error_logs_logic::vec_to_string_without_config_to_string::VecToStringWithoutConfigToString;
+                inner_errors.vec_to_string_without_config_to_string()
+            }
+        }
+    }
+}
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
+    for SixError<'a>
+{
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
+        match self {
+            SixError::Something {
+                inner_errors: _unused_first_argument,
+                code_occurence,
+            } => code_occurence,
+        }
+    }
+}
+#[derive(Debug, thiserror :: Error, serde :: Serialize, serde :: Deserialize)]
+pub enum SixErrorWithDeserialize<'a> {
+    Something {
+        #[serde(borrow)]
+        inner_errors: std::vec::Vec<SixErrorEnumWithDeserialize<'a>>,
+        #[serde(borrow)]
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize<'a>,
+    },
+}
+impl<'a>
+    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
+        'a,
+    > for SixErrorWithDeserialize<'a>
+{
+    fn source_to_string_without_config(&self) -> String {
+        match self {
+            SixErrorWithDeserialize::Something {
+                inner_errors,
+                code_occurence: _unused_second_argument,
+            } => {
+                use crate::traits::error_logs_logic::vec_to_string_without_config_to_string::VecToStringWithoutConfigToStringWithDeserialize;
+                inner_errors.vec_to_string_without_config_to_string_with_deserialize()
+            }
+        }
+    }
+}
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWithDeserialize<'a>
+    for SixErrorWithDeserialize<'a>
+{
+    fn get_code_occurence_with_deserialize(
+        &self,
+    ) -> &crate::common::code_occurence::CodeOccurenceWithDeserialize<'a> {
+        match self {
+            SixErrorWithDeserialize::Something {
+                inner_errors: _unused_first_argument,
+                code_occurence,
+            } => code_occurence,
+        }
+    }
+}
+impl<'a> SixError<'a> {
+    pub fn into_serialize_deserialize_version(self) -> SixErrorWithDeserialize<'a> {
+        match self {
+            SixError::Something {
+                inner_errors,
+                code_occurence,
+            } => SixErrorWithDeserialize::Something {
+                inner_errors: inner_errors
+                    .into_iter()
+                    .map(|e| e.into_serialize_deserialize_version())
+                    .collect(),
+                code_occurence: code_occurence.into_serialize_deserialize_version(),
+            },
+        }
+    }
+}
+impl<'a> std::fmt::Display for SixErrorEnum<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+        write!(f, "{}", self.to_string_without_config())
+    }
+}
+impl<'a> std::fmt::Display for SixErrorEnumWithDeserialize<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
+        write!(f, "{}", self.to_string_without_config_with_deserialize())
+    }
+}
+impl < 'a, ConfigGeneric > crate :: traits :: error_logs_logic ::
+to_string_with_config :: ToStringWithConfigForSourceToStringWithConfig < 'a,
+ConfigGeneric, > for SixErrorEnum < 'a > where ConfigGeneric : crate :: traits
+:: fields :: GetSourcePlaceType + crate :: traits :: fields :: GetTimezone +
+crate :: traits :: get_server_address :: GetServerAddress,
+{
+    fn
+    to_string_with_config_for_source_to_string_with_config(& self, config : &
+    ConfigGeneric) -> String
+    {
+        match self
+        {
+            SixErrorEnum :: Seven(i) =>
+            {
+                i.to_string_with_config_for_source_to_string_with_config(config)
+            }, SixErrorEnum :: Eight(i) =>
+            {
+                i.to_string_with_config_for_source_to_string_with_config(config)
+            },
+            SixErrorEnum :: Another(i) => i.to_string(),
+            SixErrorEnum::AnotherVec(i) => {
+                let stringified_vec = i.iter().fold(String::from(""), |mut acc, element| {
+                    let stringified_element = element.lines().fold(String::from(""), |mut acc, line| {
+                        acc.push_str(&format!(" {}\n", line));
+                        acc
+                    });
+                    acc.push_str(&stringified_element);
+                    acc
+                });
+                format!("[\n{}]", stringified_vec)
+            },
+            SixErrorEnum::AnotherHashmap(i) => {
+                i.iter().fold(String::from(""), |mut acc, (key, value)| {
+                    let stringified_value = value.lines().fold(String::from(""), |mut accc, line| {
+                        accc.push_str(&format!(" {}\n", line));
+                        accc
+                    });
+                    acc.push_str(&format!("{} [\n{}]\n", key, stringified_value));
+                    acc
+                })
+            },
+        }
+    }
+}
+impl<'a> crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig<'a>
+    for SixErrorEnum<'a>
+{
+    fn to_string_without_config(&self) -> String {
+        match self {
+            SixErrorEnum::Seven(i) => i.to_string_without_config(),
+            SixErrorEnum::Eight(i) => i.to_string_without_config(),
+            SixErrorEnum::Another(i) => i.to_string(),
+            SixErrorEnum::AnotherVec(i) => {
+                let stringified_vec = i.iter().fold(String::from(""), |mut acc, element| {
+                    let stringified_element =
+                        element.lines().fold(String::from(""), |mut acc, line| {
+                            acc.push_str(&format!(" {}\n", line));
+                            acc
+                        });
+                    acc.push_str(&stringified_element);
+                    acc
+                });
+                format!("[\n{}]", stringified_vec)
+            }
+            SixErrorEnum::AnotherHashmap(i) => {
+                i.iter().fold(String::from(""), |mut acc, (key, value)| {
+                    let stringified_value =
+                        value.lines().fold(String::from(""), |mut accc, line| {
+                            accc.push_str(&format!(" {}\n", line));
+                            accc
+                        });
+                    acc.push_str(&format!("{} [\n{}]\n", key, stringified_value));
+                    acc
+                })
+            }
+        }
+    }
+}
+#[derive(Debug, thiserror :: Error, serde :: Serialize, serde :: Deserialize)]
+pub enum SixErrorEnumWithDeserialize<'a> {
+    #[serde(borrow)]
+    Seven(SevenErrorWithDeserialize<'a>),
+    #[serde(borrow)]
+    Eight(EightErrorWithDeserialize<'a>),
+    Another(String),
+    AnotherVec(Vec<String>),
+    AnotherHashmap(std::collections::HashMap<String, String>),
+}
+impl<'a>
+    crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize<
+        'a,
+    > for SixErrorEnumWithDeserialize<'a>
+{
+    fn to_string_without_config_with_deserialize(&self) -> String {
+        match self {
+            SixErrorEnumWithDeserialize::Seven(i) => i.to_string_without_config_with_deserialize(),
+            SixErrorEnumWithDeserialize::Eight(i) => i.to_string_without_config_with_deserialize(),
+            SixErrorEnumWithDeserialize::Another(i) => i.to_string(), //todo or to display_foreign_type()
+            SixErrorEnumWithDeserialize::AnotherVec(i) => {
+                //todo or to display_foreign_type()
+                let stringified_vec = i.iter().fold(String::from(""), |mut acc, element| {
+                    let stringified_element =
+                        element.lines().fold(String::from(""), |mut acc, line| {
+                            acc.push_str(&format!(" {}\n", line));
+                            acc
+                        });
+                    acc.push_str(&stringified_element);
+                    acc
+                });
+                format!("[\n{}]", stringified_vec)
+            }
+            SixErrorEnumWithDeserialize::AnotherHashmap(i) => {
+                //todo or to display_foreign_type()
+                i.iter().fold(String::from(""), |mut acc, (key, value)| {
+                    let stringified_value =
+                        value.lines().fold(String::from(""), |mut accc, line| {
+                            accc.push_str(&format!(" {}\n", line));
+                            accc
+                        });
+                    acc.push_str(&format!("{} [\n{}]\n", key, stringified_value));
+                    acc
+                })
+            }
+        }
+    }
+}
+impl<'a> SixErrorEnum<'a> {
+    pub fn into_serialize_deserialize_version(self) -> SixErrorEnumWithDeserialize<'a> {
+        match self {
+            SixErrorEnum::Seven(i) => {
+                SixErrorEnumWithDeserialize::Seven(i.into_serialize_deserialize_version())
+            }
+            SixErrorEnum::Eight(i) => {
+                SixErrorEnumWithDeserialize::Eight(i.into_serialize_deserialize_version())
+            }
+            SixErrorEnum::Another(i) => SixErrorEnumWithDeserialize::Another(i.to_string()),
+            SixErrorEnum::AnotherVec(i) => {
+                //todo - display implemented or not
+                // let stringified_vec = i.iter().fold(String::from(""), |mut acc, element| {
+                //     let stringified_element =
+                //         element.lines().fold(String::from(""), |mut acc, line| {
+                //             acc.push_str(&format!(" {}\n", line));
+                //             acc
+                //         });
+                //     acc.push_str(&stringified_element);
+                //     acc
+                // });
+                // format!("[\n{}]", stringified_vec)
+                SixErrorEnumWithDeserialize::AnotherVec(i)
+            }
+            SixErrorEnum::AnotherHashmap(i) => {
+                //todo - display implemented or not
+                // let stringified_hashmap =
+                //     i.iter().fold(String::from(""), |mut acc, (key, value)| {
+                //         let stringified_value =
+                //             value.lines().fold(String::from(""), |mut accc, line| {
+                //                 accc.push_str(&format!(" {}\n", line));
+                //                 accc
+                //             });
+                //         acc.push_str(&format!("{} [\n{}]\n", key, stringified_value));
+                //         acc
+                //     });
+                SixErrorEnumWithDeserialize::AnotherHashmap(i)
+            }
+        }
+    }
+}
 
 impl<'a> std::fmt::Display for SevenError<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
@@ -522,121 +522,121 @@ impl<'a> SevenError<'a> {
         }
     }
 }
-// impl<'a> std::fmt::Display for EightError<'a> {
-//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-//         write!(f, "{}", self.to_string_without_config())
-//     }
-// }
-// impl<'a> std::fmt::Display for EightErrorWithDeserialize<'a> {
-//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
-//         write!(f, "{}", self.to_string_without_config_with_deserialize())
-//     }
-// }
-// impl<'a, ConfigGeneric>
-//     crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
-//         'a,
-//         ConfigGeneric,
-//     > for EightError<'a>
-// where
-//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-//         + crate::traits::fields::GetTimezone
-//         + crate::traits::get_server_address::GetServerAddress,
-// {
-//     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
-//         match self {
-//             EightError::Something {
-//                 error: _unused_first_argument,
-//                 code_occurence: _unused_second_argument,
-//             } => {
-//                 use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig;
-//                 self.source_to_string_without_config()
-//             }
-//         }
-//     }
-// }
-// impl<'a>
-//     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
-//         'a,
-//     > for EightError<'a>
-// {
-//     fn source_to_string_without_config(&self) -> String {
-//         match self {
-//             EightError::Something {
-//                 error,
-//                 code_occurence: _unused_second_argument,
-//             } => {
-//                 use crate::traits::display_foreign_type::DisplayForeignType;
-//                 error.to_string()
-//             }
-//         }
-//     }
-// }
-// impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
-//     for EightError<'a>
-// {
-//     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
-//         match self {
-//             EightError::Something {
-//                 error: _unused_first_argument,
-//                 code_occurence,
-//             } => code_occurence,
-//         }
-//     }
-// }
-// #[derive(Debug, thiserror :: Error, serde :: Serialize, serde :: Deserialize)]
-// pub enum EightErrorWithDeserialize<'a> {
-//     Something {
-//         error: String,
-//         #[serde(borrow)]
-//         code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize<'a>,
-//     },
-// }
-// impl<'a>
-//     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
-//         'a,
-//     > for EightErrorWithDeserialize<'a>
-// {
-//     fn source_to_string_without_config(&self) -> String {
-//         match self {
-//             EightErrorWithDeserialize::Something {
-//                 error,
-//                 code_occurence: _unused_second_argument,
-//             } => error.to_string(),
-//         }
-//     }
-// }
-// impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWithDeserialize<'a>
-//     for EightErrorWithDeserialize<'a>
-// {
-//     fn get_code_occurence_with_deserialize(
-//         &self,
-//     ) -> &crate::common::code_occurence::CodeOccurenceWithDeserialize<'a> {
-//         match self {
-//             EightErrorWithDeserialize::Something {
-//                 error: _unused_first_argument,
-//                 code_occurence,
-//             } => code_occurence,
-//         }
-//     }
-// }
-// impl<'a> EightError<'a> {
-//     pub fn into_serialize_deserialize_version(self) -> EightErrorWithDeserialize<'a> {
-//         match self {
-//             EightError::Something {
-//                 error,
-//                 code_occurence,
-//             } => {
-//                 use crate::traits::display_foreign_type::DisplayForeignType;
-//                 EightErrorWithDeserialize::Something {
-//                     error: error.to_string(),
-//                     code_occurence: code_occurence.into_serialize_deserialize_version(),
-//                 }
-//             }
-//         }
-//     }
-// }
+impl<'a> std::fmt::Display for EightError<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+        write!(f, "{}", self.to_string_without_config())
+    }
+}
+impl<'a> std::fmt::Display for EightErrorWithDeserialize<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
+        write!(f, "{}", self.to_string_without_config_with_deserialize())
+    }
+}
+impl<'a, ConfigGeneric>
+    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
+        'a,
+        ConfigGeneric,
+    > for EightError<'a>
+where
+    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+        + crate::traits::fields::GetTimezone
+        + crate::traits::get_server_address::GetServerAddress,
+{
+    fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
+        match self {
+            EightError::Something {
+                error: _unused_first_argument,
+                code_occurence: _unused_second_argument,
+            } => {
+                use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig;
+                self.source_to_string_without_config()
+            }
+        }
+    }
+}
+impl<'a>
+    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
+        'a,
+    > for EightError<'a>
+{
+    fn source_to_string_without_config(&self) -> String {
+        match self {
+            EightError::Something {
+                error,
+                code_occurence: _unused_second_argument,
+            } => {
+                use crate::traits::display_foreign_type::DisplayForeignType;
+                error.to_string()
+            }
+        }
+    }
+}
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
+    for EightError<'a>
+{
+    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
+        match self {
+            EightError::Something {
+                error: _unused_first_argument,
+                code_occurence,
+            } => code_occurence,
+        }
+    }
+}
+#[derive(Debug, thiserror :: Error, serde :: Serialize, serde :: Deserialize)]
+pub enum EightErrorWithDeserialize<'a> {
+    Something {
+        error: String,
+        #[serde(borrow)]
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize<'a>,
+    },
+}
+impl<'a>
+    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
+        'a,
+    > for EightErrorWithDeserialize<'a>
+{
+    fn source_to_string_without_config(&self) -> String {
+        match self {
+            EightErrorWithDeserialize::Something {
+                error,
+                code_occurence: _unused_second_argument,
+            } => error.to_string(),
+        }
+    }
+}
+impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWithDeserialize<'a>
+    for EightErrorWithDeserialize<'a>
+{
+    fn get_code_occurence_with_deserialize(
+        &self,
+    ) -> &crate::common::code_occurence::CodeOccurenceWithDeserialize<'a> {
+        match self {
+            EightErrorWithDeserialize::Something {
+                error: _unused_first_argument,
+                code_occurence,
+            } => code_occurence,
+        }
+    }
+}
+impl<'a> EightError<'a> {
+    pub fn into_serialize_deserialize_version(self) -> EightErrorWithDeserialize<'a> {
+        match self {
+            EightError::Something {
+                error,
+                code_occurence,
+            } => {
+                use crate::traits::display_foreign_type::DisplayForeignType;
+                EightErrorWithDeserialize::Something {
+                    error: error.to_string(),
+                    code_occurence: code_occurence.into_serialize_deserialize_version(),
+                }
+            }
+        }
+    }
+}
 
 //TODO - WHATS DO WITH THIS ? (JOIN ALL SUTIATION)
 
