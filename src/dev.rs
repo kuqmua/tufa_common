@@ -2156,18 +2156,12 @@ impl<'a> NamedError<'a> {
                     g
                 },
                 h: {
-                    h.into_iter().map(|i|{
-                        use crate::traits::display_foreign_type::DisplayForeignType;
-                        i.display_foreign_type()
-                    })
-                    .collect()
+                    use crate::traits::error_logs_logic::vec_display_foreign_type_to_vec_string::VecDisplayForeignTypeToVecString;
+                    h.vec_display_foreign_type_to_vec_string()
                 },
                 j: {
-                    j.into_iter().map(|i|{
-                        use crate::traits::display_foreign_type::DisplayForeignType;
-                        i.display_foreign_type()
-                    })
-                    .collect()
+                    use crate::traits::error_logs_logic::vec_display_foreign_type_to_vec_string::VecDisplayForeignTypeToVecString;
+                    h.vec_display_foreign_type_to_vec_string()
                 },
                 k: {
                     k.into_iter().map(|i|{
