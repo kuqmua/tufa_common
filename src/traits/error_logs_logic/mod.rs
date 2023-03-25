@@ -3,6 +3,7 @@ pub mod error_log;
 pub mod form_error_path;
 pub mod get_code_occurence;
 pub mod hashmap_display_foreign_type_display_foreign_type_to_string;
+pub mod hashmap_display_foreign_type_display_foreign_type_to_vec_string;
 pub mod hashmap_display_foreign_type_impl_display_to_string;
 pub mod hashmap_display_foreign_type_impl_display_to_vec_string;
 pub mod hashmap_display_foreign_type_to_string_without_config_to_string;

@@ -15,12 +15,7 @@ where
         self,
     ) -> std::collections::HashMap<HashMapKeyGeneric, String> {
         self.into_iter()
-            .map(|(k, v)| {
-                (k, {
-                    use crate::traits::display_foreign_type::DisplayForeignType;
-                    v.display_foreign_type()
-                })
-            })
+            .map(|(k, v)| (k, v.display_foreign_type()))
             .collect()
     }
 }
