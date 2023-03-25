@@ -1616,12 +1616,12 @@ impl<'a>
                     e.to_string_without_config()
                 };
                 let f_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    f.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
+                    f.vec_impl_display_to_string()
                 };
                 let g_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    g.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
+                    g.vec_impl_display_to_string()
                 };
                 let h_handle = {
                     use crate::traits::error_logs_logic::vec_hashmap_display_foreign_type_display_foreign_type_to_string::VecHashMapDisplayForeignTypeDisplayForeignTypeToString;
@@ -1636,20 +1636,20 @@ impl<'a>
                     k.vec_to_string_without_config_to_string()
                 };
                 let l_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    l.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+                    l.hashmap_impl_display_impl_display_to_string()
                 };
                 let m_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    m.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+                    m.hashmap_impl_display_impl_display_to_string()
                 };
                 let n_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    n.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+                    n.hashmap_impl_display_impl_display_to_string()
                 };
                 let o_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    o.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+                    o.hashmap_impl_display_impl_display_to_string()
                 };
                 let p_handle = {
                     use crate::traits::error_logs_logic::hashmap_impl_display_display_foreign_type_to_string::HashMapImplDisplayDisplayForeignTypeToString;
@@ -1917,56 +1917,56 @@ impl<'a>
                     e.to_string_without_config_with_deserialize()
                 };
                 let f_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    f.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
+                    f.vec_impl_display_to_string()
                 };
                 let g_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    g.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
+                    g.vec_impl_display_to_string()
                 };
                 let h_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    h.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
+                    h.vec_impl_display_to_string()
                 };
                 let j_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    j.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
+                    j.vec_impl_display_to_string()
                 };
                 let k_handle = {
                     use crate::traits::error_logs_logic::vec_to_string_without_config_to_string::VecToStringWithoutConfigToStringWithDeserialize;
                     k.vec_to_string_without_config_to_string_with_deserialize()
                 };
                 let l_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    l.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+                    l.hashmap_impl_display_impl_display_to_string()
                 };
                 let m_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    m.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+                    m.hashmap_impl_display_impl_display_to_string()
                 };
                 let n_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    n.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+                    n.hashmap_impl_display_impl_display_to_string()
                 };
                 let o_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    o.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+                    o.hashmap_impl_display_impl_display_to_string()
                 };
                 let p_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    p.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+                    p.hashmap_impl_display_impl_display_to_string()
                 };
                 let q_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    q.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+                    q.hashmap_impl_display_impl_display_to_string()
                 };
                 let r_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    r.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+                    r.hashmap_impl_display_impl_display_to_string()
                 };
                 let s_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    f.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
+                    f.vec_impl_display_to_string()
                 };
                 let t_handle = {
                     use crate::traits::error_logs_logic::hashmap_to_string_without_config_to_string::HashmapToStringWithoutConfigToStringWithDeserialize;
@@ -1977,36 +1977,36 @@ impl<'a>
                     u.hashmap_to_string_without_config_to_string_with_deserialize()
                 };
                 let v_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    v.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+                    v.hashmap_impl_display_impl_display_to_string()
                 };
                 let w_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    w.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+                    w.hashmap_impl_display_impl_display_to_string()
                 };
                 let x_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    x.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+                    x.hashmap_impl_display_impl_display_to_string()
                 };
                 let y_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    y.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+                    y.hashmap_impl_display_impl_display_to_string()
                 };
                 let z_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    z.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+                    z.hashmap_impl_display_impl_display_to_string()
                 };
                 let aa_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    aa.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+                    aa.hashmap_impl_display_impl_display_to_string()
                 };
                 let ab_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    ab.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+                    ab.hashmap_impl_display_impl_display_to_string()
                 };
                 let ac_handle = {
-                    use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
-                    ac.vec_hashmap_impl_display_impl_display_to_string()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+                    ac.hashmap_impl_display_impl_display_to_string()
                 };
                 let ad_handle = {
                     use crate::traits::error_logs_logic::hashmap_to_string_without_config_to_string::HashmapToStringWithoutConfigToStringWithDeserialize;
