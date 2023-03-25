@@ -1708,42 +1708,12 @@ impl<'a>
                     ab.hashmap_to_string_display_foreign_type_display_foreign_type()
                 };
                 let ad_handle = {
-                    let mut stringified = ad.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                {
-                                    use crate::traits::display_foreign_type::DisplayForeignType;
-                                    key.display_foreign_type()
-                                },
-                         {
-                                    use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-                                    value.to_string_without_config()
-                                },
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::hashmap_to_string_display_foreign_type_to_string_without_config::HashMapToStringDisplayForeignTypeToStringWithoutConfig;
+                    ad.hashmap_to_string_display_foreign_type_to_string_without_config()
                 };
                 let af_handle = {
-                    let mut stringified = af.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                {
-                                    use crate::traits::display_foreign_type::DisplayForeignType;
-                                    key.display_foreign_type()
-                                },
-                         {
-                                    use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-                                    value.to_string_without_config()
-                                },
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::hashmap_to_string_display_foreign_type_to_string_without_config::HashMapToStringDisplayForeignTypeToStringWithoutConfig;
+                    af.hashmap_to_string_display_foreign_type_to_string_without_config()
                 };
                 format!(
                     "{{\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n}}",
