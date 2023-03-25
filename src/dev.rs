@@ -1616,26 +1616,12 @@ impl<'a>
                     e.to_string_without_config()
                 };
                 let f_handle = {
-                    crate::traits::error_logs_logic::helpers::stringified_lines_error_vec(f.iter().fold(
-                        String::from(""),
-                        |mut acc, vec_element| {
-                            acc.push_str(
-                                &crate::traits::error_logs_logic::helpers::lines_space_backslash_addition(vec_element.to_string()),
-                            );
-                            acc
-                        },
-                    ))
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    f.few_to_string_impl_display_impl_display()
                 };
                 let g_handle = {
-                    crate::traits::error_logs_logic::helpers::stringified_lines_error_vec(g.iter().fold(
-                        String::from(""),
-                        |mut acc, vec_element| {
-                            acc.push_str(
-                                &crate::traits::error_logs_logic::helpers::lines_space_backslash_addition(vec_element.to_string()),
-                            );
-                            acc
-                        },
-                    ))
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    f.few_to_string_impl_display_impl_display()
                 };
                 let h_handle = {
                     crate::traits::error_logs_logic::helpers::stringified_lines_error_vec(h.iter().fold(
@@ -1674,56 +1660,20 @@ impl<'a>
                     k.few_to_string_without_config()
                 };
                 let l_handle = {
-                    let mut stringified = l.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                key,
-                         value.to_string(),
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    l.few_to_string_impl_display_impl_display()
                 };
                 let m_handle = {
-                    let mut stringified = m.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                key,
-                         value.to_string(),
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    m.few_to_string_impl_display_impl_display()
                 };
                 let n_handle = {
-                    let mut stringified = n.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                key,
-                         value.to_string(),
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    n.few_to_string_impl_display_impl_display()
                 };
                 let o_handle = {
-                    let mut stringified = o.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                key,
-                         value.to_string(),
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    o.few_to_string_impl_display_impl_display()
                 };
                 let p_handle = {
                     let mut stringified = p.iter().fold(String::from(""), |mut acc, (key, value)| {
@@ -2209,172 +2159,56 @@ impl<'a>
                     e.to_string_without_config_with_deserialize()
                 };
                 let f_handle = {
-                    crate::traits::error_logs_logic::helpers::stringified_lines_error_vec(f.iter().fold(
-                        String::from(""),
-                        |mut acc, vec_element| {
-                            acc.push_str(
-                                &crate::traits::error_logs_logic::helpers::lines_space_backslash_addition(vec_element.to_string()),
-                            );
-                            acc
-                        },
-                    ))
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    f.few_to_string_impl_display_impl_display()
                 };
                 let g_handle = {
-                    crate::traits::error_logs_logic::helpers::stringified_lines_error_vec(g.iter().fold(
-                        String::from(""),
-                        |mut acc, vec_element| {
-                            acc.push_str(
-                                &crate::traits::error_logs_logic::helpers::lines_space_backslash_addition(vec_element.to_string()),
-                            );
-                            acc
-                        },
-                    ))
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    g.few_to_string_impl_display_impl_display()
                 };
                 let h_handle = {
-                    crate::traits::error_logs_logic::helpers::stringified_lines_error_vec(h.iter().fold(
-                        String::from(""),
-                        |mut acc, vec_element| {
-                            acc.push_str(
-                                &crate::traits::error_logs_logic::helpers::lines_space_backslash_addition(
-                                    {
-                                        vec_element.to_string()
-                                    }
-                                ),
-                            );
-                            acc
-                        },
-                    ))
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    h.few_to_string_impl_display_impl_display()
                 };
                 let j_handle = {
-                    crate::traits::error_logs_logic::helpers::stringified_lines_error_vec(j.iter().fold(
-                        String::from(""),
-                        |mut acc, vec_element| {
-                            acc.push_str(
-                                &crate::traits::error_logs_logic::helpers::lines_space_backslash_addition(
-                                    {
-                                        vec_element.to_string()
-                                    }
-                                ),
-                            );
-                            acc
-                        },
-                    ))
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    j.few_to_string_impl_display_impl_display()
                 };
                 let k_handle = {
                     use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigWithDeserialize;
                     k.few_to_string_without_config_with_deserialize()
                 };
                 let l_handle = {
-                    let mut stringified = l.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                key,
-                         value.to_string(),
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    l.few_to_string_impl_display_impl_display()
                 };
                 let m_handle = {
-                    let mut stringified = m.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                key,
-                         value.to_string(),
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    m.few_to_string_impl_display_impl_display()
                 };
                 let n_handle = {
-                    let mut stringified = n.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                key,
-                         value.to_string(),
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    n.few_to_string_impl_display_impl_display()
                 };
                 let o_handle = {
-                    let mut stringified = o.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                key,
-                         value.to_string(),
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    o.few_to_string_impl_display_impl_display()
                 };
                 let p_handle = {
-                    let mut stringified = p.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                key,
-                         {
-                                    value.to_string()
-                                },
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    p.few_to_string_impl_display_impl_display()
                 };
                 let q_handle = {
-                    let mut stringified = q.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                key,
-                         {
-                                    value.to_string()
-                                },
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    q.few_to_string_impl_display_impl_display()
                 };
                 let r_handle = {
-                    let mut stringified = r.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                key,
-                         {
-                                    value.to_string()
-                                },
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    r.few_to_string_impl_display_impl_display()
                 };
                 let s_handle = {
-                    let mut stringified = s.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                key,
-                         {
-                                    value.to_string()
-                                },
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    f.few_to_string_impl_display_impl_display()
                 };
                 let t_handle = {
                     let mut stringified = t.iter().fold(String::from(""), |mut acc, (key, value)| {
@@ -2409,140 +2243,36 @@ impl<'a>
                     stringified
                 };
                 let v_handle = {
-                    let mut stringified = v.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                {
-                                    key.to_string()
-                                },
-                         {
-                                    value.to_string()
-                                },
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    v.few_to_string_impl_display_impl_display()
                 };
                 let w_handle = {
-                    let mut stringified = w.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                {
-                                    key.to_string()
-                                },
-                         {
-                                    value.to_string()
-                                },
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    w.few_to_string_impl_display_impl_display()
                 };
                 let x_handle = {
-                    let mut stringified = x.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                {
-                                    key.to_string()
-                                },
-                         {
-                                    value.to_string()
-                                },
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    x.few_to_string_impl_display_impl_display()
                 };
                 let y_handle = {
-                    let mut stringified = y.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                {
-                                    key.to_string()
-                                },
-                         {
-                                    value.to_string()
-                                },
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    y.few_to_string_impl_display_impl_display()
                 };
                 let z_handle = {
-                    let mut stringified = z.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                {
-                                    key.to_string()
-                                },
-                         {
-                                    key.to_string()
-                                },
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    z.few_to_string_impl_display_impl_display()
                 };
                 let aa_handle = {
-                    let mut stringified = aa.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                {
-                                    key.to_string()
-                                },
-                         {
-                                    key.to_string()
-                                },
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    aa.few_to_string_impl_display_impl_display()
                 };
                 let ab_handle = {
-                    let mut stringified = ab.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                {
-                                    key.to_string()
-                                },
-                         {
-                                    key.to_string()
-                                },
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    ab.few_to_string_impl_display_impl_display()
                 };
                 let ac_handle = {
-                    let mut stringified = ac.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                {
-                                    key.to_string()
-                                },
-                         {
-                                    key.to_string()
-                                },
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::few_to_string_impl_display_impl_display::FewToStringImplDisplayImplDisplay;
+                    ac.few_to_string_impl_display_impl_display()
                 };
                 let ad_handle = {
                     let mut stringified = ad.iter().fold(String::from(""), |mut acc, (key, value)| {
