@@ -1652,68 +1652,20 @@ impl<'a>
                     o.few_to_string_impl_display_impl_display()
                 };
                 let p_handle = {
-                    let mut stringified = p.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                key,
-                         {
-                                    use crate::traits::display_foreign_type::DisplayForeignType;
-                                    value.display_foreign_type()
-                                },
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::hashmap_to_string_impl_display_display_foreign_type::HashMapToStringImplDisplayDisplayForeignType;
+                    p.hashmap_to_string_impl_display_display_foreign_type()
                 };
                 let q_handle = {
-                    let mut stringified = q.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                key,
-                         {
-                                    use crate::traits::display_foreign_type::DisplayForeignType;
-                                    value.display_foreign_type()
-                                },
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::hashmap_to_string_impl_display_display_foreign_type::HashMapToStringImplDisplayDisplayForeignType;
+                    q.hashmap_to_string_impl_display_display_foreign_type()
                 };
                 let r_handle = {
-                    let mut stringified = r.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                key,
-                         {
-                                    use crate::traits::display_foreign_type::DisplayForeignType;
-                                    value.display_foreign_type()
-                                },
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::hashmap_to_string_impl_display_display_foreign_type::HashMapToStringImplDisplayDisplayForeignType;
+                    r.hashmap_to_string_impl_display_display_foreign_type()
                 };
                 let s_handle = {
-                    let mut stringified = s.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                key,
-                         {
-                                    use crate::traits::display_foreign_type::DisplayForeignType;
-                                    value.display_foreign_type()
-                                },
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::hashmap_to_string_impl_display_display_foreign_type::HashMapToStringImplDisplayDisplayForeignType;
+                    s.hashmap_to_string_impl_display_display_foreign_type()
                 };
                 let t_handle = {
                     let mut stringified = t.iter().fold(String::from(""), |mut acc, (key, value)| {

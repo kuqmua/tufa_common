@@ -1,8 +1,8 @@
-pub trait FewToStringImplDisplayImplDisplay<'a> {
+pub trait FewToStringImplDisplayImplDisplay {
     fn few_to_string_impl_display_impl_display(&self) -> String;
 }
 
-impl<'a, VecElementGeneric> FewToStringImplDisplayImplDisplay<'a> for Vec<VecElementGeneric>
+impl<VecElementGeneric> FewToStringImplDisplayImplDisplay for Vec<VecElementGeneric>
 where
     VecElementGeneric: std::fmt::Display,
 {
@@ -17,7 +17,7 @@ where
     }
 }
 
-impl<'a, HashMapKeyGeneric, HashMapValueGeneric> FewToStringImplDisplayImplDisplay<'a>
+impl<HashMapKeyGeneric, HashMapValueGeneric> FewToStringImplDisplayImplDisplay
     for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
 where
     HashMapKeyGeneric: std::fmt::Display,
