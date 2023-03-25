@@ -1,12 +1,12 @@
-pub trait VecToStringDisplayForeignType {
-    fn vec_to_string_display_foreign_type(&self) -> String;
+pub trait VecDisplayForeignTypeToString {
+    fn vec_display_foreign_type_to_string(&self) -> String;
 }
 
-impl<VecElementGeneric> VecToStringDisplayForeignType for Vec<VecElementGeneric>
+impl<VecElementGeneric> VecDisplayForeignTypeToString for Vec<VecElementGeneric>
 where
     VecElementGeneric: crate::traits::display_foreign_type::DisplayForeignType,
 {
-    fn vec_to_string_display_foreign_type(&self) -> String {
+    fn vec_display_foreign_type_to_string(&self) -> String {
         crate::traits::error_logs_logic::helpers::stringified_lines_error_vec(self.iter().fold(
             String::from(""),
             |mut acc, vec_element| {
