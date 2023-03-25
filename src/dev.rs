@@ -1417,14 +1417,14 @@ impl<'a> std::fmt::Display for OneErrorEnumWithDeserialize<'a> {
     }
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)] //, thiserror::Error, error_occurence::ImplErrorOccurence
-pub enum TestErrorEnum {
-    //todo - test crate::dev::SevenError<'a> as variant but without lifetime
-    #[to_string]
-    ToString(crate::dev::Omegalul),
-    // #[to_string]
-    // ToStringLifetime(crate::dev::OmegalulLifetime<'a>),
-}
+// #[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)] //, thiserror::Error, error_occurence::ImplErrorOccurence
+// pub enum TestErrorEnum {
+//     //todo - test crate::dev::SevenError<'a> as variant but without lifetime
+//     #[to_string]
+//     ToString(crate::dev::Omegalul),
+//     // #[to_string]
+//     // ToStringLifetime(crate::dev::OmegalulLifetime<'a>),
+// }
 
 #[derive(Debug)] //, error_occurence::ImplErrorOccurence
 pub enum NamedError<'a> {
@@ -1632,8 +1632,8 @@ impl<'a>
                     j.vec_hashmap_display_foreign_type_display_foreign_type_to_string()
                 };
                 let k_handle = {
-                    use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
-                    k.few_to_string_without_config()
+                    use crate::traits::error_logs_logic::vec_to_string_without_config_to_string::VecToStringWithoutConfigToString;
+                    k.vec_to_string_without_config_to_string()
                 };
                 let l_handle = {
                     use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
@@ -1668,12 +1668,12 @@ impl<'a>
                     s.hashmap_impl_display_display_foreign_type_to_string()
                 };
                 let t_handle = {
-                    use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
-                    t.few_to_string_without_config()
+                    use crate::traits::error_logs_logic::hashmap_to_string_without_config_to_string::HashmapToStringWithoutConfigToString;
+                    t.hashmap_to_string_without_config_to_string()
                 };
                 let u_handle = {
-                    use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;
-                    t.few_to_string_without_config()
+                    use crate::traits::error_logs_logic::hashmap_to_string_without_config_to_string::HashmapToStringWithoutConfigToString;
+                    t.hashmap_to_string_without_config_to_string()
                 };
                 let v_handle = {
                     use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_string::HashMapDisplayForeignTypeImplDisplayToString;
@@ -1933,8 +1933,8 @@ impl<'a>
                     j.vec_hashmap_impl_display_impl_display_to_string()
                 };
                 let k_handle = {
-                    use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigWithDeserialize;
-                    k.few_to_string_without_config_with_deserialize()
+                    use crate::traits::error_logs_logic::vec_to_string_without_config_to_string::VecToStringWithoutConfigToStringWithDeserialize;
+                    k.vec_to_string_without_config_to_string_with_deserialize()
                 };
                 let l_handle = {
                     use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
@@ -1969,12 +1969,12 @@ impl<'a>
                     f.vec_hashmap_impl_display_impl_display_to_string()
                 };
                 let t_handle = {
-                    use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigWithDeserialize;
-                    t.few_to_string_without_config_with_deserialize()
+                    use crate::traits::error_logs_logic::hashmap_to_string_without_config_to_string::HashmapToStringWithoutConfigToStringWithDeserialize;
+                    t.hashmap_to_string_without_config_to_string_with_deserialize()
                 };
                 let u_handle = {
-                    use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigWithDeserialize;
-                    u.few_to_string_without_config_with_deserialize()
+                    use crate::traits::error_logs_logic::hashmap_to_string_without_config_to_string::HashmapToStringWithoutConfigToStringWithDeserialize;
+                    u.hashmap_to_string_without_config_to_string_with_deserialize()
                 };
                 let v_handle = {
                     use crate::traits::error_logs_logic::vec_hashmap_impl_display_impl_display_to_string::VecHashmapImplDisplayImplDisplayToString;
@@ -2009,12 +2009,12 @@ impl<'a>
                     ac.vec_hashmap_impl_display_impl_display_to_string()
                 };
                 let ad_handle = {
-                    use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigWithDeserialize;
-                    ad.few_to_string_without_config_with_deserialize()
+                    use crate::traits::error_logs_logic::hashmap_to_string_without_config_to_string::HashmapToStringWithoutConfigToStringWithDeserialize;
+                    ad.hashmap_to_string_without_config_to_string_with_deserialize()
                 };
                 let af_handle = {
-                    use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfigWithDeserialize;
-                    ad.few_to_string_without_config_with_deserialize()
+                    use crate::traits::error_logs_logic::hashmap_to_string_without_config_to_string::HashmapToStringWithoutConfigToStringWithDeserialize;
+                    ad.hashmap_to_string_without_config_to_string_with_deserialize()
                 };
                 format!(
                     "{{\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n}}",
