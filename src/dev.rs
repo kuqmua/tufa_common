@@ -1624,36 +1624,12 @@ impl<'a>
                     f.few_to_string_impl_display_impl_display()
                 };
                 let h_handle = {
-                    crate::traits::error_logs_logic::helpers::stringified_lines_error_vec(h.iter().fold(
-                        String::from(""),
-                        |mut acc, vec_element| {
-                            acc.push_str(
-                                &crate::traits::error_logs_logic::helpers::lines_space_backslash_addition(
-                                    {
-                                        use crate::traits::display_foreign_type::DisplayForeignType;
-                                        vec_element.display_foreign_type()
-                                    }
-                                ),
-                            );
-                            acc
-                        },
-                    ))
+                    use crate::traits::error_logs_logic::vec_to_string_display_foreign_type::VecToStringDisplayForeignType;
+                    h.vec_to_string_display_foreign_type()
                 };
                 let j_handle = {
-                    crate::traits::error_logs_logic::helpers::stringified_lines_error_vec(j.iter().fold(
-                        String::from(""),
-                        |mut acc, vec_element| {
-                            acc.push_str(
-                                &crate::traits::error_logs_logic::helpers::lines_space_backslash_addition(
-                                    {
-                                        use crate::traits::display_foreign_type::DisplayForeignType;
-                                        vec_element.display_foreign_type()
-                                    }
-                                ),
-                            );
-                            acc
-                        },
-                    ))
+                    use crate::traits::error_logs_logic::vec_to_string_display_foreign_type::VecToStringDisplayForeignType;
+                    j.vec_to_string_display_foreign_type()
                 };
                 let k_handle = {
                     use crate::traits::error_logs_logic::few_to_string_without_config::FewToStringWithoutConfig;

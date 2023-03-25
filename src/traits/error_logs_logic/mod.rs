@@ -12,3 +12,4 @@ pub mod source_to_string_without_config;
 pub mod test;
 pub mod to_string_with_config;
 pub mod to_string_without_config;
+pub mod vec_to_string_display_foreign_type;
