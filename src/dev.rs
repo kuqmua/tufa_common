@@ -1676,20 +1676,20 @@ impl<'a>
                     t.few_to_string_without_config()
                 };
                 let v_handle = {
-                    use crate::traits::error_logs_logic::hashmap_to_string_display_foreign_type_impl_display::HashMapToStringDisplayForeignTypeImplDisplay;
-                    v.hashmap_to_string_display_foreign_type_impl_display()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_string::HashMapDisplayForeignTypeImplDisplayToString;
+                    v.hashmap_display_foreign_type_impl_display_to_string()
                 };
                 let w_handle = {
-                    use crate::traits::error_logs_logic::hashmap_to_string_display_foreign_type_impl_display::HashMapToStringDisplayForeignTypeImplDisplay;
-                    w.hashmap_to_string_display_foreign_type_impl_display()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_string::HashMapDisplayForeignTypeImplDisplayToString;
+                    w.hashmap_display_foreign_type_impl_display_to_string()
                 };
                 let x_handle = {
-                    use crate::traits::error_logs_logic::hashmap_to_string_display_foreign_type_impl_display::HashMapToStringDisplayForeignTypeImplDisplay;
-                    x.hashmap_to_string_display_foreign_type_impl_display()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_string::HashMapDisplayForeignTypeImplDisplayToString;
+                    x.hashmap_display_foreign_type_impl_display_to_string()
                 };
                 let y_handle = {
-                    use crate::traits::error_logs_logic::hashmap_to_string_display_foreign_type_impl_display::HashMapToStringDisplayForeignTypeImplDisplay;
-                    y.hashmap_to_string_display_foreign_type_impl_display()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_string::HashMapDisplayForeignTypeImplDisplayToString;
+                    y.hashmap_display_foreign_type_impl_display_to_string()
                 };
                 let z_handle = {
                     use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_string::HashMapDisplayForeignTypeDisplayForeignTypeToString;
