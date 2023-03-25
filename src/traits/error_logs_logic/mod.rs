@@ -1,6 +1,5 @@
 pub mod code_occurence_prepare_for_log;
 pub mod error_log;
-pub mod few_to_string_with_config;
 pub mod form_error_path;
 pub mod get_code_occurence;
 pub mod hashmap_display_foreign_type_impl_display_to_string;
