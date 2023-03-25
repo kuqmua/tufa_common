@@ -1692,80 +1692,20 @@ impl<'a>
                     y.hashmap_to_string_display_foreign_type_impl_display()
                 };
                 let z_handle = {
-                    let mut stringified = z.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                {
-                                    use crate::traits::display_foreign_type::DisplayForeignType;
-                                    key.display_foreign_type()
-                                },
-                         {
-                                    use crate::traits::display_foreign_type::DisplayForeignType;
-                                    key.display_foreign_type()
-                                },
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::hashmap_to_string_display_foreign_type_display_foreign_type::HashMapToStringDisplayForeignTypeDisplayForeignType;
+                    z.hashmap_to_string_display_foreign_type_display_foreign_type()
                 };
                 let aa_handle = {
-                    let mut stringified = aa.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                {
-                                    use crate::traits::display_foreign_type::DisplayForeignType;
-                                    key.display_foreign_type()
-                                },
-                         {
-                                    use crate::traits::display_foreign_type::DisplayForeignType;
-                                    key.display_foreign_type()
-                                },
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::hashmap_to_string_display_foreign_type_display_foreign_type::HashMapToStringDisplayForeignTypeDisplayForeignType;
+                    aa.hashmap_to_string_display_foreign_type_display_foreign_type()
                 };
                 let ab_handle = {
-                    let mut stringified = ab.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                {
-                                    use crate::traits::display_foreign_type::DisplayForeignType;
-                                    key.display_foreign_type()
-                                },
-                         {
-                                    use crate::traits::display_foreign_type::DisplayForeignType;
-                                    key.display_foreign_type()
-                                },
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::hashmap_to_string_display_foreign_type_display_foreign_type::HashMapToStringDisplayForeignTypeDisplayForeignType;
+                    ab.hashmap_to_string_display_foreign_type_display_foreign_type()
                 };
                 let ac_handle = {
-                    let mut stringified = ac.iter().fold(String::from(""), |mut acc, (key, value)| {
-                        acc.push_str(
-                            &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                                {
-                                    use crate::traits::display_foreign_type::DisplayForeignType;
-                                    key.display_foreign_type()
-                                },
-                         {
-                                    use crate::traits::display_foreign_type::DisplayForeignType;
-                                    key.display_foreign_type()
-                                },
-                            ),
-                        );
-                        acc
-                    });
-                    stringified.pop();
-                    stringified
+                    use crate::traits::error_logs_logic::hashmap_to_string_display_foreign_type_display_foreign_type::HashMapToStringDisplayForeignTypeDisplayForeignType;
+                    ab.hashmap_to_string_display_foreign_type_display_foreign_type()
                 };
                 let ad_handle = {
                     let mut stringified = ad.iter().fold(String::from(""), |mut acc, (key, value)| {
