@@ -855,131 +855,127 @@ where ConfigGeneric:
     {
         match self
         {
-            OneErrorEnum :: ToString(i) => { i.to_string() }, OneErrorEnum ::
-            ToStringLifetime(i) => { i.to_string() }, OneErrorEnum ::
-            DisplayForeignType(i) =>
-            {
-                use crate :: traits :: display_foreign_type ::
-                DisplayForeignType ; i.display_foreign_type()
-            }, OneErrorEnum :: DisplayForeignTypeLifeTime(i) =>
-            {
-                use crate :: traits :: display_foreign_type ::
-                DisplayForeignType ; i.display_foreign_type()
-            }, OneErrorEnum :: ErrorOccurence(i) =>
-            {
+            OneErrorEnum :: ToString(i) => { i.to_string() }, 
+            OneErrorEnum::ToStringLifetime(i) => { i.to_string() }, 
+            OneErrorEnum::DisplayForeignType(i) => {
+                use crate::traits::display_foreign_type::DisplayForeignType; 
+                i.display_foreign_type()
+            }, 
+            OneErrorEnum :: DisplayForeignTypeLifeTime(i) => {
+                use crate::traits::display_foreign_type::DisplayForeignType; 
+                i.display_foreign_type()
+            }, 
+            OneErrorEnum::ErrorOccurence(i) => {
                 i.to_string_with_config_for_source_to_string_with_config(config)
-            }, OneErrorEnum :: VecToString(i) =>
-            {
-                let stringified_vec =
-                i.iter().fold(String :: from(""), | mut acc, element |
-                {
+            }, 
+            OneErrorEnum::VecToString(i) => {
+                let stringified_vec = i.iter().fold(String::from(""), | mut acc, element |{
+                    let stringified_element = element.to_string().lines().fold(String::from(""), | mut acc, line |{ 
+                        acc.push_str(& format! (" {}\n", line)); 
+                        acc 
+                    });
+                    acc.push_str(& stringified_element); 
+                    acc
+                }); 
+                format! ("[\n{}]", stringified_vec)
+            }, 
+            OneErrorEnum::VecDisplayForeignType(i) => {
+                use crate::traits::display_foreign_type::DisplayForeignType; 
+                let stringified_vec = i.iter().fold(String :: from(""), | mut acc, element |{
                     let stringified_element =
-                    element.to_string().lines().fold(String :: from(""), | mut
-                    acc, line |
-                    { acc.push_str(& format! (" {}\n", line)) ; acc }) ;
-                    acc.push_str(& stringified_element) ; acc
-                }) ; format! ("[\n{}]", stringified_vec)
-            }, OneErrorEnum :: VecDisplayForeignType(i) =>
-            {
-                use crate :: traits :: display_foreign_type ::
-                DisplayForeignType ; let stringified_vec =
-                i.iter().fold(String :: from(""), | mut acc, element |
-                {
-                    let stringified_element =
-                    element.display_foreign_type().lines().fold(String ::
-                    from(""), | mut acc, line |
-                    { acc.push_str(& format! (" {}\n", line)) ; acc }) ;
-                    acc.push_str(& stringified_element) ; acc
-                }) ; format! ("[\n{}]", stringified_vec)
-            }, OneErrorEnum :: VecErrorOccurence(i) =>
-            {
-                let stringified_vec =
-                i.iter().fold(String :: from(""), | mut acc, element |
-                {
-                    let stringified_element =
-                    element.to_string_with_config_for_source_to_string_with_config(config).lines().fold(String
-                    :: from(""), | mut acc, line |
-                    { acc.push_str(& format! (" {}\n", line)) ; acc }) ;
-                    acc.push_str(& stringified_element) ; acc
-                }) ; format! ("[\n{}]", stringified_vec)
-            }, OneErrorEnum :: HashMapKeyToStringValueToString(i) =>
-            {
-                i.iter().fold(String :: from(""), | mut acc, (key, value) |
-                {
-                    let stringified_value =
-                    value.to_string().lines().fold(String :: from(""), | mut
-                    accc, line |
-                    { accc.push_str(& format! (" {}\n", line)) ; accc }) ;
-                    acc.push_str(& format!
-                    ("{} [\n{}]\n", key, stringified_value)) ; acc
+                    element.display_foreign_type().lines().fold(String::from(""), | mut acc, line |{ 
+                        acc.push_str(& format! (" {}\n", line)); 
+                        acc 
+                    });
+                    acc.push_str(& stringified_element); 
+                    acc
+                }); 
+                format! ("[\n{}]", stringified_vec)
+            }, 
+            OneErrorEnum::VecErrorOccurence(i) => {
+                let stringified_vec = i.iter().fold(String::from(""), | mut acc, element |{
+                    let stringified_element = element.to_string_with_config_for_source_to_string_with_config(config).lines().fold(String::from(""), | mut acc, line |{ 
+                        acc.push_str(& format! (" {}\n", line)); 
+                        acc 
+                    });
+                    acc.push_str(& stringified_element); 
+                    acc
+                }); 
+                format! ("[\n{}]", stringified_vec)
+            }, 
+            OneErrorEnum::HashMapKeyToStringValueToString(i) => {
+                i.iter().fold(String::from(""), | mut acc, (key, value) |{
+                    let stringified_value = value.to_string().lines().fold(String::from(""), | mut accc, line |{ 
+                        accc.push_str(& format! (" {}\n", line)); 
+                        accc 
+                    });
+                    acc.push_str(&format!("{} [\n{}]\n", key, stringified_value)); 
+                    acc
                 })
-            }, OneErrorEnum :: HashMapKeyToStringValueDisplayForeignType(i) =>
-            {
-                use crate :: traits :: display_foreign_type ::
-                DisplayForeignType ;
-                i.iter().fold(String :: from(""), | mut acc, (key, value) |
-                {
-                    let stringified_value =
-                    value.display_foreign_type().lines().fold(String ::
-                    from(""), | mut accc, line |
-                    { accc.push_str(& format! (" {}\n", line)) ; accc }) ;
-                    acc.push_str(& format!
-                    ("{} [\n{}]\n", key, stringified_value)) ; acc
+            }, 
+            OneErrorEnum::HashMapKeyToStringValueDisplayForeignType(i) => {
+                use crate::traits::display_foreign_type::DisplayForeignType;
+                i.iter().fold(String::from(""), | mut acc, (key, value) |{
+                    let stringified_value = value.display_foreign_type().lines().fold(String::from(""), | mut accc, line |{ 
+                        accc.push_str(&format!(" {}\n", line)); 
+                        accc 
+                    });
+                    acc.push_str(&format!("{} [\n{}]\n", key, stringified_value)); 
+                    acc
                 })
             }, OneErrorEnum :: HashMapKeyToStringValueErrorOccurence(i) =>
             {
-                i.iter().fold(String :: from(""), | mut acc, (key, value) |
-                {
-                    let stringified_value =
-                    value.to_string_with_config_for_source_to_string_with_config(config).lines().fold(String
-                    :: from(""), | mut accc, line |
-                    { accc.push_str(& format! (" {}\n", line)) ; accc }) ;
-                    acc.push_str(& format!
-                    ("{} [\n{}]\n", key, stringified_value)) ; acc
+                i.iter().fold(String :: from(""), | mut acc, (key, value) |{
+                    let stringified_value = value.to_string_with_config_for_source_to_string_with_config(config).lines().fold(String::from(""), | mut accc, line |{ 
+                        accc.push_str(&format!(" {}\n", line)); 
+                        accc 
+                    });
+                    acc.push_str(&format!("{} [\n{}]\n", key, stringified_value)); 
+                    acc
                 })
-            }, OneErrorEnum :: HashMapKeyDisplayForeignTypeValueToString(i) =>
-            {
-                use crate :: traits :: display_foreign_type ::
-                DisplayForeignType ;
-                i.iter().fold(String :: from(""), | mut acc, (key, value) |
-                {
-                    let stringified_value =
-                    value.to_string().lines().fold(String :: from(""), | mut
-                    accc, line |
-                    { accc.push_str(& format! (" {}\n", line)) ; accc }) ;
-                    acc.push_str(& format!
-                    ("{} [\n{}]\n", key.display_foreign_type(),
-                    stringified_value)) ; acc
+            }, 
+            OneErrorEnum::HashMapKeyDisplayForeignTypeValueToString(i) => {
+                use crate::traits::display_foreign_type::DisplayForeignType;
+                i.iter().fold(String::from(""), | mut acc, (key, value) |{
+                    let stringified_value = value.to_string().lines().fold(String::from(""), | mut accc, line |{ 
+                        accc.push_str(& format!(" {}\n", line)); 
+                        accc 
+                    });
+                    acc.push_str(& format!(
+                        "{} [\n{}]\n", 
+                        key.display_foreign_type(),
+                        stringified_value
+                    )); 
+                    acc
                 })
-            }, OneErrorEnum ::
-            HashMapKeyDisplayForeignTypeValueDisplayForeignType(i) =>
-            {
-                use crate :: traits :: display_foreign_type ::
-                DisplayForeignType ;
-                i.iter().fold(String :: from(""), | mut acc, (key, value) |
-                {
-                    let stringified_value =
-                    value.display_foreign_type().lines().fold(String ::
-                    from(""), | mut accc, line |
-                    { accc.push_str(& format! (" {}\n", line)) ; accc }) ;
-                    acc.push_str(& format!
-                    ("{} [\n{}]\n", key.display_foreign_type(),
-                    stringified_value)) ; acc
+            }, 
+            OneErrorEnum::HashMapKeyDisplayForeignTypeValueDisplayForeignType(i) => {
+                use crate::traits::display_foreign_type::DisplayForeignType;
+                i.iter().fold(String :: from(""), | mut acc, (key, value) |{
+                    let stringified_value = value.display_foreign_type().lines().fold(String::from(""), | mut accc, line |{ 
+                        accc.push_str(& format!(" {}\n", line)); 
+                        accc 
+                    });
+                    acc.push_str(&format!(
+                        "{} [\n{}]\n", 
+                        key.display_foreign_type(),
+                        stringified_value
+                    )); 
+                    acc
                 })
-            }, OneErrorEnum ::
-            HashMapKeyDisplayForeignTypeValueErrorOccurence(i) =>
-            {
-                use crate :: traits :: display_foreign_type ::
-                DisplayForeignType ;
-                i.iter().fold(String :: from(""), | mut acc, (key, value) |
-                {
-                    let stringified_value =
-                    value.to_string_with_config_for_source_to_string_with_config(config).lines().fold(String
-                    :: from(""), | mut accc, line |
-                    { accc.push_str(& format! (" {}\n", line)) ; accc }) ;
-                    acc.push_str(& format!
-                    ("{} [\n{}]\n", key.display_foreign_type(),
-                    stringified_value)) ; acc
+            }, 
+            OneErrorEnum::HashMapKeyDisplayForeignTypeValueErrorOccurence(i) => {
+                use crate::traits::display_foreign_type::DisplayForeignType;
+                i.iter().fold(String :: from(""), | mut acc, (key, value) |{
+                    let stringified_value = value.to_string_with_config_for_source_to_string_with_config(config).lines().fold(String::from(""), | mut accc, line |{ 
+                        accc.push_str(&format!(" {}\n", line)); 
+                        accc 
+                    });
+                    acc.push_str(&format!(
+                        "{} [\n{}]\n", 
+                        key.display_foreign_type(),
+                        stringified_value
+                    )) ; acc
                 })
             }
         }
