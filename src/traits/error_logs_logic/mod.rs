@@ -11,7 +11,7 @@ pub mod hashmap_impl_display_display_foreign_type_to_hashmap_impl_display_string
 pub mod hashmap_impl_display_display_foreign_type_to_string;
 pub mod hashmap_impl_display_impl_display_to_string;
 pub mod hashmap_impl_display_to_string_with_config_to_string;
-pub mod hashmap_to_string_without_config_to_string;
+pub mod hashmap_impl_display_to_string_without_config_to_string;
 pub mod helpers;
 pub mod source_to_string_with_config;
 pub mod source_to_string_without_config;

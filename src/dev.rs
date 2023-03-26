@@ -1186,70 +1186,24 @@ impl<'error_occurence_proc_macro_reserved_lifetime_name, 'a>
                 i.to_string_without_config_with_deserialize()
             }
             OneErrorEnumWithDeserialize::VecToString(i) => {
-                let stringified_vec = i.iter().fold(String::from(""), |mut acc, element| {
-                    let stringified_element =
-                        element
-                            .to_string()
-                            .lines()
-                            .fold(String::from(""), |mut acc, line| {
-                                acc.push_str(&format!(" {}\n", line));
-                                acc
-                            });
-                    acc.push_str(&stringified_element);
-                    acc
-                });
-                format!("[\n{}]", stringified_vec)
+                use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
+                i.vec_impl_display_to_string()
             }
             OneErrorEnumWithDeserialize::VecDisplayForeignType(i) => {
-                let stringified_vec = i.iter().fold(String::from(""), |mut acc, element| {
-                    let stringified_element =
-                        element.lines().fold(String::from(""), |mut acc, line| {
-                            acc.push_str(&format!(" {}\n", line));
-                            acc
-                        });
-                    acc.push_str(&stringified_element);
-                    acc
-                });
-                format!("[\n{}]", stringified_vec)
+                use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
+                i.vec_impl_display_to_string()
             }
             OneErrorEnumWithDeserialize::VecErrorOccurence(i) => {
-                let stringified_vec = i.iter().fold(String::from(""), |mut acc, element| {
-                    let stringified_element = element
-                        .to_string_without_config_with_deserialize()
-                        .lines()
-                        .fold(String::from(""), |mut acc, line| {
-                            acc.push_str(&format!(" {}\n", line));
-                            acc
-                        });
-                    acc.push_str(&stringified_element);
-                    acc
-                });
-                format!("[\n{}]", stringified_vec)
+                use crate::traits::error_logs_logic::vec_to_string_without_config_to_string::VecToStringWithoutConfigToStringWithDeserialize;
+                i.vec_to_string_without_config_to_string_with_deserialize()
             }
             OneErrorEnumWithDeserialize::HashMapKeyToStringValueToString(i) => {
-                i.iter().fold(String::from(""), |mut acc, (key, value)| {
-                    let stringified_value =
-                        value
-                            .to_string()
-                            .lines()
-                            .fold(String::from(""), |mut accc, line| {
-                                accc.push_str(&format!(" {}\n", line));
-                                accc
-                            });
-                    acc.push_str(&format!("{} [\n{}]\n", key, stringified_value));
-                    acc
-                })
+                use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+                i.hashmap_impl_display_impl_display_to_string()
             }
             OneErrorEnumWithDeserialize::HashMapKeyToStringValueDisplayForeignType(i) => {
-                i.iter().fold(String::from(""), |mut acc, (key, value)| {
-                    let stringified_value =
-                        value.lines().fold(String::from(""), |mut accc, line| {
-                            accc.push_str(&format!(" {}\n", line));
-                            accc
-                        });
-                    acc.push_str(&format!("{} [\n{}]\n", key, stringified_value));
-                    acc
-                })
+                use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+                i.hashmap_impl_display_impl_display_to_string()
             }
             OneErrorEnumWithDeserialize::HashMapKeyToStringValueErrorOccurence(i) => {
                 i.iter().fold(String::from(""), |mut acc, (key, value)| {
@@ -1663,12 +1617,12 @@ impl<'a>
                     s.hashmap_impl_display_display_foreign_type_to_string()
                 };
                 let t_handle = {
-                    use crate::traits::error_logs_logic::hashmap_to_string_without_config_to_string::HashmapToStringWithoutConfigToString;
-                    t.hashmap_to_string_without_config_to_string()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToString;
+                    t.hashmap_impl_display_to_string_without_config_to_string()
                 };
                 let u_handle = {
-                    use crate::traits::error_logs_logic::hashmap_to_string_without_config_to_string::HashmapToStringWithoutConfigToString;
-                    u.hashmap_to_string_without_config_to_string()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToString;
+                    u.hashmap_impl_display_to_string_without_config_to_string()
                 };
                 let v_handle = {
                     use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_string::HashMapDisplayForeignTypeImplDisplayToString;
@@ -1964,12 +1918,12 @@ impl<'a>
                     s.hashmap_impl_display_impl_display_to_string()
                 };
                 let t_handle = {
-                    use crate::traits::error_logs_logic::hashmap_to_string_without_config_to_string::HashmapToStringWithoutConfigToStringWithDeserialize;
-                    t.hashmap_to_string_without_config_to_string_with_deserialize()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToStringWithDeserialize;
+                    t.hashmap_impl_display_to_string_without_config_to_string_with_deserialize()
                 };
                 let u_handle = {
-                    use crate::traits::error_logs_logic::hashmap_to_string_without_config_to_string::HashmapToStringWithoutConfigToStringWithDeserialize;
-                    u.hashmap_to_string_without_config_to_string_with_deserialize()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToStringWithDeserialize;
+                    u.hashmap_impl_display_to_string_without_config_to_string_with_deserialize()
                 };
                 let v_handle = {
                     use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
@@ -2004,12 +1958,12 @@ impl<'a>
                     ac.hashmap_impl_display_impl_display_to_string()
                 };
                 let ad_handle = {
-                    use crate::traits::error_logs_logic::hashmap_to_string_without_config_to_string::HashmapToStringWithoutConfigToStringWithDeserialize;
-                    ad.hashmap_to_string_without_config_to_string_with_deserialize()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToStringWithDeserialize;
+                    ad.hashmap_impl_display_to_string_without_config_to_string_with_deserialize()
                 };
                 let af_handle = {
-                    use crate::traits::error_logs_logic::hashmap_to_string_without_config_to_string::HashmapToStringWithoutConfigToStringWithDeserialize;
-                    af.hashmap_to_string_without_config_to_string_with_deserialize()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToStringWithDeserialize;
+                    af.hashmap_impl_display_to_string_without_config_to_string_with_deserialize()
                 };
                 format!(
                     "{{\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n}}",
