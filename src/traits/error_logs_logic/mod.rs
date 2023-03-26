@@ -26,3 +26,4 @@ pub mod vec_impl_display_to_string;
 pub mod vec_to_string_with_config_to_string;
 pub mod vec_to_string_without_config_to_string;
 //todo - rename impl_display to display
+//todo - rename to_vec -> into_vec and to_hashmap s-> into_hashmap (takes self, not &self)
