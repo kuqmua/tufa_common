@@ -2231,20 +2231,20 @@ impl<'a> NamedError<'a> {
                     y.hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display()
                 },
                 z: {
-                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_vec_string::HashmapDisplayForeignTypeDisplayForeignTypeToVecString;
-                    z.hashmap_display_foreign_type_display_foreign_type_to_vec_string()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string::HashmapDisplayForeignTypeDisplayForeignTypeToHashMapStringString;
+                    z.hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string()
                 },
                 aa: {
-                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_vec_string::HashmapDisplayForeignTypeDisplayForeignTypeToVecString;
-                    aa.hashmap_display_foreign_type_display_foreign_type_to_vec_string()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string::HashmapDisplayForeignTypeDisplayForeignTypeToHashMapStringString;
+                    aa.hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string()
                 },
                 ab: {
-                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_vec_string::HashmapDisplayForeignTypeDisplayForeignTypeToVecString;
-                    ab.hashmap_display_foreign_type_display_foreign_type_to_vec_string()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string::HashmapDisplayForeignTypeDisplayForeignTypeToHashMapStringString;
+                    ab.hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string()
                 },
                 ac: {
-                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_vec_string::HashmapDisplayForeignTypeDisplayForeignTypeToVecString;
-                    ac.hashmap_display_foreign_type_display_foreign_type_to_vec_string()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string::HashmapDisplayForeignTypeDisplayForeignTypeToHashMapStringString;
+                    ac.hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string()
                 },
                 ad: {
                    ad.into_iter().map(|(k, v)|{
