@@ -1069,33 +1069,22 @@ impl<'a> OneErrorEnum<'a> {
             OneErrorEnum::VecToString(i) => OneErrorEnumWithDeserialize::VecToString(i),
             OneErrorEnum::VecDisplayForeignType(i) => {
                 OneErrorEnumWithDeserialize::VecDisplayForeignType({
-                    i.into_iter()
-                        .map(|e| {
-                            use crate::traits::display_foreign_type::DisplayForeignType;
-                            e.display_foreign_type()
-                        })
-                        .collect()
+                    use crate::traits::error_logs_logic::vec_display_foreign_type_to_vec_string::VecDisplayForeignTypeToVecString;
+                    i.vec_display_foreign_type_to_vec_string()
                 })
             }
             OneErrorEnum::VecErrorOccurence(i) => OneErrorEnumWithDeserialize::VecErrorOccurence({
                 i.into_iter()
-                    .map(|e| {
-                        use crate::traits::display_foreign_type::DisplayForeignType;
-                        e.into_serialize_deserialize_version()
-                    })
-                    .collect()
+                .map(|e| e.into_serialize_deserialize_version())
+                .collect()
             }),
             OneErrorEnum::HashMapKeyToStringValueToString(i) => {
                 OneErrorEnumWithDeserialize::HashMapKeyToStringValueToString(i)
             }
             OneErrorEnum::HashMapKeyToStringValueDisplayForeignType(i) => {
                 OneErrorEnumWithDeserialize::HashMapKeyToStringValueDisplayForeignType({
-                    i.into_iter()
-                        .map(|(k, v)| {
-                            use crate::traits::display_foreign_type::DisplayForeignType;
-                            (k, v.display_foreign_type())
-                        })
-                        .collect()
+                    use crate::traits::error_logs_logic::hashmap_impl_display_display_foreign_type_to_hashmap_impl_display_string::HashmapImplDisplayDisplayForeignTypeToHashmapImplDisplayString;
+                    i.hashmap_impl_display_display_foreign_type_to_hashmap_impl_display_string()
                 })
             }
             OneErrorEnum::HashMapKeyToStringValueErrorOccurence(i) => {
@@ -1107,22 +1096,14 @@ impl<'a> OneErrorEnum<'a> {
             }
             OneErrorEnum::HashMapKeyDisplayForeignTypeValueToString(i) => {
                 OneErrorEnumWithDeserialize::HashMapKeyDisplayForeignTypeValueToString({
-                    i.into_iter()
-                        .map(|(k, v)| {
-                            use crate::traits::display_foreign_type::DisplayForeignType;
-                            (k.display_foreign_type(), v)
-                        })
-                        .collect()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display::HashmapDisplayForeignTypeImplDisplayToHashMapStringImplDisplay;
+                    i.hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display()
                 })
             }
             OneErrorEnum::HashMapKeyDisplayForeignTypeValueDisplayForeignType(i) => {
                 OneErrorEnumWithDeserialize::HashMapKeyDisplayForeignTypeValueDisplayForeignType({
-                    i.into_iter()
-                        .map(|(k, v)| {
-                            use crate::traits::display_foreign_type::DisplayForeignType;
-                            (k.display_foreign_type(), v.display_foreign_type())
-                        })
-                        .collect()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string::HashmapDisplayForeignTypeDisplayForeignTypeToHashMapStringString;
+                    i.hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string()
                 })
             }
             OneErrorEnum::HashMapKeyDisplayForeignTypeValueErrorOccurence(i) => {
