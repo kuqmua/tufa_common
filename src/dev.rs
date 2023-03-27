@@ -1589,10 +1589,18 @@ impl<'a>
             } => {
                 format!(
                     "{{\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n}}",
-                    { a.to_string() },
-                    { b.to_string() },
-                    { c.to_string() },
-                    { d.to_string() },
+                    { 
+                        a.to_string() 
+                    },
+                    { 
+                        b.to_string() 
+                    },
+                    { 
+                        c.to_string() 
+                    },
+                    { 
+                        d.to_string() 
+                    },
                     {
                         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
                         e.to_string_without_config_with_deserialize()
