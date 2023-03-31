@@ -4,24 +4,140 @@ use crate::traits::{
 };
 
 pub fn dev() {
-    // if let Err(e) = named() {
-    //     //todo - this actually must be a config struct function, not an error - config.error_log(e)
-    //     println!("{}", *e);
-    //     use crate::traits::error_logs_logic::error_log::ErrorLog;
-    //     e.error_log(once_cell::sync::Lazy::force(
-    //         //todo - this must be call once on start of the program
-    //         &crate::global_variables::runtime::config::CONFIG,
-    //     ));
-    // }
+    if let Err(e) = named() {
+        //todo - this actually must be a config struct function, not an error - config.error_log(e)
+        println!("{}", *e);
+        use crate::traits::error_logs_logic::error_log::ErrorLog;
+        e.error_log(once_cell::sync::Lazy::force(
+            //todo - this must be call once on start of the program
+            &crate::global_variables::runtime::config::CONFIG,
+        ));
+    }
 }
 
-// pub fn named<'a>() -> Result<(), Box<NamedError<'a>>> {
-//     return Err(Box::new(NamedError::Something {
-//         one: String::from("named_one_error"),
-//         two: String::from("named_two_error"),
-//         code_occurence: crate::code_occurence_tufa_common!(),
-//     }));
-// }
+pub fn named<'a>() -> Result<(), Box<NamedError<'a>>> {
+    return Err(Box::new(NamedError::Something {
+        a: crate::dev::Omegalul {},
+        b: crate::dev::OmegalulLifetime {
+            s: "omegalullifetime",
+        },
+        c: crate::dev::Kekw {},
+        d: crate::dev::KekwLifetime { s: "kekwlifetime" },
+        e: crate::dev::SevenError::Something {
+            error: String::from("seven_error"),
+            code_occurence: crate::code_occurence_tufa_common!(),
+        },
+        f: vec![crate::dev::Omegalul {}],
+        g: vec![crate::dev::OmegalulLifetime {
+            s: "omegalullifetime",
+        }],
+        h: vec![crate::dev::Kekw {}],
+        j: vec![crate::dev::KekwLifetime { s: "kekwlifetime" }],
+        k: vec![crate::dev::SevenError::Something {
+            error: String::from("seven_error"),
+            code_occurence: crate::code_occurence_tufa_common!(),
+        }],
+        l: std::collections::HashMap::from([(crate::dev::Omegalul {}, crate::dev::Omegalul {})]),
+        m: std::collections::HashMap::from([(
+            crate::dev::Omegalul {},
+            crate::dev::OmegalulLifetime {
+                s: "omegalullifetime",
+            },
+        )]),
+        n: std::collections::HashMap::from([(
+            crate::dev::OmegalulLifetime {
+                s: "omegalullifetime",
+            },
+            crate::dev::Omegalul {},
+        )]),
+        o: std::collections::HashMap::from([(
+            crate::dev::OmegalulLifetime {
+                s: "omegalullifetime",
+            },
+            crate::dev::OmegalulLifetime {
+                s: "omegalullifetime",
+            },
+        )]),
+        p: std::collections::HashMap::from([(crate::dev::Omegalul {}, crate::dev::Kekw {})]),
+        q: std::collections::HashMap::from([(
+            crate::dev::Omegalul {},
+            crate::dev::KekwLifetime { s: "kekwlifetime" },
+        )]),
+        r: std::collections::HashMap::from([(
+            crate::dev::OmegalulLifetime {
+                s: "omegalullifetime",
+            },
+            crate::dev::Kekw {},
+        )]),
+        s: std::collections::HashMap::from([(
+            crate::dev::OmegalulLifetime {
+                s: "omegalullifetime",
+            },
+            crate::dev::KekwLifetime { s: "kekwlifetime" },
+        )]),
+        t: std::collections::HashMap::from([(
+            crate::dev::Omegalul {},
+            crate::dev::SevenError::Something {
+                error: String::from("seven_error"),
+                code_occurence: crate::code_occurence_tufa_common!(),
+            },
+        )]),
+        u: std::collections::HashMap::from([(
+            crate::dev::OmegalulLifetime {
+                s: "omegalullifetime",
+            },
+            crate::dev::SevenError::Something {
+                error: String::from("seven_error"),
+                code_occurence: crate::code_occurence_tufa_common!(),
+            },
+        )]),
+        v: std::collections::HashMap::from([(crate::dev::Kekw {}, crate::dev::Omegalul {})]),
+        w: std::collections::HashMap::from([(
+            crate::dev::Kekw {},
+            crate::dev::OmegalulLifetime {
+                s: "omegalullifetime",
+            },
+        )]),
+        x: std::collections::HashMap::from([(
+            crate::dev::KekwLifetime { s: "kekwlifetime" },
+            crate::dev::Omegalul {},
+        )]),
+        y: std::collections::HashMap::from([(
+            crate::dev::KekwLifetime { s: "kekwlifetime" },
+            crate::dev::OmegalulLifetime {
+                s: "omegalullifetime",
+            },
+        )]),
+        z: std::collections::HashMap::from([(crate::dev::Kekw {}, crate::dev::Kekw {})]),
+        aa: std::collections::HashMap::from([(
+            crate::dev::Kekw {},
+            crate::dev::KekwLifetime { s: "kekwlifetime" },
+        )]),
+        ab: std::collections::HashMap::from([(
+            crate::dev::KekwLifetime { s: "kekwlifetime" },
+            crate::dev::Kekw {},
+        )]),
+        ac: std::collections::HashMap::from([(
+            crate::dev::KekwLifetime { s: "kekwlifetime" },
+            crate::dev::KekwLifetime { s: "kekwlifetime" },
+        )]),
+        ad: std::collections::HashMap::from([(
+            crate::dev::Kekw {},
+            crate::dev::SevenError::Something {
+                error: String::from("seven_error"),
+                code_occurence: crate::code_occurence_tufa_common!(),
+            },
+        )]),
+        af: std::collections::HashMap::from([(
+            crate::dev::KekwLifetime { s: "kekwlifetime" },
+            crate::dev::SevenError::Something {
+                error: String::from("seven_error"),
+                code_occurence: crate::code_occurence_tufa_common!(),
+            },
+        )]),
+        code_occurence: crate::code_occurence_tufa_common!(),
+    }));
+}
 
 #[derive(Debug, thiserror::Error, serde::Serialize)] //, error_occurence::ImplErrorOccurence
 pub enum SixError<'a> {
@@ -1147,776 +1263,776 @@ pub enum OneErrorEnum<'a> {
 //     // ToStringLifetime(crate::dev::OmegalulLifetime<'a>),
 // }
 
-#[derive(Debug)] //, error_occurence::ImplErrorOccurence
+#[derive(Debug, error_occurence::ImplErrorOccurence)] //, error_occurence::ImplErrorOccurence
 pub enum NamedError<'a> {
     Something {
-        // #[to_string]
+        #[to_string]
         a: crate::dev::Omegalul,
-        // #[to_string]
+        #[to_string]
         b: crate::dev::OmegalulLifetime<'a>,
-        // #[display_foreign_type]
+        #[display_foreign_type]
         c: crate::dev::Kekw,
-        // #[display_foreign_type]
+        #[display_foreign_type]
         d: crate::dev::KekwLifetime<'a>,
-        // #[error_occurence]
+        #[error_occurence]
         e: crate::dev::SevenError<'a>,
-        // #[vec_to_string]
+        #[vec_to_string]
         f: std::vec::Vec<crate::dev::Omegalul>,
-        // #[vec_to_string]
+        #[vec_to_string]
         g: std::vec::Vec<crate::dev::OmegalulLifetime<'a>>,
-        // #[vec_display_foreign_type]
+        #[vec_display_foreign_type]
         h: std::vec::Vec<crate::dev::Kekw>,
-        // #[vec_display_foreign_type]
+        #[vec_display_foreign_type]
         j: std::vec::Vec<crate::dev::KekwLifetime<'a>>,
-        // #[vec_error_occurence]
+        #[vec_error_occurence]
         k: std::vec::Vec<crate::dev::SevenError<'a>>,
-        // #[hashmap_key_to_string_value_to_string]
+        #[hashmap_key_to_string_value_to_string]
         l: std::collections::HashMap<crate::dev::Omegalul, crate::dev::Omegalul>,
-        // #[hashmap_key_to_string_value_to_string]
+        #[hashmap_key_to_string_value_to_string]
         m: std::collections::HashMap<crate::dev::Omegalul, crate::dev::OmegalulLifetime<'a>>,
-        // #[hashmap_key_to_string_value_to_string]
+        #[hashmap_key_to_string_value_to_string]
         n: std::collections::HashMap<crate::dev::OmegalulLifetime<'a>, crate::dev::Omegalul>,
-        // #[hashmap_key_to_string_value_to_string]
+        #[hashmap_key_to_string_value_to_string]
         o: std::collections::HashMap<
             crate::dev::OmegalulLifetime<'a>,
             crate::dev::OmegalulLifetime<'a>,
         >,
-        // #[hashmap_key_to_string_value_display_foreign_type]
+        #[hashmap_key_to_string_value_display_foreign_type]
         p: std::collections::HashMap<crate::dev::Omegalul, crate::dev::Kekw>,
-        // #[hashmap_key_to_string_value_display_foreign_type]
+        #[hashmap_key_to_string_value_display_foreign_type]
         q: std::collections::HashMap<crate::dev::Omegalul, crate::dev::KekwLifetime<'a>>,
-        // #[hashmap_key_to_string_value_display_foreign_type]
+        #[hashmap_key_to_string_value_display_foreign_type]
         r: std::collections::HashMap<crate::dev::OmegalulLifetime<'a>, crate::dev::Kekw>,
-        // #[hashmap_key_to_string_value_display_foreign_type]
+        #[hashmap_key_to_string_value_display_foreign_type]
         s: std::collections::HashMap<
             crate::dev::OmegalulLifetime<'a>,
             crate::dev::KekwLifetime<'a>,
         >,
-        // #[hashmap_key_to_string_value_error_occurence]
+        #[hashmap_key_to_string_value_error_occurence]
         t: std::collections::HashMap<crate::dev::Omegalul, crate::dev::SevenError<'a>>,
-        // #[hashmap_key_to_string_value_error_occurence]
+        #[hashmap_key_to_string_value_error_occurence]
         u: std::collections::HashMap<crate::dev::OmegalulLifetime<'a>, crate::dev::SevenError<'a>>,
-        // #[hashmap_key_display_foreign_type_value_to_string]
+        #[hashmap_key_display_foreign_type_value_to_string]
         v: std::collections::HashMap<crate::dev::Kekw, crate::dev::Omegalul>,
-        // #[hashmap_key_display_foreign_type_value_to_string]
+        #[hashmap_key_display_foreign_type_value_to_string]
         w: std::collections::HashMap<crate::dev::Kekw, crate::dev::OmegalulLifetime<'a>>,
-        // #[hashmap_key_display_foreign_type_value_to_string]
+        #[hashmap_key_display_foreign_type_value_to_string]
         x: std::collections::HashMap<crate::dev::KekwLifetime<'a>, crate::dev::Omegalul>,
-        // #[hashmap_key_display_foreign_type_value_to_string]
+        #[hashmap_key_display_foreign_type_value_to_string]
         y: std::collections::HashMap<
             crate::dev::KekwLifetime<'a>,
             crate::dev::OmegalulLifetime<'a>,
         >,
-        // #[hashmap_key_display_foreign_type_value_display_foreign_type]
+        #[hashmap_key_display_foreign_type_value_display_foreign_type]
         z: std::collections::HashMap<crate::dev::Kekw, crate::dev::Kekw>,
-        // #[hashmap_key_display_foreign_type_value_display_foreign_type]
+        #[hashmap_key_display_foreign_type_value_display_foreign_type]
         aa: std::collections::HashMap<crate::dev::Kekw, crate::dev::KekwLifetime<'a>>,
-        // #[hashmap_key_display_foreign_type_value_display_foreign_type]
+        #[hashmap_key_display_foreign_type_value_display_foreign_type]
         ab: std::collections::HashMap<crate::dev::KekwLifetime<'a>, crate::dev::Kekw>,
-        // #[hashmap_key_display_foreign_type_value_display_foreign_type]
+        #[hashmap_key_display_foreign_type_value_display_foreign_type]
         ac: std::collections::HashMap<crate::dev::KekwLifetime<'a>, crate::dev::KekwLifetime<'a>>,
-        // #[hashmap_key_display_foreign_type_value_error_occurence]
+        #[hashmap_key_display_foreign_type_value_error_occurence]
         ad: std::collections::HashMap<crate::dev::Kekw, crate::dev::SevenError<'a>>,
-        // #[hashmap_key_display_foreign_type_value_error_occurence]
+        #[hashmap_key_display_foreign_type_value_error_occurence]
         af: std::collections::HashMap<crate::dev::KekwLifetime<'a>, crate::dev::SevenError<'a>>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
 
-impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
-        'a,
-        ConfigGeneric,
-    > for NamedError<'a>
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
-        match self {
-            NamedError::Something {
-                a: _unused_argument_0,
-                b: _unused_argument_1,
-                c: _unused_argument_2,
-                d: _unused_argument_3,
-                e: _unused_argument_4,
-                f: _unused_argument_5,
-                g: _unused_argument_6,
-                h: _unused_argument_7,
-                j: _unused_argument_8,
-                k: _unused_argument_9,
-                l: _unused_argument_10,
-                m: _unused_argument_11,
-                n: _unused_argument_12,
-                o: _unused_argument_13,
-                p: _unused_argument_14,
-                q: _unused_argument_15,
-                r: _unused_argument_16,
-                s: _unused_argument_17,
-                t: _unused_argument_18,
-                u: _unused_argument_19,
-                v: _unused_argument_20,
-                w: _unused_argument_21,
-                x: _unused_argument_22,
-                y: _unused_argument_23,
-                z: _unused_argument_24,
-                aa: _unused_argument_25,
-                ab: _unused_argument_26,
-                ac: _unused_argument_27,
-                ad: _unused_argument_28,
-                af: _unused_argument_29,
-                code_occurence: _unused_code_occurence_argument,
-            } => {
-                use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig;
-                self.source_to_string_without_config()
-            }
-        }
-    }
-}
-impl<'a>
-    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
-        'a,
-    > for NamedError<'a>
-{
-    fn source_to_string_without_config(&self) -> String {
-        match self {
-            NamedError::Something {
-                a,
-                b,
-                c,
-                d,
-                e,
-                f,
-                g,
-                h,
-                j,
-                k,
-                l,
-                m,
-                n,
-                o,
-                p,
-                q,
-                r,
-                s,
-                t,
-                u,
-                v,
-                w,
-                x,
-                y,
-                z,
-                aa,
-                ab,
-                ac,
-                ad,
-                af,
-                code_occurence: _unused_code_occurence_argument,
-            } => {
-                format!(
-                    "{{\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n}}",
-                    {
-                        a.to_string()
-                    },
-                    {
-                        b.to_string()
-                    },
-                    {
-                        use crate::traits::display_foreign_type::DisplayForeignType;
-                        c.display_foreign_type()
-                    },
-                    {
-                        use crate::traits::display_foreign_type::DisplayForeignType;
-                        d.display_foreign_type()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-                        e.to_string_without_config()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
-                        f.vec_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
-                        g.vec_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::vec_display_foreign_type_to_string::VecDisplayForeignTypeToString;
-                        h.vec_display_foreign_type_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::vec_display_foreign_type_to_string::VecDisplayForeignTypeToString;
-                        j.vec_display_foreign_type_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::vec_to_string_without_config_to_string::VecToStringWithoutConfigToString;
-                        k.vec_to_string_without_config_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        l.hashmap_impl_display_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        m.hashmap_impl_display_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        n.hashmap_impl_display_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        o.hashmap_impl_display_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_display_foreign_type_to_string::HashMapImplDisplayDisplayForeignTypeToString;
-                        p.hashmap_impl_display_display_foreign_type_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_display_foreign_type_to_string::HashMapImplDisplayDisplayForeignTypeToString;
-                        q.hashmap_impl_display_display_foreign_type_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_display_foreign_type_to_string::HashMapImplDisplayDisplayForeignTypeToString;
-                        r.hashmap_impl_display_display_foreign_type_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_display_foreign_type_to_string::HashMapImplDisplayDisplayForeignTypeToString;
-                        s.hashmap_impl_display_display_foreign_type_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToString;
-                        t.hashmap_impl_display_to_string_without_config_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToString;
-                        u.hashmap_impl_display_to_string_without_config_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_string::HashMapDisplayForeignTypeImplDisplayToString;
-                        v.hashmap_display_foreign_type_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_string::HashMapDisplayForeignTypeImplDisplayToString;
-                        w.hashmap_display_foreign_type_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_string::HashMapDisplayForeignTypeImplDisplayToString;
-                        x.hashmap_display_foreign_type_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_string::HashMapDisplayForeignTypeImplDisplayToString;
-                        y.hashmap_display_foreign_type_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_string::HashMapDisplayForeignTypeDisplayForeignTypeToString;
-                        z.hashmap_display_foreign_type_display_foreign_type_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_string::HashMapDisplayForeignTypeDisplayForeignTypeToString;
-                        aa.hashmap_display_foreign_type_display_foreign_type_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_string::HashMapDisplayForeignTypeDisplayForeignTypeToString;
-                        ab.hashmap_display_foreign_type_display_foreign_type_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_string::HashMapDisplayForeignTypeDisplayForeignTypeToString;
-                        ac.hashmap_display_foreign_type_display_foreign_type_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_display_foreign_type_to_string_without_config_to_string::HashMapDisplayForeignTypeToStringWithoutConfigToString;
-                        ad.hashmap_display_foreign_type_to_string_without_config_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_display_foreign_type_to_string_without_config_to_string::HashMapDisplayForeignTypeToStringWithoutConfigToString;
-                        af.hashmap_display_foreign_type_to_string_without_config_to_string()
-                    },
-                )
-            }
-        }
-    }
-}
-impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
-    for NamedError<'a>
-{
-    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
-        match self {
-            NamedError::Something {
-                a: _unused_argument_0,
-                b: _unused_argument_1,
-                c: _unused_argument_2,
-                d: _unused_argument_3,
-                e: _unused_argument_4,
-                f: _unused_argument_5,
-                g: _unused_argument_6,
-                h: _unused_argument_7,
-                j: _unused_argument_8,
-                k: _unused_argument_9,
-                l: _unused_argument_10,
-                m: _unused_argument_11,
-                n: _unused_argument_12,
-                o: _unused_argument_13,
-                p: _unused_argument_14,
-                q: _unused_argument_15,
-                r: _unused_argument_16,
-                s: _unused_argument_17,
-                t: _unused_argument_18,
-                u: _unused_argument_19,
-                v: _unused_argument_20,
-                w: _unused_argument_21,
-                x: _unused_argument_22,
-                y: _unused_argument_23,
-                z: _unused_argument_24,
-                aa: _unused_argument_25,
-                ab: _unused_argument_26,
-                ac: _unused_argument_27,
-                ad: _unused_argument_28,
-                af: _unused_argument_29,
-                code_occurence,
-            } => code_occurence,
-        }
-    }
-}
-#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
-pub enum NamedErrorWithDeserialize<'a> {
-    Something {
-        a: crate::dev::Omegalul,
-        #[serde(borrow)]
-        b: crate::dev::OmegalulLifetime<'a>,
-        c: std::string::String,
-        d: std::string::String,
-        #[serde(borrow)]
-        e: crate::dev::SevenErrorWithDeserialize<'a>,
-        f: std::vec::Vec<crate::dev::Omegalul>,
-        #[serde(borrow)]
-        g: std::vec::Vec<crate::dev::OmegalulLifetime<'a>>,
-        h: std::vec::Vec<std::string::String>,
-        j: std::vec::Vec<std::string::String>,
-        #[serde(borrow)]
-        k: std::vec::Vec<crate::dev::SevenErrorWithDeserialize<'a>>,
-        l: std::collections::HashMap<crate::dev::Omegalul, crate::dev::Omegalul>,
-        #[serde(borrow)]
-        m: std::collections::HashMap<crate::dev::Omegalul, crate::dev::OmegalulLifetime<'a>>,
-        #[serde(borrow)]
-        n: std::collections::HashMap<crate::dev::OmegalulLifetime<'a>, crate::dev::Omegalul>,
-        #[serde(borrow)]
-        o: std::collections::HashMap<
-            crate::dev::OmegalulLifetime<'a>,
-            crate::dev::OmegalulLifetime<'a>,
-        >,
-        p: std::collections::HashMap<crate::dev::Omegalul, std::string::String>,
-        q: std::collections::HashMap<crate::dev::Omegalul, std::string::String>,
-        #[serde(borrow)]
-        r: std::collections::HashMap<crate::dev::OmegalulLifetime<'a>, std::string::String>,
-        #[serde(borrow)]
-        s: std::collections::HashMap<crate::dev::OmegalulLifetime<'a>, std::string::String>,
-        #[serde(borrow)]
-        t: std::collections::HashMap<
-            crate::dev::Omegalul,
-            crate::dev::SevenErrorWithDeserialize<'a>,
-        >,
-        #[serde(borrow)]
-        u: std::collections::HashMap<
-            crate::dev::OmegalulLifetime<'a>,
-            crate::dev::SevenErrorWithDeserialize<'a>,
-        >,
-        v: std::collections::HashMap<std::string::String, crate::dev::Omegalul>,
-        #[serde(borrow)]
-        w: std::collections::HashMap<std::string::String, crate::dev::OmegalulLifetime<'a>>,
-        x: std::collections::HashMap<std::string::String, crate::dev::Omegalul>,
-        #[serde(borrow)]
-        y: std::collections::HashMap<std::string::String, crate::dev::OmegalulLifetime<'a>>,
-        z: std::collections::HashMap<std::string::String, std::string::String>,
-        aa: std::collections::HashMap<std::string::String, std::string::String>,
-        ab: std::collections::HashMap<std::string::String, std::string::String>,
-        ac: std::collections::HashMap<std::string::String, std::string::String>,
-        #[serde(borrow)]
-        ad: std::collections::HashMap<
-            std::string::String,
-            crate::dev::SevenErrorWithDeserialize<'a>,
-        >,
-        #[serde(borrow)]
-        af: std::collections::HashMap<
-            std::string::String,
-            crate::dev::SevenErrorWithDeserialize<'a>,
-        >,
-        #[serde(borrow)]
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize<'a>,
-    },
-}
-impl<'a>
-    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
-        'a,
-    > for NamedErrorWithDeserialize<'a>
-{
-    fn source_to_string_without_config(&self) -> String {
-        match self {
-            NamedErrorWithDeserialize::Something {
-                a,
-                b,
-                c,
-                d,
-                e,
-                f,
-                g,
-                h,
-                j,
-                k,
-                l,
-                m,
-                n,
-                o,
-                p,
-                q,
-                r,
-                s,
-                t,
-                u,
-                v,
-                w,
-                x,
-                y,
-                z,
-                aa,
-                ab,
-                ac,
-                ad,
-                af,
-                code_occurence: _unused_code_occurence_argument,
-            } => {
-                format!(
-                    "{{\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n}}",
-                    { 
-                        a.to_string() 
-                    },
-                    { 
-                        b.to_string() 
-                    },
-                    { 
-                        c.to_string() 
-                    },
-                    { 
-                        d.to_string() 
-                    },
-                    {
-                        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-                        e.to_string_without_config_with_deserialize()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
-                        f.vec_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
-                        g.vec_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
-                        h.vec_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
-                        j.vec_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::vec_to_string_without_config_to_string::VecToStringWithoutConfigToStringWithDeserialize;
-                        k.vec_to_string_without_config_to_string_with_deserialize()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        l.hashmap_impl_display_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        m.hashmap_impl_display_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        n.hashmap_impl_display_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        o.hashmap_impl_display_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        p.hashmap_impl_display_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        q.hashmap_impl_display_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        r.hashmap_impl_display_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        s.hashmap_impl_display_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToStringWithDeserialize;
-                        t.hashmap_impl_display_to_string_without_config_to_string_with_deserialize()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToStringWithDeserialize;
-                        u.hashmap_impl_display_to_string_without_config_to_string_with_deserialize()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        v.hashmap_impl_display_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        w.hashmap_impl_display_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        x.hashmap_impl_display_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        y.hashmap_impl_display_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        z.hashmap_impl_display_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        aa.hashmap_impl_display_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        ab.hashmap_impl_display_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        ac.hashmap_impl_display_impl_display_to_string()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToStringWithDeserialize;
-                        ad.hashmap_impl_display_to_string_without_config_to_string_with_deserialize()
-                    },
-                    {
-                        use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToStringWithDeserialize;
-                        af.hashmap_impl_display_to_string_without_config_to_string_with_deserialize()
-                    },
-                )
-            }
-        }
-    }
-}
-impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWithDeserialize<'a>
-    for NamedErrorWithDeserialize<'a>
-{
-    fn get_code_occurence_with_deserialize(
-        &self,
-    ) -> &crate::common::code_occurence::CodeOccurenceWithDeserialize<'a> {
-        match self {
-            NamedErrorWithDeserialize::Something {
-                a: _unused_argument_0,
-                b: _unused_argument_1,
-                c: _unused_argument_2,
-                d: _unused_argument_3,
-                e: _unused_argument_4,
-                f: _unused_argument_5,
-                g: _unused_argument_6,
-                h: _unused_argument_7,
-                j: _unused_argument_8,
-                k: _unused_argument_9,
-                l: _unused_argument_10,
-                m: _unused_argument_11,
-                n: _unused_argument_12,
-                o: _unused_argument_13,
-                p: _unused_argument_14,
-                q: _unused_argument_15,
-                r: _unused_argument_16,
-                s: _unused_argument_17,
-                t: _unused_argument_18,
-                u: _unused_argument_19,
-                v: _unused_argument_20,
-                w: _unused_argument_21,
-                x: _unused_argument_22,
-                y: _unused_argument_23,
-                z: _unused_argument_24,
-                aa: _unused_argument_25,
-                ab: _unused_argument_26,
-                ac: _unused_argument_27,
-                ad: _unused_argument_28,
-                af: _unused_argument_29,
-                code_occurence,
-            } => code_occurence,
-        }
-    }
-}
-impl<'a> NamedError<'a> {
-    pub fn into_serialize_deserialize_version(self) -> NamedErrorWithDeserialize<'a> {
-        match self {
-            NamedError::Something {
-                a,
-                b,
-                c,
-                d,
-                e,
-                f,
-                g,
-                h,
-                j,
-                k,
-                l,
-                m,
-                n,
-                o,
-                p,
-                q,
-                r,
-                s,
-                t,
-                u,
-                v,
-                w,
-                x,
-                y,
-                z,
-                aa,
-                ab,
-                ac,
-                ad,
-                af,
-                code_occurence,
-            } => NamedErrorWithDeserialize::Something {
-                a: { a },
-                b: { b },
-                c: {
-                    use crate::traits::display_foreign_type::DisplayForeignType;
-                    c.display_foreign_type()
-                },
-                d: {
-                    use crate::traits::display_foreign_type::DisplayForeignType;
-                    d.display_foreign_type()
-                },
-                e: { e.into_serialize_deserialize_version() },
-                f: { f },
-                g: { g },
-                h: {
-                    use crate::traits::error_logs_logic::vec_display_foreign_type_to_vec_string::VecDisplayForeignTypeToVecString;
-                    h.vec_display_foreign_type_to_vec_string()
-                },
-                j: {
-                    use crate::traits::error_logs_logic::vec_display_foreign_type_to_vec_string::VecDisplayForeignTypeToVecString;
-                    j.vec_display_foreign_type_to_vec_string()
-                },
-                k: {
-                    k.into_iter()
-                        .map(|i| i.into_serialize_deserialize_version())
-                        .collect()
-                },
-                l: { l },
-                m: { m },
-                n: { n },
-                o: { o },
-                p: {
-                    use crate::traits::error_logs_logic::hashmap_impl_display_display_foreign_type_to_hashmap_impl_display_string::HashmapImplDisplayDisplayForeignTypeToHashmapImplDisplayString;
-                    p.hashmap_impl_display_display_foreign_type_to_hashmap_impl_display_string()
-                },
-                q: {
-                    use crate::traits::error_logs_logic::hashmap_impl_display_display_foreign_type_to_hashmap_impl_display_string::HashmapImplDisplayDisplayForeignTypeToHashmapImplDisplayString;
-                    q.hashmap_impl_display_display_foreign_type_to_hashmap_impl_display_string()
-                },
-                r: {
-                    use crate::traits::error_logs_logic::hashmap_impl_display_display_foreign_type_to_hashmap_impl_display_string::HashmapImplDisplayDisplayForeignTypeToHashmapImplDisplayString;
-                    r.hashmap_impl_display_display_foreign_type_to_hashmap_impl_display_string()
-                },
-                s: {
-                    use crate::traits::error_logs_logic::hashmap_impl_display_display_foreign_type_to_hashmap_impl_display_string::HashmapImplDisplayDisplayForeignTypeToHashmapImplDisplayString;
-                    s.hashmap_impl_display_display_foreign_type_to_hashmap_impl_display_string()
-                },
-                t: {
-                    t.into_iter()
-                        .map(|(k, v)| (k, { v.into_serialize_deserialize_version() }))
-                        .collect()
-                },
-                u: {
-                    u.into_iter()
-                        .map(|(k, v)| (k, { v.into_serialize_deserialize_version() }))
-                        .collect()
-                },
-                v: {
-                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display::HashmapDisplayForeignTypeImplDisplayToHashMapStringImplDisplay;
-                    v.hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display()
-                },
-                w: {
-                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display::HashmapDisplayForeignTypeImplDisplayToHashMapStringImplDisplay;
-                    w.hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display()
-                },
-                x: {
-                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display::HashmapDisplayForeignTypeImplDisplayToHashMapStringImplDisplay;
-                    x.hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display()
-                },
-                y: {
-                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display::HashmapDisplayForeignTypeImplDisplayToHashMapStringImplDisplay;
-                    y.hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display()
-                },
-                z: {
-                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string::HashmapDisplayForeignTypeDisplayForeignTypeToHashMapStringString;
-                    z.hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string()
-                },
-                aa: {
-                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string::HashmapDisplayForeignTypeDisplayForeignTypeToHashMapStringString;
-                    aa.hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string()
-                },
-                ab: {
-                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string::HashmapDisplayForeignTypeDisplayForeignTypeToHashMapStringString;
-                    ab.hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string()
-                },
-                ac: {
-                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string::HashmapDisplayForeignTypeDisplayForeignTypeToHashMapStringString;
-                    ac.hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string()
-                },
-                ad: {
-                    ad.into_iter()
-                        .map(|(k, v)| {
-                            (
-                                {
-                                    use crate::traits::display_foreign_type::DisplayForeignType;
-                                    k.display_foreign_type()
-                                },
-                                { v.into_serialize_deserialize_version() },
-                            )
-                        })
-                        .collect()
-                },
-                af: {
-                    af.into_iter()
-                        .map(|(k, v)| {
-                            (
-                                {
-                                    use crate::traits::display_foreign_type::DisplayForeignType;
-                                    k.display_foreign_type()
-                                },
-                                { v.into_serialize_deserialize_version() },
-                            )
-                        })
-                        .collect()
-                },
-                code_occurence: code_occurence.into_serialize_deserialize_version(),
-            },
-        }
-    }
-}
-impl<'a> std::fmt::Display for NamedError<'a> {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-        write!(f, "{}", self.to_string_without_config())
-    }
-}
-impl<'a> std::fmt::Display for NamedErrorWithDeserialize<'a> {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
-        write!(f, "{}", self.to_string_without_config_with_deserialize())
-    }
-}
+// impl<'a, ConfigGeneric>
+//     crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
+//         'a,
+//         ConfigGeneric,
+//     > for NamedError<'a>
+// where
+//     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
+//         + crate::traits::fields::GetTimezone
+//         + crate::traits::get_server_address::GetServerAddress,
+// {
+//     fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
+//         match self {
+//             NamedError::Something {
+//                 a: _unused_argument_0,
+//                 b: _unused_argument_1,
+//                 c: _unused_argument_2,
+//                 d: _unused_argument_3,
+//                 e: _unused_argument_4,
+//                 f: _unused_argument_5,
+//                 g: _unused_argument_6,
+//                 h: _unused_argument_7,
+//                 j: _unused_argument_8,
+//                 k: _unused_argument_9,
+//                 l: _unused_argument_10,
+//                 m: _unused_argument_11,
+//                 n: _unused_argument_12,
+//                 o: _unused_argument_13,
+//                 p: _unused_argument_14,
+//                 q: _unused_argument_15,
+//                 r: _unused_argument_16,
+//                 s: _unused_argument_17,
+//                 t: _unused_argument_18,
+//                 u: _unused_argument_19,
+//                 v: _unused_argument_20,
+//                 w: _unused_argument_21,
+//                 x: _unused_argument_22,
+//                 y: _unused_argument_23,
+//                 z: _unused_argument_24,
+//                 aa: _unused_argument_25,
+//                 ab: _unused_argument_26,
+//                 ac: _unused_argument_27,
+//                 ad: _unused_argument_28,
+//                 af: _unused_argument_29,
+//                 code_occurence: _unused_code_occurence_argument,
+//             } => {
+//                 use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig;
+//                 self.source_to_string_without_config()
+//             }
+//         }
+//     }
+// }
+// impl<'a>
+//     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
+//         'a,
+//     > for NamedError<'a>
+// {
+//     fn source_to_string_without_config(&self) -> String {
+//         match self {
+//             NamedError::Something {
+//                 a,
+//                 b,
+//                 c,
+//                 d,
+//                 e,
+//                 f,
+//                 g,
+//                 h,
+//                 j,
+//                 k,
+//                 l,
+//                 m,
+//                 n,
+//                 o,
+//                 p,
+//                 q,
+//                 r,
+//                 s,
+//                 t,
+//                 u,
+//                 v,
+//                 w,
+//                 x,
+//                 y,
+//                 z,
+//                 aa,
+//                 ab,
+//                 ac,
+//                 ad,
+//                 af,
+//                 code_occurence: _unused_code_occurence_argument,
+//             } => {
+//                 format!(
+//                     "{{\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n}}",
+//                     {
+//                         a.to_string()
+//                     },
+//                     {
+//                         b.to_string()
+//                     },
+//                     {
+//                         use crate::traits::display_foreign_type::DisplayForeignType;
+//                         c.display_foreign_type()
+//                     },
+//                     {
+//                         use crate::traits::display_foreign_type::DisplayForeignType;
+//                         d.display_foreign_type()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+//                         e.to_string_without_config()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
+//                         f.vec_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
+//                         g.vec_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::vec_display_foreign_type_to_string::VecDisplayForeignTypeToString;
+//                         h.vec_display_foreign_type_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::vec_display_foreign_type_to_string::VecDisplayForeignTypeToString;
+//                         j.vec_display_foreign_type_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::vec_to_string_without_config_to_string::VecToStringWithoutConfigToString;
+//                         k.vec_to_string_without_config_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+//                         l.hashmap_impl_display_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+//                         m.hashmap_impl_display_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+//                         n.hashmap_impl_display_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+//                         o.hashmap_impl_display_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_display_foreign_type_to_string::HashMapImplDisplayDisplayForeignTypeToString;
+//                         p.hashmap_impl_display_display_foreign_type_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_display_foreign_type_to_string::HashMapImplDisplayDisplayForeignTypeToString;
+//                         q.hashmap_impl_display_display_foreign_type_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_display_foreign_type_to_string::HashMapImplDisplayDisplayForeignTypeToString;
+//                         r.hashmap_impl_display_display_foreign_type_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_display_foreign_type_to_string::HashMapImplDisplayDisplayForeignTypeToString;
+//                         s.hashmap_impl_display_display_foreign_type_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToString;
+//                         t.hashmap_impl_display_to_string_without_config_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToString;
+//                         u.hashmap_impl_display_to_string_without_config_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_string::HashMapDisplayForeignTypeImplDisplayToString;
+//                         v.hashmap_display_foreign_type_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_string::HashMapDisplayForeignTypeImplDisplayToString;
+//                         w.hashmap_display_foreign_type_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_string::HashMapDisplayForeignTypeImplDisplayToString;
+//                         x.hashmap_display_foreign_type_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_string::HashMapDisplayForeignTypeImplDisplayToString;
+//                         y.hashmap_display_foreign_type_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_string::HashMapDisplayForeignTypeDisplayForeignTypeToString;
+//                         z.hashmap_display_foreign_type_display_foreign_type_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_string::HashMapDisplayForeignTypeDisplayForeignTypeToString;
+//                         aa.hashmap_display_foreign_type_display_foreign_type_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_string::HashMapDisplayForeignTypeDisplayForeignTypeToString;
+//                         ab.hashmap_display_foreign_type_display_foreign_type_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_string::HashMapDisplayForeignTypeDisplayForeignTypeToString;
+//                         ac.hashmap_display_foreign_type_display_foreign_type_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_display_foreign_type_to_string_without_config_to_string::HashMapDisplayForeignTypeToStringWithoutConfigToString;
+//                         ad.hashmap_display_foreign_type_to_string_without_config_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_display_foreign_type_to_string_without_config_to_string::HashMapDisplayForeignTypeToStringWithoutConfigToString;
+//                         af.hashmap_display_foreign_type_to_string_without_config_to_string()
+//                     },
+//                 )
+//             }
+//         }
+//     }
+// }
+// impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
+//     for NamedError<'a>
+// {
+//     fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
+//         match self {
+//             NamedError::Something {
+//                 a: _unused_argument_0,
+//                 b: _unused_argument_1,
+//                 c: _unused_argument_2,
+//                 d: _unused_argument_3,
+//                 e: _unused_argument_4,
+//                 f: _unused_argument_5,
+//                 g: _unused_argument_6,
+//                 h: _unused_argument_7,
+//                 j: _unused_argument_8,
+//                 k: _unused_argument_9,
+//                 l: _unused_argument_10,
+//                 m: _unused_argument_11,
+//                 n: _unused_argument_12,
+//                 o: _unused_argument_13,
+//                 p: _unused_argument_14,
+//                 q: _unused_argument_15,
+//                 r: _unused_argument_16,
+//                 s: _unused_argument_17,
+//                 t: _unused_argument_18,
+//                 u: _unused_argument_19,
+//                 v: _unused_argument_20,
+//                 w: _unused_argument_21,
+//                 x: _unused_argument_22,
+//                 y: _unused_argument_23,
+//                 z: _unused_argument_24,
+//                 aa: _unused_argument_25,
+//                 ab: _unused_argument_26,
+//                 ac: _unused_argument_27,
+//                 ad: _unused_argument_28,
+//                 af: _unused_argument_29,
+//                 code_occurence,
+//             } => code_occurence,
+//         }
+//     }
+// }
+// #[derive(Debug, serde :: Serialize, serde :: Deserialize)]
+// pub enum NamedErrorWithDeserialize<'a> {
+//     Something {
+//         a: crate::dev::Omegalul,
+//         #[serde(borrow)]
+//         b: crate::dev::OmegalulLifetime<'a>,
+//         c: std::string::String,
+//         d: std::string::String,
+//         #[serde(borrow)]
+//         e: crate::dev::SevenErrorWithDeserialize<'a>,
+//         f: std::vec::Vec<crate::dev::Omegalul>,
+//         #[serde(borrow)]
+//         g: std::vec::Vec<crate::dev::OmegalulLifetime<'a>>,
+//         h: std::vec::Vec<std::string::String>,
+//         j: std::vec::Vec<std::string::String>,
+//         #[serde(borrow)]
+//         k: std::vec::Vec<crate::dev::SevenErrorWithDeserialize<'a>>,
+//         l: std::collections::HashMap<crate::dev::Omegalul, crate::dev::Omegalul>,
+//         #[serde(borrow)]
+//         m: std::collections::HashMap<crate::dev::Omegalul, crate::dev::OmegalulLifetime<'a>>,
+//         #[serde(borrow)]
+//         n: std::collections::HashMap<crate::dev::OmegalulLifetime<'a>, crate::dev::Omegalul>,
+//         #[serde(borrow)]
+//         o: std::collections::HashMap<
+//             crate::dev::OmegalulLifetime<'a>,
+//             crate::dev::OmegalulLifetime<'a>,
+//         >,
+//         p: std::collections::HashMap<crate::dev::Omegalul, std::string::String>,
+//         q: std::collections::HashMap<crate::dev::Omegalul, std::string::String>,
+//         #[serde(borrow)]
+//         r: std::collections::HashMap<crate::dev::OmegalulLifetime<'a>, std::string::String>,
+//         #[serde(borrow)]
+//         s: std::collections::HashMap<crate::dev::OmegalulLifetime<'a>, std::string::String>,
+//         #[serde(borrow)]
+//         t: std::collections::HashMap<
+//             crate::dev::Omegalul,
+//             crate::dev::SevenErrorWithDeserialize<'a>,
+//         >,
+//         #[serde(borrow)]
+//         u: std::collections::HashMap<
+//             crate::dev::OmegalulLifetime<'a>,
+//             crate::dev::SevenErrorWithDeserialize<'a>,
+//         >,
+//         v: std::collections::HashMap<std::string::String, crate::dev::Omegalul>,
+//         #[serde(borrow)]
+//         w: std::collections::HashMap<std::string::String, crate::dev::OmegalulLifetime<'a>>,
+//         x: std::collections::HashMap<std::string::String, crate::dev::Omegalul>,
+//         #[serde(borrow)]
+//         y: std::collections::HashMap<std::string::String, crate::dev::OmegalulLifetime<'a>>,
+//         z: std::collections::HashMap<std::string::String, std::string::String>,
+//         aa: std::collections::HashMap<std::string::String, std::string::String>,
+//         ab: std::collections::HashMap<std::string::String, std::string::String>,
+//         ac: std::collections::HashMap<std::string::String, std::string::String>,
+//         #[serde(borrow)]
+//         ad: std::collections::HashMap<
+//             std::string::String,
+//             crate::dev::SevenErrorWithDeserialize<'a>,
+//         >,
+//         #[serde(borrow)]
+//         af: std::collections::HashMap<
+//             std::string::String,
+//             crate::dev::SevenErrorWithDeserialize<'a>,
+//         >,
+//         #[serde(borrow)]
+//         code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize<'a>,
+//     },
+// }
+// impl<'a>
+//     crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
+//         'a,
+//     > for NamedErrorWithDeserialize<'a>
+// {
+//     fn source_to_string_without_config(&self) -> String {
+//         match self {
+//             NamedErrorWithDeserialize::Something {
+//                 a,
+//                 b,
+//                 c,
+//                 d,
+//                 e,
+//                 f,
+//                 g,
+//                 h,
+//                 j,
+//                 k,
+//                 l,
+//                 m,
+//                 n,
+//                 o,
+//                 p,
+//                 q,
+//                 r,
+//                 s,
+//                 t,
+//                 u,
+//                 v,
+//                 w,
+//                 x,
+//                 y,
+//                 z,
+//                 aa,
+//                 ab,
+//                 ac,
+//                 ad,
+//                 af,
+//                 code_occurence: _unused_code_occurence_argument,
+//             } => {
+//                 format!(
+//                     "{{\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n {}\n}}",
+//                     {
+//                         a.to_string()
+//                     },
+//                     {
+//                         b.to_string()
+//                     },
+//                     {
+//                         c.to_string()
+//                     },
+//                     {
+//                         d.to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+//                         e.to_string_without_config_with_deserialize()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
+//                         f.vec_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
+//                         g.vec_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
+//                         h.vec_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
+//                         j.vec_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::vec_to_string_without_config_to_string::VecToStringWithoutConfigToStringWithDeserialize;
+//                         k.vec_to_string_without_config_to_string_with_deserialize()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+//                         l.hashmap_impl_display_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+//                         m.hashmap_impl_display_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+//                         n.hashmap_impl_display_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+//                         o.hashmap_impl_display_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+//                         p.hashmap_impl_display_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+//                         q.hashmap_impl_display_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+//                         r.hashmap_impl_display_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+//                         s.hashmap_impl_display_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToStringWithDeserialize;
+//                         t.hashmap_impl_display_to_string_without_config_to_string_with_deserialize()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToStringWithDeserialize;
+//                         u.hashmap_impl_display_to_string_without_config_to_string_with_deserialize()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+//                         v.hashmap_impl_display_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+//                         w.hashmap_impl_display_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+//                         x.hashmap_impl_display_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+//                         y.hashmap_impl_display_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+//                         z.hashmap_impl_display_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+//                         aa.hashmap_impl_display_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+//                         ab.hashmap_impl_display_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
+//                         ac.hashmap_impl_display_impl_display_to_string()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToStringWithDeserialize;
+//                         ad.hashmap_impl_display_to_string_without_config_to_string_with_deserialize()
+//                     },
+//                     {
+//                         use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToStringWithDeserialize;
+//                         af.hashmap_impl_display_to_string_without_config_to_string_with_deserialize()
+//                     },
+//                 )
+//             }
+//         }
+//     }
+// }
+// impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWithDeserialize<'a>
+//     for NamedErrorWithDeserialize<'a>
+// {
+//     fn get_code_occurence_with_deserialize(
+//         &self,
+//     ) -> &crate::common::code_occurence::CodeOccurenceWithDeserialize<'a> {
+//         match self {
+//             NamedErrorWithDeserialize::Something {
+//                 a: _unused_argument_0,
+//                 b: _unused_argument_1,
+//                 c: _unused_argument_2,
+//                 d: _unused_argument_3,
+//                 e: _unused_argument_4,
+//                 f: _unused_argument_5,
+//                 g: _unused_argument_6,
+//                 h: _unused_argument_7,
+//                 j: _unused_argument_8,
+//                 k: _unused_argument_9,
+//                 l: _unused_argument_10,
+//                 m: _unused_argument_11,
+//                 n: _unused_argument_12,
+//                 o: _unused_argument_13,
+//                 p: _unused_argument_14,
+//                 q: _unused_argument_15,
+//                 r: _unused_argument_16,
+//                 s: _unused_argument_17,
+//                 t: _unused_argument_18,
+//                 u: _unused_argument_19,
+//                 v: _unused_argument_20,
+//                 w: _unused_argument_21,
+//                 x: _unused_argument_22,
+//                 y: _unused_argument_23,
+//                 z: _unused_argument_24,
+//                 aa: _unused_argument_25,
+//                 ab: _unused_argument_26,
+//                 ac: _unused_argument_27,
+//                 ad: _unused_argument_28,
+//                 af: _unused_argument_29,
+//                 code_occurence,
+//             } => code_occurence,
+//         }
+//     }
+// }
+// impl<'a> NamedError<'a> {
+//     pub fn into_serialize_deserialize_version(self) -> NamedErrorWithDeserialize<'a> {
+//         match self {
+//             NamedError::Something {
+//                 a,
+//                 b,
+//                 c,
+//                 d,
+//                 e,
+//                 f,
+//                 g,
+//                 h,
+//                 j,
+//                 k,
+//                 l,
+//                 m,
+//                 n,
+//                 o,
+//                 p,
+//                 q,
+//                 r,
+//                 s,
+//                 t,
+//                 u,
+//                 v,
+//                 w,
+//                 x,
+//                 y,
+//                 z,
+//                 aa,
+//                 ab,
+//                 ac,
+//                 ad,
+//                 af,
+//                 code_occurence,
+//             } => NamedErrorWithDeserialize::Something {
+//                 a: { a },
+//                 b: { b },
+//                 c: {
+//                     use crate::traits::display_foreign_type::DisplayForeignType;
+//                     c.display_foreign_type()
+//                 },
+//                 d: {
+//                     use crate::traits::display_foreign_type::DisplayForeignType;
+//                     d.display_foreign_type()
+//                 },
+//                 e: { e.into_serialize_deserialize_version() },
+//                 f: { f },
+//                 g: { g },
+//                 h: {
+//                     use crate::traits::error_logs_logic::vec_display_foreign_type_to_vec_string::VecDisplayForeignTypeToVecString;
+//                     h.vec_display_foreign_type_to_vec_string()
+//                 },
+//                 j: {
+//                     use crate::traits::error_logs_logic::vec_display_foreign_type_to_vec_string::VecDisplayForeignTypeToVecString;
+//                     j.vec_display_foreign_type_to_vec_string()
+//                 },
+//                 k: {
+//                     k.into_iter()
+//                         .map(|i| i.into_serialize_deserialize_version())
+//                         .collect()
+//                 },
+//                 l: { l },
+//                 m: { m },
+//                 n: { n },
+//                 o: { o },
+//                 p: {
+//                     use crate::traits::error_logs_logic::hashmap_impl_display_display_foreign_type_to_hashmap_impl_display_string::HashmapImplDisplayDisplayForeignTypeToHashmapImplDisplayString;
+//                     p.hashmap_impl_display_display_foreign_type_to_hashmap_impl_display_string()
+//                 },
+//                 q: {
+//                     use crate::traits::error_logs_logic::hashmap_impl_display_display_foreign_type_to_hashmap_impl_display_string::HashmapImplDisplayDisplayForeignTypeToHashmapImplDisplayString;
+//                     q.hashmap_impl_display_display_foreign_type_to_hashmap_impl_display_string()
+//                 },
+//                 r: {
+//                     use crate::traits::error_logs_logic::hashmap_impl_display_display_foreign_type_to_hashmap_impl_display_string::HashmapImplDisplayDisplayForeignTypeToHashmapImplDisplayString;
+//                     r.hashmap_impl_display_display_foreign_type_to_hashmap_impl_display_string()
+//                 },
+//                 s: {
+//                     use crate::traits::error_logs_logic::hashmap_impl_display_display_foreign_type_to_hashmap_impl_display_string::HashmapImplDisplayDisplayForeignTypeToHashmapImplDisplayString;
+//                     s.hashmap_impl_display_display_foreign_type_to_hashmap_impl_display_string()
+//                 },
+//                 t: {
+//                     t.into_iter()
+//                         .map(|(k, v)| (k, { v.into_serialize_deserialize_version() }))
+//                         .collect()
+//                 },
+//                 u: {
+//                     u.into_iter()
+//                         .map(|(k, v)| (k, { v.into_serialize_deserialize_version() }))
+//                         .collect()
+//                 },
+//                 v: {
+//                     use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display::HashmapDisplayForeignTypeImplDisplayToHashMapStringImplDisplay;
+//                     v.hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display()
+//                 },
+//                 w: {
+//                     use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display::HashmapDisplayForeignTypeImplDisplayToHashMapStringImplDisplay;
+//                     w.hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display()
+//                 },
+//                 x: {
+//                     use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display::HashmapDisplayForeignTypeImplDisplayToHashMapStringImplDisplay;
+//                     x.hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display()
+//                 },
+//                 y: {
+//                     use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display::HashmapDisplayForeignTypeImplDisplayToHashMapStringImplDisplay;
+//                     y.hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display()
+//                 },
+//                 z: {
+//                     use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string::HashmapDisplayForeignTypeDisplayForeignTypeToHashMapStringString;
+//                     z.hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string()
+//                 },
+//                 aa: {
+//                     use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string::HashmapDisplayForeignTypeDisplayForeignTypeToHashMapStringString;
+//                     aa.hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string()
+//                 },
+//                 ab: {
+//                     use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string::HashmapDisplayForeignTypeDisplayForeignTypeToHashMapStringString;
+//                     ab.hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string()
+//                 },
+//                 ac: {
+//                     use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string::HashmapDisplayForeignTypeDisplayForeignTypeToHashMapStringString;
+//                     ac.hashmap_display_foreign_type_display_foreign_type_to_hashmap_string_string()
+//                 },
+//                 ad: {
+//                     ad.into_iter()
+//                         .map(|(k, v)| {
+//                             (
+//                                 {
+//                                     use crate::traits::display_foreign_type::DisplayForeignType;
+//                                     k.display_foreign_type()
+//                                 },
+//                                 { v.into_serialize_deserialize_version() },
+//                             )
+//                         })
+//                         .collect()
+//                 },
+//                 af: {
+//                     af.into_iter()
+//                         .map(|(k, v)| {
+//                             (
+//                                 {
+//                                     use crate::traits::display_foreign_type::DisplayForeignType;
+//                                     k.display_foreign_type()
+//                                 },
+//                                 { v.into_serialize_deserialize_version() },
+//                             )
+//                         })
+//                         .collect()
+//                 },
+//                 code_occurence: code_occurence.into_serialize_deserialize_version(),
+//             },
+//         }
+//     }
+// }
+// impl<'a> std::fmt::Display for NamedError<'a> {
+//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+//         write!(f, "{}", self.to_string_without_config())
+//     }
+// }
+// impl<'a> std::fmt::Display for NamedErrorWithDeserialize<'a> {
+//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+//         use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
+//         write!(f, "{}", self.to_string_without_config_with_deserialize())
+//     }
+// }
