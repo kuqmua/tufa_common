@@ -2076,20 +2076,20 @@ impl<'a> NamedError<'a> {
                         .collect()
                 },
                 v: {
-                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display::HashmapDisplayForeignTypeImplDisplayToHashMapStringImplDisplay;
-                    v.hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_into_hashmap_string_impl_display::HashmapDisplayForeignTypeImplDisplayIntoHashMapStringImplDisplay;
+                    v.hashmap_display_foreign_type_impl_display_into_hashmap_string_impl_display()
                 },
                 w: {
-                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display::HashmapDisplayForeignTypeImplDisplayToHashMapStringImplDisplay;
-                    w.hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_into_hashmap_string_impl_display::HashmapDisplayForeignTypeImplDisplayIntoHashMapStringImplDisplay;
+                    w.hashmap_display_foreign_type_impl_display_into_hashmap_string_impl_display()
                 },
                 x: {
-                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display::HashmapDisplayForeignTypeImplDisplayToHashMapStringImplDisplay;
-                    x.hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_into_hashmap_string_impl_display::HashmapDisplayForeignTypeImplDisplayIntoHashMapStringImplDisplay;
+                    x.hashmap_display_foreign_type_impl_display_into_hashmap_string_impl_display()
                 },
                 y: {
-                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display::HashmapDisplayForeignTypeImplDisplayToHashMapStringImplDisplay;
-                    y.hashmap_display_foreign_type_impl_display_to_hashmap_string_impl_display()
+                    use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_into_hashmap_string_impl_display::HashmapDisplayForeignTypeImplDisplayIntoHashMapStringImplDisplay;
+                    y.hashmap_display_foreign_type_impl_display_into_hashmap_string_impl_display()
                 },
                 z: {
                     use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_foreign_type_into_hashmap_string_string::HashmapDisplayForeignTypeDisplayForeignTypeIntoHashMapStringString;
