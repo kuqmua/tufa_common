@@ -1006,8 +1006,8 @@ pub enum OneErrorEnum<'a> {
 //                 i.vec_to_string_with_config_to_string(config)
 //             },
 //             OneErrorEnum::HashMapKeyToStringValueToString(i) => {
-//                 use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-//                 i.hashmap_impl_display_impl_display_to_string()
+//                 use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
+//                 i.hashmap_display_display_to_string()
 //             },
 //             OneErrorEnum::HashMapKeyToStringValueDisplayForeignType(i) => {
 //                 use crate::traits::error_logs_logic::hashmap_impl_display_display_foreign_type_to_string::HashMapImplDisplayDisplayForeignTypeToString;
@@ -1063,8 +1063,8 @@ pub enum OneErrorEnum<'a> {
 //                 i.vec_to_string_without_config_to_string()
 //             }
 //             OneErrorEnum::HashMapKeyToStringValueToString(i) => {
-//                 use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-//                 i.hashmap_impl_display_impl_display_to_string()
+//                 use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
+//                 i.hashmap_display_display_to_string()
 //             }
 //             OneErrorEnum::HashMapKeyToStringValueDisplayForeignType(i) => {
 //                 use crate::traits::error_logs_logic::hashmap_impl_display_display_foreign_type_to_string::HashMapImplDisplayDisplayForeignTypeToString;
@@ -1145,24 +1145,24 @@ pub enum OneErrorEnum<'a> {
 //                 i.vec_to_string_without_config_to_string_with_deserialize()
 //             }
 //             OneErrorEnumWithDeserialize::HashMapKeyToStringValueToString(i) => {
-//                 use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-//                 i.hashmap_impl_display_impl_display_to_string()
+//                 use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
+//                 i.hashmap_display_display_to_string()
 //             }
 //             OneErrorEnumWithDeserialize::HashMapKeyToStringValueDisplayForeignType(i) => {
-//                 use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-//                 i.hashmap_impl_display_impl_display_to_string()
+//                 use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
+//                 i.hashmap_display_display_to_string()
 //             }
 //             OneErrorEnumWithDeserialize::HashMapKeyToStringValueErrorOccurence(i) => {
 //                 use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToStringWithDeserialize;
 //                 i.hashmap_impl_display_to_string_without_config_to_string_with_deserialize()
 //             }
 //             OneErrorEnumWithDeserialize::HashMapKeyDisplayForeignTypeValueToString(i) => {
-//                 use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-//                 i.hashmap_impl_display_impl_display_to_string()
+//                 use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
+//                 i.hashmap_display_display_to_string()
 //             }
 //             OneErrorEnumWithDeserialize::HashMapKeyDisplayForeignTypeValueDisplayForeignType(i) => {
-//                 use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-//                 i.hashmap_impl_display_impl_display_to_string()
+//                 use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
+//                 i.hashmap_display_display_to_string()
 //             }
 //             OneErrorEnumWithDeserialize::HashMapKeyDisplayForeignTypeValueErrorOccurence(i) => {
 //                 use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToStringWithDeserialize;
@@ -1491,27 +1491,27 @@ impl<'a>
                             .lines_space_backslash()
                     },
                     {
+                        use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        l.hashmap_impl_display_impl_display_to_string()
+                        l.hashmap_display_display_to_string()
                             .lines_space_backslash()
                     },
                     {
+                        use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        m.hashmap_impl_display_impl_display_to_string()
+                        m.hashmap_display_display_to_string()
                             .lines_space_backslash()
                     },
                     {
+                        use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        n.hashmap_impl_display_impl_display_to_string()
+                        n.hashmap_display_display_to_string()
                             .lines_space_backslash()
                     },
                     {
+                        use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        o.hashmap_impl_display_impl_display_to_string()
+                        o.hashmap_display_display_to_string()
                             .lines_space_backslash()
                     },
                     {
@@ -1814,51 +1814,51 @@ impl<'a>
                             .lines_space_backslash()
                     },
                     {
+                        use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        l.hashmap_impl_display_impl_display_to_string()
+                        l.hashmap_display_display_to_string()
                             .lines_space_backslash()
                     },
                     {
+                        use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        m.hashmap_impl_display_impl_display_to_string()
+                        m.hashmap_display_display_to_string()
                             .lines_space_backslash()
                     },
                     {
+                        use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        n.hashmap_impl_display_impl_display_to_string()
+                        n.hashmap_display_display_to_string()
                             .lines_space_backslash()
                     },
                     {
+                        use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        o.hashmap_impl_display_impl_display_to_string()
+                        o.hashmap_display_display_to_string()
                             .lines_space_backslash()
                     },
                     {
+                        use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        p.hashmap_impl_display_impl_display_to_string()
+                        p.hashmap_display_display_to_string()
                             .lines_space_backslash()
                     },
                     {
+                        use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        q.hashmap_impl_display_impl_display_to_string()
+                        q.hashmap_display_display_to_string()
                             .lines_space_backslash()
                     },
                     {
+                        use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        r.hashmap_impl_display_impl_display_to_string()
+                        r.hashmap_display_display_to_string()
                             .lines_space_backslash()
                     },
                     {
+                        use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        s.hashmap_impl_display_impl_display_to_string()
+                        s.hashmap_display_display_to_string()
                             .lines_space_backslash()
                     },
                     {
@@ -1874,51 +1874,51 @@ impl<'a>
                             .lines_space_backslash()
                     },
                     {
+                        use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        v.hashmap_impl_display_impl_display_to_string()
+                        v.hashmap_display_display_to_string()
                             .lines_space_backslash()
                     },
                     {
+                        use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        w.hashmap_impl_display_impl_display_to_string()
+                        w.hashmap_display_display_to_string()
                             .lines_space_backslash()
                     },
                     {
+                        use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        x.hashmap_impl_display_impl_display_to_string()
+                        x.hashmap_display_display_to_string()
                             .lines_space_backslash()
                     },
                     {
+                        use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        y.hashmap_impl_display_impl_display_to_string()
+                        y.hashmap_display_display_to_string()
                             .lines_space_backslash()
                     },
                     {
+                        use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        z.hashmap_impl_display_impl_display_to_string()
+                        z.hashmap_display_display_to_string()
                             .lines_space_backslash()
                     },
                     {
+                        use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        aa.hashmap_impl_display_impl_display_to_string()
+                        aa.hashmap_display_display_to_string()
                             .lines_space_backslash()
                     },
                     {
+                        use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        ab.hashmap_impl_display_impl_display_to_string()
+                        ab.hashmap_display_display_to_string()
                             .lines_space_backslash()
                     },
                     {
+                        use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
-                        ac.hashmap_impl_display_impl_display_to_string()
+                        ac.hashmap_display_display_to_string()
                             .lines_space_backslash()
                     },
                     {
