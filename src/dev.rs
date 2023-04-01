@@ -1463,14 +1463,13 @@ impl<'a>
                     },
                     {
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
-                        f.vec_impl_display_to_string().lines_space_backslash()
+                        use crate::traits::error_logs_logic::vec_display_to_string::VecDisplayToString;
+                        f.vec_display_to_string().lines_space_backslash()
                     },
-                    //
                     {
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
-                        g.vec_impl_display_to_string().lines_space_backslash()
+                        use crate::traits::error_logs_logic::vec_display_to_string::VecDisplayToString;
+                        g.vec_display_to_string().lines_space_backslash()
                     },
                     {
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
@@ -1789,23 +1788,23 @@ impl<'a>
                     },
                     {
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
-                        f.vec_impl_display_to_string().lines_space_backslash()
+                        use crate::traits::error_logs_logic::vec_display_to_string::VecDisplayToString;
+                        f.vec_display_to_string().lines_space_backslash()
                     },
                     {
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
-                        g.vec_impl_display_to_string().lines_space_backslash()
+                        use crate::traits::error_logs_logic::vec_display_to_string::VecDisplayToString;
+                        g.vec_display_to_string().lines_space_backslash()
                     },
                     {
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
-                        h.vec_impl_display_to_string().lines_space_backslash()
+                        use crate::traits::error_logs_logic::vec_display_to_string::VecDisplayToString;
+                        h.vec_display_to_string().lines_space_backslash()
                     },
                     {
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::vec_impl_display_to_string::VecImplDisplayToString;
-                        j.vec_impl_display_to_string().lines_space_backslash()
+                        use crate::traits::error_logs_logic::vec_display_to_string::VecDisplayToString;
+                        j.vec_display_to_string().lines_space_backslash()
                     },
                     {
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
