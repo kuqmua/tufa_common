@@ -1552,26 +1552,26 @@ impl<'a>
                     },
                     {
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_string::HashMapDisplayForeignTypeImplDisplayToString;
-                        v.hashmap_display_foreign_type_impl_display_to_string()
+                        use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_to_string::HashMapDisplayForeignTypeDisplayToString;
+                        v.hashmap_display_foreign_type_display_to_string()
                             .lines_space_backslash()
                     },
                     {
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_string::HashMapDisplayForeignTypeImplDisplayToString;
-                        w.hashmap_display_foreign_type_impl_display_to_string()
+                        use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_to_string::HashMapDisplayForeignTypeDisplayToString;
+                        w.hashmap_display_foreign_type_display_to_string()
                             .lines_space_backslash()
                     },
                     {
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_string::HashMapDisplayForeignTypeImplDisplayToString;
-                        x.hashmap_display_foreign_type_impl_display_to_string()
+                        use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_to_string::HashMapDisplayForeignTypeDisplayToString;
+                        x.hashmap_display_foreign_type_display_to_string()
                             .lines_space_backslash()
                     },
                     {
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_display_foreign_type_impl_display_to_string::HashMapDisplayForeignTypeImplDisplayToString;
-                        y.hashmap_display_foreign_type_impl_display_to_string()
+                        use crate::traits::error_logs_logic::hashmap_display_foreign_type_display_to_string::HashMapDisplayForeignTypeDisplayToString;
+                        y.hashmap_display_foreign_type_display_to_string()
                             .lines_space_backslash()
                     },
                     {
