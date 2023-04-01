@@ -1540,14 +1540,14 @@ impl<'a>
                     },
                     {
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToString;
-                        t.hashmap_impl_display_to_string_without_config_to_string()
+                        use crate::traits::error_logs_logic::hashmap_display_to_string_without_config_to_string::HashmapDisplayToStringWithoutConfigToString;
+                        t.hashmap_display_to_string_without_config_to_string()
                             .lines_space_backslash()
                     },
                     {
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToString;
-                        u.hashmap_impl_display_to_string_without_config_to_string()
+                        use crate::traits::error_logs_logic::hashmap_display_to_string_without_config_to_string::HashmapDisplayToStringWithoutConfigToString;
+                        u.hashmap_display_to_string_without_config_to_string()
                             .lines_space_backslash()
                     },
                     {
@@ -1863,14 +1863,14 @@ impl<'a>
                     },
                     {
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToStringWithDeserialize;
-                        t.hashmap_impl_display_to_string_without_config_to_string_with_deserialize()
+                        use crate::traits::error_logs_logic::hashmap_display_to_string_without_config_to_string::HashmapDisplayToStringWithoutConfigToStringWithDeserialize;
+                        t.hashmap_display_to_string_without_config_to_string_with_deserialize()
                             .lines_space_backslash()
                     },
                     {
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToStringWithDeserialize;
-                        u.hashmap_impl_display_to_string_without_config_to_string_with_deserialize()
+                        use crate::traits::error_logs_logic::hashmap_display_to_string_without_config_to_string::HashmapDisplayToStringWithoutConfigToStringWithDeserialize;
+                        u.hashmap_display_to_string_without_config_to_string_with_deserialize()
                             .lines_space_backslash()
                     },
                     {
@@ -1923,17 +1923,15 @@ impl<'a>
                     },
                     {
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToStringWithDeserialize;
-                        ad.hashmap_impl_display_to_string_without_config_to_string_with_deserialize(
-                        )
-                        .lines_space_backslash()
+                        use crate::traits::error_logs_logic::hashmap_display_to_string_without_config_to_string::HashmapDisplayToStringWithoutConfigToStringWithDeserialize;
+                        ad.hashmap_display_to_string_without_config_to_string_with_deserialize()
+                            .lines_space_backslash()
                     },
                     {
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::hashmap_impl_display_to_string_without_config_to_string::HashmapImplDisplayToStringWithoutConfigToStringWithDeserialize;
-                        af.hashmap_impl_display_to_string_without_config_to_string_with_deserialize(
-                        )
-                        .lines_space_backslash()
+                        use crate::traits::error_logs_logic::hashmap_display_to_string_without_config_to_string::HashmapDisplayToStringWithoutConfigToStringWithDeserialize;
+                        af.hashmap_display_to_string_without_config_to_string_with_deserialize()
+                            .lines_space_backslash()
                     },
                 )
             }
