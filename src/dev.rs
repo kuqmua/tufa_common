@@ -1496,7 +1496,6 @@ impl<'a>
                         l.hashmap_impl_display_impl_display_to_string()
                             .lines_space_backslash()
                     },
-                    /////////////////////////////////////////////////////////////////////////////
                     {
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
                         use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
@@ -1820,7 +1819,6 @@ impl<'a>
                         l.hashmap_impl_display_impl_display_to_string()
                             .lines_space_backslash()
                     },
-                    ////////////////////////////////////
                     {
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
                         use crate::traits::error_logs_logic::hashmap_impl_display_impl_display_to_string::HashmapImplDisplayImplDisplayToString;
@@ -2035,12 +2033,12 @@ impl<'a> NamedError<'a> {
                 f: { f },
                 g: { g },
                 h: {
-                    use crate::traits::error_logs_logic::vec_display_foreign_type_to_vec_string::VecDisplayForeignTypeToVecString;
-                    h.vec_display_foreign_type_to_vec_string()
+                    use crate::traits::error_logs_logic::vec_display_foreign_type_into_vec_string::VecDisplayForeignTypeIntoVecString;
+                    h.vec_display_foreign_type_into_vec_string()
                 },
                 j: {
-                    use crate::traits::error_logs_logic::vec_display_foreign_type_to_vec_string::VecDisplayForeignTypeToVecString;
-                    j.vec_display_foreign_type_to_vec_string()
+                    use crate::traits::error_logs_logic::vec_display_foreign_type_into_vec_string::VecDisplayForeignTypeIntoVecString;
+                    j.vec_display_foreign_type_into_vec_string()
                 },
                 k: {
                     k.into_iter()
