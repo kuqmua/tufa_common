@@ -921,52 +921,392 @@ impl<'a> std::fmt::Display for OmegalulLifetime<'a> {
     }
 }
 // //todo - check on lifetime - is it there or is it not - and generate/not generate it
-// #[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)] //, error_occurence::ImplErrorOccurence
-// pub enum OneErrorEnum<'a> {
-//     //todo - test crate::dev::SevenError<'a> as variant but without lifetime
-//     #[to_string]
-//     ToString(crate::dev::Omegalul),
-//     #[to_string]
-//     ToStringLifetime(crate::dev::OmegalulLifetime<'a>),
-//     #[display_foreign_type]
-//     DisplayForeignType(crate::dev::Kekw),
-//     #[display_foreign_type]
-//     DisplayForeignTypeLifeTime(crate::dev::KekwLifetime<'a>),
-//     #[error_occurence]
-//     ErrorOccurence(crate::dev::SevenError<'a>),
-//     // #[error_occurence]
-//     // ErrorOccurenceTest(crate::dev::TestErrorEnum),
-//     #[vec_to_string]
-//     VecToString(std::vec::Vec<crate::dev::Omegalul>),
-//     #[vec_display_foreign_type]
-//     VecDisplayForeignType(std::vec::Vec<crate::dev::Kekw>),
-//     #[vec_error_occurence]
-//     VecErrorOccurence(std::vec::Vec<crate::dev::SevenError<'a>>),
-//     #[hashmap_key_to_string_value_to_string]
-//     HashMapKeyToStringValueToString(
-//         std::collections::HashMap<crate::dev::Omegalul, crate::dev::Omegalul>,
-//     ),
-//     #[hashmap_key_to_string_value_display_foreign_type]
-//     HashMapKeyToStringValueDisplayForeignType(
-//         std::collections::HashMap<crate::dev::Omegalul, crate::dev::Kekw>,
-//     ),
-//     #[hashmap_key_to_string_value_error_occurence]
-//     HashMapKeyToStringValueErrorOccurence(
-//         std::collections::HashMap<crate::dev::Omegalul, crate::dev::SevenError<'a>>,
-//     ),
-//     #[hashmap_key_display_foreign_type_value_to_string]
-//     HashMapKeyDisplayForeignTypeValueToString(
-//         std::collections::HashMap<crate::dev::Kekw, crate::dev::Omegalul>,
-//     ),
-//     #[hashmap_key_display_foreign_type_value_display_foreign_type]
-//     HashMapKeyDisplayForeignTypeValueDisplayForeignType(
-//         std::collections::HashMap<crate::dev::Kekw, crate::dev::Kekw>,
-//     ),
-//     #[hashmap_key_display_foreign_type_value_error_occurence]
-//     HashMapKeyDisplayForeignTypeValueErrorOccurence(
-//         std::collections::HashMap<crate::dev::Kekw, crate::dev::SevenError<'a>>,
-//     ),
-// }
+#[derive(Debug, thiserror::Error)] //, error_occurence::ImplErrorOccurence
+pub enum OneErrorEnum<'a> {
+    //todo - test crate::dev::SevenError<'a> as variant but without lifetime
+    // #[to_string]
+    ToString(crate::dev::Omegalul),
+    // #[to_string]
+    ToStringLifetime(crate::dev::OmegalulLifetime<'a>),
+    // #[display_foreign_type]
+    DisplayForeignType(crate::dev::Kekw),
+    // #[display_foreign_type]
+    DisplayForeignTypeLifeTime(crate::dev::KekwLifetime<'a>),
+    // #[error_occurence]
+    ErrorOccurence(crate::dev::SevenError<'a>),
+    // #[error_occurence]
+    // ErrorOccurenceTest(crate::dev::TestErrorEnum),
+    // #[vec_to_string]
+    VecToString(std::vec::Vec<crate::dev::Omegalul>),
+    // #[vec_display_foreign_type]
+    VecDisplayForeignType(std::vec::Vec<crate::dev::Kekw>),
+    // #[vec_error_occurence]
+    VecErrorOccurence(std::vec::Vec<crate::dev::SevenError<'a>>),
+    // #[hashmap_key_to_string_value_to_string]
+    HashMapKeyToStringValueToString(
+        std::collections::HashMap<crate::dev::Omegalul, crate::dev::Omegalul>,
+    ),
+    // #[hashmap_key_to_string_value_display_foreign_type]
+    HashMapKeyToStringValueDisplayForeignType(
+        std::collections::HashMap<crate::dev::Omegalul, crate::dev::Kekw>,
+    ),
+    // #[hashmap_key_to_string_value_error_occurence]
+    HashMapKeyToStringValueErrorOccurence(
+        std::collections::HashMap<crate::dev::Omegalul, crate::dev::SevenError<'a>>,
+    ),
+    // #[hashmap_key_display_foreign_type_value_to_string]
+    HashMapKeyDisplayForeignTypeValueToString(
+        std::collections::HashMap<crate::dev::Kekw, crate::dev::Omegalul>,
+    ),
+    // #[hashmap_key_display_foreign_type_value_display_foreign_type]
+    HashMapKeyDisplayForeignTypeValueDisplayForeignType(
+        std::collections::HashMap<crate::dev::Kekw, crate::dev::Kekw>,
+    ),
+    // #[hashmap_key_display_foreign_type_value_error_occurence]
+    HashMapKeyDisplayForeignTypeValueErrorOccurence(
+        std::collections::HashMap<crate::dev::Kekw, crate::dev::SevenError<'a>>,
+    ),
+}
+
+impl < 'error_occurence_proc_macro_reserved_lifetime_name, 'a, ConfigGeneric,
+> crate :: traits :: error_logs_logic :: to_string_with_config ::
+ToStringWithConfigForSourceToStringWithConfig <
+'error_occurence_proc_macro_reserved_lifetime_name, ConfigGeneric, > for
+OneErrorEnum < 'a, > where ConfigGeneric : crate :: traits :: fields ::
+GetSourcePlaceType + crate :: traits :: fields :: GetTimezone + crate ::
+traits :: get_server_address :: GetServerAddress,
+{
+    fn
+    to_string_with_config_for_source_to_string_with_config(& self, config : &
+    ConfigGeneric) -> String
+    {
+        match self
+        {
+            OneErrorEnum :: ToString(i) => { i.to_string() }, OneErrorEnum ::
+            ToStringLifetime(i) => { i.to_string() }, OneErrorEnum ::
+            DisplayForeignType(i) =>
+            {
+                use crate :: traits :: display_foreign_type ::
+                DisplayForeignType ; i.display_foreign_type().to_string()
+            }, OneErrorEnum :: DisplayForeignTypeLifeTime(i) =>
+            {
+                use crate :: traits :: display_foreign_type ::
+                DisplayForeignType ; i.display_foreign_type().to_string()
+            }, OneErrorEnum :: ErrorOccurence(i) =>
+            {
+                i.to_string_with_config_for_source_to_string_with_config(config)
+            }, OneErrorEnum :: VecToString(i) =>
+            {
+                use crate :: traits :: error_logs_logic ::
+                vec_display_to_string :: VecDisplayToString ;
+                i.vec_display_to_string()
+            }, OneErrorEnum :: VecDisplayForeignType(i) =>
+            {
+                use crate :: traits :: error_logs_logic ::
+                vec_display_foreign_type_to_string ::
+                VecDisplayForeignTypeToString ;
+                i.vec_display_foreign_type_to_string()
+            }, OneErrorEnum :: VecErrorOccurence(i) =>
+            {
+                use crate :: traits :: error_logs_logic ::
+                vec_to_string_with_config_to_string ::
+                VecToStringWithConfigToString ;
+                i.vec_to_string_with_config_to_string(config)
+            }, OneErrorEnum :: HashMapKeyToStringValueToString(i) =>
+            {
+                use crate :: traits :: error_logs_logic ::
+                hashmap_display_display_to_string ::
+                HashmapDisplayDisplayToString ;
+                i.hashmap_display_display_to_string()
+            }, OneErrorEnum :: HashMapKeyToStringValueDisplayForeignType(i) =>
+            {
+                use crate :: traits :: error_logs_logic ::
+                hashmap_display_display_foreign_type_to_string ::
+                HashMapDisplayDisplayForeignTypeToString ;
+                i.hashmap_display_display_foreign_type_to_string()
+            }, OneErrorEnum :: HashMapKeyToStringValueErrorOccurence(i) =>
+            {
+                use crate :: traits :: error_logs_logic ::
+                hashmap_display_to_string_with_config_to_string ::
+                HashMapDisplayToStringWithConfigToString ;
+                i.hashmap_display_to_string_with_config_to_string(config)
+            }, OneErrorEnum :: HashMapKeyDisplayForeignTypeValueToString(i) =>
+            {
+                use crate :: traits :: error_logs_logic ::
+                hashmap_display_foreign_type_display_to_string ::
+                HashMapDisplayForeignTypeDisplayToString ;
+                i.hashmap_display_foreign_type_display_to_string()
+            }, OneErrorEnum ::
+            HashMapKeyDisplayForeignTypeValueDisplayForeignType(i) =>
+            {
+                use crate :: traits :: error_logs_logic ::
+                hashmap_display_foreign_type_display_foreign_type_to_string ::
+                HashMapDisplayForeignTypeDisplayForeignTypeToString ;
+                i.hashmap_display_foreign_type_display_foreign_type_to_string()
+            }, OneErrorEnum ::
+            HashMapKeyDisplayForeignTypeValueErrorOccurence(i) =>
+            {
+                use crate :: traits :: error_logs_logic ::
+                hashmap_display_foreign_type_to_string_with_config_to_string
+                :: HashMapDisplayForeignTypeToStringWithConfigToString ;
+                i.hashmap_display_foreign_type_to_string_with_config_to_string(config)
+            }
+        }
+    }
+}
+impl<'error_occurence_proc_macro_reserved_lifetime_name, 'a>
+    crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig<
+        'error_occurence_proc_macro_reserved_lifetime_name,
+    > for OneErrorEnum<'a>
+{
+    fn to_string_without_config(&self) -> String {
+        match self {
+            OneErrorEnum::ToString(i) => i.to_string(),
+            OneErrorEnum::ToStringLifetime(i) => i.to_string(),
+            OneErrorEnum::DisplayForeignType(i) => {
+                use crate::traits::display_foreign_type::DisplayForeignType;
+                i.display_foreign_type().to_string()
+            }
+            OneErrorEnum::DisplayForeignTypeLifeTime(i) => {
+                use crate::traits::display_foreign_type::DisplayForeignType;
+                i.display_foreign_type().to_string()
+            }
+            OneErrorEnum::ErrorOccurence(i) => i.to_string_without_config(),
+            OneErrorEnum::VecToString(i) => {
+                use crate::traits::error_logs_logic::vec_display_to_string::VecDisplayToString;
+                i.vec_display_to_string()
+            }
+            OneErrorEnum::VecDisplayForeignType(i) => {
+                use crate::traits::error_logs_logic::vec_display_foreign_type_to_string::VecDisplayForeignTypeToString;
+                i.vec_display_foreign_type_to_string()
+            }
+            OneErrorEnum::VecErrorOccurence(i) => {
+                use crate::traits::error_logs_logic::vec_to_string_without_config_to_string::VecToStringWithoutConfigToString;
+                i.vec_to_string_without_config_to_string()
+            }
+            OneErrorEnum::HashMapKeyToStringValueToString(i) => {
+                use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
+                i.hashmap_display_display_to_string()
+            }
+            OneErrorEnum::HashMapKeyToStringValueDisplayForeignType(i) => {
+                use crate :: traits :: error_logs_logic ::
+                hashmap_display_display_foreign_type_to_string ::
+                HashMapDisplayDisplayForeignTypeToString ;
+                i.hashmap_display_display_foreign_type_to_string()
+            }
+            OneErrorEnum::HashMapKeyToStringValueErrorOccurence(i) => {
+                use crate :: traits :: error_logs_logic ::
+                hashmap_display_to_string_without_config_to_string ::
+                HashmapDisplayToStringWithoutConfigToString ;
+                i.hashmap_display_to_string_without_config_to_string()
+            }
+            OneErrorEnum::HashMapKeyDisplayForeignTypeValueToString(i) => {
+                use crate :: traits :: error_logs_logic ::
+                hashmap_display_foreign_type_display_to_string ::
+                HashMapDisplayForeignTypeDisplayToString ;
+                i.hashmap_display_foreign_type_display_to_string()
+            }
+            OneErrorEnum::HashMapKeyDisplayForeignTypeValueDisplayForeignType(i) => {
+                use crate :: traits :: error_logs_logic ::
+                hashmap_display_foreign_type_display_foreign_type_to_string ::
+                HashMapDisplayForeignTypeDisplayForeignTypeToString ;
+                i.hashmap_display_foreign_type_display_foreign_type_to_string()
+            }
+            OneErrorEnum::HashMapKeyDisplayForeignTypeValueErrorOccurence(i) => {
+                use crate :: traits :: error_logs_logic ::
+                hashmap_display_foreign_type_to_string_without_config_to_string
+                :: HashMapDisplayForeignTypeToStringWithoutConfigToString ;
+                i.hashmap_display_foreign_type_to_string_without_config_to_string()
+            }
+        }
+    }
+}
+#[derive(Debug, thiserror :: Error, serde :: Serialize, serde :: Deserialize)]
+pub enum OneErrorEnumWithDeserialize<'a> {
+    ToString(crate::dev::Omegalul),
+    #[serde(borrow)]
+    ToStringLifetime(crate::dev::OmegalulLifetime<'a>),
+    DisplayForeignType(&'static str),
+    DisplayForeignTypeLifeTime(&'static str),
+    #[serde(borrow)]
+    ErrorOccurence(crate::dev::SevenErrorWithDeserialize<'a>),
+    VecToString(std::vec::Vec<crate::dev::Omegalul>),
+    VecDisplayForeignType(std::vec::Vec<&'static str>),
+    VecErrorOccurence(std::vec::Vec<crate::dev::SevenErrorWithDeserialize<'a>>),
+    HashMapKeyToStringValueToString(
+        std::collections::HashMap<crate::dev::Omegalul, crate::dev::Omegalul>,
+    ),
+    HashMapKeyToStringValueDisplayForeignType(
+        std::collections::HashMap<crate::dev::Omegalul, &'static str>,
+    ),
+    HashMapKeyToStringValueErrorOccurence(
+        std::collections::HashMap<crate::dev::Omegalul, crate::dev::SevenErrorWithDeserialize<'a>>,
+    ),
+    HashMapKeyDisplayForeignTypeValueToString(
+        std::collections::HashMap<&'static str, crate::dev::Omegalul>,
+    ),
+    HashMapKeyDisplayForeignTypeValueDisplayForeignType(
+        std::collections::HashMap<&'static str, &'static str>,
+    ),
+    HashMapKeyDisplayForeignTypeValueErrorOccurence(
+        std::collections::HashMap<&'static str, crate::dev::SevenErrorWithDeserialize<'a>>,
+    ),
+}
+impl<'error_occurence_proc_macro_reserved_lifetime_name, 'a>
+    crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize<
+        'error_occurence_proc_macro_reserved_lifetime_name,
+    > for OneErrorEnumWithDeserialize<'a>
+{
+    fn to_string_without_config_with_deserialize(&self) -> String {
+        match self {
+            OneErrorEnumWithDeserialize::ToString(i) => i.to_string(),
+            OneErrorEnumWithDeserialize::ToStringLifetime(i) => i.to_string(),
+            OneErrorEnumWithDeserialize::DisplayForeignType(i) => i.to_string(),
+            OneErrorEnumWithDeserialize::DisplayForeignTypeLifeTime(i) => i.to_string(),
+            OneErrorEnumWithDeserialize::ErrorOccurence(i) => {
+                i.to_string_without_config_with_deserialize()
+            }
+            OneErrorEnumWithDeserialize::VecToString(i) => {
+                use crate::traits::error_logs_logic::vec_display_to_string::VecDisplayToString;
+                i.vec_display_to_string()
+            }
+            OneErrorEnumWithDeserialize::VecDisplayForeignType(i) => {
+                use crate::traits::error_logs_logic::vec_display_to_string::VecDisplayToString;
+                i.vec_display_to_string()
+            }
+            OneErrorEnumWithDeserialize::VecErrorOccurence(i) => {
+                use crate::traits::error_logs_logic::vec_to_string_without_config_to_string::VecToStringWithoutConfigToStringWithDeserialize;
+                i.vec_to_string_without_config_to_string_with_deserialize()
+            }
+            OneErrorEnumWithDeserialize::HashMapKeyToStringValueToString(i) => {
+                use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
+                i.hashmap_display_display_to_string()
+            }
+            OneErrorEnumWithDeserialize::HashMapKeyToStringValueDisplayForeignType(i) => {
+                use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
+                i.hashmap_display_display_to_string()
+            }
+            OneErrorEnumWithDeserialize::HashMapKeyToStringValueErrorOccurence(i) => {
+                use crate :: traits :: error_logs_logic ::
+                hashmap_display_to_string_without_config_to_string ::
+                HashmapDisplayToStringWithoutConfigToStringWithDeserialize ;
+                i.hashmap_display_to_string_without_config_to_string_with_deserialize()
+            }
+            OneErrorEnumWithDeserialize::HashMapKeyDisplayForeignTypeValueToString(i) => {
+                use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
+                i.hashmap_display_display_to_string()
+            }
+            OneErrorEnumWithDeserialize::HashMapKeyDisplayForeignTypeValueDisplayForeignType(i) => {
+                use crate::traits::error_logs_logic::hashmap_display_display_to_string::HashmapDisplayDisplayToString;
+                i.hashmap_display_display_to_string()
+            }
+            OneErrorEnumWithDeserialize::HashMapKeyDisplayForeignTypeValueErrorOccurence(i) => {
+                use crate :: traits :: error_logs_logic ::
+                hashmap_display_to_string_without_config_to_string ::
+                HashmapDisplayToStringWithoutConfigToStringWithDeserialize ;
+                i.hashmap_display_to_string_without_config_to_string_with_deserialize()
+            }
+        }
+    }
+}
+impl<'a> OneErrorEnum<'a> {
+    pub fn into_serialize_deserialize_version(self) -> OneErrorEnumWithDeserialize<'a> {
+        match self {
+            OneErrorEnum::ToString(i) => OneErrorEnumWithDeserialize::ToString(i),
+            OneErrorEnum::ToStringLifetime(i) => OneErrorEnumWithDeserialize::ToStringLifetime(i),
+            OneErrorEnum::DisplayForeignType(i) => {
+                OneErrorEnumWithDeserialize::DisplayForeignType({
+                    use crate::traits::display_foreign_type::DisplayForeignType;
+                    i.display_foreign_type()
+                })
+            }
+            OneErrorEnum::DisplayForeignTypeLifeTime(i) => {
+                OneErrorEnumWithDeserialize::DisplayForeignTypeLifeTime({
+                    use crate::traits::display_foreign_type::DisplayForeignType;
+                    i.display_foreign_type()
+                })
+            }
+            OneErrorEnum::ErrorOccurence(i) => {
+                OneErrorEnumWithDeserialize::ErrorOccurence(i.into_serialize_deserialize_version())
+            }
+            OneErrorEnum::VecToString(i) => OneErrorEnumWithDeserialize::VecToString(i),
+            OneErrorEnum::VecDisplayForeignType(i) => {
+                OneErrorEnumWithDeserialize::VecDisplayForeignType({
+                    use crate::traits::error_logs_logic::vec_display_foreign_type_into_vec_string::VecDisplayForeignTypeIntoVecString;
+                    i.vec_display_foreign_type_into_vec_string()
+                })
+            }
+            OneErrorEnum::VecErrorOccurence(i) => OneErrorEnumWithDeserialize::VecErrorOccurence({
+                i.into_iter()
+                    .map(|e| e.into_serialize_deserialize_version())
+                    .collect()
+            }),
+            OneErrorEnum::HashMapKeyToStringValueToString(i) => {
+                OneErrorEnumWithDeserialize::HashMapKeyToStringValueToString(i)
+            }
+            OneErrorEnum::HashMapKeyToStringValueDisplayForeignType(i) => {
+                OneErrorEnumWithDeserialize::HashMapKeyToStringValueDisplayForeignType({
+                    use crate :: traits :: error_logs_logic ::
+                    hashmap_display_display_foreign_type_into_hashmap_display_string
+                    :: HashmapDisplayDisplayForeignTypeIntoHashmapDisplayString
+                    ;
+                    i.hashmap_display_display_foreign_type_into_hashmap_display_string()
+                })
+            }
+            OneErrorEnum::HashMapKeyToStringValueErrorOccurence(i) => {
+                OneErrorEnumWithDeserialize::HashMapKeyToStringValueErrorOccurence({
+                    i.into_iter()
+                        .map(|(k, v)| (k, v.into_serialize_deserialize_version()))
+                        .collect()
+                })
+            }
+            OneErrorEnum::HashMapKeyDisplayForeignTypeValueToString(i) => {
+                OneErrorEnumWithDeserialize::HashMapKeyDisplayForeignTypeValueToString({
+                    use crate :: traits :: error_logs_logic ::
+                    hashmap_display_foreign_type_display_into_hashmap_string_display
+                    :: HashmapDisplayForeignTypeDisplayIntoHashMapStringDisplay
+                    ;
+                    i.hashmap_display_foreign_type_display_into_hashmap_string_display()
+                })
+            }
+            OneErrorEnum::HashMapKeyDisplayForeignTypeValueDisplayForeignType(i) => {
+                OneErrorEnumWithDeserialize::HashMapKeyDisplayForeignTypeValueDisplayForeignType({
+                    use crate :: traits :: error_logs_logic ::
+                    hashmap_display_foreign_type_display_foreign_type_into_hashmap_string_string
+                    ::
+                    HashmapDisplayForeignTypeDisplayForeignTypeIntoHashMapStringString
+                    ;
+                    i.hashmap_display_foreign_type_display_foreign_type_into_hashmap_string_string()
+                })
+            }
+            OneErrorEnum::HashMapKeyDisplayForeignTypeValueErrorOccurence(i) => {
+                OneErrorEnumWithDeserialize::HashMapKeyDisplayForeignTypeValueErrorOccurence({
+                    i.into_iter()
+                        .map(|(k, v)| {
+                            use crate::traits::display_foreign_type::DisplayForeignType;
+                            (
+                                k.display_foreign_type(),
+                                v.into_serialize_deserialize_version(),
+                            )
+                        })
+                        .collect()
+                })
+            }
+        }
+    }
+}
+impl<'a> std::fmt::Display for OneErrorEnum<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
+        write!(f, "{}", self.to_string_without_config())
+    }
+}
+impl<'a> std::fmt::Display for OneErrorEnumWithDeserialize<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
+        write!(f, "{}", self.to_string_without_config_with_deserialize())
+    }
+}
 
 // impl <'error_occurence_proc_macro_reserved_lifetime_name, 'a, ConfigGeneric,>
 //     crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithConfig<'error_occurence_proc_macro_reserved_lifetime_name, ConfigGeneric,>
