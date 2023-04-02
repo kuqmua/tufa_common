@@ -141,6 +141,9 @@ pub fn named<'a>() -> Result<(), Box<NamedError<'a>>> {
                 code_occurence: crate::code_occurence_tufa_common!(),
             },
         )]),
+        ag: vec![OneErrorEnum::HashMapKeyToStringValueToString(
+            std::collections::HashMap::from([(crate::dev::Omegalul {}, crate::dev::Omegalul {})]),
+        )],
         code_occurence: crate::code_occurence_tufa_common!(),
     }));
 }
@@ -1341,6 +1344,7 @@ pub enum NamedError<'a> {
         ad: std::collections::HashMap<crate::dev::Kekw, crate::dev::SevenError<'a>>,
         // #[hashmap_key_display_foreign_type_value_error_occurence]
         af: std::collections::HashMap<crate::dev::KekwLifetime<'a>, crate::dev::SevenError<'a>>,
+        ag: std::vec::Vec<OneErrorEnum<'a>>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
@@ -1388,6 +1392,7 @@ where
                 ac: _unused_argument_27,
                 ad: _unused_argument_28,
                 af: _unused_argument_29,
+                ag: _unused_argument_30,
                 code_occurence: _unused_code_occurence_argument,
             } => {
                 use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig;
@@ -1434,10 +1439,11 @@ impl<'a>
                 ac,
                 ad,
                 af,
+                ag,
                 code_occurence: _unused_code_occurence_argument,
             } => {
                 format!(
-                    "{{\n{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}}}",
+                    "{{\n{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}}}",
                     {
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
                         a.lines_space_backslash()
@@ -1609,6 +1615,12 @@ impl<'a>
                         af.hashmap_display_foreign_type_to_string_without_config_to_string()
                             .lines_space_backslash()
                     },
+                    {
+                        use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
+                        use crate::traits::error_logs_logic::vec_to_string_without_config_to_string::VecToStringWithoutConfigToString;
+                        ag.vec_to_string_without_config_to_string()
+                            .lines_space_backslash()
+                    }
                 )
             }
         }
@@ -1650,6 +1662,7 @@ impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'
                 ac: _unused_argument_27,
                 ad: _unused_argument_28,
                 af: _unused_argument_29,
+                ag: _unused_argument_30,
                 code_occurence,
             } => code_occurence,
         }
@@ -1719,6 +1732,8 @@ pub enum NamedErrorWithDeserialize<'a> {
             crate::dev::SevenErrorWithDeserialize<'a>,
         >,
         #[serde(borrow)]
+        ag: std::vec::Vec<crate::dev::OneErrorEnumWithDeserialize<'a>>,
+        #[serde(borrow)]
         code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize<'a>,
     },
 }
@@ -1760,10 +1775,11 @@ impl<'a>
                 ac,
                 ad,
                 af,
+                ag,
                 code_occurence: _unused_code_occurence_argument,
             } => {
                 format!(
-                    "{{\n{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}}}",
+                    "{{\n{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}}}",
                     {
                         use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
                         a.lines_space_backslash()
@@ -1932,6 +1948,12 @@ impl<'a>
                         af.hashmap_display_to_string_without_config_to_string_with_deserialize()
                             .lines_space_backslash()
                     },
+                    {
+                        use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
+                        use crate::traits::error_logs_logic::vec_to_string_without_config_to_string::VecToStringWithoutConfigToStringWithDeserialize;
+                        ag.vec_to_string_without_config_to_string_with_deserialize()
+                            .lines_space_backslash()
+                    },
                 )
             }
         }
@@ -1975,6 +1997,7 @@ impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWi
                 ac: _unused_argument_27,
                 ad: _unused_argument_28,
                 af: _unused_argument_29,
+                ag: _unused_argument_30,
                 code_occurence,
             } => code_occurence,
         }
@@ -2014,6 +2037,7 @@ impl<'a> NamedError<'a> {
                 ac,
                 ad,
                 af,
+                ag,
                 code_occurence,
             } => NamedErrorWithDeserialize::Something {
                 a: { a },
@@ -2131,6 +2155,11 @@ impl<'a> NamedError<'a> {
                                 { v.into_serialize_deserialize_version() },
                             )
                         })
+                        .collect()
+                },
+                ag: {
+                    ag.into_iter()
+                        .map(|i| i.into_serialize_deserialize_version())
                         .collect()
                 },
                 code_occurence: code_occurence.into_serialize_deserialize_version(),
