@@ -34,6 +34,7 @@ uuid = {version = "0.8", features = ["v4", "serde"]}
 hostname = "0.3.1"
 sqlx = {version = "0.5", default-features = false, features = ["postgres", "runtime-actix-rustls", "macros", "uuid", "chrono", "migrate", "offline"]}
 
+compile_time_check_line_break = {path = "../proc_macros/compile_time_check_line_break"}
 compile_time_git_info = {path = "../proc_macros/compile_time_git_info"}
 enum_extension = {path = "../proc_macros/enum_extension"}
 error_display = {path = "../proc_macros/error_display"}
