@@ -1,92 +1,16 @@
-// use crate::traits::display_foreign_type;
-
-#[derive(Debug, thiserror::Error)] //error_occurence::ImplErrorOccurence
+#[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)] //, error_occurence::ImplErrorOccurence
 pub enum TestError<'a> {
     Something {
-        // #[error_occurence]
+        #[error_occurence_no_sd_lifetime]
         error: TestEnumError<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
 
-#[derive(Debug, thiserror::Error)] //error_occurence::ImplErrorOccurence
+#[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)] //, error_occurence::ImplErrorOccurence
 pub enum TestEnumError<'a> {
-    // #[display_foreign_type]
+    #[display_foreign_type]
     Something(crate::dev::KekwLifetime<'a>),
-}
-
-impl < 'error_occurence_proc_macro_reserved_lifetime_name, 'a, ConfigGeneric,
-> crate :: traits :: error_logs_logic :: to_string_with_config ::
-ToStringWithConfigForSourceToStringWithConfig <
-'error_occurence_proc_macro_reserved_lifetime_name, ConfigGeneric, > for
-TestEnumError < 'a, > where ConfigGeneric : crate :: traits :: fields ::
-GetSourcePlaceType + crate :: traits :: fields :: GetTimezone + crate ::
-traits :: get_server_address :: GetServerAddress,
-{
-    fn
-    to_string_with_config_for_source_to_string_with_config(& self, config : &
-    ConfigGeneric) -> String
-    {
-        match self
-        {
-            TestEnumError :: Something(i) =>
-            {
-                use crate :: traits :: display_foreign_type ::
-                DisplayForeignType ; i.display_foreign_type().to_string()
-            }
-        }
-    }
-}
-impl<'error_occurence_proc_macro_reserved_lifetime_name, 'a>
-    crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig<
-        'error_occurence_proc_macro_reserved_lifetime_name,
-    > for TestEnumError<'a>
-{
-    fn to_string_without_config(&self) -> String {
-        match self {
-            TestEnumError::Something(i) => {
-                use crate::traits::display_foreign_type::DisplayForeignType;
-                i.display_foreign_type().to_string()
-            }
-        }
-    }
-}
-#[derive(Debug, thiserror :: Error, serde :: Serialize, serde :: Deserialize)]
-pub enum TestEnumErrorWithDeserialize {
-    Something(String),
-}
-impl<'error_occurence_proc_macro_reserved_lifetime_name>
-    crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize<
-        'error_occurence_proc_macro_reserved_lifetime_name,
-    > for TestEnumErrorWithDeserialize
-{
-    fn to_string_without_config_with_deserialize(&self) -> String {
-        match self {
-            TestEnumErrorWithDeserialize::Something(i) => i.to_string(),
-        }
-    }
-}
-impl<'a> TestEnumError<'a> {
-    pub fn into_serialize_deserialize_version(self) -> TestEnumErrorWithDeserialize {
-        match self {
-            TestEnumError::Something(i) => TestEnumErrorWithDeserialize::Something({
-                use crate::traits::display_foreign_type::DisplayForeignType;
-                i.display_foreign_type().to_string()
-            }),
-        }
-    }
-}
-impl<'a> std::fmt::Display for TestEnumError<'a> {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-        write!(f, "{}", self.to_string_without_config())
-    }
-}
-impl std::fmt::Display for TestEnumErrorWithDeserialize {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
-        write!(f, "{}", self.to_string_without_config_with_deserialize())
-    }
 }
 
 pub fn test_fn<'a>() -> Result<(), Box<TestError<'a>>> {
@@ -98,21 +22,24 @@ pub fn test_fn<'a>() -> Result<(), Box<TestError<'a>>> {
     }));
 }
 
+//todo different lifetimes support for named case(unnamed done - see how)
+//todo reserved lifetime name - do somthing with it
+//todo deal with &'static str in case of Deserialize -> String
 pub fn dev() {
-    if let Err(e) = test_fn() {
-        println!("{}", *e);
-        use crate::traits::error_logs_logic::error_log::ErrorLog;
-        e.error_log(once_cell::sync::Lazy::force(
-            //todo - this must be call once on start of the program
-            &crate::global_variables::runtime::config::CONFIG,
-        ));
-        let ed = e.into_serialize_deserialize_version();
-        println!("{ed}");
-        let xs = serde_json::to_string(&ed).unwrap();
-        println!("serializes into string {}", xs);
-        let xd: TestErrorWithDeserialize = serde_json::from_str(&xs).unwrap();
-        println!("after deserialize \n{xd}");
-    }
+    // if let Err(e) = test_fn() {
+    //     println!("{}", *e);
+    //     use crate::traits::error_logs_logic::error_log::ErrorLog;
+    //     e.error_log(once_cell::sync::Lazy::force(
+    //         //todo - this must be call once on start of the program
+    //         &crate::global_variables::runtime::config::CONFIG,
+    //     ));
+    //     let ed = e.into_serialize_deserialize_version();
+    //     println!("{ed}");
+    //     let xs = serde_json::to_string(&ed).unwrap();
+    //     println!("serializes into string {}", xs);
+    //     let xd: TestErrorWithDeserialize = serde_json::from_str(&xs).unwrap();
+    //     println!("after deserialize \n{xd}");
+    // }
     // if let Err(e) = named() {
 
     //     // println!("{}", *e);
@@ -135,138 +62,6 @@ pub fn dev() {
     // }
 }
 
-impl<'a, ConfigGeneric>
-    crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
-        'a,
-        ConfigGeneric,
-    > for TestError<'a>
-where
-    ConfigGeneric: crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
-{
-    fn source_to_string_with_config(&self, config: &ConfigGeneric) -> String {
-        match self {
-            TestError::Something {
-                error: _unused_argument_0,
-                code_occurence: _unused_argument_1,
-            } => {
-                use crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig;
-                self.source_to_string_without_config()
-            }
-        }
-    }
-}
-impl<'a>
-    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
-        'a,
-    > for TestError<'a>
-{
-    fn source_to_string_without_config(&self) -> String {
-        match self {
-            TestError::Something {
-                error,
-                code_occurence: _unused_argument_1,
-            } => {
-                format!(
-                    "{{
-{}}}",
-                    {
-                        use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-                        error.to_string_without_config().lines_space_backslash()
-                    }
-                )
-            }
-        }
-    }
-}
-impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>
-    for TestError<'a>
-{
-    fn get_code_occurence(&self) -> &crate::common::code_occurence::CodeOccurence<'a> {
-        match self {
-            TestError::Something {
-                error: _unused_argument_0,
-                code_occurence,
-            } => code_occurence,
-        }
-    }
-}
-#[derive(Debug, thiserror :: Error, serde :: Serialize, serde :: Deserialize)]
-pub enum TestErrorWithDeserialize<'a> {
-    Something {
-        // #[serde(borrow)]
-        error: TestEnumErrorWithDeserialize,
-        #[serde(borrow)]
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithDeserialize<'a>,
-    },
-}
-impl<'a>
-    crate::traits::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<
-        'a,
-    > for TestErrorWithDeserialize<'a>
-{
-    fn source_to_string_without_config(&self) -> String {
-        match self {
-            TestErrorWithDeserialize::Something {
-                error,
-                code_occurence: _unused_argument_1,
-            } => {
-                format!(
-                    "{{
-{}}}",
-                    {
-                        use crate::traits::error_logs_logic::lines_space_backslash::LinesSpaceBackslash;
-                        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
-                        error
-                            .to_string_without_config_with_deserialize()
-                            .lines_space_backslash()
-                    }
-                )
-            }
-        }
-    }
-}
-impl<'a> crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurenceWithDeserialize<'a>
-    for TestErrorWithDeserialize<'a>
-{
-    fn get_code_occurence_with_deserialize(
-        &self,
-    ) -> &crate::common::code_occurence::CodeOccurenceWithDeserialize<'a> {
-        match self {
-            TestErrorWithDeserialize::Something {
-                error: _unused_argument_0,
-                code_occurence,
-            } => code_occurence,
-        }
-    }
-}
-impl<'a> TestError<'a> {
-    pub fn into_serialize_deserialize_version(self) -> TestErrorWithDeserialize<'a> {
-        match self {
-            TestError::Something {
-                error,
-                code_occurence,
-            } => TestErrorWithDeserialize::Something {
-                error: { error.into_serialize_deserialize_version() },
-                code_occurence: code_occurence.into_serialize_deserialize_version(),
-            },
-        }
-    }
-}
-impl<'a> std::fmt::Display for TestError<'a> {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig;
-        write!(f, "{}", self.to_string_without_config())
-    }
-}
-impl<'a> std::fmt::Display for TestErrorWithDeserialize<'a> {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize;
-        write!(f, "{}", self.to_string_without_config_with_deserialize())
-    }
-}
 //////////////////////////////////////////
 
 // pub fn named<'a>() -> Result<(), Box<NamedError<'a>>> {
