@@ -21,7 +21,7 @@ pub mod source_to_string_without_config;
 pub mod test;
 pub mod to_string_with_config;
 pub mod to_string_without_config;
-pub mod vec_display_foreign_type_into_vec_static_str;
+pub mod vec_display_foreign_type_into_vec_string;
 pub mod vec_display_foreign_type_to_string;
 pub mod vec_display_to_string;
 pub mod vec_to_string_with_config_to_string;
