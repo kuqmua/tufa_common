@@ -33,12 +33,10 @@
 //     }));
 // }
 
-//todo reorder and standart serde_borrow_attribute_handle and rename it in proc_macro
 //todo rename into traits - instead of static_str -> String
 //todo support 'a str and 'static str, bool u32 and other types in error occurence fields and variants
 //todo different lifetimes support for named case(unnamed done - see how)
 //todo reserved lifetime name - do somthing with it
-//todo deal with &'static str in case of Deserialize -> String
 pub fn dev() {
     // if let Err(e) = test_fn() {
     //     println!("{}", *e);
