@@ -1,18 +1,18 @@
-pub trait HashmapDisplayForeignTypeDisplayIntoHashMapStaticStrDisplay<HashMapValueGeneric> {
-    fn hashmap_display_foreign_type_display_into_hashmap_static_str_display(
+pub trait HashmapDisplayForeignTypeDisplayIntoHashMapStringDisplay<HashMapValueGeneric> {
+    fn hashmap_display_foreign_type_display_into_hashmap_string_display(
         self,
     ) -> std::collections::HashMap<String, HashMapValueGeneric>;
 }
 
 impl<HashMapKeyGeneric, HashMapValueGeneric>
-    HashmapDisplayForeignTypeDisplayIntoHashMapStaticStrDisplay<HashMapValueGeneric>
+    HashmapDisplayForeignTypeDisplayIntoHashMapStringDisplay<HashMapValueGeneric>
     for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
 where
     HashMapKeyGeneric:
         crate::traits::display_foreign_type::DisplayForeignType + std::cmp::Eq + std::hash::Hash,
     HashMapValueGeneric: std::fmt::Display,
 {
-    fn hashmap_display_foreign_type_display_into_hashmap_static_str_display(
+    fn hashmap_display_foreign_type_display_into_hashmap_string_display(
         self,
     ) -> std::collections::HashMap<String, HashMapValueGeneric> {
         self.into_iter()
