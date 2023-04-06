@@ -33,6 +33,7 @@
 //     }));
 // }
 
+//todo supported container check for all attributes
 //todo rename into traits - instead of static_str -> String
 //todo support 'a str and 'static str, bool u32 and other types in error occurence fields and variants
 //todo different lifetimes support for named case(unnamed done - see how)
