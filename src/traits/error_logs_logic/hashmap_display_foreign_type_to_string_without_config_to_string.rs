@@ -25,26 +25,26 @@ where
     }
 }
 
-pub trait HashMapToStringDisplayForeignTypeToStringWithoutConfigWithDeserialize<'a> {
-    fn hashmap_to_string_display_foreign_type_to_string_without_config_with_deserialize(
+pub trait HashMapToStringDisplayForeignTypeToStringWithoutConfigWithSerializeDeserialize<'a> {
+    fn hashmap_to_string_display_foreign_type_to_string_without_config_with_serialize_deserialize(
         &self,
     ) -> String;
 }
 
 impl<'a, HashMapKeyGeneric, HashMapValueGeneric>
-    HashMapToStringDisplayForeignTypeToStringWithoutConfigWithDeserialize<'a>
+    HashMapToStringDisplayForeignTypeToStringWithoutConfigWithSerializeDeserialize<'a>
     for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
 where
     HashMapKeyGeneric: crate::traits::display_foreign_type::DisplayForeignType,
     HashMapValueGeneric:
-        crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize<'a>,
+        crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithSerializeDeserialize<'a>,
 {
-    fn hashmap_to_string_display_foreign_type_to_string_without_config_with_deserialize(&self) -> String {
+    fn hashmap_to_string_display_foreign_type_to_string_without_config_with_serialize_deserialize(&self) -> String {
         let mut stringified = self.iter().fold(String::from(""), |mut acc, (key, value)| {
             acc.push_str(
                 &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
                     key.display_foreign_type(),
-                    value.to_string_without_config_with_deserialize(),
+                    value.to_string_without_config_with_serialize_deserialize(),
                 ),
             );
             acc

@@ -66,11 +66,11 @@ where
     }
 }
 
-pub trait CodeOccurencePrepareForLogWithoutConfigWithDeserialize {
-    fn code_occurence_prepare_for_log_without_config_with_deserialize(&self) -> String;
+pub trait CodeOccurencePrepareForLogWithoutConfigWithSerializeDeserialize {
+    fn code_occurence_prepare_for_log_without_config_with_serialize_deserialize(&self) -> String;
 }
 
-impl<'a, SelfGeneric> CodeOccurencePrepareForLogWithoutConfigWithDeserialize for SelfGeneric
+impl<'a, SelfGeneric> CodeOccurencePrepareForLogWithoutConfigWithSerializeDeserialize for SelfGeneric
 where
     SelfGeneric: crate::traits::fields::GetFile
         + crate::traits::fields::GetLine
@@ -81,7 +81,7 @@ where
         + crate::traits::get_hostname::GetHostname
         + crate::traits::get_process_id::GetProcessId,
 {
-    fn code_occurence_prepare_for_log_without_config_with_deserialize(&self) -> String {
+    fn code_occurence_prepare_for_log_without_config_with_serialize_deserialize(&self) -> String {
         use crate::traits::error_logs_logic::form_error_path::FormErrorPathGithub;
         format!(
             "{} {} {} pid: {}",

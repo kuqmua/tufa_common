@@ -22,24 +22,24 @@ where
     }
 }
 
-pub trait VecToStringWithoutConfigToStringWithDeserialize<'a> {
-    fn vec_to_string_without_config_to_string_with_deserialize(&self) -> String;
+pub trait VecToStringWithoutConfigToStringWithSerializeDeserialize<'a> {
+    fn vec_to_string_without_config_to_string_with_serialize_deserialize(&self) -> String;
 }
 
-impl<'a, VecElementGeneric> VecToStringWithoutConfigToStringWithDeserialize<'a> for Vec<VecElementGeneric>
+impl<'a, VecElementGeneric> VecToStringWithoutConfigToStringWithSerializeDeserialize<'a> for Vec<VecElementGeneric>
 where
     VecElementGeneric:
-        crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithDeserialize<
+        crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithSerializeDeserialize<
             'a,
         >,
 {
-    fn vec_to_string_without_config_to_string_with_deserialize(&self) -> String {
+    fn vec_to_string_without_config_to_string_with_serialize_deserialize(&self) -> String {
         crate::traits::error_logs_logic::helpers::stringified_lines_error_vec(self.iter().fold(
             String::from(""),
             |mut acc, vec_element| {
                 acc.push_str(
                     &crate::traits::error_logs_logic::helpers::lines_space_backslash_addition(
-                        vec_element.to_string_without_config_with_deserialize(),
+                        vec_element.to_string_without_config_with_serialize_deserialize(),
                     ),
                 );
                 acc
