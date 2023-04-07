@@ -2,10 +2,10 @@
 // pub enum TestError<'a> {
 //     Something {
 //         //todo - add here 'a str and 'static str
-//         // #[display]
-//         #[display_foreign_type]
+//         // #[eo_display]
+//         #[eo_display_foreign_type]
 //         lft_str: crate::dev::KekwLifetime<'a>,
-//         #[error_occurence_no_sd_lifetime]
+//         #[eo_error_occurence_no_sd_lifetime]
 //         error: TestEnumError<'a>,
 //         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
 //     },
@@ -13,7 +13,7 @@
 
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //, error_occurence::ErrorOccurence
 // pub enum TestEnumError<'a> {
-//     #[display_foreign_type]
+//     #[eo_display_foreign_type]
 //     Something(crate::dev::KekwLifetime<'a>),
 // }
 
@@ -33,6 +33,7 @@
 //     }));
 // }
 
+//todo - check if OneErrorEnum works without lifetimes decl
 //todo support 'a str and 'static str, bool u32 and other types in error occurence fields and variants
 //todo different lifetimes support for named case(unnamed done - see how)
 //todo reserved lifetime name - do somthing with it
@@ -205,7 +206,7 @@ pub fn dev() {
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //, error_occurence::ErrorOccurence
 pub enum SevenError<'a> {
     Something {
-        #[display]
+        #[eo_display]
         error: String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
@@ -253,43 +254,43 @@ impl<'a> std::fmt::Display for OmegalulLifetime<'a> {
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //, error_occurence::ErrorOccurence
 pub enum OneErrorEnum<'a> {
-    #[display]
+    #[eo_display]
     ToString(crate::dev::Omegalul),
-    #[display]
+    #[eo_display]
     ToStringLifetime(crate::dev::OmegalulLifetime<'a>),
-    #[display_foreign_type]
+    #[eo_display_foreign_type]
     DisplayForeignType(crate::dev::Kekw),
-    #[display_foreign_type]
+    #[eo_display_foreign_type]
     DisplayForeignTypeLifeTime(crate::dev::KekwLifetime<'a>),
-    #[error_occurence_sd_lifetime]
+    #[eo_error_occurence_sd_lifetime]
     ErrorOccurence(crate::dev::SevenError<'a>),
-    #[vec_display]
+    #[eo_vec_display]
     VecToString(std::vec::Vec<crate::dev::Omegalul>),
-    #[vec_display_foreign_type]
+    #[eo_vec_display_foreign_type]
     VecDisplayForeignType(std::vec::Vec<crate::dev::Kekw>),
-    #[vec_error_occurence_sd_lifetime]
+    #[eo_vec_error_occurence_sd_lifetime]
     VecErrorOccurence(std::vec::Vec<crate::dev::SevenError<'a>>),
-    #[hashmap_key_display_value_display]
+    #[eo_hashmap_key_display_value_display]
     HashMapKeyToStringValueToString(
         std::collections::HashMap<crate::dev::Omegalul, crate::dev::Omegalul>,
     ),
-    #[hashmap_key_display_value_display_foreign_type]
+    #[eo_hashmap_key_display_value_display_foreign_type]
     HashMapKeyToStringValueDisplayForeignType(
         std::collections::HashMap<crate::dev::Omegalul, crate::dev::Kekw>,
     ),
-    #[hashmap_key_display_value_error_occurence_sd_lifetime]
+    #[eo_hashmap_key_display_value_error_occurence_sd_lifetime]
     HashMapKeyToStringValueErrorOccurence(
         std::collections::HashMap<crate::dev::Omegalul, crate::dev::SevenError<'a>>,
     ),
-    #[hashmap_key_display_foreign_type_value_display]
+    #[eo_hashmap_key_display_foreign_type_value_display]
     HashMapKeyDisplayForeignTypeValueToString(
         std::collections::HashMap<crate::dev::Kekw, crate::dev::Omegalul>,
     ),
-    #[hashmap_key_display_foreign_type_value_display_foreign_type]
+    #[eo_hashmap_key_display_foreign_type_value_display_foreign_type]
     HashMapKeyDisplayForeignTypeValueDisplayForeignType(
         std::collections::HashMap<crate::dev::Kekw, crate::dev::Kekw>,
     ),
-    #[hashmap_key_display_foreign_type_value_error_occurence_sd_lifetime]
+    #[eo_hashmap_key_display_foreign_type_value_error_occurence_sd_lifetime]
     HashMapKeyDisplayForeignTypeValueErrorOccurence(
         std::collections::HashMap<crate::dev::Kekw, crate::dev::SevenError<'a>>,
     ),
@@ -298,76 +299,76 @@ pub enum OneErrorEnum<'a> {
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum NamedError<'a> {
     Something {
-        #[display]
+        #[eo_display]
         a: crate::dev::Omegalul,
-        #[display]
+        #[eo_display]
         b: crate::dev::OmegalulLifetime<'a>,
-        #[display_foreign_type]
+        #[eo_display_foreign_type]
         c: crate::dev::Kekw,
-        #[display_foreign_type]
+        #[eo_display_foreign_type]
         d: crate::dev::KekwLifetime<'a>,
-        #[error_occurence_sd_lifetime]
+        #[eo_error_occurence_sd_lifetime]
         e: crate::dev::SevenError<'a>,
-        #[vec_display]
+        #[eo_vec_display]
         f: std::vec::Vec<crate::dev::Omegalul>,
-        #[vec_display]
+        #[eo_vec_display]
         g: std::vec::Vec<crate::dev::OmegalulLifetime<'a>>,
-        #[vec_display_foreign_type]
+        #[eo_vec_display_foreign_type]
         h: std::vec::Vec<crate::dev::Kekw>,
-        #[vec_display_foreign_type]
+        #[eo_vec_display_foreign_type]
         j: std::vec::Vec<crate::dev::KekwLifetime<'a>>,
-        #[vec_error_occurence_sd_lifetime]
+        #[eo_vec_error_occurence_sd_lifetime]
         k: std::vec::Vec<crate::dev::SevenError<'a>>,
-        #[hashmap_key_display_value_display]
+        #[eo_hashmap_key_display_value_display]
         l: std::collections::HashMap<crate::dev::Omegalul, crate::dev::Omegalul>,
-        #[hashmap_key_display_value_display]
+        #[eo_hashmap_key_display_value_display]
         m: std::collections::HashMap<crate::dev::Omegalul, crate::dev::OmegalulLifetime<'a>>,
-        #[hashmap_key_display_value_display]
+        #[eo_hashmap_key_display_value_display]
         n: std::collections::HashMap<crate::dev::OmegalulLifetime<'a>, crate::dev::Omegalul>,
-        #[hashmap_key_display_value_display]
+        #[eo_hashmap_key_display_value_display]
         o: std::collections::HashMap<
             crate::dev::OmegalulLifetime<'a>,
             crate::dev::OmegalulLifetime<'a>,
         >,
-        #[hashmap_key_display_value_display_foreign_type]
+        #[eo_hashmap_key_display_value_display_foreign_type]
         p: std::collections::HashMap<crate::dev::Omegalul, crate::dev::Kekw>,
-        #[hashmap_key_display_value_display_foreign_type]
+        #[eo_hashmap_key_display_value_display_foreign_type]
         q: std::collections::HashMap<crate::dev::Omegalul, crate::dev::KekwLifetime<'a>>,
-        #[hashmap_key_display_value_display_foreign_type]
+        #[eo_hashmap_key_display_value_display_foreign_type]
         r: std::collections::HashMap<crate::dev::OmegalulLifetime<'a>, crate::dev::Kekw>,
-        #[hashmap_key_display_value_display_foreign_type]
+        #[eo_hashmap_key_display_value_display_foreign_type]
         s: std::collections::HashMap<
             crate::dev::OmegalulLifetime<'a>,
             crate::dev::KekwLifetime<'a>,
         >,
-        #[hashmap_key_display_value_error_occurence_sd_lifetime]
+        #[eo_hashmap_key_display_value_error_occurence_sd_lifetime]
         t: std::collections::HashMap<crate::dev::Omegalul, crate::dev::SevenError<'a>>,
-        #[hashmap_key_display_value_error_occurence_sd_lifetime]
+        #[eo_hashmap_key_display_value_error_occurence_sd_lifetime]
         u: std::collections::HashMap<crate::dev::OmegalulLifetime<'a>, crate::dev::SevenError<'a>>,
-        #[hashmap_key_display_foreign_type_value_display]
+        #[eo_hashmap_key_display_foreign_type_value_display]
         v: std::collections::HashMap<crate::dev::Kekw, crate::dev::Omegalul>,
-        #[hashmap_key_display_foreign_type_value_display]
+        #[eo_hashmap_key_display_foreign_type_value_display]
         w: std::collections::HashMap<crate::dev::Kekw, crate::dev::OmegalulLifetime<'a>>,
-        #[hashmap_key_display_foreign_type_value_display]
+        #[eo_hashmap_key_display_foreign_type_value_display]
         x: std::collections::HashMap<crate::dev::KekwLifetime<'a>, crate::dev::Omegalul>,
-        #[hashmap_key_display_foreign_type_value_display]
+        #[eo_hashmap_key_display_foreign_type_value_display]
         y: std::collections::HashMap<
             crate::dev::KekwLifetime<'a>,
             crate::dev::OmegalulLifetime<'a>,
         >,
-        #[hashmap_key_display_foreign_type_value_display_foreign_type]
+        #[eo_hashmap_key_display_foreign_type_value_display_foreign_type]
         z: std::collections::HashMap<crate::dev::Kekw, crate::dev::Kekw>,
-        #[hashmap_key_display_foreign_type_value_display_foreign_type]
+        #[eo_hashmap_key_display_foreign_type_value_display_foreign_type]
         aa: std::collections::HashMap<crate::dev::Kekw, crate::dev::KekwLifetime<'a>>,
-        #[hashmap_key_display_foreign_type_value_display_foreign_type]
+        #[eo_hashmap_key_display_foreign_type_value_display_foreign_type]
         ab: std::collections::HashMap<crate::dev::KekwLifetime<'a>, crate::dev::Kekw>,
-        #[hashmap_key_display_foreign_type_value_display_foreign_type]
+        #[eo_hashmap_key_display_foreign_type_value_display_foreign_type]
         ac: std::collections::HashMap<crate::dev::KekwLifetime<'a>, crate::dev::KekwLifetime<'a>>,
-        #[hashmap_key_display_foreign_type_value_error_occurence_sd_lifetime]
+        #[eo_hashmap_key_display_foreign_type_value_error_occurence_sd_lifetime]
         ad: std::collections::HashMap<crate::dev::Kekw, crate::dev::SevenError<'a>>,
-        #[hashmap_key_display_foreign_type_value_error_occurence_sd_lifetime]
+        #[eo_hashmap_key_display_foreign_type_value_error_occurence_sd_lifetime]
         af: std::collections::HashMap<crate::dev::KekwLifetime<'a>, crate::dev::SevenError<'a>>,
-        #[vec_error_occurence_sd_lifetime]
+        #[eo_vec_error_occurence_sd_lifetime]
         ag: std::vec::Vec<OneErrorEnum<'a>>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
