@@ -1,4 +1,4 @@
-// #[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)] //, error_occurence::ImplErrorOccurence
+// #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //, error_occurence::ErrorOccurence
 // pub enum TestError<'a> {
 //     Something {
 //         //todo - add here 'a str and 'static str
@@ -11,7 +11,7 @@
 //     },
 // }
 
-// #[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)] //, error_occurence::ImplErrorOccurence
+// #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //, error_occurence::ErrorOccurence
 // pub enum TestEnumError<'a> {
 //     #[display_foreign_type]
 //     Something(crate::dev::KekwLifetime<'a>),
@@ -202,7 +202,7 @@ pub fn dev() {
 //     }));
 // }
 
-#[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)] //, error_occurence::ImplErrorOccurence
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //, error_occurence::ErrorOccurence
 pub enum SevenError<'a> {
     Something {
         #[display]
@@ -251,7 +251,7 @@ impl<'a> std::fmt::Display for OmegalulLifetime<'a> {
     }
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)] //, error_occurence::ImplErrorOccurence
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //, error_occurence::ErrorOccurence
 pub enum OneErrorEnum<'a> {
     #[display]
     ToString(crate::dev::Omegalul),
@@ -295,7 +295,7 @@ pub enum OneErrorEnum<'a> {
     ),
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)]
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum NamedError<'a> {
     Something {
         #[display]
