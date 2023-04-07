@@ -1,57 +1,57 @@
-// #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //, error_occurence::ErrorOccurence
-// pub enum TestError<'a> {
-//     Something {
-//         //todo - add here 'a str and 'static str
-//         // #[eo_display]
-//         #[eo_display_foreign_type]
-//         lft_str: crate::dev::KekwLifetime<'a>,
-//         #[eo_error_occurence_no_sd_lifetime]
-//         error: TestEnumError<'a>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-//     },
-// }
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //, error_occurence::ErrorOccurence
+pub enum TestError<'a> {
+    Something {
+        //todo - add here 'a str and 'static str
+        // #[eo_display]
+        #[eo_display_foreign_type]
+        lft_str: crate::dev::KekwLifetime<'a>,
+        #[eo_error_occurence_no_sd_lifetime]
+        error: TestEnumError<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
 
-// #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //, error_occurence::ErrorOccurence
-// pub enum TestEnumError<'a> {
-//     #[eo_display_foreign_type]
-//     Something(crate::dev::KekwLifetime<'a>),
-// }
-
-////
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //, error_occurence::ErrorOccurence
+pub enum TestEnumError<'a> {
+    #[eo_display_foreign_type]
+    Something(crate::dev::KekwLifetime<'a>),
+}
 
 ////
 
-// pub fn test_fn<'a>() -> Result<(), Box<TestError<'a>>> {
-//     return Err(Box::new(TestError::Something {
-//         lft_str: crate::dev::KekwLifetime {
-//             s: "kekwlifetimeinners",
-//         },
-//         error: TestEnumError::Something(crate::dev::KekwLifetime {
-//             s: "kekwlifetimeinners",
-//         }),
-//         code_occurence: crate::code_occurence_tufa_common!(),
-//     }));
-// }
+////
+
+pub fn test_fn<'a>() -> Result<(), Box<TestError<'a>>> {
+    return Err(Box::new(TestError::Something {
+        lft_str: crate::dev::KekwLifetime {
+            s: "kekwlifetimeinners",
+        },
+        error: TestEnumError::Something(crate::dev::KekwLifetime {
+            s: "kekwlifetimeinners",
+        }),
+        code_occurence: crate::code_occurence_tufa_common!(),
+    }));
+}
 
 //todo - check if OneErrorEnum works without lifetimes decl
 //todo support 'a str and 'static str, bool u32 and other types in error occurence fields and variants
 //todo different lifetimes support for named case(unnamed done - see how)
 //todo reserved lifetime name - do somthing with it
 pub fn dev() {
-    // if let Err(e) = test_fn() {
-    //     println!("{}", *e);
-    //     use crate::traits::error_logs_logic::error_log::ErrorLog;
-    //     e.error_log(once_cell::sync::Lazy::force(
-    //         //todo - this must be call once on start of the program
-    //         &crate::global_variables::runtime::config::CONFIG,
-    //     ));
-    //     let ed = e.into_serialize_deserialize_version();
-    //     println!("{ed}");
-    //     let xs = serde_json::to_string(&ed).unwrap();
-    //     println!("serializes into string {}", xs);
-    //     let xd: TestErrorWithDeserialize = serde_json::from_str(&xs).unwrap();
-    //     println!("after deserialize \n{xd}");
-    // }
+    if let Err(e) = test_fn() {
+        println!("{}", *e);
+        use crate::traits::error_logs_logic::error_log::ErrorLog;
+        e.error_log(once_cell::sync::Lazy::force(
+            //todo - this must be call once on start of the program
+            &crate::global_variables::runtime::config::CONFIG,
+        ));
+        let ed = e.into_serialize_deserialize_version();
+        println!("{ed}");
+        let xs = serde_json::to_string(&ed).unwrap();
+        println!("serializes into string {}", xs);
+        let xd: TestErrorWithSerializeDeserialize = serde_json::from_str(&xs).unwrap();
+        println!("after deserialize \n{xd}");
+    }
     // if let Err(e) = named() {
 
     //     // println!("{}", *e);
