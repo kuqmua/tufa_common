@@ -76,7 +76,7 @@ pub fn dev() {
 
 //////////////////////////////////////////
 
-pub fn named<'a, 'b>() -> Result<(), Box<NamedError<'a, 'b>>> {
+pub fn named<'a, 'b>() -> Result<(), Box<NamedError<'a, 'b>>> {//, 'b//, 'b
     return Err(Box::new(NamedError::Something {
         a: crate::dev::Omegalul {},
         b: crate::dev::OmegalulLifetime {
@@ -104,6 +104,7 @@ pub fn named<'a, 'b>() -> Result<(), Box<NamedError<'a, 'b>>> {
             },
             code_occurence: crate::code_occurence_tufa_common!(),
         }],
+        //////////////////////////////////``
         // l: std::collections::HashMap::from([(crate::dev::Omegalul {}, crate::dev::Omegalul {})]),
         // m: std::collections::HashMap::from([(
         //     crate::dev::Omegalul {},
@@ -164,6 +165,7 @@ pub fn named<'a, 'b>() -> Result<(), Box<NamedError<'a, 'b>>> {
         //         code_occurence: crate::code_occurence_tufa_common!(),
         //     },
         // )]),
+        ////////////////////////////////
         v: std::collections::HashMap::from([(crate::dev::Kekw {}, crate::dev::Omegalul {})]),
         w: std::collections::HashMap::from([(
             crate::dev::Kekw {},
@@ -227,6 +229,11 @@ pub fn named<'a, 'b>() -> Result<(), Box<NamedError<'a, 'b>>> {
             crate::dev::Omegalul {},
         )]),
         ai: "aiaiaiaiaiaiaai",
+        ak: std::collections::HashMap::from([(
+            "akakakaakakakakakak",
+            crate::dev::Omegalul {},
+        )]),
+        al: vec!["first_vec_elem, second_vec_elem"],
         code_occurence: crate::code_occurence_tufa_common!(),
     }));
 }
@@ -333,7 +340,7 @@ pub enum OneErrorEnum<'a, 'b> {
 ////////////////
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum NamedError<'a, 'b> {//
+pub enum NamedError<'a, 'b> {//, 'b
     Something {
         #[eo_display]
         a: crate::dev::Omegalul,
@@ -355,6 +362,7 @@ pub enum NamedError<'a, 'b> {//
         j: std::vec::Vec<crate::dev::KekwLifetime<'a>>,
         #[eo_vec_error_occurence_sd_lifetime]
         k: std::vec::Vec<crate::dev::SevenError<'a, 'b>>,
+        //////////////////////////////
         // #[eo_hashmap_key_display_value_display]
         // l: std::collections::HashMap<crate::dev::Omegalul, crate::dev::Omegalul>,
         // #[eo_hashmap_key_display_value_display]
@@ -381,6 +389,7 @@ pub enum NamedError<'a, 'b> {//
         // t: std::collections::HashMap<crate::dev::Omegalul, crate::dev::SevenError<'a, 'b>>,
         // #[eo_hashmap_key_display_value_error_occurence_sd_lifetime]
         // u: std::collections::HashMap<crate::dev::OmegalulLifetime<'a>, crate::dev::SevenError<'a, 'b>>,
+        ///////////////////////////////
         #[eo_hashmap_key_display_foreign_type_value_display]
         v: std::collections::HashMap<crate::dev::Kekw, crate::dev::Omegalul>,
         #[eo_hashmap_key_display_foreign_type_value_display]
@@ -410,6 +419,10 @@ pub enum NamedError<'a, 'b> {//
         ah: std::collections::HashMap<crate::dev::KekwLifetime<'a>, crate::dev::Omegalul>,
         #[eo_display]
         ai: &'a str,
+        #[eo_hashmap_key_display_value_display]
+        ak: std::collections::HashMap<&'a str, crate::dev::Omegalul>,
+        #[eo_vec_display]
+        al: std::vec::Vec<&'a str>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
