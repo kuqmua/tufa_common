@@ -226,6 +226,7 @@ pub fn named<'a, 'b>() -> Result<(), Box<NamedError<'a, 'b>>> {
             crate::dev::KekwLifetime { s: "kekwlifetime" },
             crate::dev::Omegalul {},
         )]),
+        ai: "aiaiaiaiaiaiaai",
         code_occurence: crate::code_occurence_tufa_common!(),
     }));
 }
@@ -407,6 +408,8 @@ pub enum NamedError<'a, 'b> {//
         ag: std::vec::Vec<OneErrorEnum<'a, 'b>>,
         #[eo_hashmap_key_display_foreign_type_value_display]
         ah: std::collections::HashMap<crate::dev::KekwLifetime<'a>, crate::dev::Omegalul>,
+        #[eo_display]
+        ai: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
