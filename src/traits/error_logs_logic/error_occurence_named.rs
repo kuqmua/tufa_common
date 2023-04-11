@@ -1,1 +1,3 @@
-pub trait ErrorOccurenceNamed {}
+pub trait ErrorOccurenceNamed {
+    fn error_occurence_named(&self) -> ();
+}

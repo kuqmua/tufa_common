@@ -27,4 +27,4 @@ pub mod vec_display_to_string;
 pub mod vec_to_string_with_config_to_string;
 pub mod vec_to_string_without_config_to_string;
 pub mod error_occurence_named;
-pub mod error_occurence_unnnamed;
+pub mod error_occurence_unnamed;
