@@ -436,25 +436,10 @@ pub enum OneNamed<'a> {
         first: crate::dev::OneUnnamed<'a>,
         #[eo_error_occurence_sd_lifetime]
         second: crate::dev::TwoUnnamed<'a>,
-        #[eo_vec_error_occurence_sd_lifetime]
-        three: std::vec::Vec<crate::dev::OneUnnamed<'a>>,
+        // #[eo_vec_error_occurence_sd_lifetime]
+        // three: std::vec::Vec<crate::dev::OneUnnamed<'a>>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-}
-
-impl<'a> OneNamed<'a> {
-    fn check_error_occurence_members(&self) {
-        match self {
-            OneNamed::Something { first, second, three, code_occurence: _code_occurence } => {
-                use crate::traits::error_logs_logic::error_occurence_unnamed::ErrorOccurenceUnnamed;
-                first.error_occurence_unnamed();
-                second.error_occurence_unnamed();
-                three.iter().for_each(|i|{
-                    i.error_occurence_unnamed();
-                });
-            },
-        }
-    }
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //, error_occurence::ErrorOccurence
@@ -463,16 +448,7 @@ pub enum OneUnnamed<'a> {
     ErrorOccurence(crate::dev::TwoNamed<'a>),//only named
 }
 
-// impl<'a> OneUnnamed<'a> {
-//     fn check_error_occurence_members(&self) {
-//         match self {
-//             OneUnnamed::ErrorOccurence(i) => {
-//                 use crate::traits::error_logs_logic::error_occurence_named::ErrorOccurenceNamed;
-//                 i.error_occurence_named();
-//             },
-//         }
-//     }
-// }
+
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TwoNamed<'a> {
@@ -483,30 +459,11 @@ pub enum TwoNamed<'a> {
     },
 }
 
-impl<'a> TwoNamed<'a> {
-    fn check_error_occurence_members(&self) {
-        match self {
-            TwoNamed::Something { original: _original, code_occurence: _code_occurence } => {},
-        }
-    }
-}
-
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //, error_occurence::ErrorOccurence
 pub enum TwoUnnamed<'a> {
     #[eo_error_occurence_sd_lifetime]
     ErrorOccurence(crate::dev::ThreeNamed<'a>),//only named
 }
-
-// impl<'a> TwoUnnamed<'a> {
-//     fn check_error_occurence_members(&self) {
-//         match self {
-//             TwoUnnamed::ErrorOccurence(i) => {
-//                 use crate::traits::error_logs_logic::error_occurence_named::ErrorOccurenceNamed;
-//                 i.error_occurence_named();
-//             },
-//         }
-//     }
-// }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum ThreeNamed<'a> {
@@ -517,10 +474,4 @@ pub enum ThreeNamed<'a> {
     },
 }
 
-impl<'a> ThreeNamed<'a> {
-    fn check_error_occurence_members(&self) {
-        match self {
-            ThreeNamed::Something { original: _original, code_occurence: _code_occurence } => {},
-        }
-    }
-}
+//
