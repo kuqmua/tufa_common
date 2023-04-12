@@ -463,16 +463,16 @@ pub enum OneUnnamed<'a> {
     ErrorOccurence(crate::dev::TwoNamed<'a>),//only named
 }
 
-impl<'a> OneUnnamed<'a> {
-    fn check_error_occurence_members(&self) {
-        match self {
-            OneUnnamed::ErrorOccurence(i) => {
-                use crate::traits::error_logs_logic::error_occurence_named::ErrorOccurenceNamed;
-                i.error_occurence_named();
-            },
-        }
-    }
-}
+// impl<'a> OneUnnamed<'a> {
+//     fn check_error_occurence_members(&self) {
+//         match self {
+//             OneUnnamed::ErrorOccurence(i) => {
+//                 use crate::traits::error_logs_logic::error_occurence_named::ErrorOccurenceNamed;
+//                 i.error_occurence_named();
+//             },
+//         }
+//     }
+// }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TwoNamed<'a> {
@@ -497,16 +497,16 @@ pub enum TwoUnnamed<'a> {
     ErrorOccurence(crate::dev::ThreeNamed<'a>),//only named
 }
 
-impl<'a> TwoUnnamed<'a> {
-    fn check_error_occurence_members(&self) {
-        match self {
-            TwoUnnamed::ErrorOccurence(i) => {
-                use crate::traits::error_logs_logic::error_occurence_named::ErrorOccurenceNamed;
-                i.error_occurence_named();
-            },
-        }
-    }
-}
+// impl<'a> TwoUnnamed<'a> {
+//     fn check_error_occurence_members(&self) {
+//         match self {
+//             TwoUnnamed::ErrorOccurence(i) => {
+//                 use crate::traits::error_logs_logic::error_occurence_named::ErrorOccurenceNamed;
+//                 i.error_occurence_named();
+//             },
+//         }
+//     }
+// }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum ThreeNamed<'a> {
