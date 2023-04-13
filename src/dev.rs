@@ -169,7 +169,7 @@ pub fn named<'a, 'b>() -> Result<(), Box<NamedError<'a, 'b>>> {
         //         code_occurence: crate::code_occurence_tufa_common!(),
         //     },
         // )]),
-        ////////////////////////////////
+        //////////////////////////////
         v: std::collections::HashMap::from([(crate::dev::Kekw {}, crate::dev::Omegalul {})]),
         w: std::collections::HashMap::from([(
             crate::dev::Kekw {},
@@ -241,7 +241,7 @@ pub fn named<'a, 'b>() -> Result<(), Box<NamedError<'a, 'b>>> {
             "akakakaakakakakakak",
             crate::dev::Omegalul {},
         )]),
-        al: vec!["first_vec_elem, second_vec_elem"],
+        al: vec!["first_vec_elem", "second_vec_elem"],
         code_occurence: crate::code_occurence_tufa_common!(),
     }));
 }
@@ -354,7 +354,7 @@ pub enum OneErrorEnum<'a, 'b> {
 // ////////////////
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum NamedError<'a, 'b> {//, 'b
+pub enum NamedError<'a, 'b> {//
     Something {
         #[eo_display]
         a: crate::dev::Omegalul,
@@ -440,8 +440,6 @@ pub enum NamedError<'a, 'b> {//, 'b
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
-
-//
 
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 // pub enum OneNamed<'a> {
