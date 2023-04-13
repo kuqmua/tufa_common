@@ -438,6 +438,8 @@ pub enum OneNamed<'a> {
         second: crate::dev::TwoUnnamed<'a>,
         // #[eo_vec_error_occurence_sd_lifetime]
         // three: std::vec::Vec<crate::dev::OneUnnamed<'a>>,
+        #[eo_hashmap_key_display_foreign_type_value_error_occurence_sd_lifetime]
+        af: std::collections::HashMap<crate::dev::KekwLifetime<'a>, OneUnnamed<'a>>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
