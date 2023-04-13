@@ -76,7 +76,7 @@ pub fn dev() {
 
 //////////////////////////////////////////
 
-pub fn named<'a, 'b>() -> Result<(), Box<NamedError<'a, 'b>>> {
+pub fn named<'a>() -> Result<(), Box<NamedError<'a>>> {
     return Err(Box::new(NamedError::Something {
         a: crate::dev::Omegalul {},
         b: crate::dev::OmegalulLifetime {
@@ -247,20 +247,20 @@ pub fn named<'a, 'b>() -> Result<(), Box<NamedError<'a, 'b>>> {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //, error_occurence::ErrorOccurence
-pub enum SevenError<'a, 'b> {
+pub enum SevenError<'a> {
     Something {
         #[eo_display]
         error: String,
         #[eo_display]
         omega: OmegalulLifetime<'a>,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'b>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum SevenErrorEnum<'a, 'b> {
+pub enum SevenErrorEnum<'a> {
     #[eo_error_occurence_sd_lifetime]
-    Something(crate::dev::SevenError<'a, 'b>),
+    Something(crate::dev::SevenError<'a>),
 }
 
 //////////////////////////
@@ -306,7 +306,7 @@ impl<'a> std::fmt::Display for OmegalulLifetime<'a> {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //, error_occurence::ErrorOccurence
-pub enum OneErrorEnum<'a, 'b> {
+pub enum OneErrorEnum<'a> {
     // #[eo_display]
     // ToString(crate::dev::Omegalul),
     // #[eo_display]
@@ -316,7 +316,7 @@ pub enum OneErrorEnum<'a, 'b> {
     // #[eo_display_foreign_type]
     // DisplayForeignTypeLifeTime(crate::dev::KekwLifetime<'a>),
     #[eo_error_occurence_sd_lifetime]
-    ErrorOccurence(crate::dev::SevenError<'a, 'b>),
+    ErrorOccurence(crate::dev::SevenError<'a>),
     // #[eo_vec_display]
     // VecToString(std::vec::Vec<crate::dev::Omegalul>),
     // #[eo_vec_display_foreign_type]
@@ -354,7 +354,7 @@ pub enum OneErrorEnum<'a, 'b> {
 // ////////////////
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum NamedError<'a, 'b> {//
+pub enum NamedError<'a> {//
     Something {
         #[eo_display]
         a: crate::dev::Omegalul,
@@ -365,7 +365,7 @@ pub enum NamedError<'a, 'b> {//
         #[eo_display_foreign_type]
         d: crate::dev::KekwLifetime<'a>,
         #[eo_error_occurence_sd_lifetime]
-        e: crate::dev::SevenError<'a, 'b>,
+        e: crate::dev::SevenError<'a>,
         #[eo_vec_display]
         f: std::vec::Vec<crate::dev::Omegalul>,
         #[eo_vec_display]
@@ -375,7 +375,7 @@ pub enum NamedError<'a, 'b> {//
         #[eo_vec_display_foreign_type]
         j: std::vec::Vec<crate::dev::KekwLifetime<'a>>,
         #[eo_vec_error_occurence_sd_lifetime]
-        k: std::vec::Vec<crate::dev::SevenErrorEnum<'a, 'b>>,
+        k: std::vec::Vec<crate::dev::SevenErrorEnum<'a>>,
         //////////////////////////////
         // #[eo_hashmap_key_display_value_display]
         // l: std::collections::HashMap<crate::dev::Omegalul, crate::dev::Omegalul>,
@@ -400,9 +400,9 @@ pub enum NamedError<'a, 'b> {//
         //     crate::dev::KekwLifetime<'a>,
         // >,
         // #[eo_hashmap_key_display_value_error_occurence_sd_lifetime]
-        // t: std::collections::HashMap<crate::dev::Omegalul, crate::dev::SevenError<'a, 'b>>,
+        // t: std::collections::HashMap<crate::dev::Omegalul, crate::dev::SevenError<'a>>,
         // #[eo_hashmap_key_display_value_error_occurence_sd_lifetime]
-        // u: std::collections::HashMap<crate::dev::OmegalulLifetime<'a>, crate::dev::SevenError<'a, 'b>>,
+        // u: std::collections::HashMap<crate::dev::OmegalulLifetime<'a>, crate::dev::SevenError<'a>>,
         ///////////////////////////////
         #[eo_hashmap_key_display_foreign_type_value_display]
         v: std::collections::HashMap<crate::dev::Kekw, crate::dev::Omegalul>,
@@ -424,11 +424,11 @@ pub enum NamedError<'a, 'b> {//
         #[eo_hashmap_key_display_foreign_type_value_display_foreign_type]
         ac: std::collections::HashMap<crate::dev::KekwLifetime<'a>, crate::dev::KekwLifetime<'a>>,
         #[eo_hashmap_key_display_foreign_type_value_error_occurence_sd_lifetime]
-        ad: std::collections::HashMap<crate::dev::Kekw, crate::dev::SevenErrorEnum<'a, 'b>>,
+        ad: std::collections::HashMap<crate::dev::Kekw, crate::dev::SevenErrorEnum<'a>>,
         #[eo_hashmap_key_display_foreign_type_value_error_occurence_sd_lifetime]
-        af: std::collections::HashMap<crate::dev::KekwLifetime<'a>, crate::dev::SevenErrorEnum<'a, 'b>>,
+        af: std::collections::HashMap<crate::dev::KekwLifetime<'a>, crate::dev::SevenErrorEnum<'a>>,
         #[eo_vec_error_occurence_sd_lifetime]
-        ag: std::vec::Vec<OneErrorEnum<'a, 'b>>,
+        ag: std::vec::Vec<OneErrorEnum<'a>>,
         #[eo_hashmap_key_display_foreign_type_value_display]
         ah: std::collections::HashMap<crate::dev::KekwLifetime<'a>, crate::dev::Omegalul>,
         #[eo_display]
