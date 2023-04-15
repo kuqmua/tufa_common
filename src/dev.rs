@@ -315,7 +315,7 @@ pub enum OneErrorEnum<'a> {
     // DisplayForeignType(crate::dev::Kekw),
     // #[eo_display_foreign_type]
     // DisplayForeignTypeLifeTime(crate::dev::KekwLifetime<'a>),
-    #[eo_error_occurence_sd_lifetime]
+    // #[eo_error_occurence_sd_lifetime]
     ErrorOccurence(crate::dev::SevenError<'a>),
     // #[eo_vec_display]
     // VecToString(std::vec::Vec<crate::dev::Omegalul>),
