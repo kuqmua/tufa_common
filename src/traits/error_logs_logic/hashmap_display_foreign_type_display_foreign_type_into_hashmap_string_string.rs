@@ -1,11 +1,11 @@
-pub trait HashmapDisplayForeignTypeDisplayForeignTypeIntoHashMapStringString {
+pub trait HashMapDisplayForeignTypeDisplayForeignTypeIntoHashMapStringString {
     fn hashmap_display_foreign_type_display_foreign_type_into_hashmap_string_string(
         self,
     ) -> std::collections::HashMap<String, String>;
 }
 
 impl<HashMapKeyGeneric, HashMapValueGeneric>
-    HashmapDisplayForeignTypeDisplayForeignTypeIntoHashMapStringString
+    HashMapDisplayForeignTypeDisplayForeignTypeIntoHashMapStringString
     for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
 where
     HashMapKeyGeneric:

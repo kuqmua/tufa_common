@@ -1,8 +1,8 @@
-pub trait HashmapDisplayDisplayToString {
+pub trait HashMapDisplayDisplayToString {
     fn hashmap_display_display_to_string(&self) -> String;
 }
 
-impl<HashMapKeyGeneric, HashMapValueGeneric> HashmapDisplayDisplayToString
+impl<HashMapKeyGeneric, HashMapValueGeneric> HashMapDisplayDisplayToString
     for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
 where
     HashMapKeyGeneric: std::fmt::Display,
