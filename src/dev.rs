@@ -57,20 +57,17 @@ pub fn dev() {
     // }
     if let Err(e) = named() {
         // println!("{}", *e);
-        use crate::traits::error_logs_logic::error_log::ErrorLog;
-        e.error_log(once_cell::sync::Lazy::force(
-            //todo - this must be call once on start of the program
-            &crate::global_variables::runtime::config::CONFIG,
-        ));
-        let ed = e.into_serialize_deserialize_version();
-        println!("{ed}");
-        //todo - 
-// thread 'main' panicked at 'called `Result::unwrap()` on an `Err` value: Error("key must be a string", line: 0, column: 0)', tufa_common/src/dev.rs:68:45
-// note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-        let xs = serde_json::to_string(&ed).unwrap();
-        println!("serializes into string {}", xs);
-        let xd: NamedErrorWithSerializeDeserialize = serde_json::from_str(&xs).unwrap();
-        println!("after deserialize \n{xd}");
+        // use crate::traits::error_logs_logic::error_log::ErrorLog;
+        // e.error_log(once_cell::sync::Lazy::force(
+        //     //todo - this must be call once on start of the program
+        //     &crate::global_variables::runtime::config::CONFIG,
+        // ));
+        // let ed = e.into_serialize_deserialize_version();
+        // println!("{ed}");
+        // let xs = serde_json::to_string(&ed).unwrap();
+        // println!("serializes into string {}", xs);
+        // let xd: NamedErrorWithSerializeDeserialize = serde_json::from_str(&xs).unwrap();
+        // println!("after deserialize \n{xd}");
     }
 }
 
