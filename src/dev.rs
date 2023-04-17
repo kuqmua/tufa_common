@@ -1,45 +1,3 @@
-// #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //, error_occurence::ErrorOccurence
-// pub enum TestError<'a> {
-//     Something {
-//         //todo - add here 'a str and 'static str
-//         // #[eo_display_foreign_type]
-//         // lft_str: crate::dev::KekwLifetime<'a>,
-//         // #[eo_error_occurence_no]
-//         // error: TestEnumError<'a>,
-//         #[eo_display]
-//         network: String,//&'a str
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-//     },
-// }
-
-
-
-// #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //, error_occurence::ErrorOccurence
-// pub enum TestEnumError<'a> {
-//     #[eo_display_foreign_type]
-//     Something(crate::dev::KekwLifetime<'a>),
-// }
-
-////
-
-////
-
-// pub fn test_fn<'a>() -> Result<(), Box<TestError<'a>>> {
-//     return Err(Box::new(TestError::Something {
-//         // lft_str: crate::dev::KekwLifetime {
-//         //     s: "kekwlifetimeinners",
-//         // },
-//         // error: TestEnumError::Something(crate::dev::KekwLifetime {
-//         //     s: "kekwlifetimeinners",
-//         // }),
-//         network: String::from("404 not found"),
-//         code_occurence: crate::code_occurence_tufa_common!(),
-//     }));
-// }
-
-//todo support 'a str and 'static str, bool u32 and other types in error occurence fields and variants
-//todo different lifetimes support for named case(unnamed done - see how)
-//todo reserved lifetime name - do somthing with it
 pub fn dev() {
     // if let Err(e) = test_fn() {
     //     println!("{}", *e);
@@ -56,18 +14,28 @@ pub fn dev() {
     //     println!("after deserialize \n{xd}");
     // }
     if let Err(e) = named() {
-        // println!("{}", *e);
-        // use crate::traits::error_logs_logic::error_log::ErrorLog;
-        // e.error_log(once_cell::sync::Lazy::force(
-        //     //todo - this must be call once on start of the program
-        //     &crate::global_variables::runtime::config::CONFIG,
-        // ));
-        // let ed = e.into_serialize_deserialize_version();
-        // println!("{ed}");
-        // let xs = serde_json::to_string(&ed).unwrap();
-        // println!("serializes into string {}", xs);
-        // let xd: NamedErrorWithSerializeDeserialize = serde_json::from_str(&xs).unwrap();
-        // println!("after deserialize \n{xd}");
+        // println!("---------------------------------------");
+        println!("{}", *e);
+        use crate::traits::error_logs_logic::error_log::ErrorLog;
+        //todo why this happens?
+        // src/tufa_common/src/dev.rs:220:37 2023-04-17 09:57:38 "DESKTOP-S0HUIHS" pid: 4989 
+        //  src/tufa_common/src/dev.rs:229:29 2023-04-17 09:57:38 "DESKTOP-S0HUIHS" pid: 4989
+        // https://github.com/kuqmua/tufa_common/blob/a8724351a9fe20a47a310030825497d624be79c4/src/dev.rs#L242 2023-04-17 09:57:38 "DESKTOP-S0HUIHS" pid: 4989 http://127.0.0.1:8081
+        // println!("---------------------------------------");
+        e.error_log(once_cell::sync::Lazy::force(
+            //todo - this must be call once on start of the program
+            &crate::global_variables::runtime::config::CONFIG,
+        ));
+        // println!("---------------------------------------");
+        let ed = e.into_serialize_deserialize_version();
+        println!("{ed}");
+        // println!("---------------------------------------");
+        let xs = serde_json::to_string(&ed).unwrap();
+        println!("serializes into string {}", xs);
+        println!("---------------------------------------");
+        let xd: NamedErrorWithSerializeDeserialize = serde_json::from_str(&xs).unwrap();
+        println!("after deserialize \n{xd}");
+        println!("---------------------------------------");
     }
 }
 
@@ -254,7 +222,7 @@ pub enum SevenError<'a> {
     },
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]//, error_occurence::ErrorOccurence
 pub enum SevenErrorEnum<'a> {
     #[eo_error_occurence]
     Something(crate::dev::SevenError<'a>),
@@ -346,11 +314,7 @@ pub enum OneErrorEnum<'a> {
     // ),
 }
 
-// ////////////////
-
-// ////////////////
-
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]//, error_occurence::ErrorOccurence
 pub enum NamedError<'a> {//
     Something {
         #[eo_display]
@@ -437,52 +401,4 @@ pub enum NamedError<'a> {//
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
-
-// #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-// pub enum OneNamed<'a> {
-//     Something {
-//         // #[eo_error_occurence]
-//         // first: crate::dev::OneUnnamed<'a>,
-//         // #[eo_error_occurence]
-//         // second: crate::dev::TwoUnnamed<'a>,
-//         #[eo_vec_error_occurence]
-//         three: std::vec::Vec<crate::dev::OneUnnamed<'a>>,
-//         // #[eo_hashmap_key_display_foreign_type_value_error_occurence]
-//         // af: std::collections::HashMap<crate::dev::KekwLifetime<'a>, OneUnnamed<'a>>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-//     },
-// }
-
-// #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //, error_occurence::ErrorOccurence
-// pub enum OneUnnamed<'a> {
-//     #[eo_error_occurence]
-//     ErrorOccurence(crate::dev::TwoNamed<'a>),//only named
-// }
-
-
-
-// #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-// pub enum TwoNamed<'a> {
-//     Something {
-//         #[eo_display]
-//         original: std::string::String,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-//     },
-// }
-
-// #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //, error_occurence::ErrorOccurence
-// pub enum TwoUnnamed<'a> {
-//     #[eo_error_occurence]
-//     ErrorOccurence(crate::dev::ThreeNamed<'a>),//only named
-// }
-
-// #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-// pub enum ThreeNamed<'a> {
-//     Something {
-//         #[eo_display]
-//         original: std::string::String,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-//     },
-// }
-
-//
+//////////////////////////////////////////////
