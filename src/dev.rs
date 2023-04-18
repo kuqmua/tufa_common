@@ -17,10 +17,6 @@ pub fn dev() {
         // println!("---------------------------------------");
         println!("{}", *e);
         use crate::traits::error_logs_logic::error_log::ErrorLog;
-        //todo why this happens?
-        // src/tufa_common/src/dev.rs:220:37 2023-04-17 09:57:38 "DESKTOP-S0HUIHS" pid: 4989 
-        //  src/tufa_common/src/dev.rs:229:29 2023-04-17 09:57:38 "DESKTOP-S0HUIHS" pid: 4989
-        // https://github.com/kuqmua/tufa_common/blob/a8724351a9fe20a47a310030825497d624be79c4/src/dev.rs#L242 2023-04-17 09:57:38 "DESKTOP-S0HUIHS" pid: 4989 http://127.0.0.1:8081
         // println!("---------------------------------------");
         e.error_log(once_cell::sync::Lazy::force(
             //todo - this must be call once on start of the program
