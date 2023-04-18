@@ -6,6 +6,10 @@ macro_rules! code_occurence {
             file!(),
             line!(),
             column!(),
+            {
+                use tufa_common::traits::fields::GetServerPort;
+                *crate::global_variables::runtime::config::CONFIG.get_server_port()
+            }
         )
     }};
 }
@@ -18,6 +22,10 @@ macro_rules! code_occurence_tufa_common {
             file!(),
             line!(),
             column!(),
+            {
+                use crate::traits::fields::GetServerPort;
+                *crate::global_variables::runtime::config::CONFIG.get_server_port()
+            }
         )
     }};
 }

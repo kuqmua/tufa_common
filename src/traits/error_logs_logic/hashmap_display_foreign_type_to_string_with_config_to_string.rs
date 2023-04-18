@@ -17,7 +17,7 @@ where
         >,
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
+        + crate::traits::fields::GetServerPort
 {
     fn hashmap_display_foreign_type_to_string_with_config_to_string(&self, config: &ConfigGeneric) -> String {
         let mut stringified = self.iter().fold(String::from(""), |mut acc, (key, value)| {

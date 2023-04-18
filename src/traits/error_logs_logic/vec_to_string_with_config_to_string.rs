@@ -12,7 +12,6 @@ where
         >,
     ConfigGeneric: crate::traits::fields::GetSourcePlaceType
         + crate::traits::fields::GetTimezone
-        + crate::traits::get_server_address::GetServerAddress,
 {
     fn vec_to_string_with_config_to_string(&self, config: &ConfigGeneric) -> String {
         crate::traits::error_logs_logic::helpers::stringified_lines_error_vec(self.iter().fold(

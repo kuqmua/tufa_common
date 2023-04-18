@@ -5,8 +5,8 @@ pub struct CodeOccurence<'a> {
     column: u32,
     git_info: &'a crate::common::git::git_info::GitInformation<'a>,
     duration: std::time::Duration,
-    hostname: String,
     process_id: u32,
+    server_port: u16,
 }
 
 impl<'a> CodeOccurence<'a> {
@@ -15,6 +15,7 @@ impl<'a> CodeOccurence<'a> {
         file: &'a str,
         line: u32,
         column: u32,
+        server_port: u16,
     ) -> Self {
         Self {
             file,
@@ -24,11 +25,8 @@ impl<'a> CodeOccurence<'a> {
             duration: std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("cannot convert time to unix_epoch"),
-            hostname: match hostname::get() {
-                Ok(os_string) => format!("{os_string:?}"),
-                Err(_) => String::from("\"hostname::get() failed \""),
-            },
             process_id: std::process::id(),
+            server_port,
         }
     }
 }
@@ -63,15 +61,15 @@ impl<'a> crate::traits::get_duration::GetDuration for CodeOccurence<'a> {
     }
 }
 
-impl<'a> crate::traits::get_hostname::GetHostname for CodeOccurence<'a> {
-    fn get_hostname(&self) -> &String {
-        &self.hostname
-    }
-}
-
 impl<'a> crate::traits::get_process_id::GetProcessId for CodeOccurence<'a> {
     fn get_process_id(&self) -> &u32 {
         &self.process_id
+    }
+}
+
+impl<'a> crate::traits::fields::GetServerPort for CodeOccurence<'a> {
+    fn get_server_port(&self) -> &u16 {
+        &self.server_port
     }
 }
 
@@ -102,8 +100,8 @@ impl<'a> CodeOccurence<'a> {
             column: self.column,
             git_info: self.git_info.clone(),
             duration: self.duration,
-            hostname: self.hostname,
             process_id: self.process_id,
+            server_port: self.server_port,
         }
     }
 }
@@ -115,8 +113,8 @@ pub struct CodeOccurenceWithSerializeDeserialize<'a> {
     column: u32,
     git_info: crate::common::git::git_info::GitInformation<'a>,
     duration: std::time::Duration,
-    hostname: String,
     process_id: u32,
+    server_port: u16,
 }
 
 impl<'a> CodeOccurenceWithSerializeDeserialize<'a> {
@@ -125,6 +123,7 @@ impl<'a> CodeOccurenceWithSerializeDeserialize<'a> {
         file: &'a str,
         line: u32,
         column: u32,
+        server_port: u16,
     ) -> Self {
         Self {
             file,
@@ -134,11 +133,8 @@ impl<'a> CodeOccurenceWithSerializeDeserialize<'a> {
             duration: std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("cannot convert time to unix_epoch"),
-            hostname: match hostname::get() {
-                Ok(os_string) => format!("{os_string:?}"),
-                Err(_) => String::from("\"hostname::get() failed \""),
-            },
             process_id: std::process::id(),
+            server_port,
         }
     }
 }
@@ -173,15 +169,15 @@ impl<'a> crate::traits::get_duration::GetDuration for CodeOccurenceWithSerialize
     }
 }
 
-impl<'a> crate::traits::get_hostname::GetHostname for CodeOccurenceWithSerializeDeserialize<'a> {
-    fn get_hostname(&self) -> &String {
-        &self.hostname
-    }
-}
-
 impl<'a> crate::traits::get_process_id::GetProcessId for CodeOccurenceWithSerializeDeserialize<'a> {
     fn get_process_id(&self) -> &u32 {
         &self.process_id
+    }
+}
+
+impl<'a> crate::traits::fields::GetServerPort for CodeOccurenceWithSerializeDeserialize<'a> {
+    fn get_server_port(&self) -> &u16 {
+        &self.server_port
     }
 }
 
