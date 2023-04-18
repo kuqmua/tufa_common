@@ -1,4 +1,4 @@
-#[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)]
+#[derive(Debug)]//, thiserror::Error, error_occurence::ImplErrorOccurence
 pub enum MongoInsertManyOriginError<'a> {
     Mongo {
         inner_errors: std::collections::HashMap<String, MongoInsertManyOriginErrorEnum<'a>>,
@@ -6,12 +6,12 @@ pub enum MongoInsertManyOriginError<'a> {
     },
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)]
+#[derive(Debug)]//, thiserror::Error, error_occurence::ImplErrorOccurence
 pub enum MongoInsertManyOriginErrorEnum<'a> {
     Mongo(MongoInsertManyOriginErrorEnumError<'a>),
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)]
+#[derive(Debug)]//, thiserror::Error, error_occurence::ImplErrorOccurence
 pub enum MongoInsertManyOriginErrorEnumError<'a> {
     Mongo {
         error: mongodb::error::Error,

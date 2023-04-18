@@ -1,4 +1,4 @@
-#[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)]
+#[derive(Debug)]//, thiserror::Error, error_occurence::ImplErrorOccurence
 pub enum MongoCheckCollectionIsNotEmptyError<'a> {
     Mongo {
         inner_errors:
@@ -7,13 +7,13 @@ pub enum MongoCheckCollectionIsNotEmptyError<'a> {
     },
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)]
+#[derive(Debug)]//, thiserror::Error, error_occurence::ImplErrorOccurence
 pub enum MongoCheckCollectionIsNotEmptyErrorEnum<'a> {
     CountDocumentsOrigin(MongoCheckCollectionIsNotEmptyErrorEnumCountDocuments<'a>),
     IsNotEmptyOrigin(MongoCheckCollectionIsNotEmptyErrorEnumIsNotEmptyOrigin<'a>),
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)]
+#[derive(Debug)]//, thiserror::Error, error_occurence::ImplErrorOccurence
 pub enum MongoCheckCollectionIsNotEmptyErrorEnumCountDocuments<'a> {
     CountDocuments {
         error: mongodb::error::Error,
@@ -21,7 +21,7 @@ pub enum MongoCheckCollectionIsNotEmptyErrorEnumCountDocuments<'a> {
     },
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ImplErrorOccurence)]
+#[derive(Debug)]//, thiserror::Error, error_occurence::ImplErrorOccurence
 pub enum MongoCheckCollectionIsNotEmptyErrorEnumIsNotEmptyOrigin<'a> {
     IsNotEmptyOrigin {
         error: u64,
