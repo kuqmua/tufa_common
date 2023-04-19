@@ -11,17 +11,3 @@ pub enum InitSubcriberErrorEnum<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
-
-impl crate::traits::display_foreign_type::DisplayForeignType
-    for tracing::dispatcher::SetGlobalDefaultError
-{
-    fn display_foreign_type(&self) -> &'static str {
-        "SetGlobalDefaultError"
-    }
-}
-
-impl crate::traits::display_foreign_type::DisplayForeignType for tracing::log::SetLoggerError {
-    fn display_foreign_type(&self) -> &'static str {
-        "SetLoggerError"
-    }
-}

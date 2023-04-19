@@ -232,8 +232,8 @@ pub struct KekwLifetime<'a> {
 }
 
 impl<'a> crate::traits::display_foreign_type::DisplayForeignType for KekwLifetime<'a> {
-    fn display_foreign_type(&self) -> &'static str {
-        "kekwlifetime"
+    fn display_foreign_type(&self) -> String {
+        String::from("kekwlifetime")
     }
 }
 
@@ -241,8 +241,8 @@ impl<'a> crate::traits::display_foreign_type::DisplayForeignType for KekwLifetim
 pub struct Kekw {}
 
 impl crate::traits::display_foreign_type::DisplayForeignType for Kekw {
-    fn display_foreign_type(&self) -> &'static str {
-        "kekw"
+    fn display_foreign_type(&self) -> String {
+        String::from("kekw")
     }
 }
 
