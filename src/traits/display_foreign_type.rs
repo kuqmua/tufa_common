@@ -5,22 +5,22 @@ pub trait DisplayForeignType {
 impl crate::traits::display_foreign_type::DisplayForeignType for sqlx::Error {
     fn display_foreign_type(&self) -> String {
         match self {
-            sqlx::Error::Configuration(_) => String::from("sqlx::Error::Configuration"),
-            sqlx::Error::Database(_) => String::from("sqlx::Error::Database"),
-            sqlx::Error::Io(_) => String::from("sqlx::Error::Io"),
-            sqlx::Error::Tls(_) => String::from("sqlx::Error::Tls"),
-            sqlx::Error::Protocol(_) => String::from("sqlx::Error::Protocol"),
-            sqlx::Error::RowNotFound => String::from("sqlx::Error::RowNotFound"),
-            sqlx::Error::TypeNotFound { type_name } => String::from("sqlx::Error::TypeNotFound"),
-            sqlx::Error::ColumnIndexOutOfBounds { index, len } => String::from("sqlx::Error::ColumnIndexOutOfBounds"),
-            sqlx::Error::ColumnNotFound(_) => String::from("sqlx::Error::ColumnNotFound"),
-            sqlx::Error::ColumnDecode { index, source } => String::from("sqlx::Error::ColumnDecode"),
-            sqlx::Error::Decode(_) => String::from("sqlx::Error::Decode"),
-            sqlx::Error::PoolTimedOut => String::from("sqlx::Error::PoolTimedOut"),
-            sqlx::Error::PoolClosed => String::from("sqlx::Error::PoolClosed"),
-            sqlx::Error::WorkerCrashed => String::from("sqlx::Error::WorkerCrashed"),
-            sqlx::Error::Migrate(_) => String::from("sqlx::Error::Migrate"),
-            _ => String::from("unknown sqlx::Error"),
+            sqlx::Error::Configuration(e) => format!("sqlx::Error::Configuration({e})"),
+            sqlx::Error::Database(e) => format!("sqlx::Error::Database({e})"),
+            sqlx::Error::Io(e) => format!("sqlx::Error::Io({e})"),
+            sqlx::Error::Tls(e) => format!("sqlx::Error::Tls({e})"),
+            sqlx::Error::Protocol(e) => format!("sqlx::Error::Protocol({e})"),
+            sqlx::Error::RowNotFound => format!("sqlx::Error::RowNotFound"),
+            sqlx::Error::TypeNotFound { type_name } => format!("sqlx::Error::TypeNotFound{{type_name: {type_name}}}"),
+            sqlx::Error::ColumnIndexOutOfBounds { index, len } => format!("sqlx::Error::ColumnIndexOutOfBounds{{index: {index}, len: {len}}}"),
+            sqlx::Error::ColumnNotFound(e) => format!("sqlx::Error::ColumnNotFound({e})"),
+            sqlx::Error::ColumnDecode { index, source } => format!("sqlx::Error::ColumnDecode{{index: {index}, source: {source}}}"),
+            sqlx::Error::Decode(e) => format!("sqlx::Error::Decode({e})"),
+            sqlx::Error::PoolTimedOut => format!("sqlx::Error::PoolTimedOut"),
+            sqlx::Error::PoolClosed => format!("sqlx::Error::PoolClosed"),
+            sqlx::Error::WorkerCrashed => format!("sqlx::Error::WorkerCrashed"),
+            sqlx::Error::Migrate(e) => format!("sqlx::Error::Migrate({e})"),
+            i => format!("sqlx::Error (default case) {i}"),
         }
     }
 }
