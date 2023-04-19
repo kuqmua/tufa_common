@@ -3,6 +3,7 @@ pub trait DisplayForeignType {
 }
 
 use crate::global_variables::hardcode::CRATES_IO_SLASH_CRATES_SLASH_LINK;
+use crate::global_variables::hardcode::NON_EXHAUSTIVE;
 
 impl crate::traits::display_foreign_type::DisplayForeignType for sqlx::Error {
     fn display_foreign_type(&self) -> String {
@@ -23,7 +24,7 @@ impl crate::traits::display_foreign_type::DisplayForeignType for sqlx::Error {
             sqlx::Error::PoolClosed => format!("sqlx::Error::PoolClosed {link_to_crate}"),
             sqlx::Error::WorkerCrashed => format!("sqlx::Error::WorkerCrashed {link_to_crate}"),
             sqlx::Error::Migrate(e) => format!("sqlx::Error::Migrate({e}) {link_to_crate}"),
-            e => format!("sqlx::Error (default case) {e} {link_to_crate}"),
+            e => format!("sqlx::Error {NON_EXHAUSTIVE} {e} {link_to_crate}"),
         }
     }
 }
@@ -60,11 +61,17 @@ impl crate::traits::display_foreign_type::DisplayForeignType for mongodb::error:
             mongodb::error::ErrorKind::ServerSelection { message, .. } => format!("mongodb::error::ErrorKind::ServerSelection{{message: {message}}} {link_to_crate}"),
             mongodb::error::ErrorKind::SessionsNotSupported => format!("mongodb::error::ErrorKind::SessionsNotSupported {link_to_crate}"),
             mongodb::error::ErrorKind::InvalidTlsConfig { message, .. } => format!("mongodb::error::ErrorKind::InvalidTlsConfig{{message: {message}}} {link_to_crate}"),
-            mongodb::error::ErrorKind::Write(e) => format!("mongodb::error::ErrorKind::Write({e}) {link_to_crate}"),
+            mongodb::error::ErrorKind::Write(e) => {
+                match e {
+                    mongodb::error::WriteFailure::WriteConcernError(e) => format!("mongodb::error::ErrorKind::Write(mongodb::error::WriteFailure::WriteConcernError({})) {link_to_crate}", e.code_name),//todo - not all fields
+                    mongodb::error::WriteFailure::WriteError(e) => todo!("mongodb::error::ErrorKind::Write(mongodb::error::WriteFailure({})) {link_to_crate}", e.code),//todo - not all fields
+                    e => format!("mongodb::error::ErrorKind::Write(mongodb::error::WriteFailure {NON_EXHAUSTIVE}) {link_to_crate}"),
+                }
+            },
             mongodb::error::ErrorKind::Transaction { message, .. } => format!("mongodb::error::ErrorKind::Transaction{{message: {message}}} {link_to_crate}"),
             mongodb::error::ErrorKind::IncompatibleServer { message, .. } => format!("mongodb::error::ErrorKind::IncompatibleServer{{message: {message}}} {link_to_crate}"),
             mongodb::error::ErrorKind::MissingResumeToken => format!("mongodb::error::ErrorKind::MissingResumeToken {link_to_crate}"),
-            e => format!("mongodb::error::ErrorKind (default case) {e} {link_to_crate}"),
+            e => format!("mongodb::error::ErrorKind {NON_EXHAUSTIVE} {e} {link_to_crate}"),
         }
     }
 }
