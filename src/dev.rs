@@ -1,4 +1,32 @@
+use valuable::Valuable;
+
+#[derive(Clone, Debug, Valuable)]
+struct User {
+    name: String,
+    age: u32,
+    something: Vec<bool>,
+    address: Address,
+}
+
+#[derive(Clone, Debug, Valuable)]
+struct Address {
+    country: String,
+    city: String,
+    street: String,
+}
+
 pub fn dev() {
+    let user = User {
+        name: "Arwen Undomiel".to_string(),
+        age: 3000,
+        something: vec![true, false],
+        address: Address {
+            country: "Middle Earth".to_string(),
+            city: "Rivendell".to_string(),
+            street: "leafy lane".to_string(),
+        },
+    };
+    tracing::error!(valuable = false, user = ?user);
     // if let Err(e) = test_fn() {
     //     println!("{}", *e);
     //     use crate::traits::error_logs_logic::error_log::ErrorLog;
@@ -16,22 +44,20 @@ pub fn dev() {
     if let Err(e) = named() {
         // println!("---------------------------------------");
         println!("{}", *e);
-        use crate::traits::error_logs_logic::error_log::ErrorLog;
+        // use crate::traits::error_logs_logic::error_log::ErrorLog;
+        // e.error_log(once_cell::sync::Lazy::force(
+        //     &crate::global_variables::runtime::config::CONFIG,
+        // ));
+        // // println!("---------------------------------------");
+        // let ed = e.into_serialize_deserialize_version();
+        // println!("{ed}");
+        // // println!("---------------------------------------");
+        // let xs = serde_json::to_string(&ed).unwrap();
+        // println!("serializes into string {}", xs);
         // println!("---------------------------------------");
-        e.error_log(once_cell::sync::Lazy::force(
-            //todo - this must be call once on start of the program
-            &crate::global_variables::runtime::config::CONFIG,
-        ));
+        // let xd: NamedErrorWithSerializeDeserialize = serde_json::from_str(&xs).unwrap();
+        // println!("after deserialize \n{xd}");
         // println!("---------------------------------------");
-        let ed = e.into_serialize_deserialize_version();
-        println!("{ed}");
-        // println!("---------------------------------------");
-        let xs = serde_json::to_string(&ed).unwrap();
-        println!("serializes into string {}", xs);
-        println!("---------------------------------------");
-        let xd: NamedErrorWithSerializeDeserialize = serde_json::from_str(&xs).unwrap();
-        println!("after deserialize \n{xd}");
-        println!("---------------------------------------");
     }
 }
 
