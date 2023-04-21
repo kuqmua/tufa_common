@@ -65,7 +65,13 @@ pub enum SerializeDeserializeDisplayError<'a> {
         #[eo_display_foreign_type]
         display_foreign_type_struct: DisplayForeignTypeStruct,
         #[eo_display]
-        display_without_serialize_deserialize_struct: DisplayWithoutSerializeDeserializeStruct, 
+        display_without_serialize_deserialize_struct: DisplayWithoutSerializeDeserializeStruct,
+        #[eo_vec_display]
+        eo_vec_display: Vec<DisplayWithoutSerializeDeserializeStruct>,
+        #[eo_hashmap_key_display_with_serialize_deserialize_value_display]
+        eo_hashmap_key_display_with_serialize_deserialize_value_display: std::collections::HashMap<String, DisplayWithoutSerializeDeserializeStruct>,
+        #[eo_hashmap_key_display_foreign_type_value_display]
+        eo_hashmap_key_display_foreign_type_value_display: std::collections::HashMap<crate::dev::KekwLifetime<'a>, DisplayWithoutSerializeDeserializeStruct>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
@@ -99,6 +105,39 @@ pub fn dev() {
         display_without_serialize_deserialize_struct: DisplayWithoutSerializeDeserializeStruct {
             three: String::from("three"),
         }, 
+        eo_vec_display: vec![DisplayWithoutSerializeDeserializeStruct {
+            three: String::from("three"),
+        }],
+        eo_hashmap_key_display_with_serialize_deserialize_value_display: std::collections::HashMap::from([(
+            String::from("key"),
+            DisplayWithoutSerializeDeserializeStruct {
+                three: String::from("three"),
+            }
+        ),
+        (
+            String::from("key2"),
+            DisplayWithoutSerializeDeserializeStruct {
+                three: String::from("three2"),
+            }
+        )//todo - change how it shows in console
+        
+        ]),
+        //
+        eo_hashmap_key_display_foreign_type_value_display: std::collections::HashMap::from([
+        (
+            crate::dev::KekwLifetime { s: "kekwlifetime1" },
+            DisplayWithoutSerializeDeserializeStruct {
+                three: String::from("three"),
+            }
+        ),
+        (
+            crate::dev::KekwLifetime { s: "kekwlifetime2" },
+            DisplayWithoutSerializeDeserializeStruct {
+                three: String::from("three2"),
+            }
+        )//todo - change how it shows in console
+        ]),
+        //
         code_occurence: crate::code_occurence_tufa_common!(),
     };
     // //
@@ -353,16 +392,16 @@ pub fn dev() {
 
 // //////////////////////////
 
-// #[derive(Debug, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
-// pub struct KekwLifetime<'a> {
-//     s: &'a str,
-// }
+#[derive(Debug, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
+pub struct KekwLifetime<'a> {
+    s: &'a str,
+}
 
-// impl<'a> crate::traits::display_foreign_type::DisplayForeignType for KekwLifetime<'a> {
-//     fn display_foreign_type(&self) -> String {
-//         String::from("kekwlifetime")
-//     }
-// }
+impl<'a> crate::traits::display_foreign_type::DisplayForeignType for KekwLifetime<'a> {
+    fn display_foreign_type(&self) -> String {
+        String::from("kekwlifetime")
+    }
+}
 
 // #[derive(Debug, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
 // pub struct Kekw {}
