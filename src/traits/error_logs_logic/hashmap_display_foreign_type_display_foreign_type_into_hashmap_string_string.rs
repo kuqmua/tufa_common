@@ -18,8 +18,8 @@ where
         self.into_iter()
             .map(|(k, v)| {
                 (
-                    k.display_foreign_type().to_string(),
-                    v.display_foreign_type().to_string(),
+                    k.display_foreign_type(),
+                    v.display_foreign_type(),
                 )
             })
             .collect()

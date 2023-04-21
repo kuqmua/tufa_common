@@ -8,7 +8,7 @@ where
 {
     fn vec_display_foreign_type_into_vec_string(self) -> Vec<String> {
         self.into_iter()
-            .map(|i| i.display_foreign_type().to_string())
+            .map(|i| i.display_foreign_type())
             .collect()
     }
 }
