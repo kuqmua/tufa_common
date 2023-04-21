@@ -15,60 +15,135 @@
 //     street: String,
 // }
 
-// #[derive(serde::Serialize, serde::Deserialize)]
-// struct So {
-//     country: String,
-//     city: String,
-//     street: String,
-// }
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
+pub struct SerializeDeserializeStruct {
+    one: String
+}
+impl crate::traits::display_foreign_type::DisplayForeignType
+    for SerializeDeserializeStruct
+{
+    fn display_foreign_type(&self) -> String {
+        String::from("SerializeDeserializeStruct")
+    }
+}
+#[derive(Debug, Hash, Eq, PartialEq)]
+pub struct DisplayForeignTypeStruct {
+    two: String
+}
+impl crate::traits::display_foreign_type::DisplayForeignType
+    for DisplayForeignTypeStruct
+{
+    fn display_foreign_type(&self) -> String {
+        String::from("DisplayForeignTypeStruct")
+    }
+}
 
-// pub fn dev() {
-//     // let user = User {
-//     //     name: "Arwen Undomiel".to_string(),
-//     //     age: 3000,
-//     //     something: vec![true, false],
-//     //     address: Address {
-//     //         country: "Middle Earth".to_string(),
-//     //         city: "Rivendell".to_string(),
-//     //         street: "leafy lane".to_string(),
-//     //     },
-//     // };
-//     // tracing::error!(valuable = false, user = ?user);
-//     // // if let Err(e) = test_fn() {
-//     // //     println!("{}", *e);
-//     // //     use crate::traits::error_logs_logic::error_log::ErrorLog;
-//     // //     e.error_log(once_cell::sync::Lazy::force(
-//     // //         //todo - this must be call once on start of the program
-//     // //         &crate::global_variables::runtime::config::CONFIG,
-//     // //     ));
-//     // //     let ed = e.into_serialize_deserialize_version();
-//     // //     println!("{ed}");
-//     // //     let xs = serde_json::to_string(&ed).unwrap();
-//     // //     println!("serializes into string {}", xs);
-//     // //     let xd: TestErrorWithSerializeDeserialize = serde_json::from_str(&xs).unwrap();
-//     // //     println!("after deserialize \n{xd}");
-//     // // }
-//     if let Err(e) = named() {
-//         // println!("---------------------------------------");
-//         println!("{}", *e);
-//         use crate::traits::error_logs_logic::error_log::ErrorLog;
-//         e.error_log(once_cell::sync::Lazy::force(
-//             &crate::global_variables::runtime::config::CONFIG,
-//         ));
-//         // println!("---------------------------------------");
-//         let ed = e.into_serialize_deserialize_version();
-//         println!("{ed}");
-//         // println!("---------------------------------------");
-//         let xs = serde_json::to_string(&ed).unwrap();
-//         println!("serializes into string {}", xs);
-//         println!("---------------------------------------");
-//         let xd: NamedErrorWithSerializeDeserialize = serde_json::from_str(&xs).unwrap();
-//         println!("after deserialize \n{xd}");
-//         println!("---------------------------------------");
-//     }
-// }
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum SerializeDeserializeDisplayError<'a> {
+    Something {
+        #[eo_display_foreign_type_with_serialize_deserialize]
+        serialize_deserialize_struct: SerializeDeserializeStruct,
+        #[eo_vec_display_foreign_type_with_serialize_deserialize]
+        vec_serialize_deserialize_struct: Vec<SerializeDeserializeStruct>,
+        #[eo_hashmap_key_display_value_display_foreign_type_with_serialize_deserialize]
+        hashmap_serialize_deserialize_struct: std::collections::HashMap<String, SerializeDeserializeStruct>,
+        #[eo_hashmap_key_display_foreign_type_value_display_foreign_type_with_serialize_deserialize]
+        hashmap_second_serialize_deserialize_struct: std::collections::HashMap<DisplayForeignTypeStruct, SerializeDeserializeStruct>,
+        #[eo_display_foreign_type]
+        display_foreign_type_struct: DisplayForeignTypeStruct,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
 
-// //////////////////////////////////////////
+pub fn dev() {
+    let e = SerializeDeserializeDisplayError::Something {
+        serialize_deserialize_struct: SerializeDeserializeStruct{
+            one: String::from("one")
+        },
+        vec_serialize_deserialize_struct: vec![SerializeDeserializeStruct{
+            one: String::from("one")
+        }],
+        hashmap_serialize_deserialize_struct: std::collections::HashMap::from([(
+            String::from("key"),
+            SerializeDeserializeStruct{
+                one: String::from("one")
+            }
+        )]),
+        hashmap_second_serialize_deserialize_struct: std::collections::HashMap::from([(
+            DisplayForeignTypeStruct{
+                two: String::from("two")
+            },
+            SerializeDeserializeStruct{
+                one: String::from("one")
+            }
+        )]),
+        display_foreign_type_struct: DisplayForeignTypeStruct{
+            two: String::from("two")
+        },
+        code_occurence: crate::code_occurence_tufa_common!(),
+    };
+    //
+    println!("{}", e);
+    use crate::traits::error_logs_logic::error_log::ErrorLog;
+    e.error_log(once_cell::sync::Lazy::force(
+        &crate::global_variables::runtime::config::CONFIG,
+    ));
+    // println!("---------------------------------------");
+    let ed = e.into_serialize_deserialize_version();
+    println!("{ed}");
+    // println!("---------------------------------------");
+    let xs = serde_json::to_string(&ed).unwrap();
+    println!("serializes into string {}", xs);
+    println!("---------------------------------------");
+    let xd: SerializeDeserializeDisplayErrorWithSerializeDeserialize = serde_json::from_str(&xs).unwrap();
+    println!("after deserialize \n{xd}");
+    println!("---------------------------------------");
+    //
+    // let user = User {
+    //     name: "Arwen Undomiel".to_string(),
+    //     age: 3000,
+    //     something: vec![true, false],
+    //     address: Address {
+    //         country: "Middle Earth".to_string(),
+    //         city: "Rivendell".to_string(),
+    //         street: "leafy lane".to_string(),
+    //     },
+    // };
+    // tracing::error!(valuable = false, user = ?user);
+    // // if let Err(e) = test_fn() {
+    // //     println!("{}", *e);
+    // //     use crate::traits::error_logs_logic::error_log::ErrorLog;
+    // //     e.error_log(once_cell::sync::Lazy::force(
+    // //         &crate::global_variables::runtime::config::CONFIG,
+    // //     ));
+    // //     let ed = e.into_serialize_deserialize_version();
+    // //     println!("{ed}");
+    // //     let xs = serde_json::to_string(&ed).unwrap();
+    // //     println!("serializes into string {}", xs);
+    // //     let xd: TestErrorWithSerializeDeserialize = serde_json::from_str(&xs).unwrap();
+    // //     println!("after deserialize \n{xd}");
+    // // }
+    // if let Err(e) = named() {
+    //     // println!("---------------------------------------");
+    //     println!("{}", *e);
+    //     use crate::traits::error_logs_logic::error_log::ErrorLog;
+    //     e.error_log(once_cell::sync::Lazy::force(
+    //         &crate::global_variables::runtime::config::CONFIG,
+    //     ));
+    //     // println!("---------------------------------------");
+    //     let ed = e.into_serialize_deserialize_version();
+    //     println!("{ed}");
+    //     // println!("---------------------------------------");
+    //     let xs = serde_json::to_string(&ed).unwrap();
+    //     println!("serializes into string {}", xs);
+    //     println!("---------------------------------------");
+    //     let xd: NamedErrorWithSerializeDeserialize = serde_json::from_str(&xs).unwrap();
+    //     println!("after deserialize \n{xd}");
+    //     println!("---------------------------------------");
+    // }
+}
+
+//////////////////////////////////////////
 
 // pub fn named<'a>() -> Result<(), Box<NamedError<'a>>> {
 //     return Err(Box::new(NamedError::Something {
@@ -430,4 +505,4 @@
 //         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
 //     },
 // }
-// //////////////////////////////////////////////
+//////////////////////////////////////////////
