@@ -6,7 +6,7 @@ impl<'a, VecElementGeneric, ConfigGeneric> VecToStringWithConfigToString<'a, Con
     for Vec<VecElementGeneric>
 where
     VecElementGeneric:
-        crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithConfig<
+        crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfig<
             'a,
             ConfigGeneric,
         >,
@@ -20,7 +20,7 @@ where
             |mut acc, vec_element| {
                 acc.push_str(
                     &crate::traits::error_logs_logic::helpers::lines_space_backslash_addition(
-                        vec_element.to_string_with_config_for_source_to_string_with_config(config),
+                        vec_element.to_string_with_config(config),
                     ),
                 );
                 acc

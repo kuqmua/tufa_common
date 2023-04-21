@@ -11,7 +11,7 @@ impl<'a, HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric>
 where
     HashMapKeyGeneric: crate::traits::display_foreign_type::DisplayForeignType,
     HashMapValueGeneric:
-        crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfigForSourceToStringWithConfig<
+        crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfig<
             'a,
             ConfigGeneric,
         >,
@@ -24,7 +24,7 @@ where
             acc.push_str(
                 &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
                     key.display_foreign_type(),
-                    value.to_string_with_config_for_source_to_string_with_config(config),
+                    value.to_string_with_config(config),
                 ),
             );
             acc

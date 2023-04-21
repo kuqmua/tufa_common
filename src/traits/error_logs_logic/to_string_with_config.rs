@@ -1,12 +1,12 @@
-pub trait ToStringWithConfigForSourceToStringWithConfig<'a, ConfigGeneric> {
-    fn to_string_with_config_for_source_to_string_with_config(
+pub trait ToStringWithConfig<'a, ConfigGeneric> {
+    fn to_string_with_config(
         &self,
         config: &ConfigGeneric,
     ) -> String;
 }
 
 impl<'a, SelfGeneric, ConfigGeneric>
-    ToStringWithConfigForSourceToStringWithConfig<'a, ConfigGeneric> for SelfGeneric
+    ToStringWithConfig<'a, ConfigGeneric> for SelfGeneric
 where
     SelfGeneric:
         crate::traits::error_logs_logic::source_to_string_with_config::SourceToStringWithConfig<
@@ -17,7 +17,7 @@ where
         + crate::traits::fields::GetTimezone
         + crate::traits::fields::GetServerPort,
 {
-    fn to_string_with_config_for_source_to_string_with_config(
+    fn to_string_with_config(
         &self,
         config: &ConfigGeneric,
     ) -> String {
