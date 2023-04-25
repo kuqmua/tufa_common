@@ -1,186 +1,32 @@
-// use valuable::Valuable;
+use valuable::Valuable;
 
-// #[derive(Clone, Debug, Valuable)]
-// struct User {
-//     name: String,
-//     age: u32,
-//     something: Vec<bool>,
-//     address: Address,
-// }
-
-// #[derive(Clone, Debug, Valuable)]
-// struct Address {
-//     country: String,
-//     city: String,
-//     street: String,
-// }
-
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub struct SerializeDeserializeStruct {
-    one: String
-}
-impl crate::traits::display_foreign_type::DisplayForeignType
-    for SerializeDeserializeStruct
-{
-    fn display_foreign_type(&self) -> String {
-        String::from("SerializeDeserializeStruct")
-    }
-}
-#[derive(Debug, Hash, Eq, PartialEq)]
-pub struct DisplayForeignTypeStruct {
-    two: String
-}
-impl crate::traits::display_foreign_type::DisplayForeignType
-    for DisplayForeignTypeStruct
-{
-    fn display_foreign_type(&self) -> String {
-        String::from("DisplayForeignTypeStruct")
-    }
+#[derive(Clone, Debug, Valuable)]
+struct User {
+    name: String,
+    age: u32,
+    something: Vec<bool>,
+    address: Address,
 }
 
-#[derive(Debug)]
-pub struct DisplayWithoutSerializeDeserializeStruct {
-    three: String
-}
-
-impl std::fmt::Display for DisplayWithoutSerializeDeserializeStruct {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.three)
-    }
-}
-
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]//
-pub enum SerializeDeserializeDisplayError<'a> {
-    Something {
-        // #[eo_display]
-        // display_without_ser_deser: DisplayWithoutSerializeDeserializeStruct,
-        #[eo_display_foreign_type_with_serialize_deserialize]
-        serialize_deserialize_struct: SerializeDeserializeStruct,
-        #[eo_vec_display_foreign_type_with_serialize_deserialize]
-        vec_serialize_deserialize_struct: Vec<SerializeDeserializeStruct>,
-        #[eo_hashmap_key_display_with_serialize_deserialize_value_display_foreign_type_with_serialize_deserialize]
-        hashmap_serialize_deserialize_struct: std::collections::HashMap<String, SerializeDeserializeStruct>,
-        #[eo_hashmap_key_display_foreign_type_value_display_foreign_type_with_serialize_deserialize]
-        hashmap_second_serialize_deserialize_struct: std::collections::HashMap<DisplayForeignTypeStruct, SerializeDeserializeStruct>,
-        #[eo_display_foreign_type]
-        display_foreign_type_struct: DisplayForeignTypeStruct,
-        #[eo_display]
-        display_without_serialize_deserialize_struct: DisplayWithoutSerializeDeserializeStruct,
-        #[eo_vec_display]
-        eo_vec_display: Vec<DisplayWithoutSerializeDeserializeStruct>,
-        #[eo_hashmap_key_display_with_serialize_deserialize_value_display]
-        eo_hashmap_key_display_with_serialize_deserialize_value_display: std::collections::HashMap<String, DisplayWithoutSerializeDeserializeStruct>,
-        #[eo_hashmap_key_display_foreign_type_value_display]
-        eo_hashmap_key_display_foreign_type_value_display: std::collections::HashMap<crate::dev::KekwLifetime<'a>, DisplayWithoutSerializeDeserializeStruct>,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
+#[derive(Clone, Debug, Valuable)]
+struct Address {
+    country: String,
+    city: String,
+    street: String,
 }
 
 pub fn dev() {
-    let e = SerializeDeserializeDisplayError::Something {
-        // display_without_ser_deser: DisplayWithoutSerializeDeserializeStruct{ three: String::from("DisplayWithoutSerializeDeserializeStruct") },
-        serialize_deserialize_struct: SerializeDeserializeStruct{
-            one: String::from("one")
+    let user = User {
+        name: "Arwen Undomiel".to_string(),
+        age: 3000,
+        something: vec![true, false],
+        address: Address {
+            country: "Middle Earth".to_string(),
+            city: "Rivendell".to_string(),
+            street: "leafy lane".to_string(),
         },
-        vec_serialize_deserialize_struct: vec![SerializeDeserializeStruct{
-            one: String::from("one")
-        }],
-        hashmap_serialize_deserialize_struct: std::collections::HashMap::from([(
-            String::from("key"),
-            SerializeDeserializeStruct{
-                one: String::from("one")
-            }
-        )]),
-        hashmap_second_serialize_deserialize_struct: std::collections::HashMap::from([(
-            DisplayForeignTypeStruct{
-                two: String::from("two")
-            },
-            SerializeDeserializeStruct{
-                one: String::from("one")
-            }
-        )]),
-        display_foreign_type_struct: DisplayForeignTypeStruct{
-            two: String::from("two")
-        },
-        display_without_serialize_deserialize_struct: DisplayWithoutSerializeDeserializeStruct {
-            three: String::from("three"),
-        }, 
-        eo_vec_display: vec![DisplayWithoutSerializeDeserializeStruct {
-            three: String::from("three"),
-        }],
-        eo_hashmap_key_display_with_serialize_deserialize_value_display: std::collections::HashMap::from([(
-            String::from("key"),
-            DisplayWithoutSerializeDeserializeStruct {
-                three: String::from("three"),
-            }
-        ),
-        (
-            String::from("key2"),
-            DisplayWithoutSerializeDeserializeStruct {
-                three: String::from("three2"),
-            }
-        )//todo - change how it shows in console
-        
-        ]),
-        //
-        eo_hashmap_key_display_foreign_type_value_display: std::collections::HashMap::from([
-        (
-            crate::dev::KekwLifetime { s: "kekwlifetime1" },
-            DisplayWithoutSerializeDeserializeStruct {
-                three: String::from("three"),
-            }
-        ),
-        (
-            crate::dev::KekwLifetime { s: "kekwlifetime2" },
-            DisplayWithoutSerializeDeserializeStruct {
-                three: String::from("three2"),
-            }
-        )//todo - change how it shows in console
-        ]),
-        //
-        code_occurence: crate::code_occurence_tufa_common!(),
     };
-    // //
-    println!("{}", e);
-    use crate::traits::error_logs_logic::error_log::ErrorLog;
-    e.error_log(once_cell::sync::Lazy::force(
-        &crate::global_variables::runtime::config::CONFIG,
-    ));
-    // println!("---------------------------------------");
-    let ed = e.into_serialize_deserialize_version();
-    println!("{ed}");
-    // println!("---------------------------------------");
-    let xs = serde_json::to_string(&ed).unwrap();
-    println!("serializes into string {}", xs);
-    println!("---------------------------------------");
-    let xd: SerializeDeserializeDisplayErrorWithSerializeDeserialize = serde_json::from_str(&xs).unwrap();
-    println!("after deserialize \n{xd}");
-    println!("---------------------------------------");
-    //
-    // let user = User {
-    //     name: "Arwen Undomiel".to_string(),
-    //     age: 3000,
-    //     something: vec![true, false],
-    //     address: Address {
-    //         country: "Middle Earth".to_string(),
-    //         city: "Rivendell".to_string(),
-    //         street: "leafy lane".to_string(),
-    //     },
-    // };
-    // tracing::error!(valuable = false, user = ?user);
-    // // if let Err(e) = test_fn() {
-    // //     println!("{}", *e);
-    // //     use crate::traits::error_logs_logic::error_log::ErrorLog;
-    // //     e.error_log(once_cell::sync::Lazy::force(
-    // //         &crate::global_variables::runtime::config::CONFIG,
-    // //     ));
-    // //     let ed = e.into_serialize_deserialize_version();
-    // //     println!("{ed}");
-    // //     let xs = serde_json::to_string(&ed).unwrap();
-    // //     println!("serializes into string {}", xs);
-    // //     let xd: TestErrorWithSerializeDeserialize = serde_json::from_str(&xs).unwrap();
-    // //     println!("after deserialize \n{xd}");
-    // // }
+    tracing::error!(valuable = false, user = ?user);
     // if let Err(e) = named() {
     //     // println!("---------------------------------------");
     //     println!("{}", *e);
@@ -205,6 +51,75 @@ pub fn dev() {
 
 // pub fn named<'a>() -> Result<(), Box<NamedError<'a>>> {
 //     return Err(Box::new(NamedError::Something {
+//         // display_with_ser_deser: String::from("displayserde"),
+//         // something: crate::dev::SevenError::Something {
+//         //     error: String::from("seven_error"),
+//         //     omega: OmegalulLifetime {
+//         //         s: "omegalllil",
+//         //     },
+//         //     code_occurence: crate::code_occurence_tufa_common!(),
+//         // },
+//         // display_without_ser_deser: DisplayStruct{ three: String::from("DisplayStruct") },
+//         // serialize_deserialize_struct: SerializeDeserializeStruct{
+//         //     one: String::from("one")
+//         // },
+//         // vec_serialize_deserialize_struct: vec![SerializeDeserializeStruct{
+//         //     one: String::from("one")
+//         // }],
+//         // hashmap_serialize_deserialize_struct: std::collections::HashMap::from([(
+//         //     String::from("key"),
+//         //     SerializeDeserializeStruct{
+//         //         one: String::from("one")
+//         //     }
+//         // )]),
+//         // hashmap_second_serialize_deserialize_struct: std::collections::HashMap::from([(
+//         //     DisplayForeignTypeStruct{
+//         //         two: String::from("two")
+//         //     },
+//         //     SerializeDeserializeStruct{
+//         //         one: String::from("one")
+//         //     }
+//         // )]),
+//         // display_foreign_type_struct: DisplayForeignTypeStruct{
+//         //     two: String::from("two")
+//         // },
+//         // display_without_serialize_deserialize_struct: DisplayStruct {
+//         //     three: String::from("three"),
+//         // }, 
+//         // eo_vec_display: vec![DisplayStruct {
+//         //     three: String::from("three"),
+//         // }],
+//         // eo_hashmap_key_display_with_serialize_deserialize_value_display: std::collections::HashMap::from([(
+//         //     String::from("key"),
+//         //     DisplayStruct {
+//         //         three: String::from("three"),
+//         //     }
+//         // ),
+//         // (
+//         //     String::from("key2"),
+//         //     DisplayStruct {
+//         //         three: String::from("three2"),
+//         //     }
+//         // )//todo - change how it shows in console
+        
+//         // ]),
+//         // //
+//         // eo_hashmap_key_display_foreign_type_value_display: std::collections::HashMap::from([
+//         // (
+//         //     crate::dev::KekwLifetime { s: "kekwlifetime1" },
+//         //     DisplayStruct {
+//         //         three: String::from("three"),
+//         //     }
+//         // ),
+//         // (
+//         //     crate::dev::KekwLifetime { s: "kekwlifetime2" },
+//         //     DisplayStruct {
+//         //         three: String::from("three2"),
+//         //     }
+//         // )//todo - change how it shows in console
+//         // ]),
+//         //
+
 //         a: crate::dev::Omegalul {},
 //         b: crate::dev::OmegalulLifetime {
 //             s: "omegalullifetime",
@@ -235,67 +150,6 @@ pub fn dev() {
 //                 }
 //             )
 //         ],
-//         //////////////////////////////////``
-//         // l: std::collections::HashMap::from([(crate::dev::Omegalul {}, crate::dev::Omegalul {})]),
-//         // m: std::collections::HashMap::from([(
-//         //     crate::dev::Omegalul {},
-//         //     crate::dev::OmegalulLifetime {
-//         //         s: "omegalullifetime",
-//         //     },
-//         // )]),
-//         // n: std::collections::HashMap::from([(
-//         //     crate::dev::OmegalulLifetime {
-//         //         s: "omegalullifetime",
-//         //     },
-//         //     crate::dev::Omegalul {},
-//         // )]),
-//         // o: std::collections::HashMap::from([(
-//         //     crate::dev::OmegalulLifetime {
-//         //         s: "omegalullifetime",
-//         //     },
-//         //     crate::dev::OmegalulLifetime {
-//         //         s: "omegalullifetime",
-//         //     },
-//         // )]),
-//         // p: std::collections::HashMap::from([(crate::dev::Omegalul {}, crate::dev::Kekw {})]),
-//         // q: std::collections::HashMap::from([(
-//         //     crate::dev::Omegalul {},
-//         //     crate::dev::KekwLifetime { s: "kekwlifetime" },
-//         // )]),
-//         // r: std::collections::HashMap::from([(
-//         //     crate::dev::OmegalulLifetime {
-//         //         s: "omegalullifetime",
-//         //     },
-//         //     crate::dev::Kekw {},
-//         // )]),
-//         // s: std::collections::HashMap::from([(
-//         //     crate::dev::OmegalulLifetime {
-//         //         s: "omegalullifetime",
-//         //     },
-//         //     crate::dev::KekwLifetime { s: "kekwlifetime" },
-//         // )]),
-//         // t: std::collections::HashMap::from([(
-//         //     crate::dev::Omegalul {},
-//         //     crate::dev::SevenError::Something {
-//         //         error: String::from("seven_error"),
-//         //         omega: OmegalulLifetime {
-//         //             s: "omegalllil",
-//         //         },
-//         //         code_occurence: crate::code_occurence_tufa_common!(),
-//         //     },
-//         // )]),
-//         // u: std::collections::HashMap::from([(
-//         //     crate::dev::OmegalulLifetime {
-//         //         s: "omegalullifetime",
-//         //     },
-//         //     crate::dev::SevenError::Something {
-//         //         error: String::from("seven_error"),
-//         //         omega: OmegalulLifetime {
-//         //             s: "omegalllil",
-//         //         },
-//         //         code_occurence: crate::code_occurence_tufa_common!(),
-//         //     },
-//         // )]),
 //         //////////////////////////////
 //         v: std::collections::HashMap::from([(crate::dev::Kekw {}, crate::dev::Omegalul {})]),
 //         w: std::collections::HashMap::from([(
@@ -373,112 +227,271 @@ pub fn dev() {
 //     }));
 // }
 
-// #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //, error_occurence::ErrorOccurence
-// pub enum SevenError<'a> {
-//     Something {
-//         #[eo_display_with_serialize_deserialize]
-//         error: String,
-//         #[eo_display_with_serialize_deserialize]
-//         omega: OmegalulLifetime<'a>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-//     },
-// }
-
-// #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]//, error_occurence::ErrorOccurence
-// pub enum SevenErrorEnum<'a> {
-//     #[eo_error_occurence]
-//     Something(crate::dev::SevenError<'a>),
-// }
-
-// //////////////////////////
-
-#[derive(Debug, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
-pub struct KekwLifetime<'a> {
-    s: &'a str,
+#[derive(Debug)]
+pub struct DisplayStruct {
+    display_struct: String
 }
 
-impl<'a> crate::traits::display_foreign_type::DisplayForeignType for KekwLifetime<'a> {
-    fn display_foreign_type(&self) -> String {
-        String::from("kekwlifetime")
+impl std::fmt::Display for DisplayStruct {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.display_struct)
     }
 }
 
-// #[derive(Debug, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
-// pub struct Kekw {}
+#[derive(Debug)]
+pub struct DisplayStructLifetime<'a> {
+    display_struct: &'a str
+}
 
-// impl crate::traits::display_foreign_type::DisplayForeignType for Kekw {
-//     fn display_foreign_type(&self) -> String {
-//         String::from("kekw")
-//     }
-// }
+impl<'a> std::fmt::Display for DisplayStructLifetime<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.display_struct)
+    }
+}
 
-// #[derive(Debug, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
-// pub struct Omegalul {}
+#[derive(Debug, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
+pub struct DisplayWithSerializeDeserializeStruct {}
 
-// impl std::fmt::Display for Omegalul {
-//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//         write!(f, "omegalul")
-//     }
-// }
+impl std::fmt::Display for DisplayWithSerializeDeserializeStruct {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "DisplayWithSerializeDeserializeStruct")
+    }
+}
 
-// #[derive(Debug, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
-// pub struct OmegalulLifetime<'a> {
-//     s: &'a str,
-// }
+#[derive(Debug, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
+pub struct DisplayWithSerializeDeserializeStructLifetime<'a> {
+    display_with_serialize_deserialize_struct_lifetime: &'a str,
+}
 
-// impl<'a> std::fmt::Display for OmegalulLifetime<'a> {
-//     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//         write!(f, "omegalullifetime")
-//     }
-// }
+impl<'a> std::fmt::Display for DisplayWithSerializeDeserializeStructLifetime<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "DisplayWithSerializeDeserializeStructLifetime")
+    }
+}
 
-// #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //, error_occurence::ErrorOccurence
-// pub enum OneErrorEnum<'a> {
-//     // #[eo_display]
-//     // ToString(crate::dev::Omegalul),
-//     // #[eo_display]
-//     // ToStringLifetime(crate::dev::OmegalulLifetime<'a>),
-//     // #[eo_display_foreign_type]
-//     // DisplayForeignType(crate::dev::Kekw),
-//     // #[eo_display_foreign_type]
-//     // DisplayForeignTypeLifeTime(crate::dev::KekwLifetime<'a>),
-//     // #[eo_error_occurence]
-//     ErrorOccurence(crate::dev::SevenError<'a>),
-//     // #[eo_vec_display]
-//     // VecToString(std::vec::Vec<crate::dev::Omegalul>),
-//     // #[eo_vec_display_foreign_type]
-//     // VecDisplayForeignType(std::vec::Vec<crate::dev::Kekw>),
-//     // #[eo_vec_error_occurence]
-//     // VecErrorOccurence(std::vec::Vec<crate::dev::SevenError<'a>>),
-//     // #[eo_hashmap_key_display_value_display]
-//     // HashMapKeyToStringValueToString(
-//     //     std::collections::HashMap<crate::dev::Omegalul, crate::dev::Omegalul>,
-//     // ),
-//     // #[eo_hashmap_key_display_value_display_foreign_type]
-//     // HashMapKeyToStringValueDisplayForeignType(
-//     //     std::collections::HashMap<crate::dev::Omegalul, crate::dev::Kekw>,
-//     // ),
-//     // #[eo_hashmap_key_display_value_error_occurence]
-//     // HashMapKeyToStringValueErrorOccurence(
-//     //     std::collections::HashMap<crate::dev::Omegalul, crate::dev::SevenError<'a>>,
-//     // ),
-//     // #[eo_hashmap_key_display_foreign_type_value_display]
-//     // HashMapKeyDisplayForeignTypeValueToString(
-//     //     std::collections::HashMap<crate::dev::Kekw, crate::dev::Omegalul>,
-//     // ),
-//     // #[eo_hashmap_key_display_foreign_type_value_display_foreign_type]
-//     // HashMapKeyDisplayForeignTypeValueDisplayForeignType(
-//     //     std::collections::HashMap<crate::dev::Kekw, crate::dev::Kekw>,
-//     // ),
-//     // #[eo_hashmap_key_display_foreign_type_value_error_occurence]
-//     // HashMapKeyDisplayForeignTypeValueErrorOccurence(
-//     //     std::collections::HashMap<crate::dev::Kekw, crate::dev::SevenError<'a>>,
-//     // ),
-// }
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
+pub struct DisplayForeignTypeSerializeDeserializeStruct {
+    display_foreign_type_serialize_deserialize_struct: String
+}
+impl crate::traits::display_foreign_type::DisplayForeignType
+    for DisplayForeignTypeSerializeDeserializeStruct
+{
+    fn display_foreign_type(&self) -> String {
+        String::from("DisplayForeignTypeSerializeDeserializeStruct")
+    }
+}
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
+pub struct DisplayForeignTypeSerializeDeserializeStructLifetime<'a> {
+    display_foreign_type_serialize_deserialize_struct: &'a str
+}
+impl<'a> crate::traits::display_foreign_type::DisplayForeignType
+    for DisplayForeignTypeSerializeDeserializeStructLifetime<'a>
+{
+    fn display_foreign_type(&self) -> String {
+        String::from("DisplayForeignTypeSerializeDeserializeStructLifetime")
+    }
+}
 
-// #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]//, error_occurence::ErrorOccurence
-// pub enum NamedError<'a> {//
-//     Something {
+#[derive(Debug, Hash, Eq, PartialEq)]
+pub struct DisplayForeignTypeStruct {
+    display_foreign_type_struct: String
+}
+impl crate::traits::display_foreign_type::DisplayForeignType
+    for DisplayForeignTypeStruct
+{
+    fn display_foreign_type(&self) -> String {
+        String::from("DisplayForeignTypeStruct")
+    }
+}
+#[derive(Debug, Hash, Eq, PartialEq)]
+pub struct DisplayForeignTypeStructLifetime<'a> {
+    display_foreign_type_struct: &'a str
+}
+impl<'a> crate::traits::display_foreign_type::DisplayForeignType
+    for DisplayForeignTypeStructLifetime<'a>
+{
+    fn display_foreign_type(&self) -> String {
+        String::from("DisplayForeignTypeStruct")
+    }
+}
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //, error_occurence::ErrorOccurence
+pub enum SevenError<'a> {
+    Something {
+        #[eo_display_with_serialize_deserialize]
+        error: String,
+        #[eo_display_with_serialize_deserialize]
+        omega: DisplayWithSerializeDeserializeStructLifetime<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]//, error_occurence::ErrorOccurence
+pub enum SevenErrorEnum<'a> {
+    #[eo_error_occurence]
+    Something(crate::dev::SevenError<'a>),
+}
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]//, error_occurence::ErrorOccurence
+pub enum NamedError<'a> {//
+    Something {
+        // #[eo_display]
+        // eo_display: crate::dev::DisplayStruct,
+        // #[eo_display]
+        // eo_display_lifetime: crate::dev::DisplayStructLifetime<'a>,
+
+        // #[eo_display_with_serialize_deserialize]
+        // eo_display_with_serialize_deserialize: crate::dev::DisplayWithSerializeDeserializeStruct,
+        // #[eo_display_with_serialize_deserialize]
+        // eo_display_with_serialize_deserialize_lifetime: crate::dev::DisplayWithSerializeDeserializeStructLifetime<'a>,
+
+        // #[eo_display_foreign_type]
+        // eo_display_foreign_type: crate::dev::DisplayForeignTypeStruct,
+        // #[eo_display_foreign_type]
+        // eo_display_foreign_type_lifetime: crate::dev::DisplayForeignTypeStructLifetime<'a>,
+
+        // #[eo_display_foreign_type_with_serialize_deserialize]
+        // eo_display_foreign_type_with_serialize_deserialize: crate::dev::DisplayForeignTypeSerializeDeserializeStruct,
+        // #[eo_display_foreign_type_with_serialize_deserialize]
+        // eo_display_foreign_type_with_serialize_deserialize_lifetime: crate::dev::DisplayForeignTypeSerializeDeserializeStructLifetime<'a>,
+
+        // #[eo_error_occurence]
+        // eo_error_occurence: crate::dev::SevenError<'a>,
+
+        // #[eo_vec_display]
+        // eo_vec_display: std::vec::Vec<crate::dev::DisplayStruct>,
+        // #[eo_vec_display]
+        // eo_vec_display_lifetime: std::vec::Vec<crate::dev::DisplayStructLifetime<'a>>,
+
+        // #[eo_vec_display_with_serialize_deserialize]
+        // eo_vec_display_with_serialize_deserialize: std::vec::Vec<crate::dev::DisplayWithSerializeDeserializeStruct>,
+        // #[eo_vec_display_with_serialize_deserialize]
+        // eo_vec_display_with_serialize_deserialize_lifetime: std::vec::Vec<crate::dev::DisplayWithSerializeDeserializeStructLifetime<'a>>,
+
+        // #[eo_vec_display_foreign_type]
+        // eo_vec_display_foreign_type: std::vec::Vec<crate::dev::DisplayForeignTypeStruct>,
+        // #[eo_vec_display_foreign_type]
+        // eo_vec_display_foreign_type_lifetime: std::vec::Vec<crate::dev::DisplayForeignTypeStructLifetime<'a>>,
+
+        // #[eo_vec_display_foreign_type_with_serialize_deserialize]
+        // eo_vec_display_foreign_type_with_serialize_deserialize: std::vec::Vec<crate::dev::DisplayForeignTypeSerializeDeserializeStruct>,
+        // #[eo_vec_display_foreign_type_with_serialize_deserialize]
+        // eo_vec_display_foreign_type_with_serialize_deserialize_lifetime: std::vec::Vec<crate::dev::DisplayForeignTypeSerializeDeserializeStructLifetime<'a>>,
+
+        // #[eo_vec_error_occurence]
+        // eo_vec_error_occurence: std::vec::Vec<crate::dev::SevenErrorEnum<'a>>,
+
+        // #[eo_hashmap_key_display_with_serialize_deserialize_value_display]
+        // eo_hashmap_key_display_with_serialize_deserialize_value_display: std::collections::HashMap<crate::dev::DisplayWithSerializeDeserializeStruct, crate::dev::DisplayStruct>,
+        // #[eo_hashmap_key_display_with_serialize_deserialize_value_display]
+        // eo_hashmap_key_display_with_serialize_deserialize_lifetime_value_display: std::collections::HashMap<crate::dev::DisplayWithSerializeDeserializeStructLifetime<'a>, crate::dev::DisplayStruct>,
+        // #[eo_hashmap_key_display_with_serialize_deserialize_value_display]
+        // eo_hashmap_key_display_with_serialize_deserialize_value_display_lifetime: std::collections::HashMap<crate::dev::DisplayWithSerializeDeserializeStruct, crate::dev::DisplayStructLifetime<'a>>,
+        // #[eo_hashmap_key_display_with_serialize_deserialize_value_display]
+        // eo_hashmap_key_display_with_serialize_deserialize_lifetime_value_display_lifetime: std::collections::HashMap<crate::dev::DisplayWithSerializeDeserializeStructLifetime<'a>, crate::dev::DisplayStructLifetime<'a>>,
+
+        // #[eo_hashmap_key_display_with_serialize_deserialize_value_display_with_serialize_deserialize]
+        // eo_hashmap_key_display_with_serialize_deserialize_value_display_with_serialize_deserialize: std::collections::HashMap<crate::dev::DisplayWithSerializeDeserializeStruct, crate::dev::DisplayWithSerializeDeserializeStruct>,
+        // #[eo_hashmap_key_display_with_serialize_deserialize_value_display_with_serialize_deserialize]
+        // eo_hashmap_key_display_with_serialize_deserialize_lifetime_value_display_with_serialize_deserialize: std::collections::HashMap<crate::dev::DisplayWithSerializeDeserializeStructLifetime<'a>, crate::dev::DisplayWithSerializeDeserializeStruct>,
+        // #[eo_hashmap_key_display_with_serialize_deserialize_value_display_with_serialize_deserialize]
+        // eo_hashmap_key_display_with_serialize_deserialize_value_display_with_serialize_deserialize_lifetime: std::collections::HashMap<crate::dev::DisplayWithSerializeDeserializeStruct, crate::dev::DisplayWithSerializeDeserializeStructLifetime<'a>>,
+        // #[eo_hashmap_key_display_with_serialize_deserialize_value_display_with_serialize_deserialize]
+        // eo_hashmap_key_display_with_serialize_deserialize_lifetime_value_display_with_serialize_deserialize_lifetime: std::collections::HashMap<crate::dev::DisplayWithSerializeDeserializeStructLifetime<'a>, crate::dev::DisplayWithSerializeDeserializeStructLifetime<'a>>,
+
+        // #[eo_hashmap_key_display_with_serialize_deserialize_value_display_foreign_type]
+        // eo_hashmap_key_display_with_serialize_deserialize_value_display_foreign_type: std::collections::HashMap<crate::dev::DisplayWithSerializeDeserializeStruct, crate::dev::DisplayForeignTypeStruct>,
+        // #[eo_hashmap_key_display_with_serialize_deserialize_value_display_foreign_type]
+        // eo_hashmap_key_display_with_serialize_deserialize_lifetime_value_display_foreign_type: std::collections::HashMap<crate::dev::DisplayWithSerializeDeserializeStructLifetime<'a>, crate::dev::DisplayForeignTypeStruct>,
+        // #[eo_hashmap_key_display_with_serialize_deserialize_value_display_foreign_type]
+        // eo_hashmap_key_display_with_serialize_deserialize_value_display_foreign_type_lifetime: std::collections::HashMap<crate::dev::DisplayWithSerializeDeserializeStruct, crate::dev::DisplayForeignTypeStructLifetime<'a>>,
+        // #[eo_hashmap_key_display_with_serialize_deserialize_value_display_foreign_type]
+        // eo_hashmap_key_display_with_serialize_deserialize_lifetime_value_display_foreign_type_lifetime: std::collections::HashMap<crate::dev::DisplayWithSerializeDeserializeStructLifetime<'a>, crate::dev::DisplayForeignTypeStructLifetime<'a>>,
+
+        #[eo_hashmap_key_display_with_serialize_deserialize_value_display_foreign_type_with_serialize_deserialize]
+        eo_hashmap_key_display_with_serialize_deserialize_value_display_foreign_type_with_serialize_deserialize: std::collections::HashMap<crate::dev::DisplayWithSerializeDeserializeStruct, crate::dev::DisplayWithSerializeDeserializeStruct>,
+        // #[eo_hashmap_key_display_with_serialize_deserialize_value_display_foreign_type_with_serialize_deserialize]
+        // eo_hashmap_key_display_with_serialize_deserialize_lifetime_value_display_foreign_type_with_serialize_deserialize: std::collections::HashMap<crate::dev::DisplayWithSerializeDeserializeStructLifetime<'a>, crate::dev::DisplayWithSerializeDeserializeStruct>,
+        // #[eo_hashmap_key_display_with_serialize_deserialize_value_display_foreign_type_with_serialize_deserialize]
+        // eo_hashmap_key_display_with_serialize_deserialize_value_display_foreign_type_with_serialize_deserialize_lifetime: std::collections::HashMap<crate::dev::DisplayWithSerializeDeserializeStruct, crate::dev::DisplayWithSerializeDeserializeStructLifetime<'a>>,
+        // #[eo_hashmap_key_display_with_serialize_deserialize_value_display_foreign_type_with_serialize_deserialize]
+        // eo_hashmap_key_display_with_serialize_deserialize_lifetime_value_display_foreign_type_with_serialize_deserialize_lifetime: std::collections::HashMap<crate::dev::DisplayWithSerializeDeserializeStructLifetime<'a>, crate::dev::DisplayWithSerializeDeserializeStructLifetime<'a>>,
+
+        // #[eo_hashmap_key_display_with_serialize_deserialize_value_error_occurence]
+        // eo_hashmap_key_display_with_serialize_deserialize_value_error_occurence: std::collections::HashMap<crate::dev::DisplayWithSerializeDeserializeStruct, crate::dev::SevenErrorEnum<'a>>,
+        // #[eo_hashmap_key_display_with_serialize_deserialize_value_error_occurence]
+        // eo_hashmap_key_display_with_serialize_deserialize_lifetime_value_error_occurence: std::collections::HashMap<crate::dev::DisplayWithSerializeDeserializeStructLifetime<'a>, crate::dev::SevenErrorEnum<'a>>,
+
+        // #[eo_hashmap_key_display_foreign_type_value_display]
+        // eo_hashmap_key_display_foreign_type_value_display: std::collections::HashMap<crate::dev::DisplayForeignTypeStruct, crate::dev::DisplayStruct>,
+        // #[eo_hashmap_key_display_foreign_type_value_display]
+        // eo_hashmap_key_display_foreign_type_lifetime_value_display: std::collections::HashMap<crate::dev::DisplayForeignTypeStructLifetime<'a>, crate::dev::DisplayStruct>,
+        // #[eo_hashmap_key_display_foreign_type_value_display]
+        // eo_hashmap_key_display_foreign_type_value_display_lifetime: std::collections::HashMap<crate::dev::DisplayForeignTypeStruct, crate::dev::DisplayStructLifetime<'a>>,
+        // #[eo_hashmap_key_display_foreign_type_value_display]
+        // eo_hashmap_key_display_foreign_type_lifetime_value_display_lifetime: std::collections::HashMap<crate::dev::DisplayForeignTypeStructLifetime<'a>, crate::dev::DisplayStructLifetime<'a>>,
+
+        // #[eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize]
+        // eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize: std::collections::HashMap<crate::dev::DisplayForeignTypeStruct, crate::dev::DisplayWithSerializeDeserializeStruct>,
+        // #[eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize]
+        // eo_hashmap_key_display_foreign_type_lifetime_value_display_with_serialize_deserialize: std::collections::HashMap<crate::dev::DisplayForeignTypeStructLifetime<'a>, crate::dev::DisplayWithSerializeDeserializeStruct>,
+        // #[eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize]
+        // eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize_lifetime: std::collections::HashMap<crate::dev::DisplayForeignTypeStruct, crate::dev::DisplayWithSerializeDeserializeStructLifetime<'a>>,
+        // #[eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize]
+        // eo_hashmap_key_display_foreign_type_lifetime_value_display_with_serialize_deserialize_lifetime: std::collections::HashMap<
+        //     crate::dev::DisplayForeignTypeStructLifetime<'a>,
+        //     crate::dev::DisplayWithSerializeDeserializeStructLifetime<'a>,
+        // >,
+
+        // #[eo_hashmap_key_display_foreign_type_value_display_foreign_type]
+        // eo_hashmap_key_display_foreign_type_value_display_foreign_type: std::collections::HashMap<crate::dev::DisplayForeignTypeStruct, crate::dev::DisplayForeignTypeStruct>,
+        // #[eo_hashmap_key_display_foreign_type_value_display_foreign_type]
+        // eo_hashmap_key_display_foreign_type_lifetime_value_display_foreign_type: std::collections::HashMap<crate::dev::DisplayForeignTypeStructLifetime<'a>, crate::dev::DisplayForeignTypeStruct>,
+        // #[eo_hashmap_key_display_foreign_type_value_display_foreign_type]
+        // eo_hashmap_key_display_foreign_type_value_display_foreign_type_lifetime: std::collections::HashMap<crate::dev::DisplayForeignTypeStruct, crate::dev::DisplayForeignTypeStructLifetime<'a>>,
+        // #[eo_hashmap_key_display_foreign_type_value_display_foreign_type]
+        // eo_hashmap_key_display_foreign_type_lifetime_value_display_foreign_type_lifetime: std::collections::HashMap<crate::dev::DisplayForeignTypeStructLifetime<'a>, crate::dev::DisplayForeignTypeStructLifetime<'a>>,
+
+        // #[eo_hashmap_key_display_foreign_type_value_display_foreign_type_with_serialize_deserialize]
+        // eo_hashmap_key_display_foreign_type_value_display_foreign_type_with_serialize_deserialize: std::collections::HashMap<crate::dev::DisplayForeignTypeStruct, crate::dev::DisplayForeignTypeSerializeDeserializeStruct>,
+        // #[eo_hashmap_key_display_foreign_type_value_display_foreign_type_with_serialize_deserialize]
+        // eo_hashmap_key_display_foreign_type_lifetime_value_display_foreign_type_with_serialize_deserialize: std::collections::HashMap<crate::dev::DisplayForeignTypeStructLifetime<'a>, crate::dev::DisplayForeignTypeSerializeDeserializeStruct>,
+        // #[eo_hashmap_key_display_foreign_type_value_display_foreign_type_with_serialize_deserialize]
+        // eo_hashmap_key_display_foreign_type_value_display_foreign_type_with_serialize_deserialize_lifetime: std::collections::HashMap<crate::dev::DisplayForeignTypeStruct, crate::dev::DisplayForeignTypeSerializeDeserializeStructLifetime<'a>>,
+        // #[eo_hashmap_key_display_foreign_type_value_display_foreign_type_with_serialize_deserialize]
+        // eo_hashmap_key_display_foreign_type_lifetime_value_display_foreign_type_with_serialize_deserialize_lifetime: std::collections::HashMap<crate::dev::DisplayForeignTypeStructLifetime<'a>, crate::dev::DisplayForeignTypeSerializeDeserializeStructLifetime<'a>>,
+
+        // #[eo_hashmap_key_display_foreign_type_value_error_occurence]
+        // eo_hashmap_key_display_foreign_type_value_error_occurence: std::collections::HashMap<crate::dev::DisplayForeignTypeStruct, crate::dev::SevenErrorEnum<'a>>,
+        // #[eo_hashmap_key_display_foreign_type_value_error_occurence]
+        // eo_hashmap_key_display_foreign_type_lifetime_value_error_occurence: std::collections::HashMap<crate::dev::DisplayForeignTypeStructLifetime<'a>, crate::dev::SevenErrorEnum<'a>>,
+
+///////////////////////////////////////////////////////////////////////////
+
+// //
+//         // #[eo_display_with_serialize_deserialize]
+//         // display_with_ser_deser: String,
+//         // #[eo_error_occurence]
+//         // something: crate::dev::SevenError<'a>,
+
+//         // #[eo_display_foreign_type_with_serialize_deserialize]
+//         // serialize_deserialize_struct: SerializeDeserializeStruct,
+//         // #[eo_vec_display_foreign_type_with_serialize_deserialize]
+//         // vec_serialize_deserialize_struct: Vec<SerializeDeserializeStruct>,
+
+
+//         // #[eo_display_foreign_type]
+//         // display_foreign_type_struct: DisplayForeignTypeStruct,
+//         // #[eo_display]
+//         // display_without_serialize_deserialize_struct: DisplayStruct,
+//         // #[eo_vec_display]
+//         // eo_vec_display: Vec<DisplayStruct>,
+//         // #[eo_hashmap_key_display_with_serialize_deserialize_value_display]
+//         // eo_hashmap_key_display_with_serialize_deserialize_value_display: std::collections::HashMap<String, DisplayStruct>,
+//         // #[eo_hashmap_key_display_foreign_type_value_display]
+//         // eo_hashmap_key_display_foreign_type_value_display: std::collections::HashMap<crate::dev::KekwLifetime<'a>, DisplayStruct>,
+// //
+
 //         #[eo_display_with_serialize_deserialize]
 //         a: crate::dev::Omegalul,
 //         #[eo_display_with_serialize_deserialize]
@@ -497,70 +510,60 @@ impl<'a> crate::traits::display_foreign_type::DisplayForeignType for KekwLifetim
 //         h: std::vec::Vec<crate::dev::Kekw>,
 //         #[eo_vec_display_foreign_type]
 //         j: std::vec::Vec<crate::dev::KekwLifetime<'a>>,
-//         #[eo_vec_error_occurence]
-//         k: std::vec::Vec<crate::dev::SevenErrorEnum<'a>>,
 //         //////////////////////////////
-//         // #[eo_hashmap_key_display_value_display]
-//         // l: std::collections::HashMap<crate::dev::Omegalul, crate::dev::Omegalul>,
-//         // #[eo_hashmap_key_display_value_display]
-//         // m: std::collections::HashMap<crate::dev::Omegalul, crate::dev::OmegalulLifetime<'a>>,
-//         // #[eo_hashmap_key_display_value_display]
-//         // n: std::collections::HashMap<crate::dev::OmegalulLifetime<'a>, crate::dev::Omegalul>,
-//         // #[eo_hashmap_key_display_value_display]
-//         // o: std::collections::HashMap<
-//         //     crate::dev::OmegalulLifetime<'a>,
-//         //     crate::dev::OmegalulLifetime<'a>,
-//         // >,
-//         // #[eo_hashmap_key_display_value_display_foreign_type]
-//         // p: std::collections::HashMap<crate::dev::Omegalul, crate::dev::Kekw>,
-//         // #[eo_hashmap_key_display_value_display_foreign_type]
-//         // q: std::collections::HashMap<crate::dev::Omegalul, crate::dev::KekwLifetime<'a>>,
-//         // #[eo_hashmap_key_display_value_display_foreign_type]
-//         // r: std::collections::HashMap<crate::dev::OmegalulLifetime<'a>, crate::dev::Kekw>,
-//         // #[eo_hashmap_key_display_value_display_foreign_type]
-//         // s: std::collections::HashMap<
-//         //     crate::dev::OmegalulLifetime<'a>,
-//         //     crate::dev::KekwLifetime<'a>,
-//         // >,
-//         // #[eo_hashmap_key_display_value_error_occurence]
-//         // t: std::collections::HashMap<crate::dev::Omegalul, crate::dev::SevenError<'a>>,
-//         // #[eo_hashmap_key_display_value_error_occurence]
-//         // u: std::collections::HashMap<crate::dev::OmegalulLifetime<'a>, crate::dev::SevenError<'a>>,
-//         ///////////////////////////////
-//         #[eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize]
-//         v: std::collections::HashMap<crate::dev::Kekw, crate::dev::Omegalul>,
-//         #[eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize]
-//         w: std::collections::HashMap<crate::dev::Kekw, crate::dev::OmegalulLifetime<'a>>,
-//         #[eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize]
-//         x: std::collections::HashMap<crate::dev::KekwLifetime<'a>, crate::dev::Omegalul>,
-//         #[eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize]
-//         y: std::collections::HashMap<
-//             crate::dev::KekwLifetime<'a>,
-//             crate::dev::OmegalulLifetime<'a>,
-//         >,
-//         #[eo_hashmap_key_display_foreign_type_value_display_foreign_type]
-//         z: std::collections::HashMap<crate::dev::Kekw, crate::dev::Kekw>,
-//         #[eo_hashmap_key_display_foreign_type_value_display_foreign_type]
-//         aa: std::collections::HashMap<crate::dev::Kekw, crate::dev::KekwLifetime<'a>>,
-//         #[eo_hashmap_key_display_foreign_type_value_display_foreign_type]
-//         ab: std::collections::HashMap<crate::dev::KekwLifetime<'a>, crate::dev::Kekw>,
-//         #[eo_hashmap_key_display_foreign_type_value_display_foreign_type]
-//         ac: std::collections::HashMap<crate::dev::KekwLifetime<'a>, crate::dev::KekwLifetime<'a>>,
-//         #[eo_hashmap_key_display_foreign_type_value_error_occurence]
-//         ad: std::collections::HashMap<crate::dev::Kekw, crate::dev::SevenErrorEnum<'a>>,
-//         #[eo_hashmap_key_display_foreign_type_value_error_occurence]
-//         af: std::collections::HashMap<crate::dev::KekwLifetime<'a>, crate::dev::SevenErrorEnum<'a>>,
+
 //         #[eo_vec_error_occurence]
 //         ag: std::vec::Vec<OneErrorEnum<'a>>,
-//         #[eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize]
-//         ah: std::collections::HashMap<crate::dev::KekwLifetime<'a>, crate::dev::Omegalul>,
 //         #[eo_display_with_serialize_deserialize]
 //         ai: &'a str,
 //         #[eo_hashmap_key_display_with_serialize_deserialize_value_display_with_serialize_deserialize]
 //         ak: std::collections::HashMap<&'a str, crate::dev::Omegalul>,
 //         #[eo_vec_display_with_serialize_deserialize]
 //         al: std::vec::Vec<&'a str>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-//     },
-// }
-// ////////////////////////////////////////////
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //, error_occurence::ErrorOccurence
+pub enum OneErrorEnum<'a> {
+    // #[eo_display]
+    // ToString(crate::dev::Omegalul),
+    // #[eo_display]
+    // ToStringLifetime(crate::dev::OmegalulLifetime<'a>),
+    // #[eo_display_foreign_type]
+    // DisplayForeignType(crate::dev::Kekw),
+    // #[eo_display_foreign_type]
+    // DisplayForeignTypeLifeTime(crate::dev::KekwLifetime<'a>),
+    // #[eo_error_occurence]
+    ErrorOccurence(crate::dev::SevenError<'a>),
+    // #[eo_vec_display]
+    // VecToString(std::vec::Vec<crate::dev::Omegalul>),
+    // #[eo_vec_display_foreign_type]
+    // VecDisplayForeignType(std::vec::Vec<crate::dev::Kekw>),
+    // #[eo_vec_error_occurence]
+    // VecErrorOccurence(std::vec::Vec<crate::dev::SevenError<'a>>),
+    // #[eo_hashmap_key_display_value_display]
+    // HashMapKeyToStringValueToString(
+    //     std::collections::HashMap<crate::dev::Omegalul, crate::dev::Omegalul>,
+    // ),
+    // #[eo_hashmap_key_display_value_display_foreign_type]
+    // HashMapKeyToStringValueDisplayForeignType(
+    //     std::collections::HashMap<crate::dev::Omegalul, crate::dev::Kekw>,
+    // ),
+    // #[eo_hashmap_key_display_value_error_occurence]
+    // HashMapKeyToStringValueErrorOccurence(
+    //     std::collections::HashMap<crate::dev::Omegalul, crate::dev::SevenError<'a>>,
+    // ),
+    // #[eo_hashmap_key_display_foreign_type_value_display]
+    // HashMapKeyDisplayForeignTypeValueToString(
+    //     std::collections::HashMap<crate::dev::Kekw, crate::dev::Omegalul>,
+    // ),
+    // #[eo_hashmap_key_display_foreign_type_value_display_foreign_type]
+    // HashMapKeyDisplayForeignTypeValueDisplayForeignType(
+    //     std::collections::HashMap<crate::dev::Kekw, crate::dev::Kekw>,
+    // ),
+    // #[eo_hashmap_key_display_foreign_type_value_error_occurence]
+    // HashMapKeyDisplayForeignTypeValueErrorOccurence(
+    //     std::collections::HashMap<crate::dev::Kekw, crate::dev::SevenError<'a>>,
+    // ),
+}
