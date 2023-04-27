@@ -51,59 +51,59 @@ pub fn dev() {
 
 pub fn named<'a>() -> Result<(), Box<NamedError<'a>>> {
     return Err(Box::new(NamedError::Something {
-        // eo_display: crate::dev::DisplayStruct {
-        //     display_struct: String::from("DisplayStruct")
-        // },
-        // eo_display_lifetime: crate::dev::DisplayStructLifetime {
-        //     display_struct_lifetime: "DisplayStructLifetime"
-        // },
+        eo_display: crate::dev::DisplayStruct {
+            display_struct: String::from("DisplayStruct")
+        },
+        eo_display_lifetime: crate::dev::DisplayStructLifetime {
+            display_struct_lifetime: "DisplayStructLifetime"
+        },
 
-        // eo_display_with_serialize_deserialize: crate::dev::DisplayWithSerializeDeserializeStruct {},
-        // eo_display_with_serialize_deserialize_lifetime: crate::dev::DisplayWithSerializeDeserializeStructLifetime {
-        //     display_with_serialize_deserialize_struct_lifetime: "DisplayWithSerializeDeserializeStructLifetime"
-        // },
+        eo_display_with_serialize_deserialize: crate::dev::DisplayWithSerializeDeserializeStruct {},
+        eo_display_with_serialize_deserialize_lifetime: crate::dev::DisplayWithSerializeDeserializeStructLifetime {
+            display_with_serialize_deserialize_struct_lifetime: "DisplayWithSerializeDeserializeStructLifetime"
+        },
 
-        // eo_display_foreign_type: crate::dev::DisplayForeignTypeStruct {
-        //     display_foreign_type_struct: String::from("DisplayForeignTypeStruct")
-        // },
-        // eo_display_foreign_type_lifetime: crate::dev::DisplayForeignTypeStructLifetime {
-        //     display_foreign_type_struct: "DisplayForeignTypeStructLifetime"
-        // },
+        eo_display_foreign_type: crate::dev::DisplayForeignTypeStruct {
+            display_foreign_type_struct: String::from("DisplayForeignTypeStruct")
+        },
+        eo_display_foreign_type_lifetime: crate::dev::DisplayForeignTypeStructLifetime {
+            display_foreign_type_struct: "DisplayForeignTypeStructLifetime"
+        },
 
-        // eo_display_foreign_type_with_serialize_deserialize: crate::dev::DisplayForeignTypeSerializeDeserializeStruct {
-        //     display_foreign_type_serialize_deserialize_struct: String::from("DisplayForeignTypeSerializeDeserializeStruct")
-        // },
-        // eo_display_foreign_type_with_serialize_deserialize_lifetime: crate::dev::DisplayForeignTypeSerializeDeserializeStructLifetime {
-        //     display_foreign_type_serialize_deserialize_struct: "DisplayForeignTypeSerializeDeserializeStructLifetime"
-        // },
+        eo_display_foreign_type_with_serialize_deserialize: crate::dev::DisplayForeignTypeSerializeDeserializeStruct {
+            display_foreign_type_serialize_deserialize_struct: String::from("DisplayForeignTypeSerializeDeserializeStruct")
+        },
+        eo_display_foreign_type_with_serialize_deserialize_lifetime: crate::dev::DisplayForeignTypeSerializeDeserializeStructLifetime {
+            display_foreign_type_serialize_deserialize_struct: "DisplayForeignTypeSerializeDeserializeStructLifetime"
+        },
 
-        // eo_error_occurence: crate::dev::ErrorOccurenceError::Something {
-        //     string: String::from("String"),
-        //     display_with_serialize_deserializeStructLifetime: crate::dev::DisplayWithSerializeDeserializeStructLifetime {
-        //         display_with_serialize_deserialize_struct_lifetime: "DisplayWithSerializeDeserializeStructLifetime",
-        //     },
-        //     code_occurence: crate::code_occurence_tufa_common!(),
-        // },
+        eo_error_occurence: crate::dev::ErrorOccurenceError::Something {
+            string: String::from("String"),
+            display_with_serialize_deserialize_struct_lifetime: crate::dev::DisplayWithSerializeDeserializeStructLifetime {
+                display_with_serialize_deserialize_struct_lifetime: "DisplayWithSerializeDeserializeStructLifetime",
+            },
+            code_occurence: crate::code_occurence_tufa_common!(),
+        },
 
-        // eo_vec_display: vec![crate::dev::DisplayStruct { display_struct: String::from("DisplayStruct") }],
-        // eo_vec_display_lifetime: vec![crate::dev::DisplayStructLifetime { display_struct_lifetime: "DisplayStructLifetime" }],
+        eo_vec_display: vec![crate::dev::DisplayStruct { display_struct: String::from("DisplayStruct") }],
+        eo_vec_display_lifetime: vec![crate::dev::DisplayStructLifetime { display_struct_lifetime: "DisplayStructLifetime" }],
 
-        // eo_vec_display_with_serialize_deserialize: vec![crate::dev::DisplayWithSerializeDeserializeStruct {}],
-        // eo_vec_display_with_serialize_deserialize_lifetime: vec![crate::dev::DisplayWithSerializeDeserializeStructLifetime { display_with_serialize_deserialize_struct_lifetime: "DisplayWithSerializeDeserializeStructLifetime" }],
+        eo_vec_display_with_serialize_deserialize: vec![crate::dev::DisplayWithSerializeDeserializeStruct {}],
+        eo_vec_display_with_serialize_deserialize_lifetime: vec![crate::dev::DisplayWithSerializeDeserializeStructLifetime { display_with_serialize_deserialize_struct_lifetime: "DisplayWithSerializeDeserializeStructLifetime" }],
 
-        // eo_vec_display_foreign_type: vec![crate::dev::DisplayForeignTypeStruct { display_foreign_type_struct: String::from("DisplayForeignTypeStruct") }],
-        // eo_vec_display_foreign_type_lifetime: vec![crate::dev::DisplayForeignTypeStructLifetime { display_foreign_type_struct: "DisplayForeignTypeStructLifetime" }], 
+        eo_vec_display_foreign_type: vec![crate::dev::DisplayForeignTypeStruct { display_foreign_type_struct: String::from("DisplayForeignTypeStruct") }],
+        eo_vec_display_foreign_type_lifetime: vec![crate::dev::DisplayForeignTypeStructLifetime { display_foreign_type_struct: "DisplayForeignTypeStructLifetime" }], 
 
-        // eo_vec_display_foreign_type_with_serialize_deserialize: vec![crate::dev::DisplayForeignTypeSerializeDeserializeStruct { display_foreign_type_serialize_deserialize_struct: String::from("DisplayForeignTypeSerializeDeserializeStruct") }],
-        // eo_vec_display_foreign_type_with_serialize_deserialize_lifetime: vec![crate::dev::DisplayForeignTypeSerializeDeserializeStructLifetime{ display_foreign_type_serialize_deserialize_struct: "DisplayForeignTypeSerializeDeserializeStructLifetime" }], 
+        eo_vec_display_foreign_type_with_serialize_deserialize: vec![crate::dev::DisplayForeignTypeSerializeDeserializeStruct { display_foreign_type_serialize_deserialize_struct: String::from("DisplayForeignTypeSerializeDeserializeStruct") }],
+        eo_vec_display_foreign_type_with_serialize_deserialize_lifetime: vec![crate::dev::DisplayForeignTypeSerializeDeserializeStructLifetime{ display_foreign_type_serialize_deserialize_struct: "DisplayForeignTypeSerializeDeserializeStructLifetime" }], 
 
-        // eo_vec_error_occurence: vec![crate::dev::ErrorOccurenceErrorEnum::Something(crate::dev::ErrorOccurenceError::Something {
-        //     string: String::from("String"),
-        //     display_with_serialize_deserializeStructLifetime: crate::dev::DisplayWithSerializeDeserializeStructLifetime {
-        //         display_with_serialize_deserialize_struct_lifetime: "DisplayWithSerializeDeserializeStructLifetime",
-        //     },
-        //     code_occurence: crate::code_occurence_tufa_common!(),
-        // })],
+        eo_vec_error_occurence: vec![crate::dev::ErrorOccurenceErrorEnum::Something(crate::dev::ErrorOccurenceError::Something {
+            string: String::from("String"),
+            display_with_serialize_deserialize_struct_lifetime: crate::dev::DisplayWithSerializeDeserializeStructLifetime {
+                display_with_serialize_deserialize_struct_lifetime: "DisplayWithSerializeDeserializeStructLifetime",
+            },
+            code_occurence: crate::code_occurence_tufa_common!(),
+        })],
 
         eo_hashmap_key_str_value_display: std::collections::HashMap::from([(
             "str",
@@ -181,7 +181,7 @@ pub fn named<'a>() -> Result<(), Box<NamedError<'a>>> {
             "str",
             crate::dev::ErrorOccurenceErrorEnum::Something(crate::dev::ErrorOccurenceError::Something {
                 string: String::from("String"),
-                display_with_serialize_deserializeStructLifetime: crate::dev::DisplayWithSerializeDeserializeStructLifetime {
+                display_with_serialize_deserialize_struct_lifetime: crate::dev::DisplayWithSerializeDeserializeStructLifetime {
                     display_with_serialize_deserialize_struct_lifetime: "DisplayWithSerializeDeserializeStructLifetime",
                 },
                 code_occurence: crate::code_occurence_tufa_common!(),
@@ -191,7 +191,7 @@ pub fn named<'a>() -> Result<(), Box<NamedError<'a>>> {
             std::string::String::from("string"),
             crate::dev::ErrorOccurenceErrorEnum::Something(crate::dev::ErrorOccurenceError::Something {
                 string: String::from("String"),
-                display_with_serialize_deserializeStructLifetime: crate::dev::DisplayWithSerializeDeserializeStructLifetime {
+                display_with_serialize_deserialize_struct_lifetime: crate::dev::DisplayWithSerializeDeserializeStructLifetime {
                     display_with_serialize_deserialize_struct_lifetime: "DisplayWithSerializeDeserializeStructLifetime",
                 },
                 code_occurence: crate::code_occurence_tufa_common!(),
@@ -557,7 +557,7 @@ pub enum ErrorOccurenceError<'a> {
         #[eo_display_with_serialize_deserialize]
         string: String,
         #[eo_display_with_serialize_deserialize]
-        display_with_serialize_deserializeStructLifetime: DisplayWithSerializeDeserializeStructLifetime<'a>,
+        display_with_serialize_deserialize_struct_lifetime: DisplayWithSerializeDeserializeStructLifetime<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
@@ -574,51 +574,51 @@ pub enum NamedError<'a> {//
         // #[eo_display_with_serialize_deserialize]
         // lifetime_str: &'a str,
 
-        // #[eo_display]
-        // eo_display: crate::dev::DisplayStruct,
-        // #[eo_display]
-        // eo_display_lifetime: crate::dev::DisplayStructLifetime<'a>,
+        #[eo_display]
+        eo_display: crate::dev::DisplayStruct,
+        #[eo_display]
+        eo_display_lifetime: crate::dev::DisplayStructLifetime<'a>,
 
-        // #[eo_display_with_serialize_deserialize]
-        // eo_display_with_serialize_deserialize: crate::dev::DisplayWithSerializeDeserializeStruct,
-        // #[eo_display_with_serialize_deserialize]
-        // eo_display_with_serialize_deserialize_lifetime: crate::dev::DisplayWithSerializeDeserializeStructLifetime<'a>,
+        #[eo_display_with_serialize_deserialize]
+        eo_display_with_serialize_deserialize: crate::dev::DisplayWithSerializeDeserializeStruct,
+        #[eo_display_with_serialize_deserialize]
+        eo_display_with_serialize_deserialize_lifetime: crate::dev::DisplayWithSerializeDeserializeStructLifetime<'a>,
 
-        // #[eo_display_foreign_type]
-        // eo_display_foreign_type: crate::dev::DisplayForeignTypeStruct,
-        // #[eo_display_foreign_type]
-        // eo_display_foreign_type_lifetime: crate::dev::DisplayForeignTypeStructLifetime<'a>,
+        #[eo_display_foreign_type]
+        eo_display_foreign_type: crate::dev::DisplayForeignTypeStruct,
+        #[eo_display_foreign_type]
+        eo_display_foreign_type_lifetime: crate::dev::DisplayForeignTypeStructLifetime<'a>,
 
-        // #[eo_display_foreign_type_with_serialize_deserialize]
-        // eo_display_foreign_type_with_serialize_deserialize: crate::dev::DisplayForeignTypeSerializeDeserializeStruct,
-        // #[eo_display_foreign_type_with_serialize_deserialize]
-        // eo_display_foreign_type_with_serialize_deserialize_lifetime: crate::dev::DisplayForeignTypeSerializeDeserializeStructLifetime<'a>,
+        #[eo_display_foreign_type_with_serialize_deserialize]
+        eo_display_foreign_type_with_serialize_deserialize: crate::dev::DisplayForeignTypeSerializeDeserializeStruct,
+        #[eo_display_foreign_type_with_serialize_deserialize]
+        eo_display_foreign_type_with_serialize_deserialize_lifetime: crate::dev::DisplayForeignTypeSerializeDeserializeStructLifetime<'a>,
 
-        // #[eo_error_occurence]
-        // eo_error_occurence: crate::dev::ErrorOccurenceError<'a>,
+        #[eo_error_occurence]
+        eo_error_occurence: crate::dev::ErrorOccurenceError<'a>,
 
-        // #[eo_vec_display]
-        // eo_vec_display: std::vec::Vec<crate::dev::DisplayStruct>,
-        // #[eo_vec_display]
-        // eo_vec_display_lifetime: std::vec::Vec<crate::dev::DisplayStructLifetime<'a>>,
+        #[eo_vec_display]
+        eo_vec_display: std::vec::Vec<crate::dev::DisplayStruct>,
+        #[eo_vec_display]
+        eo_vec_display_lifetime: std::vec::Vec<crate::dev::DisplayStructLifetime<'a>>,
 
-        // #[eo_vec_display_with_serialize_deserialize]
-        // eo_vec_display_with_serialize_deserialize: std::vec::Vec<crate::dev::DisplayWithSerializeDeserializeStruct>,
-        // #[eo_vec_display_with_serialize_deserialize]
-        // eo_vec_display_with_serialize_deserialize_lifetime: std::vec::Vec<crate::dev::DisplayWithSerializeDeserializeStructLifetime<'a>>,
+        #[eo_vec_display_with_serialize_deserialize]
+        eo_vec_display_with_serialize_deserialize: std::vec::Vec<crate::dev::DisplayWithSerializeDeserializeStruct>,
+        #[eo_vec_display_with_serialize_deserialize]
+        eo_vec_display_with_serialize_deserialize_lifetime: std::vec::Vec<crate::dev::DisplayWithSerializeDeserializeStructLifetime<'a>>,
 
-        // #[eo_vec_display_foreign_type]
-        // eo_vec_display_foreign_type: std::vec::Vec<crate::dev::DisplayForeignTypeStruct>,
-        // #[eo_vec_display_foreign_type]
-        // eo_vec_display_foreign_type_lifetime: std::vec::Vec<crate::dev::DisplayForeignTypeStructLifetime<'a>>,
+        #[eo_vec_display_foreign_type]
+        eo_vec_display_foreign_type: std::vec::Vec<crate::dev::DisplayForeignTypeStruct>,
+        #[eo_vec_display_foreign_type]
+        eo_vec_display_foreign_type_lifetime: std::vec::Vec<crate::dev::DisplayForeignTypeStructLifetime<'a>>,
 
-        // #[eo_vec_display_foreign_type_with_serialize_deserialize]
-        // eo_vec_display_foreign_type_with_serialize_deserialize: std::vec::Vec<crate::dev::DisplayForeignTypeSerializeDeserializeStruct>,
-        // #[eo_vec_display_foreign_type_with_serialize_deserialize]
-        // eo_vec_display_foreign_type_with_serialize_deserialize_lifetime: std::vec::Vec<crate::dev::DisplayForeignTypeSerializeDeserializeStructLifetime<'a>>,
+        #[eo_vec_display_foreign_type_with_serialize_deserialize]
+        eo_vec_display_foreign_type_with_serialize_deserialize: std::vec::Vec<crate::dev::DisplayForeignTypeSerializeDeserializeStruct>,
+        #[eo_vec_display_foreign_type_with_serialize_deserialize]
+        eo_vec_display_foreign_type_with_serialize_deserialize_lifetime: std::vec::Vec<crate::dev::DisplayForeignTypeSerializeDeserializeStructLifetime<'a>>,
 
-        // #[eo_vec_error_occurence]
-        // eo_vec_error_occurence: std::vec::Vec<crate::dev::ErrorOccurenceErrorEnum<'a>>,
+        #[eo_vec_error_occurence]
+        eo_vec_error_occurence: std::vec::Vec<crate::dev::ErrorOccurenceErrorEnum<'a>>,
 
         #[eo_hashmap_key_display_with_serialize_deserialize_value_display]
         eo_hashmap_key_str_value_display: std::collections::HashMap<&'a str, crate::dev::DisplayStruct>,
