@@ -238,22 +238,22 @@ pub fn named<'a>() -> Result<(), Box<NamedError<'a>>> {
 
 
 //
-        // eo_hashmap_key_display_foreign_type_value_str_display_with_serialize_deserialize: std::collections::HashMap::from([(
-        //     crate::dev::DisplayForeignTypeStruct { display_foreign_type_struct: String::from("DisplayForeignTypeStruct") },
-        //     "eo_hashmap_key_display_foreign_type_value_str_display_with_serialize_deserialize_value",
-        // )]),
-        // eo_hashmap_key_display_foreign_type_lifetime_value_str_display_with_serialize_deserialize: std::collections::HashMap::from([(
-        //     crate::dev::DisplayForeignTypeStructLifetime { display_foreign_type_struct: "DisplayForeignTypeStructLifetime" },
-        //     "eo_hashmap_key_display_foreign_type_lifetime_value_str_display_with_serialize_deserialize_value",
-        // )]),
-        // eo_hashmap_key_display_foreign_type_value_string_display_with_serialize_deserialize: std::collections::HashMap::from([(
-        //     crate::dev::DisplayForeignTypeStruct { display_foreign_type_struct: String::from("DisplayForeignTypeStruct") },
-        //     std::string::String::from("eo_hashmap_key_display_foreign_type_value_string_display_with_serialize_deserialize_value"),
-        // )]),
-        // eo_hashmap_key_display_foreign_type_lifetime_value_string_display_with_serialize_deserialize: std::collections::HashMap::from([(
-        //     crate::dev::DisplayForeignTypeStructLifetime { display_foreign_type_struct: "DisplayForeignTypeStructLifetime" },
-        //     std::string::String::from("eo_hashmap_key_display_foreign_type_lifetime_value_string_display_with_serialize_deserialize_value"),
-        // )]),
+        eo_hashmap_key_display_foreign_type_value_str_display_with_serialize_deserialize: std::collections::HashMap::from([(
+            crate::dev::DisplayForeignTypeStruct { display_foreign_type_struct: String::from("DisplayForeignTypeStruct") },
+            "eo_hashmap_key_display_foreign_type_value_str_display_with_serialize_deserialize_value",
+        )]),
+        eo_hashmap_key_display_foreign_type_lifetime_value_str_display_with_serialize_deserialize: std::collections::HashMap::from([(
+            crate::dev::DisplayForeignTypeStructLifetime { display_foreign_type_struct: "DisplayForeignTypeStructLifetime" },
+            "eo_hashmap_key_display_foreign_type_lifetime_value_str_display_with_serialize_deserialize_value",
+        )]),
+        eo_hashmap_key_display_foreign_type_value_string_display_with_serialize_deserialize: std::collections::HashMap::from([(
+            crate::dev::DisplayForeignTypeStruct { display_foreign_type_struct: String::from("DisplayForeignTypeStruct") },
+            std::string::String::from("eo_hashmap_key_display_foreign_type_value_string_display_with_serialize_deserialize_value"),
+        )]),
+        eo_hashmap_key_display_foreign_type_lifetime_value_string_display_with_serialize_deserialize: std::collections::HashMap::from([(
+            crate::dev::DisplayForeignTypeStructLifetime { display_foreign_type_struct: "DisplayForeignTypeStructLifetime" },
+            std::string::String::from("eo_hashmap_key_display_foreign_type_lifetime_value_string_display_with_serialize_deserialize_value"),
+        )]),
 //
         eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize: std::collections::HashMap::from([(
             crate::dev::DisplayForeignTypeStruct { display_foreign_type_struct: String::from("DisplayForeignTypeStruct") },
@@ -729,14 +729,14 @@ pub enum NamedError<'a> {//
         eo_hashmap_key_display_foreign_type_lifetime_value_display_lifetime: std::collections::HashMap<crate::dev::DisplayForeignTypeStructLifetime<'a>, crate::dev::DisplayStructLifetime<'a>>,
 
 //
-        // #[eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize]
-        // eo_hashmap_key_display_foreign_type_value_str_display_with_serialize_deserialize: std::collections::HashMap<crate::dev::DisplayForeignTypeStruct, &'a str>,
-        // #[eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize]
-        // eo_hashmap_key_display_foreign_type_lifetime_value_str_display_with_serialize_deserialize: std::collections::HashMap<crate::dev::DisplayForeignTypeStructLifetime<'a>, &'a str>,
-        // #[eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize]
-        // eo_hashmap_key_display_foreign_type_value_string_display_with_serialize_deserialize: std::collections::HashMap<crate::dev::DisplayForeignTypeStruct, std::string::String>,
-        // #[eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize]
-        // eo_hashmap_key_display_foreign_type_lifetime_value_string_display_with_serialize_deserialize: std::collections::HashMap<crate::dev::DisplayForeignTypeStructLifetime<'a>, std::string::String>,
+        #[eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize]
+        eo_hashmap_key_display_foreign_type_value_str_display_with_serialize_deserialize: std::collections::HashMap<crate::dev::DisplayForeignTypeStruct, &'a str>,
+        #[eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize]
+        eo_hashmap_key_display_foreign_type_lifetime_value_str_display_with_serialize_deserialize: std::collections::HashMap<crate::dev::DisplayForeignTypeStructLifetime<'a>, &'a str>,
+        #[eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize]
+        eo_hashmap_key_display_foreign_type_value_string_display_with_serialize_deserialize: std::collections::HashMap<crate::dev::DisplayForeignTypeStruct, std::string::String>,
+        #[eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize]
+        eo_hashmap_key_display_foreign_type_lifetime_value_string_display_with_serialize_deserialize: std::collections::HashMap<crate::dev::DisplayForeignTypeStructLifetime<'a>, std::string::String>,
 //
         #[eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize]
         eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize: std::collections::HashMap<crate::dev::DisplayForeignTypeStruct, crate::dev::DisplayWithSerializeDeserializeStruct>,
