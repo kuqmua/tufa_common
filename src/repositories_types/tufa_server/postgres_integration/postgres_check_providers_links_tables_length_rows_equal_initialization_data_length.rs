@@ -17,8 +17,8 @@ pub enum PostgresCheckProvidersLinksTablesLengthRowsEqualInitializationDataLengt
     'a,
 > {
     Postgres {
-        #[eo_hashmap_key_display_value_error_occurence]
-        inner_errors: std::collections::HashMap<String, PostgresCheckProvidersLinksTablesLengthRowsEqualInitializationDataLengthWrapperErrorSelectCountOriginErrorSqlxUnnamed<'a>>,
+        #[eo_hashmap_key_display_with_serialize_deserialize_value_error_occurence]
+        inner_errors: std::collections::HashMap<std::string::String, PostgresCheckProvidersLinksTablesLengthRowsEqualInitializationDataLengthWrapperErrorSelectCountOriginErrorSqlxUnnamed<'a>>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
@@ -46,8 +46,8 @@ pub enum PostgresCheckProvidersLinksTablesLengthRowsEqualInitializationDataLengt
     'a,
 > {
     Postgres {
-        #[eo_hashmap_key_display_value_error_occurence]
-        inner_errors: std::collections::HashMap<String, PostgresCheckProvidersLinksTablesLengthRowsEqualInitializationDataLengthWrapperErrorSelectCountOriginErrorUnnamed<'a>>,
+        #[eo_hashmap_key_display_with_serialize_deserialize_value_error_occurence]
+        inner_errors: std::collections::HashMap<std::string::String, PostgresCheckProvidersLinksTablesLengthRowsEqualInitializationDataLengthWrapperErrorSelectCountOriginErrorUnnamed<'a>>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
@@ -65,7 +65,7 @@ pub enum PostgresCheckProvidersLinksTablesLengthRowsEqualInitializationDataLengt
     'a,
 > {
     Postgres {
-        #[eo_display]
+        #[eo_display_with_serialize_deserialize]
         error: ProviderLinksTablesLengthRowsNotEqualInitializationDataLength,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },

@@ -1,9 +1,9 @@
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum PostgresInsertLinkPartsIntoProvidersTablesOriginError<'a> {
     Postgres {
-        #[eo_hashmap_key_display_value_error_occurence]
+        #[eo_hashmap_key_display_with_serialize_deserialize_value_error_occurence]
         inner_errors: std::collections::HashMap<
-            String,
+            std::string::String,
             PostgresInsertLinkPartsIntoProvidersTablesOriginErrorEnumUnnamed<'a>,
         >,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
