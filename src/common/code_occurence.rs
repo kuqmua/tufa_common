@@ -1,4 +1,4 @@
-#[derive(Debug, serde::Serialize)]
+#[derive(Debug, serde::Serialize, Clone)]
 pub struct CodeOccurence<'a> {
     file: &'a str,
     line: u32,
@@ -106,7 +106,7 @@ impl<'a> CodeOccurence<'a> {
     }
 }
 
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, serde::Serialize, serde::Deserialize, Clone)]
 pub struct CodeOccurenceWithSerializeDeserialize<'a> {
     file: &'a str,
     line: u32,

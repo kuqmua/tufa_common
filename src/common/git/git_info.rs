@@ -2,7 +2,7 @@ use generate_getter_traits_for_struct_fields::GenerateGetterTraitsForStructField
 use serde_derive::Deserialize;
 use serde_derive::Serialize;
 
-#[derive(Debug, Serialize, Deserialize, Clone, Eq, Hash, PartialEq)]
+#[derive(Debug, Serialize, Deserialize, Clone, Eq, Hash, PartialEq, Default)]
 pub struct GitInformation<'a> {
     pub git_commit_id: &'a str,
     pub git_repo_link: &'a str,
