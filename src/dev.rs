@@ -94,7 +94,7 @@ pub fn named<'a>() -> Result<(), Box<ErrorNamed<'a>>> {
         eo_vec_display_foreign_type_with_serialize_deserialize: vec![crate::dev::DisplayForeignTypeSerializeDeserializeStruct { display_foreign_type_serialize_deserialize_struct: std::string::String::from("String") }],
         eo_vec_display_foreign_type_with_serialize_deserialize_lifetime: vec![crate::dev::DisplayForeignTypeSerializeDeserializeStructLifetime{ display_foreign_type_serialize_deserialize_struct: "str" }], 
 
-        eo_vec_error_occurence: vec![crate::dev::ErrorOccurenceErrorEnum::Something(crate::dev::ErrorOccurenceErrorNamed::Something {
+        eo_vec_error_occurence: vec![crate::dev::ErrorUnnamed::Something(crate::dev::ErrorOccurenceErrorNamed::Something {
             string: std::string::String::from("String"),
             display_with_serialize_deserialize_struct_lifetime: crate::dev::DisplayWithSerializeDeserializeStructLifetime {
                 display_with_serialize_deserialize_struct_lifetime: "str",
@@ -193,7 +193,7 @@ pub fn named<'a>() -> Result<(), Box<ErrorNamed<'a>>> {
 
         eo_hashmap_key_str_display_with_serialize_deserialize_value_error_occurence: std::collections::HashMap::from([(
             "str",
-            crate::dev::ErrorOccurenceErrorEnum::Something(crate::dev::ErrorOccurenceErrorNamed::Something {
+            crate::dev::ErrorUnnamed::Something(crate::dev::ErrorOccurenceErrorNamed::Something {
                 string: std::string::String::from("String"),
                 display_with_serialize_deserialize_struct_lifetime: crate::dev::DisplayWithSerializeDeserializeStructLifetime {
                     display_with_serialize_deserialize_struct_lifetime: "str",
@@ -203,7 +203,7 @@ pub fn named<'a>() -> Result<(), Box<ErrorNamed<'a>>> {
         )]),
         eo_hashmap_key_string_display_with_serialize_deserialize_value_error_occurence: std::collections::HashMap::from([(
             std::string::String::from("String"),
-            crate::dev::ErrorOccurenceErrorEnum::Something(crate::dev::ErrorOccurenceErrorNamed::Something {
+            crate::dev::ErrorUnnamed::Something(crate::dev::ErrorOccurenceErrorNamed::Something {
                 string: std::string::String::from("String"),
                 display_with_serialize_deserialize_struct_lifetime: crate::dev::DisplayWithSerializeDeserializeStructLifetime {
                     display_with_serialize_deserialize_struct_lifetime: "str",
@@ -298,7 +298,7 @@ pub fn named<'a>() -> Result<(), Box<ErrorNamed<'a>>> {
 
         eo_hashmap_key_display_foreign_type_value_error_occurence: std::collections::HashMap::from([(
             crate::dev::DisplayForeignTypeStruct { display_foreign_type_struct: std::string::String::from("String") },
-            crate::dev::ErrorOccurenceErrorEnum::Something(crate::dev::ErrorOccurenceErrorNamed::Something {
+            crate::dev::ErrorUnnamed::Something(crate::dev::ErrorOccurenceErrorNamed::Something {
                 string: std::string::String::from("String"),
                 display_with_serialize_deserialize_struct_lifetime: crate::dev::DisplayWithSerializeDeserializeStructLifetime {
                     display_with_serialize_deserialize_struct_lifetime: "str",
@@ -308,7 +308,7 @@ pub fn named<'a>() -> Result<(), Box<ErrorNamed<'a>>> {
         )]),
         eo_hashmap_key_display_foreign_type_lifetime_value_error_occurence: std::collections::HashMap::from([(
             crate::dev::DisplayForeignTypeStructLifetime { display_foreign_type_struct: "str" },
-            crate::dev::ErrorOccurenceErrorEnum::Something(crate::dev::ErrorOccurenceErrorNamed::Something {
+            crate::dev::ErrorUnnamed::Something(crate::dev::ErrorOccurenceErrorNamed::Something {
                 string: std::string::String::from("String"),
                 display_with_serialize_deserialize_struct_lifetime: crate::dev::DisplayWithSerializeDeserializeStructLifetime {
                     display_with_serialize_deserialize_struct_lifetime: "str",
@@ -417,7 +417,7 @@ pub enum ErrorOccurenceErrorNamed<'a> {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum ErrorOccurenceErrorEnum<'a> {
+pub enum ErrorUnnamed<'a> {
     #[eo_error_occurence]
     Something(crate::dev::ErrorOccurenceErrorNamed<'a>),
 }
@@ -477,7 +477,7 @@ pub enum ErrorNamed<'a> {
         eo_vec_display_foreign_type_with_serialize_deserialize_lifetime: std::vec::Vec<crate::dev::DisplayForeignTypeSerializeDeserializeStructLifetime<'a>>,
 
         #[eo_vec_error_occurence]
-        eo_vec_error_occurence: std::vec::Vec<crate::dev::ErrorOccurenceErrorEnum<'a>>,
+        eo_vec_error_occurence: std::vec::Vec<crate::dev::ErrorUnnamed<'a>>,
 
         #[eo_hashmap_key_display_with_serialize_deserialize_value_display]
         eo_hashmap_key_str_display_with_serialize_deserialize_value_display: std::collections::HashMap<&'a str, crate::dev::DisplayStruct>,
@@ -524,9 +524,9 @@ pub enum ErrorNamed<'a> {
         eo_hashmap_key_string_value_display_foreign_type_with_serialize_deserialize_lifetime: std::collections::HashMap<std::string::String, crate::dev::DisplayForeignTypeSerializeDeserializeStructLifetime<'a>>,
 
         #[eo_hashmap_key_display_with_serialize_deserialize_value_error_occurence]
-        eo_hashmap_key_str_display_with_serialize_deserialize_value_error_occurence: std::collections::HashMap<&'a str, crate::dev::ErrorOccurenceErrorEnum<'a>>,
+        eo_hashmap_key_str_display_with_serialize_deserialize_value_error_occurence: std::collections::HashMap<&'a str, crate::dev::ErrorUnnamed<'a>>,
         #[eo_hashmap_key_display_with_serialize_deserialize_value_error_occurence]
-        eo_hashmap_key_string_display_with_serialize_deserialize_value_error_occurence: std::collections::HashMap<std::string::String, crate::dev::ErrorOccurenceErrorEnum<'a>>,
+        eo_hashmap_key_string_display_with_serialize_deserialize_value_error_occurence: std::collections::HashMap<std::string::String, crate::dev::ErrorUnnamed<'a>>,
 
         #[eo_hashmap_key_display_foreign_type_value_display]
         eo_hashmap_key_display_foreign_type_value_display: std::collections::HashMap<crate::dev::DisplayForeignTypeStruct, crate::dev::DisplayStruct>,
@@ -576,9 +576,9 @@ pub enum ErrorNamed<'a> {
         eo_hashmap_key_display_foreign_type_lifetime_value_display_foreign_type_with_serialize_deserialize_lifetime: std::collections::HashMap<crate::dev::DisplayForeignTypeStructLifetime<'a>, crate::dev::DisplayForeignTypeSerializeDeserializeStructLifetime<'a>>,
 
         #[eo_hashmap_key_display_foreign_type_value_error_occurence]
-        eo_hashmap_key_display_foreign_type_value_error_occurence: std::collections::HashMap<crate::dev::DisplayForeignTypeStruct, crate::dev::ErrorOccurenceErrorEnum<'a>>,
+        eo_hashmap_key_display_foreign_type_value_error_occurence: std::collections::HashMap<crate::dev::DisplayForeignTypeStruct, crate::dev::ErrorUnnamed<'a>>,
         #[eo_hashmap_key_display_foreign_type_value_error_occurence]
-        eo_hashmap_key_display_foreign_type_lifetime_value_error_occurence: std::collections::HashMap<crate::dev::DisplayForeignTypeStructLifetime<'a>, crate::dev::ErrorOccurenceErrorEnum<'a>>,
+        eo_hashmap_key_display_foreign_type_lifetime_value_error_occurence: std::collections::HashMap<crate::dev::DisplayForeignTypeStructLifetime<'a>, crate::dev::ErrorUnnamed<'a>>,
 
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
