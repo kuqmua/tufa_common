@@ -1,29 +1,32 @@
-#[derive(Debug)]//, thiserror::Error, error_occurence::ImplErrorOccurence
-pub enum MongoCheckCollectionIsNotEmptyError<'a> {
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum MongoCheckCollectionIsNotEmptyErrorNamed<'a> {
     Mongo {
+        #[eo_hashmap_key_display_with_serialize_deserialize_value_error_occurence]
         inner_errors:
-            std::collections::HashMap<String, MongoCheckCollectionIsNotEmptyErrorEnum<'a>>,
+            std::collections::HashMap<std::string::String, MongoCheckCollectionIsNotEmptyErrorUnnamed<'a>>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
 
-#[derive(Debug)]//, thiserror::Error, error_occurence::ImplErrorOccurence
-pub enum MongoCheckCollectionIsNotEmptyErrorEnum<'a> {
-    CountDocumentsOrigin(MongoCheckCollectionIsNotEmptyErrorEnumCountDocuments<'a>),
-    IsNotEmptyOrigin(MongoCheckCollectionIsNotEmptyErrorEnumIsNotEmptyOrigin<'a>),
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum MongoCheckCollectionIsNotEmptyErrorUnnamed<'a> {
+    CountDocumentsOrigin(MongoCheckCollectionIsNotEmptyErrorCountDocumentsErrorNamed<'a>),
+    IsNotEmptyOrigin(MongoCheckCollectionIsNotEmptyErrorIsNotEmptyOriginErrorNamed<'a>),
 }
 
-#[derive(Debug)]//, thiserror::Error, error_occurence::ImplErrorOccurence
-pub enum MongoCheckCollectionIsNotEmptyErrorEnumCountDocuments<'a> {
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum MongoCheckCollectionIsNotEmptyErrorCountDocumentsErrorNamed<'a> {
     CountDocuments {
+        #[eo_display_foreign_type]
         error: mongodb::error::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
 
-#[derive(Debug)]//, thiserror::Error, error_occurence::ImplErrorOccurence
-pub enum MongoCheckCollectionIsNotEmptyErrorEnumIsNotEmptyOrigin<'a> {
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum MongoCheckCollectionIsNotEmptyErrorIsNotEmptyOriginErrorNamed<'a> {
     IsNotEmptyOrigin {
+        #[eo_display_with_serialize_deserialize]
         error: u64,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
