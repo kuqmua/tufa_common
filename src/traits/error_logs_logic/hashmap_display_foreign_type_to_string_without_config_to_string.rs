@@ -11,17 +11,18 @@ where
         crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig<'a>,
 {
     fn hashmap_display_foreign_type_to_string_without_config_to_string(&self) -> String {
-        let mut stringified = self.iter().fold(String::from(""), |mut acc, (key, value)| {
-            acc.push_str(
-                &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                    key.display_foreign_type(),
-                    value.to_string_without_config(),
-                ),
-            );
-            acc
-        });
-        stringified.pop();
-        stringified
+        crate::traits::error_logs_logic::helpers::error_occurence_hashmap_formatter(
+            self.iter().fold(String::from(""), |mut acc, (key, value)| {
+                acc.push_str(
+                    &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
+                        key.display_foreign_type(),
+                        value.to_string_without_config(),
+                    ),
+                );
+                acc
+            })
+        )
+
     }
 }
 
@@ -40,16 +41,16 @@ where
         crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithSerializeDeserialize<'a>,
 {
     fn hashmap_to_string_display_foreign_type_to_string_without_config_with_serialize_deserialize(&self) -> String {
-        let mut stringified = self.iter().fold(String::from(""), |mut acc, (key, value)| {
-            acc.push_str(
-                &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
-                    key.display_foreign_type(),
-                    value.to_string_without_config_with_serialize_deserialize(),
-                ),
-            );
-            acc
-        });
-        stringified.pop();
-        stringified
+        crate::traits::error_logs_logic::helpers::error_occurence_hashmap_formatter(
+            self.iter().fold(String::from(""), |mut acc, (key, value)| {
+                acc.push_str(
+                    &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
+                        key.display_foreign_type(),
+                        value.to_string_without_config_with_serialize_deserialize(),
+                    ),
+                );
+                acc
+            })
+        )
     }
 }
