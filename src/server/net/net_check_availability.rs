@@ -12,7 +12,7 @@ pub enum NetCheckAvailabilityError<'a> {
     }
 }
 
-pub async fn net_check_availability<'a>(link: String) -> Result<(), Box<NetCheckAvailabilityError<'a>>> {
+pub async fn net_check_availability<'a>(link: &String) -> Result<(), Box<NetCheckAvailabilityError<'a>>> {
     match reqwest::get(link).await {
         Err(e) => Err(Box::new(NetCheckAvailabilityError::ReqwestGet {
             reqwest_get: e,
