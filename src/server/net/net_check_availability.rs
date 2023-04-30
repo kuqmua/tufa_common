@@ -2,7 +2,7 @@
 pub enum NetCheckAvailabilityError<'a> {
     ReqwestGet {
         #[eo_display_foreign_type]
-        error: reqwest::Error,
+        reqwest_get: reqwest::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     ResponseStatus {
@@ -15,7 +15,7 @@ pub enum NetCheckAvailabilityError<'a> {
 pub async fn net_check_availability<'a>(link: String) -> Result<(), Box<NetCheckAvailabilityError<'a>>> {
     match reqwest::get(link).await {
         Err(e) => Err(Box::new(NetCheckAvailabilityError::ReqwestGet {
-            error: e,
+            reqwest_get: e,
             code_occurence: crate::code_occurence_tufa_common!(),
         })),
         Ok(res) => {
