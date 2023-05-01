@@ -1,107 +1,49 @@
-use crate::common::where_was::WhereWas;
-use crate::config_mods::source_place_type::SourcePlaceType;
-use crate::global_variables::runtime::config::CONFIG;
-use crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES;
-use crate::traits::get_source::GetSource;
-use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
-use crate::traits::where_was_methods::WhereWasMethods;
-use impl_display_for_error::ImplDisplayForError;
-use impl_error_with_tracing::ImplErrorWithTracingFromCrate;
-use impl_get_source::ImplGetSourceFromCrate;
-use impl_get_where_was_origin_or_wrapper::ImplGetWhereWasOriginOrWrapperFromCrate;
-use init_error::InitErrorFromCrate;
-use mongodb::bson::Document;
-use mongodb::options::ClientOptions;
-use mongodb::Client;
-
-#[derive(
-    Debug,
-    ImplGetSourceFromCrate,
-    ImplDisplayForError,
-    InitErrorFromCrate,
-    ImplErrorWithTracingFromCrate,
-    ImplGetWhereWasOriginOrWrapperFromCrate,
-)]
-pub struct MongoCheckCollectionIsEmptyWrapperError {
-    source: MongoCheckCollectionIsEmptyOriginErrorEnum,
-    where_was: WhereWas,
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum MongoCheckCollectionIsEmptyErrorNamed<'a> {
+    MongoDB {
+        #[eo_display_foreign_type]
+        mongodb: mongodb::error::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    CollectionIsNotEmpty {
+        #[eo_display_with_serialize_deserialize]
+        collection_documents: u64,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
 }
 
-#[derive(
-    Debug, ImplGetSourceFromCrate, ImplDisplayForError, ImplGetWhereWasOriginOrWrapperFromCrate,
-)]
-pub enum MongoCheckCollectionIsEmptyOriginErrorEnum {
-    ClientWithOptionsOrigin(mongodb::error::Error),
-    CountDocumentsOrigin(mongodb::error::Error),
-    NotEmptyOrigin(u64),
-}
-
-pub async fn mongo_check_collection_is_empty(
-    client_options: ClientOptions,
+pub async fn mongo_check_collection_is_empty<'a>(
+    client_options: mongodb::options::ClientOptions,
     db_name: &str,
-    db_collection_name: &str,
-    source_place_type: &SourcePlaceType,
-    should_trace: bool,
-) -> Result<(), Box<MongoCheckCollectionIsEmptyWrapperError>> {
-    match Client::with_options(client_options) {
+    db_collection_name: &str
+) -> Result<(), Box<MongoCheckCollectionIsEmptyErrorNamed<'a>>> {
+    match mongodb::Client::with_options(client_options) {
         Err(e) => Err(Box::new(
-            MongoCheckCollectionIsEmptyWrapperError::init_error_with_possible_trace(
-                MongoCheckCollectionIsEmptyOriginErrorEnum::ClientWithOptionsOrigin(e),
-                WhereWas {
-                    time: std::time::SystemTime::now()
-                        .duration_since(std::time::UNIX_EPOCH)
-                        .expect("cannot convert time to unix_epoch"),
-                    file: String::from(file!()),
-                    line: line!(),
-                    column: column!(),
-                    git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-                },
-                source_place_type,
-                should_trace,
-            ),
+            MongoCheckCollectionIsEmptyErrorNamed::MongoDB {
+                mongodb: e,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            }
         )),
         Ok(client) => {
             match client
                 .database(db_name)
-                .collection::<Document>(db_collection_name)
+                .collection::<mongodb::bson::Document>(db_collection_name)
                 .count_documents(None, None)
                 .await
             {
                 Err(e) => Err(Box::new(
-                    MongoCheckCollectionIsEmptyWrapperError::init_error_with_possible_trace(
-                        MongoCheckCollectionIsEmptyOriginErrorEnum::CountDocumentsOrigin(e),
-                        WhereWas {
-                            time: std::time::SystemTime::now()
-                                .duration_since(std::time::UNIX_EPOCH)
-                                .expect("cannot convert time to unix_epoch"),
-                            file: String::from(file!()),
-                            line: line!(),
-                            column: column!(),
-                            git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-                        },
-                        source_place_type,
-                        should_trace,
-                    ),
+                    MongoCheckCollectionIsEmptyErrorNamed::MongoDB {
+                        mongodb: e,
+                        code_occurence: crate::code_occurence_tufa_common!(),
+                    }
                 )),
                 Ok(documents_number) => {
                     if documents_number > 0 {
                         return Err(Box::new(
-                            MongoCheckCollectionIsEmptyWrapperError::init_error_with_possible_trace(
-                                MongoCheckCollectionIsEmptyOriginErrorEnum::NotEmptyOrigin(
-                                    documents_number,
-                                ),
-                                WhereWas {
-                                    time: std::time::SystemTime::now()
-                                        .duration_since(std::time::UNIX_EPOCH)
-                                        .expect("cannot convert time to unix_epoch"),
-                                    file: String::from(file!()),
-                                    line: line!(),
-                                    column: column!(),
-                                    git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-                                },
-                                source_place_type,
-                                should_trace,
-                            ),
+                            MongoCheckCollectionIsEmptyErrorNamed::CollectionIsNotEmpty {
+                                collection_documents: documents_number,
+                                code_occurence: crate::code_occurence_tufa_common!(),
+                            }
                         ));
                     }
                     Ok(())
