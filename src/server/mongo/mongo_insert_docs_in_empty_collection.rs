@@ -1,23 +1,13 @@
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum MongoInsertDocsInEmptyCollectionWrapperErrorNamed<'a> {
-    ClientWithOptions {
+pub enum MongoInsertDocsInEmptyCollectionErrorNamed<'a> {
+    MongoDB {
         #[eo_display_foreign_type]
-        client_with_options: mongodb::error::Error,
+        mongodb: mongodb::error::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    CountDocuments {
-        #[eo_display_foreign_type]
-        count_documents: mongodb::error::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    NotEmpty {
+    CollectionIsNotEmpty {
         #[eo_display_with_serialize_deserialize]
-        not_empty: u64,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    CollectionInsertMany {
-        #[eo_display_foreign_type]
-        collection_insert_many: mongodb::error::Error,
+        collection_is_not_empty: u64,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
@@ -28,11 +18,11 @@ pub async fn mongo_insert_docs_in_empty_collection(
     db_collection_handle: String,
     collection_field_name: String,
     vec_of_values: Vec<String>,
-) -> Result<(), Box<MongoInsertDocsInEmptyCollectionWrapperErrorNamed>> {
+) -> Result<(), Box<MongoInsertDocsInEmptyCollectionErrorNamed>> {
     match mongodb::Client::with_options(client_options) {
         Err(e) => Err(Box::new(
-            MongoInsertDocsInEmptyCollectionWrapperErrorNamed::ClientWithOptions{
-                client_with_options: e,
+            MongoInsertDocsInEmptyCollectionErrorNamed::MongoDB{
+                mongodb: e,
                 code_occurence: crate::code_occurence_tufa_common!()
             }
         )),
@@ -42,16 +32,16 @@ pub async fn mongo_insert_docs_in_empty_collection(
                 .collection(&db_collection_handle);
             match collection.count_documents(None, None).await {
                 Err(e) => Err(Box::new(
-                    MongoInsertDocsInEmptyCollectionWrapperErrorNamed::CountDocuments{
-                        count_documents: e,
+                    MongoInsertDocsInEmptyCollectionErrorNamed::MongoDB{
+                        mongodb: e,
                         code_occurence: crate::code_occurence_tufa_common!()
                     }
                 )),
                 Ok(documents_number) => {
                     if documents_number > 0 {
                         Err(Box::new(
-                            MongoInsertDocsInEmptyCollectionWrapperErrorNamed::NotEmpty{
-                                not_empty: documents_number,
+                            MongoInsertDocsInEmptyCollectionErrorNamed::CollectionIsNotEmpty{
+                                collection_is_not_empty: documents_number,
                                 code_occurence: crate::code_occurence_tufa_common!()
                             }
                         ))
@@ -67,8 +57,8 @@ pub async fn mongo_insert_docs_in_empty_collection(
                             .await
                         {
                             return Err(Box::new(
-                                    MongoInsertDocsInEmptyCollectionWrapperErrorNamed::CollectionInsertMany{
-                                        collection_insert_many: e,
+                                    MongoInsertDocsInEmptyCollectionErrorNamed::MongoDB{
+                                        mongodb: e,
                                         code_occurence: crate::code_occurence_tufa_common!()
                                     }
                                 ));
