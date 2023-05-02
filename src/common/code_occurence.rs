@@ -6,7 +6,6 @@ pub struct CodeOccurence<'a> {
     git_info: &'a crate::common::git::git_info::GitInformation<'a>,
     duration: std::time::Duration,
     process_id: u32,
-    server_port: u16,
 }
 
 impl<'a> CodeOccurence<'a> {
@@ -15,7 +14,6 @@ impl<'a> CodeOccurence<'a> {
         file: &'a str,
         line: u32,
         column: u32,
-        server_port: u16,
     ) -> Self {
         Self {
             file,
@@ -26,7 +24,6 @@ impl<'a> CodeOccurence<'a> {
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("cannot convert time to unix_epoch"),
             process_id: std::process::id(),
-            server_port,
         }
     }
 }
@@ -67,12 +64,6 @@ impl<'a> crate::traits::get_process_id::GetProcessId for CodeOccurence<'a> {
     }
 }
 
-impl<'a> crate::traits::fields::GetServerPort for CodeOccurence<'a> {
-    fn get_server_port(&self) -> &u16 {
-        &self.server_port
-    }
-}
-
 impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurence<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         use crate::traits::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithoutConfig;
@@ -101,7 +92,6 @@ impl<'a> CodeOccurence<'a> {
             git_info: self.git_info.clone(),
             duration: self.duration,
             process_id: self.process_id,
-            server_port: self.server_port,
         }
     }
 }
@@ -114,7 +104,6 @@ pub struct CodeOccurenceWithSerializeDeserialize<'a> {
     git_info: crate::common::git::git_info::GitInformation<'a>,
     duration: std::time::Duration,
     process_id: u32,
-    server_port: u16,
 }
 
 impl<'a> CodeOccurenceWithSerializeDeserialize<'a> {
@@ -123,7 +112,6 @@ impl<'a> CodeOccurenceWithSerializeDeserialize<'a> {
         file: &'a str,
         line: u32,
         column: u32,
-        server_port: u16,
     ) -> Self {
         Self {
             file,
@@ -134,7 +122,6 @@ impl<'a> CodeOccurenceWithSerializeDeserialize<'a> {
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("cannot convert time to unix_epoch"),
             process_id: std::process::id(),
-            server_port,
         }
     }
 }
@@ -172,12 +159,6 @@ impl<'a> crate::traits::get_duration::GetDuration for CodeOccurenceWithSerialize
 impl<'a> crate::traits::get_process_id::GetProcessId for CodeOccurenceWithSerializeDeserialize<'a> {
     fn get_process_id(&self) -> &u32 {
         &self.process_id
-    }
-}
-
-impl<'a> crate::traits::fields::GetServerPort for CodeOccurenceWithSerializeDeserialize<'a> {
-    fn get_server_port(&self) -> &u16 {
-        &self.server_port
     }
 }
 
