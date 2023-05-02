@@ -5,9 +5,11 @@ pub enum MongoDropEmptyDbErrorNamed<'a> {
         mongodb: mongodb::error::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    CollectionNamesListIsEmpty {
+    CollectionNamesListIsNotEmpty {
         #[eo_display_with_serialize_deserialize]
         database: &'a str,
+        #[eo_display_with_serialize_deserialize]
+        list_collection_names_len: usize,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
