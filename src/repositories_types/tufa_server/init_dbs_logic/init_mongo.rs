@@ -15,9 +15,9 @@ pub enum InitMongoErrorNamed<'a> {
         collection_is_not_empty: crate::repositories_types::tufa_server::mongo_integration::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    InsertManyError {
+    InsertMany {
         #[eo_error_occurence]
-        insert_many: crate::repositories_types::tufa_server::mongo_integration::mongo_insert_many::MongoInsertManyOriginErrorNamed<'a>,
+        insert_many: crate::repositories_types::tufa_server::mongo_integration::mongo_insert_many::MongoInsertManyErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     }
 }
