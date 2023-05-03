@@ -4,3 +4,4 @@ pub mod postgres_integration;
 pub mod preparation;
 pub mod providers;
 pub mod telemetry;
+pub mod domain;
