@@ -6,3 +6,4 @@ pub mod providers;
 pub mod telemetry;
 pub mod domain;
 pub mod fetch;
+pub mod idempotency;
