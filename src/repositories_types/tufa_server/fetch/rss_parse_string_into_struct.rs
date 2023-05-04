@@ -1,45 +1,12 @@
-use crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPost;
-use crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct;
-use crate::repositories_types::tufa_server::fetch::info_structures::structs_for_parsing::arxiv_struct_for_parsing::ArxivStructForParsing;
-use crate::repositories_types::tufa_server::fetch::info_structures::structs_for_parsing::biorxiv_struct_for_parsing::BiorxivStructForParsing;
-use crate::repositories_types::tufa_server::fetch::info_structures::structs_for_parsing::github_struct_for_parsing::GithubStructForParsing;
-use crate::repositories_types::tufa_server::fetch::info_structures::structs_for_parsing::habr_struct_for_parsing::HabrStructForParsing;
-use crate::repositories_types::tufa_server::fetch::info_structures::structs_for_parsing::medrxiv_struct_for_parsing::MedrxivStructForParsing;
-use crate::repositories_types::tufa_server::fetch::info_structures::structs_for_parsing::reddit_struct_for_parsing::RedditStructForParsing;
-use crate::repositories_types::tufa_server::fetch::info_structures::structs_for_parsing::twitter_struct_for_parsing::TwitterStructForParsing;
-use crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError;
-use crate::global_variables::compile_time::git_info::GIT_INFO;
-use crate::global_variables::hardcode::BIORXIV_FILTER_HANDLE_TO_REMOVE_1;
-use crate::global_variables::hardcode::BIORXIV_FILTER_HANDLE_TO_REMOVE_2;
-use crate::global_variables::hardcode::BIORXIV_FILTER_HANDLE_TO_REPLACE_REMOVED_1;
-use crate::global_variables::hardcode::BIORXIV_FILTER_HANDLE_TO_REPLACE_REMOVED_2;
-use crate::global_variables::hardcode::HABR_FILTER_HANDLE_TO_REMOVE_1;
-use crate::global_variables::hardcode::HABR_FILTER_HANDLE_TO_REMOVE_2;
-use crate::global_variables::hardcode::HABR_FILTER_HANDLE_TO_REPLACE_REMOVED_1;
-use crate::global_variables::hardcode::HABR_FILTER_HANDLE_TO_REPLACE_REMOVED_2;
-use crate::global_variables::hardcode::MEDRXIV_FILTER_HANDLE_TO_REMOVE_1;
-use crate::global_variables::hardcode::MEDRXIV_FILTER_HANDLE_TO_REMOVE_2;
-use crate::global_variables::hardcode::MEDRXIV_FILTER_HANDLE_TO_REPLACE_REMOVED_1;
-use crate::global_variables::hardcode::MEDRXIV_FILTER_HANDLE_TO_REPLACE_REMOVED_2;
-use crate::global_variables::hardcode::TWITTER_FILTER_HANDLE_TO_REMOVE_1;
-use crate::global_variables::hardcode::TWITTER_FILTER_HANDLE_TO_REMOVE_2;
-use crate::global_variables::hardcode::TWITTER_FILTER_HANDLE_TO_REMOVE_3;
-use crate::global_variables::hardcode::TWITTER_FILTER_HANDLE_TO_REPLACE_REMOVED_1;
-use crate::global_variables::hardcode::TWITTER_FILTER_HANDLE_TO_REPLACE_REMOVED_2;
-use crate::global_variables::hardcode::TWITTER_FILTER_HANDLE_TO_REPLACE_REMOVED_3;
-use crate::repositories_types::tufa_server::traits::provider_kind_methods::ProviderKindMethods;
-use regex::Regex;
-use serde_xml_rs::from_str;
-use crate::config_mods::print_type::PrintType;
-use crate::traits::get_color::WarningLowColor;
-use crate::traits::get_git_source_file_link::GetGitSourceFileLink;
-
 pub fn rss_parse_string_into_struct(
     mut fetch_result_string: String,
     value: &str,
     pk: crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind,
-) -> Result<CommonRssPostStruct, NoItemsError> {
-    match pk.get_item_handle() {
+) -> Result<crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct, crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError> {
+    match {
+        use crate::repositories_types::tufa_server::traits::provider_kind_methods::ProviderKindMethods;
+        pk.get_item_handle()
+    } {
         Some(what_should_find_in_fetch_result_string) => {
             match fetch_result_string.find(what_should_find_in_fetch_result_string) {
                 Some(_) => {
@@ -67,83 +34,83 @@ pub fn rss_parse_string_into_struct(
                                 }
                             }
                             #[allow(trivial_regex)]
-                            let re = Regex::new(TWITTER_FILTER_HANDLE_TO_REMOVE_1).unwrap();
+                            let re = regex::Regex::new(crate::global_variables::hardcode::TWITTER_FILTER_HANDLE_TO_REMOVE_1).unwrap();
                             fetch_result_string = re
                                 .replace_all(
                                     &fetch_result_string,
-                                    TWITTER_FILTER_HANDLE_TO_REPLACE_REMOVED_1,
+                                    crate::global_variables::hardcode::TWITTER_FILTER_HANDLE_TO_REPLACE_REMOVED_1,
                                 )
                                 .to_string();
                             //todo: replace .replace_all with algorithm what do not reallocate memory
                             #[allow(trivial_regex)]
-                            let re = Regex::new(TWITTER_FILTER_HANDLE_TO_REMOVE_2).unwrap();
+                            let re = regex::Regex::new(crate::global_variables::hardcode::TWITTER_FILTER_HANDLE_TO_REMOVE_2).unwrap();
                             fetch_result_string = re
                                 .replace_all(
                                     &fetch_result_string,
-                                    TWITTER_FILTER_HANDLE_TO_REPLACE_REMOVED_2,
+                                    crate::global_variables::hardcode::TWITTER_FILTER_HANDLE_TO_REPLACE_REMOVED_2,
                                 )
                                 .to_string();
                             #[allow(trivial_regex)]
-                            let re = Regex::new(TWITTER_FILTER_HANDLE_TO_REMOVE_3).unwrap();
+                            let re = regex::Regex::new(crate::global_variables::hardcode::TWITTER_FILTER_HANDLE_TO_REMOVE_3).unwrap();
                             fetch_result_string = re
                                 .replace_all(
                                     &fetch_result_string,
-                                    TWITTER_FILTER_HANDLE_TO_REPLACE_REMOVED_3,
+                                    crate::global_variables::hardcode::TWITTER_FILTER_HANDLE_TO_REPLACE_REMOVED_3,
                                 )
                                 .to_string();
                         }
                         crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Medrxiv => {
                             fetch_result_string.remove(0);
                             #[allow(trivial_regex)]
-                            let re = Regex::new(MEDRXIV_FILTER_HANDLE_TO_REMOVE_1).unwrap();
+                            let re = regex::Regex::new(crate::global_variables::hardcode::MEDRXIV_FILTER_HANDLE_TO_REMOVE_1).unwrap();
                             fetch_result_string = re
                                 .replace_all(
                                     &fetch_result_string,
-                                    MEDRXIV_FILTER_HANDLE_TO_REPLACE_REMOVED_1,
+                                    crate::global_variables::hardcode::MEDRXIV_FILTER_HANDLE_TO_REPLACE_REMOVED_1,
                                 )
                                 .to_string();
                             #[allow(trivial_regex)]
-                            let re = Regex::new(MEDRXIV_FILTER_HANDLE_TO_REMOVE_2).unwrap();
+                            let re = regex::Regex::new(crate::global_variables::hardcode::MEDRXIV_FILTER_HANDLE_TO_REMOVE_2).unwrap();
                             fetch_result_string = re
                                 .replace_all(
                                     &fetch_result_string,
-                                    MEDRXIV_FILTER_HANDLE_TO_REPLACE_REMOVED_2,
+                                    crate::global_variables::hardcode::MEDRXIV_FILTER_HANDLE_TO_REPLACE_REMOVED_2,
                                 )
                                 .to_string();
                         }
                         crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Biorxiv => {
                             #[allow(trivial_regex)]
-                            let re = Regex::new(BIORXIV_FILTER_HANDLE_TO_REMOVE_1).unwrap();
+                            let re = regex::Regex::new(crate::global_variables::hardcode::BIORXIV_FILTER_HANDLE_TO_REMOVE_1).unwrap();
                             fetch_result_string = re
                                 .replace_all(
                                     &fetch_result_string,
-                                    BIORXIV_FILTER_HANDLE_TO_REPLACE_REMOVED_1,
+                                    crate::global_variables::hardcode::BIORXIV_FILTER_HANDLE_TO_REPLACE_REMOVED_1,
                                 )
                                 .to_string();
                             #[allow(trivial_regex)]
-                            let re = Regex::new(BIORXIV_FILTER_HANDLE_TO_REMOVE_2).unwrap();
+                            let re = regex::Regex::new(crate::global_variables::hardcode::BIORXIV_FILTER_HANDLE_TO_REMOVE_2).unwrap();
                             fetch_result_string = re
                                 .replace_all(
                                     &fetch_result_string,
-                                    BIORXIV_FILTER_HANDLE_TO_REPLACE_REMOVED_2,
+                                    crate::global_variables::hardcode::BIORXIV_FILTER_HANDLE_TO_REPLACE_REMOVED_2,
                                 )
                                 .to_string();
                         }
                         crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Habr => {
                             #[allow(trivial_regex)]
-                            let re = Regex::new(HABR_FILTER_HANDLE_TO_REMOVE_1).unwrap();
+                            let re = regex::Regex::new(crate::global_variables::hardcode::HABR_FILTER_HANDLE_TO_REMOVE_1).unwrap();
                             fetch_result_string = re
                                 .replace_all(
                                     &fetch_result_string,
-                                    HABR_FILTER_HANDLE_TO_REPLACE_REMOVED_1,
+                                    crate::global_variables::hardcode::HABR_FILTER_HANDLE_TO_REPLACE_REMOVED_1,
                                 )
                                 .to_string();
                             #[allow(trivial_regex)]
-                            let re = Regex::new(HABR_FILTER_HANDLE_TO_REMOVE_2).unwrap();
+                            let re = regex::Regex::new(crate::global_variables::hardcode::HABR_FILTER_HANDLE_TO_REMOVE_2).unwrap();
                             fetch_result_string = re
                                 .replace_all(
                                     &fetch_result_string,
-                                    HABR_FILTER_HANDLE_TO_REPLACE_REMOVED_2,
+                                    crate::global_variables::hardcode::HABR_FILTER_HANDLE_TO_REPLACE_REMOVED_2,
                                 )
                                 .to_string();
                         }
@@ -155,18 +122,18 @@ pub fn rss_parse_string_into_struct(
                     match pk {
                         crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Arxiv => {
                             let rss_struct_from_str_result: Result<
-                                ArxivStructForParsing,
+                                crate::repositories_types::tufa_server::fetch::info_structures::structs_for_parsing::arxiv_struct_for_parsing::ArxivStructForParsing,
                                 serde_xml_rs::Error,
-                            > = from_str(&fetch_result_string);
+                            > = serde_xml_rs::from_str(&fetch_result_string);
                             match rss_struct_from_str_result {
                                 Ok(rss_struct) => {
                                     let mut count = 0;
-                                    let mut rss_page_struct: CommonRssPostStruct =
-                                        CommonRssPostStruct::default();
+                                    let mut rss_page_struct: crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct =
+                                        crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct::default();
                                     loop {
                                         if count < rss_struct.items.len() {
                                             rss_page_struct.items.push(
-                                                CommonRssPost::initialize_with_params(
+                                                crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPost::initialize_with_params(
                                                     rss_struct.items[count].title.clone(),
                                                     rss_struct.items[count].link.clone(),
                                                     rss_struct.items[count].description.clone(),
@@ -257,11 +224,11 @@ pub fn rss_parse_string_into_struct(
                                     if !rss_page_struct.items.is_empty() {
                                         Ok(rss_page_struct)
                                     } else {
-                                        Err(NoItemsError::ThereIsTag(fetch_result_string))
+                                        Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ThereIsTag(fetch_result_string))
                                     }
                                 }
                                 Err(e) => {
-                                    Err(NoItemsError::ConversionFromStrError(
+                                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ConversionFromStrError(
                                         fetch_result_string,
                                         e.to_string(),
                                     ))
@@ -270,18 +237,18 @@ pub fn rss_parse_string_into_struct(
                         }
                         crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Biorxiv => {
                             let rss_struct_from_str_result: Result<
-                                BiorxivStructForParsing,
+                                crate::repositories_types::tufa_server::fetch::info_structures::structs_for_parsing::biorxiv_struct_for_parsing::BiorxivStructForParsing,
                                 serde_xml_rs::Error,
-                            > = from_str(&fetch_result_string);
+                            > = serde_xml_rs::from_str(&fetch_result_string);
                             match rss_struct_from_str_result {
                                 Ok(rss_struct) => {
                                     let mut count = 0;
-                                    let mut rss_page_struct: CommonRssPostStruct =
-                                        CommonRssPostStruct::default();
+                                    let mut rss_page_struct: crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct =
+                                        crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct::default();
                                     loop {
                                         if count < rss_struct.items.len() {
                                             rss_page_struct.items.push(
-                                                CommonRssPost::initialize_with_params(
+                                                crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPost::initialize_with_params(
                                                     //todo option fields
                                                     rss_struct.items[count].title.clone(),
                                                     rss_struct.items[count].link.clone(),
@@ -375,11 +342,11 @@ pub fn rss_parse_string_into_struct(
                                     if !rss_page_struct.items.is_empty() {
                                         Ok(rss_page_struct)
                                     } else {
-                                        Err(NoItemsError::ThereIsTag(fetch_result_string))
+                                        Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ThereIsTag(fetch_result_string))
                                     }
                                 }
                                 Err(e) => {
-                                    Err(NoItemsError::ConversionFromStrError(
+                                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ConversionFromStrError(
                                         fetch_result_string,
                                         e.to_string(),
                                     ))
@@ -388,14 +355,14 @@ pub fn rss_parse_string_into_struct(
                         }
                         crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Github => {
                             let rss_struct_from_str_result: Result<
-                                GithubStructForParsing,
+                                crate::repositories_types::tufa_server::fetch::info_structures::structs_for_parsing::github_struct_for_parsing::GithubStructForParsing,
                                 serde_xml_rs::Error,
-                            > = from_str(&fetch_result_string);
+                            > = serde_xml_rs::from_str(&fetch_result_string);
                             match rss_struct_from_str_result {
                                 Ok(rss_struct) => {
                                     let mut count = 0;
-                                    let mut rss_page_struct: CommonRssPostStruct =
-                                        CommonRssPostStruct::default();
+                                    let mut rss_page_struct: crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct =
+                                        crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct::default();
                                     loop {
                                         if count < rss_struct.entries.len() {
                                             // if count == 0 {
@@ -403,7 +370,7 @@ pub fn rss_parse_string_into_struct(
                                             // }
 
                                             rss_page_struct.items.push(
-                                                CommonRssPost::initialize_with_params(
+                                                crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPost::initialize_with_params(
                                                     //todo option fields
                                                     rss_struct.entries[count].title.clone(),
                                                     rss_struct.entries[count].link.clone(),
@@ -495,11 +462,11 @@ pub fn rss_parse_string_into_struct(
                                     if !rss_page_struct.items.is_empty() {
                                         Ok(rss_page_struct)
                                     } else {
-                                        Err(NoItemsError::ThereIsTag(fetch_result_string))
+                                        Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ThereIsTag(fetch_result_string))
                                     }
                                 }
                                 Err(e) => {
-                                    Err(NoItemsError::ConversionFromStrError(
+                                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ConversionFromStrError(
                                         fetch_result_string,
                                         e.to_string(),
                                     ))
@@ -508,18 +475,18 @@ pub fn rss_parse_string_into_struct(
                         }
                         crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Habr => {
                             let rss_struct_from_str_result: Result<
-                                HabrStructForParsing,
+                                crate::repositories_types::tufa_server::fetch::info_structures::structs_for_parsing::habr_struct_for_parsing::HabrStructForParsing,
                                 serde_xml_rs::Error,
-                            > = from_str(&fetch_result_string);
+                            > = serde_xml_rs::from_str(&fetch_result_string);
                             match rss_struct_from_str_result {
                                 Ok(rss_struct) => {
                                     let mut count = 0;
-                                    let mut rss_page_struct: CommonRssPostStruct =
-                                        CommonRssPostStruct::default();
+                                    let mut rss_page_struct: crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct =
+                                        crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct::default();
                                     loop {
                                         if count < rss_struct.items.len() {
                                             rss_page_struct.items.push(
-                                                CommonRssPost::initialize_with_params(
+                                                crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPost::initialize_with_params(
                                                     //todo option fields
                                                     rss_struct.items[count].title.clone(),
                                                     rss_struct.items[count].link.clone(),
@@ -611,11 +578,11 @@ pub fn rss_parse_string_into_struct(
                                     if !rss_page_struct.items.is_empty() {
                                         Ok(rss_page_struct)
                                     } else {
-                                        Err(NoItemsError::ThereIsTag(fetch_result_string))
+                                        Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ThereIsTag(fetch_result_string))
                                     }
                                 }
                                 Err(e) => {
-                                    Err(NoItemsError::ConversionFromStrError(
+                                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ConversionFromStrError(
                                         fetch_result_string,
                                         e.to_string(),
                                     ))
@@ -624,18 +591,18 @@ pub fn rss_parse_string_into_struct(
                         }
                         crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Medrxiv => {
                             let rss_struct_from_str_result: Result<
-                                MedrxivStructForParsing,
+                                crate::repositories_types::tufa_server::fetch::info_structures::structs_for_parsing::medrxiv_struct_for_parsing::MedrxivStructForParsing,
                                 serde_xml_rs::Error,
-                            > = from_str(&fetch_result_string);
+                            > = serde_xml_rs::from_str(&fetch_result_string);
                             match rss_struct_from_str_result {
                                 Ok(rss_struct) => {
                                     let mut count = 0;
-                                    let mut rss_page_struct: CommonRssPostStruct =
-                                        CommonRssPostStruct::default();
+                                    let mut rss_page_struct: crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct =
+                                        crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct::default();
                                     loop {
                                         if count < rss_struct.items.len() {
                                             rss_page_struct.items.push(
-                                                CommonRssPost::initialize_with_params(
+                                                crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPost::initialize_with_params(
                                                     //todo option fields
                                                     rss_struct.items[count].title.clone(),
                                                     rss_struct.items[count].link.clone(),
@@ -729,11 +696,11 @@ pub fn rss_parse_string_into_struct(
                                     if !rss_page_struct.items.is_empty() {
                                         Ok(rss_page_struct)
                                     } else {
-                                        Err(NoItemsError::ThereIsTag(fetch_result_string))
+                                        Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ThereIsTag(fetch_result_string))
                                     }
                                 }
                                 Err(e) => {
-                                    Err(NoItemsError::ConversionFromStrError(
+                                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ConversionFromStrError(
                                         fetch_result_string,
                                         e.to_string(),
                                     ))
@@ -745,18 +712,18 @@ pub fn rss_parse_string_into_struct(
                         }
                         crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Twitter => {
                             let rss_struct_from_str_result: Result<
-                                TwitterStructForParsing,
+                                crate::repositories_types::tufa_server::fetch::info_structures::structs_for_parsing::twitter_struct_for_parsing::TwitterStructForParsing,
                                 serde_xml_rs::Error,
-                            > = from_str(&fetch_result_string);
+                            > = serde_xml_rs::from_str(&fetch_result_string);
                             match rss_struct_from_str_result {
                                 Ok(rss_struct) => {
                                     let mut count = 0;
-                                    let mut rss_page_struct: CommonRssPostStruct =
-                                        CommonRssPostStruct::default();
+                                    let mut rss_page_struct: crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct =
+                                        crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct::default();
                                     loop {
                                         if count < rss_struct.items.len() {
                                             rss_page_struct.items.push(
-                                                CommonRssPost::initialize_with_params(
+                                                crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPost::initialize_with_params(
                                                     //todo option fields
                                                     rss_struct.items[count].title.clone(),
                                                     rss_struct.items[count].link.clone(),
@@ -848,11 +815,11 @@ pub fn rss_parse_string_into_struct(
                                     if !rss_page_struct.items.is_empty() {
                                         Ok(rss_page_struct)
                                     } else {
-                                        Err(NoItemsError::ThereIsTag(fetch_result_string))
+                                        Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ThereIsTag(fetch_result_string))
                                     }
                                 }
                                 Err(e) => {
-                                    Err(NoItemsError::ConversionFromStrError(
+                                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ConversionFromStrError(
                                         fetch_result_string,
                                         e.to_string(),
                                     ))
@@ -863,7 +830,7 @@ pub fn rss_parse_string_into_struct(
                 }
                 None => {
                     let warning_message = format!("cannot find {what_should_find_in_fetch_result_string} for {pk:#?} in fetch_result_string");
-                    Err(NoItemsError::NoTag(
+                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::NoTag(
                         what_should_find_in_fetch_result_string.to_string(),
                     ))
                 }
@@ -872,18 +839,18 @@ pub fn rss_parse_string_into_struct(
         None => {
             //todo option fields
             //cuz reddit in json, others on commit time in xml
-            let rss_struct_from_str_result: Result<RedditStructForParsing, serde_json::Error> =
+            let rss_struct_from_str_result: Result<crate::repositories_types::tufa_server::fetch::info_structures::structs_for_parsing::reddit_struct_for_parsing::RedditStructForParsing, serde_json::Error> =
                 serde_json::from_str(&fetch_result_string);
             match rss_struct_from_str_result {
                 Ok(rss_struct) => {
                     let mut count = 0;
-                    let mut rss_page_struct: CommonRssPostStruct = CommonRssPostStruct::default(); //todo: add expected number of posts in with_capacity
+                    let mut rss_page_struct: crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct = crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct::default(); //todo: add expected number of posts in with_capacity
                                                                                                    //todo: rewrite into functional way
                     loop {
                         if count < rss_struct.data.children.len() {
                             rss_page_struct
                                 .items
-                                .push(CommonRssPost::initialize_with_params(
+                                .push(crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPost::initialize_with_params(
                                     //todo option fields
                                     rss_struct.data.children[count].data.title.clone(),
                                     rss_struct.data.children[count].data.url.clone(),
@@ -978,11 +945,11 @@ pub fn rss_parse_string_into_struct(
                     if !rss_page_struct.items.is_empty() {
                         Ok(rss_page_struct)
                     } else {
-                        Err(NoItemsError::ThereIsTag(fetch_result_string))
+                        Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ThereIsTag(fetch_result_string))
                     }
                 }
                 Err(e) => {
-                    Err(NoItemsError::ConversionFromStrError(
+                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ConversionFromStrError(
                         fetch_result_string,
                         e.to_string(),
                     ))
