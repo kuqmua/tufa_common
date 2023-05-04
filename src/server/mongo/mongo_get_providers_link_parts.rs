@@ -19,5 +19,5 @@ pub enum MongoGetProvidersLinkPartsErrorNamed<'a> {
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum MongoGetDocumentsAsStringVectorErrorUnnamed<'a> {
-    MongoGetDocumentsAsStringVector(crate::server::mongo::mongo_get_documents_as_string_vector::MongoGetDocumentsAsStringVectorErrorNamed<'a>),
+    MongoGetDocumentsAsStringVector(crate::repositories_types::tufa_server::mongo_integration::mongo_get_documents_as_string_vector::MongoGetDocumentsAsStringVectorErrorNamed<'a>),
 }
