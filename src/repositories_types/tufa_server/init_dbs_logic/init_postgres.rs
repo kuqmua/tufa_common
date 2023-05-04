@@ -7,7 +7,7 @@ pub enum PostgresInitErrorNamed<'a> {
     },
     CreateTableQueries{
         #[eo_error_occurence]
-        create_table_queries: crate::server::postgres::postgres_create_providers_tables_if_not_exists::PostgresCreateProvidersDbsErrorNamed<'a>,
+        create_table_queries: crate::repositories_types::tufa_server::postgres_integration::postgres_create_providers_tables_if_not_exists::PostgresCreateProvidersDbsErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     CheckProviderLinksTablesAreEmpty{
