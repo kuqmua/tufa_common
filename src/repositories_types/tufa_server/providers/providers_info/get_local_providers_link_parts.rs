@@ -16,18 +16,6 @@ use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
 use crate::traits::where_was_methods::WhereWasMethods;
 use valuable::Valuable;
 
-// #[derive(
-//     Debug,
-//     InitErrorFromCrate,
-//     ImplGetWhereWasOriginOrWrapperFromCrate,
-//     ImplGetSourceFromCrate,
-//     ImplErrorWithTracingFromCrate,
-// )]
-// pub struct GetLocalProvidersLinkPartsWrapperError<'a> {
-//     pub source: HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, GetLinkPartsFromLocalJsonFileErrorNamed<'a>>,
-//     pub where_was: WhereWas,
-// }
-
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum GetLocalProvidersLinkPartsErrorNamed<'a> {
     GetLinkPartsFromLocalJsonFile {
@@ -81,20 +69,6 @@ pub async fn get_local_providers_link_parts<'a>(
                 get_link_parts_from_localJson_file: errors_hashmap,
                 code_occurence: crate::code_occurence_tufa_common!(),
             }
-            // GetLocalProvidersLinkPartsWrapperError::init_error_with_possible_trace(
-            //     errors_hashmap,
-            //     WhereWas {
-            //         time: std::time::SystemTime::now()
-            //             .duration_since(std::time::UNIX_EPOCH)
-            //             .expect("cannot convert time to unix_epoch"),
-            //         file: String::from(file!()),
-            //         line: line!(),
-            //         column: column!(),
-            //         git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-            //     },
-            //     &CONFIG.source_place_type,
-            //     should_trace,
-            // ),
         ));
     }
     Ok(success_hashmap)
