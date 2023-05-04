@@ -12,7 +12,7 @@ pub enum PostgresInitErrorNamed<'a> {
     },
     CheckProviderLinksTablesAreEmpty{
         #[eo_error_occurence]
-        check_provider_links_tables_are_empty: crate::server::postgres::postgres_check_providers_link_parts_tables_are_empty::PostgresCheckProvidersLinkPartsTablesEmptyErrorNamed<'a>,
+        check_provider_links_tables_are_empty: crate::repositories_types::tufa_server::postgres_integration::postgres_check_providers_link_parts_tables_are_empty::PostgresCheckProvidersLinkPartsTablesEmptyErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     DeleteAllFromProvidersTables{
