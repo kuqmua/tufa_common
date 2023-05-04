@@ -3,6 +3,7 @@ pub mod mongo_client_options_parse;
 pub mod mongo_client_with_options;
 pub mod mongo_drop_collection;
 pub mod mongo_get_providers_link_parts;
+pub mod mongo_insert_data;
 pub mod mongo_insert_many;
 pub mod mongo_drop_db;
 pub mod mongo_drop_empty_collection;
