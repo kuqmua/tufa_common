@@ -8,3 +8,4 @@ pub mod domain;
 pub mod fetch;
 pub mod idempotency;
 pub mod utils;
+pub mod traits;
