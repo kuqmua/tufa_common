@@ -11,3 +11,4 @@ pub mod idempotency;
 pub mod utils;
 pub mod traits;
 pub mod session_state;
+pub mod check_new_providers_posts;
