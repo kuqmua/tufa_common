@@ -2,7 +2,7 @@
 pub enum PostgresInitErrorNamed<'a> {
     EstablishConnection{
         #[eo_error_occurence]
-        establish_connection: crate::server::postgres::postgres_establish_connection::PostgresEstablishConnectionErrorNamed<'a>,
+        establish_connection: crate::repositories_types::tufa_server::postgres_integration::postgres_establish_connection::PostgresEstablishConnectionErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     CreateTableQueries{
