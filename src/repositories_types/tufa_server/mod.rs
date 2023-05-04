@@ -1,3 +1,4 @@
+pub mod authentication;
 pub mod init_dbs_logic;
 pub mod mongo_integration;
 pub mod postgres_integration;
@@ -9,3 +10,4 @@ pub mod fetch;
 pub mod idempotency;
 pub mod utils;
 pub mod traits;
+pub mod session_state;
