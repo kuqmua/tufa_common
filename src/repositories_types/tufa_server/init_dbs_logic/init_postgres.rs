@@ -17,7 +17,7 @@ pub enum PostgresInitErrorNamed<'a> {
     },
     DeleteAllFromProvidersTables{
         #[eo_error_occurence]
-        delete_all_from_providers_tables: crate::server::postgres::postgres_delete_all_from_providers_link_parts_tables::PostgresDeleteAllFromProvidersTablesErrorNamed<'a>,
+        delete_all_from_providers_tables: crate::repositories_types::tufa_server::postgres_integration::postgres_delete_all_from_providers_link_parts_tables::PostgresDeleteAllFromProvidersTablesErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     CheckProvidersLinksTablesLengthRowsEqualInitializationDataLength{
