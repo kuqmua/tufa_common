@@ -1,1 +1,0 @@
-pub mod mongo_insert_docs_in_empty_collection;

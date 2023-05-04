@@ -9,7 +9,7 @@ pub enum MongoInsertDataErrorNamed<'a> {
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum MongoInsertDataErrorUnnamed<'a> {
-    MongoInsertDocsInEmptyCollection(crate::server::mongo::mongo_insert_docs_in_empty_collection::MongoInsertDocsInEmptyCollectionErrorNamed<'a>)
+    MongoInsertDocsInEmptyCollection(crate::repositories_types::tufa_server::mongo_integration::mongo_insert_docs_in_empty_collection::MongoInsertDocsInEmptyCollectionErrorNamed<'a>)
 }
 
 pub async fn mongo_insert_data<'a>(
@@ -20,7 +20,7 @@ pub async fn mongo_insert_data<'a>(
         |(pk, vec_of_link_parts)| async move {
             (
                 pk,
-                crate::server::mongo::mongo_insert_docs_in_empty_collection::mongo_insert_docs_in_empty_collection(
+                crate::repositories_types::tufa_server::mongo_integration::mongo_insert_docs_in_empty_collection::mongo_insert_docs_in_empty_collection(
                     {
                         use std::ops::Deref;
                         crate::global_variables::runtime::mongo_client_options::MONGO_CLIENT_OPTIONS.deref().to_owned()
