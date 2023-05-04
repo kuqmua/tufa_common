@@ -241,30 +241,49 @@ impl ProviderKind {
     }
 }
 
-#[derive(
-    Debug,
-    impl_get_where_was_origin_or_wrapper::ImplGetWhereWasOriginOrWrapperFromCrate,
-    impl_get_source::ImplGetSourceFromCrate,
-    impl_display_for_error::ImplDisplayForError,
-    init_error::InitErrorFromCrate,
-    impl_error_with_tracing::ImplErrorWithTracingFromCrate,
-)]
-pub struct GetLinkPartsFromLocalJsonFileWrapperError {
-    source: GetLinkPartsFromLocalJsonFileOriginErrorEnum,
-    where_was: crate::common::where_was::WhereWas,
+// #[derive(
+//     Debug,
+//     impl_get_where_was_origin_or_wrapper::ImplGetWhereWasOriginOrWrapperFromCrate,
+//     impl_get_source::ImplGetSourceFromCrate,
+//     impl_display_for_error::ImplDisplayForError,
+//     init_error::InitErrorFromCrate,
+//     impl_error_with_tracing::ImplErrorWithTracingFromCrate,
+// )]
+// pub struct GetLinkPartsFromLocalJsonFileWrapperError {
+//     source: GetLinkPartsFromLocalJsonFileOriginErrorEnum,
+//     where_was: crate::common::where_was::WhereWas,
+// }
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum GetLinkPartsFromLocalJsonFileErrorNamed<'a> {
+    TokioFsFileOpen {
+        #[eo_display]
+        tokio_fs_file_open: std::io::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    TokioIoAsyncReadExtReadToEnd {
+        #[eo_display]
+        tokio_io_async_read_ext_read_to_end: std::io::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    SerdeJsonFromSlice {
+        #[eo_display]
+        serde_json_from_slice: serde_json::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
 }
 
-#[derive(
-    Debug,
-    impl_get_source::ImplGetSourceFromCrate,
-    impl_display_for_error::ImplDisplayForError,
-    impl_get_where_was_origin_or_wrapper::ImplGetWhereWasOriginOrWrapperFromCrate,
-)]
-pub enum GetLinkPartsFromLocalJsonFileOriginErrorEnum {
-    TokioFsFileOpenOrigin(std::io::Error),
-    TokioIoAsyncReadExtReadToEndOrigin(std::io::Error),
-    SerdeJsonFromSliceOrigin(serde_json::Error),
-}
+// #[derive(
+//     Debug,
+//     impl_get_source::ImplGetSourceFromCrate,
+//     impl_display_for_error::ImplDisplayForError,
+//     impl_get_where_was_origin_or_wrapper::ImplGetWhereWasOriginOrWrapperFromCrate,
+// )]
+// pub enum GetLinkPartsFromLocalJsonFileOriginErrorEnum {
+//     TokioFsFileOpenOrigin(std::io::Error),
+//     TokioIoAsyncReadExtReadToEndOrigin(std::io::Error),
+//     SerdeJsonFromSliceOrigin(serde_json::Error),
+// }
 
 #[derive(
     Default, Debug, Clone, PartialEq, Eq, serde_derive::Serialize, serde_derive::Deserialize,
@@ -274,69 +293,34 @@ pub struct ProvidersInitJsonSchema {
 }
 
 impl ProviderKind {
-    pub async fn get_link_parts_from_local_json_file(
-        self,
-        should_trace: bool,
-    ) -> Result<Vec<String>, Box<GetLinkPartsFromLocalJsonFileWrapperError>> {
+    pub async fn get_link_parts_from_local_json_file<'a>(self) -> Result<Vec<String>, Box<GetLinkPartsFromLocalJsonFileErrorNamed<'a>>> {
         match tokio::fs::File::open(&{
             use crate::repositories_types::tufa_server::traits::provider_kind_methods::ProviderKindMethods;
             self.get_init_local_data_file_path()
         }).await {
             Err(e) => Err(Box::new(
-                GetLinkPartsFromLocalJsonFileWrapperError::init_error_with_possible_trace(
-                    GetLinkPartsFromLocalJsonFileOriginErrorEnum::TokioFsFileOpenOrigin(e),
-                    crate::common::where_was::WhereWas {
-                        time: std::time::SystemTime::now()
-                            .duration_since(std::time::UNIX_EPOCH)
-                            .expect("cannot convert time to unix_epoch"),
-                        file: String::from(file!()),
-                        line: line!(),
-                        column: column!(),
-                        git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-                    },
-                    &crate::global_variables::runtime::config::CONFIG.source_place_type,
-                    should_trace,
-                ),
+                GetLinkPartsFromLocalJsonFileErrorNamed::TokioFsFileOpen {
+                    tokio_fs_file_open: e,
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                }
             )),
             Ok(mut file) => {
                 let mut content = Vec::new();
                 if let Err(e) = tokio::io::AsyncReadExt::read_to_end(&mut file, &mut content).await
                 {
                     return Err(Box::new(
-                        GetLinkPartsFromLocalJsonFileWrapperError::init_error_with_possible_trace(
-                            GetLinkPartsFromLocalJsonFileOriginErrorEnum::TokioIoAsyncReadExtReadToEndOrigin(e),
-                            crate::common::where_was::WhereWas {
-                                time: std::time::SystemTime::now()
-                                    .duration_since(std::time::UNIX_EPOCH)
-                                    .expect("cannot convert time to unix_epoch"),
-                                file: String::from(file!()),
-                        line: line!(),
-                        column: column!(),
-                        git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-                            },
-                            &crate::global_variables::runtime::config::CONFIG.source_place_type,
-                            should_trace,
-                        ),
+                        GetLinkPartsFromLocalJsonFileErrorNamed::TokioIoAsyncReadExtReadToEnd {
+                            tokio_io_async_read_ext_read_to_end: e,
+                            code_occurence: crate::code_occurence_tufa_common!()
+                        }
                     ));
                 }
                 match serde_json::from_slice::<ProvidersInitJsonSchema>(&content) {
                     Err(e) => Err(Box::new(
-                        GetLinkPartsFromLocalJsonFileWrapperError::init_error_with_possible_trace(
-                            GetLinkPartsFromLocalJsonFileOriginErrorEnum::SerdeJsonFromSliceOrigin(
-                                e,
-                            ),
-                            crate::common::where_was::WhereWas {
-                                time: std::time::SystemTime::now()
-                                    .duration_since(std::time::UNIX_EPOCH)
-                                    .expect("cannot convert time to unix_epoch"),
-                                file: String::from(file!()),
-                                line: line!(),
-                                column: column!(),
-                                git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-                            },
-                            &crate::global_variables::runtime::config::CONFIG.source_place_type,
-                            should_trace,
-                        ),
+                        GetLinkPartsFromLocalJsonFileErrorNamed::SerdeJsonFromSlice {
+                            serde_json_from_slice: e,
+                            code_occurence: crate::code_occurence_tufa_common!()
+                        }
                     )),
                     Ok(file_content_as_struct) => {
                         let unique_vec: Vec<String> =

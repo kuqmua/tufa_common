@@ -20,7 +20,7 @@ where
         Err(e) => Err(Box::new(
             SyncResponseCopyToErrorNamed::CopyTo {
                 reqwest_error: e,
-                code_occurence: crate::code_occurence_tufa_common!() ,
+                code_occurence: crate::code_occurence_tufa_common!(),
             }
         )),
         Ok(copy_to) => Ok(copy_to),
