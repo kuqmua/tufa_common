@@ -1,3 +1,8 @@
+use crate::traits::get_source::GetSource;
+use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
+use crate::traits::where_was_methods::WhereWasMethods;
+use crate::global_variables::runtime::config::CONFIG;
+
 #[derive(Debug)]
 pub struct RemoveDirError {
     pub error: std::io::Error,
@@ -46,32 +51,15 @@ pub enum ProviderKind {
     Twitter,
 }
 
-//////////////////
-
-use crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct;
-use crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError;
-use crate::repositories_types::tufa_server::fetch::rss_parse_string_into_struct::rss_parse_string_into_struct;
-use crate::global_variables::runtime::config::CONFIG;
-use crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES;
-use futures::future::join_all;
-use std::time::Instant;
-use crate::common::where_was::WhereWas;
-use crate::config_mods::print_type::PrintType;
-use crate::server::http_request::http_request_error::HttpRequestOriginError;
-use crate::server::http_request::http_request_method::HttpRequestMethod;
-use crate::server::http_request::wrappers::text::async_http_request_text::async_http_request_text_wrapper;
-use crate::traits::get_color::WarningHighColor;
-use crate::traits::get_git_source_file_link::GetGitSourceFileLink;
-
 #[derive(Debug)]
 pub enum FetchAndParseProviderDataErrorEnum {
     AsyncFetchLinks {
-        source: Vec<(String, Box<HttpRequestOriginError>)>, //link, error
-        where_was: WhereWas,
+        source: Vec<(String, Box<crate::server::http_request::http_request_error::HttpRequestOriginError>)>, //link, error
+        where_was: crate::common::where_was::WhereWas,
     },
     NoItems {
-        source: Vec<(String, NoItemsError)>, //link, error
-        where_was: WhereWas,
+        source: Vec<(String, crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError)>, //link, error
+        where_was: crate::common::where_was::WhereWas,
     },
 }
 
@@ -79,11 +67,11 @@ impl ProviderKind {
     pub async fn fetch_and_parse_provider_data(
         self,
         links: Vec<String>,
-    ) -> Result<Vec<CommonRssPostStruct>, Box<FetchAndParseProviderDataErrorEnum>> {
-        let time = Instant::now();
+    ) -> Result<Vec<crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct>, Box<FetchAndParseProviderDataErrorEnum>> {
+        let time = std::time::Instant::now();
         let capacity = links.len();
-        let vec_to_return = join_all(links.iter().map(|url| async move {
-            let result = async_http_request_text_wrapper::<
+        let vec_to_return = futures::future::join_all(links.iter().map(|url| async move {
+            let result = crate::server::http_request::wrappers::text::async_http_request_text::async_http_request_text_wrapper::<
                 String,
                 reqwest::cookie::Jar,
                 core::time::Duration,
@@ -166,8 +154,8 @@ impl ProviderKind {
                 None,
                 None,
                 None,
-                HttpRequestMethod::Get,
-                &CONFIG.source_place_type,
+                crate::server::http_request::http_request_method::HttpRequestMethod::Get,
+                &crate::global_variables::runtime::config::CONFIG.source_place_type,
                 false,
             )
             .await;
@@ -191,7 +179,7 @@ impl ProviderKind {
             return Err(Box::new(
                 FetchAndParseProviderDataErrorEnum::AsyncFetchLinks {
                     source: async_fetch_links_error_vec,
-                    where_was: WhereWas {
+                    where_was: crate::common::where_was::WhereWas {
                         time: std::time::SystemTime::now()
                             .duration_since(std::time::UNIX_EPOCH)
                             .expect("cannot convert time to unix_epoch"),
@@ -206,7 +194,7 @@ impl ProviderKind {
         let mut success_vec = Vec::with_capacity(capacity);
         let mut no_items_error_vec = Vec::new();
         for (link, response_text) in half_success_vec {
-            match rss_parse_string_into_struct(response_text, link, self) {
+            match crate::repositories_types::tufa_server::fetch::rss_parse_string_into_struct::rss_parse_string_into_struct(response_text, link, self) {
                 Err(e) => no_items_error_vec.push((link.to_string(), e)),
                 Ok(post_struct) => {
                     success_vec.push(post_struct); //todo maybe add link here?
@@ -216,7 +204,7 @@ impl ProviderKind {
         if !no_items_error_vec.is_empty() {
             return Err(Box::new(FetchAndParseProviderDataErrorEnum::NoItems {
                 source: no_items_error_vec,
-                where_was: WhereWas {
+                where_was: crate::common::where_was::WhereWas {
                     time: std::time::SystemTime::now()
                         .duration_since(std::time::UNIX_EPOCH)
                         .expect("cannot convert time to unix_epoch"),
@@ -231,27 +219,20 @@ impl ProviderKind {
     }
 }
 
-////////////////
-
-// use crate::global_variables::runtime::config::CONFIG;
-// use crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKindFromConfig;
-use mongodb::bson::doc;
-use mongodb::bson::Document;
-
 impl ProviderKind {
-    pub fn get_mongo_provider_link_parts_aggregation(&self) -> Option<Document> {
-        if CONFIG.is_links_limit_enabled_providers
+    pub fn get_mongo_provider_link_parts_aggregation(&self) -> Option<mongodb::bson::Document> {
+        if crate::global_variables::runtime::config::CONFIG.is_links_limit_enabled_providers
             && self.is_mongo_link_parts_randomize_order_enabled()
         {
-            Some(doc! { "$sample" : {"size": CONFIG.links_limit_providers as i64}});
-        } else if CONFIG.is_links_limit_enabled_providers {
-            Some(doc! { "$limit" :  CONFIG.links_limit_providers as i64});
+            Some(mongodb::bson::doc! { "$sample" : {"size": crate::global_variables::runtime::config::CONFIG.links_limit_providers as i64}});
+        } else if crate::global_variables::runtime::config::CONFIG.is_links_limit_enabled_providers {
+            Some(mongodb::bson::doc! { "$limit" :  crate::global_variables::runtime::config::CONFIG.links_limit_providers as i64});
         } else if self.is_links_limit_enabled()
             && self.is_mongo_link_parts_randomize_order_enabled()
         {
-            Some(doc! { "$sample" : {"size": self.links_limit() as i64}});
+            Some(mongodb::bson::doc! { "$sample" : {"size": self.links_limit() as i64}});
         } else if self.is_links_limit_enabled() {
-            Some(doc! { "$limit" : self.links_limit() as i64});
+            Some(mongodb::bson::doc! { "$limit" : self.links_limit() as i64});
         } else if self.is_mongo_link_parts_randomize_order_enabled() {
             println!("todo: mongo sample(randomized aggregation) only works if size is valid number. No aggregation applied");
             return None;
@@ -260,42 +241,24 @@ impl ProviderKind {
     }
 }
 
-//////////////////////
-// use crate::global_variables::runtime::config::CONFIG;
-// use crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES;
-
-// use crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKindFromConfig;
-use crate::repositories_types::tufa_server::traits::provider_kind_methods::ProviderKindMethods;
-use impl_display_for_error::ImplDisplayForError;
-use impl_error_with_tracing::ImplErrorWithTracingFromCrate;
-use impl_get_source::ImplGetSourceFromCrate;
-
-use impl_get_where_was_origin_or_wrapper::ImplGetWhereWasOriginOrWrapperFromCrate;
-use init_error::InitErrorFromCrate;
-use itertools::Itertools;
-// use crate::common::where_was::WhereWas;
-use crate::traits::get_source::GetSource;
-use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
-use crate::traits::where_was_methods::WhereWasMethods;
-
 #[derive(
     Debug,
-    ImplGetWhereWasOriginOrWrapperFromCrate,
-    ImplGetSourceFromCrate,
-    ImplDisplayForError,
-    InitErrorFromCrate,
-    ImplErrorWithTracingFromCrate,
+    impl_get_where_was_origin_or_wrapper::ImplGetWhereWasOriginOrWrapperFromCrate,
+    impl_get_source::ImplGetSourceFromCrate,
+    impl_display_for_error::ImplDisplayForError,
+    init_error::InitErrorFromCrate,
+    impl_error_with_tracing::ImplErrorWithTracingFromCrate,
 )]
 pub struct GetLinkPartsFromLocalJsonFileWrapperError {
     source: GetLinkPartsFromLocalJsonFileOriginErrorEnum,
-    where_was: WhereWas,
+    where_was: crate::common::where_was::WhereWas,
 }
 
 #[derive(
     Debug,
-    ImplGetSourceFromCrate,
-    ImplDisplayForError,
-    ImplGetWhereWasOriginOrWrapperFromCrate,
+    impl_get_source::ImplGetSourceFromCrate,
+    impl_display_for_error::ImplDisplayForError,
+    impl_get_where_was_origin_or_wrapper::ImplGetWhereWasOriginOrWrapperFromCrate,
 )]
 pub enum GetLinkPartsFromLocalJsonFileOriginErrorEnum {
     TokioFsFileOpenOrigin(std::io::Error),
@@ -315,11 +278,14 @@ impl ProviderKind {
         self,
         should_trace: bool,
     ) -> Result<Vec<String>, Box<GetLinkPartsFromLocalJsonFileWrapperError>> {
-        match tokio::fs::File::open(&self.get_init_local_data_file_path()).await {
+        match tokio::fs::File::open(&{
+            use crate::repositories_types::tufa_server::traits::provider_kind_methods::ProviderKindMethods;
+            self.get_init_local_data_file_path()
+        }).await {
             Err(e) => Err(Box::new(
                 GetLinkPartsFromLocalJsonFileWrapperError::init_error_with_possible_trace(
                     GetLinkPartsFromLocalJsonFileOriginErrorEnum::TokioFsFileOpenOrigin(e),
-                    WhereWas {
+                    crate::common::where_was::WhereWas {
                         time: std::time::SystemTime::now()
                             .duration_since(std::time::UNIX_EPOCH)
                             .expect("cannot convert time to unix_epoch"),
@@ -327,8 +293,8 @@ impl ProviderKind {
                         line: line!(),
                         column: column!(),
                         git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-                    }, //
-                    &CONFIG.source_place_type,
+                    },
+                    &crate::global_variables::runtime::config::CONFIG.source_place_type,
                     should_trace,
                 ),
             )),
@@ -339,7 +305,7 @@ impl ProviderKind {
                     return Err(Box::new(
                         GetLinkPartsFromLocalJsonFileWrapperError::init_error_with_possible_trace(
                             GetLinkPartsFromLocalJsonFileOriginErrorEnum::TokioIoAsyncReadExtReadToEndOrigin(e),
-                            WhereWas {
+                            crate::common::where_was::WhereWas {
                                 time: std::time::SystemTime::now()
                                     .duration_since(std::time::UNIX_EPOCH)
                                     .expect("cannot convert time to unix_epoch"),
@@ -348,7 +314,7 @@ impl ProviderKind {
                         column: column!(),
                         git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
                             },
-                            &CONFIG.source_place_type,
+                            &crate::global_variables::runtime::config::CONFIG.source_place_type,
                             should_trace,
                         ),
                     ));
@@ -359,7 +325,7 @@ impl ProviderKind {
                             GetLinkPartsFromLocalJsonFileOriginErrorEnum::SerdeJsonFromSliceOrigin(
                                 e,
                             ),
-                            WhereWas {
+                            crate::common::where_was::WhereWas {
                                 time: std::time::SystemTime::now()
                                     .duration_since(std::time::UNIX_EPOCH)
                                     .expect("cannot convert time to unix_epoch"),
@@ -368,16 +334,19 @@ impl ProviderKind {
                                 column: column!(),
                                 git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
                             },
-                            &CONFIG.source_place_type,
+                            &crate::global_variables::runtime::config::CONFIG.source_place_type,
                             should_trace,
                         ),
                     )),
                     Ok(file_content_as_struct) => {
                         let unique_vec: Vec<String> =
-                            file_content_as_struct.data.into_iter().unique().collect();
+                            {
+                                use itertools::Itertools;
+                                file_content_as_struct.data.into_iter().unique()
+                            }.collect();
                         let return_vec: Vec<String>;
                         //todo - add correct impl for is_links_limit_enabled - like is_links_limit_enabled_providers && is_links_limit_enabled_arxiv
-                        if CONFIG.is_links_limit_enabled_providers && self.is_links_limit_enabled()
+                        if crate::global_variables::runtime::config::CONFIG.is_links_limit_enabled_providers && self.is_links_limit_enabled()
                         {
                             let limit = self.links_limit();
                             if unique_vec.len() > limit {
@@ -403,21 +372,6 @@ impl ProviderKind {
     }
 }
 
-
-//////////////////////
-
-
-// use crate::global_variables::runtime::config::CONFIG;
-// use crate::mongo_integration::mongo_get_documents_as_string_vector::mongo_get_documents_as_string_vector;
-// use crate::mongo_integration::mongo_get_documents_as_string_vector::MongoGetDocumentsAsStringVectorErrorEnum;
-
-//  use crate::repositories_types::tufa_server::traits::provider_kind_methods::ProviderKindMethods;
-// use mongodb::bson::Document;
-use mongodb::options::ClientOptions;
-use mongodb::Client;
-// use crate::common::where_was::WhereWas;
-use crate::traits::get_mongo_url::GetMongoUrl;
-
 #[derive(Debug)]
 pub struct MongoGetProviderLinkPartsError {
     pub source: Box<MongoGetProviderLinkPartsErrorEnum>,
@@ -427,15 +381,15 @@ pub struct MongoGetProviderLinkPartsError {
 pub enum MongoGetProviderLinkPartsErrorEnum {
     ClientOptionsParse {
         source: mongodb::error::Error,
-        where_was: WhereWas,
+        where_was: crate::common::where_was::WhereWas,
     },
     ClientWithOptions {
         source: mongodb::error::Error,
-        where_was: WhereWas,
+        where_was: crate::common::where_was::WhereWas,
     },
     // MongoGetDocumentsAsStringVector {
     //     source: Box<MongoGetDocumentsAsStringVectorErrorEnum>,
-    //     where_was: WhereWas,
+    //     where_was: crate::common::where_was::WhereWas,
     // },
 }
 
@@ -445,11 +399,11 @@ impl ProviderKind {
         pk: crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind,
     ) -> Result<Vec<String>, MongoGetProviderLinkPartsError> {
         todo!()
-        // match ClientOptions::parse(CONFIG.get_mongo_url()).await {
+        // match mongodb::options::ClientOptions::parse(crate::global_variables::runtime::config::CONFIG.get_mongo_url()).await {
         //     Err(e) => Err(MongoGetProviderLinkPartsError {
         //         source: Box::new(MongoGetProviderLinkPartsErrorEnum::ClientOptionsParse {
         //             source: e,
-        //             where_was: WhereWas {
+        //             where_was: crate::common::where_was::WhereWas {
         //                 time: std::time::SystemTime::now()
         //                     .duration_since(std::time::UNIX_EPOCH)
         //                     .expect("cannot convert time to unix_epoch"),
@@ -460,11 +414,11 @@ impl ProviderKind {
         //             },
         //         }),
         //     }),
-        //     Ok(client_options) => match Client::with_options(client_options) {
+        //     Ok(client_options) => match mongodb::Client::with_options(client_options) {
         //         Err(e) => Err(MongoGetProviderLinkPartsError {
         //             source: Box::new(MongoGetProviderLinkPartsErrorEnum::ClientWithOptions {
         //                 source: e,
-        //                 where_was: WhereWas {
+        //                 where_was: crate::common::where_was::WhereWas {
         //                     time: std::time::SystemTime::now()
         //                         .duration_since(std::time::UNIX_EPOCH)
         //                         .expect("cannot convert time to unix_epoch"),
@@ -478,9 +432,9 @@ impl ProviderKind {
         //         Ok(client) => {
         //             match mongo_get_documents_as_string_vector(
         //                 client
-        //                     .database(&CONFIG.mongo_providers_logs_db_name)
-        //                     .collection::<Document>(&pk.get_mongo_log_collection_name()),
-        //                 &CONFIG.mongo_providers_logs_db_collection_document_field_name_handle,
+        //                     .database(&crate::global_variables::runtime::config::CONFIG.mongo_providers_logs_db_name)
+        //                     .collection::<mongodb::bson::Document>(&pk.get_mongo_log_collection_name()),
+        //                 &crate::global_variables::runtime::config::CONFIG.mongo_providers_logs_db_collection_document_field_name_handle,
         //                 ProviderKind::get_mongo_provider_link_parts_aggregation(&pk),
         //             )
         //             .await
@@ -489,7 +443,7 @@ impl ProviderKind {
         //                     source: Box::new(
         //                         MongoGetProviderLinkPartsErrorEnum::MongoGetDocumentsAsStringVector {
         //                             source: e,
-        //     where_was: WhereWas {
+        //     where_was: crate::common::where_was::WhereWas {
         //         time: std::time::SystemTime::now()
         //             .duration_since(std::time::UNIX_EPOCH)
         //             .expect("cannot convert time to unix_epoch"),
