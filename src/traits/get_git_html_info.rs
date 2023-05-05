@@ -1,6 +1,3 @@
-use crate::traits::get_git_commit_link::GetGitCommitLink;
-use crate::traits::get_git_commit_link::GetGitCommitLinkLifetime;
-
 pub trait GetGitHtmlInfo {
     fn get_git_html_info(&self) -> String;
 }
@@ -17,7 +14,8 @@ where
         + crate::traits::fields::GetGitCommitUnixTime
         + crate::traits::fields::GetGitMessage
         + crate::traits::fields::GetGitRepoLink
-        + crate::traits::fields::GetGitTimezone,
+        + crate::traits::fields::GetGitTimezone
+        + crate::traits::get_git_commit_link::GetGitCommitLink,
 {
     fn get_git_html_info(&self) -> String {
         let git_commit_id = &self.get_git_commit_id();
@@ -5680,7 +5678,8 @@ where
         + crate::traits::fields::GetGitCommitUnixTimeLifetime<'a>
         + crate::traits::fields::GetGitMessageLifetime<'a>
         + crate::traits::fields::GetGitRepoLinkLifetime<'a>
-        + crate::traits::fields::GetGitTimezoneLifetime<'a>,
+        + crate::traits::fields::GetGitTimezoneLifetime<'a>
+        + crate::traits::get_git_commit_link::GetGitCommitLinkLifetime,
 {
     fn get_git_html_info_lifetime(&self) -> String {
         let git_commit_id = self.get_git_commit_id_lifetime();

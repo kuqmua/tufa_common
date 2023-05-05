@@ -1,18 +1,10 @@
-use crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabled;
-use crate::traits::fields::GetIsInfoPrintsEnabled;
-use crate::traits::fields::GetIsPartialSuccessPrintsEnabled;
-use crate::traits::fields::GetIsPrintsEnabled;
-use crate::traits::fields::GetIsSuccessPrintsEnabled;
-use crate::traits::fields::GetIsTimeMeasurementPrintsEnabled;
-use crate::traits::fields::GetIsWarningHighPrintsEnabled;
-use crate::traits::fields::GetIsWarningLowPrintsEnabled;
-
 pub trait GetIsWarningHighPrintsEnabledWrapper<T> {
     fn get_is_warning_high_prints_enabled_wrapper(&self) -> bool;
 }
 impl<T> GetIsWarningHighPrintsEnabledWrapper<Self> for T
 where
-    Self: GetIsWarningHighPrintsEnabled + GetIsPrintsEnabled,
+    Self: crate::traits::fields::GetIsWarningHighPrintsEnabled 
+    + crate::traits::fields::GetIsPrintsEnabled,
 {
     fn get_is_warning_high_prints_enabled_wrapper(&self) -> bool {
         *self.get_is_prints_enabled() && *self.get_is_warning_high_prints_enabled()
@@ -23,7 +15,8 @@ pub trait GetIsWarningLowPrintsEnabledWrapper<T> {
 }
 impl<T> GetIsWarningLowPrintsEnabledWrapper<Self> for T
 where
-    Self: GetIsWarningLowPrintsEnabled + GetIsPrintsEnabled,
+    Self: crate::traits::fields::GetIsWarningLowPrintsEnabled 
+    + crate::traits::fields::GetIsPrintsEnabled,
 {
     fn get_is_warning_low_prints_enabled_wrapper(&self) -> bool {
         *self.get_is_prints_enabled() && *self.get_is_warning_low_prints_enabled()
@@ -34,7 +27,8 @@ pub trait GetIsSuccessPrintsEnabledWrapper<T> {
 }
 impl<T> GetIsSuccessPrintsEnabledWrapper<Self> for T
 where
-    Self: GetIsSuccessPrintsEnabled + GetIsPrintsEnabled,
+    Self: crate::traits::fields::GetIsSuccessPrintsEnabled 
+    + crate::traits::fields::GetIsPrintsEnabled,
 {
     fn get_is_success_prints_enabled_wrapper(&self) -> bool {
         *self.get_is_prints_enabled() && *self.get_is_success_prints_enabled()
@@ -45,7 +39,8 @@ pub trait GetIsPartialSuccessPrintsEnabledWrapper<T> {
 }
 impl<T> GetIsPartialSuccessPrintsEnabledWrapper<Self> for T
 where
-    Self: GetIsPartialSuccessPrintsEnabled + GetIsPrintsEnabled,
+    Self: crate::traits::fields::GetIsPartialSuccessPrintsEnabled 
+    + crate::traits::fields::GetIsPrintsEnabled,
 {
     fn get_is_partial_success_prints_enabled_wrapper(&self) -> bool {
         *self.get_is_prints_enabled() && *self.get_is_partial_success_prints_enabled()
@@ -56,7 +51,8 @@ pub trait GetIsCleaningWarningLogsDirectoryEnabledWrapper<T> {
 }
 impl<T> GetIsCleaningWarningLogsDirectoryEnabledWrapper<Self> for T
 where
-    Self: GetIsCleaningWarningLogsDirectoryEnabled + GetIsPrintsEnabled,
+    Self: crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabled 
+    + crate::traits::fields::GetIsPrintsEnabled,
 {
     fn get_is_cleaning_warning_logs_directory_enabled_wrapper(&self) -> bool {
         *self.get_is_prints_enabled() && *self.get_is_cleaning_warning_logs_directory_enabled()
@@ -67,7 +63,8 @@ pub trait GetIsTimeMeasurementPrintsEnabledWrapper<T> {
 }
 impl<T> GetIsTimeMeasurementPrintsEnabledWrapper<Self> for T
 where
-    Self: GetIsTimeMeasurementPrintsEnabled + GetIsPrintsEnabled,
+    Self: crate::traits::fields::GetIsTimeMeasurementPrintsEnabled 
+    + crate::traits::fields::GetIsPrintsEnabled,
 {
     fn get_is_time_measurement_prints_enabled_wrapper(&self) -> bool {
         *self.get_is_prints_enabled() && *self.get_is_time_measurement_prints_enabled()
@@ -78,7 +75,8 @@ pub trait GetIsInfoPrintsEnabledWrapper<T> {
 }
 impl<T> GetIsInfoPrintsEnabledWrapper<Self> for T
 where
-    Self: GetIsInfoPrintsEnabled + GetIsPrintsEnabled,
+    Self: crate::traits::fields::GetIsInfoPrintsEnabled 
+    + crate::traits::fields::GetIsPrintsEnabled,
 {
     fn get_is_info_prints_enabled_wrapper(&self) -> bool {
         *self.get_is_prints_enabled() && *self.get_is_info_prints_enabled()

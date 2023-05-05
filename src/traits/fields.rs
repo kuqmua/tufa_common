@@ -1,9 +1,3 @@
-use crate::config_mods::log_type::LogType;
-use crate::{
-    config_mods::{source_place_type::SourcePlaceType, tracing_type::TracingType},
-    server::resource::Resource,
-};
-
 //Config
 pub trait GetServerIp {
     fn get_server_ip(&self) -> &String;
@@ -42,7 +36,7 @@ pub trait GetRedditPassword {
     fn get_reddit_password(&self) -> &String;
 }
 pub trait GetProvidersLinkPartsSource {
-    fn get_providers_link_parts_source(&self) -> &Resource;
+    fn get_providers_link_parts_source(&self) -> &crate::server::resource::Resource;
 }
 pub trait GetTimezone {
     fn get_timezone(&self) -> &i32;
@@ -711,16 +705,16 @@ pub trait GetIsPreparationEnabled {
     fn get_is_preparation_enabled(&self) -> &bool;
 }
 pub trait GetLogType {
-    fn get_log_type(&self) -> &LogType;
+    fn get_log_type(&self) -> &crate::config_mods::log_type::LogType;
 }
 pub trait GetTracingType {
-    fn get_tracing_type(&self) -> &TracingType;
+    fn get_tracing_type(&self) -> &crate::config_mods::tracing_type::TracingType;
 }
 pub trait GetIsParentTracingEnabled {
     fn get_is_parent_tracing_enabled(&self) -> &bool;
 }
 pub trait GetSourcePlaceType {
-    fn get_source_place_type(&self) -> &SourcePlaceType;
+    fn get_source_place_type(&self) -> &crate::config_mods::source_place_type::SourcePlaceType;
 }
 pub trait GetIsTracingTimeEnabled {
     fn get_is_tracing_time_enabled(&self) -> &bool;
