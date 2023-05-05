@@ -1,8 +1,8 @@
-pub fn rss_parse_string_into_struct(
+pub fn rss_parse_string_into_struct<'a>(
     mut fetch_result_string: String,
-    value: &str,
+    value: &'a str,
     pk: crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind,
-) -> Result<crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct, crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError> {
+) -> Result<crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct, crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed<'a>> {
     match {
         use crate::repositories_types::tufa_server::traits::provider_kind_methods::ProviderKindMethods;
         pk.get_item_handle()
@@ -224,14 +224,18 @@ pub fn rss_parse_string_into_struct(
                                     if !rss_page_struct.items.is_empty() {
                                         Ok(rss_page_struct)
                                     } else {
-                                        Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ThereIsTag(fetch_result_string))
+                                        Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed::ThereIsTag{ 
+                                            tag: fetch_result_string,
+                                            code_occurence: crate::code_occurence_tufa_common!() 
+                                        })
                                     }
                                 }
                                 Err(e) => {
-                                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ConversionFromStrError(
-                                        fetch_result_string,
-                                        e.to_string(),
-                                    ))
+                                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed::ConversionFromStrError{
+                                        string: fetch_result_string,
+                                        error: e.to_string(),
+                                        code_occurence: crate::code_occurence_tufa_common!()
+                                    })
                                 }
                             }
                         }
@@ -342,14 +346,18 @@ pub fn rss_parse_string_into_struct(
                                     if !rss_page_struct.items.is_empty() {
                                         Ok(rss_page_struct)
                                     } else {
-                                        Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ThereIsTag(fetch_result_string))
+                                        Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed::ThereIsTag{
+                                            tag: fetch_result_string,
+                                            code_occurence: crate::code_occurence_tufa_common!()
+                                        })
                                     }
                                 }
                                 Err(e) => {
-                                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ConversionFromStrError(
-                                        fetch_result_string,
-                                        e.to_string(),
-                                    ))
+                                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed::ConversionFromStrError{
+                                        string: fetch_result_string,
+                                        error: e.to_string(),
+                                        code_occurence: crate::code_occurence_tufa_common!()
+                                    })
                                 }
                             }
                         }
@@ -462,14 +470,18 @@ pub fn rss_parse_string_into_struct(
                                     if !rss_page_struct.items.is_empty() {
                                         Ok(rss_page_struct)
                                     } else {
-                                        Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ThereIsTag(fetch_result_string))
+                                        Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed::ThereIsTag{ 
+                                            tag: fetch_result_string,
+                                            code_occurence: crate::code_occurence_tufa_common!()
+                                        })
                                     }
                                 }
                                 Err(e) => {
-                                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ConversionFromStrError(
-                                        fetch_result_string,
-                                        e.to_string(),
-                                    ))
+                                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed::ConversionFromStrError{
+                                        string: fetch_result_string,
+                                        error: e.to_string(),
+                                        code_occurence: crate::code_occurence_tufa_common!()
+                                    })
                                 }
                             }
                         }
@@ -578,14 +590,18 @@ pub fn rss_parse_string_into_struct(
                                     if !rss_page_struct.items.is_empty() {
                                         Ok(rss_page_struct)
                                     } else {
-                                        Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ThereIsTag(fetch_result_string))
+                                        Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed::ThereIsTag{
+                                            tag: fetch_result_string,
+                                            code_occurence: crate::code_occurence_tufa_common!()
+                                        })
                                     }
                                 }
                                 Err(e) => {
-                                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ConversionFromStrError(
-                                        fetch_result_string,
-                                        e.to_string(),
-                                    ))
+                                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed::ConversionFromStrError{
+                                        string: fetch_result_string,
+                                        error: e.to_string(),
+                                        code_occurence: crate::code_occurence_tufa_common!()
+                                    })
                                 }
                             }
                         }
@@ -696,14 +712,18 @@ pub fn rss_parse_string_into_struct(
                                     if !rss_page_struct.items.is_empty() {
                                         Ok(rss_page_struct)
                                     } else {
-                                        Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ThereIsTag(fetch_result_string))
+                                        Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed::ThereIsTag{
+                                            tag: fetch_result_string,
+                                            code_occurence: crate::code_occurence_tufa_common!()
+                                        })
                                     }
                                 }
                                 Err(e) => {
-                                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ConversionFromStrError(
-                                        fetch_result_string,
-                                        e.to_string(),
-                                    ))
+                                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed::ConversionFromStrError{
+                                        string: fetch_result_string,
+                                        error: e.to_string(),
+                                        code_occurence: crate::code_occurence_tufa_common!()
+                                    })
                                 }
                             }
                         }
@@ -815,14 +835,18 @@ pub fn rss_parse_string_into_struct(
                                     if !rss_page_struct.items.is_empty() {
                                         Ok(rss_page_struct)
                                     } else {
-                                        Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ThereIsTag(fetch_result_string))
+                                        Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed::ThereIsTag{
+                                            tag: fetch_result_string,
+                                            code_occurence: crate::code_occurence_tufa_common!()
+                                        })
                                     }
                                 }
                                 Err(e) => {
-                                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ConversionFromStrError(
-                                        fetch_result_string,
-                                        e.to_string(),
-                                    ))
+                                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed::ConversionFromStrError{
+                                        string: fetch_result_string,
+                                        error: e.to_string(),
+                                        code_occurence: crate::code_occurence_tufa_common!()
+                                    })
                                 }
                             }
                         }
@@ -830,9 +854,10 @@ pub fn rss_parse_string_into_struct(
                 }
                 None => {
                     let warning_message = format!("cannot find {what_should_find_in_fetch_result_string} for {pk:#?} in fetch_result_string");
-                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::NoTag(
-                        what_should_find_in_fetch_result_string.to_string(),
-                    ))
+                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed::NoTag{
+                        no_tag: what_should_find_in_fetch_result_string.to_string(),
+                        code_occurence: crate::code_occurence_tufa_common!()
+                    })
                 }
             }
         }
@@ -945,14 +970,18 @@ pub fn rss_parse_string_into_struct(
                     if !rss_page_struct.items.is_empty() {
                         Ok(rss_page_struct)
                     } else {
-                        Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ThereIsTag(fetch_result_string))
+                        Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed::ThereIsTag{
+                            tag: fetch_result_string,
+                            code_occurence: crate::code_occurence_tufa_common!()
+                        })
                     }
                 }
                 Err(e) => {
-                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError::ConversionFromStrError(
-                        fetch_result_string,
-                        e.to_string(),
-                    ))
+                    Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed::ConversionFromStrError{
+                        string: fetch_result_string,
+                        error: e.to_string(),
+                        code_occurence: crate::code_occurence_tufa_common!()
+                    })
                 }
             }
         }

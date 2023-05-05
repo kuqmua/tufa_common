@@ -52,13 +52,13 @@ pub enum ProviderKind {
 }
 
 #[derive(Debug)]
-pub enum FetchAndParseProviderDataErrorEnum {
+pub enum FetchAndParseProviderDataErrorEnum<'a> {
     // AsyncFetchLinks {
     //     source: Vec<(String, Box<crate::server::http_request::http_request_error::HttpRequestErrorNamed<'a>>)>, //link, error
     //     where_was: crate::common::where_was::WhereWas,
     // },
     NoItems {
-        source: Vec<(String, crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError)>, //link, error
+        source: Vec<(String, crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed<'a>)>, //link, error
         where_was: crate::common::where_was::WhereWas,
     },
 }
