@@ -1,5 +1,4 @@
 pub mod file_system;
-pub mod http_request;
 pub mod mongo;
 pub mod net;
 pub mod postgres;

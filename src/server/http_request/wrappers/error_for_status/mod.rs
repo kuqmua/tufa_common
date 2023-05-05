@@ -1,2 +1,0 @@
-pub mod async_http_request_error_for_status;
-pub mod sync_http_request_error_for_status;

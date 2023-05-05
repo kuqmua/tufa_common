@@ -53,171 +53,171 @@ pub enum ProviderKind {
 
 #[derive(Debug)]
 pub enum FetchAndParseProviderDataErrorEnum {
-    AsyncFetchLinks {
-        source: Vec<(String, Box<crate::server::http_request::http_request_error::HttpRequestOriginError>)>, //link, error
-        where_was: crate::common::where_was::WhereWas,
-    },
+    // AsyncFetchLinks {
+    //     source: Vec<(String, Box<crate::server::http_request::http_request_error::HttpRequestErrorNamed<'a>>)>, //link, error
+    //     where_was: crate::common::where_was::WhereWas,
+    // },
     NoItems {
         source: Vec<(String, crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsError)>, //link, error
         where_was: crate::common::where_was::WhereWas,
     },
 }
 
-impl ProviderKind {
-    pub async fn fetch_and_parse_provider_data(
-        self,
-        links: Vec<String>,
-    ) -> Result<Vec<crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct>, Box<FetchAndParseProviderDataErrorEnum>> {
-        let time = std::time::Instant::now();
-        let capacity = links.len();
-        let vec_to_return = futures::future::join_all(links.iter().map(|url| async move {
-            let result = crate::server::http_request::wrappers::text::async_http_request_text::async_http_request_text_wrapper::<
-                String,
-                reqwest::cookie::Jar,
-                core::time::Duration,
-                u32,
-                u32,
-                u32,
-                std::time::Duration,
-                std::net::IpAddr,
-                std::time::Duration,
-                String, //todo - dyn std::any::Any
-                String,
-                String,
-                String,
-                String,
-                String,
-                String,
-                String,
-                String,
-                String,
-            >(
-                url,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                crate::server::http_request::http_request_method::HttpRequestMethod::Get,
-                &crate::global_variables::runtime::config::CONFIG.source_place_type,
-                false,
-            )
-            .await;
-            (url, result)
-        }))
-        .await;
-        let mut half_success_vec = Vec::with_capacity(capacity);
-        let mut async_fetch_links_error_vec = Vec::new();
-        for (link, result) in vec_to_return {
-            match result {
-                Err(e) => {
-                    async_fetch_links_error_vec.push((link.to_string(), e));
-                }
-                Ok(str) => {
-                    half_success_vec.push((link, str));
-                }
-            }
-        }
-        if !async_fetch_links_error_vec.is_empty() {
-            //todo: maybe not all links must return Ok ?
-            return Err(Box::new(
-                FetchAndParseProviderDataErrorEnum::AsyncFetchLinks {
-                    source: async_fetch_links_error_vec,
-                    where_was: crate::common::where_was::WhereWas {
-                        time: std::time::SystemTime::now()
-                            .duration_since(std::time::UNIX_EPOCH)
-                            .expect("cannot convert time to unix_epoch"),
-                        file: String::from(file!()),
-                        line: line!(),
-                        column: column!(),
-                        git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-                    },
-                },
-            ));
-        }
-        let mut success_vec = Vec::with_capacity(capacity);
-        let mut no_items_error_vec = Vec::new();
-        for (link, response_text) in half_success_vec {
-            match crate::repositories_types::tufa_server::fetch::rss_parse_string_into_struct::rss_parse_string_into_struct(response_text, link, self) {
-                Err(e) => no_items_error_vec.push((link.to_string(), e)),
-                Ok(post_struct) => {
-                    success_vec.push(post_struct); //todo maybe add link here?
-                }
-            }
-        }
-        if !no_items_error_vec.is_empty() {
-            return Err(Box::new(FetchAndParseProviderDataErrorEnum::NoItems {
-                source: no_items_error_vec,
-                where_was: crate::common::where_was::WhereWas {
-                    time: std::time::SystemTime::now()
-                        .duration_since(std::time::UNIX_EPOCH)
-                        .expect("cannot convert time to unix_epoch"),
-                    file: String::from(file!()),
-                    line: line!(),
-                    column: column!(),
-                    git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-                },
-            }));
-        }
-        Ok(success_vec)
-    }
-}
+// impl ProviderKind {
+//     pub async fn fetch_and_parse_provider_data(
+//         self,
+//         links: Vec<String>,
+//     ) -> Result<Vec<crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct>, Box<FetchAndParseProviderDataErrorEnum>> {
+//         let time = std::time::Instant::now();
+//         let capacity = links.len();
+//         let vec_to_return = futures::future::join_all(links.iter().map(|url| async move {
+//             let result = crate::server::http_request::wrappers::text::async_http_request_text::async_http_request_text_wrapper::<
+//                 String,
+//                 reqwest::cookie::Jar,
+//                 core::time::Duration,
+//                 u32,
+//                 u32,
+//                 u32,
+//                 std::time::Duration,
+//                 std::net::IpAddr,
+//                 std::time::Duration,
+//                 String, //todo - dyn std::any::Any
+//                 String,
+//                 String,
+//                 String,
+//                 String,
+//                 String,
+//                 String,
+//                 String,
+//                 String,
+//                 String,
+//             >(
+//                 url,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 None,
+//                 crate::server::http_request::http_request_method::HttpRequestMethod::Get,
+//                 &crate::global_variables::runtime::config::CONFIG.source_place_type,
+//                 false,
+//             )
+//             .await;
+//             (url, result)
+//         }))
+//         .await;
+//         let mut half_success_vec = Vec::with_capacity(capacity);
+//         let mut async_fetch_links_error_vec = Vec::new();
+//         for (link, result) in vec_to_return {
+//             match result {
+//                 Err(e) => {
+//                     async_fetch_links_error_vec.push((link.to_string(), e));
+//                 }
+//                 Ok(str) => {
+//                     half_success_vec.push((link, str));
+//                 }
+//             }
+//         }
+//         if !async_fetch_links_error_vec.is_empty() {
+//             //todo: maybe not all links must return Ok ?
+//             return Err(Box::new(
+//                 FetchAndParseProviderDataErrorEnum::AsyncFetchLinks {
+//                     source: async_fetch_links_error_vec,
+//                     where_was: crate::common::where_was::WhereWas {
+//                         time: std::time::SystemTime::now()
+//                             .duration_since(std::time::UNIX_EPOCH)
+//                             .expect("cannot convert time to unix_epoch"),
+//                         file: String::from(file!()),
+//                         line: line!(),
+//                         column: column!(),
+//                         git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
+//                     },
+//                 },
+//             ));
+//         }
+//         let mut success_vec = Vec::with_capacity(capacity);
+//         let mut no_items_error_vec = Vec::new();
+//         for (link, response_text) in half_success_vec {
+//             match crate::repositories_types::tufa_server::fetch::rss_parse_string_into_struct::rss_parse_string_into_struct(response_text, link, self) {
+//                 Err(e) => no_items_error_vec.push((link.to_string(), e)),
+//                 Ok(post_struct) => {
+//                     success_vec.push(post_struct); //todo maybe add link here?
+//                 }
+//             }
+//         }
+//         if !no_items_error_vec.is_empty() {
+//             return Err(Box::new(FetchAndParseProviderDataErrorEnum::NoItems {
+//                 source: no_items_error_vec,
+//                 where_was: crate::common::where_was::WhereWas {
+//                     time: std::time::SystemTime::now()
+//                         .duration_since(std::time::UNIX_EPOCH)
+//                         .expect("cannot convert time to unix_epoch"),
+//                     file: String::from(file!()),
+//                     line: line!(),
+//                     column: column!(),
+//                     git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
+//                 },
+//             }));
+//         }
+//         Ok(success_vec)
+//     }
+// }
 
 impl ProviderKind {
     pub fn get_mongo_provider_link_parts_aggregation(&self) -> Option<mongodb::bson::Document> {
