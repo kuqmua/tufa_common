@@ -22,12 +22,10 @@ pub enum MongoGetDocumentsAsStringVectorErrorUnnamed<'a> {
     MongoGetDocumentsAsStringVector(crate::repositories_types::tufa_server::mongo_integration::mongo_get_documents_as_string_vector::MongoGetDocumentsAsStringVectorErrorNamed<'a>),
 }
 
-pub async fn mongo_get_providers_link_parts<'a>(
+pub async fn mongo_get_providers_link_parts<'a, SelfGeneric>(
+    config: &(impl crate::traits::get_mongo_url::GetMongoUrl<SelfGeneric>)
 ) -> Result<std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>, crate::repositories_types::tufa_server::mongo_integration::mongo_get_providers_link_parts::MongoGetProvidersLinkPartsErrorNamed<'a>> {
-    match mongodb::options::ClientOptions::parse({
-        use crate::traits::get_mongo_url::GetMongoUrl;
-        crate::global_variables::runtime::config::CONFIG.get_mongo_url()
-    }).await {
+    match mongodb::options::ClientOptions::parse(config.get_mongo_url()).await {
         Err(e) => Err(
             crate::repositories_types::tufa_server::mongo_integration::mongo_get_providers_link_parts::MongoGetProvidersLinkPartsErrorNamed::MongoDB {
                 mongodb: e,
