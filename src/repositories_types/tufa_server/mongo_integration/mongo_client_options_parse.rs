@@ -7,13 +7,10 @@ pub enum MongoClientOptionsParseOriginErrorNamed<'a> {
     },
 }
 
-pub async fn mongo_client_options_parse<'a>() -> Result<mongodb::options::ClientOptions, Box<crate::repositories_types::tufa_server::mongo_integration::mongo_client_options_parse::MongoClientOptionsParseOriginErrorNamed<'a>>>{
-    match mongodb::options::ClientOptions::parse(&
-        {
-            use crate::traits::get_mongo_url::GetMongoUrl;
-            crate::global_variables::runtime::config::CONFIG.get_mongo_url()
-        }
-        ).await {
+pub async fn mongo_client_options_parse<'a, SelfGeneric>(
+    config: &(impl crate::traits::get_mongo_url::GetMongoUrl<SelfGeneric>)
+) -> Result<mongodb::options::ClientOptions, Box<crate::repositories_types::tufa_server::mongo_integration::mongo_client_options_parse::MongoClientOptionsParseOriginErrorNamed<'a>>>{
+    match mongodb::options::ClientOptions::parse(&config.get_mongo_url()).await {
         Err(e) => Err(Box::new(
             crate::repositories_types::tufa_server::mongo_integration::mongo_client_options_parse::MongoClientOptionsParseOriginErrorNamed::Mongo {
                 error: e,

@@ -22,11 +22,12 @@ pub enum InitMongoErrorNamed<'a> {
     }
 }
 
-pub async fn init_mongo<'a>(
+pub async fn init_mongo<'a, SelfGeneric>(
     providers_json_local_data_hashmap: std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
-    impl_get_mongo_providers_link_parts_db_name: impl crate::traits::fields::GetMongoProvidersLinkPartsDbName
+    config: &(impl crate::traits::fields::GetMongoProvidersLinkPartsDbName 
+    + crate::traits::get_mongo_url::GetMongoUrl<SelfGeneric>),
 ) -> Result<(), Box<crate::repositories_types::tufa_server::init_dbs_logic::init_mongo::InitMongoErrorNamed<'a>>>{
-    match crate::repositories_types::tufa_server::mongo_integration::mongo_client_options_parse::mongo_client_options_parse().await {
+    match crate::repositories_types::tufa_server::mongo_integration::mongo_client_options_parse::mongo_client_options_parse(config).await {
         Err(e) => Err(Box::new(
             crate::repositories_types::tufa_server::init_dbs_logic::init_mongo::InitMongoErrorNamed::ClientOptionsParse {
                 client_options_parse: *e,
@@ -41,7 +42,7 @@ pub async fn init_mongo<'a>(
                 }
             )),
             Ok(client) => {
-                let db = client.database(&impl_get_mongo_providers_link_parts_db_name.get_mongo_providers_link_parts_db_name());
+                let db = client.database(&config.get_mongo_providers_link_parts_db_name());
                 if let Err(e) = crate::repositories_types::tufa_server::mongo_integration::mongo_check_collection_is_not_empty::mongo_check_collections_is_not_empty(
                     providers_json_local_data_hashmap.clone(),
                     &db,
