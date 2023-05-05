@@ -23,7 +23,11 @@ pub enum MongoGetDocumentsAsStringVectorErrorUnnamed<'a> {
 }
 
 pub async fn mongo_get_providers_link_parts<'a, SelfGeneric>(
-    config: &(impl crate::traits::get_mongo_url::GetMongoUrl<SelfGeneric>)
+    config: &'a (
+        impl crate::traits::get_mongo_url::GetMongoUrl<SelfGeneric>
+        + crate::traits::fields::GetMongoProvidersLinkPartsDbName
+        + crate::traits::fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
+    )
 ) -> Result<std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>, crate::repositories_types::tufa_server::mongo_integration::mongo_get_providers_link_parts::MongoGetProvidersLinkPartsErrorNamed<'a>> {
     match mongodb::options::ClientOptions::parse(config.get_mongo_url()).await {
         Err(e) => Err(
@@ -40,7 +44,7 @@ pub async fn mongo_get_providers_link_parts<'a, SelfGeneric>(
                 }
             ),
             Ok(client) => {
-                let db = client.database(&crate::global_variables::runtime::config::CONFIG.mongo_providers_link_parts_db_name);
+                let db = client.database(&config.get_mongo_providers_link_parts_db_name());
                 match db.list_collection_names(None).await {
                     Err(e) => Err(
                         crate::repositories_types::tufa_server::mongo_integration::mongo_get_providers_link_parts::MongoGetProvidersLinkPartsErrorNamed::MongoDB {
@@ -78,7 +82,7 @@ pub async fn mongo_get_providers_link_parts<'a, SelfGeneric>(
                                             *pk,
                                             crate::repositories_types::tufa_server::mongo_integration::mongo_get_documents_as_string_vector::mongo_get_documents_as_string_vector(
                                                 db.collection::<mongodb::bson::Document>(&pk.get_mongo_log_collection_name()),
-                                                &crate::global_variables::runtime::config::CONFIG.mongo_providers_logs_db_collection_document_field_name_handle,
+                                                config.get_mongo_providers_logs_db_collection_document_field_name_handle(),
                                                 crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::get_mongo_provider_link_parts_aggregation(pk),
                                             )
                                             .await,
