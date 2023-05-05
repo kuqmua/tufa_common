@@ -2,7 +2,7 @@
 pub enum GetLocalProvidersLinkPartsErrorNamed<'a> {
     GetLinkPartsFromLocalJsonFile {
         #[eo_hashmap_key_display_with_serialize_deserialize_value_error_occurence]
-        get_link_parts_from_localJson_file: std::collections::HashMap<std::string::String, GetLocalProvidersLinkPartsErrorUnnamed<'a>>,
+        get_link_parts_from_local_json_file: std::collections::HashMap<std::string::String, GetLocalProvidersLinkPartsErrorUnnamed<'a>>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
@@ -49,7 +49,7 @@ pub async fn get_local_providers_link_parts<'a>() -> Result<std::collections::Ha
     if !errors_hashmap.is_empty() {
         return Err(Box::new(
             GetLocalProvidersLinkPartsErrorNamed::GetLinkPartsFromLocalJsonFile {
-                get_link_parts_from_localJson_file: errors_hashmap,
+                get_link_parts_from_local_json_file: errors_hashmap,
                 code_occurence: crate::code_occurence_tufa_common!(),
             }
         ));
