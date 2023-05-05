@@ -49,21 +49,27 @@ pub enum CheckAvailabilityErrorNamed<'a> {
     },
 }
 
-pub async fn check_availability<'a>(
-    mongodb_options_client_options: mongodb::options::ClientOptions
+pub async fn check_availability<'a, SelfGeneric>(
+    mongodb_options_client_options: mongodb::options::ClientOptions,
+    config: &'a (
+        impl crate::traits::fields::GetStartingCheckLink
+        + crate::traits::get_postgres_url::GetPostgresUrl<SelfGeneric>
+        + crate::traits::fields::GetPostgresConnectionTimeout
+        + crate::traits::fields::GetMongoProvidersLogsDbName
+    )
 ) -> Result<(), Box<crate::repositories_types::tufa_server::preparation::check_availability::CheckAvailabilityErrorNamed<'a>>>{
     match futures::join!(
-        crate::server::net::net_check_availability::net_check_availability(&crate::global_variables::runtime::config::CONFIG.starting_check_link),
+        crate::server::net::net_check_availability::net_check_availability(config.get_starting_check_link()),
         crate::repositories_types::tufa_server::postgres_integration::postgres_check_availability::postgres_check_availability(
             {
                 use crate::traits::get_postgres_url::GetPostgresUrl;
-                crate::global_variables::runtime::config::CONFIG.get_postgres_url()
+                config.get_postgres_url()
             }, 
-            crate::global_variables::runtime::config::CONFIG.postgres_connection_timeout
+            *config.get_postgres_connection_timeout()
         ),
         crate::repositories_types::tufa_server::mongo_integration::mongo_check_availability::mongo_check_availability(
             mongodb_options_client_options,
-            &crate::global_variables::runtime::config::CONFIG.mongo_providers_logs_db_name,
+            config.get_mongo_providers_logs_db_name()
         ),
     ) {
         (Ok(_), Ok(_), Ok(_)) => Ok(()),
