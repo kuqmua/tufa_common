@@ -1,8 +1,3 @@
-use crate::traits::get_source::GetSource;
-use crate::traits::init_error_with_possible_trace::InitErrorWithPossibleTrace;
-use crate::traits::where_was_methods::WhereWasMethods;
-use crate::global_variables::runtime::config::CONFIG;
-
 #[derive(Debug)]
 pub struct RemoveDirError {
     pub error: std::io::Error,
