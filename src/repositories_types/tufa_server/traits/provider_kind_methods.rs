@@ -1,6 +1,6 @@
 pub trait ProviderKindMethods {
     fn get_item_handle(&self) -> Option<&'static str>;
-    fn get_mongo_log_collection_name(&self) -> String;
+    fn get_mongo_log_collection_name(&self, config: & impl crate::traits::fields::GetMongoProvidersLogsDbCollectionHandleSecondPart) -> String;
     fn get_path_to_logs_directory(&self) -> String;
     fn get_path_to_provider_log_file(&self) -> String;
     fn get_init_local_data_file_path(&self) -> String;

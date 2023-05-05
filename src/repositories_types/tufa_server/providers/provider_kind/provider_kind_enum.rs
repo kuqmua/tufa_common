@@ -264,9 +264,7 @@ pub struct ProvidersInitJsonSchema {
 impl ProviderKind {
     pub async fn get_link_parts_from_local_json_file<'a>(
         self,
-        config: &'a (
-            impl crate::traits::fields::GetIsLinksLimitEnabledProviders
-        )
+        config: &'a impl crate::traits::fields::GetIsLinksLimitEnabledProviders
     ) -> Result<Vec<String>, Box<GetLinkPartsFromLocalJsonFileErrorNamed<'a>>> {
         match tokio::fs::File::open(&{
             use crate::repositories_types::tufa_server::traits::provider_kind_methods::ProviderKindMethods;

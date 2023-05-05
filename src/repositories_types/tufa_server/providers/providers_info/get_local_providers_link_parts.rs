@@ -18,9 +18,7 @@ pub struct TracingVec {
 }
 
 pub async fn get_local_providers_link_parts<'a>(
-    config: &'a (
-        impl crate::traits::fields::GetIsLinksLimitEnabledProviders
-    )
+    config: &'a impl crate::traits::fields::GetIsLinksLimitEnabledProviders
 ) -> Result<std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>, Box<GetLocalProvidersLinkPartsErrorNamed<'a>>> {
     let result_vec = futures::future::join_all(
             {

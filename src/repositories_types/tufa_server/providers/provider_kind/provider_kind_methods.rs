@@ -10,10 +10,13 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
             crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Twitter => Some("</item>"),
         }
     }
-    fn get_mongo_log_collection_name(&self) -> String {
+    fn get_mongo_log_collection_name(
+        &self,
+        config: & impl crate::traits::fields::GetMongoProvidersLogsDbCollectionHandleSecondPart 
+    ) -> String {
         format!(
             "{self}{}",
-            crate::global_variables::runtime::config::CONFIG.mongo_providers_logs_db_collection_handle_second_part //todo rename it into db log collection
+            config.get_mongo_providers_logs_db_collection_handle_second_part()//todo rename it into db log collection
         )
     }
     fn get_path_to_logs_directory(&self) -> String {
