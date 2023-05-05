@@ -23,13 +23,19 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
         &self,
         config: &impl crate::traits::fields::GetWarningLogsDirectoryName
     ) -> String {
-        format!("logs/{}/{self:?}", config.get_warning_logs_directory_name())//&crate::global_variables::runtime::config::CONFIG.warning_logs_directory_name
+        format!("logs/{}/{self:?}", config.get_warning_logs_directory_name())
     }
-    fn get_path_to_provider_log_file(&self) -> String {
+    fn get_path_to_provider_log_file(
+        &self,
+        config: &(
+            impl crate::traits::fields::GetWarningLogsDirectoryName
+            + crate::traits::fields::GetUnhandledSuccessHandledSuccessAreThereItemsInitializedPostsDir
+        )
+    ) -> String {
         format!(
             "logs/{}/{self:?}/{}",
-            &crate::global_variables::runtime::config::CONFIG.warning_logs_directory_name,
-            &crate::global_variables::runtime::config::CONFIG.unhandled_success_handled_success_are_there_items_initialized_posts_dir
+            config.get_warning_logs_directory_name(),
+            config.get_unhandled_success_handled_success_are_there_items_initialized_posts_dir()
         )
     }
     fn get_init_local_data_file_path(&self) -> String {
