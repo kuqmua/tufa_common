@@ -51,23 +51,30 @@ pub enum ProviderKind {
     Twitter,
 }
 
-#[derive(Debug)]
-pub enum FetchAndParseProviderDataErrorEnum<'a> {
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum FetchAndParseProviderDataErrorNamed<'a> {
     // AsyncFetchLinks {
-    //     source: Vec<(String, Box<crate::server::http_request::http_request_error::HttpRequestErrorNamed<'a>>)>, //link, error
-    //     where_was: crate::common::where_was::WhereWas,
+    //     #[eo_hashmap_key_display_with_serialize_deserialize_value_error_occurence]
+    //     fetch_links: std::collections::HashMap<std::string::String, crate::server::http_request::http_request_error::HttpRequestErrorNamed<'a>>, //link, error
+    //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     // },
     NoItems {
-        source: Vec<(String, crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed<'a>)>, //link, error
-        where_was: crate::common::where_was::WhereWas,
+        #[eo_hashmap_key_display_with_serialize_deserialize_value_error_occurence]
+        no_items: std::collections::HashMap<std::string::String, FetchAndParseProviderDataErrorUnnamed<'a>>, //link, error
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
 
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum FetchAndParseProviderDataErrorUnnamed<'a> {
+    NoItems(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed<'a>),
+}
+
 // impl ProviderKind {
-//     pub async fn fetch_and_parse_provider_data(
+//     pub async fn fetch_and_parse_provider_data<'a>(
 //         self,
 //         links: Vec<String>,
-//     ) -> Result<Vec<crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct>, Box<FetchAndParseProviderDataErrorEnum>> {
+//     ) -> Result<Vec<crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct>, Box<FetchAndParseProviderDataErrorNamed<'a>>> {
 //         let time = std::time::Instant::now();
 //         let capacity = links.len();
 //         let vec_to_return = futures::future::join_all(links.iter().map(|url| async move {
@@ -176,43 +183,27 @@ pub enum FetchAndParseProviderDataErrorEnum<'a> {
 //         }
 //         if !async_fetch_links_error_vec.is_empty() {
 //             //todo: maybe not all links must return Ok ?
-//             return Err(Box::new(
-//                 FetchAndParseProviderDataErrorEnum::AsyncFetchLinks {
-//                     source: async_fetch_links_error_vec,
-//                     where_was: crate::common::where_was::WhereWas {
-//                         time: std::time::SystemTime::now()
-//                             .duration_since(std::time::UNIX_EPOCH)
-//                             .expect("cannot convert time to unix_epoch"),
-//                         file: String::from(file!()),
-//                         line: line!(),
-//                         column: column!(),
-//                         git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-//                     },
+//             return Err(
+//                 FetchAndParseProviderDataErrorNamed::AsyncFetchLinks {
+//                     fetch_links: async_fetch_links_error_vec,
+//                     code_occurence: crate::code_occurence_tufa_common!() 
 //                 },
-//             ));
+//             );
 //         }
 //         let mut success_vec = Vec::with_capacity(capacity);
 //         let mut no_items_error_vec = Vec::new();
 //         for (link, response_text) in half_success_vec {
 //             match crate::repositories_types::tufa_server::fetch::rss_parse_string_into_struct::rss_parse_string_into_struct(response_text, link, self) {
-//                 Err(e) => no_items_error_vec.push((link.to_string(), e)),
+//                 Err(e) => no_items_error_vec.push((link.to_string(), FetchAndParseProviderDataErrorUnnamed::NoItems(e))),
 //                 Ok(post_struct) => {
 //                     success_vec.push(post_struct); //todo maybe add link here?
 //                 }
 //             }
 //         }
 //         if !no_items_error_vec.is_empty() {
-//             return Err(Box::new(FetchAndParseProviderDataErrorEnum::NoItems {
-//                 source: no_items_error_vec,
-//                 where_was: crate::common::where_was::WhereWas {
-//                     time: std::time::SystemTime::now()
-//                         .duration_since(std::time::UNIX_EPOCH)
-//                         .expect("cannot convert time to unix_epoch"),
-//                     file: String::from(file!()),
-//                     line: line!(),
-//                     column: column!(),
-//                     git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-//                 },
+//             return Err(Box::new(FetchAndParseProviderDataErrorNamed::NoItems {
+//                 no_items: no_items_error_vec,
+//                 code_occurence: crate::code_occurence_tufa_common!() 
 //             }));
 //         }
 //         Ok(success_vec)
