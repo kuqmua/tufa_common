@@ -1,10 +1,10 @@
 pub trait ProviderKindMethods {
     fn get_item_handle(&self) -> Option<&'static str>;
     fn get_mongo_log_collection_name(&self, config: & impl crate::traits::fields::GetMongoProvidersLogsDbCollectionHandleSecondPart) -> String;
-    fn get_path_to_logs_directory(&self) -> String;
+    fn get_path_to_logs_directory(&self, config: &impl crate::traits::fields::GetWarningLogsDirectoryName) -> String;
     fn get_path_to_provider_log_file(&self) -> String;
     fn get_init_local_data_file_path(&self) -> String;
-    fn remove_logs_directory(&self) -> Result<(), crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::CleanLogsDirError>;
+    fn remove_logs_directory(&self, config: &impl crate::traits::fields::GetWarningLogsDirectoryName) -> Result<(), crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::CleanLogsDirError>;
     fn stringify(&self) -> &'static str;
     fn generate_provider_links(&self, names_vector: Vec<String>) -> Vec<String>;
     fn generate_hashmap_with_empty_string_vecs_for_enabled_providers() -> std::collections::HashMap<Self, Vec<String>>
@@ -24,10 +24,10 @@ pub trait ProviderKindMethods {
     fn into_string_name_and_kind_tuple_vec() -> Vec<(String, Self)>
     where
         Self: Sized;
-    fn remove_existing_providers_logs_directories() -> Result<(), std::collections::HashMap<Self, crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::RemoveDirError>>
+    fn remove_existing_providers_logs_directories(config: &impl crate::traits::fields::GetWarningLogsDirectoryName) -> Result<(), std::collections::HashMap<Self, crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::RemoveDirError>>
     where
         Self: Sized;
-    fn remove_providers_logs_directories() -> Result<(), std::collections::HashMap<Self, crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::CleanLogsDirError>>
+    fn remove_providers_logs_directories(config: &impl crate::traits::fields::GetWarningLogsDirectoryName) -> Result<(), std::collections::HashMap<Self, crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::CleanLogsDirError>>
     where
         Self: Sized;
     fn get_db_tag(&self) -> String

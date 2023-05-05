@@ -19,8 +19,11 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
             config.get_mongo_providers_logs_db_collection_handle_second_part()//todo rename it into db log collection
         )
     }
-    fn get_path_to_logs_directory(&self) -> String {
-        format!("logs/{}/{self:?}", &crate::global_variables::runtime::config::CONFIG.warning_logs_directory_name)
+    fn get_path_to_logs_directory(
+        &self,
+        config: &impl crate::traits::fields::GetWarningLogsDirectoryName
+    ) -> String {
+        format!("logs/{}/{self:?}", config.get_warning_logs_directory_name())//&crate::global_variables::runtime::config::CONFIG.warning_logs_directory_name
     }
     fn get_path_to_provider_log_file(&self) -> String {
         format!(
@@ -36,8 +39,11 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
             crate::global_variables::runtime::config::CONFIG.log_file_extension
         )
     }
-    fn remove_logs_directory(&self) -> Result<(), crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::CleanLogsDirError> {
-        let path = self.get_path_to_logs_directory();
+    fn remove_logs_directory(
+        &self,
+        config: &impl crate::traits::fields::GetWarningLogsDirectoryName
+    ) -> Result<(), crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::CleanLogsDirError> {
+        let path = self.get_path_to_logs_directory(config);
         if !std::path::Path::new(&path).is_dir() {
             return Err(crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::CleanLogsDirError::PathIsNotDir { path });
         }
@@ -142,8 +148,9 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
             .collect()
     }
     fn remove_existing_providers_logs_directories(
+        config: &impl crate::traits::fields::GetWarningLogsDirectoryName
     ) -> Result<(), std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::RemoveDirError>> {
-        if let Err(error_hashmap) = crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::remove_providers_logs_directories() {
+        if let Err(error_hashmap) = crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::remove_providers_logs_directories(config) {
             let return_hashmap = error_hashmap
                 .into_iter()
                 .filter_map(|(pk, error)| {
@@ -160,7 +167,9 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
         }
         Ok(())
     }
-    fn remove_providers_logs_directories() -> Result<(), std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::CleanLogsDirError>> {
+    fn remove_providers_logs_directories(
+        config: &impl crate::traits::fields::GetWarningLogsDirectoryName
+    ) -> Result<(), std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::CleanLogsDirError>> {
         let result_hashmap = {
             use strum::IntoEnumIterator;
             crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::iter()
@@ -170,7 +179,7 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
                     use crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKindFromConfig;
                     pk.is_cleaning_warning_logs_directory_enabled()
                 } {
-                    if let Err(e) = pk.remove_logs_directory() {
+                    if let Err(e) = pk.remove_logs_directory(config) {
                         return Some((pk, e));
                     }
                 }
