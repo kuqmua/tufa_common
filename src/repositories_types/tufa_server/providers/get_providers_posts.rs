@@ -1,4 +1,4 @@
-use crate::repositories_types::tufa_server::providers::check_providers_link_parts_on_empty::CheckProvidersLinkPartsEmptyError;
+use crate::repositories_types::tufa_server::providers::check_providers_link_parts_on_empty::CheckProvidersLinkPartsEmptyErrorNamed;
 use crate::repositories_types::tufa_server::providers::provider_kind::functions::rss_part::RssPartErrorEnum;
 use crate::repositories_types::tufa_server::providers::providers_info::get_providers_link_parts::GetProvidersLinkPartsErrorNamed;
 use crate::repositories_types::tufa_server::check_new_providers_posts::check_new_providers_posts;
@@ -58,7 +58,7 @@ pub enum GetProviderPostsErrorEnum<'a> {
         where_was: WhereWas,
     },
     CheckProvidersLinkPartsEmpty {
-        source: CheckProvidersLinkPartsEmptyError,
+        source: CheckProvidersLinkPartsEmptyErrorNamed<'a>,
         where_was: WhereWas,
     },
     GetNewProvidersPosts {
