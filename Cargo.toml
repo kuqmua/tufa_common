@@ -56,7 +56,6 @@ impl_display_for_error = {path = "../proc_macros/impl_display_for_error"}
 impl_from_for_upper_struct = {path = "../proc_macros/impl_from_for_upper_struct"}
 impl_get_git_info = {path = "../proc_macros/impl_get_git_info"}
 impl_get_source = {path = "../proc_macros/impl_get_source"}
-init_from_env = {path = "../proc_macros/init_from_env"}
 init_from_env_with_panic_if_failed = {path = "../proc_macros/init_from_env_with_panic_if_failed"}
 provider_kind_from_config = {path = "../proc_macros/provider_kind_from_config"}
 struct_field_getter = {path = "../proc_macros/struct_field_getter"}
