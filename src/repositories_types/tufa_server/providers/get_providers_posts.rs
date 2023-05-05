@@ -1,12 +1,3 @@
-use crate::repositories_types::tufa_server::providers::check_providers_link_parts_on_empty::CheckProvidersLinkPartsEmptyErrorNamed;
-use crate::repositories_types::tufa_server::providers::provider_kind::functions::rss_part::RssPartErrorNamed;
-use crate::repositories_types::tufa_server::providers::providers_info::get_providers_link_parts::GetProvidersLinkPartsErrorNamed;
-use crate::repositories_types::tufa_server::check_new_providers_posts::check_new_providers_posts;
-use crate::global_variables::runtime::config::CONFIG;
-use crate::repositories_types::tufa_server::providers::check_providers_link_parts_on_empty::check_providers_link_parts_on_empty;
-use crate::repositories_types::tufa_server::providers::providers_info::get_providers_link_parts::get_providers_link_parts;
-use std::collections::HashMap;
-use crate::common::where_was::WhereWas;
 // use crate::write_error_posts_wrapper::write_error_posts_wrapper;
 //     let future_possible_drop_collection = mongo_drop_collection_wrapper(
 //         mongo_url,
@@ -51,64 +42,56 @@ use crate::common::where_was::WhereWas;
 // }
 //TODO: WRITE CONVERSION FUNCTION INTO COMMON ERROR ENUM AND MOVE IT INTO write_error_posts_wrapper
 
-#[derive(Debug)]
-pub enum GetProviderPostsErrorEnum<'a> {
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum GetProviderPostsErrorNamed<'a> {
     GetLocalProvidersLinkParts {
-        source: GetProvidersLinkPartsErrorNamed<'a>,
-        where_was: WhereWas,
+        #[eo_error_occurence]
+        get_providers_link_parts: crate::repositories_types::tufa_server::providers::providers_info::get_providers_link_parts::GetProvidersLinkPartsErrorNamed<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     CheckProvidersLinkPartsEmpty {
-        source: CheckProvidersLinkPartsEmptyErrorNamed<'a>,
-        where_was: WhereWas,
+        #[eo_error_occurence]
+        check_providers_link_parts_empty: crate::repositories_types::tufa_server::providers::check_providers_link_parts_on_empty::CheckProvidersLinkPartsEmptyErrorNamed<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     GetNewProvidersPosts {
-        source: HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, RssPartErrorNamed<'a>>,
-        where_was: WhereWas,
+        #[eo_hashmap_key_display_with_serialize_deserialize_value_error_occurence]
+        hashmap_provider_kind_rss_part: std::collections::HashMap<std::string::String, GetProviderPostsErrorUnnamed<'a>>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
 
-pub async fn get_providers_posts<'a>() -> Result<(), Box<GetProviderPostsErrorEnum<'a>>> {
-    match get_providers_link_parts(&CONFIG.providers_link_parts_source).await {
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum GetProviderPostsErrorUnnamed<'a> {
+    GetNewProvidersPosts(crate::repositories_types::tufa_server::providers::provider_kind::functions::rss_part::RssPartErrorNamed<'a>),
+}
+
+pub async fn get_providers_posts<'a>() -> Result<(), Box<GetProviderPostsErrorNamed<'a>>> {
+    match crate::repositories_types::tufa_server::providers::providers_info::get_providers_link_parts::get_providers_link_parts(&crate::global_variables::runtime::config::CONFIG.providers_link_parts_source).await {
         Err(e) => Err(Box::new(
-            GetProviderPostsErrorEnum::GetLocalProvidersLinkParts {
-                source: *e,
-                where_was: WhereWas {
-                    time: std::time::SystemTime::now()
-                        .duration_since(std::time::UNIX_EPOCH)
-                        .expect("cannot convert time to unix_epoch"),
-                    file: String::from(file!()),
-                    line: line!(),
-                    column: column!(),
-                    git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-                },
+            GetProviderPostsErrorNamed::GetLocalProvidersLinkParts {
+                get_providers_link_parts: *e,
+                code_occurence: crate::code_occurence_tufa_common!()
             },
         )),
         Ok(providers_link_parts) => {
-            match check_providers_link_parts_on_empty(providers_link_parts) {
+            match crate::repositories_types::tufa_server::providers::check_providers_link_parts_on_empty::check_providers_link_parts_on_empty(providers_link_parts) {
                 Err(e) => {
                     return Err(Box::new(
-                        GetProviderPostsErrorEnum::CheckProvidersLinkPartsEmpty {
-                            source: *e,
-                            where_was: WhereWas {
-                                time: std::time::SystemTime::now()
-                                    .duration_since(std::time::UNIX_EPOCH)
-                                    .expect("cannot convert time to unix_epoch"),
-                                file: String::from(file!()),
-                                line: line!(),
-                                column: column!(),
-                                git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-                            },
+                        GetProviderPostsErrorNamed::CheckProvidersLinkPartsEmpty {
+                            check_providers_link_parts_empty: *e,
+                            code_occurence: crate::code_occurence_tufa_common!()
                         },
                     ));
                 }
                 Ok(non_empty_providers_link_parts) => {
-                    let hm = check_new_providers_posts(non_empty_providers_link_parts).await;
-                    let mut error_hashmap = HashMap::with_capacity(hm.len());
-                    let mut success_hashmap = HashMap::with_capacity(hm.len());
+                    let hm = crate::repositories_types::tufa_server::check_new_providers_posts::check_new_providers_posts(non_empty_providers_link_parts).await;
+                    let mut error_hashmap = std::collections::HashMap::with_capacity(hm.len());
+                    let mut success_hashmap = std::collections::HashMap::with_capacity(hm.len());
                     for (key, value) in hm {
                         match value {
                             Err(e) => {
-                                error_hashmap.insert(key, e);
+                                error_hashmap.insert(key.to_string(), GetProviderPostsErrorUnnamed::GetNewProvidersPosts(e));
                             }
                             Ok(vec) => {
                                 success_hashmap.insert(key, vec);
@@ -116,17 +99,9 @@ pub async fn get_providers_posts<'a>() -> Result<(), Box<GetProviderPostsErrorEn
                         }
                     }
                     if !error_hashmap.is_empty() {
-                        return Err(Box::new(GetProviderPostsErrorEnum::GetNewProvidersPosts {
-                            source: error_hashmap,
-                            where_was: WhereWas {
-                                time: std::time::SystemTime::now()
-                                    .duration_since(std::time::UNIX_EPOCH)
-                                    .expect("cannot convert time to unix_epoch"),
-                                file: String::from(file!()),
-                                line: line!(),
-                                column: column!(),
-                                git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-                            },
+                        return Err(Box::new(GetProviderPostsErrorNamed::GetNewProvidersPosts {
+                            hashmap_provider_kind_rss_part: error_hashmap,
+                            code_occurence: crate::code_occurence_tufa_common!()
                         }));
                     }
                     Ok(())
