@@ -1,18 +1,5 @@
-
-// #[derive(Debug, Clone)] //Debug only for prints
-// pub enum NoItemsErrorNamed {
-//     ThereIsTag(String),
-//     ConversionFromStrError(String, String),
-//     NoTag(String),
-// }
-
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum NoItemsErrorNamed<'a> {
-    // InsertMany {
-    //     #[eo_hashmap_key_display_with_serialize_deserialize_value_error_occurence]
-    //     insert_many: std::collections::HashMap<std::string::String, MongoInsertManyErrorUnnamed<'a>>,
-    //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    // },
     ThereIsTag {
         #[eo_display_with_serialize_deserialize]
         tag: std::string::String,
