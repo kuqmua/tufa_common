@@ -1,6 +1,4 @@
-use valuable::Valuable;
-
-#[derive(Clone, Debug, Valuable)]
+#[derive(Clone, Debug, valuable::Valuable)]
 struct User {
     name: String,
     age: u32,
@@ -8,7 +6,7 @@ struct User {
     address: Address,
 }
 
-#[derive(Clone, Debug, Valuable)]
+#[derive(Clone, Debug, valuable::Valuable)]
 struct Address {
     country: String,
     city: String,

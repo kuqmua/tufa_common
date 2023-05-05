@@ -1,8 +1,4 @@
-use generate_getter_traits_for_struct_fields::GenerateGetterTraitsForStructFieldsFromCrate;
-use serde_derive::Deserialize;
-use serde_derive::Serialize;
-
-#[derive(Debug, Serialize, Deserialize, Clone, Eq, Hash, PartialEq, Default)]
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize, Clone, Eq, Hash, PartialEq, Default)]
 pub struct GitInformation<'a> {
     pub git_commit_id: &'a str,
     pub git_repo_link: &'a str,
@@ -75,9 +71,9 @@ impl GitInformation<'static> {
     Eq,
     Hash,
     PartialEq,
-    GenerateGetterTraitsForStructFieldsFromCrate,
-    Serialize,
-    Deserialize,
+    generate_getter_traits_for_struct_fields::GenerateGetterTraitsForStructFieldsFromCrate,
+    serde_derive::Serialize,
+    serde_derive::Deserialize,
 )]
 pub struct GitInformationWithoutLifetimes {
     pub git_commit_id: String,
