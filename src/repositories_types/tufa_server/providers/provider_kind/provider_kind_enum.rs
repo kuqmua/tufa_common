@@ -331,64 +331,42 @@ impl ProviderKind {
     }
 }
 
-#[derive(Debug)]
-pub struct MongoGetProviderLinkPartsError {
-    pub source: Box<MongoGetProviderLinkPartsErrorEnum>,
-}
-
-#[derive(Debug)]
-pub enum MongoGetProviderLinkPartsErrorEnum {
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum MongoGetProviderLinkPartsErrorNamed<'a> {
     ClientOptionsParse {
-        source: mongodb::error::Error,
-        where_was: crate::common::where_was::WhereWas,
+        #[eo_display_foreign_type]
+        mongo: mongodb::error::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     ClientWithOptions {
-        source: mongodb::error::Error,
-        where_was: crate::common::where_was::WhereWas,
+        #[eo_display_foreign_type]
+        mongo: mongodb::error::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     // MongoGetDocumentsAsStringVector {
+    //    #[eo_error_occurence]
     //     source: Box<MongoGetDocumentsAsStringVectorErrorEnum>,
-    //     where_was: crate::common::where_was::WhereWas,
+    //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     // },
 }
 
 impl ProviderKind {
     //rust does not support async traits yet (end of 2021). only with third party crate
-    pub async fn mongo_get_provider_link_parts(
+    pub async fn mongo_get_provider_link_parts<'a>(
         pk: crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind,
-    ) -> Result<Vec<String>, MongoGetProviderLinkPartsError> {
+    ) -> Result<Vec<String>, MongoGetProviderLinkPartsErrorNamed<'a>> {
         todo!()
         // match mongodb::options::ClientOptions::parse(crate::global_variables::runtime::config::CONFIG.get_mongo_url()).await {
-        //     Err(e) => Err(MongoGetProviderLinkPartsError {
-        //         source: Box::new(MongoGetProviderLinkPartsErrorEnum::ClientOptionsParse {
-        //             source: e,
-        //             where_was: crate::common::where_was::WhereWas {
-        //                 time: std::time::SystemTime::now()
-        //                     .duration_since(std::time::UNIX_EPOCH)
-        //                     .expect("cannot convert time to unix_epoch"),
-        //                 file: String::from(file!()),
-        //                 line: line!(),
-        //                 column: column!(),
-        //                 git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-        //             },
-        //         }),
-        //     }),
+        //     Err(e) => Err(Box::new(MongoGetProviderLinkPartsErrorNamed::ClientOptionsParse {
+        //         mongo: e,
+        //         code_occurence: crate::code_occurence_tufa_common!()
+        //     })),
         //     Ok(client_options) => match mongodb::Client::with_options(client_options) {
-        //         Err(e) => Err(MongoGetProviderLinkPartsError {
-        //             source: Box::new(MongoGetProviderLinkPartsErrorEnum::ClientWithOptions {
-        //                 source: e,
-        //                 where_was: crate::common::where_was::WhereWas {
-        //                     time: std::time::SystemTime::now()
-        //                         .duration_since(std::time::UNIX_EPOCH)
-        //                         .expect("cannot convert time to unix_epoch"),
-        //                     file: String::from(file!()),
-        //                     line: line!(),
-        //                     column: column!(),
-        //                     git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-        //                 },
-        //             }),
-        //         }),
-        //         Ok(client) => {
+        //         Err(e) => Err(Box::new(MongoGetProviderLinkPartsErrorNamed::ClientWithOptions {
+        //             mongo: e,
+        //             code_occurence: crate::code_occurence_tufa_common!()
+        //         })),
+        //         Ok(client) => Ok({
         //             match mongo_get_documents_as_string_vector(
         //                 client
         //                     .database(&crate::global_variables::runtime::config::CONFIG.mongo_providers_logs_db_name)
@@ -398,23 +376,13 @@ impl ProviderKind {
         //             )
         //             .await
         //             {
-        //                 Err(e) => Err(MongoGetProviderLinkPartsError {
-        //                     source: Box::new(
-        //                         MongoGetProviderLinkPartsErrorEnum::MongoGetDocumentsAsStringVector {
-        //                             source: e,
-        //     where_was: crate::common::where_was::WhereWas {
-        //         time: std::time::SystemTime::now()
-        //             .duration_since(std::time::UNIX_EPOCH)
-        //             .expect("cannot convert time to unix_epoch"),
-        //         file: String::from(file!()),
-        //         line: line!(),
-        //         column: column!(),
-        //         git_info: crate::global_variables::runtime::git_info_without_lifetimes::GIT_INFO_WITHOUT_LIFETIMES.clone(),
-        //     },
-        //                 })}),
+        //                 Err(e) => Err(Box::new(
+        //                     MongoGetProviderLinkPartsErrorNamed::MongoGetDocumentsAsStringVector {
+        //                         source: e,
+        //                 })),
         //                 Ok(vec_of_strings) => Ok(vec_of_strings),
         //             }
-        //         }
+        //         })
         //     },
         // }
     }
