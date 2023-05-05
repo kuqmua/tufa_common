@@ -98,7 +98,6 @@ pub struct CommonRssPost {
     //twitter specific
 }
 impl CommonRssPost {
-    #[allow(too_many_arguments)]
     pub fn initialize_with_params(
         title: Option<String>,
         link: Option<String>,

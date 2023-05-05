@@ -33,7 +33,6 @@ pub fn rss_parse_string_into_struct<'a>(
                                         format!("no <channel> in response link: {value}");
                                 }
                             }
-                            #[allow(trivial_regex)]
                             let re = regex::Regex::new(crate::global_variables::hardcode::TWITTER_FILTER_HANDLE_TO_REMOVE_1).unwrap();
                             fetch_result_string = re
                                 .replace_all(
@@ -42,7 +41,6 @@ pub fn rss_parse_string_into_struct<'a>(
                                 )
                                 .to_string();
                             //todo: replace .replace_all with algorithm what do not reallocate memory
-                            #[allow(trivial_regex)]
                             let re = regex::Regex::new(crate::global_variables::hardcode::TWITTER_FILTER_HANDLE_TO_REMOVE_2).unwrap();
                             fetch_result_string = re
                                 .replace_all(
@@ -50,7 +48,6 @@ pub fn rss_parse_string_into_struct<'a>(
                                     crate::global_variables::hardcode::TWITTER_FILTER_HANDLE_TO_REPLACE_REMOVED_2,
                                 )
                                 .to_string();
-                            #[allow(trivial_regex)]
                             let re = regex::Regex::new(crate::global_variables::hardcode::TWITTER_FILTER_HANDLE_TO_REMOVE_3).unwrap();
                             fetch_result_string = re
                                 .replace_all(
@@ -61,7 +58,6 @@ pub fn rss_parse_string_into_struct<'a>(
                         }
                         crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Medrxiv => {
                             fetch_result_string.remove(0);
-                            #[allow(trivial_regex)]
                             let re = regex::Regex::new(crate::global_variables::hardcode::MEDRXIV_FILTER_HANDLE_TO_REMOVE_1).unwrap();
                             fetch_result_string = re
                                 .replace_all(
@@ -69,7 +65,6 @@ pub fn rss_parse_string_into_struct<'a>(
                                     crate::global_variables::hardcode::MEDRXIV_FILTER_HANDLE_TO_REPLACE_REMOVED_1,
                                 )
                                 .to_string();
-                            #[allow(trivial_regex)]
                             let re = regex::Regex::new(crate::global_variables::hardcode::MEDRXIV_FILTER_HANDLE_TO_REMOVE_2).unwrap();
                             fetch_result_string = re
                                 .replace_all(
@@ -79,7 +74,6 @@ pub fn rss_parse_string_into_struct<'a>(
                                 .to_string();
                         }
                         crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Biorxiv => {
-                            #[allow(trivial_regex)]
                             let re = regex::Regex::new(crate::global_variables::hardcode::BIORXIV_FILTER_HANDLE_TO_REMOVE_1).unwrap();
                             fetch_result_string = re
                                 .replace_all(
@@ -87,7 +81,6 @@ pub fn rss_parse_string_into_struct<'a>(
                                     crate::global_variables::hardcode::BIORXIV_FILTER_HANDLE_TO_REPLACE_REMOVED_1,
                                 )
                                 .to_string();
-                            #[allow(trivial_regex)]
                             let re = regex::Regex::new(crate::global_variables::hardcode::BIORXIV_FILTER_HANDLE_TO_REMOVE_2).unwrap();
                             fetch_result_string = re
                                 .replace_all(
@@ -97,7 +90,6 @@ pub fn rss_parse_string_into_struct<'a>(
                                 .to_string();
                         }
                         crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Habr => {
-                            #[allow(trivial_regex)]
                             let re = regex::Regex::new(crate::global_variables::hardcode::HABR_FILTER_HANDLE_TO_REMOVE_1).unwrap();
                             fetch_result_string = re
                                 .replace_all(
@@ -105,7 +97,6 @@ pub fn rss_parse_string_into_struct<'a>(
                                     crate::global_variables::hardcode::HABR_FILTER_HANDLE_TO_REPLACE_REMOVED_1,
                                 )
                                 .to_string();
-                            #[allow(trivial_regex)]
                             let re = regex::Regex::new(crate::global_variables::hardcode::HABR_FILTER_HANDLE_TO_REMOVE_2).unwrap();
                             fetch_result_string = re
                                 .replace_all(
