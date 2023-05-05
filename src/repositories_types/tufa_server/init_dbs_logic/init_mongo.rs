@@ -24,8 +24,11 @@ pub enum InitMongoErrorNamed<'a> {
 
 pub async fn init_mongo<'a, SelfGeneric>(
     providers_json_local_data_hashmap: std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
-    config: &(impl crate::traits::fields::GetMongoProvidersLinkPartsDbName 
-    + crate::traits::get_mongo_url::GetMongoUrl<SelfGeneric>),
+    config: &'a (
+        impl crate::traits::fields::GetMongoProvidersLinkPartsDbName 
+        + crate::traits::get_mongo_url::GetMongoUrl<SelfGeneric>
+        + crate::traits::fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
+    ),
 ) -> Result<(), Box<crate::repositories_types::tufa_server::init_dbs_logic::init_mongo::InitMongoErrorNamed<'a>>>{
     match crate::repositories_types::tufa_server::mongo_integration::mongo_client_options_parse::mongo_client_options_parse(config).await {
         Err(e) => Err(Box::new(
@@ -57,7 +60,7 @@ pub async fn init_mongo<'a, SelfGeneric>(
                     ));
                 }
                 if let Err(e) =
-                    crate::repositories_types::tufa_server::mongo_integration::mongo_insert_many::mongo_insert_many(providers_json_local_data_hashmap, db).await
+                    crate::repositories_types::tufa_server::mongo_integration::mongo_insert_many::mongo_insert_many(providers_json_local_data_hashmap, db, config).await
                 {
                     return Err(Box::new(
                         crate::repositories_types::tufa_server::init_dbs_logic::init_mongo::InitMongoErrorNamed::InsertMany {

@@ -24,6 +24,7 @@ pub enum MongoInsertManyHandleErrorNamed<'a> {
 pub async fn mongo_insert_many<'a>(
     providers_json_local_data_hashmap: std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
     db: mongodb::Database,
+    config: &'a impl crate::traits::fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
 ) -> Result<(), Box<crate::repositories_types::tufa_server::mongo_integration::mongo_insert_many::MongoInsertManyErrorNamed<'a>>> {
     let error_vec_insert_many = futures::future::join_all(
         providers_json_local_data_hashmap.iter().map(
@@ -40,7 +41,12 @@ pub async fn mongo_insert_many<'a>(
                             data_vec
                             .iter()
                             .map(|data|
-                                mongodb::bson::doc! { &crate::global_variables::runtime::config::CONFIG.mongo_providers_logs_db_collection_document_field_name_handle: data }
+                                mongodb::bson::doc! { 
+                                    // &crate::global_variables::runtime::config::CONFIG.mongo_providers_logs_db_collection_document_field_name_handle
+                                    config.get_mongo_providers_logs_db_collection_document_field_name_handle()
+                                    : 
+                                    data 
+                                }
                             )
                             .collect::<Vec<mongodb::bson::Document>>(), 
                             None
