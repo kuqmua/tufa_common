@@ -12,13 +12,13 @@ pub enum MongoInsertDocsInEmptyCollectionErrorNamed<'a> {
     },
 }
 
-pub async fn mongo_insert_docs_in_empty_collection(
+pub async fn mongo_insert_docs_in_empty_collection<'a>(
     client_options: mongodb::options::ClientOptions,
     db_name_handle: &str,
     db_collection_handle: String,
-    collection_field_name: String,
+    collection_field_name: &'a String,
     vec_of_values: Vec<String>,
-) -> Result<(), Box<MongoInsertDocsInEmptyCollectionErrorNamed>> {
+) -> Result<(), Box<MongoInsertDocsInEmptyCollectionErrorNamed<'a>>> {
     match mongodb::Client::with_options(client_options) {
         Err(e) => Err(Box::new(
             MongoInsertDocsInEmptyCollectionErrorNamed::MongoDB{
@@ -50,7 +50,7 @@ pub async fn mongo_insert_docs_in_empty_collection(
                             .insert_many(
                                 vec_of_values
                                     .iter()
-                                    .map(|value| mongodb::bson::doc! { &collection_field_name: value })
+                                    .map(|value| mongodb::bson::doc! { collection_field_name: value })
                                     .collect::<Vec<mongodb::bson::Document>>(),
                                 None,
                             )

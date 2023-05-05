@@ -15,7 +15,11 @@ pub enum MongoInsertDataErrorUnnamed<'a> {
 pub async fn mongo_insert_data<'a>(
     db_name_handle: &'a str,
     vec_of_link_parts_hashmap: std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,//todo impl Display instead of ProviderKind
-    mongodb_options_client_options: mongodb::options::ClientOptions
+    mongodb_options_client_options: mongodb::options::ClientOptions,
+    config: &'a (
+        impl crate::traits::fields::GetMongoProvidersLogsDbCollectionHandleSecondPart
+        + crate::traits::fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
+    )
 ) -> Result<(), Box<crate::repositories_types::tufa_server::mongo_integration::mongo_insert_data::MongoInsertDataErrorNamed<'a>>> {
     let error_hashmap = futures::future::join_all(vec_of_link_parts_hashmap.into_iter().map(
         |(pk, vec_of_link_parts)| {
@@ -28,11 +32,9 @@ pub async fn mongo_insert_data<'a>(
                         db_name_handle,
                         format!(
                             "{pk}{}",
-                            crate::global_variables::runtime::config::CONFIG.mongo_providers_logs_db_collection_handle_second_part
+                            config.get_mongo_providers_logs_db_collection_handle_second_part()
                         ),
-                        crate::global_variables::runtime::config::CONFIG
-                            .mongo_providers_logs_db_collection_document_field_name_handle
-                            .clone(),
+                        config.get_mongo_providers_logs_db_collection_document_field_name_handle(),
                         vec_of_link_parts
                     )
                     .await,
