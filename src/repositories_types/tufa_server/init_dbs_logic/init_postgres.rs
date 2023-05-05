@@ -32,10 +32,17 @@ pub enum PostgresInitErrorNamed<'a> {
     },
 }
 
-pub async fn init_postgres<'a>(
+pub async fn init_postgres<'a, SelfGeneric>(
     providers_json_local_data_hashmap: std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
+    config: &'a (
+        impl crate::traits::fields::GetPostgresConnectionTimeout
+        + crate::traits::get_postgres_url::GetPostgresUrl<SelfGeneric>
+    )
 ) -> Result<(), Box<crate::repositories_types::tufa_server::init_dbs_logic::init_postgres::PostgresInitErrorNamed<'a>>> {
-    match crate::repositories_types::tufa_server::postgres_integration::postgres_establish_connection::postgres_establish_connection(providers_json_local_data_hashmap.len() as u32).await {
+    match crate::repositories_types::tufa_server::postgres_integration::postgres_establish_connection::postgres_establish_connection(
+        providers_json_local_data_hashmap.len() as u32,
+        config
+    ).await {
         Err(e) => Err(Box::new(
             crate::repositories_types::tufa_server::init_dbs_logic::init_postgres::PostgresInitErrorNamed::EstablishConnection { 
                 establish_connection: *e, 

@@ -7,16 +7,17 @@ pub enum PostgresEstablishConnectionErrorNamed<'a> {
     },
 }
 
-pub async fn postgres_establish_connection<'a>(
+pub async fn postgres_establish_connection<'a, SelfGeneric>(
     max_connections: u32,
+    config: &'a (
+        impl crate::traits::fields::GetPostgresConnectionTimeout
+        + crate::traits::get_postgres_url::GetPostgresUrl<SelfGeneric>
+    )
 ) -> Result<sqlx::Pool<sqlx::Postgres>, Box<crate::repositories_types::tufa_server::postgres_integration::postgres_establish_connection::PostgresEstablishConnectionErrorNamed<'a>>> {
     match sqlx::postgres::PgPoolOptions::new()
         .max_connections(max_connections)
-        .connect_timeout(std::time::Duration::from_millis(crate::global_variables::runtime::config::CONFIG.postgres_connection_timeout)) //todo add timeout constant or env var
-        .connect(&{
-            use crate::traits::get_postgres_url::GetPostgresUrl;
-            crate::global_variables::runtime::config::CONFIG.get_postgres_url()
-        })
+        .connect_timeout(std::time::Duration::from_millis(*config.get_postgres_connection_timeout())) //todo add timeout constant or env var
+        .connect(&config.get_postgres_url())
         .await
     {
         Err(e) => Err(Box::new(
