@@ -17,7 +17,11 @@ pub struct TracingVec {
     pub vec: Vec<String>,
 }
 
-pub async fn get_local_providers_link_parts<'a>() -> Result<std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>, Box<GetLocalProvidersLinkPartsErrorNamed<'a>>> {
+pub async fn get_local_providers_link_parts<'a>(
+    config: &'a (
+        impl crate::traits::fields::GetIsLinksLimitEnabledProviders
+    )
+) -> Result<std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>, Box<GetLocalProvidersLinkPartsErrorNamed<'a>>> {
     let result_vec = futures::future::join_all(
             {
                 use crate::repositories_types::tufa_server::traits::provider_kind_methods::ProviderKindMethods;
@@ -27,7 +31,10 @@ pub async fn get_local_providers_link_parts<'a>() -> Result<std::collections::Ha
             .map(|pk| async move {
                 (
                     pk,
-                    crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::get_link_parts_from_local_json_file(pk).await,
+                    crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::get_link_parts_from_local_json_file(
+                        pk,
+                        config
+                    ).await,
                 )
             }),
     )

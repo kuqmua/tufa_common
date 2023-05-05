@@ -262,7 +262,12 @@ pub struct ProvidersInitJsonSchema {
 }
 
 impl ProviderKind {
-    pub async fn get_link_parts_from_local_json_file<'a>(self) -> Result<Vec<String>, Box<GetLinkPartsFromLocalJsonFileErrorNamed<'a>>> {
+    pub async fn get_link_parts_from_local_json_file<'a>(
+        self,
+        config: &'a (
+            impl crate::traits::fields::GetIsLinksLimitEnabledProviders
+        )
+    ) -> Result<Vec<String>, Box<GetLinkPartsFromLocalJsonFileErrorNamed<'a>>> {
         match tokio::fs::File::open(&{
             use crate::repositories_types::tufa_server::traits::provider_kind_methods::ProviderKindMethods;
             self.get_init_local_data_file_path()
@@ -299,7 +304,10 @@ impl ProviderKind {
                             }.collect();
                         let return_vec: Vec<String>;
                         //todo - add correct impl for is_links_limit_enabled - like is_links_limit_enabled_providers && is_links_limit_enabled_arxiv
-                        if crate::global_variables::runtime::config::CONFIG.is_links_limit_enabled_providers && self.is_links_limit_enabled()
+                        if 
+                            *config.get_is_links_limit_enabled_providers()
+                            && 
+                            self.is_links_limit_enabled()
                         {
                             let limit = self.links_limit();
                             if unique_vec.len() > limit {
