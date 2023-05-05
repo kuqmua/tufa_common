@@ -264,11 +264,15 @@ pub struct ProvidersInitJsonSchema {
 impl ProviderKind {
     pub async fn get_link_parts_from_local_json_file<'a>(
         self,
-        config: &'a impl crate::traits::fields::GetIsLinksLimitEnabledProviders
+        config: &'a (
+            impl crate::traits::fields::GetIsLinksLimitEnabledProviders
+            + crate::traits::fields::GetPathToProviderLinkPartsFolder
+            + crate::traits::fields::GetLogFileExtension
+        )
     ) -> Result<Vec<String>, Box<GetLinkPartsFromLocalJsonFileErrorNamed<'a>>> {
         match tokio::fs::File::open(&{
             use crate::repositories_types::tufa_server::traits::provider_kind_methods::ProviderKindMethods;
-            self.get_init_local_data_file_path()
+            self.get_init_local_data_file_path(config)
         }).await {
             Err(e) => Err(Box::new(
                 GetLinkPartsFromLocalJsonFileErrorNamed::TokioFsFileOpen {

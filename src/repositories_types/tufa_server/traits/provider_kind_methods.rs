@@ -9,7 +9,13 @@ pub trait ProviderKindMethods {
             + crate::traits::fields::GetUnhandledSuccessHandledSuccessAreThereItemsInitializedPostsDir
         )
     ) -> String;
-    fn get_init_local_data_file_path(&self) -> String;
+    fn get_init_local_data_file_path(
+        &self,
+        config: &(
+            impl crate::traits::fields::GetPathToProviderLinkPartsFolder
+            + crate::traits::fields::GetLogFileExtension
+        )
+    ) -> String;
     fn remove_logs_directory(&self, config: &impl crate::traits::fields::GetWarningLogsDirectoryName) -> Result<(), crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::CleanLogsDirError>;
     fn stringify(&self) -> &'static str;
     fn generate_provider_links(&self, names_vector: Vec<String>) -> Vec<String>;

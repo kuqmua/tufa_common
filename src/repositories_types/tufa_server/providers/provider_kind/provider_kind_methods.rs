@@ -38,11 +38,17 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
             config.get_unhandled_success_handled_success_are_there_items_initialized_posts_dir()
         )
     }
-    fn get_init_local_data_file_path(&self) -> String {
+    fn get_init_local_data_file_path(
+        &self,
+        config: &(
+            impl crate::traits::fields::GetPathToProviderLinkPartsFolder
+            + crate::traits::fields::GetLogFileExtension
+        )
+    ) -> String {
         format!(
             "{}{self}_link_parts{}",
-            crate::global_variables::runtime::config::CONFIG.path_to_provider_link_parts_folder, 
-            crate::global_variables::runtime::config::CONFIG.log_file_extension
+            config.get_path_to_provider_link_parts_folder(),
+            config.get_log_file_extension()
         )
     }
     fn remove_logs_directory(
