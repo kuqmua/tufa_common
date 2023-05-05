@@ -49,7 +49,9 @@ pub enum CheckAvailabilityErrorNamed<'a> {
     },
 }
 
-pub async fn check_availability<'a>() -> Result<(), Box<crate::repositories_types::tufa_server::preparation::check_availability::CheckAvailabilityErrorNamed<'a>>>{
+pub async fn check_availability<'a>(
+    mongodb_options_client_options: mongodb::options::ClientOptions
+) -> Result<(), Box<crate::repositories_types::tufa_server::preparation::check_availability::CheckAvailabilityErrorNamed<'a>>>{
     match futures::join!(
         crate::server::net::net_check_availability::net_check_availability(&crate::global_variables::runtime::config::CONFIG.starting_check_link),
         crate::repositories_types::tufa_server::postgres_integration::postgres_check_availability::postgres_check_availability(
@@ -60,10 +62,7 @@ pub async fn check_availability<'a>() -> Result<(), Box<crate::repositories_type
             crate::global_variables::runtime::config::CONFIG.postgres_connection_timeout
         ),
         crate::repositories_types::tufa_server::mongo_integration::mongo_check_availability::mongo_check_availability(
-            {
-                use std::ops::Deref;
-                crate::global_variables::runtime::mongo_client_options::MONGO_CLIENT_OPTIONS.deref().to_owned() //todo timeout std::time::Duration::from_millis(CONFIG.mongo_connection_timeout),
-            },
+            mongodb_options_client_options,
             &crate::global_variables::runtime::config::CONFIG.mongo_providers_logs_db_name,
         ),
     ) {
