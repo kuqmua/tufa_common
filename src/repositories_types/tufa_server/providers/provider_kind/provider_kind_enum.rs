@@ -206,13 +206,21 @@ pub enum FetchAndParseProviderDataErrorUnnamed<'a> {
 // }
 
 impl ProviderKind {
-    pub fn get_mongo_provider_link_parts_aggregation(&self) -> Option<mongodb::bson::Document> {
-        if crate::global_variables::runtime::config::CONFIG.is_links_limit_enabled_providers
-            && self.is_mongo_link_parts_randomize_order_enabled()
+    pub fn get_mongo_provider_link_parts_aggregation(
+        &self,
+        config: &(
+            impl crate::traits::fields::GetIsLinksLimitEnabledProviders
+            + crate::traits::fields::GetLinksLimitProviders
+        )
+    ) -> Option<mongodb::bson::Document> {
+        if 
+            *config.get_is_links_limit_enabled_providers()
+            && 
+            self.is_mongo_link_parts_randomize_order_enabled()
         {
-            Some(mongodb::bson::doc! { "$sample" : {"size": crate::global_variables::runtime::config::CONFIG.links_limit_providers as i64}});
-        } else if crate::global_variables::runtime::config::CONFIG.is_links_limit_enabled_providers {
-            Some(mongodb::bson::doc! { "$limit" :  crate::global_variables::runtime::config::CONFIG.links_limit_providers as i64});
+            Some(mongodb::bson::doc! { "$sample" : {"size": *config.get_links_limit_providers() as i64}});
+        } else if *config.get_is_links_limit_enabled_providers() {
+            Some(mongodb::bson::doc! { "$limit" :  *config.get_links_limit_providers() as i64});
         } else if self.is_links_limit_enabled()
             && self.is_mongo_link_parts_randomize_order_enabled()
         {
