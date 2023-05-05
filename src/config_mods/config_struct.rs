@@ -1,22 +1,13 @@
-use crate::config_mods::log_type::LogType;
-use crate::config_mods::source_place_type::SourcePlaceType;
-use crate::config_mods::tracing_type::TracingType;
-use crate::server::resource::Resource;
-use gen_enum::GenEnum;
-use gen_enum_without_values::GenEnumWithoutValues;
-use generate_getter_traits_for_struct_fields::GenerateGetterTraitsForStructFieldsFromCrate;
-use init_from_env_with_panic_if_failed::InitFromEnvWithPanicIfFailedWithPanicIfFailedFromCrate;
-
 #[derive(
     Debug,
     Clone,
-    InitFromEnvWithPanicIfFailedWithPanicIfFailedFromCrate,
-    GenEnum,
-    GenEnumWithoutValues,
+    init_from_env_with_panic_if_failed::InitFromEnvWithPanicIfFailedWithPanicIfFailedFromCrate,
+    gen_enum::GenEnum,
+    gen_enum_without_values::GenEnumWithoutValues,
     Default,
     PartialEq,
     Eq,
-    GenerateGetterTraitsForStructFieldsFromCrate,
+    generate_getter_traits_for_struct_fields::GenerateGetterTraitsForStructFieldsFromCrate,
 )]
 pub struct ConfigStruct {
     pub server_ip: String,
@@ -34,7 +25,7 @@ pub struct ConfigStruct {
     pub reddit_username: String,
     pub reddit_password: String,
 
-    pub providers_link_parts_source: Resource,
+    pub providers_link_parts_source: crate::server::resource::Resource,
 
     pub timezone: i32,
 
@@ -288,10 +279,10 @@ pub struct ConfigStruct {
     pub links_limit_twitter: usize,
 
     pub is_preparation_enabled: bool,
-    pub log_type: LogType,
-    pub tracing_type: TracingType,
+    pub log_type: crate::config_mods::log_type::LogType,
+    pub tracing_type: crate::config_mods::tracing_type::TracingType,
     pub is_parent_tracing_enabled: bool,
-    pub source_place_type: SourcePlaceType,
+    pub source_place_type: crate::config_mods::source_place_type::SourcePlaceType,
     pub is_tracing_time_enabled: bool,
 
     pub error_red: u8,
