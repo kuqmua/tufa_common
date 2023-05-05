@@ -16,7 +16,6 @@ pub fn write_json_into_file_async<'a>(
     path: &'a std::path::Path,
     json_object: serde_json::Value,
     source_place_type: &'a crate::config_mods::source_place_type::SourcePlaceType,
-    should_trace: bool,
 ) -> Result<(), Box<WriteJsonIntoFileSyncErrorNamed<'a>>> {
     match serde_json::to_string_pretty(&json_object) {
         Err(e) => Err(Box::new(
@@ -30,7 +29,6 @@ pub fn write_json_into_file_async<'a>(
                 path,
                 stringified_json,
                 source_place_type,
-                should_trace,
             ) {
                 return Err(
                     Box::new(

@@ -71,8 +71,7 @@ pub async fn init_postgres<'a>(
             }
             if let Err(e) = crate::repositories_types::tufa_server::postgres_integration::postgres_delete_all_from_providers_link_parts_tables::postgres_delete_all_from_providers_link_parts_tables(
                 &providers_json_local_data_hashmap,
-                &pool,
-                false,
+                &pool
             )
             .await
             {
@@ -86,7 +85,6 @@ pub async fn init_postgres<'a>(
             if let Err(e) = crate::repositories_types::tufa_server::postgres_integration::postgres_check_providers_links_tables_length_rows_equal_initialization_data_length::postgres_check_providers_links_tables_length_rows_equal_initialization_data_length(
                 &providers_json_local_data_hashmap,
                 &pool,
-                false,
             )
             .await {
                 return Err(Box::new(
@@ -99,7 +97,6 @@ pub async fn init_postgres<'a>(
             if let Err(e) = crate::repositories_types::tufa_server::postgres_integration::postgres_insert_link_parts_into_providers_tables::postgres_insert_link_parts_into_providers_tables(
                 &providers_json_local_data_hashmap,
                 &pool,
-                false,
             )
             .await
             {

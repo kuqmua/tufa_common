@@ -55,7 +55,7 @@ pub async fn init_mongo<'a>(
                     ));
                 }
                 if let Err(e) =
-                    crate::repositories_types::tufa_server::mongo_integration::mongo_insert_many::mongo_insert_many(providers_json_local_data_hashmap, db, false).await
+                    crate::repositories_types::tufa_server::mongo_integration::mongo_insert_many::mongo_insert_many(providers_json_local_data_hashmap, db).await
                 {
                     return Err(Box::new(
                         crate::repositories_types::tufa_server::init_dbs_logic::init_mongo::InitMongoErrorNamed::InsertMany {

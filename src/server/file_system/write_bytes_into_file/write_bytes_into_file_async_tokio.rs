@@ -11,7 +11,6 @@ pub async fn write_bytes_into_file_async_tokio<'a>(
     path: &'a std::path::Path,
     bytes: &[u8],
     source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
-    should_trace: bool,
 ) -> Result<(), Box<WriteBytesIntoFileAsyncTokioErrorNamed<'a>>> {
     if let Some(prefix) = path.parent() {
         if let Err(e) = std::fs::create_dir_all(prefix) {

@@ -54,7 +54,6 @@ pub enum PostgresCheckProvidersLinksTablesLengthRowsEqualInitializationDataLengt
 pub async fn postgres_check_providers_links_tables_length_rows_equal_initialization_data_length<'a>(
     providers_json_local_data_hashmap: &std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
     db: &sqlx::Pool<sqlx::Postgres>,
-    should_trace: bool,
 ) -> Result<
     (),
     Box<PostgresCheckProvidersLinksTablesLengthRowsEqualInitializationDataLengthWrapperErrorNamed<'a>>,
