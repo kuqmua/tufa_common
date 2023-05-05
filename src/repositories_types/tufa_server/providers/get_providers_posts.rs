@@ -67,9 +67,12 @@ pub enum GetProviderPostsErrorUnnamed<'a> {
 }
 
 pub async fn get_providers_posts<'a>(
-    config: &impl crate::traits::fields::GetGithubToken
+    config: &(
+        impl crate::traits::fields::GetGithubToken
+        + crate::traits::fields::GetProvidersLinkPartsSource
+    )
 ) -> Result<(), Box<GetProviderPostsErrorNamed<'a>>> {
-    match crate::repositories_types::tufa_server::providers::providers_info::get_providers_link_parts::get_providers_link_parts(&crate::global_variables::runtime::config::CONFIG.providers_link_parts_source).await {
+    match crate::repositories_types::tufa_server::providers::providers_info::get_providers_link_parts::get_providers_link_parts(config.get_providers_link_parts_source()).await {
         Err(e) => Err(Box::new(
             GetProviderPostsErrorNamed::GetLocalProvidersLinkParts {
                 get_providers_link_parts: *e,
