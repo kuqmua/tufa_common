@@ -1,13 +1,3 @@
-use crate::repositories_types::tufa_server::mongo_integration::mongo_get_providers_link_parts::mongo_get_providers_link_parts;
-// use crate::mongo_integration::mongo_get_providers_link_parts::MongoGetProvidersLinkPartsErrorNamed;
-
-use crate::repositories_types::tufa_server::providers::providers_info::get_local_providers_link_parts::get_local_providers_link_parts;
-use std::collections::HashMap;
-use crate::common::where_was::WhereWas;
-use crate::server::resource::Resource;
-// use crate::postgres_integration::postgres_get_providers_link_parts::postgres_get_providers_link_parts;
-// use crate::postgres_integration::postgres_get_providers_link_parts::PostgresGetProviderLinksError;
-
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum GetProvidersLinkPartsErrorNamed<'a> {
     GetLocalProvidersLinkParts {
@@ -27,8 +17,8 @@ pub enum GetProvidersLinkPartsErrorNamed<'a> {
 }
 
 pub async fn get_providers_link_parts<'a>(
-    resource: &Resource,
-) -> Result<HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>, Box<GetProvidersLinkPartsErrorNamed<'a>>> {
+    resource: &crate::server::resource::Resource,
+) -> Result<std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>, Box<GetProvidersLinkPartsErrorNamed<'a>>> {
     todo!()
     // match resource {
     //     Resource::Local => match get_local_providers_link_parts(false).await {
