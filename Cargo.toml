@@ -53,7 +53,6 @@ gen_enum = {path = "../proc_macros/gen_enum"}
 gen_enum_without_values = {path = "../proc_macros/gen_enum_without_values"}
 generate_getter_traits_for_struct_fields = {path = "../proc_macros/generate_getter_traits_for_struct_fields"}
 impl_display_for_error = {path = "../proc_macros/impl_display_for_error"}
-impl_error_with_tracing = {path = "../proc_macros/impl_error_with_tracing"}
 impl_from_for_upper_struct = {path = "../proc_macros/impl_from_for_upper_struct"}
 impl_get_git_info = {path = "../proc_macros/impl_get_git_info"}
 impl_get_source = {path = "../proc_macros/impl_get_source"}
