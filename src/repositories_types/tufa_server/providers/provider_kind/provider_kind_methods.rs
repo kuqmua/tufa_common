@@ -73,11 +73,15 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
             crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Twitter => stringify!(ProviderKind::Twitter),
         }
     }
-    fn generate_provider_links(&self, names_vector: Vec<String>) -> Vec<String> {
+    fn generate_provider_links(
+        &self, 
+        names_vector: Vec<String>,
+        config: &impl crate::traits::fields::GetGithubToken
+    ) -> Vec<String> {
         match self {
             crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Arxiv => crate::repositories_types::tufa_server::providers::providers_info::links::generate_arxiv_links::generate_arxiv_links(names_vector),
             crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Biorxiv => crate::repositories_types::tufa_server::providers::providers_info::links::generate_biorxiv_links::generate_biorxiv_links(names_vector),
-            crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Github => crate::repositories_types::tufa_server::providers::providers_info::links::generate_github_links::generate_github_links(names_vector),
+            crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Github => crate::repositories_types::tufa_server::providers::providers_info::links::generate_github_links::generate_github_links(names_vector, config),
             crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Habr => crate::repositories_types::tufa_server::providers::providers_info::links::generate_habr_links::generate_habr_links(names_vector),
             crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Medrxiv => crate::repositories_types::tufa_server::providers::providers_info::links::generate_medrxiv_links::generate_medrxiv_links(names_vector),
             crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Reddit => crate::repositories_types::tufa_server::providers::providers_info::links::generate_reddit_links::generate_reddit_links(names_vector),

@@ -18,7 +18,11 @@ pub trait ProviderKindMethods {
     ) -> String;
     fn remove_logs_directory(&self, config: &impl crate::traits::fields::GetWarningLogsDirectoryName) -> Result<(), crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::CleanLogsDirError>;
     fn stringify(&self) -> &'static str;
-    fn generate_provider_links(&self, names_vector: Vec<String>) -> Vec<String>;
+    fn generate_provider_links(
+        &self, 
+        names_vector: Vec<String>,
+        config: &impl crate::traits::fields::GetGithubToken
+    ) -> Vec<String>;
     fn generate_hashmap_with_empty_string_vecs_for_enabled_providers() -> std::collections::HashMap<Self, Vec<String>>
     where
         Self: Sized;

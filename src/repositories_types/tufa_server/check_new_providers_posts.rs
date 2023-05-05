@@ -1,5 +1,6 @@
 pub async fn check_new_providers_posts<'a>(
     providers_link_parts: std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
+    config: &impl crate::traits::fields::GetGithubToken
 ) -> std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Result<Vec<crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct>, crate::repositories_types::tufa_server::providers::provider_kind::functions::rss_part::RssPartErrorNamed<'a>>> {
     let tasks_vec = providers_link_parts
         .into_iter()
@@ -8,7 +9,7 @@ pub async fn check_new_providers_posts<'a>(
                 pk, 
                 {
                     use crate::repositories_types::tufa_server::traits::provider_kind_methods::ProviderKindMethods;
-                    pk.generate_provider_links(link_parts)
+                    pk.generate_provider_links(link_parts, config)
                 }
             ).await {
                 Ok(posts_vec) => (pk, Ok(posts_vec)),

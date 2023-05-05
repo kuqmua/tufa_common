@@ -66,7 +66,9 @@ pub enum GetProviderPostsErrorUnnamed<'a> {
     GetNewProvidersPosts(crate::repositories_types::tufa_server::providers::provider_kind::functions::rss_part::RssPartErrorNamed<'a>),
 }
 
-pub async fn get_providers_posts<'a>() -> Result<(), Box<GetProviderPostsErrorNamed<'a>>> {
+pub async fn get_providers_posts<'a>(
+    config: &impl crate::traits::fields::GetGithubToken
+) -> Result<(), Box<GetProviderPostsErrorNamed<'a>>> {
     match crate::repositories_types::tufa_server::providers::providers_info::get_providers_link_parts::get_providers_link_parts(&crate::global_variables::runtime::config::CONFIG.providers_link_parts_source).await {
         Err(e) => Err(Box::new(
             GetProviderPostsErrorNamed::GetLocalProvidersLinkParts {
@@ -85,7 +87,7 @@ pub async fn get_providers_posts<'a>() -> Result<(), Box<GetProviderPostsErrorNa
                     ));
                 }
                 Ok(non_empty_providers_link_parts) => {
-                    let hm = crate::repositories_types::tufa_server::check_new_providers_posts::check_new_providers_posts(non_empty_providers_link_parts).await;
+                    let hm = crate::repositories_types::tufa_server::check_new_providers_posts::check_new_providers_posts(non_empty_providers_link_parts, config).await;
                     let mut error_hashmap = std::collections::HashMap::with_capacity(hm.len());
                     let mut success_hashmap = std::collections::HashMap::with_capacity(hm.len());
                     for (key, value) in hm {
