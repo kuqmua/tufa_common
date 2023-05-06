@@ -211,23 +211,46 @@ impl ProviderKind {
         config: &(
             impl crate::traits::fields::GetIsLinksLimitEnabledProviders
             + crate::traits::fields::GetLinksLimitProviders
+
+
+            + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledArxiv
+            + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledBiorxiv
+            + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledGithub
+            + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledHabr
+            + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledMedrxiv
+            + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledReddit
+            + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledTwitter
+            + crate::traits::fields::GetIsLinksLimitEnabledArxiv
+            + crate::traits::fields::GetIsLinksLimitEnabledBiorxiv
+            + crate::traits::fields::GetIsLinksLimitEnabledGithub
+            + crate::traits::fields::GetIsLinksLimitEnabledHabr
+            + crate::traits::fields::GetIsLinksLimitEnabledMedrxiv
+            + crate::traits::fields::GetIsLinksLimitEnabledReddit
+            + crate::traits::fields::GetIsLinksLimitEnabledTwitter
+            + crate::traits::fields::GetLinksLimitArxiv
+            + crate::traits::fields::GetLinksLimitBiorxiv
+            + crate::traits::fields::GetLinksLimitGithub
+            + crate::traits::fields::GetLinksLimitHabr
+            + crate::traits::fields::GetLinksLimitMedrxiv
+            + crate::traits::fields::GetLinksLimitReddit
+            + crate::traits::fields::GetLinksLimitTwitter
         )
     ) -> Option<mongodb::bson::Document> {
         if 
             *config.get_is_links_limit_enabled_providers()
             && 
-            self.is_mongo_link_parts_randomize_order_enabled()
+            *self.is_mongo_link_parts_randomize_order_enabled(config)
         {
             Some(mongodb::bson::doc! { "$sample" : {"size": *config.get_links_limit_providers() as i64}});
         } else if *config.get_is_links_limit_enabled_providers() {
             Some(mongodb::bson::doc! { "$limit" :  *config.get_links_limit_providers() as i64});
-        } else if self.is_links_limit_enabled()
-            && self.is_mongo_link_parts_randomize_order_enabled()
+        } else if *self.is_links_limit_enabled(config)
+            && *self.is_mongo_link_parts_randomize_order_enabled(config)
         {
-            Some(mongodb::bson::doc! { "$sample" : {"size": self.links_limit() as i64}});
-        } else if self.is_links_limit_enabled() {
-            Some(mongodb::bson::doc! { "$limit" : self.links_limit() as i64});
-        } else if self.is_mongo_link_parts_randomize_order_enabled() {
+            Some(mongodb::bson::doc! { "$sample" : {"size": *self.links_limit(config) as i64}});
+        } else if *self.is_links_limit_enabled(config) {
+            Some(mongodb::bson::doc! { "$limit" : *self.links_limit(config) as i64});
+        } else if *self.is_mongo_link_parts_randomize_order_enabled(config) {
             println!("todo: mongo sample(randomized aggregation) only works if size is valid number. No aggregation applied");
             return None;
         }
@@ -268,6 +291,22 @@ impl ProviderKind {
             impl crate::traits::fields::GetIsLinksLimitEnabledProviders
             + crate::traits::fields::GetPathToProviderLinkPartsFolder
             + crate::traits::fields::GetLogFileExtension
+
+
+            + crate::traits::fields::GetIsLinksLimitEnabledArxiv
+            + crate::traits::fields::GetIsLinksLimitEnabledBiorxiv
+            + crate::traits::fields::GetIsLinksLimitEnabledGithub
+            + crate::traits::fields::GetIsLinksLimitEnabledHabr
+            + crate::traits::fields::GetIsLinksLimitEnabledMedrxiv
+            + crate::traits::fields::GetIsLinksLimitEnabledReddit
+            + crate::traits::fields::GetIsLinksLimitEnabledTwitter
+            + crate::traits::fields::GetLinksLimitArxiv
+            + crate::traits::fields::GetLinksLimitBiorxiv
+            + crate::traits::fields::GetLinksLimitGithub
+            + crate::traits::fields::GetLinksLimitHabr
+            + crate::traits::fields::GetLinksLimitMedrxiv
+            + crate::traits::fields::GetLinksLimitReddit
+            + crate::traits::fields::GetLinksLimitTwitter
         )
     ) -> Result<Vec<String>, Box<GetLinkPartsFromLocalJsonFileErrorNamed<'a>>> {
         match tokio::fs::File::open(&{
@@ -309,14 +348,14 @@ impl ProviderKind {
                         if 
                             *config.get_is_links_limit_enabled_providers()
                             && 
-                            self.is_links_limit_enabled()
+                            *self.is_links_limit_enabled(config)
                         {
-                            let limit = self.links_limit();
-                            if unique_vec.len() > limit {
+                            let limit = self.links_limit(config);
+                            if unique_vec.len() > *limit {
                                 return_vec = unique_vec
                                     .into_iter()
                                     .enumerate()
-                                    .filter_map(|(index, element)| match index > limit {
+                                    .filter_map(|(index, element)| match index > *limit {
                                         false => None,
                                         true => Some(element),
                                     })

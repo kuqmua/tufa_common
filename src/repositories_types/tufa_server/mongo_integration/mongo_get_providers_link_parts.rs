@@ -30,6 +30,48 @@ pub async fn mongo_get_providers_link_parts<'a, SelfGeneric>(
         + crate::traits::fields::GetIsLinksLimitEnabledProviders
         + crate::traits::fields::GetLinksLimitProviders
         + crate::traits::fields::GetMongoProvidersLogsDbCollectionHandleSecondPart
+
+
+
+
+
+        + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledArxiv
+        + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledBiorxiv
+        + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledGithub
+        + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledHabr
+        + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledMedrxiv
+        + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledReddit
+        + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledTwitter
+        + crate::traits::fields::GetIsLinksLimitEnabledArxiv
+        + crate::traits::fields::GetIsLinksLimitEnabledBiorxiv
+        + crate::traits::fields::GetIsLinksLimitEnabledGithub
+        + crate::traits::fields::GetIsLinksLimitEnabledHabr
+        + crate::traits::fields::GetIsLinksLimitEnabledMedrxiv
+        + crate::traits::fields::GetIsLinksLimitEnabledReddit
+        + crate::traits::fields::GetIsLinksLimitEnabledTwitter
+        + crate::traits::fields::GetLinksLimitArxiv
+        + crate::traits::fields::GetLinksLimitBiorxiv
+        + crate::traits::fields::GetLinksLimitGithub
+        + crate::traits::fields::GetLinksLimitHabr
+        + crate::traits::fields::GetLinksLimitMedrxiv
+        + crate::traits::fields::GetLinksLimitReddit
+        + crate::traits::fields::GetLinksLimitTwitter
+
+        + crate::traits::fields::GetIsEnabledArxiv
+        + crate::traits::fields::GetIsEnabledBiorxiv
+        + crate::traits::fields::GetIsEnabledGithub
+        + crate::traits::fields::GetIsEnabledHabr
+        + crate::traits::fields::GetIsEnabledMedrxiv
+        + crate::traits::fields::GetIsEnabledReddit
+        + crate::traits::fields::GetIsEnabledTwitter
+
+        + crate::traits::fields::GetIsEnabledArxiv
+        + crate::traits::fields::GetIsEnabledBiorxiv
+        + crate::traits::fields::GetIsEnabledGithub
+        + crate::traits::fields::GetIsEnabledHabr
+        + crate::traits::fields::GetIsEnabledMedrxiv
+        + crate::traits::fields::GetIsEnabledReddit
+        + crate::traits::fields::GetIsEnabledTwitter
     )
 ) -> Result<std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>, crate::repositories_types::tufa_server::mongo_integration::mongo_get_providers_link_parts::MongoGetProvidersLinkPartsErrorNamed<'a>> {
     match mongodb::options::ClientOptions::parse(config.get_mongo_url()).await {
@@ -58,7 +100,7 @@ pub async fn mongo_get_providers_link_parts<'a, SelfGeneric>(
                     Ok(vec_collection_names) => {
                         let no_collection_error_hashmap = {
                             use crate::repositories_types::tufa_server::traits::provider_kind_methods::ProviderKindMethods;
-                            crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::get_enabled_providers_vec()
+                            crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::get_enabled_providers_vec(config)
                             .into_iter()
                             .filter_map(|pk| {
                                 let collection_name = pk.get_mongo_log_collection_name(config);
@@ -80,7 +122,7 @@ pub async fn mongo_get_providers_link_parts<'a, SelfGeneric>(
                         let result_get_documents_hashmap =
                                 futures::future::join_all({
                                     use crate::repositories_types::tufa_server::traits::provider_kind_methods::ProviderKindMethods;
-                                    crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::get_enabled_providers_vec().iter().map(|pk| async {
+                                    crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::get_enabled_providers_vec(config).iter().map(|pk| async {
                                         (
                                             *pk,
                                             crate::repositories_types::tufa_server::mongo_integration::mongo_get_documents_as_string_vector::mongo_get_documents_as_string_vector(

@@ -89,22 +89,51 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
         }
     }
     fn generate_hashmap_with_empty_string_vecs_for_enabled_providers(
+        config: &(
+            impl crate::traits::fields::GetIsEnabledArxiv
+            + crate::traits::fields::GetIsEnabledBiorxiv
+            + crate::traits::fields::GetIsEnabledGithub
+            + crate::traits::fields::GetIsEnabledHabr
+            + crate::traits::fields::GetIsEnabledMedrxiv
+            + crate::traits::fields::GetIsEnabledReddit
+            + crate::traits::fields::GetIsEnabledTwitter
+        )   
     ) -> std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>> {
-        crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::get_enabled_providers_vec()
+        crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::get_enabled_providers_vec(config)
             .iter()
             .map(|pk| (*pk, Vec::<String>::new()))
             .collect()
     }
-    fn get_enabled_providers_vec() -> Vec<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind> {
+    fn get_enabled_providers_vec(
+        config: &(
+            impl crate::traits::fields::GetIsEnabledArxiv
+            + crate::traits::fields::GetIsEnabledBiorxiv
+            + crate::traits::fields::GetIsEnabledGithub
+            + crate::traits::fields::GetIsEnabledHabr
+            + crate::traits::fields::GetIsEnabledMedrxiv
+            + crate::traits::fields::GetIsEnabledReddit
+            + crate::traits::fields::GetIsEnabledTwitter
+        )
+    ) -> Vec<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind> {
         {
             use strum::IntoEnumIterator;
             crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::iter()
         }.filter(|pk| {
             use crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKindFromConfig;
-            pk.is_enabled()
+            *pk.is_enabled(config)
         }).collect()
     }
-    fn get_enabled_string_name_vec() -> Vec<String> {
+    fn get_enabled_string_name_vec(
+        config: &(
+            impl crate::traits::fields::GetIsEnabledArxiv
+            + crate::traits::fields::GetIsEnabledBiorxiv
+            + crate::traits::fields::GetIsEnabledGithub
+            + crate::traits::fields::GetIsEnabledHabr
+            + crate::traits::fields::GetIsEnabledMedrxiv
+            + crate::traits::fields::GetIsEnabledReddit
+            + crate::traits::fields::GetIsEnabledTwitter
+        )        
+    ) -> Vec<String> {
         {
             use strum::IntoEnumIterator;
             crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::iter()
@@ -112,7 +141,7 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
             .filter_map(|pk| {
                 if {
                     use crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKindFromConfig;
-                    pk.is_enabled()
+                    *pk.is_enabled(config)
                 } {
                     return Some(format!("{pk}"));
                 }
@@ -120,18 +149,38 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
             })
             .collect()
     }
-    fn get_mongo_initialization_provider_kind_vec() -> Vec<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind> {
+    fn get_mongo_initialization_provider_kind_vec(
+        config: &(
+            impl crate::traits::fields::GetIsMongoInitializationEnabledArxiv
+            + crate::traits::fields::GetIsMongoInitializationEnabledBiorxiv
+            + crate::traits::fields::GetIsMongoInitializationEnabledGithub
+            + crate::traits::fields::GetIsMongoInitializationEnabledHabr
+            + crate::traits::fields::GetIsMongoInitializationEnabledMedrxiv
+            + crate::traits::fields::GetIsMongoInitializationEnabledReddit
+            + crate::traits::fields::GetIsMongoInitializationEnabledTwitter
+        )
+    ) -> Vec<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind> {
         {
             use strum::IntoEnumIterator;
             crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::iter()
         }
             .filter(|pk| {
                 use crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKindFromConfig;
-                pk.is_mongo_initialization_enabled()
+                *pk.is_mongo_initialization_enabled(config)
             })
             .collect()
     }
-    fn get_mongo_initialization_string_name_vec() -> Vec<String> {
+    fn get_mongo_initialization_string_name_vec(
+        config: &(
+            impl crate::traits::fields::GetIsMongoInitializationEnabledArxiv
+            + crate::traits::fields::GetIsMongoInitializationEnabledBiorxiv
+            + crate::traits::fields::GetIsMongoInitializationEnabledGithub
+            + crate::traits::fields::GetIsMongoInitializationEnabledHabr
+            + crate::traits::fields::GetIsMongoInitializationEnabledMedrxiv
+            + crate::traits::fields::GetIsMongoInitializationEnabledReddit
+            + crate::traits::fields::GetIsMongoInitializationEnabledTwitter
+        )
+    ) -> Vec<String> {
         {
             use strum::IntoEnumIterator;
             crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::iter()
@@ -139,7 +188,7 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
             .filter_map(|pk| {
                 if {
                     use crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKindFromConfig;
-                    pk.is_mongo_initialization_enabled()
+                    *pk.is_mongo_initialization_enabled(config)
                 } {
                     return Some(format!("{pk}"));
                 }
@@ -164,7 +213,17 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
             .collect()
     }
     fn remove_existing_providers_logs_directories(
-        config: &impl crate::traits::fields::GetWarningLogsDirectoryName
+        config: &(
+            impl crate::traits::fields::GetWarningLogsDirectoryName
+    
+            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledArxiv
+            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledBiorxiv
+            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledGithub
+            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledHabr
+            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledMedrxiv
+            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledReddit
+            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledTwitter
+        )
     ) -> Result<(), std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::RemoveDirError>> {
         if let Err(error_hashmap) = crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::remove_providers_logs_directories(config) {
             let return_hashmap = error_hashmap
@@ -184,7 +243,17 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
         Ok(())
     }
     fn remove_providers_logs_directories(
-        config: &impl crate::traits::fields::GetWarningLogsDirectoryName
+        config: &(
+            impl crate::traits::fields::GetWarningLogsDirectoryName
+
+            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledArxiv
+            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledBiorxiv
+            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledGithub
+            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledHabr
+            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledMedrxiv
+            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledReddit
+            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledTwitter
+        )
     ) -> Result<(), std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::CleanLogsDirError>> {
         let result_hashmap = {
             use strum::IntoEnumIterator;
@@ -193,7 +262,7 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
             .filter_map(|pk| {
                 if {
                     use crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKindFromConfig;
-                    pk.is_cleaning_warning_logs_directory_enabled()
+                    *pk.is_cleaning_warning_logs_directory_enabled(config)
                 } {
                     if let Err(e) = pk.remove_logs_directory(config) {
                         return Some((pk, e));
@@ -213,14 +282,24 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
     fn get_postgres_table_name(&self) -> String {
         format!("{}_link_parts", self.to_lower_snake_case())
     }
-    fn get_dbs_initialization_enabled_vec() -> Vec<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind> {
+    fn get_dbs_initialization_enabled_vec(
+        config: &(
+            impl crate::traits::fields::GetIsDbsInitializationEnabledArxiv
+            + crate::traits::fields::GetIsDbsInitializationEnabledBiorxiv
+            + crate::traits::fields::GetIsDbsInitializationEnabledGithub
+            + crate::traits::fields::GetIsDbsInitializationEnabledHabr
+            + crate::traits::fields::GetIsDbsInitializationEnabledMedrxiv
+            + crate::traits::fields::GetIsDbsInitializationEnabledReddit
+            + crate::traits::fields::GetIsDbsInitializationEnabledTwitter
+        )
+    ) -> Vec<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind> {
         {
             use strum::IntoEnumIterator;
             crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::iter()
         }
         .filter(|pk| {
             use crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKindFromConfig;
-            pk.is_dbs_initialization_enabled()
+            *pk.is_dbs_initialization_enabled(config)
         })
         .collect()
     }
