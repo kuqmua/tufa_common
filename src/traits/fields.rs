@@ -802,60 +802,31 @@ pub trait GetLine {
 pub trait GetColumn {
     fn get_column(&self) -> &u32;
 }
-//GitInformation GitInformationWithoutLifetimes
-pub trait GetGitCommitId {
-    fn get_git_commit_id(&self) -> &String;
+//GitInformation
+pub trait GetGitCommitId<'a> {
+    fn get_git_commit_id(&self) -> &'a str;
 }
 
-pub trait GetGitRepoLink {
-    fn get_git_repo_link(&self) -> &String;
+pub trait GetGitRepoLink<'a> {
+    fn get_git_repo_link(&self) -> &'a str;
 }
 
-pub trait GetGitAuthor {
-    fn get_git_author(&self) -> &String;
+pub trait GetGitAuthor<'a> {
+    fn get_git_author(&self) -> &'a str;
 }
 
-pub trait GetGitAuthorEmail {
-    fn get_git_author_email(&self) -> &String;
+pub trait GetGitAuthorEmail<'a> {
+    fn get_git_author_email(&self) -> &'a str;
 }
 
-pub trait GetGitCommitUnixTime {
-    fn get_git_commit_unix_time(&self) -> &String;
+pub trait GetGitCommitUnixTime<'a> {
+    fn get_git_commit_unix_time(&self) -> &'a str;
 }
 
-pub trait GetGitTimezone {
-    fn get_git_timezone(&self) -> &String;
+pub trait GetGitTimezone<'a> {
+    fn get_git_timezone(&self) -> &'a str;
 }
 
-pub trait GetGitMessage {
-    fn get_git_message(&self) -> &String;
-}
-
-//with lifetimes
-pub trait GetGitCommitIdLifetime<'a> {
-    fn get_git_commit_id_lifetime(&self) -> &'a str;
-}
-
-pub trait GetGitRepoLinkLifetime<'a> {
-    fn get_git_repo_link_lifetime(&self) -> &'a str;
-}
-
-pub trait GetGitAuthorLifetime<'a> {
-    fn get_git_author_lifetime(&self) -> &'a str;
-}
-
-pub trait GetGitAuthorEmailLifetime<'a> {
-    fn get_git_author_email_lifetime(&self) -> &'a str;
-}
-
-pub trait GetGitCommitUnixTimeLifetime<'a> {
-    fn get_git_commit_unix_time_lifetime(&self) -> &'a str;
-}
-
-pub trait GetGitTimezoneLifetime<'a> {
-    fn get_git_timezone_lifetime(&self) -> &'a str;
-}
-
-pub trait GetGitMessageLifetime<'a> {
-    fn get_git_message_lifetime(&self) -> &'a str;
+pub trait GetGitMessage<'a> {
+    fn get_git_message(&self) -> &'a str;
 }

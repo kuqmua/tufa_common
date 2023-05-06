@@ -2,33 +2,15 @@ pub trait GetGitCommitLink {
     fn get_git_commit_link(&self) -> String;
 }
 
-impl<T> GetGitCommitLink for T
+impl<'a, T> GetGitCommitLink for T
 where
-    T: crate::traits::fields::GetGitCommitId + crate::traits::fields::GetGitRepoLink,
+    T: crate::traits::fields::GetGitCommitId<'a> + crate::traits::fields::GetGitRepoLink<'a>,
 {
     fn get_git_commit_link(&self) -> String {
         format!(
             "{}/tree/{}/",
             self.get_git_repo_link(),
             self.get_git_commit_id()
-        )
-    }
-}
-
-pub trait GetGitCommitLinkLifetime {
-    fn get_git_commit_link_lifetime(&self) -> String;
-}
-
-impl<'a, T> GetGitCommitLinkLifetime for T
-where
-    T: crate::traits::fields::GetGitCommitIdLifetime<'a>
-        + crate::traits::fields::GetGitRepoLinkLifetime<'a>,
-{
-    fn get_git_commit_link_lifetime(&self) -> String {
-        format!(
-            "{}/tree/{}/",
-            self.get_git_repo_link_lifetime(),
-            self.get_git_commit_id_lifetime()
         )
     }
 }
