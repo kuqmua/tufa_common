@@ -44,7 +44,6 @@ validator = "0.16.0"
 tracing-subscriber = {version = "0.3", features = ["registry", "env-filter"]}
 tracing-bunyan-formatter = "0.3"
 tracing-log = "0.1"
-
 compile_time_git_info = {path = "../proc_macros/compile_time_git_info"}
 enum_extension = {path = "../proc_macros/enum_extension"}
 error_occurence = {path = "../proc_macros/error_occurence"}
