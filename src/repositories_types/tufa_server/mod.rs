@@ -10,6 +10,7 @@ pub mod fetch;
 pub mod idempotency;
 pub mod utils;
 pub mod traits;
+pub mod configuration;
 pub mod email_client;
 pub mod session_state;
 pub mod check_new_providers_posts;
