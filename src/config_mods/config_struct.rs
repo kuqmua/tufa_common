@@ -1,3 +1,5 @@
+//todo - maybe should exists types of config - config for parsing env file, config builder for checks some logic like its have u8 but its not 42(wrapper under u8)
+
 #[derive(
     Debug,
     Clone,

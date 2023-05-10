@@ -41,12 +41,7 @@ pub async fn mongo_insert_many<'a>(
                             data_vec
                             .iter()
                             .map(|data|
-                                mongodb::bson::doc! { 
-                                    // &crate::global_variables::runtime::config::CONFIG.mongo_providers_logs_db_collection_document_field_name_handle
-                                    config.get_mongo_providers_logs_db_collection_document_field_name_handle()
-                                    : 
-                                    data 
-                                }
+                                mongodb::bson::doc! { config.get_mongo_providers_logs_db_collection_document_field_name_handle(): data }
                             )
                             .collect::<Vec<mongodb::bson::Document>>(), 
                             None
