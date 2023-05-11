@@ -12,7 +12,7 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
     }
     fn get_mongo_log_collection_name(
         &self,
-        config: & impl crate::traits::fields::GetMongoProvidersLogsDbCollectionHandleSecondPart 
+        config: & impl crate::traits::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart 
     ) -> String {
         format!(
             "{self}{}",
@@ -21,15 +21,15 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
     }
     fn get_path_to_logs_directory(
         &self,
-        config: &impl crate::traits::fields::GetWarningLogsDirectoryName
+        config: &impl crate::traits::config_fields::GetWarningLogsDirectoryName
     ) -> String {
         format!("logs/{}/{self:?}", config.get_warning_logs_directory_name())
     }
     fn get_path_to_provider_log_file(
         &self,
         config: &(
-            impl crate::traits::fields::GetWarningLogsDirectoryName
-            + crate::traits::fields::GetUnhandledSuccessHandledSuccessAreThereItemsInitializedPostsDir
+            impl crate::traits::config_fields::GetWarningLogsDirectoryName
+            + crate::traits::config_fields::GetUnhandledSuccessHandledSuccessAreThereItemsInitializedPostsDir
         )
     ) -> String {
         format!(
@@ -41,8 +41,8 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
     fn get_init_local_data_file_path(
         &self,
         config: &(
-            impl crate::traits::fields::GetPathToProviderLinkPartsFolder
-            + crate::traits::fields::GetLogFileExtension
+            impl crate::traits::config_fields::GetPathToProviderLinkPartsFolder
+            + crate::traits::config_fields::GetLogFileExtension
         )
     ) -> String {
         format!(
@@ -53,7 +53,7 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
     }
     fn remove_logs_directory(
         &self,
-        config: &impl crate::traits::fields::GetWarningLogsDirectoryName
+        config: &impl crate::traits::config_fields::GetWarningLogsDirectoryName
     ) -> Result<(), crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::CleanLogsDirError> {
         let path = self.get_path_to_logs_directory(config);
         if !std::path::Path::new(&path).is_dir() {
@@ -76,7 +76,7 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
     fn generate_provider_links(
         &self, 
         names_vector: Vec<String>,
-        config: &impl crate::traits::fields::GetGithubToken
+        config: &impl crate::traits::config_fields::GetGithubToken
     ) -> Vec<String> {
         match self {
             crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Arxiv => crate::repositories_types::tufa_server::providers::providers_info::links::generate_arxiv_links::generate_arxiv_links(names_vector),
@@ -90,13 +90,13 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
     }
     fn generate_hashmap_with_empty_string_vecs_for_enabled_providers(
         config: &(
-            impl crate::traits::fields::GetIsEnabledArxiv
-            + crate::traits::fields::GetIsEnabledBiorxiv
-            + crate::traits::fields::GetIsEnabledGithub
-            + crate::traits::fields::GetIsEnabledHabr
-            + crate::traits::fields::GetIsEnabledMedrxiv
-            + crate::traits::fields::GetIsEnabledReddit
-            + crate::traits::fields::GetIsEnabledTwitter
+            impl crate::traits::config_fields::GetIsEnabledArxiv
+            + crate::traits::config_fields::GetIsEnabledBiorxiv
+            + crate::traits::config_fields::GetIsEnabledGithub
+            + crate::traits::config_fields::GetIsEnabledHabr
+            + crate::traits::config_fields::GetIsEnabledMedrxiv
+            + crate::traits::config_fields::GetIsEnabledReddit
+            + crate::traits::config_fields::GetIsEnabledTwitter
         )   
     ) -> std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>> {
         crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::get_enabled_providers_vec(config)
@@ -106,13 +106,13 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
     }
     fn get_enabled_providers_vec(
         config: &(
-            impl crate::traits::fields::GetIsEnabledArxiv
-            + crate::traits::fields::GetIsEnabledBiorxiv
-            + crate::traits::fields::GetIsEnabledGithub
-            + crate::traits::fields::GetIsEnabledHabr
-            + crate::traits::fields::GetIsEnabledMedrxiv
-            + crate::traits::fields::GetIsEnabledReddit
-            + crate::traits::fields::GetIsEnabledTwitter
+            impl crate::traits::config_fields::GetIsEnabledArxiv
+            + crate::traits::config_fields::GetIsEnabledBiorxiv
+            + crate::traits::config_fields::GetIsEnabledGithub
+            + crate::traits::config_fields::GetIsEnabledHabr
+            + crate::traits::config_fields::GetIsEnabledMedrxiv
+            + crate::traits::config_fields::GetIsEnabledReddit
+            + crate::traits::config_fields::GetIsEnabledTwitter
         )
     ) -> Vec<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind> {
         {
@@ -125,13 +125,13 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
     }
     fn get_enabled_string_name_vec(
         config: &(
-            impl crate::traits::fields::GetIsEnabledArxiv
-            + crate::traits::fields::GetIsEnabledBiorxiv
-            + crate::traits::fields::GetIsEnabledGithub
-            + crate::traits::fields::GetIsEnabledHabr
-            + crate::traits::fields::GetIsEnabledMedrxiv
-            + crate::traits::fields::GetIsEnabledReddit
-            + crate::traits::fields::GetIsEnabledTwitter
+            impl crate::traits::config_fields::GetIsEnabledArxiv
+            + crate::traits::config_fields::GetIsEnabledBiorxiv
+            + crate::traits::config_fields::GetIsEnabledGithub
+            + crate::traits::config_fields::GetIsEnabledHabr
+            + crate::traits::config_fields::GetIsEnabledMedrxiv
+            + crate::traits::config_fields::GetIsEnabledReddit
+            + crate::traits::config_fields::GetIsEnabledTwitter
         )        
     ) -> Vec<String> {
         {
@@ -151,13 +151,13 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
     }
     fn get_mongo_initialization_provider_kind_vec(
         config: &(
-            impl crate::traits::fields::GetIsMongoInitializationEnabledArxiv
-            + crate::traits::fields::GetIsMongoInitializationEnabledBiorxiv
-            + crate::traits::fields::GetIsMongoInitializationEnabledGithub
-            + crate::traits::fields::GetIsMongoInitializationEnabledHabr
-            + crate::traits::fields::GetIsMongoInitializationEnabledMedrxiv
-            + crate::traits::fields::GetIsMongoInitializationEnabledReddit
-            + crate::traits::fields::GetIsMongoInitializationEnabledTwitter
+            impl crate::traits::config_fields::GetIsMongoInitializationEnabledArxiv
+            + crate::traits::config_fields::GetIsMongoInitializationEnabledBiorxiv
+            + crate::traits::config_fields::GetIsMongoInitializationEnabledGithub
+            + crate::traits::config_fields::GetIsMongoInitializationEnabledHabr
+            + crate::traits::config_fields::GetIsMongoInitializationEnabledMedrxiv
+            + crate::traits::config_fields::GetIsMongoInitializationEnabledReddit
+            + crate::traits::config_fields::GetIsMongoInitializationEnabledTwitter
         )
     ) -> Vec<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind> {
         {
@@ -172,13 +172,13 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
     }
     fn get_mongo_initialization_string_name_vec(
         config: &(
-            impl crate::traits::fields::GetIsMongoInitializationEnabledArxiv
-            + crate::traits::fields::GetIsMongoInitializationEnabledBiorxiv
-            + crate::traits::fields::GetIsMongoInitializationEnabledGithub
-            + crate::traits::fields::GetIsMongoInitializationEnabledHabr
-            + crate::traits::fields::GetIsMongoInitializationEnabledMedrxiv
-            + crate::traits::fields::GetIsMongoInitializationEnabledReddit
-            + crate::traits::fields::GetIsMongoInitializationEnabledTwitter
+            impl crate::traits::config_fields::GetIsMongoInitializationEnabledArxiv
+            + crate::traits::config_fields::GetIsMongoInitializationEnabledBiorxiv
+            + crate::traits::config_fields::GetIsMongoInitializationEnabledGithub
+            + crate::traits::config_fields::GetIsMongoInitializationEnabledHabr
+            + crate::traits::config_fields::GetIsMongoInitializationEnabledMedrxiv
+            + crate::traits::config_fields::GetIsMongoInitializationEnabledReddit
+            + crate::traits::config_fields::GetIsMongoInitializationEnabledTwitter
         )
     ) -> Vec<String> {
         {
@@ -214,15 +214,15 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
     }
     fn remove_existing_providers_logs_directories(
         config: &(
-            impl crate::traits::fields::GetWarningLogsDirectoryName
+            impl crate::traits::config_fields::GetWarningLogsDirectoryName
     
-            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledArxiv
-            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledBiorxiv
-            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledGithub
-            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledHabr
-            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledMedrxiv
-            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledReddit
-            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledTwitter
+            + crate::traits::config_fields::GetIsCleaningWarningLogsDirectoryEnabledArxiv
+            + crate::traits::config_fields::GetIsCleaningWarningLogsDirectoryEnabledBiorxiv
+            + crate::traits::config_fields::GetIsCleaningWarningLogsDirectoryEnabledGithub
+            + crate::traits::config_fields::GetIsCleaningWarningLogsDirectoryEnabledHabr
+            + crate::traits::config_fields::GetIsCleaningWarningLogsDirectoryEnabledMedrxiv
+            + crate::traits::config_fields::GetIsCleaningWarningLogsDirectoryEnabledReddit
+            + crate::traits::config_fields::GetIsCleaningWarningLogsDirectoryEnabledTwitter
         )
     ) -> Result<(), std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::RemoveDirError>> {
         if let Err(error_hashmap) = crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::remove_providers_logs_directories(config) {
@@ -244,15 +244,15 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
     }
     fn remove_providers_logs_directories(
         config: &(
-            impl crate::traits::fields::GetWarningLogsDirectoryName
+            impl crate::traits::config_fields::GetWarningLogsDirectoryName
 
-            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledArxiv
-            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledBiorxiv
-            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledGithub
-            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledHabr
-            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledMedrxiv
-            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledReddit
-            + crate::traits::fields::GetIsCleaningWarningLogsDirectoryEnabledTwitter
+            + crate::traits::config_fields::GetIsCleaningWarningLogsDirectoryEnabledArxiv
+            + crate::traits::config_fields::GetIsCleaningWarningLogsDirectoryEnabledBiorxiv
+            + crate::traits::config_fields::GetIsCleaningWarningLogsDirectoryEnabledGithub
+            + crate::traits::config_fields::GetIsCleaningWarningLogsDirectoryEnabledHabr
+            + crate::traits::config_fields::GetIsCleaningWarningLogsDirectoryEnabledMedrxiv
+            + crate::traits::config_fields::GetIsCleaningWarningLogsDirectoryEnabledReddit
+            + crate::traits::config_fields::GetIsCleaningWarningLogsDirectoryEnabledTwitter
         )
     ) -> Result<(), std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::CleanLogsDirError>> {
         let result_hashmap = {
@@ -284,13 +284,13 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
     }
     fn get_dbs_initialization_enabled_vec(
         config: &(
-            impl crate::traits::fields::GetIsDbsInitializationEnabledArxiv
-            + crate::traits::fields::GetIsDbsInitializationEnabledBiorxiv
-            + crate::traits::fields::GetIsDbsInitializationEnabledGithub
-            + crate::traits::fields::GetIsDbsInitializationEnabledHabr
-            + crate::traits::fields::GetIsDbsInitializationEnabledMedrxiv
-            + crate::traits::fields::GetIsDbsInitializationEnabledReddit
-            + crate::traits::fields::GetIsDbsInitializationEnabledTwitter
+            impl crate::traits::config_fields::GetIsDbsInitializationEnabledArxiv
+            + crate::traits::config_fields::GetIsDbsInitializationEnabledBiorxiv
+            + crate::traits::config_fields::GetIsDbsInitializationEnabledGithub
+            + crate::traits::config_fields::GetIsDbsInitializationEnabledHabr
+            + crate::traits::config_fields::GetIsDbsInitializationEnabledMedrxiv
+            + crate::traits::config_fields::GetIsDbsInitializationEnabledReddit
+            + crate::traits::config_fields::GetIsDbsInitializationEnabledTwitter
         )
     ) -> Vec<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind> {
         {

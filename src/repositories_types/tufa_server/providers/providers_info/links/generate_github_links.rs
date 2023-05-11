@@ -1,6 +1,6 @@
 pub fn generate_github_links(
     github_names: Vec<String>,
-    config: &impl crate::traits::fields::GetGithubToken
+    config: &impl crate::traits::config_fields::GetGithubToken
 ) -> Vec<String> {
     //https://github.com/kuqmua.private.atom?token=EXAMPLE_FROM_CONFIG
     github_names

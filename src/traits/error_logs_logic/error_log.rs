@@ -5,10 +5,10 @@ pub trait ErrorLog<'a, ConfigGeneric> {
 impl<'a, SelfGeneric, ConfigGeneric>
     crate::traits::error_logs_logic::error_log::ErrorLog<'a, ConfigGeneric> for SelfGeneric
 where
-    ConfigGeneric: crate::traits::fields::GetServerPort
-        + crate::traits::fields::GetSourcePlaceType
-        + crate::traits::fields::GetTimezone
-        + crate::traits::fields::GetServerIp,
+    ConfigGeneric: crate::traits::config_fields::GetServerPort
+        + crate::traits::config_fields::GetSourcePlaceType
+        + crate::traits::config_fields::GetTimezone
+        + crate::traits::config_fields::GetServerIp,
     SelfGeneric: crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfig<
         'a,
         ConfigGeneric,

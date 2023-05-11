@@ -4,16 +4,16 @@ pub trait GetMongoUrl<SelfGeneric> {
 
 impl<SelfGeneric> GetMongoUrl<Self> for SelfGeneric
 where
-    Self: crate::traits::fields::GetMongoFirstHandleUrlPart
-        + crate::traits::fields::GetMongoSecondHandleUrlPart
-        + crate::traits::fields::GetMongoThirdHandleUrlPart
-        + crate::traits::fields::GetMongoFourthHandleUrlPart
-        + crate::traits::fields::GetMongoFifthHandleUrlPart
-        + crate::traits::fields::GetMongoIp
-        + crate::traits::fields::GetMongoPort
-        + crate::traits::fields::GetMongoLogin
-        + crate::traits::fields::GetMongoPassword
-        + crate::traits::fields::GetMongoParams,
+    Self: crate::traits::config_fields::GetMongoFirstHandleUrlPart
+        + crate::traits::config_fields::GetMongoSecondHandleUrlPart
+        + crate::traits::config_fields::GetMongoThirdHandleUrlPart
+        + crate::traits::config_fields::GetMongoFourthHandleUrlPart
+        + crate::traits::config_fields::GetMongoFifthHandleUrlPart
+        + crate::traits::config_fields::GetMongoIp
+        + crate::traits::config_fields::GetMongoPort
+        + crate::traits::config_fields::GetMongoLogin
+        + crate::traits::config_fields::GetMongoPassword
+        + crate::traits::config_fields::GetMongoParams,
 {
     fn get_mongo_url(&self) -> String {
         format!(

@@ -25,53 +25,53 @@ pub enum MongoGetDocumentsAsStringVectorErrorUnnamed<'a> {
 pub async fn mongo_get_providers_link_parts<'a, SelfGeneric>(
     config: &'a (
         impl crate::traits::get_mongo_url::GetMongoUrl<SelfGeneric>
-        + crate::traits::fields::GetMongoProvidersLinkPartsDbName
-        + crate::traits::fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
-        + crate::traits::fields::GetIsLinksLimitEnabledProviders
-        + crate::traits::fields::GetLinksLimitProviders
-        + crate::traits::fields::GetMongoProvidersLogsDbCollectionHandleSecondPart
+        + crate::traits::config_fields::GetMongoProvidersLinkPartsDbName
+        + crate::traits::config_fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
+        + crate::traits::config_fields::GetIsLinksLimitEnabledProviders
+        + crate::traits::config_fields::GetLinksLimitProviders
+        + crate::traits::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart
 
 
 
 
 
-        + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledArxiv
-        + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledBiorxiv
-        + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledGithub
-        + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledHabr
-        + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledMedrxiv
-        + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledReddit
-        + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledTwitter
-        + crate::traits::fields::GetIsLinksLimitEnabledArxiv
-        + crate::traits::fields::GetIsLinksLimitEnabledBiorxiv
-        + crate::traits::fields::GetIsLinksLimitEnabledGithub
-        + crate::traits::fields::GetIsLinksLimitEnabledHabr
-        + crate::traits::fields::GetIsLinksLimitEnabledMedrxiv
-        + crate::traits::fields::GetIsLinksLimitEnabledReddit
-        + crate::traits::fields::GetIsLinksLimitEnabledTwitter
-        + crate::traits::fields::GetLinksLimitArxiv
-        + crate::traits::fields::GetLinksLimitBiorxiv
-        + crate::traits::fields::GetLinksLimitGithub
-        + crate::traits::fields::GetLinksLimitHabr
-        + crate::traits::fields::GetLinksLimitMedrxiv
-        + crate::traits::fields::GetLinksLimitReddit
-        + crate::traits::fields::GetLinksLimitTwitter
+        + crate::traits::config_fields::GetIsMongoLinkPartsRandomizeOrderEnabledArxiv
+        + crate::traits::config_fields::GetIsMongoLinkPartsRandomizeOrderEnabledBiorxiv
+        + crate::traits::config_fields::GetIsMongoLinkPartsRandomizeOrderEnabledGithub
+        + crate::traits::config_fields::GetIsMongoLinkPartsRandomizeOrderEnabledHabr
+        + crate::traits::config_fields::GetIsMongoLinkPartsRandomizeOrderEnabledMedrxiv
+        + crate::traits::config_fields::GetIsMongoLinkPartsRandomizeOrderEnabledReddit
+        + crate::traits::config_fields::GetIsMongoLinkPartsRandomizeOrderEnabledTwitter
+        + crate::traits::config_fields::GetIsLinksLimitEnabledArxiv
+        + crate::traits::config_fields::GetIsLinksLimitEnabledBiorxiv
+        + crate::traits::config_fields::GetIsLinksLimitEnabledGithub
+        + crate::traits::config_fields::GetIsLinksLimitEnabledHabr
+        + crate::traits::config_fields::GetIsLinksLimitEnabledMedrxiv
+        + crate::traits::config_fields::GetIsLinksLimitEnabledReddit
+        + crate::traits::config_fields::GetIsLinksLimitEnabledTwitter
+        + crate::traits::config_fields::GetLinksLimitArxiv
+        + crate::traits::config_fields::GetLinksLimitBiorxiv
+        + crate::traits::config_fields::GetLinksLimitGithub
+        + crate::traits::config_fields::GetLinksLimitHabr
+        + crate::traits::config_fields::GetLinksLimitMedrxiv
+        + crate::traits::config_fields::GetLinksLimitReddit
+        + crate::traits::config_fields::GetLinksLimitTwitter
 
-        + crate::traits::fields::GetIsEnabledArxiv
-        + crate::traits::fields::GetIsEnabledBiorxiv
-        + crate::traits::fields::GetIsEnabledGithub
-        + crate::traits::fields::GetIsEnabledHabr
-        + crate::traits::fields::GetIsEnabledMedrxiv
-        + crate::traits::fields::GetIsEnabledReddit
-        + crate::traits::fields::GetIsEnabledTwitter
+        + crate::traits::config_fields::GetIsEnabledArxiv
+        + crate::traits::config_fields::GetIsEnabledBiorxiv
+        + crate::traits::config_fields::GetIsEnabledGithub
+        + crate::traits::config_fields::GetIsEnabledHabr
+        + crate::traits::config_fields::GetIsEnabledMedrxiv
+        + crate::traits::config_fields::GetIsEnabledReddit
+        + crate::traits::config_fields::GetIsEnabledTwitter
 
-        + crate::traits::fields::GetIsEnabledArxiv
-        + crate::traits::fields::GetIsEnabledBiorxiv
-        + crate::traits::fields::GetIsEnabledGithub
-        + crate::traits::fields::GetIsEnabledHabr
-        + crate::traits::fields::GetIsEnabledMedrxiv
-        + crate::traits::fields::GetIsEnabledReddit
-        + crate::traits::fields::GetIsEnabledTwitter
+        + crate::traits::config_fields::GetIsEnabledArxiv
+        + crate::traits::config_fields::GetIsEnabledBiorxiv
+        + crate::traits::config_fields::GetIsEnabledGithub
+        + crate::traits::config_fields::GetIsEnabledHabr
+        + crate::traits::config_fields::GetIsEnabledMedrxiv
+        + crate::traits::config_fields::GetIsEnabledReddit
+        + crate::traits::config_fields::GetIsEnabledTwitter
     )
 ) -> Result<std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>, crate::repositories_types::tufa_server::mongo_integration::mongo_get_providers_link_parts::MongoGetProvidersLinkPartsErrorNamed<'a>> {
     match mongodb::options::ClientOptions::parse(config.get_mongo_url()).await {

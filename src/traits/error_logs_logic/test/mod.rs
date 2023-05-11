@@ -7,7 +7,7 @@ pub fn test_code_occurence() {
         line!(),
         column!(),
         {
-            use crate::traits::fields::GetServerPort;
+            use crate::traits::config_fields::GetServerPort;
             *crate::config_mods::config_struct::ConfigStruct::default().get_server_port()
         }
     );

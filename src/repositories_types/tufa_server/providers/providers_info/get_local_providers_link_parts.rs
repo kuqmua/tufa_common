@@ -19,32 +19,32 @@ pub struct TracingVec {
 
 pub async fn get_local_providers_link_parts<'a>(
     config: &'a (
-        impl crate::traits::fields::GetIsLinksLimitEnabledProviders
-        + crate::traits::fields::GetPathToProviderLinkPartsFolder
-        + crate::traits::fields::GetLogFileExtension
+        impl crate::traits::config_fields::GetIsLinksLimitEnabledProviders
+        + crate::traits::config_fields::GetPathToProviderLinkPartsFolder
+        + crate::traits::config_fields::GetLogFileExtension
 
-        + crate::traits::fields::GetIsLinksLimitEnabledArxiv
-        + crate::traits::fields::GetIsLinksLimitEnabledBiorxiv
-        + crate::traits::fields::GetIsLinksLimitEnabledGithub
-        + crate::traits::fields::GetIsLinksLimitEnabledHabr
-        + crate::traits::fields::GetIsLinksLimitEnabledMedrxiv
-        + crate::traits::fields::GetIsLinksLimitEnabledReddit
-        + crate::traits::fields::GetIsLinksLimitEnabledTwitter
-        + crate::traits::fields::GetLinksLimitArxiv
-        + crate::traits::fields::GetLinksLimitBiorxiv
-        + crate::traits::fields::GetLinksLimitGithub
-        + crate::traits::fields::GetLinksLimitHabr
-        + crate::traits::fields::GetLinksLimitMedrxiv
-        + crate::traits::fields::GetLinksLimitReddit
-        + crate::traits::fields::GetLinksLimitTwitter
+        + crate::traits::config_fields::GetIsLinksLimitEnabledArxiv
+        + crate::traits::config_fields::GetIsLinksLimitEnabledBiorxiv
+        + crate::traits::config_fields::GetIsLinksLimitEnabledGithub
+        + crate::traits::config_fields::GetIsLinksLimitEnabledHabr
+        + crate::traits::config_fields::GetIsLinksLimitEnabledMedrxiv
+        + crate::traits::config_fields::GetIsLinksLimitEnabledReddit
+        + crate::traits::config_fields::GetIsLinksLimitEnabledTwitter
+        + crate::traits::config_fields::GetLinksLimitArxiv
+        + crate::traits::config_fields::GetLinksLimitBiorxiv
+        + crate::traits::config_fields::GetLinksLimitGithub
+        + crate::traits::config_fields::GetLinksLimitHabr
+        + crate::traits::config_fields::GetLinksLimitMedrxiv
+        + crate::traits::config_fields::GetLinksLimitReddit
+        + crate::traits::config_fields::GetLinksLimitTwitter
 
-        + crate::traits::fields::GetIsEnabledArxiv
-        + crate::traits::fields::GetIsEnabledBiorxiv
-        + crate::traits::fields::GetIsEnabledGithub
-        + crate::traits::fields::GetIsEnabledHabr
-        + crate::traits::fields::GetIsEnabledMedrxiv
-        + crate::traits::fields::GetIsEnabledReddit
-        + crate::traits::fields::GetIsEnabledTwitter
+        + crate::traits::config_fields::GetIsEnabledArxiv
+        + crate::traits::config_fields::GetIsEnabledBiorxiv
+        + crate::traits::config_fields::GetIsEnabledGithub
+        + crate::traits::config_fields::GetIsEnabledHabr
+        + crate::traits::config_fields::GetIsEnabledMedrxiv
+        + crate::traits::config_fields::GetIsEnabledReddit
+        + crate::traits::config_fields::GetIsEnabledTwitter
     )
 ) -> Result<std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>, Box<GetLocalProvidersLinkPartsErrorNamed<'a>>> {
     let result_vec = futures::future::join_all(

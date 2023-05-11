@@ -209,31 +209,31 @@ impl ProviderKind {
     pub fn get_mongo_provider_link_parts_aggregation(
         &self,
         config: &(
-            impl crate::traits::fields::GetIsLinksLimitEnabledProviders
-            + crate::traits::fields::GetLinksLimitProviders
+            impl crate::traits::config_fields::GetIsLinksLimitEnabledProviders
+            + crate::traits::config_fields::GetLinksLimitProviders
 
 
-            + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledArxiv
-            + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledBiorxiv
-            + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledGithub
-            + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledHabr
-            + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledMedrxiv
-            + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledReddit
-            + crate::traits::fields::GetIsMongoLinkPartsRandomizeOrderEnabledTwitter
-            + crate::traits::fields::GetIsLinksLimitEnabledArxiv
-            + crate::traits::fields::GetIsLinksLimitEnabledBiorxiv
-            + crate::traits::fields::GetIsLinksLimitEnabledGithub
-            + crate::traits::fields::GetIsLinksLimitEnabledHabr
-            + crate::traits::fields::GetIsLinksLimitEnabledMedrxiv
-            + crate::traits::fields::GetIsLinksLimitEnabledReddit
-            + crate::traits::fields::GetIsLinksLimitEnabledTwitter
-            + crate::traits::fields::GetLinksLimitArxiv
-            + crate::traits::fields::GetLinksLimitBiorxiv
-            + crate::traits::fields::GetLinksLimitGithub
-            + crate::traits::fields::GetLinksLimitHabr
-            + crate::traits::fields::GetLinksLimitMedrxiv
-            + crate::traits::fields::GetLinksLimitReddit
-            + crate::traits::fields::GetLinksLimitTwitter
+            + crate::traits::config_fields::GetIsMongoLinkPartsRandomizeOrderEnabledArxiv
+            + crate::traits::config_fields::GetIsMongoLinkPartsRandomizeOrderEnabledBiorxiv
+            + crate::traits::config_fields::GetIsMongoLinkPartsRandomizeOrderEnabledGithub
+            + crate::traits::config_fields::GetIsMongoLinkPartsRandomizeOrderEnabledHabr
+            + crate::traits::config_fields::GetIsMongoLinkPartsRandomizeOrderEnabledMedrxiv
+            + crate::traits::config_fields::GetIsMongoLinkPartsRandomizeOrderEnabledReddit
+            + crate::traits::config_fields::GetIsMongoLinkPartsRandomizeOrderEnabledTwitter
+            + crate::traits::config_fields::GetIsLinksLimitEnabledArxiv
+            + crate::traits::config_fields::GetIsLinksLimitEnabledBiorxiv
+            + crate::traits::config_fields::GetIsLinksLimitEnabledGithub
+            + crate::traits::config_fields::GetIsLinksLimitEnabledHabr
+            + crate::traits::config_fields::GetIsLinksLimitEnabledMedrxiv
+            + crate::traits::config_fields::GetIsLinksLimitEnabledReddit
+            + crate::traits::config_fields::GetIsLinksLimitEnabledTwitter
+            + crate::traits::config_fields::GetLinksLimitArxiv
+            + crate::traits::config_fields::GetLinksLimitBiorxiv
+            + crate::traits::config_fields::GetLinksLimitGithub
+            + crate::traits::config_fields::GetLinksLimitHabr
+            + crate::traits::config_fields::GetLinksLimitMedrxiv
+            + crate::traits::config_fields::GetLinksLimitReddit
+            + crate::traits::config_fields::GetLinksLimitTwitter
         )
     ) -> Option<mongodb::bson::Document> {
         if 
@@ -288,25 +288,25 @@ impl ProviderKind {
     pub async fn get_link_parts_from_local_json_file<'a>(
         self,
         config: &'a (
-            impl crate::traits::fields::GetIsLinksLimitEnabledProviders
-            + crate::traits::fields::GetPathToProviderLinkPartsFolder
-            + crate::traits::fields::GetLogFileExtension
+            impl crate::traits::config_fields::GetIsLinksLimitEnabledProviders
+            + crate::traits::config_fields::GetPathToProviderLinkPartsFolder
+            + crate::traits::config_fields::GetLogFileExtension
 
 
-            + crate::traits::fields::GetIsLinksLimitEnabledArxiv
-            + crate::traits::fields::GetIsLinksLimitEnabledBiorxiv
-            + crate::traits::fields::GetIsLinksLimitEnabledGithub
-            + crate::traits::fields::GetIsLinksLimitEnabledHabr
-            + crate::traits::fields::GetIsLinksLimitEnabledMedrxiv
-            + crate::traits::fields::GetIsLinksLimitEnabledReddit
-            + crate::traits::fields::GetIsLinksLimitEnabledTwitter
-            + crate::traits::fields::GetLinksLimitArxiv
-            + crate::traits::fields::GetLinksLimitBiorxiv
-            + crate::traits::fields::GetLinksLimitGithub
-            + crate::traits::fields::GetLinksLimitHabr
-            + crate::traits::fields::GetLinksLimitMedrxiv
-            + crate::traits::fields::GetLinksLimitReddit
-            + crate::traits::fields::GetLinksLimitTwitter
+            + crate::traits::config_fields::GetIsLinksLimitEnabledArxiv
+            + crate::traits::config_fields::GetIsLinksLimitEnabledBiorxiv
+            + crate::traits::config_fields::GetIsLinksLimitEnabledGithub
+            + crate::traits::config_fields::GetIsLinksLimitEnabledHabr
+            + crate::traits::config_fields::GetIsLinksLimitEnabledMedrxiv
+            + crate::traits::config_fields::GetIsLinksLimitEnabledReddit
+            + crate::traits::config_fields::GetIsLinksLimitEnabledTwitter
+            + crate::traits::config_fields::GetLinksLimitArxiv
+            + crate::traits::config_fields::GetLinksLimitBiorxiv
+            + crate::traits::config_fields::GetLinksLimitGithub
+            + crate::traits::config_fields::GetLinksLimitHabr
+            + crate::traits::config_fields::GetLinksLimitMedrxiv
+            + crate::traits::config_fields::GetLinksLimitReddit
+            + crate::traits::config_fields::GetLinksLimitTwitter
         )
     ) -> Result<Vec<String>, Box<GetLinkPartsFromLocalJsonFileErrorNamed<'a>>> {
         match tokio::fs::File::open(&{

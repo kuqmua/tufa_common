@@ -1,15 +1,15 @@
 pub async fn check_new_providers_posts<'a>(
     providers_link_parts: std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
     config: &'a (
-        impl crate::traits::fields::GetGithubToken
+        impl crate::traits::config_fields::GetGithubToken
 
-        + crate::traits::fields::GetCheckLinkArxiv
-        + crate::traits::fields::GetCheckLinkBiorxiv
-        + crate::traits::fields::GetCheckLinkGithub
-        + crate::traits::fields::GetCheckLinkHabr
-        + crate::traits::fields::GetCheckLinkMedrxiv
-        + crate::traits::fields::GetCheckLinkReddit
-        + crate::traits::fields::GetCheckLinkTwitter
+        + crate::traits::config_fields::GetCheckLinkArxiv
+        + crate::traits::config_fields::GetCheckLinkBiorxiv
+        + crate::traits::config_fields::GetCheckLinkGithub
+        + crate::traits::config_fields::GetCheckLinkHabr
+        + crate::traits::config_fields::GetCheckLinkMedrxiv
+        + crate::traits::config_fields::GetCheckLinkReddit
+        + crate::traits::config_fields::GetCheckLinkTwitter
     )
 ) -> std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Result<Vec<crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct>, crate::repositories_types::tufa_server::providers::provider_kind::functions::rss_part::RssPartErrorNamed<'a>>> {
     let tasks_vec = providers_link_parts

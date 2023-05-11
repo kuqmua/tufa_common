@@ -4,18 +4,18 @@ pub trait GetPostgresUrl<SelfGeneric> {
 
 impl<SelfGeneric> GetPostgresUrl<Self> for SelfGeneric
 where
-    Self: crate::traits::fields::GetPostgresFirstHandleUrlPart
-        + crate::traits::fields::GetPostgresLogin
-        + crate::traits::fields::GetPostgresSecondHandleUrlPart
-        + crate::traits::fields::GetPostgresPassword
-        + crate::traits::fields::GetPostgresThirdHandleUrlPart
-        + crate::traits::fields::GetPostgresIp
-        + crate::traits::fields::GetPostgresFourthHandleUrlPart
-        + crate::traits::fields::GetPostgresPort
-        + crate::traits::fields::GetPostgresFifthHandleUrlPart
-        + crate::traits::fields::GetPostgresDb
-        + crate::traits::fields::GetPostgresSixthHandleUrlPart
-        + crate::traits::fields::GetPostgresParams,
+    Self: crate::traits::config_fields::GetPostgresFirstHandleUrlPart
+        + crate::traits::config_fields::GetPostgresLogin
+        + crate::traits::config_fields::GetPostgresSecondHandleUrlPart
+        + crate::traits::config_fields::GetPostgresPassword
+        + crate::traits::config_fields::GetPostgresThirdHandleUrlPart
+        + crate::traits::config_fields::GetPostgresIp
+        + crate::traits::config_fields::GetPostgresFourthHandleUrlPart
+        + crate::traits::config_fields::GetPostgresPort
+        + crate::traits::config_fields::GetPostgresFifthHandleUrlPart
+        + crate::traits::config_fields::GetPostgresDb
+        + crate::traits::config_fields::GetPostgresSixthHandleUrlPart
+        + crate::traits::config_fields::GetPostgresParams,
 {
     fn get_postgres_url(&self) -> String {
         format!(

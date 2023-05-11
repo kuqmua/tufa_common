@@ -20,13 +20,13 @@ pub async fn rss_part<'a>(
     pk: crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind,
     vec_of_provider_links: Vec<String>,
     config: &'a (
-        impl crate::traits::fields::GetCheckLinkArxiv
-        + crate::traits::fields::GetCheckLinkBiorxiv
-        + crate::traits::fields::GetCheckLinkGithub
-        + crate::traits::fields::GetCheckLinkHabr
-        + crate::traits::fields::GetCheckLinkMedrxiv
-        + crate::traits::fields::GetCheckLinkReddit
-        + crate::traits::fields::GetCheckLinkTwitter
+        impl crate::traits::config_fields::GetCheckLinkArxiv
+        + crate::traits::config_fields::GetCheckLinkBiorxiv
+        + crate::traits::config_fields::GetCheckLinkGithub
+        + crate::traits::config_fields::GetCheckLinkHabr
+        + crate::traits::config_fields::GetCheckLinkMedrxiv
+        + crate::traits::config_fields::GetCheckLinkReddit
+        + crate::traits::config_fields::GetCheckLinkTwitter
     )
 ) -> Result<Vec<crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct>, Box<RssPartErrorNamed<'a>>> {
     match reqwest::get({

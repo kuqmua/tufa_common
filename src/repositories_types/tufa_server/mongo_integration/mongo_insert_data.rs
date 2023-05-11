@@ -17,8 +17,8 @@ pub async fn mongo_insert_data<'a>(
     vec_of_link_parts_hashmap: std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,//todo impl Display instead of ProviderKind
     mongodb_options_client_options: mongodb::options::ClientOptions,
     config: &'a (
-        impl crate::traits::fields::GetMongoProvidersLogsDbCollectionHandleSecondPart
-        + crate::traits::fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
+        impl crate::traits::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart
+        + crate::traits::config_fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
     )
 ) -> Result<(), Box<crate::repositories_types::tufa_server::mongo_integration::mongo_insert_data::MongoInsertDataErrorNamed<'a>>> {
     let error_hashmap = futures::future::join_all(vec_of_link_parts_hashmap.into_iter().map(

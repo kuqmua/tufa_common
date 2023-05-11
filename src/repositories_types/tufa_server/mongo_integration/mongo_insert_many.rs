@@ -24,7 +24,7 @@ pub enum MongoInsertManyHandleErrorNamed<'a> {
 pub async fn mongo_insert_many<'a>(
     providers_json_local_data_hashmap: std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
     db: mongodb::Database,
-    config: &'a impl crate::traits::fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
+    config: &'a impl crate::traits::config_fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
 ) -> Result<(), Box<crate::repositories_types::tufa_server::mongo_integration::mongo_insert_many::MongoInsertManyErrorNamed<'a>>> {
     let error_vec_insert_many = futures::future::join_all(
         providers_json_local_data_hashmap.iter().map(

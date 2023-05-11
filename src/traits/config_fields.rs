@@ -1,4 +1,3 @@
-//Config
 pub trait GetServerIp {
     fn get_server_ip(&self) -> &String;
 }
