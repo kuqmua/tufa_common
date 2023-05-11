@@ -13,6 +13,7 @@ pub mod get_postgres_url;
 pub mod get_process_id;
 pub mod get_server_address;
 pub mod get_source;
+pub mod git_fields;
 pub mod readable_time;
 pub mod get_file;
 pub mod get_line;
