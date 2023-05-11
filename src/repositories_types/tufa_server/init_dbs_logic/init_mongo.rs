@@ -22,11 +22,11 @@ pub enum InitMongoErrorNamed<'a> {
     }
 }
 
-pub async fn init_mongo<'a, SelfGeneric>(
+pub async fn init_mongo<'a>(
     providers_json_local_data_hashmap: std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
     config: &'a (
         impl crate::traits::config_fields::GetMongoProvidersLinkPartsDbName 
-        + crate::traits::get_mongo_url::GetMongoUrl<SelfGeneric>
+        + crate::traits::config_fields::GetMongoUrl
         + crate::traits::config_fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
     ),
 ) -> Result<(), Box<crate::repositories_types::tufa_server::init_dbs_logic::init_mongo::InitMongoErrorNamed<'a>>>{

@@ -46,35 +46,8 @@ pub trait GetRedisIp {
 pub trait GetRedisPort {
     fn get_redis_port(&self) -> &u16;
 }
-pub trait GetMongoFirstHandleUrlPart {
-    fn get_mongo_first_handle_url_part(&self) -> &String;
-}
-pub trait GetMongoSecondHandleUrlPart {
-    fn get_mongo_second_handle_url_part(&self) -> &String;
-}
-pub trait GetMongoThirdHandleUrlPart {
-    fn get_mongo_third_handle_url_part(&self) -> &String;
-}
-pub trait GetMongoFourthHandleUrlPart {
-    fn get_mongo_fourth_handle_url_part(&self) -> &String;
-}
-pub trait GetMongoFifthHandleUrlPart {
-    fn get_mongo_fifth_handle_url_part(&self) -> &String;
-}
-pub trait GetMongoLogin {
-    fn get_mongo_login(&self) -> &String;
-}
-pub trait GetMongoPassword {
-    fn get_mongo_password(&self) -> &String;
-}
-pub trait GetMongoIp {
-    fn get_mongo_ip(&self) -> &String;
-}
-pub trait GetMongoPort {
-    fn get_mongo_port(&self) -> &u16;
-}
-pub trait GetMongoParams {
-    fn get_mongo_params(&self) -> &String;
+pub trait GetMongoUrl {
+    fn get_mongo_url(&self) -> &String;
 }
 pub trait GetMongoConnectionTimeout {
     fn get_mongo_connection_timeout(&self) -> &u64;

@@ -45,19 +45,9 @@ pub enum WrapConfigChecksErrorNamed<'a> {
         reddit_password: std::string::String, 
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
     },
-    MongoLogin {
+    MongoUrl {
         #[eo_display_with_serialize_deserialize] 
-        mongo_login: std::string::String, 
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    },
-    MongoPassword {
-        #[eo_display_with_serialize_deserialize] 
-        mongo_password: std::string::String, 
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    },
-    MongoIp {
-        #[eo_display_with_serialize_deserialize] 
-        mongo_ip: std::string::String, 
+        mongo_url: std::string::String, 
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
     },
     LogFileExtension {
@@ -146,21 +136,9 @@ impl crate::repositories_types::tufa_server::config_mods::config_struct::ConfigS
                 code_occurence: crate::code_occurence_tufa_common!()
             }));
         }
-        if self.mongo_login.is_empty() {
-            return Err(Box::new(WrapConfigChecksErrorNamed::MongoLogin {
-                mongo_login: self.mongo_login,
-                code_occurence: crate::code_occurence_tufa_common!()
-            }));
-        }
-        if self.mongo_password.is_empty() {
-            return Err(Box::new(WrapConfigChecksErrorNamed::MongoPassword {
-                mongo_password: self.mongo_password,
-                code_occurence: crate::code_occurence_tufa_common!()
-            }));
-        }
-        if self.mongo_ip.is_empty() {
-            return Err(Box::new(WrapConfigChecksErrorNamed::MongoIp {
-                mongo_ip: self.mongo_ip,
+        if self.mongo_url.is_empty() {
+            return Err(Box::new(WrapConfigChecksErrorNamed::MongoUrl {
+                mongo_url: self.mongo_url,
                 code_occurence: crate::code_occurence_tufa_common!()
             }));
         }

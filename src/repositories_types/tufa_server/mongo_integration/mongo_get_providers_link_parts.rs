@@ -22,18 +22,14 @@ pub enum MongoGetDocumentsAsStringVectorErrorUnnamed<'a> {
     MongoGetDocumentsAsStringVector(crate::repositories_types::tufa_server::mongo_integration::mongo_get_documents_as_string_vector::MongoGetDocumentsAsStringVectorErrorNamed<'a>),
 }
 
-pub async fn mongo_get_providers_link_parts<'a, SelfGeneric>(
+pub async fn mongo_get_providers_link_parts<'a>(
     config: &'a (
-        impl crate::traits::get_mongo_url::GetMongoUrl<SelfGeneric>
+        impl crate::traits::config_fields::GetMongoUrl
         + crate::traits::config_fields::GetMongoProvidersLinkPartsDbName
         + crate::traits::config_fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
         + crate::traits::config_fields::GetIsLinksLimitEnabledProviders
         + crate::traits::config_fields::GetLinksLimitProviders
         + crate::traits::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart
-
-
-
-
 
         + crate::traits::config_fields::GetIsMongoLinkPartsRandomizeOrderEnabledArxiv
         + crate::traits::config_fields::GetIsMongoLinkPartsRandomizeOrderEnabledBiorxiv
