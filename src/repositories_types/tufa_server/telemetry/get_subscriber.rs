@@ -1,5 +1,5 @@
 pub fn get_subscriber<Sink>(
-    name: String,
+    name: &str,
     env_filter: String,
     sink: Sink,
 ) -> impl tracing::Subscriber + Send + Sync
@@ -13,7 +13,7 @@ where
 {
     let env_filter =
         tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(|_| tracing_subscriber::EnvFilter::new(env_filter));
-    let formatting_layer = tracing_bunyan_formatter::BunyanFormattingLayer::new(name, sink);
+    let formatting_layer = tracing_bunyan_formatter::BunyanFormattingLayer::new(name.to_string(), sink);
     {
         use tracing_subscriber::layer::SubscriberExt;
         tracing_subscriber::Registry::default()
