@@ -14,6 +14,4 @@ pub mod get_postgres_url;
 pub mod get_process_id;
 pub mod get_server_address;
 pub mod get_source;
-pub mod is_enabled_prints;
-pub mod print_type_methods;
 pub mod readable_time;
