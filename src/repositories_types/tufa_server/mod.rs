@@ -17,3 +17,4 @@ pub mod session_state;
 pub mod check_new_providers_posts;
 pub mod startup;
 pub mod issue_delivery_worker;
+pub mod config_mods;

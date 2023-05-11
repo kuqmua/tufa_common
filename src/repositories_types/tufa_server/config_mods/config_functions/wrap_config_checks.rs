@@ -87,7 +87,7 @@ pub enum WrapConfigChecksErrorNamed<'a> {
     },
 }
 
-impl crate::config_mods::config_struct::ConfigStruct {
+impl crate::repositories_types::tufa_server::config_mods::config_struct::ConfigStruct {
     pub fn wrap_config_checks<'a>(self) -> Result<Self, Box<WrapConfigChecksErrorNamed<'a>>> {
         //its important to check timezone first coz it will be used later. it must be valid
         if !(-86_400 < self.timezone && self.timezone < 86_400) {
