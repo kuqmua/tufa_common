@@ -3,7 +3,6 @@ pub mod display_foreign_type;
 pub mod error_logs_logic;
 pub mod fields;
 pub mod get_code_path_without_config;
-pub mod get_color;
 pub mod get_duration;
 pub mod get_git_commit_link;
 pub mod get_git_html_info;
