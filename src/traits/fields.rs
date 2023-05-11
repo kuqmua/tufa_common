@@ -708,7 +708,7 @@ pub trait GetLogType {
     fn get_log_type(&self) -> &crate::config_mods::log_type::LogType;
 }
 pub trait GetTracingType {
-    fn get_tracing_type(&self) -> &crate::config_mods::tracing_type::TracingType;
+    fn get_tracing_type(&self) -> &crate::server::tracing_type::TracingType;
 }
 pub trait GetIsParentTracingEnabled {
     fn get_is_parent_tracing_enabled(&self) -> &bool;

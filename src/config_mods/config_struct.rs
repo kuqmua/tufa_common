@@ -282,7 +282,7 @@ pub struct ConfigStruct {
 
     pub is_preparation_enabled: bool,
     pub log_type: crate::config_mods::log_type::LogType,
-    pub tracing_type: crate::config_mods::tracing_type::TracingType,
+    pub tracing_type: crate::server::tracing_type::TracingType,
     pub is_parent_tracing_enabled: bool,
     pub source_place_type: crate::config_mods::source_place_type::SourcePlaceType,
     pub is_tracing_time_enabled: bool,
