@@ -15,7 +15,7 @@ pub enum WriteJsonIntoFileSyncErrorNamed<'a> {
 pub fn write_json_into_file_async<'a>(
     path: &'a std::path::Path,
     json_object: serde_json::Value,
-    source_place_type: &'a crate::config_mods::source_place_type::SourcePlaceType,
+    source_place_type: &'a crate::common::source_place_type::SourcePlaceType,
 ) -> Result<(), Box<WriteJsonIntoFileSyncErrorNamed<'a>>> {
     match serde_json::to_string_pretty(&json_object) {
         Err(e) => Err(Box::new(

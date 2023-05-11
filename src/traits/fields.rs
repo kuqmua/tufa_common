@@ -714,7 +714,7 @@ pub trait GetIsParentTracingEnabled {
     fn get_is_parent_tracing_enabled(&self) -> &bool;
 }
 pub trait GetSourcePlaceType {
-    fn get_source_place_type(&self) -> &crate::config_mods::source_place_type::SourcePlaceType;
+    fn get_source_place_type(&self) -> &crate::common::source_place_type::SourcePlaceType;
 }
 pub trait GetIsTracingTimeEnabled {
     fn get_is_tracing_time_enabled(&self) -> &bool;

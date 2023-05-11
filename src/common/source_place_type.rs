@@ -14,15 +14,15 @@ impl<'a> SourcePlaceType {
               + crate::traits::get_git_source_file_link::GetGitSourceFileLink<'a>),
     ) -> String {
         match self {
-            crate::config_mods::source_place_type::SourcePlaceType::Source => {
+            SourcePlaceType::Source => {
                 use crate::traits::error_logs_logic::form_error_path::FormErrorPathDirectory;
                 code_occurence.form_error_path_directory()
             }
-            crate::config_mods::source_place_type::SourcePlaceType::Github => {
+            SourcePlaceType::Github => {
                 use crate::traits::error_logs_logic::form_error_path::FormErrorPathGithub;
                 code_occurence.form_error_path_github()
             }
-            crate::config_mods::source_place_type::SourcePlaceType::None => String::from(""), //todo maybe incorrect?
+            SourcePlaceType::None => String::from(""), //todo maybe incorrect?
         }
     }
 }

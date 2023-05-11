@@ -9,7 +9,7 @@ pub enum CreateDirIfItDoesntExistErrorNamed<'a> {
 
 pub fn create_dir_if_it_doesnt_exist<'a>(
     path: &str,
-    source_place_type: &crate::config_mods::source_place_type::SourcePlaceType,
+    source_place_type: &crate::common::source_place_type::SourcePlaceType,
 ) -> Result<(), Box<CreateDirIfItDoesntExistErrorNamed<'a>>> {
     if std::path::Path::new(path).exists() {
         return Ok(());
