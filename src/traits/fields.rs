@@ -500,17 +500,6 @@ pub trait GetSourcePlaceType {
 pub trait GetIsTracingTimeEnabled {
     fn get_is_tracing_time_enabled(&self) -> &bool;
 }
-//FileLineColumn
-pub trait GetFile {
-    fn get_file(&self) -> &str;
-}
-pub trait GetLine {
-    fn get_line(&self) -> &u32;
-}
-
-pub trait GetColumn {
-    fn get_column(&self) -> &u32;
-}
 //GitInformation
 pub trait GetGitCommitId<'a> {
     fn get_git_commit_id(&self) -> &'a str;

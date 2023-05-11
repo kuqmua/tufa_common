@@ -9,9 +9,9 @@ pub trait CodeOccurencePrepareForLogWithConfig<
 impl<'a, SelfGeneric, ConfigGeneric> CodeOccurencePrepareForLogWithConfig<ConfigGeneric>
     for SelfGeneric
 where
-    SelfGeneric: crate::traits::fields::GetFile
-        + crate::traits::fields::GetLine
-        + crate::traits::fields::GetColumn
+    SelfGeneric: crate::traits::get_file::GetFile
+        + crate::traits::get_line::GetLine
+        + crate::traits::get_column::GetColumn
         + crate::traits::get_code_path_without_config::GetCodePathWithoutConfig
         + crate::traits::get_duration::GetDuration
         + crate::traits::get_process_id::GetProcessId
@@ -37,9 +37,9 @@ pub trait CodeOccurencePrepareForLogWithoutConfig {
 
 impl<SelfGeneric> CodeOccurencePrepareForLogWithoutConfig for SelfGeneric
 where
-    SelfGeneric: crate::traits::fields::GetFile
-        + crate::traits::fields::GetLine
-        + crate::traits::fields::GetColumn
+    SelfGeneric: crate::traits::get_file::GetFile
+        + crate::traits::get_line::GetLine
+        + crate::traits::get_column::GetColumn
         //above its for crate::traits::get_code_path_without_config::GetCodePathWithoutConfig
         + crate::traits::get_code_path_without_config::GetCodePathWithoutConfig
         + crate::traits::get_duration::GetDuration
@@ -63,9 +63,9 @@ pub trait CodeOccurencePrepareForLogWithoutConfigWithSerializeDeserialize {
 
 impl<'a, SelfGeneric> CodeOccurencePrepareForLogWithoutConfigWithSerializeDeserialize for SelfGeneric
 where
-    SelfGeneric: crate::traits::fields::GetFile
-        + crate::traits::fields::GetLine
-        + crate::traits::fields::GetColumn
+    SelfGeneric: crate::traits::get_file::GetFile
+        + crate::traits::get_line::GetLine
+        + crate::traits::get_column::GetColumn
         + crate::traits::get_code_path_without_config::GetCodePathWithoutConfig
         + crate::traits::get_git_source_file_link::GetGitSourceFileLink<'a>
         + crate::traits::get_duration::GetDuration

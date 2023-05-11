@@ -3,10 +3,10 @@
 #[derive(
     Debug,
     Clone,
-    init_from_env_with_panic_if_failed::InitFromEnvWithPanicIfFailedWithPanicIfFailed,
     Default,
     PartialEq,
     Eq,
+    init_from_env_with_panic_if_failed::InitFromEnvWithPanicIfFailedWithPanicIfFailed,
     generate_getter_traits_for_struct_fields::GenerateGetterTraitsForStructFields,
 )]
 pub struct ConfigStruct {

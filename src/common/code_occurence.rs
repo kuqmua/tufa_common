@@ -28,19 +28,19 @@ impl<'a> CodeOccurence<'a> {
     }
 }
 
-impl<'a> crate::traits::fields::GetFile for CodeOccurence<'a> {
+impl<'a> crate::traits::get_file::GetFile for CodeOccurence<'a> {
     fn get_file(&self) -> &str {
         &self.file
     }
 }
 
-impl<'a> crate::traits::fields::GetLine for CodeOccurence<'a> {
+impl<'a> crate::traits::get_line::GetLine for CodeOccurence<'a> {
     fn get_line(&self) -> &u32 {
         &self.line
     }
 }
 
-impl<'a> crate::traits::fields::GetColumn for CodeOccurence<'a> {
+impl<'a> crate::traits::get_column::GetColumn for CodeOccurence<'a> {
     fn get_column(&self) -> &u32 {
         &self.column
     }
@@ -126,19 +126,19 @@ impl<'a> CodeOccurenceWithSerializeDeserialize<'a> {
     }
 }
 
-impl<'a> crate::traits::fields::GetFile for CodeOccurenceWithSerializeDeserialize<'a> {
+impl<'a> crate::traits::get_file::GetFile for CodeOccurenceWithSerializeDeserialize<'a> {
     fn get_file(&self) -> &str {
         &self.file
     }
 }
 
-impl<'a> crate::traits::fields::GetLine for CodeOccurenceWithSerializeDeserialize<'a> {
+impl<'a> crate::traits::get_line::GetLine for CodeOccurenceWithSerializeDeserialize<'a> {
     fn get_line(&self) -> &u32 {
         &self.line
     }
 }
 
-impl<'a> crate::traits::fields::GetColumn for CodeOccurenceWithSerializeDeserialize<'a> {
+impl<'a> crate::traits::get_column::GetColumn for CodeOccurenceWithSerializeDeserialize<'a> {
     fn get_column(&self) -> &u32 {
         &self.column
     }
