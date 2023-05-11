@@ -4,8 +4,6 @@
     Debug,
     Clone,
     init_from_env_with_panic_if_failed::InitFromEnvWithPanicIfFailedWithPanicIfFailedFromCrate,
-    gen_enum::GenEnum,
-    gen_enum_without_values::GenEnumWithoutValues,
     Default,
     PartialEq,
     Eq,

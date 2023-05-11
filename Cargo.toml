@@ -51,8 +51,6 @@ tracing-log = "0.1"
 compile_time_git_info = {path = "../proc_macros/compile_time_git_info"}
 enum_extension = {path = "../proc_macros/enum_extension"}
 error_occurence = {path = "../proc_macros/error_occurence"}
-gen_enum = {path = "../proc_macros/gen_enum"}
-gen_enum_without_values = {path = "../proc_macros/gen_enum_without_values"}
 generate_getter_traits_for_struct_fields = {path = "../proc_macros/generate_getter_traits_for_struct_fields"}
 init_from_env_with_panic_if_failed = {path = "../proc_macros/init_from_env_with_panic_if_failed"}
 provider_kind_from_config = {path = "../proc_macros/provider_kind_from_config"}
