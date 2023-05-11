@@ -33,75 +33,75 @@ pub fn rss_parse_string_into_struct<'a>(
                                         format!("no <channel> in response link: {value}");
                                 }
                             }
-                            let re = regex::Regex::new(crate::global_variables::hardcode::TWITTER_FILTER_HANDLE_TO_REMOVE_1).unwrap();
+                            let re = regex::Regex::new("<dc:creator>").unwrap();
                             fetch_result_string = re
                                 .replace_all(
                                     &fetch_result_string,
-                                    crate::global_variables::hardcode::TWITTER_FILTER_HANDLE_TO_REPLACE_REMOVED_1,
+                                    "bbb<creator>",
                                 )
                                 .to_string();
                             //todo: replace .replace_all with algorithm what do not reallocate memory
-                            let re = regex::Regex::new(crate::global_variables::hardcode::TWITTER_FILTER_HANDLE_TO_REMOVE_2).unwrap();
+                            let re = regex::Regex::new("</dc:creator>").unwrap();
                             fetch_result_string = re
                                 .replace_all(
                                     &fetch_result_string,
-                                    crate::global_variables::hardcode::TWITTER_FILTER_HANDLE_TO_REPLACE_REMOVED_2,
+                                    "bbb</creator>",
                                 )
                                 .to_string();
-                            let re = regex::Regex::new(crate::global_variables::hardcode::TWITTER_FILTER_HANDLE_TO_REMOVE_3).unwrap();
+                            let re = regex::Regex::new("<atom:link").unwrap();
                             fetch_result_string = re
                                 .replace_all(
                                     &fetch_result_string,
-                                    crate::global_variables::hardcode::TWITTER_FILTER_HANDLE_TO_REPLACE_REMOVED_3,
+                                    "<atomllink",
                                 )
                                 .to_string();
                         }
                         crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Medrxiv => {
                             fetch_result_string.remove(0);
-                            let re = regex::Regex::new(crate::global_variables::hardcode::MEDRXIV_FILTER_HANDLE_TO_REMOVE_1).unwrap();
+                            let re = regex::Regex::new("<dc:title>").unwrap();
                             fetch_result_string = re
                                 .replace_all(
                                     &fetch_result_string,
-                                    crate::global_variables::hardcode::MEDRXIV_FILTER_HANDLE_TO_REPLACE_REMOVED_1,
+                                    "<dccfifle>",
                                 )
                                 .to_string();
-                            let re = regex::Regex::new(crate::global_variables::hardcode::MEDRXIV_FILTER_HANDLE_TO_REMOVE_2).unwrap();
+                            let re = regex::Regex::new("</dc:title>").unwrap();
                             fetch_result_string = re
                                 .replace_all(
                                     &fetch_result_string,
-                                    crate::global_variables::hardcode::MEDRXIV_FILTER_HANDLE_TO_REPLACE_REMOVED_2,
+                                    "</dccfifle>",
                                 )
                                 .to_string();
                         }
                         crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Biorxiv => {
-                            let re = regex::Regex::new(crate::global_variables::hardcode::BIORXIV_FILTER_HANDLE_TO_REMOVE_1).unwrap();
+                            let re = regex::Regex::new("<dc:title>").unwrap();
                             fetch_result_string = re
                                 .replace_all(
                                     &fetch_result_string,
-                                    crate::global_variables::hardcode::BIORXIV_FILTER_HANDLE_TO_REPLACE_REMOVED_1,
+                                    "<dcstitle>",
                                 )
                                 .to_string();
-                            let re = regex::Regex::new(crate::global_variables::hardcode::BIORXIV_FILTER_HANDLE_TO_REMOVE_2).unwrap();
+                            let re = regex::Regex::new("</dc:title>").unwrap();
                             fetch_result_string = re
                                 .replace_all(
                                     &fetch_result_string,
-                                    crate::global_variables::hardcode::BIORXIV_FILTER_HANDLE_TO_REPLACE_REMOVED_2,
+                                    "</dcstitle>",
                                 )
                                 .to_string();
                         }
                         crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Habr => {
-                            let re = regex::Regex::new(crate::global_variables::hardcode::HABR_FILTER_HANDLE_TO_REMOVE_1).unwrap();
+                            let re = regex::Regex::new("<channel>").unwrap();
                             fetch_result_string = re
                                 .replace_all(
                                     &fetch_result_string,
-                                    crate::global_variables::hardcode::HABR_FILTER_HANDLE_TO_REPLACE_REMOVED_1,
+                                    "         ",
                                 )
                                 .to_string();
-                            let re = regex::Regex::new(crate::global_variables::hardcode::HABR_FILTER_HANDLE_TO_REMOVE_2).unwrap();
+                            let re = regex::Regex::new("</channel>").unwrap();
                             fetch_result_string = re
                                 .replace_all(
                                     &fetch_result_string,
-                                    crate::global_variables::hardcode::HABR_FILTER_HANDLE_TO_REPLACE_REMOVED_2,
+                                    "         ",
                                 )
                                 .to_string();
                         }

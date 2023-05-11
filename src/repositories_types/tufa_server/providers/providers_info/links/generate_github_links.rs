@@ -5,13 +5,9 @@ pub fn generate_github_links(
     //https://github.com/kuqmua.private.atom?token=EXAMPLE_FROM_CONFIG
     github_names
         .iter()
-        .map(|name| {
-            format!(
-                "{}{name}{}{}",
-                crate::global_variables::hardcode::GITHUB_LINK_FIRST_PART,
-                crate::global_variables::hardcode::GITHUB_LINK_SECOND_PART,
-                config.get_github_token()
-            )
-        })
+        .map(|name| format!(
+            "https://github.com/{name}.private.atom?token={}",
+            config.get_github_token()
+        ))
         .collect()
 }
