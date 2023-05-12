@@ -105,13 +105,27 @@ async fn dequeue_task(
     }
 }
 
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum DeleteTaskErrorNamed<'a> {
+    PostgresDeleteTask {
+        #[eo_display]
+        postgres_delete_task: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PostgresTransactionCommit {
+        #[eo_display]
+        postgres_transaction_commit: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
 #[tracing::instrument(skip_all)]
-async fn delete_task(
+async fn delete_task<'a>(
     mut transaction: sqlx::Transaction<'static, sqlx::Postgres>,
     issue_id: uuid::Uuid,
     email: &str,
-) -> Result<(), anyhow::Error> {
-    sqlx::query!(
+) -> Result<(), DeleteTaskErrorNamed<'a>> {
+    if let Err(e) = sqlx::query!(
         r#"
         DELETE FROM issue_delivery_queue
         WHERE 
@@ -122,8 +136,18 @@ async fn delete_task(
         email
     )
     .execute(&mut transaction)
-    .await?;
-    transaction.commit().await?;
+    .await {
+        return Err(DeleteTaskErrorNamed::PostgresDeleteTask {
+            postgres_delete_task: e,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        });
+    }
+    if let Err(e) = transaction.commit().await {
+        return Err(DeleteTaskErrorNamed::PostgresTransactionCommit {
+            postgres_transaction_commit: e,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        });
+    }
     Ok(())
 }
 
