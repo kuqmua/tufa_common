@@ -92,37 +92,64 @@ fn verify_password_hash(
     .map_err(AuthError::InvalidCredentials)
 }
 
-#[tracing::instrument(name = "Change password", skip(password, pool))]
-pub async fn change_password(
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum ChangePasswordErrorNamed<'a> {
+    SpawnBlockingWithTracing {
+        #[eo_display]
+        spawn_blocking_with_tracing: tokio::task::JoinError,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ComputePasswordHash {
+        #[eo_error_occurence]
+        compute_password_hash: ComputePasswordHashErrorNamed<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PostgresQuery {
+        #[eo_display]
+        query_error: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    }
+}
+
+pub async fn change_password<'a>(
     user_id: uuid::Uuid,
     password: secrecy::Secret<String>,
     pool: &sqlx::PgPool,
-) -> Result<(), anyhow::Error> {
-    let password_hash = {
-        use anyhow::Context;
-        crate::repositories_types::tufa_server::telemetry::spawn_blocking_with_tracing::spawn_blocking_with_tracing(move || compute_password_hash(password))
-        .await?
-        .context("Failed to hash password")
-    }?;
-    {
-        use anyhow::Context;
-        sqlx::query!(
-            r#"
-            UPDATE users
-            SET password_hash = $1
-            WHERE user_id = $2
-            "#,
-            {
-                use secrecy::ExposeSecret;
-                password_hash.expose_secret()
+) -> Result<(), ChangePasswordErrorNamed<'a>> {
+    match 
+    crate::repositories_types::tufa_server::telemetry::spawn_blocking_with_tracing::spawn_blocking_with_tracing(move || compute_password_hash(password))
+    .await {
+            Err(e) => Err(ChangePasswordErrorNamed::SpawnBlockingWithTracing {
+                spawn_blocking_with_tracing: e,
+                code_occurence: crate::code_occurence_tufa_common!()
+            }),
+            Ok(res) => match res {
+                Err(e) => Err(ChangePasswordErrorNamed::ComputePasswordHash {
+                    compute_password_hash: e,
+                    code_occurence: crate::code_occurence_tufa_common!()
+                }),
+                Ok(password_hash) => match sqlx::query!(
+                        r#"
+                            UPDATE users
+                            SET password_hash = $1
+                            WHERE user_id = $2
+                        "#,
+                        {
+                            use secrecy::ExposeSecret;
+                            password_hash.expose_secret()
+                        },
+                        user_id
+                )
+                .execute(pool)
+                .await {
+                    Err(e) => Err(ChangePasswordErrorNamed::PostgresQuery {
+                        query_error: e,
+                        code_occurence: crate::code_occurence_tufa_common!()
+                    }),
+                    Ok(_) => Ok(()),
+                }
             },
-            user_id
-        )
-        .execute(pool)
-        .await
-        .context("Failed to change user's password in the database.")
-    }?;
-    Ok(())
+        }
 }
 
 
