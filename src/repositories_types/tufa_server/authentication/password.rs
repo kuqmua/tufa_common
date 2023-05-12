@@ -1,11 +1,3 @@
-#[derive(thiserror::Error, Debug)]
-pub enum AuthError {
-    #[error("Invalid credentials.")]
-    InvalidCredentials(#[source] anyhow::Error),
-    #[error(transparent)]
-    UnexpectedError(#[from] anyhow::Error),
-}
-
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum GetStoredCredentialsErrorNamed<'a> {
     FetchOptional {
@@ -162,30 +154,6 @@ fn verify_password_hash<'a>(
             Ok(_) => Ok(())
         }
     }
-    // let expected_password_hash = {
-    //     use anyhow::Context;
-    //     argon2::PasswordHash::new({
-    //         use secrecy::ExposeSecret;
-    //         expected_password_hash.expose_secret()
-    //     })
-    //     .context("Failed to parse hash in PHC string format.")
-    // }?;
-    // {
-    //     use anyhow::Context;
-    //     {
-    //         use argon2::PasswordVerifier;
-    //         argon2::Argon2::default()
-    //         .verify_password(
-    //             {
-    //                 use secrecy::ExposeSecret;
-    //                 password_candidate.expose_secret()
-    //             }.as_bytes(),
-    //             &expected_password_hash,
-    //         )
-    //     }
-    //     .context("Invalid password.")
-    // }
-    // .map_err(AuthError::InvalidCredentials)
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
