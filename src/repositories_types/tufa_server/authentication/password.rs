@@ -126,28 +126,33 @@ pub async fn change_password(
 }
 
 
-// #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-// pub enum ComputePasswordHashErrorNamed<'a> {
-//     Connect {
-//         #[eo_display]
-//         sqlx_error: sqlx::Error,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-//     },
-// }
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum ComputePasswordHashErrorNamed<'a> {
+    PasswordHash {
+        #[eo_display]
+        argon2_password_hash_error: argon2::password_hash::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
 
-fn compute_password_hash(password: secrecy::Secret<String>) -> Result<secrecy::Secret<String>, anyhow::Error> {
-    let password_hash = {
-        use argon2::PasswordHasher;
-        argon2::Argon2::new(
-            argon2::Algorithm::Argon2id,
-            argon2::Version::V0x13,
-            argon2::Params::new(15000, 2, 1, None).unwrap(),
-        )
-        .hash_password({
-            use secrecy::ExposeSecret;
-            password.expose_secret()
-        }.as_bytes(), &argon2::password_hash::SaltString::generate(&mut rand::thread_rng()))
-    }?
-    .to_string();
-    Ok(secrecy::Secret::new(password_hash))
+fn compute_password_hash<'a>(password: secrecy::Secret<String>) -> Result<secrecy::Secret<String>, ComputePasswordHashErrorNamed<'a>> {
+    use argon2::PasswordHasher;
+    match 
+    argon2::Argon2::new(
+        argon2::Algorithm::Argon2id,
+        argon2::Version::V0x13,
+        argon2::Params::new(15000, 2, 1, None).unwrap(),
+    )
+    .hash_password({
+        use secrecy::ExposeSecret;
+        password.expose_secret()
+    }.as_bytes(), &argon2::password_hash::SaltString::generate(&mut rand::thread_rng())) {
+        Ok(password_hash) => Ok(secrecy::Secret::new(password_hash.to_string())),
+        Err(e) => Err(
+            ComputePasswordHashErrorNamed::PasswordHash {
+                argon2_password_hash_error: e,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            }
+        ),
+    }
 }
