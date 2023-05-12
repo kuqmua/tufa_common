@@ -1,9 +1,10 @@
 use serde_aux::field_attributes::deserialize_number_from_string;
 
 #[derive(serde::Deserialize, Clone, Debug)]
-pub struct Settings {
+pub struct Settings<'a> {
     pub database: DatabaseSettings,
-    pub application: ApplicationSettings,
+    #[serde(borrow)]
+    pub application: ApplicationSettings<'a>,
     pub email_client: EmailClientSettings,
     pub redis_uri: secrecy::Secret<String>,
 }
@@ -36,10 +37,10 @@ impl EmailClientSettings {
 }
 
 #[derive(serde::Deserialize, Clone, Debug)]
-pub struct ApplicationSettings {
+pub struct ApplicationSettings<'a> {
     #[serde(deserialize_with = "deserialize_number_from_string")]
     pub port: u16,
-    pub host: String,
+    pub host: &'a str,
     pub base_url: String,
     pub hmac_secret: secrecy::Secret<String>,
 }
@@ -82,7 +83,7 @@ impl DatabaseSettings {
     }
 }
 
-pub fn get_configuration() -> Result<Settings, config::ConfigError> {
+pub fn get_configuration<'a>() -> Result<Settings<'a>, config::ConfigError> {
     let mut settings = config::Config::default();
     let base_path = std::env::current_dir().expect("Failed to determine the current directory");
     let configuration_directory = base_path.join("configuration");

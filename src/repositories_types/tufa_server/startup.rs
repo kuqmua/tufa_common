@@ -17,7 +17,7 @@ pub enum ApplicationBuildErrorEnum {
 }
 
 impl Application {
-    pub async fn build(configuration: crate::repositories_types::tufa_server::configuration::Settings) -> Result<Self, Box<ApplicationBuildErrorEnum>> {
+    pub async fn build<'a>(configuration: crate::repositories_types::tufa_server::configuration::Settings<'a>) -> Result<Self, Box<ApplicationBuildErrorEnum>> {
         let connection_pool = get_connection_pool(&configuration.database);
         let listener = match std::net::TcpListener::bind(&format!(
             "{}:{}",
