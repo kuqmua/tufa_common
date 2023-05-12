@@ -125,8 +125,17 @@ pub async fn change_password(
     Ok(())
 }
 
+
+// #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+// pub enum ComputePasswordHashErrorNamed<'a> {
+//     Connect {
+//         #[eo_display]
+//         sqlx_error: sqlx::Error,
+//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//     },
+// }
+
 fn compute_password_hash(password: secrecy::Secret<String>) -> Result<secrecy::Secret<String>, anyhow::Error> {
-    let salt = argon2::password_hash::SaltString::generate(&mut rand::thread_rng());
     let password_hash = {
         use argon2::PasswordHasher;
         argon2::Argon2::new(
@@ -137,7 +146,7 @@ fn compute_password_hash(password: secrecy::Secret<String>) -> Result<secrecy::S
         .hash_password({
             use secrecy::ExposeSecret;
             password.expose_secret()
-        }.as_bytes(), &salt)
+        }.as_bytes(), &argon2::password_hash::SaltString::generate(&mut rand::thread_rng()))
     }?
     .to_string();
     Ok(secrecy::Secret::new(password_hash))

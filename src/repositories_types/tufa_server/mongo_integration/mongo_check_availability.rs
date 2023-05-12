@@ -1,12 +1,12 @@
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum MongoCheckAvailabilityErrorNamed<'a> {
     ClientWithOptions {
-        #[eo_display_foreign_type]
+        #[eo_display]
         client_with_options: mongodb::error::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     ListCollectionNames {
-        #[eo_display_foreign_type]
+        #[eo_display]
         list_collection_names: mongodb::error::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },

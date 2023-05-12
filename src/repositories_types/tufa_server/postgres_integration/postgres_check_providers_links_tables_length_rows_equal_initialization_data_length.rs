@@ -24,7 +24,7 @@ pub enum PostgresCheckProvidersLinksTablesLengthRowsEqualInitializationDataLengt
     'a,
 > {
     Postgres {
-        #[eo_display_foreign_type]
+        #[eo_display]
         error: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
