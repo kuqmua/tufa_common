@@ -76,7 +76,7 @@ pub struct ApplicationBaseUrl(pub String);
 
 #[derive(Debug)]
 pub enum ApplicationRunErrorEnum {
-    NewRedisSessionStore { source: anyhow::Error },
+    NewRedisSessionStore { source: std::string::String },
     HttpServerListen { source: std::io::Error },
 }
 
@@ -104,7 +104,7 @@ async fn run(
         Ok(redis_session_store) => redis_session_store,
         Err(e) => {
             return Err(Box::new(ApplicationRunErrorEnum::NewRedisSessionStore {
-                source: e,
+                source: e.to_string(),
             }))
         }
     };
