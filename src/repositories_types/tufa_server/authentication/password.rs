@@ -116,40 +116,40 @@ pub async fn change_password<'a>(
     password: secrecy::Secret<String>,
     pool: &sqlx::PgPool,
 ) -> Result<(), ChangePasswordErrorNamed<'a>> {
-    match 
-    crate::repositories_types::tufa_server::telemetry::spawn_blocking_with_tracing::spawn_blocking_with_tracing(move || compute_password_hash(password))
-    .await {
-            Err(e) => Err(ChangePasswordErrorNamed::SpawnBlockingWithTracing {
-                spawn_blocking_with_tracing: e,
+    match crate::repositories_types::tufa_server::telemetry::spawn_blocking_with_tracing::spawn_blocking_with_tracing(
+        move || compute_password_hash(password)
+    ).await {
+        Err(e) => Err(ChangePasswordErrorNamed::SpawnBlockingWithTracing {
+            spawn_blocking_with_tracing: e,
+            code_occurence: crate::code_occurence_tufa_common!()
+        }),
+        Ok(res) => match res {
+            Err(e) => Err(ChangePasswordErrorNamed::ComputePasswordHash {
+                compute_password_hash: e,
                 code_occurence: crate::code_occurence_tufa_common!()
             }),
-            Ok(res) => match res {
-                Err(e) => Err(ChangePasswordErrorNamed::ComputePasswordHash {
-                    compute_password_hash: e,
+            Ok(password_hash) => match sqlx::query!(
+                r#"
+                        UPDATE users
+                        SET password_hash = $1
+                        WHERE user_id = $2
+                    "#,
+                    {
+                        use secrecy::ExposeSecret;
+                        password_hash.expose_secret()
+                    },
+                    user_id
+            )
+            .execute(pool)
+            .await {
+                Err(e) => Err(ChangePasswordErrorNamed::PostgresQuery {
+                    query_error: e,
                     code_occurence: crate::code_occurence_tufa_common!()
                 }),
-                Ok(password_hash) => match sqlx::query!(
-                        r#"
-                            UPDATE users
-                            SET password_hash = $1
-                            WHERE user_id = $2
-                        "#,
-                        {
-                            use secrecy::ExposeSecret;
-                            password_hash.expose_secret()
-                        },
-                        user_id
-                )
-                .execute(pool)
-                .await {
-                    Err(e) => Err(ChangePasswordErrorNamed::PostgresQuery {
-                        query_error: e,
-                        code_occurence: crate::code_occurence_tufa_common!()
-                    }),
-                    Ok(_) => Ok(()),
-                }
-            },
-        }
+                Ok(_) => Ok(()),
+            }
+        },
+    }
 }
 
 
@@ -164,8 +164,7 @@ pub enum ComputePasswordHashErrorNamed<'a> {
 
 fn compute_password_hash<'a>(password: secrecy::Secret<String>) -> Result<secrecy::Secret<String>, ComputePasswordHashErrorNamed<'a>> {
     use argon2::PasswordHasher;
-    match 
-    argon2::Argon2::new(
+    match argon2::Argon2::new(
         argon2::Algorithm::Argon2id,
         argon2::Version::V0x13,
         argon2::Params::new(15000, 2, 1, None).unwrap(),
