@@ -78,12 +78,10 @@ pub async fn try_execute_task(
     }
 }
 
-type PgTransaction = sqlx::Transaction<'static, sqlx::Postgres>;
-
 #[tracing::instrument(skip_all)]
 async fn dequeue_task(
     pool: &sqlx::PgPool,
-) -> Result<Option<(PgTransaction, uuid::Uuid, String)>, anyhow::Error> {
+) -> Result<Option<(sqlx::Transaction<'static, sqlx::Postgres>, uuid::Uuid, String)>, anyhow::Error> {
     let mut transaction = pool.begin().await?;
     let r = sqlx::query!(
         r#"
@@ -109,7 +107,7 @@ async fn dequeue_task(
 
 #[tracing::instrument(skip_all)]
 async fn delete_task(
-    mut transaction: PgTransaction,
+    mut transaction: sqlx::Transaction<'static, sqlx::Postgres>,
     issue_id: uuid::Uuid,
     email: &str,
 ) -> Result<(), anyhow::Error> {
@@ -135,9 +133,18 @@ struct NewsletterIssue {
     html_content: String,
 }
 
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum GetIssueErrorNamed<'a> {
+    PostgresSelectNewsletterIssues {
+        #[eo_display]
+        postgres_select_newsletter_issues: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
 #[tracing::instrument(skip_all)]
-async fn get_issue(pool: &sqlx::PgPool, issue_id: uuid::Uuid) -> Result<NewsletterIssue, anyhow::Error> {
-    let issue = sqlx::query_as!(
+async fn get_issue<'a>(pool: &sqlx::PgPool, issue_id: uuid::Uuid) -> Result<NewsletterIssue, GetIssueErrorNamed<'a>> {
+    match sqlx::query_as!(
         NewsletterIssue,
         r#"
         SELECT title, text_content, html_content
@@ -148,6 +155,11 @@ async fn get_issue(pool: &sqlx::PgPool, issue_id: uuid::Uuid) -> Result<Newslett
         issue_id
     )
     .fetch_one(pool)
-    .await?;
-    Ok(issue)
+    .await {
+        Err(e) => Err(GetIssueErrorNamed::PostgresSelectNewsletterIssues {
+            postgres_select_newsletter_issues: e,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        }),
+        Ok(issue) => Ok(issue)
+    }
 }
