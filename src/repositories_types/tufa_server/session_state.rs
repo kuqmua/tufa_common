@@ -1,12 +1,27 @@
 pub struct TypedSession(actix_session::Session);
 
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum InsertUserIdErrorNamed<'a> {
+    SessionInsert {
+        #[eo_display]
+        session_insert: actix_session::SessionInsertError,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    }
+}
+
 impl TypedSession {
     const USER_ID_KEY: &'static str = "user_id";
     pub fn renew(&self) {
         self.0.renew();
     }
-    pub fn insert_user_id(&self, user_id: uuid::Uuid) -> Result<(), actix_session::SessionInsertError> {
-        self.0.insert(Self::USER_ID_KEY, user_id)
+    pub fn insert_user_id<'a>(&self, user_id: uuid::Uuid) -> Result<(), InsertUserIdErrorNamed<'a>> {
+        match self.0.insert(Self::USER_ID_KEY, user_id) {
+            Err(e) => Err(InsertUserIdErrorNamed::SessionInsert {
+                session_insert: e,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            }),
+            Ok(_) => Ok(()),
+        }
     }
     pub fn get_user_id(&self) -> Result<Option<uuid::Uuid>, actix_session::SessionGetError> {
         self.0.get(Self::USER_ID_KEY)

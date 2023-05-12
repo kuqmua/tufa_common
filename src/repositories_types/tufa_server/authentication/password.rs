@@ -39,43 +39,78 @@ async fn get_stored_credentials<'a>(
     }
 }
 
-pub async fn validate_credentials(
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum ValidateCredentialsErrorNamed<'a> {
+    GetStoredCredentials {
+        #[eo_error_occurence]
+        get_stored_credentials: GetStoredCredentialsErrorNamed<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    SpawnBlockingWithTracing {
+        #[eo_display]
+        spawn_blocking_with_tracing: tokio::task::JoinError,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    VerifyPasswordHash {
+        #[eo_error_occurence]
+        spawn_blocking_with_tracing: VerifyPasswordHashErrorNamed<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    UnknownUsername {
+        #[eo_display_with_serialize_deserialize]
+        message: &'a str,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
+pub async fn validate_credentials<'a>(
     credentials: crate::common::postgres_credentials::PostgresCredentials,
     pool: &sqlx::PgPool,
-) -> Result<uuid::Uuid, AuthError> {
-    todo!()
-    // let mut user_id = None;
-    // let mut expected_password_hash = secrecy::Secret::new(
-    //     "$argon2id$v=19$m=15000,t=2,p=1$\
-    //     gZiV/M1gPc22ElAH/Jh1Hw$\
-    //     CWOrkoo7oJBQ/iyh7uJ0LO2aLEfrHwTWllSAxT0zRno"
-    //         .to_string(),
-    // );
-    // // //
-
-    // // match get_stored_credentials(&credentials.username, pool).await {
-    // //     Err(e) => todo!(),
-    // //     Ok(_) => todo!(),
-    // // }
-
-    // // 
-    // if let Some((stored_user_id, stored_password_hash)) =
-    //     get_stored_credentials(&credentials.username, pool).await?
-    // {
-    //     user_id = Some(stored_user_id);
-    //     expected_password_hash = stored_password_hash;
-    // }
-    // {   
-    //     use anyhow::Context;
-    //     crate::repositories_types::tufa_server::telemetry::spawn_blocking_with_tracing::spawn_blocking_with_tracing(move || {
-    //         verify_password_hash(expected_password_hash, credentials.password)
-    //     })
-    //     .await
-    //     .context("Failed to spawn blocking task.")
-    // }??;
-    // user_id
-    //     .ok_or_else(|| anyhow::anyhow!("Unknown username."))
-    //     .map_err(AuthError::InvalidCredentials)
+) -> Result<uuid::Uuid, ValidateCredentialsErrorNamed<'a>> {
+    let mut user_id = None;
+    let mut expected_password_hash = secrecy::Secret::new(
+        "$argon2id$v=19$m=15000,t=2,p=1$\
+        gZiV/M1gPc22ElAH/Jh1Hw$\
+        CWOrkoo7oJBQ/iyh7uJ0LO2aLEfrHwTWllSAxT0zRno"
+            .to_string(),
+    );
+    match get_stored_credentials(&credentials.username, pool).await {
+        Err(e) => {
+            return Err(ValidateCredentialsErrorNamed::GetStoredCredentials {
+                get_stored_credentials: e,
+                code_occurence: crate::code_occurence_tufa_common!()
+            });
+        },
+        Ok(option) => {
+            if let Some((stored_user_id, stored_password_hash)) = option {
+                user_id = Some(stored_user_id);
+                expected_password_hash = stored_password_hash;
+            }
+        }
+    }
+    match crate::repositories_types::tufa_server::telemetry::spawn_blocking_with_tracing::spawn_blocking_with_tracing(
+        move || {
+            verify_password_hash(expected_password_hash, credentials.password)
+        }
+    ).await {
+        Err(e) => Err(ValidateCredentialsErrorNamed::SpawnBlockingWithTracing {
+            spawn_blocking_with_tracing: e,
+            code_occurence: crate::code_occurence_tufa_common!()
+        }),
+        Ok(result) => match result {
+            Err(e) => Err(ValidateCredentialsErrorNamed::VerifyPasswordHash {
+                spawn_blocking_with_tracing: e,
+                code_occurence: crate::code_occurence_tufa_common!()
+            }),
+            Ok(_) => match user_id {
+                None => Err(ValidateCredentialsErrorNamed::UnknownUsername {
+                    message: "Unknown username",
+                    code_occurence: crate::code_occurence_tufa_common!()
+                }),
+                Some(uuid) => Ok(uuid),
+            },
+        },
+    }
 }
 
 

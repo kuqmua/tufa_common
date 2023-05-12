@@ -26,12 +26,44 @@ pub async fn change_password(
         password: form.0.current_password,
     };
     if let Err(e) = crate::repositories_types::tufa_server::authentication::password::validate_credentials(credentials, &pool).await {
-        return match e {
-            crate::repositories_types::tufa_server::authentication::password::AuthError::InvalidCredentials(_) => {
+        //todo - add to body deserialized version?
+        return match &e {
+            crate::repositories_types::tufa_server::authentication::password::ValidateCredentialsErrorNamed::GetStoredCredentials { 
+                get_stored_credentials, 
+                code_occurence 
+            } => match get_stored_credentials {
+                crate::repositories_types::tufa_server::authentication::password::GetStoredCredentialsErrorNamed::FetchOptional { 
+                    fetch_optional, 
+                    code_occurence 
+                } => Err(crate::repositories_types::tufa_server::utils::status_codes::e500(e)),
+            },
+            crate::repositories_types::tufa_server::authentication::password::ValidateCredentialsErrorNamed::SpawnBlockingWithTracing { 
+                spawn_blocking_with_tracing, 
+                code_occurence 
+            } => Err(crate::repositories_types::tufa_server::utils::status_codes::e500(e)),
+            crate::repositories_types::tufa_server::authentication::password::ValidateCredentialsErrorNamed::VerifyPasswordHash { 
+                spawn_blocking_with_tracing, 
+                code_occurence 
+            } => match spawn_blocking_with_tracing {
+                crate::repositories_types::tufa_server::authentication::password::VerifyPasswordHashErrorNamed::ExposeSecret { 
+                    expose_secret, 
+                    code_occurence 
+                } => Err(crate::repositories_types::tufa_server::utils::status_codes::e500(e)),
+                crate::repositories_types::tufa_server::authentication::password::VerifyPasswordHashErrorNamed::InvalidPassword { 
+                    invalid_password, 
+                    code_occurence 
+                } => {
+                    actix_web_flash_messages::FlashMessage::error("The current password is incorrect.").send();
+                    Ok(crate::repositories_types::tufa_server::utils::status_codes::see_other("/admin/password"))
+                },
+            },
+            crate::repositories_types::tufa_server::authentication::password::ValidateCredentialsErrorNamed::UnknownUsername { 
+                message, 
+                code_occurence 
+            } => {
                 actix_web_flash_messages::FlashMessage::error("The current password is incorrect.").send();
                 Ok(crate::repositories_types::tufa_server::utils::status_codes::see_other("/admin/password"))
             }
-            crate::repositories_types::tufa_server::authentication::password::AuthError::UnexpectedError(_) => Err(crate::repositories_types::tufa_server::utils::status_codes::e500(e)),
         };
     }
     crate::repositories_types::tufa_server::authentication::change_password(*user_id, form.0.new_password, &pool)

@@ -4,15 +4,11 @@ pub struct FormData {
     password: secrecy::Secret<String>,
 }
 
-#[tracing::instrument(
-    skip(form, pool, session),
-    fields(username=tracing::field::Empty, user_id=tracing::field::Empty)
-)]
-pub async fn login(
+pub async fn login<'a>(
     form: actix_web::web::Form<FormData>,
     pool: actix_web::web::Data<sqlx::PgPool>,
     session: crate::repositories_types::tufa_server::session_state::TypedSession,
-) -> Result<actix_web::HttpResponse, actix_web::error::InternalError<LoginError>> {
+) -> Result<actix_web::HttpResponse, actix_web::error::InternalError<LoginErrorNamed<'a>>> {
     let credentials = crate::common::postgres_credentials::PostgresCredentials {
         username: form.0.username,
         password: form.0.password,
@@ -24,22 +20,24 @@ pub async fn login(
             session.renew();
             session
                 .insert_user_id(user_id)
-                .map_err(|e| login_redirect(LoginError::UnexpectedError(e.into())))?;
+                .map_err(|e| login_redirect(LoginErrorNamed::SessionInsert{
+                    session_insert: e,
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                }))?;
             Ok(actix_web::HttpResponse::SeeOther()
                 .insert_header((actix_web::http::header::LOCATION, "/admin/dashboard"))
                 .finish())
         }
         Err(e) => {
-            let e = match e {
-                crate::repositories_types::tufa_server::authentication::AuthError::InvalidCredentials(_) => LoginError::AuthError(e.into()),
-                crate::repositories_types::tufa_server::authentication::AuthError::UnexpectedError(_) => LoginError::UnexpectedError(e.into()),
-            };
-            Err(login_redirect(e))
+            Err(login_redirect(LoginErrorNamed::AuthError{
+                validate_credentials: e,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            }))
         }
     }
 }
 
-fn login_redirect(e: LoginError) -> actix_web::error::InternalError<LoginError> {
+fn login_redirect(e: LoginErrorNamed) -> actix_web::error::InternalError<LoginErrorNamed> {
     actix_web_flash_messages::FlashMessage::error(e.to_string()).send();
     let response = actix_web::HttpResponse::SeeOther()
         .insert_header((actix_web::http::header::LOCATION, "/login"))
@@ -47,16 +45,16 @@ fn login_redirect(e: LoginError) -> actix_web::error::InternalError<LoginError> 
     actix_web::error::InternalError::from_response(e, response)
 }
 
-#[derive(thiserror::Error)]
-pub enum LoginError {
-    #[error("Authentication failed")]
-    AuthError(#[source] anyhow::Error),
-    #[error("Something went wrong")]
-    UnexpectedError(#[from] anyhow::Error),
-}
-
-impl std::fmt::Debug for LoginError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        crate::repositories_types::tufa_server::routes::subscriptions::error_chain_fmt(self, f)
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum LoginErrorNamed<'a> {
+    AuthError {
+        #[eo_error_occurence]
+        validate_credentials: crate::repositories_types::tufa_server::authentication::password::ValidateCredentialsErrorNamed<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    SessionInsert {
+        #[eo_error_occurence]
+        session_insert: crate::repositories_types::tufa_server::session_state::InsertUserIdErrorNamed<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     }
 }
