@@ -85,16 +85,42 @@ pub async fn get_saved_response<'a>(
     }
 }
 
-pub async fn save_response(
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum SaveResponseErrorNamed<'a> {
+    BodyToBytes {
+        #[eo_display]
+        body_to_bytes: actix_web::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PostgtesUpdate {
+        #[eo_display]
+        postgres_update: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PostgtesTransactionCommit {
+        #[eo_display]
+        postgres_transaction_commit: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
+pub async fn save_response<'a>(
     mut transaction: sqlx::Transaction<'static, sqlx::Postgres>,
     idempotency_key: &super::IdempotencyKey,
     user_id: uuid::Uuid,
     http_response: actix_web::HttpResponse,
-) -> Result<actix_web::HttpResponse, anyhow::Error> {
+) -> Result<actix_web::HttpResponse, SaveResponseErrorNamed<'a>> {
     let (response_head, body) = http_response.into_parts();
     // `MessageBody::Error` is not `Send` + `Sync`,
-    // therefore it doesn't play nicely with `anyhow`
-    let body = actix_web::body::to_bytes(body).await.map_err(|e| anyhow::anyhow!("{}", e))?;
+    let body = match actix_web::body::to_bytes(body).await {
+        Err(e) => {
+            return Err(SaveResponseErrorNamed::BodyToBytes {
+                body_to_bytes: e.into(),
+                code_occurence: crate::code_occurence_tufa_common!(),
+            });
+        },
+        Ok(bytes) => bytes,
+    };
     let status_code = response_head.status().as_u16() as i16;
     let headers = {
         let mut h = Vec::with_capacity(response_head.headers().len());
@@ -105,8 +131,7 @@ pub async fn save_response(
         }
         h
     };
-
-    sqlx::query_unchecked!(
+    if let Err(e) = sqlx::query_unchecked!(
         r#"
         UPDATE idempotency
         SET 
@@ -124,8 +149,18 @@ pub async fn save_response(
         body.as_ref()
     )
     .execute(&mut transaction)
-    .await?;
-    transaction.commit().await?;
+    .await {
+        return Err(SaveResponseErrorNamed::PostgtesUpdate {
+            postgres_update: e,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        });
+    };
+    if let Err(e) = transaction.commit().await {
+        return Err(SaveResponseErrorNamed::PostgtesTransactionCommit {
+            postgres_transaction_commit: e,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        });
+    }
     // We need `.map_into_boxed_body` to go from
     // `actix_web::HttpResponse<Bytes>` to `actix_web::HttpResponse<BoxBody>`
     let http_response = response_head.set_body(body).map_into_boxed_body();
