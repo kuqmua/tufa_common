@@ -34,20 +34,14 @@ pub async fn publish_newsletter(
             return Ok(saved_response);
         }
     };
-    let issue_id = {
-        use anyhow::Context;
-        insert_newsletter_issue(&mut transaction, &title, &text_content, &html_content)
+    //"Failed to store newsletter issue details"
+    let issue_id = insert_newsletter_issue(&mut transaction, &title, &text_content, &html_content)
         .await
-        .context("Failed to store newsletter issue details")
-        .map_err(crate::repositories_types::tufa_server::utils::status_codes::e500)?
-    };
-    {
-        use anyhow::Context;
-        enqueue_delivery_tasks(&mut transaction, issue_id)
+        .map_err(crate::repositories_types::tufa_server::utils::status_codes::e500)?;
+    //"Failed to enqueue delivery tasks"
+    enqueue_delivery_tasks(&mut transaction, issue_id)
         .await
-        .context("Failed to enqueue delivery tasks")
-        .map_err(crate::repositories_types::tufa_server::utils::status_codes::e500)?
-    };
+        .map_err(crate::repositories_types::tufa_server::utils::status_codes::e500)?;
     let response = crate::repositories_types::tufa_server::utils::status_codes::see_other("/admin/newsletters");
     let response = crate::repositories_types::tufa_server::idempotency::save_response(transaction, &idempotency_key, *user_id, response)
         .await
