@@ -78,30 +78,52 @@ pub async fn try_execute_task(
     }
 }
 
-#[tracing::instrument(skip_all)]
-async fn dequeue_task(
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum DequeueTaskErrorNamed<'a> {
+    PostgresPoolBegin {
+        #[eo_display]
+        postgres_pool_begin: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PostgresSelect {
+        #[eo_display]
+        postgres_select: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
+async fn dequeue_task<'a>(
     pool: &sqlx::PgPool,
-) -> Result<Option<(sqlx::Transaction<'static, sqlx::Postgres>, uuid::Uuid, String)>, anyhow::Error> {
-    let mut transaction = pool.begin().await?;
-    let r = sqlx::query!(
-        r#"
-        SELECT newsletter_issue_id, subscriber_email
-        FROM issue_delivery_queue
-        FOR UPDATE
-        SKIP LOCKED
-        LIMIT 1
-        "#,
-    )
-    .fetch_optional(&mut transaction)
-    .await?;
-    if let Some(r) = r {
-        Ok(Some((
-            transaction,
-            r.newsletter_issue_id,
-            r.subscriber_email,
-        )))
-    } else {
-        Ok(None)
+) -> Result<Option<(sqlx::Transaction<'static, sqlx::Postgres>, uuid::Uuid, String)>, DequeueTaskErrorNamed<'a>> {
+    match pool.begin().await {
+        Err(e) => Err(DequeueTaskErrorNamed::PostgresPoolBegin {
+            postgres_pool_begin: e,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        }),
+        Ok(mut transaction) => match sqlx::query!(
+            r#"
+            SELECT newsletter_issue_id, subscriber_email
+            FROM issue_delivery_queue
+            FOR UPDATE
+            SKIP LOCKED
+            LIMIT 1
+            "#,
+        )
+        .fetch_optional(&mut transaction)
+        .await {
+            Err(e) => Err(DequeueTaskErrorNamed::PostgresSelect {
+                postgres_select: e,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            }),
+            Ok(option_record) => match option_record {
+                Some(record) => Ok(Some((
+                    transaction,
+                    record.newsletter_issue_id,
+                    record.subscriber_email,
+                ))),
+                None => Ok(None),
+            }
+        },
     }
 }
 
