@@ -19,6 +19,3 @@ pub enum ApplicationRunErrorNamed<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
-
-#[derive(Clone)]
-pub struct HmacSecret(pub secrecy::Secret<String>);
