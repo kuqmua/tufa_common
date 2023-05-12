@@ -6,10 +6,18 @@ pub fn get_connection_pool(configuration: &crate::repositories_types::tufa_serve
 
 pub struct ApplicationBaseUrl(pub String);
 
-#[derive(Debug)]
-pub enum ApplicationRunErrorEnum {
-    NewRedisSessionStore { source: std::string::String },
-    HttpServerListen { source: std::io::Error },
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum ApplicationRunErrorNamed<'a> {
+    NewRedisSessionStore {
+        #[eo_display_with_serialize_deserialize]
+        new_redis_session_store: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    HttpServerListen {
+        #[eo_display]
+        http_server_listen: std::io::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
 }
 
 #[derive(Clone)]
