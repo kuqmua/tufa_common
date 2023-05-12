@@ -23,19 +23,38 @@ pub enum ExecutionOutcome {
     EmptyQueue,
 }
 
-#[tracing::instrument(
-    skip_all,
-    fields(
-        newsletter_issue_id=tracing::field::Empty,
-        subscriber_email=tracing::field::Empty
-    ),
-    err
-)]
-pub async fn try_execute_task(
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum TryExecuteTaskErrorNamed<'a> {
+    DequeueTask {
+        #[eo_error_occurence]
+        dequeue_task: DequeueTaskErrorNamed<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    GetIssue {
+        #[eo_error_occurence]
+        get_issue: GetIssueErrorNamed<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    DeleteTask {
+        #[eo_error_occurence]
+        delete_task: DeleteTaskErrorNamed<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
+pub async fn try_execute_task<'a>(
     pool: &sqlx::PgPool,
     email_client: &crate::repositories_types::tufa_server::email_client::EmailClient,
-) -> Result<ExecutionOutcome, anyhow::Error> {
-    let task = dequeue_task(pool).await?;
+) -> Result<ExecutionOutcome, TryExecuteTaskErrorNamed<'a>> {
+    let task = match dequeue_task(pool).await {
+        Err(e) => {
+            return Err(TryExecuteTaskErrorNamed::DequeueTask {
+                dequeue_task: e,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            });
+        }, 
+        Ok(option_task) => option_task,
+    };
     match task {
         None => Ok(ExecutionOutcome::EmptyQueue),
         Some(task) => {
@@ -45,7 +64,15 @@ pub async fn try_execute_task(
                 .record("subscriber_email", &tracing::field::display(&email));
             match crate::repositories_types::tufa_server::domain::SubscriberEmail::parse(email.clone()) {
                 Ok(email) => {
-                    let issue = get_issue(pool, issue_id).await?;
+                    let issue = match get_issue(pool, issue_id).await {
+                        Err(e) => {
+                            return Err(TryExecuteTaskErrorNamed::GetIssue {
+                                get_issue: e,
+                                code_occurence: crate::code_occurence_tufa_common!(),
+                            });
+                        },
+                        Ok(newletter_issue) => newletter_issue,
+                    };
                     if let Err(e) = email_client
                         .send_email(
                             &email,
@@ -72,7 +99,12 @@ pub async fn try_execute_task(
                     );
                 }
             }
-            delete_task(transaction, issue_id, &email).await?;
+            if let Err(e) = delete_task(transaction, issue_id, &email).await {
+                return Err(TryExecuteTaskErrorNamed::DeleteTask {
+                    delete_task: e,
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                });
+            }
             Ok(ExecutionOutcome::TaskCompleted)
         }
     }
