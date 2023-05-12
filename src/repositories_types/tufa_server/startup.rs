@@ -4,8 +4,6 @@ pub fn get_connection_pool(configuration: &crate::repositories_types::tufa_serve
         .connect_lazy_with(configuration.with_db())
 }
 
-pub struct ApplicationBaseUrl(pub String);
-
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum ApplicationRunErrorNamed<'a> {
     NewRedisSessionStore {
