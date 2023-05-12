@@ -34,21 +34,33 @@ pub async fn admin_dashboard(
         )))
 }
 
-#[tracing::instrument(name = "Get username", skip(pool))]
-pub async fn get_username(user_id: uuid::Uuid, pool: &sqlx::PgPool) -> Result<String, anyhow::Error> {
-    let row = {
-        use anyhow::Context;
-        sqlx::query!(
-            r#"
-            SELECT username
-            FROM users
-            WHERE user_id = $1
-            "#,
-            user_id,
-        )
-        .fetch_one(pool)
-        .await
-        .context("Failed to perform a query to retrieve a username.")?
-    };
-    Ok(row.username)
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum GetUsernameErrorNamed<'a> {
+    PostgresQuery {
+        #[eo_display_foreign_type]
+        get_username: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
+
+pub async fn get_username<'a>(user_id: uuid::Uuid, pool: &sqlx::PgPool) -> Result<String, GetUsernameErrorNamed<'a>> {
+    match sqlx::query!(
+        r#"
+        SELECT username
+        FROM users
+        WHERE user_id = $1
+        "#,
+        user_id,
+    )
+    .fetch_one(pool)
+    .await {
+        Ok(row) => Ok(row.username),
+        Err(e) => Err(
+            GetUsernameErrorNamed::PostgresQuery {
+                get_username: e,
+                code_occurence: crate::code_occurence_tufa_common!()
+            }
+        ), 
+    }
 }
