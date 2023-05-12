@@ -13,82 +13,116 @@ impl std::convert::TryFrom<FormData> for crate::repositories_types::tufa_server:
     }
 }
 
-#[derive(thiserror::Error)]
-pub enum SubscribeError {
-    #[error("{0}")]
-    ValidationError(String),
-    #[error(transparent)]
-    UnexpectedError(#[from] anyhow::Error),
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum SubscribeErrorNamed<'a> {
+    TryIntoNewSubscriber {
+        #[eo_display_with_serialize_deserialize]
+        try_into_new_subscriber: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PostgresPoolBegin {
+        #[eo_display]
+        postgres_pool_begin: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    InsertSubscriber {
+        #[eo_display]
+        insert_subscriber: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    StoreToken {
+        #[eo_display]
+        store_token: StoreTokenError,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PostgresTransactionCommit {
+        #[eo_display]
+        postgres_transaction_commit: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    SendConfirmationEmail {
+        #[eo_display]
+        send_confirmation_email: reqwest::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
 }
 
-impl std::fmt::Debug for SubscribeError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        error_chain_fmt(self, f)
-    }
-}
-
-impl actix_web::ResponseError for SubscribeError {
+impl<'a> actix_web::ResponseError for SubscribeErrorNamed<'a> {
     fn status_code(&self) -> actix_web::http::StatusCode {
         match self {
-            SubscribeError::ValidationError(_) => actix_web::http::StatusCode::BAD_REQUEST,
-            SubscribeError::UnexpectedError(_) => actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+            SubscribeErrorNamed::TryIntoNewSubscriber { try_into_new_subscriber, code_occurence } => actix_web::http::StatusCode::BAD_REQUEST,
+            SubscribeErrorNamed::PostgresPoolBegin { postgres_pool_begin, code_occurence } => actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+            SubscribeErrorNamed::InsertSubscriber { insert_subscriber, code_occurence } => actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+            SubscribeErrorNamed::StoreToken { store_token, code_occurence } => actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+            SubscribeErrorNamed::PostgresTransactionCommit { postgres_transaction_commit, code_occurence } => actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+            SubscribeErrorNamed::SendConfirmationEmail { send_confirmation_email, code_occurence } => actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
         }
     }
 }
 
-#[tracing::instrument(
-    name = "Adding a new subscriber",
-    skip(form, pool, email_client, base_url),
-    fields(
-        subscriber_email = %form.email,
-        subscriber_name = %form.name
-    )
-)]
-pub async fn subscribe(
+pub async fn subscribe<'a>(
     form: actix_web::web::Form<FormData>,
     pool: actix_web::web::Data<sqlx::PgPool>,
     email_client: actix_web::web::Data<crate::repositories_types::tufa_server::email_client::EmailClient>,
     base_url: actix_web::web::Data<crate::repositories_types::tufa_server::startup::ApplicationBaseUrl>,
-) -> Result<actix_web::HttpResponse, SubscribeError> {
-    let new_subscriber = form.0.try_into().map_err(SubscribeError::ValidationError)?;
-    let mut transaction = {
-        use anyhow::Context;
-        pool
-        .begin()
-        .await
-        .context("Failed to acquire a Postgres connection from the pool")?
+) -> Result<actix_web::HttpResponse, SubscribeErrorNamed<'a>> {
+    let new_subscriber: crate::repositories_types::tufa_server::domain::NewSubscriber = match form.0.try_into() {
+        Err(e) => {
+            return Err(SubscribeErrorNamed::TryIntoNewSubscriber {
+                try_into_new_subscriber: e,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            });
+        },
+        Ok(new_subscriber) => new_subscriber,
     };
-    let subscriber_id = {
-        use anyhow::Context;
-        insert_subscriber(&mut transaction, &new_subscriber)
-        .await
-        .context("Failed to insert new subscriber in the database.")?
+    //"Failed to acquire a Postgres connection from the pool"
+    let mut transaction = match pool.begin().await {
+        Err(e) => {
+            return Err(SubscribeErrorNamed::PostgresPoolBegin {
+                postgres_pool_begin: e,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            });
+        },
+        Ok(transaction) => transaction,
+    };
+    //"Failed to insert new subscriber in the database."
+    let subscriber_id = match insert_subscriber(&mut transaction, &new_subscriber).await {
+        Err(e) => {
+            return Err(SubscribeErrorNamed::InsertSubscriber {
+                insert_subscriber: e,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            });
+        },
+        Ok(subscriber_id) => subscriber_id,
     };
     let subscription_token = generate_subscription_token();
-    {
-        use anyhow::Context;
-        store_token(&mut transaction, subscriber_id, &subscription_token)
-        .await
-        .context("Failed to store the confirmation token for a new subscriber.")?
-    };
-    {
-        use anyhow::Context;
-        transaction
-        .commit()
-        .await
-        .context("Failed to commit SQL transaction to store a new subscriber.")?
-    };
-    {
-        use anyhow::Context;
-        send_confirmation_email(
-            &email_client,
-            new_subscriber,
-            &base_url.0,
-            &subscription_token,
-        )
-        .await
-        .context("Failed to send a confirmation email.")?
-    };
+    //"Failed to store the confirmation token for a new subscriber."
+    if let Err(e) = store_token(&mut transaction, subscriber_id, &subscription_token)
+    .await {
+        return Err(SubscribeErrorNamed::StoreToken {
+            store_token: e,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        });
+    }
+    //"Failed to commit SQL transaction to store a new subscriber."
+    if let Err(e) = transaction.commit().await {
+        return Err(SubscribeErrorNamed::PostgresTransactionCommit {
+            postgres_transaction_commit: e,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        });
+    }
+    //"Failed to send a confirmation email."
+    if let Err(e) = send_confirmation_email(
+        &email_client,
+        new_subscriber,
+        &base_url.0,
+        &subscription_token,
+    ).await {
+        return Err(SubscribeErrorNamed::SendConfirmationEmail {
+            send_confirmation_email: e,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        });
+    }
     Ok(actix_web::HttpResponse::Ok().finish())
 }
 
