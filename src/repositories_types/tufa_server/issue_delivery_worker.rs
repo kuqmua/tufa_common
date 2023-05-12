@@ -1,19 +1,21 @@
-pub async fn run_worker_until_stopped<'a>(configuration: crate::repositories_types::tufa_server::configuration::Settings<'a>) -> Result<(), anyhow::Error> {
+pub async fn run_worker_until_stopped<'a>(configuration: crate::repositories_types::tufa_server::configuration::Settings<'a>) {// -> Result<(), Error>
     let connection_pool = crate::repositories_types::tufa_server::startup::get_connection_pool(&configuration.database);
     let email_client = configuration.email_client.client();
     worker_loop(connection_pool, email_client).await
 }
 
-async fn worker_loop(pool: sqlx::PgPool, email_client: crate::repositories_types::tufa_server::email_client::EmailClient) -> Result<(), anyhow::Error> {
+async fn worker_loop(pool: sqlx::PgPool, email_client: crate::repositories_types::tufa_server::email_client::EmailClient) {//-> Result<(), Error>
     loop {
         match try_execute_task(&pool, &email_client).await {
             Ok(ExecutionOutcome::EmptyQueue) => {
                 tokio::time::sleep(std::time::Duration::from_secs(10)).await;
             }
-            Err(_) => {
+            Ok(ExecutionOutcome::TaskCompleted) => {}
+            Err(e) => {
+                println!("{e:#?}");//todo
                 tokio::time::sleep(std::time::Duration::from_secs(1)).await;
             }
-            Ok(ExecutionOutcome::TaskCompleted) => {}
+           
         }
     }
 }
