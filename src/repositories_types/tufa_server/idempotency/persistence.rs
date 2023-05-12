@@ -11,13 +11,32 @@ impl sqlx::postgres::PgHasArrayType for HeaderPairRecord {
     }
 }
 
-pub async fn get_saved_response(
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum GetSavedResponseErrorNamed<'a> {
+    PostgresSelect {
+        #[eo_display]
+        postgres_select: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    TryFromIntError {
+        #[eo_display]
+        try_from_int_error: std::num::TryFromIntError,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    InvalidStatusCode {
+        #[eo_display]
+        invalid_status_code: http::status::InvalidStatusCode,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
+pub async fn get_saved_response<'a>(
     pool: &sqlx::PgPool,
     idempotency_key: &super::IdempotencyKey,
     user_id: uuid::Uuid,
-) -> Result<Option<actix_web::HttpResponse>, anyhow::Error> {
+) -> Result<Option<actix_web::HttpResponse>, GetSavedResponseErrorNamed<'a>> {
     //todo - sqlx::query! is a macro to check db on compile time. DATABASE_URL must be set in env variables. its not for lib. change it later
-    let saved_response = sqlx::query!(
+    let saved_response = match sqlx::query!(
         r#"
         SELECT 
             response_status_code as "response_status_code!", 
@@ -32,14 +51,35 @@ pub async fn get_saved_response(
         idempotency_key.as_ref()
     )
     .fetch_optional(pool)
-    .await?;
+    .await {
+        Err(e) => {
+            return Err(GetSavedResponseErrorNamed::PostgresSelect {
+                postgres_select: e,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            });
+        },
+        Ok(option_record) => option_record,
+    };
     if let Some(r) = saved_response {
-        let status_code = actix_web::http::StatusCode::from_u16(r.response_status_code.try_into()?)?;
-        let mut response = actix_web::HttpResponse::build(status_code);
-        for HeaderPairRecord { name, value } in r.response_headers {
-            response.append_header((name, value));
+        match r.response_status_code.try_into() {
+            Err(e) => Err(GetSavedResponseErrorNamed::TryFromIntError {
+                try_from_int_error: e,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            }),
+            Ok(status_code_as_u16) => match actix_web::http::StatusCode::from_u16(status_code_as_u16) {
+                Err(e) => Err(GetSavedResponseErrorNamed::InvalidStatusCode {
+                    invalid_status_code: e,
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                }),
+                Ok(status_code) => {
+                    let mut response = actix_web::HttpResponse::build(status_code);
+                    for HeaderPairRecord { name, value } in r.response_headers {
+                        response.append_header((name, value));
+                    }
+                    Ok(Some(response.body(r.response_body)))
+                },
+            },
         }
-        Ok(Some(response.body(r.response_body)))
     } else {
         Ok(None)
     }
@@ -98,13 +138,45 @@ pub enum NextAction {
     StartProcessing(sqlx::Transaction<'static, sqlx::Postgres>),
 }
 
-pub async fn try_processing(
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum TryProcessingErrorNamed<'a> {
+    PostgresPoolBegin {
+        #[eo_display]
+        pool_begin_error: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PostgresInsert {
+        #[eo_display]
+        insert: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    GetSavedResponse {
+        #[eo_error_occurence]
+        get_saved_response: GetSavedResponseErrorNamed<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    SavedResponseIsNone {
+        #[eo_display_with_serialize_deserialize]
+        message: &'a str,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    }
+}
+
+pub async fn try_processing<'a>(
     pool: &sqlx::PgPool,
     idempotency_key: &super::IdempotencyKey,
     user_id: uuid::Uuid,
-) -> Result<NextAction, anyhow::Error> {
-    let mut transaction = pool.begin().await?;
-    let n_inserted_rows = sqlx::query!(
+) -> Result<NextAction, TryProcessingErrorNamed<'a>> {
+    let mut transaction = match pool.begin().await {
+        Err(e) => {
+            return Err(TryProcessingErrorNamed::PostgresPoolBegin {
+                pool_begin_error: e,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            });
+        },
+        Ok(transaction) => transaction,
+    };
+    let n_inserted_rows = match sqlx::query!(
         r#"
         INSERT INTO idempotency (
             user_id, 
@@ -118,14 +190,32 @@ pub async fn try_processing(
         idempotency_key.as_ref()
     )
     .execute(&mut transaction)
-    .await?
-    .rows_affected();
+    .await {
+        Err(e) => {
+            return Err(TryProcessingErrorNamed::PostgresInsert {
+                insert: e,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            });
+        },
+        Ok(pg_query_result) => pg_query_result.rows_affected(),
+    };
     if n_inserted_rows > 0 {
         Ok(NextAction::StartProcessing(transaction))
     } else {
-        let saved_response = get_saved_response(pool, idempotency_key, user_id)
-            .await?
-            .ok_or_else(|| anyhow::anyhow!("We expected a saved response, we didn't find it"))?;
-        Ok(NextAction::ReturnSavedResponse(saved_response))
+        match get_saved_response(pool, idempotency_key, user_id).await {
+            Err(e) => {
+                return Err(TryProcessingErrorNamed::GetSavedResponse {
+                    get_saved_response: e,
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                });
+            },
+            Ok(option_http_response) => match option_http_response {
+                None => Err(TryProcessingErrorNamed::SavedResponseIsNone {
+                    message: "We expected a saved response, we didn't find it",
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                }),
+                Some(saved_response) => Ok(NextAction::ReturnSavedResponse(saved_response)),
+            },
+        }
     }
 }
