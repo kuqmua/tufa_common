@@ -1,19 +1,31 @@
 #[derive(Debug)]
 pub struct IdempotencyKey(String);
 
+#[derive(Debug, thiserror::Error)]
+pub enum IdempotencyKeyTryFromStringError {
+    CannotBeEmpty(std::string::String),
+    MustBeShorter(std::string::String),
+}
+
+impl std::fmt::Display for IdempotencyKeyTryFromStringError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            IdempotencyKeyTryFromStringError::CannotBeEmpty(message) => write!(f, "{}", message),
+            IdempotencyKeyTryFromStringError::MustBeShorter(message) => write!(f, "{}", message),
+        }
+    }
+}
+
 impl TryFrom<String> for IdempotencyKey {
-    type Error = anyhow::Error;
+    type Error = IdempotencyKeyTryFromStringError;
 
     fn try_from(s: String) -> Result<Self, Self::Error> {
         if s.is_empty() {
-            anyhow::bail!("The idempotency key cannot be empty");
+            return Err(IdempotencyKeyTryFromStringError::CannotBeEmpty(std::string::String::from("The idempotency key cannot be empty")))
         }
         let max_length = 50;
         if s.len() >= max_length {
-            anyhow::bail!(
-                "The idempotency key must be shorter 
-                than {max_length} characters"
-            );
+            return Err(IdempotencyKeyTryFromStringError::MustBeShorter(format!("The idempotency key must be shorter than {max_length} characters")))
         }
         Ok(Self(s))
     }
