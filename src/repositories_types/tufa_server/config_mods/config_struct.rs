@@ -91,6 +91,8 @@ pub struct ConfigStruct {
     pub is_mongo_link_parts_randomize_order_enabled_reddit: bool,
     pub is_mongo_link_parts_randomize_order_enabled_twitter: bool,
 
+    pub database_url: String,//postgres_url, naming required by sqlx::query::query!
+
     pub postgres_first_handle_url_part: String,
     pub postgres_second_handle_url_part: String,
     pub postgres_third_handle_url_part: String,

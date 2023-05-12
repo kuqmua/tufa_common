@@ -199,6 +199,9 @@ pub trait GetIsMongoLinkPartsRandomizeOrderEnabledReddit {
 pub trait GetIsMongoLinkPartsRandomizeOrderEnabledTwitter {
     fn get_is_mongo_link_parts_randomize_order_enabled_twitter(&self) -> &bool;
 }
+pub trait GetDatabaseUrl {
+    fn get_database_url(&self) -> &String;//postgres database url. required to exists in env
+}
 pub trait GetPostgresFirstHandleUrlPart {
     fn get_postgres_first_handle_url_part(&self) -> &String;
 }
