@@ -36,8 +36,7 @@ pub async fn reject_anonymous_users(
         }
         None => {
             let response = crate::repositories_types::tufa_server::utils::status_codes::see_other("/login");
-            let e = anyhow::anyhow!("The user has not logged in");
-            Err(actix_web::error::InternalError::from_response(e, response).into())
+            Err(actix_web::error::InternalError::from_response("The user has not logged in", response).into())
         }
     }
 }
