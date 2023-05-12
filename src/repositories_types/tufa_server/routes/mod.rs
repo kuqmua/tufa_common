@@ -1,10 +1,10 @@
-mod admin;
+pub mod admin;
 pub mod get_providers_posts_route;
 mod health_check;
 pub mod home;
 pub mod login;
-mod subscriptions;
-mod subscriptions_confirm;
+pub mod subscriptions;
+pub mod subscriptions_confirm;
 pub use admin::*;
 pub use health_check::*;
 pub use home::*;

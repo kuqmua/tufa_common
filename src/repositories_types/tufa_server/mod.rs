@@ -4,7 +4,7 @@ pub mod mongo_integration;
 pub mod postgres_integration;
 pub mod preparation;
 pub mod providers;
-mod routes;
+pub mod routes;
 pub mod telemetry;
 pub mod domain;
 pub mod fetch;
