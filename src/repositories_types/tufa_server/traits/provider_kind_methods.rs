@@ -36,9 +36,6 @@ pub trait ProviderKindMethods {
     fn into_string_name_and_kind_hashmap() -> std::collections::HashMap<String, Self>
     where
         Self: Sized;
-    fn into_string_name_and_kind_tuple_vec() -> Vec<(String, Self)>
-    where
-        Self: Sized;
     fn get_db_tag(&self) -> String
     where
         Self: Sized;

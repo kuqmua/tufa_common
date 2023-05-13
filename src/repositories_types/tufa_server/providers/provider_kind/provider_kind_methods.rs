@@ -146,14 +146,6 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
             .map(|pk| (format!("{pk}"), pk))
             .collect()
     }
-    fn into_string_name_and_kind_tuple_vec() -> Vec<(String, crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind)> {
-        {
-            use strum::IntoEnumIterator;
-            crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::iter()
-        }
-            .map(|pk| (format!("{pk}"), pk))
-            .collect()
-    }
     fn get_db_tag(&self) -> String {
         format!("{self}")
     }
