@@ -62,17 +62,6 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
         std::fs::remove_dir_all(&path)?; //todo: its blocking, rewrite to async //update: also its has vulnerability https://blog.rust-lang.org/2022/01/20/cve-2022-21658.html
         Ok(())
     }
-    fn stringify(&self) -> &'static str {
-        match self {
-            crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Arxiv => stringify!(ProviderKind::Arxiv),
-            crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Biorxiv => stringify!(ProviderKind::Biorxiv),
-            crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Github => stringify!(ProviderKind::Github),
-            crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Habr => stringify!(ProviderKind::Habr),
-            crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Medrxiv => stringify!(ProviderKind::Medrxiv),
-            crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Reddit => stringify!(ProviderKind::Reddit),
-            crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Twitter => stringify!(ProviderKind::Twitter),
-        }
-    }
     fn generate_provider_links(
         &self, 
         names_vector: Vec<String>,
