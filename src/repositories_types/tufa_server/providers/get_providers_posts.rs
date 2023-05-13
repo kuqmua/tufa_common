@@ -70,14 +70,6 @@ pub async fn get_providers_posts<'a>(
     config: &'a (
         impl crate::traits::config_fields::GetGithubToken
         + crate::traits::config_fields::GetProvidersLinkPartsSource
-
-        + crate::traits::config_fields::GetCheckLinkArxiv
-        + crate::traits::config_fields::GetCheckLinkBiorxiv
-        + crate::traits::config_fields::GetCheckLinkGithub
-        + crate::traits::config_fields::GetCheckLinkHabr
-        + crate::traits::config_fields::GetCheckLinkMedrxiv
-        + crate::traits::config_fields::GetCheckLinkReddit
-        + crate::traits::config_fields::GetCheckLinkTwitter
     )
 ) -> Result<(), Box<GetProviderPostsErrorNamed<'a>>> {
     match crate::repositories_types::tufa_server::providers::providers_info::get_providers_link_parts::get_providers_link_parts(config.get_providers_link_parts_source()).await {

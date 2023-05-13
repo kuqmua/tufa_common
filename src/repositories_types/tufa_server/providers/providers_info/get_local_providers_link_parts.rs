@@ -19,38 +19,14 @@ pub struct TracingVec {
 
 pub async fn get_local_providers_link_parts<'a>(
     config: &'a (
-        impl crate::traits::config_fields::GetIsLinksLimitEnabledProviders
-        + crate::traits::config_fields::GetPathToProviderLinkPartsFolder
+        impl crate::traits::config_fields::GetPathToProviderLinkPartsFolder
         + crate::traits::config_fields::GetLogFileExtension
-
-        + crate::traits::config_fields::GetIsLinksLimitEnabledArxiv
-        + crate::traits::config_fields::GetIsLinksLimitEnabledBiorxiv
-        + crate::traits::config_fields::GetIsLinksLimitEnabledGithub
-        + crate::traits::config_fields::GetIsLinksLimitEnabledHabr
-        + crate::traits::config_fields::GetIsLinksLimitEnabledMedrxiv
-        + crate::traits::config_fields::GetIsLinksLimitEnabledReddit
-        + crate::traits::config_fields::GetIsLinksLimitEnabledTwitter
-        + crate::traits::config_fields::GetLinksLimitArxiv
-        + crate::traits::config_fields::GetLinksLimitBiorxiv
-        + crate::traits::config_fields::GetLinksLimitGithub
-        + crate::traits::config_fields::GetLinksLimitHabr
-        + crate::traits::config_fields::GetLinksLimitMedrxiv
-        + crate::traits::config_fields::GetLinksLimitReddit
-        + crate::traits::config_fields::GetLinksLimitTwitter
-
-        + crate::traits::config_fields::GetIsEnabledArxiv
-        + crate::traits::config_fields::GetIsEnabledBiorxiv
-        + crate::traits::config_fields::GetIsEnabledGithub
-        + crate::traits::config_fields::GetIsEnabledHabr
-        + crate::traits::config_fields::GetIsEnabledMedrxiv
-        + crate::traits::config_fields::GetIsEnabledReddit
-        + crate::traits::config_fields::GetIsEnabledTwitter
     )
 ) -> Result<std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>, Box<GetLocalProvidersLinkPartsErrorNamed<'a>>> {
     let result_vec = futures::future::join_all(
             {
                 use crate::repositories_types::tufa_server::traits::provider_kind_methods::ProviderKindMethods;
-                crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::get_enabled_providers_vec(config) //maybe its not exactly correct
+                crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::get_enabled_providers_vec() //maybe its not exactly correct
             }
             .into_iter()
             .map(|pk| async move {

@@ -2,7 +2,6 @@
 
 #[derive(
     Debug,
-    Clone,
     Default,
     PartialEq,
     Eq,
@@ -40,56 +39,6 @@ pub struct ConfigStruct {
     pub mongo_providers_logs_db_collection_handle_second_part: String,
     pub mongo_providers_logs_db_collection_document_field_name_handle: String,
 
-    pub is_mongo_initialization_enabled: bool,
-    pub is_mongo_initialization_enabled_providers: bool,
-    pub is_mongo_initialization_enabled_arxiv: bool,
-    pub is_mongo_initialization_enabled_biorxiv: bool,
-    pub is_mongo_initialization_enabled_github: bool,
-    pub is_mongo_initialization_enabled_habr: bool,
-    pub is_mongo_initialization_enabled_medrxiv: bool,
-    pub is_mongo_initialization_enabled_reddit: bool,
-    pub is_mongo_initialization_enabled_twitter: bool,
-
-    pub is_mongo_write_error_logs_enabled: bool,
-    pub is_mongo_write_error_logs_enabled_providers: bool,
-    pub is_mongo_write_error_logs_enabled_arxiv: bool,
-    pub is_mongo_write_error_logs_enabled_biorxiv: bool,
-    pub is_mongo_write_error_logs_enabled_github: bool,
-    pub is_mongo_write_error_logs_enabled_habr: bool,
-    pub is_mongo_write_error_logs_enabled_medrxiv: bool,
-    pub is_mongo_write_error_logs_enabled_reddit: bool,
-    pub is_mongo_write_error_logs_enabled_twitter: bool,
-
-    pub is_mongo_cleaning_warning_logs_db_enabled: bool,
-    pub is_mongo_cleaning_warning_logs_db_enabled_providers: bool,
-    pub is_mongo_cleaning_warning_logs_db_enabled_arxiv: bool,
-    pub is_mongo_cleaning_warning_logs_db_enabled_biorxiv: bool,
-    pub is_mongo_cleaning_warning_logs_db_enabled_github: bool,
-    pub is_mongo_cleaning_warning_logs_db_enabled_habr: bool,
-    pub is_mongo_cleaning_warning_logs_db_enabled_medrxiv: bool,
-    pub is_mongo_cleaning_warning_logs_db_enabled_reddit: bool,
-    pub is_mongo_cleaning_warning_logs_db_enabled_twitter: bool,
-
-    pub is_mongo_cleaning_warning_logs_db_collections_enabled: bool,
-    pub is_mongo_cleaning_warning_logs_db_collections_enabled_providers: bool,
-    pub is_mongo_cleaning_warning_logs_db_collections_enabled_arxiv: bool,
-    pub is_mongo_cleaning_warning_logs_db_collections_enabled_biorxiv: bool,
-    pub is_mongo_cleaning_warning_logs_db_collections_enabled_github: bool,
-    pub is_mongo_cleaning_warning_logs_db_collections_enabled_habr: bool,
-    pub is_mongo_cleaning_warning_logs_db_collections_enabled_medrxiv: bool,
-    pub is_mongo_cleaning_warning_logs_db_collections_enabled_reddit: bool,
-    pub is_mongo_cleaning_warning_logs_db_collections_enabled_twitter: bool,
-
-    pub is_mongo_link_parts_randomize_order_enabled: bool,
-    pub is_mongo_link_parts_randomize_order_enabled_providers: bool,
-    pub is_mongo_link_parts_randomize_order_enabled_arxiv: bool,
-    pub is_mongo_link_parts_randomize_order_enabled_biorxiv: bool,
-    pub is_mongo_link_parts_randomize_order_enabled_github: bool,
-    pub is_mongo_link_parts_randomize_order_enabled_habr: bool,
-    pub is_mongo_link_parts_randomize_order_enabled_medrxiv: bool,
-    pub is_mongo_link_parts_randomize_order_enabled_reddit: bool,
-    pub is_mongo_link_parts_randomize_order_enabled_twitter: bool,
-
     pub database_url: String,//postgres_url, naming required by sqlx::query::query!
 
     pub postgres_first_handle_url_part: String,
@@ -108,86 +57,12 @@ pub struct ConfigStruct {
 
     pub postgres_connection_timeout: u64,
 
-    pub is_postgres_initialization_enabled: bool,
-    pub is_postgres_initialization_enabled_providers: bool,
-    pub is_postgres_initialization_enabled_arxiv: bool,
-    pub is_postgres_initialization_enabled_biorxiv: bool,
-    pub is_postgres_initialization_enabled_github: bool,
-    pub is_postgres_initialization_enabled_habr: bool,
-    pub is_postgres_initialization_enabled_medrxiv: bool,
-    pub is_postgres_initialization_enabled_reddit: bool,
-    pub is_postgres_initialization_enabled_twitter: bool,
-
     pub warning_logs_directory_name: String,
     pub unhandled_success_handled_success_are_there_items_initialized_posts_dir: String,
     pub path_to_provider_link_parts_folder: String,
     pub log_file_extension: String,
 
-    pub is_write_error_logs_in_local_folder_enabled: bool,
-    pub is_write_error_logs_in_local_folder_enabled_providers: bool,
-    pub is_write_error_logs_in_local_folder_enabled_arxiv: bool,
-    pub is_write_error_logs_in_local_folder_enabled_biorxiv: bool,
-    pub is_write_error_logs_in_local_folder_enabled_github: bool,
-    pub is_write_error_logs_in_local_folder_enabled_habr: bool,
-    pub is_write_error_logs_in_local_folder_enabled_medrxiv: bool,
-    pub is_write_error_logs_in_local_folder_enabled_reddit: bool,
-    pub is_write_error_logs_in_local_folder_enabled_twitter: bool,
-
-    pub is_cleaning_warning_logs_directory_enabled: bool,
-    pub is_cleaning_warning_logs_directory_enabled_providers: bool,
-    pub is_cleaning_warning_logs_directory_enabled_arxiv: bool,
-    pub is_cleaning_warning_logs_directory_enabled_biorxiv: bool,
-    pub is_cleaning_warning_logs_directory_enabled_github: bool,
-    pub is_cleaning_warning_logs_directory_enabled_habr: bool,
-    pub is_cleaning_warning_logs_directory_enabled_medrxiv: bool,
-    pub is_cleaning_warning_logs_directory_enabled_reddit: bool,
-    pub is_cleaning_warning_logs_directory_enabled_twitter: bool,
-
     pub starting_check_link: String, //todo add browser url limit check
-    pub check_link_arxiv: String,    //todo add browser url limit check
-    pub check_link_biorxiv: String,  //todo add browser url limit check
-    pub check_link_github: String,   //todo add browser url limit check
-    pub check_link_habr: String,     //todo add browser url limit check
-    pub check_link_medrxiv: String,  //todo add browser url limit check
-    pub check_link_reddit: String,   //todo add browser url limit check
-    pub check_link_twitter: String,  //todo add browser url limit check
-
-    pub is_enabled_providers: bool,
-    pub is_enabled_arxiv: bool,
-    pub is_enabled_biorxiv: bool,
-    pub is_enabled_github: bool,
-    pub is_enabled_habr: bool,
-    pub is_enabled_medrxiv: bool,
-    pub is_enabled_reddit: bool,
-    pub is_enabled_twitter: bool,
-
-    pub is_dbs_initialization_enabled: bool,
-    pub is_dbs_initialization_enabled_providers: bool,
-    pub is_dbs_initialization_enabled_arxiv: bool,
-    pub is_dbs_initialization_enabled_biorxiv: bool,
-    pub is_dbs_initialization_enabled_github: bool,
-    pub is_dbs_initialization_enabled_habr: bool,
-    pub is_dbs_initialization_enabled_medrxiv: bool,
-    pub is_dbs_initialization_enabled_reddit: bool,
-    pub is_dbs_initialization_enabled_twitter: bool,
-
-    pub is_links_limit_enabled_providers: bool,
-    pub is_links_limit_enabled_arxiv: bool,
-    pub is_links_limit_enabled_biorxiv: bool,
-    pub is_links_limit_enabled_github: bool,
-    pub is_links_limit_enabled_habr: bool,
-    pub is_links_limit_enabled_medrxiv: bool,
-    pub is_links_limit_enabled_reddit: bool,
-    pub is_links_limit_enabled_twitter: bool,
-
-    pub links_limit_providers: usize, //override links limit for providers. this value applied for each provider
-    pub links_limit_arxiv: usize,
-    pub links_limit_biorxiv: usize,
-    pub links_limit_github: usize,
-    pub links_limit_habr: usize,
-    pub links_limit_medrxiv: usize,
-    pub links_limit_reddit: usize,
-    pub links_limit_twitter: usize,
 
     pub is_preparation_enabled: bool,
     pub tracing_type: crate::server::tracing_type::TracingType,

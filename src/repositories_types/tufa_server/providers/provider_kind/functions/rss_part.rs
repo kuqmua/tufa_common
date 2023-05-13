@@ -19,19 +19,11 @@ pub enum RssPartErrorNamed<'a> {
 pub async fn rss_part<'a>(
     pk: crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind,
     vec_of_provider_links: Vec<String>,
-    config: &'a (
-        impl crate::traits::config_fields::GetCheckLinkArxiv
-        + crate::traits::config_fields::GetCheckLinkBiorxiv
-        + crate::traits::config_fields::GetCheckLinkGithub
-        + crate::traits::config_fields::GetCheckLinkHabr
-        + crate::traits::config_fields::GetCheckLinkMedrxiv
-        + crate::traits::config_fields::GetCheckLinkReddit
-        + crate::traits::config_fields::GetCheckLinkTwitter
-    )
 ) -> Result<Vec<crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct>, Box<RssPartErrorNamed<'a>>> {
     match reqwest::get({
-        use crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKindFromConfig;
-        pk.check_link(config)
+        // use crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKindFromConfig;
+        // pk.check_link()
+        "https://www.google.com/"
     }).await {
         Err(e) => Err(Box::new(RssPartErrorNamed::CheckLinkStatusCodeError {
             reqwest_error: e,
