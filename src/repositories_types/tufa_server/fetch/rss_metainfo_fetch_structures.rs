@@ -29,36 +29,36 @@ impl<'a> NoItemsErrorNamed<'a> {
             NoItemsErrorNamed::NoTag{ no_tag: _no_tag, code_occurence: _code_occurence } => stringify!(NoItemsErrorNamed::NoTag),
         }
     }
-    pub fn into_json_with_link_and_provider_kind(
-        link: &str,
-        no_items_error: &NoItemsErrorNamed,
-        pk: &crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind,
-    ) -> serde_json::Value {
-        match no_items_error {
-            NoItemsErrorNamed::ThereIsTag{ tag, code_occurence: _code_occurence } => {
-                serde_json::json!({
-                    "error_kind": NoItemsErrorNamed::get_stringified_kind(no_items_error),
-                    "link": link,
-                    "tag": tag,
-                    "part_of": format!("{pk}"),
-                    "date": chrono::Local::now().to_string()
-                })
-            }
-            NoItemsErrorNamed::ConversionFromStrError{ string, error, code_occurence: _code_occurence} => serde_json::json!({
-                "error_kind": NoItemsErrorNamed::get_stringified_kind(no_items_error),
-                "link": link,
-                "string": string,
-                "error": error,
-                "part_of": format!("{pk}"),
-                "date": chrono::Local::now().to_string()
-            }),
-            NoItemsErrorNamed::NoTag{ no_tag, code_occurence: _code_occurence} => serde_json::json!({
-                "error_kind": NoItemsErrorNamed::get_stringified_kind(no_items_error),
-                "link": link,
-                "tag": no_tag,
-                "part_of": format!("{pk}"),
-                "date": chrono::Local::now().to_string()
-            }),
-        }
-    }
+    // pub fn into_json_with_link_and_provider_kind(
+    //     link: &str,
+    //     no_items_error: &NoItemsErrorNamed,
+    //     pk: &crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind,
+    // ) -> serde_json::Value {
+    //     match no_items_error {
+    //         NoItemsErrorNamed::ThereIsTag{ tag, code_occurence: _code_occurence } => {
+    //             serde_json::json!({
+    //                 "error_kind": NoItemsErrorNamed::get_stringified_kind(no_items_error),
+    //                 "link": link,
+    //                 "tag": tag,
+    //                 "part_of": format!("{pk}"),
+    //                 "date": chrono::Local::now().to_string()
+    //             })
+    //         }
+    //         NoItemsErrorNamed::ConversionFromStrError{ string, error, code_occurence: _code_occurence} => serde_json::json!({
+    //             "error_kind": NoItemsErrorNamed::get_stringified_kind(no_items_error),
+    //             "link": link,
+    //             "string": string,
+    //             "error": error,
+    //             "part_of": format!("{pk}"),
+    //             "date": chrono::Local::now().to_string()
+    //         }),
+    //         NoItemsErrorNamed::NoTag{ no_tag, code_occurence: _code_occurence} => serde_json::json!({
+    //             "error_kind": NoItemsErrorNamed::get_stringified_kind(no_items_error),
+    //             "link": link,
+    //             "tag": no_tag,
+    //             "part_of": format!("{pk}"),
+    //             "date": chrono::Local::now().to_string()
+    //         }),
+    //     }
+    // }
 }
