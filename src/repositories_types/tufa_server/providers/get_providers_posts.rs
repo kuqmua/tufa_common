@@ -70,9 +70,16 @@ pub async fn get_providers_posts<'a>(
     config: &'a (
         impl crate::traits::config_fields::GetGithubToken
         + crate::traits::config_fields::GetProvidersLinkPartsSource
+
+        + crate::traits::config_fields::GetPathToProviderLinkPartsFolder
+        + crate::traits::config_fields::GetLogFileExtension
+        + crate::traits::config_fields::GetMongoUrl
+        + crate::traits::config_fields::GetMongoProvidersLinkPartsDbName
+        + crate::traits::config_fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
+        + crate::traits::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart
     )
 ) -> Result<(), Box<GetProviderPostsErrorNamed<'a>>> {
-    match crate::repositories_types::tufa_server::providers::providers_info::get_providers_link_parts::get_providers_link_parts(config.get_providers_link_parts_source()).await {
+    match crate::repositories_types::tufa_server::providers::providers_info::get_providers_link_parts::get_providers_link_parts(config).await {
         Err(e) => Err(Box::new(
             GetProviderPostsErrorNamed::GetLocalProvidersLinkParts {
                 get_providers_link_parts: *e,
