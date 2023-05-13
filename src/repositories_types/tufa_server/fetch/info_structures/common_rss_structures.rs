@@ -12,7 +12,7 @@ pub struct CommonRssPost {
     pub description: Option<String>,
     pub creator: Option<String>,
     //meta
-    pub provider_kind: crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind,
+    // pub provider_kind: crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind,
     //meta
 
     //arxiv specific
@@ -104,7 +104,7 @@ impl CommonRssPost {
         description: Option<String>,
         creator: Option<String>,
         //meta
-        provider_kind: crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind,
+        // provider_kind: crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind,
         //meta
 
         //arxiv specific
@@ -195,7 +195,7 @@ impl CommonRssPost {
             description,
             creator,
             //meta
-            provider_kind,
+            // provider_kind,
             //meta
 
             //arxiv specific
