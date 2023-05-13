@@ -37,4 +37,13 @@ pub enum ApplicationRunErrorNamed<'a> {
     },
 }
 
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum RunUntilStoppedErrorNamed<'a> {
+    RunUntilStopped {
+        #[eo_display]
+        run_until_stopped: std::io::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    }
+}
+
 
