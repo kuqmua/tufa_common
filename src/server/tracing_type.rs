@@ -2,7 +2,6 @@
     Debug,
     Clone,
     strum_macros::EnumIter,
-    strum_macros::Display,
     enum_extension::EnumExtension,
     serde::Deserialize,
     PartialEq,
@@ -33,5 +32,11 @@ impl std::str::FromStr for TracingType {
             "error" => Ok(Self::Error),
             _ => Err(String::from("wtf")),
         }
+    }
+}
+
+impl std::fmt::Display for TracingType {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.to_lower_snake_case())
     }
 }
