@@ -56,7 +56,4 @@ pub trait ProviderKindMethods {
     fn get_postgres_table_name(&self) -> String
     where
         Self: Sized;
-    fn get_dbs_initialization_enabled_vec() -> Vec<Self>
-    where
-        Self: Sized;
 }

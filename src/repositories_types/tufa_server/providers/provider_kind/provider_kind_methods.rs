@@ -214,16 +214,4 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
     fn get_postgres_table_name(&self) -> String {
         format!("{}_link_parts", self.to_lower_snake_case())
     }
-    fn get_dbs_initialization_enabled_vec() -> Vec<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind> {
-        {
-            use strum::IntoEnumIterator;
-            crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::iter()
-        }
-        .filter(|pk| {
-            // use crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKindFromConfig;
-            // *pk.is_dbs_initialization_enabled()
-            false
-        })
-        .collect()
-    }
 }
