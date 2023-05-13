@@ -123,6 +123,3 @@ pub trait GetIsParentTracingEnabled {
 pub trait GetSourcePlaceType {
     fn get_source_place_type(&self) -> &crate::common::source_place_type::SourcePlaceType;
 }
-pub trait GetIsTracingTimeEnabled {
-    fn get_is_tracing_time_enabled(&self) -> &bool;
-}
