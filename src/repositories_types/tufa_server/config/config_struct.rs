@@ -63,6 +63,5 @@ pub struct ConfigStruct {
 
     pub is_preparation_enabled: bool,
     pub tracing_type: crate::server::tracing_type::TracingType,
-    pub is_parent_tracing_enabled: bool,
     pub source_place_type: crate::common::source_place_type::SourcePlaceType,
 }

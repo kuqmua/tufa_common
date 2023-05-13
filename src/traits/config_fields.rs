@@ -117,9 +117,6 @@ pub trait GetIsPreparationEnabled {
 pub trait GetTracingType {
     fn get_tracing_type(&self) -> &crate::server::tracing_type::TracingType;
 }
-pub trait GetIsParentTracingEnabled {
-    fn get_is_parent_tracing_enabled(&self) -> &bool;
-}
 pub trait GetSourcePlaceType {
     fn get_source_place_type(&self) -> &crate::common::source_place_type::SourcePlaceType;
 }
