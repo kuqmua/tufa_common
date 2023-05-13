@@ -64,15 +64,6 @@ pub trait GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle {
 pub trait GetDatabaseUrl {
     fn get_database_url(&self) -> &String;//postgres database url. required to exists in env
 }
-pub trait GetPostgresFirstHandleUrlPart {
-    fn get_postgres_first_handle_url_part(&self) -> &String;
-}
-pub trait GetPostgresSecondHandleUrlPart {
-    fn get_postgres_second_handle_url_part(&self) -> &String;
-}
-pub trait GetPostgresThirdHandleUrlPart {
-    fn get_postgres_third_handle_url_part(&self) -> &String;
-}
 pub trait GetPostgresFourthHandleUrlPart {
     fn get_postgres_fourth_handle_url_part(&self) -> &String;
 }

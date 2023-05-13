@@ -41,9 +41,6 @@ pub struct ConfigStruct {
 
     pub database_url: String,//postgres_url, naming required by sqlx::query::query!
 
-    pub postgres_first_handle_url_part: String,
-    pub postgres_second_handle_url_part: String,
-    pub postgres_third_handle_url_part: String,
     pub postgres_fourth_handle_url_part: String,
     pub postgres_fifth_handle_url_part: String,
     pub postgres_sixth_handle_url_part: String,
