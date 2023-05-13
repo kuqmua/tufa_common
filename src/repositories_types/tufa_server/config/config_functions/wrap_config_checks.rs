@@ -86,13 +86,6 @@ impl crate::repositories_types::tufa_server::config::config_struct::ConfigStruct
                 code_occurence: crate::code_occurence_tufa_common!()
             }));
         }
-        //todo: add server_ip server_port checks. and postgres and mongo for validation
-        if self.server_ip.is_empty() {
-            return Err(Box::new(WrapConfigChecksErrorNamed::ServerIp {
-                server_ip: self.server_ip,
-                code_occurence: crate::code_occurence_tufa_common!()
-            }));
-        }
         //todo: check ip pattern. check port pattern
         if self.github_name.is_empty() {
             return Err(Box::new(WrapConfigChecksErrorNamed::GithubName {

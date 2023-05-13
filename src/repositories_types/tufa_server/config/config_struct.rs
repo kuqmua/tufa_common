@@ -10,7 +10,6 @@
     generate_getter_traits_for_struct_fields::GenerateGetterTraitsForStructFields,
 )]
 pub struct ConfigStruct {
-    pub server_ip: String,
     pub server_port: u16,
     pub hmac_secret: String,
     pub base_url: String,

@@ -14,8 +14,7 @@ where
                 ConfigGeneric,
             > + crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>,
     ConfigGeneric: crate::traits::config_fields::GetSourcePlaceType
-        + crate::traits::config_fields::GetTimezone
-        + crate::traits::config_fields::GetServerPort,
+        + crate::traits::config_fields::GetTimezone,
 {
     fn to_string_with_config(
         &self,

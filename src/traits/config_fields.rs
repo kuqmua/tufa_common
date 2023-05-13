@@ -1,6 +1,3 @@
-pub trait GetServerIp {
-    fn get_server_ip(&self) -> &String;
-}
 pub trait GetServerPort {
     fn get_server_port(&self) -> &u16;
 }
