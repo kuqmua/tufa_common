@@ -61,10 +61,7 @@ pub async fn check_availability<'a, SelfGeneric>(
     match futures::join!(
         crate::server::net::net_check_availability::net_check_availability(config.get_starting_check_link()),
         crate::repositories_types::tufa_server::postgres_integration::postgres_check_availability::postgres_check_availability(
-            {
-                use crate::traits::get_postgres_url::GetPostgresUrl;
-                config.get_postgres_url()
-            }, 
+            config.get_postgres_url(), 
             *config.get_postgres_connection_timeout()
         ),
         crate::repositories_types::tufa_server::mongo_integration::mongo_check_availability::mongo_check_availability(

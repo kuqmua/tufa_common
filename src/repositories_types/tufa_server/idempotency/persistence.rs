@@ -49,7 +49,6 @@ pub enum SaveResponseErrorNamed<'a> {
     },
 }
 
-#[allow(large_enum_variant)]
 pub enum NextAction {
     ReturnSavedResponse(actix_web::HttpResponse),
     StartProcessing(sqlx::Transaction<'static, sqlx::Postgres>),
