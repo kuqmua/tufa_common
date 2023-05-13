@@ -40,16 +40,6 @@ pub trait ProviderKindMethods {
     fn into_string_name_and_kind_tuple_vec() -> Vec<(String, Self)>
     where
         Self: Sized;
-    fn remove_existing_providers_logs_directories(
-        config: &impl crate::traits::config_fields::GetWarningLogsDirectoryName
-    ) -> Result<(), std::collections::HashMap<Self, crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::RemoveDirError>>
-    where
-        Self: Sized;
-    fn remove_providers_logs_directories(
-        config: &impl crate::traits::config_fields::GetWarningLogsDirectoryName
-    ) -> Result<(), std::collections::HashMap<Self, crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::CleanLogsDirError>>
-    where
-        Self: Sized;
     fn get_db_tag(&self) -> String
     where
         Self: Sized;

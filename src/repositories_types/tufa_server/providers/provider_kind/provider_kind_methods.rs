@@ -165,49 +165,6 @@ impl crate::repositories_types::tufa_server::traits::provider_kind_methods::Prov
             .map(|pk| (format!("{pk}"), pk))
             .collect()
     }
-    fn remove_existing_providers_logs_directories(
-        config: &impl crate::traits::config_fields::GetWarningLogsDirectoryName
-    ) -> Result<(), std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::RemoveDirError>> {
-        if let Err(error_hashmap) = crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::remove_providers_logs_directories(config) {
-            let return_hashmap = error_hashmap
-                .into_iter()
-                .filter_map(|(pk, error)| {
-                    if let crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::CleanLogsDirError::CannotRemoveDir { error: e } = error {
-                        return Some((pk, e));
-                    }
-                    None
-                })
-                .collect::<std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::RemoveDirError>>();
-            if !return_hashmap.is_empty() {
-                return Err(return_hashmap);
-            }
-            return Ok(());
-        }
-        Ok(())
-    }
-    fn remove_providers_logs_directories(config: &impl crate::traits::config_fields::GetWarningLogsDirectoryName) -> Result<(), std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::CleanLogsDirError>> {
-        let result_hashmap = {
-            use strum::IntoEnumIterator;
-            crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::iter()
-        }
-            .filter_map(|pk| {
-                if {
-                    // use crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKindFromConfig;
-                    // *pk.is_cleaning_warning_logs_directory_enabled(config)
-                    false
-                } {
-                    if let Err(e) = pk.remove_logs_directory(config) {
-                        return Some((pk, e));
-                    }
-                }
-                None
-            })
-            .collect::<std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::CleanLogsDirError>>();
-        if !result_hashmap.is_empty() {
-            return Err(result_hashmap);
-        }
-        Ok(())
-    }
     fn get_db_tag(&self) -> String {
         format!("{self}")
     }
