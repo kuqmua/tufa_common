@@ -1,14 +1,6 @@
 // pub trait ProviderKindMethods {
 //     fn get_item_handle(&self) -> Option<&'static str>;
 //     fn get_mongo_log_collection_name(&self, config: & impl crate::traits::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart) -> String;
-//     fn get_path_to_logs_directory(&self, config: &impl crate::traits::config_fields::GetWarningLogsDirectoryName) -> String;
-//     fn get_path_to_provider_log_file(
-//         &self,
-//         config: &(
-//             impl crate::traits::config_fields::GetWarningLogsDirectoryName
-//             + crate::traits::config_fields::GetUnhandledSuccessHandledSuccessAreThereItemsInitializedPostsDir
-//         )
-//     ) -> String;
 //     fn get_init_local_data_file_path(
 //         &self,
 //         config: &(
@@ -16,7 +8,6 @@
 //             + crate::traits::config_fields::GetLogFileExtension
 //         )
 //     ) -> String;
-//     fn remove_logs_directory(&self, config: &impl crate::traits::config_fields::GetWarningLogsDirectoryName) -> Result<(), crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::CleanLogsDirError>;
 //     fn generate_provider_links(
 //         &self, 
 //         names_vector: Vec<String>,

@@ -19,25 +19,6 @@
 //             config.get_mongo_providers_logs_db_collection_handle_second_part()//todo rename it into db log collection
 //         )
 //     }
-//     fn get_path_to_logs_directory(
-//         &self,
-//         config: &impl crate::traits::config_fields::GetWarningLogsDirectoryName
-//     ) -> String {
-//         format!("logs/{}/{self:?}", config.get_warning_logs_directory_name())
-//     }
-//     fn get_path_to_provider_log_file(
-//         &self,
-//         config: &(
-//             impl crate::traits::config_fields::GetWarningLogsDirectoryName
-//             + crate::traits::config_fields::GetUnhandledSuccessHandledSuccessAreThereItemsInitializedPostsDir
-//         )
-//     ) -> String {
-//         format!(
-//             "logs/{}/{self:?}/{}",
-//             config.get_warning_logs_directory_name(),
-//             config.get_unhandled_success_handled_success_are_there_items_initialized_posts_dir()
-//         )
-//     }
 //     fn get_init_local_data_file_path(
 //         &self,
 //         config: &(
@@ -50,17 +31,6 @@
 //             config.get_path_to_provider_link_parts_folder(),
 //             config.get_log_file_extension()
 //         )
-//     }
-//     fn remove_logs_directory(
-//         &self,
-//         config: &impl crate::traits::config_fields::GetWarningLogsDirectoryName
-//     ) -> Result<(), crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::CleanLogsDirError> {
-//         let path = self.get_path_to_logs_directory(config);
-//         if !std::path::Path::new(&path).is_dir() {
-//             return Err(crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::CleanLogsDirError::PathIsNotDir { path });
-//         }
-//         std::fs::remove_dir_all(&path)?; //todo: its blocking, rewrite to async //update: also its has vulnerability https://blog.rust-lang.org/2022/01/20/cve-2022-21658.html
-//         Ok(())
 //     }
 //     fn generate_provider_links(
 //         &self, 

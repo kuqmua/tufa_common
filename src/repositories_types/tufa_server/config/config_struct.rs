@@ -54,7 +54,6 @@ pub struct ConfigStruct {
 
     pub postgres_connection_timeout: u64,
 
-    pub warning_logs_directory_name: String,
     pub unhandled_success_handled_success_are_there_items_initialized_posts_dir: String,
     pub path_to_provider_link_parts_folder: String,
     pub log_file_extension: String,

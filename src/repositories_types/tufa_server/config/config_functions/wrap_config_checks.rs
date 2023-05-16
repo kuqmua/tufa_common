@@ -65,11 +65,6 @@ pub enum WrapConfigChecksErrorNamed<'a> {
         providers_db_collection_document_field_name: std::string::String, 
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
     },
-    WarningLogsDirectoryName {
-        #[eo_display_with_serialize_deserialize]
-        warning_logs_directory_name: std::string::String, 
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    },
     LinksLimitProviders {
         #[eo_display_with_serialize_deserialize]
         links_limit_providers: usize, 
@@ -144,12 +139,6 @@ impl crate::repositories_types::tufa_server::config::config_struct::ConfigStruct
         if self.path_to_provider_link_parts_folder.is_empty() {
             return Err(Box::new(WrapConfigChecksErrorNamed::PathToProviderLinkPartsFolder {
                 path_to_provider_link_parts_folder: self.path_to_provider_link_parts_folder,
-                code_occurence: crate::code_occurence_tufa_common!()
-            }));
-        }
-        if self.warning_logs_directory_name.is_empty() {
-            return Err(Box::new(WrapConfigChecksErrorNamed::WarningLogsDirectoryName {
-                warning_logs_directory_name: self.warning_logs_directory_name,
                 code_occurence: crate::code_occurence_tufa_common!()
             }));
         }
