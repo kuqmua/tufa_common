@@ -55,7 +55,6 @@ pub async fn check_availability<'a, SelfGeneric>(
         impl crate::traits::config_fields::GetStartingCheckLink
         + crate::traits::get_postgres_url::GetPostgresUrl<SelfGeneric>
         + crate::traits::config_fields::GetPostgresConnectionTimeout
-        + crate::traits::config_fields::GetMongoProvidersLogsDbName
     )
 ) -> Result<(), Box<crate::repositories_types::tufa_server::preparation::check_availability::CheckAvailabilityErrorNamed<'a>>>{
     match futures::join!(
@@ -66,7 +65,7 @@ pub async fn check_availability<'a, SelfGeneric>(
         ),
         crate::repositories_types::tufa_server::mongo_integration::mongo_check_availability::mongo_check_availability(
             mongodb_options_client_options,
-            config.get_mongo_providers_logs_db_name()
+            "logs"
         ),
     ) {
         (Ok(_), Ok(_), Ok(_)) => Ok(()),

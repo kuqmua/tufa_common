@@ -345,7 +345,7 @@
 //         //         Ok(client) => Ok({
 //         //             match mongo_get_documents_as_string_vector(
 //         //                 client
-//         //                     .database(&crate::global_variables::runtime::config::CONFIG.mongo_providers_logs_db_name)
+//         //                     .database("logs")
 //         //                     .collection::<mongodb::bson::Document>(&pk.get_mongo_log_collection_name()),
 //         //                 &crate::global_variables::runtime::config::CONFIG.mongo_providers_logs_db_collection_document_field_name_handle,
 //         //                 ProviderKind::get_mongo_provider_link_parts_aggregation(&pk),

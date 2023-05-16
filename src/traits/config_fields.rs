@@ -49,9 +49,6 @@ pub trait GetMongoUrl {
 pub trait GetMongoConnectionTimeout {
     fn get_mongo_connection_timeout(&self) -> &u64;
 }
-pub trait GetMongoProvidersLogsDbName {
-    fn get_mongo_providers_logs_db_name(&self) -> &String;
-}
 pub trait GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle {
     fn get_mongo_providers_logs_db_collection_document_field_name_handle(&self) -> &String;
 }
