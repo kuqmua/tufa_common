@@ -52,4 +52,3 @@ enum_extension = {path = "../proc_macros/enum_extension"}
 error_occurence = {path = "../proc_macros/error_occurence"}
 generate_getter_traits_for_struct_fields = {path = "../proc_macros/generate_getter_traits_for_struct_fields"}
 init_from_env_with_panic_if_failed = {path = "../proc_macros/init_from_env_with_panic_if_failed"}
-provider_kind_from_config = {path = "../proc_macros/provider_kind_from_config"}
