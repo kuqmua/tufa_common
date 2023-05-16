@@ -53,8 +53,6 @@ pub struct ConfigStruct {
 
     pub postgres_connection_timeout: u64,
 
-    pub path_to_provider_link_parts_folder: String,
-
     pub starting_check_link: String, //todo add browser url limit check
 
     pub tracing_type: crate::server::tracing_type::TracingType,

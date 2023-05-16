@@ -50,11 +50,6 @@ pub enum WrapConfigChecksErrorNamed<'a> {
         mongo_url: std::string::String, 
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
     },
-    PathToProviderLinkPartsFolder {
-        #[eo_display_with_serialize_deserialize] 
-        path_to_provider_link_parts_folder: std::string::String, 
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    },
     ProvidersDbCollectionDocumentFieldName {
         #[eo_display_with_serialize_deserialize] 
         providers_db_collection_document_field_name: std::string::String, 
@@ -122,12 +117,6 @@ impl crate::repositories_types::tufa_server::config::config_struct::ConfigStruct
         if self.mongo_url.is_empty() {
             return Err(Box::new(WrapConfigChecksErrorNamed::MongoUrl {
                 mongo_url: self.mongo_url,
-                code_occurence: crate::code_occurence_tufa_common!()
-            }));
-        }
-        if self.path_to_provider_link_parts_folder.is_empty() {
-            return Err(Box::new(WrapConfigChecksErrorNamed::PathToProviderLinkPartsFolder {
-                path_to_provider_link_parts_folder: self.path_to_provider_link_parts_folder,
                 code_occurence: crate::code_occurence_tufa_common!()
             }));
         }

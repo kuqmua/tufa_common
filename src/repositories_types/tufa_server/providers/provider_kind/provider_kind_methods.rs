@@ -20,14 +20,9 @@
 //     }
 //     fn get_init_local_data_file_path(
 //         &self,
-//         config: &(
-//             impl crate::traits::config_fields::GetPathToProviderLinkPartsFolder
-//             + crate::traits::config_fields::GetLogFileExtension
-//         )
 //     ) -> String {
 //         format!(
-//             "{}{self}_link_parts.json",
-//             config.get_path_to_provider_link_parts_folder(),
+//             "./providers_link_parts/{self}_link_parts.json",
 //         )
 //     }
 //     fn generate_provider_links(
