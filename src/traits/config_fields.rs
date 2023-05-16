@@ -100,9 +100,6 @@ pub trait GetLogFileExtension {
 pub trait GetStartingCheckLink {
     fn get_starting_check_link(&self) -> &String;
 }
-pub trait GetIsPreparationEnabled {
-    fn get_is_preparation_enabled(&self) -> &bool;
-}
 pub trait GetTracingType {
     fn get_tracing_type(&self) -> &crate::server::tracing_type::TracingType;
 }

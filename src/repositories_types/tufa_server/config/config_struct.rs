@@ -58,7 +58,6 @@ pub struct ConfigStruct {
 
     pub starting_check_link: String, //todo add browser url limit check
 
-    pub is_preparation_enabled: bool,
     pub tracing_type: crate::server::tracing_type::TracingType,
     pub source_place_type: crate::common::source_place_type::SourcePlaceType,
 }
