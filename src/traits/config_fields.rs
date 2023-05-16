@@ -94,11 +94,6 @@ pub trait GetPostgresParams {
 pub trait GetPostgresConnectionTimeout {
     fn get_postgres_connection_timeout(&self) -> &u64;
 }
-pub trait GetUnhandledSuccessHandledSuccessAreThereItemsInitializedPostsDir {
-    fn get_unhandled_success_handled_success_are_there_items_initialized_posts_dir(
-        &self,
-    ) -> &String;
-}
 pub trait GetPathToProviderLinkPartsFolder {
     fn get_path_to_provider_link_parts_folder(&self) -> &String;
 }
