@@ -29,7 +29,9 @@
 //         + crate::traits::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart
 //     ) 
 // ) -> Result<std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>, Box<GetProvidersLinkPartsErrorNamed<'a>>> {
-//     match config.get_providers_link_parts_source() {
+//     match 
+            // config.get_providers_link_parts_source() //postgres mongo local
+        // {
 //         crate::server::resource::Resource::Local => match crate::repositories_types::tufa_server::providers::providers_info::get_local_providers_link_parts::get_local_providers_link_parts(config).await {
 //             Err(error_hashmap) => Err(Box::new(
 //                 GetProvidersLinkPartsErrorNamed::GetLocalProvidersLinkParts {

@@ -31,9 +31,6 @@ pub trait GetRedditUsername {
 pub trait GetRedditPassword {
     fn get_reddit_password(&self) -> &String;
 }
-pub trait GetProvidersLinkPartsSource {
-    fn get_providers_link_parts_source(&self) -> &crate::server::resource::Resource;
-}
 pub trait GetTimezone {
     fn get_timezone(&self) -> &i32;
 }

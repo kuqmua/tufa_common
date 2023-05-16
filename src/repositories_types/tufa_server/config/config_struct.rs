@@ -23,8 +23,6 @@ pub struct ConfigStruct {
     pub reddit_username: String,
     pub reddit_password: String,
 
-    pub providers_link_parts_source: crate::server::resource::Resource,
-
     pub timezone: i32,
 
     pub redis_ip: String,
