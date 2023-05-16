@@ -34,8 +34,6 @@ pub struct ConfigStruct {
 
     pub mongo_connection_timeout: u64,
 
-    pub mongo_providers_logs_db_collection_document_field_name_handle: String,
-
     pub database_url: String,//postgres_url, naming required by sqlx::query::query!
 
     pub postgres_fourth_handle_url_part: String,

@@ -33,7 +33,7 @@
 //                         format!(
 //                             "{pk}second_part",
 //                         ),
-//                         config.get_mongo_providers_logs_db_collection_document_field_name_handle(),
+//                         "data",
 //                         vec_of_link_parts
 //                     )
 //                     .await,

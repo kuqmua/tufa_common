@@ -347,7 +347,7 @@
 //         //                 client
 //         //                     .database("logs")
 //         //                     .collection::<mongodb::bson::Document>(&pk.get_mongo_log_collection_name()),
-//         //                 &crate::global_variables::runtime::config::CONFIG.mongo_providers_logs_db_collection_document_field_name_handle,
+//         //                 "data",
 //         //                 ProviderKind::get_mongo_provider_link_parts_aggregation(&pk),
 //         //             )
 //         //             .await

@@ -83,7 +83,7 @@
 //                                             *pk,
 //                                             crate::repositories_types::tufa_server::mongo_integration::mongo_get_documents_as_string_vector::mongo_get_documents_as_string_vector(
 //                                                 db.collection::<mongodb::bson::Document>(&pk.get_mongo_log_collection_name(config)),
-//                                                 config.get_mongo_providers_logs_db_collection_document_field_name_handle(),
+//                                                 "data",
 //                                                 crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::get_mongo_provider_link_parts_aggregation(pk),
 //                                             )
 //                                             .await,
