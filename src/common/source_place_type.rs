@@ -2,7 +2,6 @@
 pub enum SourcePlaceType {
     Source,
     Github,
-    None,
 }
 
 impl<'a> SourcePlaceType {
@@ -22,14 +21,13 @@ impl<'a> SourcePlaceType {
                 use crate::traits::error_logs_logic::form_error_path::FormErrorPathGithub;
                 code_occurence.form_error_path_github()
             }
-            SourcePlaceType::None => String::from(""), //todo maybe incorrect?
         }
     }
 }
 
 impl Default for SourcePlaceType {
     fn default() -> Self {
-        Self::None
+        Self::Source
     }
 }
 
@@ -43,7 +41,6 @@ impl std::str::FromStr for SourcePlaceType {
         match e {
             "source" => Ok(SourcePlaceType::Source),
             "github" => Ok(SourcePlaceType::Github),
-            "none" => Ok(SourcePlaceType::None),
             _ => Err(ParseSourcePlaceTypeError {
                 _incorrect_str: e.to_string(),
             }),
