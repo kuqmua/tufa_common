@@ -26,9 +26,8 @@
 //         )
 //     ) -> String {
 //         format!(
-//             "{}{self}_link_parts{}",
+//             "{}{self}_link_parts.json",
 //             config.get_path_to_provider_link_parts_folder(),
-//             config.get_log_file_extension()
 //         )
 //     }
 //     fn generate_provider_links(

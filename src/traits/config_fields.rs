@@ -94,9 +94,6 @@ pub trait GetPostgresConnectionTimeout {
 pub trait GetPathToProviderLinkPartsFolder {
     fn get_path_to_provider_link_parts_folder(&self) -> &String;
 }
-pub trait GetLogFileExtension {
-    fn get_log_file_extension(&self) -> &String;
-}
 pub trait GetStartingCheckLink {
     fn get_starting_check_link(&self) -> &String;
 }
