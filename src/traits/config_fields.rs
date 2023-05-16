@@ -16,21 +16,6 @@ pub trait GetGithubName {
 pub trait GetGithubToken {
     fn get_github_token(&self) -> &String;
 }
-pub trait GetRedditUserAgent {
-    fn get_reddit_user_agent(&self) -> &String;
-}
-pub trait GetRedditClientId {
-    fn get_reddit_client_id(&self) -> &String;
-}
-pub trait GetRedditClientSecret {
-    fn get_reddit_client_secret(&self) -> &String;
-}
-pub trait GetRedditUsername {
-    fn get_reddit_username(&self) -> &String;
-}
-pub trait GetRedditPassword {
-    fn get_reddit_password(&self) -> &String;
-}
 pub trait GetTimezone {
     fn get_timezone(&self) -> &i32;
 }

@@ -20,31 +20,6 @@ pub enum WrapConfigChecksErrorNamed<'a> {
         github_token: std::string::String, 
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
     },
-    RedditUserAgent {
-        #[eo_display_with_serialize_deserialize] 
-        reddit_user_agent: std::string::String, 
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    },
-    RedditClientId {
-        #[eo_display_with_serialize_deserialize] 
-        reddit_client_id: std::string::String, 
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    },
-    RedditClientSecret {
-        #[eo_display_with_serialize_deserialize] 
-        reddit_client_secret: std::string::String, 
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    },
-    RedditUsername {
-        #[eo_display_with_serialize_deserialize] 
-        reddit_username: std::string::String, 
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    },
-    RedditPassword {
-        #[eo_display_with_serialize_deserialize] 
-        reddit_password: std::string::String, 
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    },
     MongoUrl {
         #[eo_display_with_serialize_deserialize] 
         mongo_url: std::string::String, 
@@ -81,36 +56,6 @@ impl crate::repositories_types::tufa_server::config::config_struct::ConfigStruct
         if self.github_token.is_empty() {
             return Err(Box::new(WrapConfigChecksErrorNamed::GithubToken {
                 github_token: self.github_token,
-                code_occurence: crate::code_occurence_tufa_common!()
-            }));
-        }
-        if self.reddit_user_agent.is_empty() {
-            return Err(Box::new(WrapConfigChecksErrorNamed::RedditUserAgent {
-                reddit_user_agent: self.reddit_user_agent,
-                code_occurence: crate::code_occurence_tufa_common!()
-            }));
-        }
-        if self.reddit_client_id.is_empty() {
-            return Err(Box::new(WrapConfigChecksErrorNamed::RedditClientId {
-                reddit_client_id: self.reddit_client_id,
-                code_occurence: crate::code_occurence_tufa_common!()
-            }));
-        }
-        if self.reddit_client_secret.is_empty() {
-            return Err(Box::new(WrapConfigChecksErrorNamed::RedditClientSecret {
-                reddit_client_secret: self.reddit_client_secret,
-                code_occurence: crate::code_occurence_tufa_common!()
-            }));
-        }
-        if self.reddit_username.is_empty() {
-            return Err(Box::new(WrapConfigChecksErrorNamed::RedditUsername {
-                reddit_username: self.reddit_username,
-                code_occurence: crate::code_occurence_tufa_common!()
-            }));
-        }
-        if self.reddit_password.is_empty() {
-            return Err(Box::new(WrapConfigChecksErrorNamed::RedditPassword {
-                reddit_password: self.reddit_password,
                 code_occurence: crate::code_occurence_tufa_common!()
             }));
         }

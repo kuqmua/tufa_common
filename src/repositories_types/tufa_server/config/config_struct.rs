@@ -17,12 +17,6 @@ pub struct ConfigStruct {
     pub github_name: String,
     pub github_token: String,
 
-    pub reddit_user_agent: String,
-    pub reddit_client_id: String,
-    pub reddit_client_secret: String,
-    pub reddit_username: String,
-    pub reddit_password: String,
-
     pub timezone: i32,
 
     pub redis_ip: String,
