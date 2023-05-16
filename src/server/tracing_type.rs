@@ -3,6 +3,7 @@
     Clone,
     strum_macros::EnumIter,
     enum_extension::EnumExtension,
+    serde::Serialize,
     serde::Deserialize,
     PartialEq,
     Eq,

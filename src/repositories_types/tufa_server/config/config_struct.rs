@@ -49,132 +49,24 @@ pub struct ConfigStruct {
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum WrapConfigChecksErrorNamed<'a> {
-    //  {
-    //     #[eo_display_with_serialize_deserialize] 
-    //     : std::string::String, 
-    //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    // },
-    //  {
-    //     #[eo_display_with_serialize_deserialize] 
-    //     : std::string::String, 
-    //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    // },
-    //  {
-    //     #[eo_display_with_serialize_deserialize] 
-    //     : std::string::String, 
-    //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    // },
-    //  {
-    //     #[eo_display_with_serialize_deserialize] 
-    //     : std::string::String, 
-    //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    // },
-    //  {
-    //     #[eo_display_with_serialize_deserialize] 
-    //     : std::string::String, 
-    //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    // },
-    //  {
-    //     #[eo_display_with_serialize_deserialize] 
-    //     : std::string::String, 
-    //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    // },
-    //  {
-    //     #[eo_display_with_serialize_deserialize] 
-    //     : std::string::String, 
-    //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    // },
-    //  {
-    //     #[eo_display_with_serialize_deserialize] 
-    //     : std::string::String, 
-    //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    // },
-    //  {
-    //     #[eo_display_with_serialize_deserialize] 
-    //     : std::string::String, 
-    //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    // },
-    //  {
-    //     #[eo_display_with_serialize_deserialize] 
-    //     : std::string::String, 
-    //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    // },
-    //  {
-    //     #[eo_display_with_serialize_deserialize] 
-    //     : std::string::String, 
-    //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    // },
-    //  {
-    //     #[eo_display_with_serialize_deserialize] 
-    //     : std::string::String, 
-    //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    // },
-    //  {
-    //     #[eo_display_with_serialize_deserialize] 
-    //     : std::string::String, 
-    //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    // },
-    //  {
-    //     #[eo_display_with_serialize_deserialize] 
-    //     : std::string::String, 
-    //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    // },
-    //  {
-    //     #[eo_display_with_serialize_deserialize] 
-    //     : std::string::String, 
-    //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    // },
-    //  {
-    //     #[eo_display_with_serialize_deserialize] 
-    //     : std::string::String, 
-    //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
-    // },
-    // //
-    // server_port: u16,
-    // hmac_secret: String,
-    // base_url: String,
-    // require_ssl: bool,
-
-    // github_name: String,
-    // github_token: String,
-
-    // timezone: i32,
-
-    // redis_ip: String,
-    // redis_port: u16,
-
-    // mongo_url: String,
-
-    // mongo_connection_timeout: u64,
-
-    // database_url: String,//postgres_url, naming required by sqlx::query::query!
-
-    // postgres_fourth_handle_url_part: String,
-    // postgres_fifth_handle_url_part: String,
-    // postgres_sixth_handle_url_part: String,
-
-    // postgres_login: String,
-    // postgres_password: String,
-    // postgres_ip: String, //todo: 4x u8
-    // postgres_port: u16,
-    // postgres_db: String,
-    // postgres_params: String,
-
-    // postgres_connection_timeout: u64,
-
-    // starting_check_link: String, //todo add browser url limit check
-
-    // tracing_type: crate::server::tracing_type::TracingType,
-    // source_place_type: crate::common::source_place_type::SourcePlaceType,
-    // //
-    Timezone {
+    ServerPort {
         #[eo_display_with_serialize_deserialize] 
-        timezone: i32, 
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    }, //incorrect code_occurence maybe
-    ServerIp {
+        server_port: u16, 
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
+    },
+    HmacSecret {
         #[eo_display_with_serialize_deserialize] 
-        server_ip: std::string::String, 
+        hmac_secret: std::string::String, 
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
+    },
+    BaseUrl {
+        #[eo_display_with_serialize_deserialize] 
+        base_url: std::string::String, 
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
+    },
+    RequireSsl {
+        #[eo_display_with_serialize_deserialize] 
+        require_ssl: bool, 
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
     },
     GithubName {
@@ -187,86 +79,130 @@ pub enum WrapConfigChecksErrorNamed<'a> {
         github_token: std::string::String, 
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
     },
+    Timezone {
+        #[eo_display_with_serialize_deserialize] 
+        timezone: i32, 
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
+    },
+    RedisIp {
+        #[eo_display_with_serialize_deserialize] 
+        redis_ip: std::string::String, 
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
+    },
+    RedisPort {
+        #[eo_display_with_serialize_deserialize] 
+        redis_port: u16, 
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
+    },
     MongoUrl {
         #[eo_display_with_serialize_deserialize] 
         mongo_url: std::string::String, 
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
     },
-    ProvidersDbCollectionDocumentFieldName {
+    MongoConnectionTimeout {
         #[eo_display_with_serialize_deserialize] 
-        providers_db_collection_document_field_name: std::string::String, 
+        mongo_connection_timeout: u64, 
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
     },
-    LinksLimitProviders {
-        #[eo_display_with_serialize_deserialize]
-        links_limit_providers: usize, 
+    DatabaseUrl {
+        #[eo_display_with_serialize_deserialize] 
+        database_url: std::string::String, 
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
     },
+    PostgresFourthHandleUrlPart {
+        #[eo_display_with_serialize_deserialize] 
+        postgres_fourth_handle_url_part: std::string::String, 
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
+    },
+    PostgresFifthHandleUrlpart {
+        #[eo_display_with_serialize_deserialize] 
+        postgres_fifth_handle_url_part: std::string::String, 
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
+    },
+    PostgresSixthHandleUrlPart {
+        #[eo_display_with_serialize_deserialize] 
+        postgres_sixth_handle_url_part: std::string::String, 
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
+    },
+    PostgresLogin {
+        #[eo_display_with_serialize_deserialize] 
+        PostgresLogin: std::string::String, 
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
+    },
+    PostgresPassword {
+        #[eo_display_with_serialize_deserialize] 
+        postgres_password: std::string::String, 
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
+    },
+    PostgresIp {
+        #[eo_display_with_serialize_deserialize] 
+        postgres_ip: std::string::String, 
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
+    },
+    PostgresPort {
+        #[eo_display_with_serialize_deserialize] 
+        postgres_port: u16, 
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
+    },
+    PostgresDb {
+        #[eo_display_with_serialize_deserialize] 
+        postgres_db: std::string::String, 
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
+    },
+    PostgresParams {
+        #[eo_display_with_serialize_deserialize] 
+        postgres_params: std::string::String, 
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
+    },
+    PostgresConnectionTimeout {
+        #[eo_display_with_serialize_deserialize] 
+        postgres_connection_timeout: u64, 
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
+    },
+    StartingCheckLink {
+        #[eo_display_with_serialize_deserialize] 
+        starting_check_link: std::string::String, 
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
+    },
+    TracingType {
+        #[eo_display_with_serialize_deserialize] 
+        tracing_type: crate::server::tracing_type::TracingType, 
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
+    },
+    SourcePlaceType {
+        #[eo_display_with_serialize_deserialize] 
+        source_place_type: crate::common::source_place_type::SourcePlaceType, 
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>, 
+    }
 }
 
 impl crate::repositories_types::tufa_server::config::config_struct::ConfigStruct {
     pub fn wrap_config_checks<'a>(self) -> Result<Self, Box<WrapConfigChecksErrorNamed<'a>>> {
         //its important to check timezone first coz it will be used later. it must be valid
-        if !(-86_400 < self.timezone && self.timezone < 86_400) {
-            return Err(Box::new(WrapConfigChecksErrorNamed::Timezone {
-                timezone: self.timezone,
-                code_occurence: crate::code_occurence_tufa_common!()
-            }));
-        }
-        //todo: check ip pattern. check port pattern
-        if self.github_name.is_empty() {
-            return Err(Box::new(WrapConfigChecksErrorNamed::GithubName {
-                github_name: self.github_name,
-                code_occurence: crate::code_occurence_tufa_common!()
-            }));
-        }
-        if self.github_token.is_empty() {
-            return Err(Box::new(WrapConfigChecksErrorNamed::GithubToken {
-                github_token: self.github_token,
-                code_occurence: crate::code_occurence_tufa_common!()
-            }));
-        }
-        if self.mongo_url.is_empty() {
-            return Err(Box::new(WrapConfigChecksErrorNamed::MongoUrl {
-                mongo_url: self.mongo_url,
-                code_occurence: crate::code_occurence_tufa_common!()
-            }));
-        }
-        //useless coz usize must be not negative
-        // if self.links_limit_providers <= 0 {
-        //     println!("fak");
-        //     return Err(WrapConfigChecksError {
-        //         source: Box::new(WrapConfigChecksErrorNamed::LinksLimitProviderse {
-        //             source: self.links_limit_providers,
-        //             code_occurence: crate::code_occurence_tufa_common!()
-        //         }),
-        //     });
+        // if !(-86_400 < self.timezone && self.timezone < 86_400) {
+        //     return Err(Box::new(WrapConfigChecksErrorNamed::Timezone {
+        //         timezone: self.timezone,
+        //         code_occurence: crate::code_occurence_tufa_common!()
+        //     }));
         // }
-        /////////////
-        //     pub fn east_opt(secs: i32) -> Option<FixedOffset> {
-        //     if -86_400 < secs && secs < 86_400 {
-        //         Some(FixedOffset { local_minus_utc: secs })
-        //     } else {
-        //         None
-        //     }
+        // //todo: check ip pattern. check port pattern
+        // if self.github_name.is_empty() {
+        //     return Err(Box::new(WrapConfigChecksErrorNamed::GithubName {
+        //         github_name: self.github_name,
+        //         code_occurence: crate::code_occurence_tufa_common!()
+        //     }));
         // }
-        // pub fn west_opt(secs: i32) -> Option<FixedOffset> {
-        //     if -86_400 < secs && secs < 86_400 {
-        //         Some(FixedOffset { local_minus_utc: -secs })
-        //     } else {
-        //         None
-        //     }
+        // if self.github_token.is_empty() {
+        //     return Err(Box::new(WrapConfigChecksErrorNamed::GithubToken {
+        //         github_token: self.github_token,
+        //         code_occurence: crate::code_occurence_tufa_common!()
+        //     }));
         // }
-        ///////////////
-        // if !crate::config_mods::config_struct::ConfigStruct::check_valid_i64_providers_links_limits_for_mongo(&self) {
-        //     return Err(WrapConfigChecksError {
-        //         source: Box::new(WrapConfigChecksErrorNamed::GithubName {
-        //             source: self.github_name,
-        //             file: file!(),
-        //             line: line!(),
-        //             column: column!(),
-        //         })
-        //     });
+        // if self.mongo_url.is_empty() {
+        //     return Err(Box::new(WrapConfigChecksErrorNamed::MongoUrl {
+        //         mongo_url: self.mongo_url,
+        //         code_occurence: crate::code_occurence_tufa_common!()
+        //     }));
         // }
         Ok(self)
     }
