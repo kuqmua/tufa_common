@@ -52,3 +52,4 @@ enum_extension = {path = "../proc_macros/enum_extension"}
 error_occurence = {path = "../proc_macros/error_occurence"}
 generate_getter_traits_for_struct_fields = {path = "../proc_macros/generate_getter_traits_for_struct_fields"}
 init_from_env_with_panic_if_failed = {path = "../proc_macros/init_from_env_with_panic_if_failed"}
+user_port_try_from_u16 = {path = "../proc_macros/user_port_try_from_u16"}
