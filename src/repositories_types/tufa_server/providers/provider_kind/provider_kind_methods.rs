@@ -15,8 +15,7 @@
 //         config: & impl crate::traits::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart 
 //     ) -> String {
 //         format!(
-//             "{self}{}",
-//             config.get_mongo_providers_logs_db_collection_handle_second_part()//todo rename it into db log collection
+//             "{self}second_part",
 //         )
 //     }
 //     fn get_init_local_data_file_path(

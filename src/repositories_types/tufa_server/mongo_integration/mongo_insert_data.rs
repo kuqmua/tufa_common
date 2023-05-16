@@ -31,8 +31,7 @@
 //                         mongodb_options_client_options_handle,
 //                         db_name_handle,
 //                         format!(
-//                             "{pk}{}",
-//                             config.get_mongo_providers_logs_db_collection_handle_second_part()
+//                             "{pk}second_part",
 //                         ),
 //                         config.get_mongo_providers_logs_db_collection_document_field_name_handle(),
 //                         vec_of_link_parts

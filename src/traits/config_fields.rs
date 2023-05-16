@@ -55,9 +55,6 @@ pub trait GetMongoProvidersLinkPartsDbName {
 pub trait GetMongoProvidersLogsDbName {
     fn get_mongo_providers_logs_db_name(&self) -> &String;
 }
-pub trait GetMongoProvidersLogsDbCollectionHandleSecondPart {
-    fn get_mongo_providers_logs_db_collection_handle_second_part(&self) -> &String;
-}
 pub trait GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle {
     fn get_mongo_providers_logs_db_collection_document_field_name_handle(&self) -> &String;
 }
