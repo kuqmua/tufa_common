@@ -5,7 +5,6 @@ pub struct CodeOccurence<'a> {
     column: u32,
     git_info: &'a crate::common::git::git_info::GitInformation<'a>,
     duration: std::time::Duration,
-    process_id: u32,
 }
 
 impl<'a> CodeOccurence<'a> {
@@ -22,8 +21,7 @@ impl<'a> CodeOccurence<'a> {
             git_info,
             duration: std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
-                .expect("cannot convert time to unix_epoch"),
-            process_id: std::process::id(),
+                .expect("cannot convert time to unix_epoch")
         }
     }
 }
@@ -58,12 +56,6 @@ impl<'a> crate::traits::get_duration::GetDuration for CodeOccurence<'a> {
     }
 }
 
-impl<'a> crate::traits::get_process_id::GetProcessId for CodeOccurence<'a> {
-    fn get_process_id(&self) -> &u32 {
-        &self.process_id
-    }
-}
-
 impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurence<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         use crate::traits::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithoutConfig;
@@ -91,7 +83,6 @@ impl<'a> CodeOccurence<'a> {
             column: self.column,
             git_info: self.git_info.clone(),
             duration: self.duration,
-            process_id: self.process_id,
         }
     }
 }
@@ -103,7 +94,6 @@ pub struct CodeOccurenceWithSerializeDeserialize<'a> {
     column: u32,
     git_info: crate::common::git::git_info::GitInformation<'a>,
     duration: std::time::Duration,
-    process_id: u32,
 }
 
 impl<'a> CodeOccurenceWithSerializeDeserialize<'a> {
@@ -121,7 +111,6 @@ impl<'a> CodeOccurenceWithSerializeDeserialize<'a> {
             duration: std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("cannot convert time to unix_epoch"),
-            process_id: std::process::id(),
         }
     }
 }
@@ -153,12 +142,6 @@ impl<'a> crate::traits::get_git_info::GetGitInfo<'a> for CodeOccurenceWithSerial
 impl<'a> crate::traits::get_duration::GetDuration for CodeOccurenceWithSerializeDeserialize<'a> {
     fn get_duration(&self) -> std::time::Duration {
         self.duration
-    }
-}
-
-impl<'a> crate::traits::get_process_id::GetProcessId for CodeOccurenceWithSerializeDeserialize<'a> {
-    fn get_process_id(&self) -> &u32 {
-        &self.process_id
     }
 }
 

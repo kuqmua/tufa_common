@@ -14,7 +14,6 @@ where
         + crate::traits::get_column::GetColumn
         + crate::traits::get_code_path_without_config::GetCodePathWithoutConfig
         + crate::traits::get_duration::GetDuration
-        + crate::traits::get_process_id::GetProcessId
         + crate::traits::get_git_source_file_link::GetGitSourceFileLink<'a>,
     ConfigGeneric: crate::traits::config_fields::GetTimezone
         + crate::traits::config_fields::GetSourcePlaceType
@@ -25,8 +24,7 @@ where
             chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
                 .with_timezone(&chrono::FixedOffset::east_opt(*config.get_timezone()).unwrap())
                 .format("%Y-%m-%d %H:%M:%S")
-                .to_string(),
-            self.get_process_id()
+                .to_string()
         )
     }
 }
@@ -43,7 +41,6 @@ where
         //above its for crate::traits::get_code_path_without_config::GetCodePathWithoutConfig
         + crate::traits::get_code_path_without_config::GetCodePathWithoutConfig
         + crate::traits::get_duration::GetDuration
-        + crate::traits::get_process_id::GetProcessId
 {
     fn code_occurence_prepare_for_log_without_config(&self) -> String {
         prepare_for_log(
@@ -51,8 +48,7 @@ where
             chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
                 .with_timezone(&chrono::FixedOffset::east_opt(10800).unwrap())
                 .format("%Y-%m-%d %H:%M:%S")
-                .to_string(),
-            self.get_process_id()
+                .to_string()
         )
     }
 }
@@ -69,7 +65,6 @@ where
         + crate::traits::get_code_path_without_config::GetCodePathWithoutConfig
         + crate::traits::get_git_source_file_link::GetGitSourceFileLink<'a>
         + crate::traits::get_duration::GetDuration
-        + crate::traits::get_process_id::GetProcessId
 {
     fn code_occurence_prepare_for_log_without_config_with_serialize_deserialize(&self) -> String {
         use crate::traits::error_logs_logic::form_error_path::FormErrorPathGithub;
@@ -78,8 +73,7 @@ where
             chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
                 .with_timezone(&chrono::FixedOffset::east_opt(10800).unwrap())
                 .format("%Y-%m-%d %H:%M:%S")
-                .to_string(),
-            self.get_process_id()
+                .to_string()
         )
     }
 }
@@ -87,7 +81,6 @@ where
 fn prepare_for_log(
     path: String,
     time: String,
-    process_id: &u32
 ) -> String {
-    format!("{path} {time} pid {process_id}")
+    format!("{path} {time}")
 }
