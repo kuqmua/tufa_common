@@ -45,7 +45,7 @@
 //                 }
 //             )),
 //             Ok(client) => {
-//                 let db = client.database(&config.get_mongo_providers_link_parts_db_name());
+//                 let db = client.database("providers_link_parts");
 //                 if let Err(e) = crate::repositories_types::tufa_server::mongo_integration::mongo_check_collection_is_not_empty::mongo_check_collections_is_not_empty(
 //                     providers_json_local_data_hashmap.clone(),
 //                     &db,

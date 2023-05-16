@@ -34,7 +34,6 @@ pub struct ConfigStruct {
 
     pub mongo_connection_timeout: u64,
 
-    pub mongo_providers_link_parts_db_name: String,
     pub mongo_providers_logs_db_name: String,
     pub mongo_providers_logs_db_collection_document_field_name_handle: String,
 
