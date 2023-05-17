@@ -14,7 +14,7 @@ pub struct ConfigUnchecked {
     pub github_name: String,
     pub github_token: String,
 
-    pub timezone: i32,
+    pub timezone: i32,//for some reason chrono::FixedOffset::east_opt uses i32 but i16 is enough 
 
     pub redis_ip: String,
     pub redis_port: u16,
