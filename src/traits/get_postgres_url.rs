@@ -11,12 +11,11 @@ where
         + crate::traits::config_fields::GetPostgresPort
         + crate::traits::config_fields::GetPostgresFifthHandleUrlPart
         + crate::traits::config_fields::GetPostgresDb
-        + crate::traits::config_fields::GetPostgresSixthHandleUrlPart
         + crate::traits::config_fields::GetPostgresParams,
 {
     fn get_postgres_url(&self) -> String {
         format!(
-            "postgres://{}:{}@{}{}{}{}{}{}{}",
+            "postgres://{}:{}@{}{}{}{}{}{}",
             self.get_postgres_login(),
             self.get_postgres_password(),
             self.get_postgres_ip(),
@@ -24,7 +23,6 @@ where
             self.get_postgres_port(),
             self.get_postgres_fifth_handle_url_part(),
             self.get_postgres_db(),
-            self.get_postgres_sixth_handle_url_part(),
             self.get_postgres_params(),
         )
     }

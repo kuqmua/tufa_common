@@ -29,7 +29,6 @@ pub struct ConfigUnchecked {
 
     pub postgres_fourth_handle_url_part: String,
     pub postgres_fifth_handle_url_part: String,
-    pub postgres_sixth_handle_url_part: String,
 
     pub postgres_login: String,
     pub postgres_password: String,
@@ -72,7 +71,6 @@ pub struct Config {
 
     postgres_fourth_handle_url_part: String,
     postgres_fifth_handle_url_part: String,
-    postgres_sixth_handle_url_part: String,
 
     postgres_login: String,
     postgres_password: String,
@@ -175,7 +173,6 @@ impl TryFrom<ConfigUnchecked> for Config {
             },
             false => config_struct.postgres_fifth_handle_url_part,
         };
-        let postgres_sixth_handle_url_part_handle = config_struct.postgres_sixth_handle_url_part;
 
         let postgres_login_handle = match config_struct.postgres_login.is_empty() {
             true => {
@@ -242,7 +239,6 @@ impl TryFrom<ConfigUnchecked> for Config {
 
             postgres_fourth_handle_url_part: postgres_fourth_handle_url_part_handle,
             postgres_fifth_handle_url_part: postgres_fifth_handle_url_part_handle,
-            postgres_sixth_handle_url_part: postgres_sixth_handle_url_part_handle,
 
             postgres_login: postgres_login_handle,
             postgres_password: postgres_password_handle,

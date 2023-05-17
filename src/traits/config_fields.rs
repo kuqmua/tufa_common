@@ -40,9 +40,6 @@ pub trait GetPostgresFourthHandleUrlPart {
 pub trait GetPostgresFifthHandleUrlPart {
     fn get_postgres_fifth_handle_url_part(&self) -> &String;
 }
-pub trait GetPostgresSixthHandleUrlPart {
-    fn get_postgres_sixth_handle_url_part(&self) -> &String;
-}
 pub trait GetPostgresLogin {
     fn get_postgres_login(&self) -> &String;
 }
