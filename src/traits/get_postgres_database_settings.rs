@@ -1,8 +1,8 @@
-pub trait GePostgresDatabaseSettings<'a> {
+pub trait GetPostgresDatabaseSettings<'a> {
     fn get_postgres_database_settings(&self) -> crate::repositories_types::tufa_server::configuration::PostgresDatabaseSettings;
 }
 
-impl<'a, SelfGeneric> GePostgresDatabaseSettings<'a> for SelfGeneric
+impl<'a, SelfGeneric> GetPostgresDatabaseSettings<'a> for SelfGeneric
 where
     Self: crate::traits::config_fields::GetPostgresIp
         + crate::traits::config_fields::GetPostgresPort
