@@ -50,12 +50,30 @@ pub enum SubscribeErrorNamed<'a> {
 impl<'a> actix_web::ResponseError for SubscribeErrorNamed<'a> {
     fn status_code(&self) -> actix_web::http::StatusCode {
         match self {
-            SubscribeErrorNamed::TryIntoNewSubscriber { try_into_new_subscriber, code_occurence } => actix_web::http::StatusCode::BAD_REQUEST,
-            SubscribeErrorNamed::PostgresPoolBegin { postgres_pool_begin, code_occurence } => actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
-            SubscribeErrorNamed::InsertSubscriber { insert_subscriber, code_occurence } => actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
-            SubscribeErrorNamed::StoreToken { store_token, code_occurence } => actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
-            SubscribeErrorNamed::PostgresTransactionCommit { postgres_transaction_commit, code_occurence } => actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
-            SubscribeErrorNamed::SendConfirmationEmail { send_confirmation_email, code_occurence } => actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+            SubscribeErrorNamed::TryIntoNewSubscriber { 
+                try_into_new_subscriber: _try_into_new_subscriber, 
+                code_occurence: _code_occurence 
+            } => actix_web::http::StatusCode::BAD_REQUEST,
+            SubscribeErrorNamed::PostgresPoolBegin { 
+                postgres_pool_begin: _postgres_pool_begin, 
+                code_occurence: _code_occurence 
+            } => actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+            SubscribeErrorNamed::InsertSubscriber { 
+                insert_subscriber: _insert_subscriber, 
+                code_occurence: _code_occurence 
+            } => actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+            SubscribeErrorNamed::StoreToken { 
+                store_token: _store_token, 
+                code_occurence: _code_occurence 
+            } => actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+            SubscribeErrorNamed::PostgresTransactionCommit { 
+                postgres_transaction_commit: _postgres_transaction_commit, 
+                code_occurence: _code_occurence 
+            } => actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+            SubscribeErrorNamed::SendConfirmationEmail { 
+                send_confirmation_email: _send_confirmation_email, 
+                code_occurence: _code_occurence 
+            } => actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
         }
     }
 }
