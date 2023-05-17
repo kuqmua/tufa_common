@@ -1,4 +1,4 @@
-pub fn get_connection_pool(configuration: &crate::repositories_types::tufa_server::configuration::DatabaseSettings) -> sqlx::PgPool {
+pub fn get_connection_pool(configuration: &crate::repositories_types::tufa_server::configuration::PostgresDatabaseSettings) -> sqlx::PgPool {
     sqlx::postgres::PgPoolOptions::new()
         .connect_timeout(std::time::Duration::from_secs(2))
         .connect_lazy_with(configuration.with_db())

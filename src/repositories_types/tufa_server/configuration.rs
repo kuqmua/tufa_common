@@ -2,7 +2,7 @@ use serde_aux::field_attributes::deserialize_number_from_string;
 
 #[derive(serde::Deserialize, Clone, Debug)]
 pub struct Settings {
-    pub database: DatabaseSettings,
+    pub database: PostgresDatabaseSettings,
     pub application: ApplicationSettings,
     pub email_client: EmailClientSettings,
     pub redis_uri: secrecy::Secret<String>,
@@ -43,7 +43,7 @@ pub struct ApplicationSettings {
 }
 
 #[derive(serde::Deserialize, Clone, Debug)]
-pub struct DatabaseSettings {
+pub struct PostgresDatabaseSettings {
     pub username: String,
     pub password: secrecy::Secret<String>,
     #[serde(deserialize_with = "deserialize_number_from_string")]
@@ -53,7 +53,7 @@ pub struct DatabaseSettings {
     pub require_ssl: bool,
 }
 
-impl DatabaseSettings {
+impl PostgresDatabaseSettings {
     pub fn with_db(&self) -> sqlx::postgres::PgConnectOptions {
         let mut options = self.without_db().database(&self.database_name);
         {
