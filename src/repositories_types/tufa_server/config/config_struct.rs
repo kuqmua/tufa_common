@@ -1,5 +1,3 @@
-//todo - maybe should exists types of config - config for parsing env file, config builder for checks some logic like its have u8 but its not 42(wrapper under u8)
-
 #[derive(
     Debug,
     Default,
@@ -58,7 +56,7 @@ pub struct Config {
     github_name: String,
     github_token: String,
 
-    timezone: i32,
+    timezone: chrono::FixedOffset,
 
     redis_ip: String,
     redis_port: crate::common::user_port::UserPort,
@@ -89,134 +87,132 @@ pub struct Config {
 
 impl TryFrom<ConfigUnchecked> for Config {
     type Error = ConfigCheckError;
-    fn try_from(config_struct: ConfigUnchecked) -> Result<Self, ConfigCheckError> {
-        //its important to check timezone first coz it will be used later. it must be valid
-        // if !(-86_400 < self.timezone && self.timezone < 86_400) {
-        //     return Err(Box::new(ConfigCheckErrorNamed::Timezone {
-        //         timezone: self.timezone,
-        //         code_occurence: crate::code_occurence_tufa_common!()
-        //     }));
-        // }
-        let server_port_handle = match crate::common::user_port::UserPort::try_from(config_struct.server_port) {
+    fn try_from(config_unchecked: ConfigUnchecked) -> Result<Self, ConfigCheckError> {
+        let server_port_handle = match crate::common::user_port::UserPort::try_from(config_unchecked.server_port) {
             Ok(user_port) => user_port,
             Err(e) => {
                 return Err(ConfigCheckError::ServerPort(e));
             },
         };
-        let hmac_secret_handle = match config_struct.hmac_secret.is_empty() {
+        let hmac_secret_handle = match config_unchecked.hmac_secret.is_empty() {
             true => {
-                return Err(ConfigCheckError::HmacSecret(config_struct.hmac_secret));
+                return Err(ConfigCheckError::HmacSecret(config_unchecked.hmac_secret));
             },
-            false => config_struct.hmac_secret,
+            false => config_unchecked.hmac_secret,
         };
-        let base_url_handle = match config_struct.base_url.is_empty() {
+        let base_url_handle = match config_unchecked.base_url.is_empty() {
             true => {
-                return Err(ConfigCheckError::BaseUrl(config_struct.base_url));
+                return Err(ConfigCheckError::BaseUrl(config_unchecked.base_url));
             },
-            false => config_struct.base_url,
+            false => config_unchecked.base_url,
         };
-        let require_ssl_handle = config_struct.require_ssl;
+        let require_ssl_handle = config_unchecked.require_ssl;
 
-        let github_name_handle = match config_struct.github_name.is_empty() {
+        let github_name_handle = match config_unchecked.github_name.is_empty() {
             true => {
-                return Err(ConfigCheckError::GithubName(config_struct.github_name));
+                return Err(ConfigCheckError::GithubName(config_unchecked.github_name));
             },
-            false => config_struct.github_name,
+            false => config_unchecked.github_name,
         };
-        let github_token_handle = match config_struct.github_token.is_empty() {
+        let github_token_handle = match config_unchecked.github_token.is_empty() {
             true => {
-                return Err(ConfigCheckError::GithubToken(config_struct.github_token));
+                return Err(ConfigCheckError::GithubToken(config_unchecked.github_token));
             },
-            false => config_struct.github_token,
+            false => config_unchecked.github_token,
         };
 
-        let timezone_handle = config_struct.timezone;
-
-        let redis_ip_handle = match config_struct.redis_ip.is_empty() {
-            true => {
-                return Err(ConfigCheckError::RedisIp(config_struct.redis_ip));
+        let timezone_handle = match chrono::FixedOffset::east_opt(config_unchecked.timezone) {
+            Some(fixed_offset) => fixed_offset,
+            None => {
+                return Err(ConfigCheckError::Timezone(config_unchecked.timezone));
             },
-            false => config_struct.redis_ip,
         };
-        let redis_port_handle = match crate::common::user_port::UserPort::try_from(config_struct.redis_port) {
+
+        let redis_ip_handle = match config_unchecked.redis_ip.is_empty() {
+            true => {
+                return Err(ConfigCheckError::RedisIp(config_unchecked.redis_ip));
+            },
+            false => config_unchecked.redis_ip,
+        };
+        let redis_port_handle = match crate::common::user_port::UserPort::try_from(config_unchecked.redis_port) {
             Ok(user_port) => user_port,
             Err(e) => {
                 return Err(ConfigCheckError::RedisPort(e));
             },
         };
 
-        let mongo_url_handle = match config_struct.mongo_url.is_empty() {
+        let mongo_url_handle = match config_unchecked.mongo_url.is_empty() {
             true => {
-                return Err(ConfigCheckError::MongoUrl(config_struct.mongo_url));
+                return Err(ConfigCheckError::MongoUrl(config_unchecked.mongo_url));
             },
-            false => config_struct.mongo_url,
+            false => config_unchecked.mongo_url,
         };
 
-        let mongo_connection_timeout_handle = config_struct.mongo_connection_timeout;
+        let mongo_connection_timeout_handle = config_unchecked.mongo_connection_timeout;
 
-        let database_url_handle = match config_struct.database_url.is_empty() {
+        let database_url_handle = match config_unchecked.database_url.is_empty() {
             true => {
-                return Err(ConfigCheckError::DatabaseUrl(config_struct.database_url));
+                return Err(ConfigCheckError::DatabaseUrl(config_unchecked.database_url));
             },
-            false => config_struct.database_url,
-        };//postgres_url = config_struct.; naming required by sqlx::query::query!
+            false => config_unchecked.database_url,
+        };//postgres_url = config_unchecked.; naming required by sqlx::query::query!
 
-        let postgres_fourth_handle_url_part_handle = match config_struct.postgres_fourth_handle_url_part.is_empty() {
+        let postgres_fourth_handle_url_part_handle = match config_unchecked.postgres_fourth_handle_url_part.is_empty() {
             true => {
-                return Err(ConfigCheckError::PostgresFourthHandleUrlPart(config_struct.postgres_fourth_handle_url_part));
+                return Err(ConfigCheckError::PostgresFourthHandleUrlPart(config_unchecked.postgres_fourth_handle_url_part));
             },
-            false => config_struct.postgres_fourth_handle_url_part,
+            false => config_unchecked.postgres_fourth_handle_url_part,
         };
-        let postgres_fifth_handle_url_part_handle = match config_struct.postgres_fifth_handle_url_part.is_empty() {
+        let postgres_fifth_handle_url_part_handle = match config_unchecked.postgres_fifth_handle_url_part.is_empty() {
             true => {
-                return Err(ConfigCheckError::PostgresFifthHandleUrlpart(config_struct.postgres_fifth_handle_url_part));
+                return Err(ConfigCheckError::PostgresFifthHandleUrlpart(config_unchecked.postgres_fifth_handle_url_part));
             },
-            false => config_struct.postgres_fifth_handle_url_part,
+            false => config_unchecked.postgres_fifth_handle_url_part,
         };
 
-        let postgres_login_handle = match config_struct.postgres_login.is_empty() {
+        let postgres_login_handle = match config_unchecked.postgres_login.is_empty() {
             true => {
-                return Err(ConfigCheckError::PostgresLogin(config_struct.postgres_login));
+                return Err(ConfigCheckError::PostgresLogin(config_unchecked.postgres_login));
             },
-            false => config_struct.postgres_login,
+            false => config_unchecked.postgres_login,
         };
-        let postgres_password_handle = match config_struct.postgres_password.is_empty() {
+        let postgres_password_handle = match config_unchecked.postgres_password.is_empty() {
             true => {
-                return Err(ConfigCheckError::PostgresPassword(config_struct.postgres_password));
+                return Err(ConfigCheckError::PostgresPassword(config_unchecked.postgres_password));
             },
-            false => config_struct.postgres_password,
+            false => config_unchecked.postgres_password,
         };
-        let postgres_ip_handle = match config_struct.postgres_ip.is_empty() {
+        let postgres_ip_handle = match config_unchecked.postgres_ip.is_empty() {
             true => {
-                return Err(ConfigCheckError::PostgresIp(config_struct.postgres_ip));
+                return Err(ConfigCheckError::PostgresIp(config_unchecked.postgres_ip));
             },
-            false => config_struct.postgres_ip,
+            false => config_unchecked.postgres_ip,
         }; //todo_handle: 4x u8
-        let postgres_port_handle = match crate::common::user_port::UserPort::try_from(config_struct.postgres_port) {
+        let postgres_port_handle = match crate::common::user_port::UserPort::try_from(config_unchecked.postgres_port) {
             Ok(user_port) => user_port,
             Err(e) => {
                 return Err(ConfigCheckError::PostgresPort(e));
             },
         };
-        let postgres_db_handle = match config_struct.postgres_db.is_empty() {
+        let postgres_db_handle = match config_unchecked.postgres_db.is_empty() {
             true => {
-                return Err(ConfigCheckError::PostgresDb(config_struct.postgres_db));
+                return Err(ConfigCheckError::PostgresDb(config_unchecked.postgres_db));
             },
-            false => config_struct.postgres_db,
+            false => config_unchecked.postgres_db,
         };
-        let postgres_params_handle = config_struct.postgres_params;
+        let postgres_params_handle = config_unchecked.postgres_params;
 
-        let postgres_connection_timeout_handle = config_struct.postgres_connection_timeout;
+        let postgres_connection_timeout_handle = config_unchecked.postgres_connection_timeout;
 
-        let starting_check_link_handle = match config_struct.starting_check_link.is_empty() {
+        let starting_check_link_handle = match config_unchecked.starting_check_link.is_empty() {
             true => {
-                return Err(ConfigCheckError::StartingCheckLink(config_struct.starting_check_link));
+                return Err(ConfigCheckError::StartingCheckLink(config_unchecked.starting_check_link));
             },
-            false => config_struct.starting_check_link,
+            false => config_unchecked.starting_check_link,
         }; //todo add browser url limit check
 
-        let tracing_type_handle = config_struct.tracing_type;
-        let source_place_type_handle = config_struct.source_place_type;
+        let tracing_type_handle = config_unchecked.tracing_type;
+        let source_place_type_handle = config_unchecked.source_place_type;
         Ok(Config {
             server_port: server_port_handle,
             hmac_secret: hmac_secret_handle,

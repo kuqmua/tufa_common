@@ -17,7 +17,7 @@ pub trait GetGithubToken {
     fn get_github_token(&self) -> &String;
 }
 pub trait GetTimezone {
-    fn get_timezone(&self) -> &i32;
+    fn get_timezone(&self) -> &chrono::FixedOffset;
 }
 pub trait GetRedisIp {
     fn get_redis_ip(&self) -> &String;
