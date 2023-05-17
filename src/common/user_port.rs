@@ -3,8 +3,10 @@
     Clone, 
     serde::Serialize,
     serde::Deserialize,
+    getset::Getters,
 )]
 pub struct UserPort {
+    #[getset(get = "pub")]
     port: u16,
 }
 
@@ -34,12 +36,6 @@ impl TryFrom<u16> for UserPort {
         else {
             Err(UserPortTryFromStringError::EphemeralPort(possible_port))
         }
-    }
-}
-
-impl UserPort {
-    pub fn port(&self) -> &u16 {
-        &self.port
     }
 }
 
