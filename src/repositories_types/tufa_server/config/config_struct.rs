@@ -6,41 +6,41 @@
     init_from_env_with_panic_if_failed::InitFromEnvWithPanicIfFailedWithPanicIfFailed,
 )]
 pub struct ConfigUnchecked {
-    pub server_port: u16,
-    pub hmac_secret: String,
-    pub base_url: String,
-    pub require_ssl: bool,
+    server_port: u16,
+    hmac_secret: String,
+    base_url: String,
+    require_ssl: bool,
 
-    pub github_name: String,
-    pub github_token: String,
+    github_name: String,
+    github_token: String,
 
-    pub timezone: i32,//for some reason chrono::FixedOffset::east_opt uses i32 but i16 is enough 
+    timezone: i32,//for some reason chrono::FixedOffset::east_opt uses i32 but i16 is enough 
 
-    pub redis_ip: String,
-    pub redis_port: u16,
+    redis_ip: String,
+    redis_port: u16,
 
-    pub mongo_url: String,
+    mongo_url: String,
 
-    pub mongo_connection_timeout: u64,
+    mongo_connection_timeout: u64,
 
-    pub database_url: String,//postgres_url, naming required by sqlx::query::query!
+    database_url: String,//postgres_url, naming required by sqlx::query::query!
 
-    pub postgres_fourth_handle_url_part: String,
-    pub postgres_fifth_handle_url_part: String,
+    postgres_fourth_handle_url_part: String,
+    postgres_fifth_handle_url_part: String,
 
-    pub postgres_login: String,
-    pub postgres_password: String,
-    pub postgres_ip: String, //todo: 4x u8
-    pub postgres_port: u16,
-    pub postgres_db: String,
-    pub postgres_params: String,
+    postgres_login: String,
+    postgres_password: String,
+    postgres_ip: String, //todo: 4x u8
+    postgres_port: u16,
+    postgres_db: String,
+    postgres_params: String,
 
-    pub postgres_connection_timeout: u64,
+    postgres_connection_timeout: u64,
 
-    pub starting_check_link: String, //todo add browser url limit check
+    starting_check_link: String, //todo add browser url limit check
 
-    pub tracing_type: crate::server::tracing_type::TracingType,
-    pub source_place_type: crate::common::source_place_type::SourcePlaceType,
+    tracing_type: crate::server::tracing_type::TracingType,
+    source_place_type: crate::common::source_place_type::SourcePlaceType,
 }
 
 #[derive(
@@ -253,7 +253,7 @@ impl TryFrom<ConfigUnchecked> for Config {
     }
 }
 
-#[derive(Debug, thiserror::Error)]
+#[derive(Debug, thiserror::Error, strum_macros::Display)]
 pub enum ConfigCheckError {
     ServerPort(crate::common::user_port::UserPortTryFromStringError),
     HmacSecret(std::string::String),
@@ -280,36 +280,4 @@ pub enum ConfigCheckError {
     StartingCheckLink(std::string::String),
     TracingType(crate::server::tracing_type::TracingType),
     SourcePlaceType(crate::common::source_place_type::SourcePlaceType)
-}
-
-impl std::fmt::Display for ConfigCheckError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            ConfigCheckError::ServerPort(i) => write!(f, "{i}"),
-            ConfigCheckError::HmacSecret(i) => write!(f, "{i}"),
-            ConfigCheckError::BaseUrl(i) => write!(f, "{i}"),
-            ConfigCheckError::RequireSsl(i) => write!(f, "{i}"),
-            ConfigCheckError::GithubName(i) => write!(f, "{i}"),
-            ConfigCheckError::GithubToken(i) => write!(f, "{i}"),
-            ConfigCheckError::Timezone(i) => write!(f, "{i}"),
-            ConfigCheckError::RedisIp(i) => write!(f, "{i}"),
-            ConfigCheckError::RedisPort(i) => write!(f, "{i}"),
-            ConfigCheckError::MongoUrl(i) => write!(f, "{i}"),
-            ConfigCheckError::MongoConnectionTimeout(i) => write!(f, "{i}"),
-            ConfigCheckError::DatabaseUrl(i) => write!(f, "{i}"),
-            ConfigCheckError::PostgresFourthHandleUrlPart(i) => write!(f, "{i}"),
-            ConfigCheckError::PostgresFifthHandleUrlpart(i) => write!(f, "{i}"),
-            ConfigCheckError::PostgresSixthHandleUrlPart(i) => write!(f, "{i}"),
-            ConfigCheckError::PostgresLogin(i) => write!(f, "{i}"),
-            ConfigCheckError::PostgresPassword(i) => write!(f, "{i}"),
-            ConfigCheckError::PostgresIp(i) => write!(f, "{i}"),
-            ConfigCheckError::PostgresPort(i) => write!(f, "{i}"),
-            ConfigCheckError::PostgresDb(i) => write!(f, "{i}"),
-            ConfigCheckError::PostgresParams(i) => write!(f, "{i}"),
-            ConfigCheckError::PostgresConnectionTimeout(i) => write!(f, "{i}"),
-            ConfigCheckError::StartingCheckLink(i) => write!(f, "{i}"),
-            ConfigCheckError::TracingType(i) => write!(f, "{i}"),
-            ConfigCheckError::SourcePlaceType(i) => write!(f, "{i}"),
-        }
-    }
 }
