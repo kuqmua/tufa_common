@@ -8,7 +8,7 @@ pub fn test_code_occurence() {
         column!(),
         {
             use crate::traits::config_fields::GetServerPort;
-            *crate::config_mods::config_struct::ConfigStruct::default().get_server_port()
+            *crate::config_mods::config_struct::ConfigUnchecked::default().get_server_port()
         }
     );
     let e = ErrorNamed::Something {
@@ -289,7 +289,7 @@ pub fn test_code_occurence() {
     };
     println!("{e}");
     use crate::traits::error_logs_logic::error_log::ErrorLog;
-    e.error_log( &crate::config_mods::config_struct::ConfigStruct::default());
+    // e.error_log(&crate::config_mods::config_struct::ConfigUnchecked::default());
     let e_serialize_deserialize_version = e.into_serialize_deserialize_version();
     println!("{e_serialize_deserialize_version}");
     let e_json = serde_json::to_string(&e_serialize_deserialize_version).unwrap();

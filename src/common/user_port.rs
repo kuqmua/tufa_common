@@ -15,16 +15,16 @@ impl std::fmt::Display for UserPort {
 }
 
 #[derive(Debug, strum_macros::Display, thiserror::Error)]
-pub enum UserPortTryFromStringErrorNamed {
+pub enum UserPortTryFromStringError {
     SystemPort(u16),//used for system services e.g. HTTP, FTP, SSH, DHCP ... 
     EphemeralPort(u16)//https://www.ncftp.com/ncftpd/doc/misc/ephemeral_ports.html
 }
 
 impl TryFrom<u16> for UserPort {
-    type Error = UserPortTryFromStringErrorNamed;
-    fn try_from(possible_port: u16) -> Result<UserPort, UserPortTryFromStringErrorNamed> {
+    type Error = UserPortTryFromStringError;
+    fn try_from(possible_port: u16) -> Result<UserPort, UserPortTryFromStringError> {
         if possible_port < 1024 {
-            Err(UserPortTryFromStringErrorNamed::SystemPort(possible_port))
+            Err(UserPortTryFromStringError::SystemPort(possible_port))
         }
         else if possible_port < 49152 {
             Ok(Self {
@@ -32,13 +32,13 @@ impl TryFrom<u16> for UserPort {
             })
         }
         else {
-            Err(UserPortTryFromStringErrorNamed::EphemeralPort(possible_port))
+            Err(UserPortTryFromStringError::EphemeralPort(possible_port))
         }
     }
 }
 
 impl UserPort {
-    fn port(&self) -> &u16 {
+    pub fn port(&self) -> &u16 {
         &self.port
     }
 }

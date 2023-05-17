@@ -1,5 +1,5 @@
 pub trait GetServerPort {
-    fn get_server_port(&self) -> &u16;
+    fn get_server_port(&self) -> &crate::common::user_port::UserPort;
 }
 pub trait GetHmacSecret {
     fn get_hmac_secret(&self) -> &String;
@@ -23,7 +23,7 @@ pub trait GetRedisIp {
     fn get_redis_ip(&self) -> &String;
 }
 pub trait GetRedisPort {
-    fn get_redis_port(&self) -> &u16;
+    fn get_redis_port(&self) -> &crate::common::user_port::UserPort;
 }
 pub trait GetMongoUrl {
     fn get_mongo_url(&self) -> &String;
@@ -53,7 +53,7 @@ pub trait GetPostgresIp {
     fn get_postgres_ip(&self) -> &String;
 }
 pub trait GetPostgresPort {
-    fn get_postgres_port(&self) -> &u16;
+    fn get_postgres_port(&self) -> &crate::common::user_port::UserPort;
 }
 pub trait GetPostgresDb {
     fn get_postgres_db(&self) -> &String;
