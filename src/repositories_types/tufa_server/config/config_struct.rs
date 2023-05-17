@@ -7,7 +7,7 @@
     Eq,
     init_from_env_with_panic_if_failed::InitFromEnvWithPanicIfFailedWithPanicIfFailed,
 )]
-pub struct ConfigBuilder {
+pub struct ConfigUnchecked {
     pub server_port: u16,
     pub hmac_secret: String,
     pub base_url: String,
@@ -51,47 +51,47 @@ pub struct ConfigBuilder {
     generate_getter_traits_for_struct_fields::GenerateGetterTraitsForStructFields,
 )]
 pub struct Config {
-    pub server_port: crate::common::user_port::UserPort,
-    pub hmac_secret: String,
-    pub base_url: String,
-    pub require_ssl: bool,
+    server_port: crate::common::user_port::UserPort,
+    hmac_secret: String,
+    base_url: String,
+    require_ssl: bool,
 
-    pub github_name: String,
-    pub github_token: String,
+    github_name: String,
+    github_token: String,
 
-    pub timezone: i32,
+    timezone: i32,
 
-    pub redis_ip: String,
-    pub redis_port: crate::common::user_port::UserPort,
+    redis_ip: String,
+    redis_port: crate::common::user_port::UserPort,
 
-    pub mongo_url: String,
+    mongo_url: String,
 
-    pub mongo_connection_timeout: u64,
+    mongo_connection_timeout: u64,
 
-    pub database_url: String,//postgres_url, naming required by sqlx::query::query!
+    database_url: String,//postgres_url, naming required by sqlx::query::query!
 
-    pub postgres_fourth_handle_url_part: String,
-    pub postgres_fifth_handle_url_part: String,
-    pub postgres_sixth_handle_url_part: String,
+    postgres_fourth_handle_url_part: String,
+    postgres_fifth_handle_url_part: String,
+    postgres_sixth_handle_url_part: String,
 
-    pub postgres_login: String,
-    pub postgres_password: String,
-    pub postgres_ip: String, //todo: 4x u8
-    pub postgres_port: crate::common::user_port::UserPort,
-    pub postgres_db: String,
-    pub postgres_params: String,
+    postgres_login: String,
+    postgres_password: String,
+    postgres_ip: String, //todo: 4x u8
+    postgres_port: crate::common::user_port::UserPort,
+    postgres_db: String,
+    postgres_params: String,
 
-    pub postgres_connection_timeout: u64,
+    postgres_connection_timeout: u64,
 
-    pub starting_check_link: String, //todo add browser url limit check
+    starting_check_link: String, //todo add browser url limit check
 
-    pub tracing_type: crate::server::tracing_type::TracingType,
-    pub source_place_type: crate::common::source_place_type::SourcePlaceType,
+    tracing_type: crate::server::tracing_type::TracingType,
+    source_place_type: crate::common::source_place_type::SourcePlaceType,
 }
 
-impl TryFrom<ConfigBuilder> for Config {
+impl TryFrom<ConfigUnchecked> for Config {
     type Error = ConfigCheckError;
-    fn try_from(config_struct: ConfigBuilder) -> Result<Self, ConfigCheckError> {
+    fn try_from(config_struct: ConfigUnchecked) -> Result<Self, ConfigCheckError> {
         //its important to check timezone first coz it will be used later. it must be valid
         // if !(-86_400 < self.timezone && self.timezone < 86_400) {
         //     return Err(Box::new(ConfigCheckErrorNamed::Timezone {
