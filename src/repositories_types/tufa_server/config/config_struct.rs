@@ -99,29 +99,47 @@ impl TryFrom<ConfigUnchecked> for Config {
         //         code_occurence: crate::code_occurence_tufa_common!()
         //     }));
         // }
-        // //todo: check ip pattern. check port pattern
-        // if self.github_name.is_empty() {
-        //     return Err(Box::new(ConfigCheckErrorNamed::GithubName {
-        //         github_name: self.github_name,
-        //         code_occurence: crate::code_occurence_tufa_common!()
-        //     }));
-        // }
         let server_port_handle = match crate::common::user_port::UserPort::try_from(config_struct.server_port) {
             Ok(user_port) => user_port,
             Err(e) => {
                 return Err(ConfigCheckError::ServerPort(e));
             },
         };
-        let hmac_secret_handle: String = config_struct.hmac_secret;
-        let base_url_handle: String = config_struct.base_url;
-        let require_ssl_handle: bool = config_struct.require_ssl;
+        let hmac_secret_handle = match config_struct.hmac_secret.is_empty() {
+            true => {
+                return Err(ConfigCheckError::HmacSecret(config_struct.hmac_secret));
+            },
+            false => config_struct.hmac_secret,
+        };
+        let base_url_handle = match config_struct.base_url.is_empty() {
+            true => {
+                return Err(ConfigCheckError::BaseUrl(config_struct.base_url));
+            },
+            false => config_struct.base_url,
+        };
+        let require_ssl_handle = config_struct.require_ssl;
 
-        let github_name_handle: String = config_struct.github_name;
-        let github_token_handle: String = config_struct.github_token;
+        let github_name_handle = match config_struct.github_name.is_empty() {
+            true => {
+                return Err(ConfigCheckError::GithubName(config_struct.github_name));
+            },
+            false => config_struct.github_name,
+        };
+        let github_token_handle = match config_struct.github_token.is_empty() {
+            true => {
+                return Err(ConfigCheckError::GithubToken(config_struct.github_token));
+            },
+            false => config_struct.github_token,
+        };
 
-        let timezone_handle: i32 = config_struct.timezone;
+        let timezone_handle = config_struct.timezone;
 
-        let redis_ip_handle: String = config_struct.redis_ip;
+        let redis_ip_handle = match config_struct.redis_ip.is_empty() {
+            true => {
+                return Err(ConfigCheckError::RedisIp(config_struct.redis_ip));
+            },
+            false => config_struct.redis_ip,
+        };
         let redis_port_handle = match crate::common::user_port::UserPort::try_from(config_struct.redis_port) {
             Ok(user_port) => user_port,
             Err(e) => {
@@ -129,34 +147,79 @@ impl TryFrom<ConfigUnchecked> for Config {
             },
         };
 
-        let mongo_url_handle: String = config_struct.mongo_url;
+        let mongo_url_handle = match config_struct.mongo_url.is_empty() {
+            true => {
+                return Err(ConfigCheckError::MongoUrl(config_struct.mongo_url));
+            },
+            false => config_struct.mongo_url,
+        };
 
-        let mongo_connection_timeout_handle: u64 = config_struct.mongo_connection_timeout;
+        let mongo_connection_timeout_handle = config_struct.mongo_connection_timeout;
 
-        let database_url_handle: String = config_struct.database_url;//postgres_url = config_struct.; naming required by sqlx::query::query!
+        let database_url_handle = match config_struct.database_url.is_empty() {
+            true => {
+                return Err(ConfigCheckError::DatabaseUrl(config_struct.database_url));
+            },
+            false => config_struct.database_url,
+        };//postgres_url = config_struct.; naming required by sqlx::query::query!
 
-        let postgres_fourth_handle_url_part_handle: String = config_struct.postgres_fourth_handle_url_part;
-        let postgres_fifth_handle_url_part_handle: String = config_struct.postgres_fifth_handle_url_part;
-        let postgres_sixth_handle_url_part_handle: String = config_struct.postgres_sixth_handle_url_part;
+        let postgres_fourth_handle_url_part_handle = match config_struct.postgres_fourth_handle_url_part.is_empty() {
+            true => {
+                return Err(ConfigCheckError::PostgresFourthHandleUrlPart(config_struct.postgres_fourth_handle_url_part));
+            },
+            false => config_struct.postgres_fourth_handle_url_part,
+        };
+        let postgres_fifth_handle_url_part_handle = match config_struct.postgres_fifth_handle_url_part.is_empty() {
+            true => {
+                return Err(ConfigCheckError::PostgresFifthHandleUrlpart(config_struct.postgres_fifth_handle_url_part));
+            },
+            false => config_struct.postgres_fifth_handle_url_part,
+        };
+        let postgres_sixth_handle_url_part_handle = config_struct.postgres_sixth_handle_url_part;
 
-        let postgres_login_handle: String = config_struct.postgres_login;
-        let postgres_password_handle: String = config_struct.postgres_password;
-        let postgres_ip_handle: String = config_struct.postgres_ip; //todo_handle: 4x u8
+        let postgres_login_handle = match config_struct.postgres_login.is_empty() {
+            true => {
+                return Err(ConfigCheckError::PostgresLogin(config_struct.postgres_login));
+            },
+            false => config_struct.postgres_login,
+        };
+        let postgres_password_handle = match config_struct.postgres_password.is_empty() {
+            true => {
+                return Err(ConfigCheckError::PostgresPassword(config_struct.postgres_password));
+            },
+            false => config_struct.postgres_password,
+        };
+        let postgres_ip_handle = match config_struct.postgres_ip.is_empty() {
+            true => {
+                return Err(ConfigCheckError::PostgresIp(config_struct.postgres_ip));
+            },
+            false => config_struct.postgres_ip,
+        }; //todo_handle: 4x u8
         let postgres_port_handle = match crate::common::user_port::UserPort::try_from(config_struct.postgres_port) {
             Ok(user_port) => user_port,
             Err(e) => {
                 return Err(ConfigCheckError::PostgresPort(e));
             },
         };
-        let postgres_db_handle: String = config_struct.postgres_db;
-        let postgres_params_handle: String = config_struct.postgres_params;
+        let postgres_db_handle = match config_struct.postgres_db.is_empty() {
+            true => {
+                return Err(ConfigCheckError::PostgresDb(config_struct.postgres_db));
+            },
+            false => config_struct.postgres_db,
+        };
+        let postgres_params_handle = config_struct.postgres_params;
 
-        let postgres_connection_timeout_handle: u64 = config_struct.postgres_connection_timeout;
+        let postgres_connection_timeout_handle = config_struct.postgres_connection_timeout;
 
-        let starting_check_link_handle: String = config_struct.starting_check_link; //todo add browser url limit check
+        let starting_check_link_handle = match config_struct.starting_check_link.is_empty() {
+            true => {
+                return Err(ConfigCheckError::StartingCheckLink(config_struct.starting_check_link));
+            },
+            false => config_struct.starting_check_link,
+        }; //todo add browser url limit check
 
-        let tracing_type_handle: crate::server::tracing_type::TracingType = config_struct.tracing_type;
-        let source_place_type_handle: crate::common::source_place_type::SourcePlaceType = config_struct.source_place_type;
+        let tracing_type_handle = config_struct.tracing_type;
+        let source_place_type_handle = config_struct.source_place_type;
         Ok(Config {
             server_port: server_port_handle,
             hmac_secret: hmac_secret_handle,
