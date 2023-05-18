@@ -1,7 +1,12 @@
-pub fn get_connection_pool(postgres_database_settings: &crate::repositories_types::tufa_server::settings::PostgresDatabaseSettings) -> sqlx::PgPool {
+pub fn get_connection_pool(
+    postgres_database_settings: &crate::repositories_types::tufa_server::settings::PostgresDatabaseSettings,
+    config: &'static impl crate::traits::get_postgres_connect_options_with_db::GetPostgresConnectOptionsWithDb
+) -> sqlx::PgPool {
     sqlx::postgres::PgPoolOptions::new()
         .connect_timeout(std::time::Duration::from_secs(2))
-        .connect_lazy_with(postgres_database_settings.with_db())
+        .connect_lazy_with(
+            config.get_postgres_connect_options_with_db()
+        )
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]

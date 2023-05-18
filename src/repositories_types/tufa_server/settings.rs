@@ -17,33 +17,6 @@ pub struct PostgresDatabaseSettings {
     pub require_ssl: bool,
 }
 
-impl PostgresDatabaseSettings {
-    pub fn with_db(&self) -> sqlx::postgres::PgConnectOptions {
-        let mut options = self.without_db().database(&self.database_name);
-        {
-            use sqlx::ConnectOptions;
-            options.log_statements(tracing::log::LevelFilter::Trace)
-        };
-        options
-    }
-    pub fn without_db(&self) -> sqlx::postgres::PgConnectOptions {
-        let ssl_mode = if self.require_ssl {
-            sqlx::postgres::PgSslMode::Require
-        } else {
-            sqlx::postgres::PgSslMode::Prefer
-        };
-        sqlx::postgres::PgConnectOptions::new()
-            .host(&self.host)
-            .username(&self.username)
-            .password({
-                use secrecy::ExposeSecret;
-                self.password.expose_secret()
-            })
-            .port(self.port)
-            .ssl_mode(ssl_mode)
-    }
-}
-
 pub enum Environment {
     Local,
     Production,
