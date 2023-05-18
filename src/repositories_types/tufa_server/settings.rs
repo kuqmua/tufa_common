@@ -3,7 +3,6 @@ use serde_aux::field_attributes::deserialize_number_from_string;
 #[derive(serde::Deserialize, Clone, Debug)]
 pub struct Settings {
     pub database: PostgresDatabaseSettings,
-    pub application: ApplicationSettings,
     pub email_client: EmailClientSettings,
     pub redis_uri: secrecy::Secret<String>,
 }
@@ -33,13 +32,6 @@ impl EmailClientSettings {
             timeout,
         )
     }
-}
-
-#[derive(serde::Deserialize, Clone, Debug)]
-pub struct ApplicationSettings {
-    #[serde(deserialize_with = "deserialize_number_from_string")]
-    pub port: u16,
-    pub hmac_secret: secrecy::Secret<String>,
 }
 
 #[derive(serde::Deserialize, Clone, Debug)]
