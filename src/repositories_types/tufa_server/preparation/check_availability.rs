@@ -51,10 +51,12 @@ pub enum CheckAvailabilityErrorNamed<'a> {
 
 pub async fn check_availability<'a, SelfGeneric>(
     mongodb_options_client_options: mongodb::options::ClientOptions,
-    config: &'a (
+    config: &'static (
         impl crate::traits::config_fields::GetStartingCheckLink
         + crate::traits::get_postgres_url::GetPostgresUrl<SelfGeneric>
         + crate::traits::config_fields::GetPostgresConnectionTimeout
+        + std::marker::Send 
+        + std::marker::Sync
     )
 ) -> Result<(), Box<crate::repositories_types::tufa_server::preparation::check_availability::CheckAvailabilityErrorNamed<'a>>>{
     match futures::join!(

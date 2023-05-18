@@ -1,6 +1,10 @@
 pub fn get_subscriber<Sink>(
     name: &str,
-    config: &impl crate::traits::config_fields::GetTracingType,
+    config: &'static (
+        impl crate::traits::config_fields::GetTracingType
+        + std::marker::Send 
+        + std::marker::Sync
+    ),
     sink: Sink,
 ) -> impl tracing::Subscriber + Send + Sync
 where

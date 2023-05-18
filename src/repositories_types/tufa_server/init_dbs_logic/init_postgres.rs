@@ -34,9 +34,11 @@
 
 // pub async fn init_postgres<'a, SelfGeneric>(
 //     providers_json_local_data_hashmap: std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
-//     config: &'a (
+//     config: &'static (
 //         impl crate::traits::config_fields::GetPostgresConnectionTimeout
 //         + crate::traits::get_postgres_url::GetPostgresUrl<SelfGeneric>
+        // + std::marker::Send 
+        // + std::marker::Sync
 //     )
 // ) -> Result<(), Box<crate::repositories_types::tufa_server::init_dbs_logic::init_postgres::PostgresInitErrorNamed<'a>>> {
 //     match crate::repositories_types::tufa_server::postgres_integration::postgres_establish_connection::postgres_establish_connection(

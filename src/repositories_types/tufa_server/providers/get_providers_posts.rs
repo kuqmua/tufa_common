@@ -67,7 +67,7 @@
 // }
 
 // pub async fn get_providers_posts<'a>(
-//     config: &'a (
+//     config: &'static (
 //         impl crate::traits::config_fields::GetGithubToken
 //         + crate::traits::config_fields::GetProvidersLinkPartsSource
 
@@ -77,6 +77,8 @@
 //         + crate::traits::config_fields::GetMongoProvidersLinkPartsDbName
 //         + crate::traits::config_fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
 //         + crate::traits::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart
+        // + std::marker::Send 
+        // + std::marker::Sync
 //     )
 // ) -> Result<(), Box<GetProviderPostsErrorNamed<'a>>> {
 //     todo!()

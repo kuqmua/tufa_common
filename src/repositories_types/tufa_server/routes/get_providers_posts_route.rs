@@ -4,7 +4,7 @@
 //     fields(user_id=%*user_id)
 // )]
 pub async fn get_providers_posts_route(//todo - if add here function parameter - actix-web trait will be not satisfied - what to do?
-    // config: &(
+    // config: &'static (
     //     impl crate::traits::fields::GetGithubToken
     //     + crate::traits::fields::GetProvidersLinkPartsSource
 
@@ -15,6 +15,8 @@ pub async fn get_providers_posts_route(//todo - if add here function parameter -
     //     + crate::traits::fields::GetCheckLinkMedrxiv
     //     + crate::traits::fields::GetCheckLinkReddit
     //     + crate::traits::fields::GetCheckLinkTwitter
+        // + std::marker::Send 
+        // + std::marker::Sync
     // )
 ) -> Result<actix_web::HttpResponse, actix_web::Error> {
     let time = std::time::Instant::now();

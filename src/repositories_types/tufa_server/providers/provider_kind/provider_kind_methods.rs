@@ -12,7 +12,11 @@
 //     }
 //     fn get_mongo_log_collection_name(
 //         &self,
-//         config: & impl crate::traits::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart 
+//         config: &'static (
+    // impl crate::traits::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart 
+        // + std::marker::Send 
+        // + std::marker::Sync
+// )
 //     ) -> String {
 //         format!(
 //             "{self}second_part",
@@ -28,7 +32,11 @@
 //     fn generate_provider_links(
 //         &self, 
 //         names_vector: Vec<String>,
-//         config: &impl crate::traits::config_fields::GetGithubToken
+//         config: &'static (
+    // impl crate::traits::config_fields::GetGithubToken
+        // + std::marker::Send 
+        // + std::marker::Sync
+// )
 //     ) -> Vec<String> {
 //         match self {
 //             crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind::Arxiv => crate::repositories_types::tufa_server::providers::providers_info::links::generate_arxiv_links::generate_arxiv_links(names_vector),

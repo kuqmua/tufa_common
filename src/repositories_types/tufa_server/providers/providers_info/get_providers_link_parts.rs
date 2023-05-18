@@ -17,7 +17,7 @@
 // }
 
 // pub async fn get_providers_link_parts<'a>(
-//     config: &'a (
+//     config: &'static (
 //         impl crate::traits::config_fields::GetProvidersLinkPartsSource
 
 //         + crate::traits::config_fields::GetPathToProviderLinkPartsFolder
@@ -27,6 +27,8 @@
 //         + crate::traits::config_fields::GetMongoProvidersLinkPartsDbName
 //         + crate::traits::config_fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
 //         + crate::traits::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart
+        // + std::marker::Send 
+        // + std::marker::Sync
 //     ) 
 // ) -> Result<std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>, Box<GetProvidersLinkPartsErrorNamed<'a>>> {
 //     match 

@@ -23,11 +23,13 @@
 // }
 
 // pub async fn mongo_get_providers_link_parts<'a>(
-//     config: &'a (
+//     config: &'static (
 //         impl crate::traits::config_fields::GetMongoUrl
 //         + crate::traits::config_fields::GetMongoProvidersLinkPartsDbName
 //         + crate::traits::config_fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
 //         + crate::traits::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart
+        // + std::marker::Send 
+        // + std::marker::Sync
 //     )
 // ) -> Result<std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>, crate::repositories_types::tufa_server::mongo_integration::mongo_get_providers_link_parts::MongoGetProvidersLinkPartsErrorNamed<'a>> {
 //     match mongodb::options::ClientOptions::parse(config.get_mongo_url()).await {

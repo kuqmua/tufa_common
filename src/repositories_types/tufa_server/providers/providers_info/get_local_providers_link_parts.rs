@@ -18,9 +18,11 @@
 // }
 
 // pub async fn get_local_providers_link_parts<'a>(
-//     config: &'a (
+//     config: &'static (
 //         impl crate::traits::config_fields::GetPathToProviderLinkPartsFolder
 //         + crate::traits::config_fields::GetLogFileExtension
+        // + std::marker::Send 
+        // + std::marker::Sync
 //     )
 // ) -> Result<std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>, Box<GetLocalProvidersLinkPartsErrorNamed<'a>>> {
 //     let result_vec = futures::future::join_all(

@@ -1,17 +1,28 @@
 // pub trait ProviderKindMethods {
 //     fn get_item_handle(&self) -> Option<&'static str>;
-//     fn get_mongo_log_collection_name(&self, config: & impl crate::traits::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart) -> String;
+//     fn get_mongo_log_collection_name(&self, config: &'static (
+    // impl crate::traits::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart
+        // + std::marker::Send 
+        // + std::marker::Sync
+// )
+// ) -> String;
 //     fn get_init_local_data_file_path(
 //         &self,
-//         config: &(
+//         config: &'static (
 //             impl crate::traits::config_fields::GetPathToProviderLinkPartsFolder
 //             + crate::traits::config_fields::GetLogFileExtension
+            // + std::marker::Send 
+            // + std::marker::Sync
 //         )
 //     ) -> String;
 //     fn generate_provider_links(
 //         &self, 
 //         names_vector: Vec<String>,
-//         config: &impl crate::traits::config_fields::GetGithubToken
+//         config: &'static (
+            //  impl crate::traits::config_fields::GetGithubToken
+            // + std::marker::Send 
+            // + std::marker::Sync
+            // )
 //     ) -> Vec<String>;
 //     fn generate_hashmap_with_empty_string_vecs_for_enabled_providers() -> std::collections::HashMap<Self, Vec<String>>
 //     where

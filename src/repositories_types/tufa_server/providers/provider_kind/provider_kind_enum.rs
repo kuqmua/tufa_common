@@ -234,9 +234,11 @@
 // impl ProviderKind {
 //     pub async fn get_link_parts_from_local_json_file<'a>(
 //         self,
-//         config: &'a (
+//         config: &'static (
 //             impl crate::traits::config_fields::GetPathToProviderLinkPartsFolder
 //             + crate::traits::config_fields::GetLogFileExtension
+        // + std::marker::Send 
+        // + std::marker::Sync
 //         )
 //     ) -> Result<Vec<String>, Box<GetLinkPartsFromLocalJsonFileErrorNamed<'a>>> {
 //         match tokio::fs::File::open(&{
