@@ -8,7 +8,7 @@ impl std::convert::TryFrom<FormData> for crate::repositories_types::tufa_server:
     type Error = String;
     fn try_from(value: FormData) -> Result<Self, Self::Error> {
         let name = crate::repositories_types::tufa_server::domain::SubscriberName::parse(value.name)?;
-        let email = crate::repositories_types::tufa_server::domain::SubscriberEmail::parse(value.email)?;
+        let email = crate::repositories_types::tufa_server::domain::SubscriberEmail::try_from(value.email)?;
         Ok(Self { email, name })
     }
 }

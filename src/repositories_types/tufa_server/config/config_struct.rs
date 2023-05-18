@@ -213,7 +213,7 @@ impl TryFrom<ConfigUnchecked> for Config {
 
         let tracing_type_handle = config_unchecked.tracing_type;
         let source_place_type_handle = config_unchecked.source_place_type;
-        Ok(Config {
+        Ok(Self {
             server_port: server_port_handle,
             hmac_secret: hmac_secret_handle,
             base_url: base_url_handle,

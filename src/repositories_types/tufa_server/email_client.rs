@@ -98,7 +98,7 @@ mod tests {
         Paragraph(1..10).fake()
     }
     fn email() -> crate::repositories_types::tufa_server::domain::SubscriberEmail {
-        crate::repositories_types::tufa_server::domain::SubscriberEmail::parse(SafeEmail().fake()).unwrap()
+        crate::repositories_types::tufa_server::domain::SubscriberEmail::try_from(SafeEmail().fake()).unwrap()
     }
     fn email_client(base_url: String) -> EmailClient {
         EmailClient::new(

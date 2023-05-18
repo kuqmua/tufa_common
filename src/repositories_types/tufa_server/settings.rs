@@ -17,7 +17,7 @@ pub struct EmailClientSettings {
 
 impl EmailClientSettings {
     pub fn sender(&self) -> Result<crate::repositories_types::tufa_server::domain::SubscriberEmail, String> {
-        crate::repositories_types::tufa_server::domain::SubscriberEmail::parse(self.sender_email.clone())
+        crate::repositories_types::tufa_server::domain::SubscriberEmail::try_from(self.sender_email.clone())
     }
     pub fn timeout(&self) -> std::time::Duration {
         std::time::Duration::from_millis(self.timeout_milliseconds)
