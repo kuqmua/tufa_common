@@ -15,7 +15,6 @@ pub mod readable_time;
 pub mod get_file;
 pub mod get_line;
 pub mod get_column;
-pub mod get_postgres_database_settings;
 pub mod get_settings;
 pub mod get_redis_url;
 pub mod get_email_client;

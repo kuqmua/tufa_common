@@ -4,12 +4,10 @@ pub trait GetSettings {
 
 impl<SelfGeneric> GetSettings for SelfGeneric
 where
-    Self: crate::traits::get_postgres_database_settings::GetPostgresDatabaseSettings
-        + crate::traits::get_redis_url::GetRedisUrl,
+    Self: crate::traits::get_redis_url::GetRedisUrl,
 {
     fn get_settings(&self) -> crate::repositories_types::tufa_server::settings::Settings {
         crate::repositories_types::tufa_server::settings::Settings {
-            database: self.get_postgres_database_settings(),
             redis_uri: secrecy::Secret::new(self.get_redis_url()),
         }
     }
