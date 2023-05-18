@@ -14,22 +14,13 @@ pub struct EmailClientSettings {
     pub authorization_token: secrecy::Secret<String>,
     pub timeout_milliseconds: u64,
 }
-
 impl EmailClientSettings {
-    pub fn sender(&self) -> Result<crate::repositories_types::tufa_server::domain::SubscriberEmail, String> {
-        crate::repositories_types::tufa_server::domain::SubscriberEmail::try_from(self.sender_email.clone())
-    }
-    pub fn timeout(&self) -> std::time::Duration {
-        std::time::Duration::from_millis(self.timeout_milliseconds)
-    }
     pub fn client(self) -> crate::repositories_types::tufa_server::email_client::EmailClient {
-        let sender_email = self.sender().expect("Invalid sender email address.");
-        let timeout = self.timeout();
         crate::repositories_types::tufa_server::email_client::EmailClient::new(
             self.base_url,
-            sender_email,
+            crate::repositories_types::tufa_server::domain::SubscriberEmail::try_from(self.sender_email.clone()).expect("Invalid sender email address."),
             self.authorization_token,
-            timeout,
+            std::time::Duration::from_millis(self.timeout_milliseconds),
         )
     }
 }
