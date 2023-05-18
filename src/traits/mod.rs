@@ -19,4 +19,5 @@ pub mod get_postgres_database_settings;
 pub mod get_settings;
 pub mod get_redis_url;
 pub mod get_email_client;
-pub mod without_db;
+pub mod get_postgres_connect_options_without_db;
+pub mod get_postgres_connect_options_with_db;

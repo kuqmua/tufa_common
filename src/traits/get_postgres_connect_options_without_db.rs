@@ -1,8 +1,8 @@
-pub trait WithoutDb {
-    fn without_db(&self) -> sqlx::postgres::PgConnectOptions;
+pub trait GetPostgresConnectOptionsWithoutDb {
+    fn get_postgres_connect_options_without_db(&self) -> sqlx::postgres::PgConnectOptions;
 }
 
-impl<SelfGeneric> WithoutDb for SelfGeneric
+impl<SelfGeneric> GetPostgresConnectOptionsWithoutDb for SelfGeneric
 where
     Self: crate::traits::config_fields::GetRequireSsl
         + crate::traits::config_fields::GetPostgresIp
@@ -10,7 +10,7 @@ where
         + crate::traits::config_fields::GetPostgresPassword
         + crate::traits::config_fields::GetPostgresPort,
 {
-    fn without_db(&self) -> sqlx::postgres::PgConnectOptions {
+    fn get_postgres_connect_options_without_db(&self) -> sqlx::postgres::PgConnectOptions {
         sqlx::postgres::PgConnectOptions::new()
             .host(&self.get_postgres_ip())
             .username(&self.get_postgres_login())
