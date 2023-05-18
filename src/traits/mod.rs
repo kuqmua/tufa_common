@@ -19,3 +19,4 @@ pub mod get_redis_url;
 pub mod get_email_client;
 pub mod get_postgres_connect_options_without_db;
 pub mod get_postgres_connect_options_with_db;
+pub mod get_postgres_connection_pool;
