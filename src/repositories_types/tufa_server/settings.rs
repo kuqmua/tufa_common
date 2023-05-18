@@ -3,26 +3,7 @@ use serde_aux::field_attributes::deserialize_number_from_string;
 #[derive(serde::Deserialize, Clone, Debug)]
 pub struct Settings {
     pub database: PostgresDatabaseSettings,
-    pub email_client: EmailClientSettings,
     pub redis_uri: secrecy::Secret<String>,
-}
-
-#[derive(serde::Deserialize, Clone, Debug)]
-pub struct EmailClientSettings {
-    pub base_url: String,
-    pub sender_email: String,
-    pub authorization_token: secrecy::Secret<String>,
-    pub timeout_milliseconds: u64,
-}
-impl EmailClientSettings {
-    pub fn client(self) -> crate::repositories_types::tufa_server::email_client::EmailClient {
-        crate::repositories_types::tufa_server::email_client::EmailClient::new(
-            self.base_url,
-            crate::repositories_types::tufa_server::domain::SubscriberEmail::try_from(self.sender_email.clone()).expect("Invalid sender email address."),
-            self.authorization_token,
-            std::time::Duration::from_millis(self.timeout_milliseconds),
-        )
-    }
 }
 
 #[derive(serde::Deserialize, Clone, Debug)]
