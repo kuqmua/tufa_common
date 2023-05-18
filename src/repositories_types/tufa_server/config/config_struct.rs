@@ -49,9 +49,9 @@ pub struct ConfigUnchecked {
 )]
 pub struct Config {
     server_port: crate::common::user_port::UserPort,
-    hmac_secret: String,
+    hmac_secret: secrecy::Secret<std::string::String>,
     base_url: String,
-    require_ssl: bool,
+    require_ssl: sqlx::postgres::PgSslMode,
 
     github_name: String,
     github_token: String,
@@ -71,7 +71,7 @@ pub struct Config {
     postgres_fifth_handle_url_part: String,
 
     postgres_login: String,
-    postgres_password: String,
+    postgres_password: secrecy::Secret<std::string::String>,
     postgres_ip: String, //todo: 4x u8
     postgres_port: crate::common::user_port::UserPort,
     postgres_db: String,
@@ -98,7 +98,7 @@ impl TryFrom<ConfigUnchecked> for Config {
             true => {
                 return Err(ConfigCheckError::HmacSecret(config_unchecked.hmac_secret));
             },
-            false => config_unchecked.hmac_secret,
+            false => secrecy::Secret::new(config_unchecked.hmac_secret),
         };
         let base_url_handle = match config_unchecked.base_url.is_empty() {
             true => {
@@ -106,7 +106,10 @@ impl TryFrom<ConfigUnchecked> for Config {
             },
             false => config_unchecked.base_url,
         };
-        let require_ssl_handle = config_unchecked.require_ssl;
+        let require_ssl_handle = match config_unchecked.require_ssl {
+                true => sqlx::postgres::PgSslMode::Require,
+                false => sqlx::postgres::PgSslMode::Prefer,
+        };
 
         let github_name_handle = match config_unchecked.github_name.is_empty() {
             true => {
@@ -180,7 +183,7 @@ impl TryFrom<ConfigUnchecked> for Config {
             true => {
                 return Err(ConfigCheckError::PostgresPassword(config_unchecked.postgres_password));
             },
-            false => config_unchecked.postgres_password,
+            false => secrecy::Secret::new(config_unchecked.postgres_password),
         };
         let postgres_ip_handle = match config_unchecked.postgres_ip.is_empty() {
             true => {

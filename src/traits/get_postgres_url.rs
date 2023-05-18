@@ -13,11 +13,14 @@ where
         + crate::traits::config_fields::GetPostgresDb
         + crate::traits::config_fields::GetPostgresParams,
 {
-    fn get_postgres_url(&self) -> String {
+    fn get_postgres_url(&self) -> String {//todo maybe use secrecy::Secret<std::string::String>
         format!(
             "postgres://{}:{}@{}{}{}{}{}{}",
             self.get_postgres_login(),
-            self.get_postgres_password(),
+            {
+                use secrecy::ExposeSecret;
+                self.get_postgres_password().expose_secret()
+            },
             self.get_postgres_ip(),
             self.get_postgres_fourth_handle_url_part(),
             self.get_postgres_port(),

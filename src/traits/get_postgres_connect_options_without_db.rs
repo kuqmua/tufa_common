@@ -15,13 +15,10 @@ where
             .host(&self.get_postgres_ip())
             .username(&self.get_postgres_login())
             .password({
-                use secrecy::ExposeSecret;//todo password must be store as secrecy::Secret not just a String
-                secrecy::Secret::new(self.get_postgres_password().clone()).expose_secret()
+                use secrecy::ExposeSecret;
+                self.get_postgres_password().expose_secret()
             })
             .port(*self.get_postgres_port().port())
-            .ssl_mode(match self.get_require_ssl() {//todo use sqlx::postgres::PgSslMode instead of bool in Config
-                true => sqlx::postgres::PgSslMode::Require,
-                false => sqlx::postgres::PgSslMode::Prefer,
-            })
+            .ssl_mode(*self.get_require_ssl())
     }
 }

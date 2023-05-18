@@ -2,13 +2,13 @@ pub trait GetServerPort {
     fn get_server_port(&self) -> &crate::common::user_port::UserPort;
 }
 pub trait GetHmacSecret {
-    fn get_hmac_secret(&self) -> &String;
+    fn get_hmac_secret(&self) -> &secrecy::Secret<std::string::String>;
 }
 pub trait GetBaseUrl {
     fn get_base_url(&self) -> &String;
 }
 pub trait GetRequireSsl {
-    fn get_require_ssl(&self) -> &bool;
+    fn get_require_ssl(&self) -> &sqlx::postgres::PgSslMode;
 }
 pub trait GetGithubName {
     fn get_github_name(&self) -> &String;
@@ -44,7 +44,7 @@ pub trait GetPostgresLogin {
     fn get_postgres_login(&self) -> &String;
 }
 pub trait GetPostgresPassword {
-    fn get_postgres_password(&self) -> &String;
+    fn get_postgres_password(&self) -> &secrecy::Secret<std::string::String>;
 }
 pub trait GetPostgresIp {
     fn get_postgres_ip(&self) -> &String;
