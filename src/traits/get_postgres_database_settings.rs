@@ -1,5 +1,5 @@
 pub trait GetPostgresDatabaseSettings {
-    fn get_postgres_database_settings(&self) -> crate::repositories_types::tufa_server::configuration::PostgresDatabaseSettings;
+    fn get_postgres_database_settings(&self) -> crate::repositories_types::tufa_server::settings::PostgresDatabaseSettings;
 }
 
 impl<SelfGeneric> GetPostgresDatabaseSettings for SelfGeneric
@@ -11,8 +11,8 @@ where
         + crate::traits::config_fields::GetPostgresDb
         + crate::traits::config_fields::GetRequireSsl,
 {
-    fn get_postgres_database_settings(&self) -> crate::repositories_types::tufa_server::configuration::PostgresDatabaseSettings {
-        crate::repositories_types::tufa_server::configuration::PostgresDatabaseSettings {
+    fn get_postgres_database_settings(&self) -> crate::repositories_types::tufa_server::settings::PostgresDatabaseSettings {
+        crate::repositories_types::tufa_server::settings::PostgresDatabaseSettings {
             host: self.get_postgres_ip().clone(),
             port: *self.get_postgres_port().port(),
             username: self.get_postgres_login().clone(),
