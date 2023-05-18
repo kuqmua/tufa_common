@@ -1,8 +1,8 @@
-pub trait GetApplicationSettings<'a> {
+pub trait GetApplicationSettings {
     fn get_application_settings(&self) -> crate::repositories_types::tufa_server::configuration::ApplicationSettings;
 }
 
-impl<'a, SelfGeneric> GetApplicationSettings<'a> for SelfGeneric
+impl<SelfGeneric> GetApplicationSettings for SelfGeneric
 where
     Self: crate::traits::config_fields::GetServerPort
         + crate::traits::config_fields::GetHmacSecret,

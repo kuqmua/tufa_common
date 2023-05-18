@@ -17,3 +17,4 @@ pub mod get_line;
 pub mod get_column;
 pub mod get_postgres_database_settings;
 pub mod get_application_settings;
+pub mod get_email_client_settings;
