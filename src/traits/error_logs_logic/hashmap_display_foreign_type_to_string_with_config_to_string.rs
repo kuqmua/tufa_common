@@ -17,7 +17,6 @@ where
         >,
     ConfigGeneric: crate::traits::config_fields::GetSourcePlaceType
         + crate::traits::config_fields::GetTimezone
-        + crate::traits::config_fields::GetServerPort
 {
     fn hashmap_display_foreign_type_to_string_with_config_to_string(&self, config: &ConfigGeneric) -> String {
         crate::traits::error_logs_logic::helpers::error_occurence_hashmap_formatter(
