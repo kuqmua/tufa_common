@@ -19,13 +19,13 @@ pub async fn get_providers_posts_route(//todo - if add here function parameter -
         // + std::marker::Sync
     // )
 ) -> Result<actix_web::HttpResponse, actix_web::Error> {
-    let time = std::time::Instant::now();
+    // let time = std::time::Instant::now();
     // if let Err(e) = crate::repositories_types::tufa_server::providers::get_providers_posts::get_providers_posts(config).await {
     //     return Ok(actix_web::HttpResponse::InternalServerError().finish());
     // };
-    let message = format!(
-        "get_providers_posts done in {} seconds",
-        time.elapsed().as_secs()
-    );
+    // let message = format!(
+    //     "get_providers_posts done in {} seconds",
+    //     time.elapsed().as_secs()
+    // );
     Ok(actix_web::HttpResponse::Ok().finish())
 }

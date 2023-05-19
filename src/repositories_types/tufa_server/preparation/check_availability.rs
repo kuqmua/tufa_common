@@ -50,7 +50,7 @@ pub enum CheckAvailabilityErrorNamed<'a> {
 }
 
 pub async fn check_availability<'a, SelfGeneric>(
-    mongodb_options_client_options: mongodb::options::ClientOptions,
+    // mongodb_options_client_options: mongodb::options::ClientOptions,
     config: &'static (
         impl crate::traits::config_fields::GetStartingCheckLink
         + crate::traits::get_postgres_url::GetPostgresUrl<SelfGeneric>
