@@ -66,7 +66,7 @@ pub struct Config {
     redis_port: crate::common::user_port::UserPort,
 
     mongo_url: String,
-    mongo_client_options: mongodb::options::ClientOptions,
+    mongo_client: mongodb::Client,
 
     mongo_connection_timeout: u64,
 
@@ -162,12 +162,10 @@ impl TryFrom<ConfigUnchecked> for Config {
             },
             false => config_unchecked.mongo_url,
         };
-        let mongo_client_options_handle = match futures::executor::block_on(
-            mongodb::options::ClientOptions::parse(mongo_url_handle.clone())
-        ) {
-            Ok(mongo_client_options) => mongo_client_options,
+        let mongo_client_handle = match crate::repositories_types::tufa_server::mongo_integration::mongo_try_get_client::mongo_try_get_client(&mongo_url_handle) {
+            Ok(mongo_client) => mongo_client,
             Err(e) => {
-                return Err(ConfigCheckError::MongoClientOptions(e));
+                return Err(ConfigCheckError::MongoClient(e));
             },
         };
 
@@ -253,7 +251,7 @@ impl TryFrom<ConfigUnchecked> for Config {
             redis_port: redis_port_handle,
 
             mongo_url: mongo_url_handle,
-            mongo_client_options: mongo_client_options_handle,
+            mongo_client: mongo_client_handle,
 
             mongo_connection_timeout: mongo_connection_timeout_handle,
 
@@ -293,7 +291,7 @@ pub enum ConfigCheckError {
     RedisIp(std::string::String),
     RedisPort(crate::common::user_port::UserPortTryFromStringError),
     MongoUrl(std::string::String),
-    MongoClientOptions(mongodb::error::Error),
+    MongoClient(crate::repositories_types::tufa_server::mongo_integration::mongo_try_get_client::MongoTryGetClientError),
     MongoConnectionTimeout(u64),
     DatabaseUrl(std::string::String),
     PostgresFourthHandleUrlPart(std::string::String),
