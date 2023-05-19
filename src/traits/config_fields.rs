@@ -13,6 +13,9 @@ pub trait GetRequireSsl {
 pub trait GetAccessControlMaxAge {
     fn get_access_control_max_age(&self) -> &usize;
 }
+pub trait GetAccessControlAllowOrigin {
+    fn get_access_control_allow_origin(&self) -> &String;
+}
 pub trait GetGithubName {
     fn get_github_name(&self) -> &String;
 }

@@ -11,6 +11,7 @@ pub struct ConfigUnchecked {
     base_url: String,
     require_ssl: bool,
     access_control_max_age: usize,
+    access_control_allow_origin: String,
 
     github_name: String,
     github_token: String,
@@ -54,6 +55,7 @@ pub struct Config {
     base_url: String,
     require_ssl: sqlx::postgres::PgSslMode,
     access_control_max_age: usize,
+    access_control_allow_origin: String,
 
     github_name: String,
     github_token: String,
@@ -113,6 +115,7 @@ impl TryFrom<ConfigUnchecked> for Config {
                 false => sqlx::postgres::PgSslMode::Prefer,
         };
         let access_control_max_age_handle = config_unchecked.access_control_max_age;
+        let access_control_allow_origin_handle = config_unchecked.access_control_allow_origin;//todo - maybe add check if its uri\url
 
         let github_name_handle = match config_unchecked.github_name.is_empty() {
             true => {
@@ -225,6 +228,7 @@ impl TryFrom<ConfigUnchecked> for Config {
             base_url: base_url_handle,
             require_ssl: require_ssl_handle,
             access_control_max_age: access_control_max_age_handle,
+            access_control_allow_origin: access_control_allow_origin_handle,
 
             github_name: github_name_handle,
             github_token: github_token_handle,
