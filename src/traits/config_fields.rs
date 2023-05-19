@@ -34,6 +34,9 @@ pub trait GetRedisPort {
 pub trait GetMongoUrl {
     fn get_mongo_url(&self) -> &String;
 }
+pub trait GetMongoClientOptions {
+    fn get_mongo_client_options(&self) -> &mongodb::options::ClientOptions;
+}
 pub trait GetMongoConnectionTimeout {
     fn get_mongo_connection_timeout(&self) -> &u64;
 }

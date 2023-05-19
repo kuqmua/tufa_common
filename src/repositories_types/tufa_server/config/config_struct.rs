@@ -66,6 +66,7 @@ pub struct Config {
     redis_port: crate::common::user_port::UserPort,
 
     mongo_url: String,
+    mongo_client_options: mongodb::options::ClientOptions,
 
     mongo_connection_timeout: u64,
 
@@ -115,7 +116,12 @@ impl TryFrom<ConfigUnchecked> for Config {
                 false => sqlx::postgres::PgSslMode::Prefer,
         };
         let access_control_max_age_handle = config_unchecked.access_control_max_age;
-        let access_control_allow_origin_handle = config_unchecked.access_control_allow_origin;//todo - maybe add check if its uri\url
+        let access_control_allow_origin_handle = match config_unchecked.access_control_allow_origin.is_empty() {
+            true => {
+                return Err(ConfigCheckError::AccessControlAllowOrigin(config_unchecked.access_control_allow_origin));//todo - maybe add check if its uri\url
+            },
+            false => config_unchecked.access_control_allow_origin,
+        };
 
         let github_name_handle = match config_unchecked.github_name.is_empty() {
             true => {
@@ -155,6 +161,14 @@ impl TryFrom<ConfigUnchecked> for Config {
                 return Err(ConfigCheckError::MongoUrl(config_unchecked.mongo_url));
             },
             false => config_unchecked.mongo_url,
+        };
+        let mongo_client_options_handle = match futures::executor::block_on(
+            mongodb::options::ClientOptions::parse(mongo_url_handle.clone())
+        ) {
+            Ok(mongo_client_options) => mongo_client_options,
+            Err(e) => {
+                return Err(ConfigCheckError::MongoClientOptions(e));
+            },
         };
 
         let mongo_connection_timeout_handle = config_unchecked.mongo_connection_timeout;
@@ -209,7 +223,7 @@ impl TryFrom<ConfigUnchecked> for Config {
             },
             false => config_unchecked.postgres_db,
         };
-        let postgres_params_handle = config_unchecked.postgres_params;
+        let postgres_params_handle = config_unchecked.postgres_params;//can be empty
 
         let postgres_connection_timeout_handle = config_unchecked.postgres_connection_timeout;
 
@@ -239,6 +253,7 @@ impl TryFrom<ConfigUnchecked> for Config {
             redis_port: redis_port_handle,
 
             mongo_url: mongo_url_handle,
+            mongo_client_options: mongo_client_options_handle,
 
             mongo_connection_timeout: mongo_connection_timeout_handle,
 
@@ -266,16 +281,19 @@ impl TryFrom<ConfigUnchecked> for Config {
 
 #[derive(Debug, thiserror::Error, strum_macros::Display)]
 pub enum ConfigCheckError {
+    //TODO todo for empty string cases - why need to store empty string? remove it
     ServerPort(crate::common::user_port::UserPortTryFromStringError),
     HmacSecret(std::string::String),
     BaseUrl(std::string::String),
     RequireSsl(bool),
+    AccessControlAllowOrigin(std::string::String),
     GithubName(std::string::String),
     GithubToken(std::string::String),
     Timezone(i32),
     RedisIp(std::string::String),
     RedisPort(crate::common::user_port::UserPortTryFromStringError),
     MongoUrl(std::string::String),
+    MongoClientOptions(mongodb::error::Error),
     MongoConnectionTimeout(u64),
     DatabaseUrl(std::string::String),
     PostgresFourthHandleUrlPart(std::string::String),
