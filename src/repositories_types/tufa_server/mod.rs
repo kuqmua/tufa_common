@@ -14,7 +14,7 @@ pub mod traits;
 pub mod email_client;
 pub mod session_state;
 pub mod check_new_providers_posts;
-pub mod startup;
+pub mod try_build_actix_web_dev_server;
 pub mod issue_delivery_worker;
 pub mod config;
 pub mod server_wrapper;

@@ -1,5 +1,5 @@
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum ApplicationBuildErrorNamed<'a> {
+pub enum TryBuildActixWebDevServer<'a> {
     TcpListenerBind {
         #[eo_error_occurence]
         tcp_listener_bind: crate::traits::try_create_tcp_listener::TryCreateTcpListenerErrorNamed<'a>,
