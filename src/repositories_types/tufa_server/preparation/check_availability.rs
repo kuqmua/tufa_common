@@ -50,11 +50,11 @@ pub enum CheckAvailabilityErrorNamed<'a> {
 }
 
 pub async fn check_availability<'a, SelfGeneric>(
-    // mongodb_options_client_options: mongodb::options::ClientOptions,
     config: &'static (
         impl crate::traits::config_fields::GetStartingCheckLink
         + crate::traits::get_postgres_url::GetPostgresUrl<SelfGeneric>
         + crate::traits::config_fields::GetPostgresConnectionTimeout
+        // + crate::traits::config_fields::GetMongoClient
         + std::marker::Send 
         + std::marker::Sync
     )
@@ -88,7 +88,7 @@ pub async fn check_availability<'a, SelfGeneric>(
     //         *config.get_postgres_connection_timeout()
     //     ),
     //     crate::repositories_types::tufa_server::mongo_integration::mongo_check_availability::mongo_check_availability(
-    //         mongodb_options_client_options,
+    //         config,
     //         "logs"
     //     ),
     // ) {

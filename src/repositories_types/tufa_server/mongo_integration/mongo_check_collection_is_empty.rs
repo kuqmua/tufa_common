@@ -13,42 +13,33 @@ pub enum MongoCheckCollectionIsEmptyErrorNamed<'a> {
 }
 
 pub async fn mongo_check_collection_is_empty<'a>(
-    client_options: mongodb::options::ClientOptions,
+    config: &'static impl crate::traits::config_fields::GetMongoClient,
     db_name: &str,
     db_collection_name: &str
 ) -> Result<(), Box<MongoCheckCollectionIsEmptyErrorNamed<'a>>> {
-    match mongodb::Client::with_options(client_options) {
+    match config
+        .get_mongo_client()
+        .database(db_name)
+        .collection::<mongodb::bson::Document>(db_collection_name)
+        .count_documents(None, None)
+        .await
+    {
         Err(e) => Err(Box::new(
             MongoCheckCollectionIsEmptyErrorNamed::MongoDB {
                 mongodb: e,
                 code_occurence: crate::code_occurence_tufa_common!(),
             }
         )),
-        Ok(client) => {
-            match client
-                .database(db_name)
-                .collection::<mongodb::bson::Document>(db_collection_name)
-                .count_documents(None, None)
-                .await
-            {
-                Err(e) => Err(Box::new(
-                    MongoCheckCollectionIsEmptyErrorNamed::MongoDB {
-                        mongodb: e,
+        Ok(documents_number) => {
+            if documents_number > 0 {
+                return Err(Box::new(
+                    MongoCheckCollectionIsEmptyErrorNamed::CollectionIsNotEmpty {
+                        collection_documents: documents_number,
                         code_occurence: crate::code_occurence_tufa_common!(),
                     }
-                )),
-                Ok(documents_number) => {
-                    if documents_number > 0 {
-                        return Err(Box::new(
-                            MongoCheckCollectionIsEmptyErrorNamed::CollectionIsNotEmpty {
-                                collection_documents: documents_number,
-                                code_occurence: crate::code_occurence_tufa_common!(),
-                            }
-                        ));
-                    }
-                    Ok(())
-                }
+                ));
             }
+            Ok(())
         }
     }
 }

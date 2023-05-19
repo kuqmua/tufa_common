@@ -13,10 +13,10 @@ pub enum MongoCheckDbIsEmptyErrorNamed<'a> {
 }
 
 pub async fn mongo_check_db_is_empty<'a>(
-    client: mongodb::Client,
+    config: &'static impl crate::traits::config_fields::GetMongoClient,
     db_name: &str,
 ) -> Result<(), Box<MongoCheckDbIsEmptyErrorNamed<'a>>> {
-    match client.database(db_name).list_collection_names(None).await {
+    match config.get_mongo_client().database(db_name).list_collection_names(None).await {
         Err(e) => Err(Box::new(
             MongoCheckDbIsEmptyErrorNamed::MongoDB {
                 mongodb: e,
