@@ -21,10 +21,10 @@ pub async fn mongo_get_documents_as_string_vector(
     collection: mongodb::Collection<mongodb::bson::Document>,
     db_collection_document_field_name_handle: &str,
     option_aggregation: Option<mongodb::bson::Document>,
-) -> Result<Vec<String>, Box<crate::server::mongo_integration::mongo_get_documents_as_string_vector::MongoGetDocumentsAsStringVectorErrorNamed>> {
+) -> Result<Vec<String>, Box<crate::server::mongo::mongo_get_documents_as_string_vector::MongoGetDocumentsAsStringVectorErrorNamed>> {
     match collection.aggregate(option_aggregation, None).await {
         Err(e) => Err(Box::new(
-            crate::server::mongo_integration::mongo_get_documents_as_string_vector::MongoGetDocumentsAsStringVectorErrorNamed::MongoDB {
+            crate::server::mongo::mongo_get_documents_as_string_vector::MongoGetDocumentsAsStringVectorErrorNamed::MongoDB {
                 mongodb: e,
                 code_occurence: crate::code_occurence_tufa_common!()
             }
@@ -38,7 +38,7 @@ pub async fn mongo_get_documents_as_string_vector(
                 }.await {
                     Err(e) => {
                         return Err(Box::new(
-                            crate::server::mongo_integration::mongo_get_documents_as_string_vector::MongoGetDocumentsAsStringVectorErrorNamed::MongoDB {
+                            crate::server::mongo::mongo_get_documents_as_string_vector::MongoGetDocumentsAsStringVectorErrorNamed::MongoDB {
                                 mongodb: e,
                                 code_occurence: crate::code_occurence_tufa_common!()
                             }
@@ -51,7 +51,7 @@ pub async fn mongo_get_documents_as_string_vector(
                         Some(document) => {
                             match document.get(db_collection_document_field_name_handle) {
                                 None => return Err(Box::new(
-                                    crate::server::mongo_integration::mongo_get_documents_as_string_vector::MongoGetDocumentsAsStringVectorErrorNamed::NoKeyInDocument {
+                                    crate::server::mongo::mongo_get_documents_as_string_vector::MongoGetDocumentsAsStringVectorErrorNamed::NoKeyInDocument {
                                         key: db_collection_document_field_name_handle,
                                         code_occurence: crate::code_occurence_tufa_common!()
                                     }
@@ -62,7 +62,7 @@ pub async fn mongo_get_documents_as_string_vector(
                                     }
                                     other_bson_type => {
                                         return Err(Box::new(
-                                            crate::server::mongo_integration::mongo_get_documents_as_string_vector::MongoGetDocumentsAsStringVectorErrorNamed::WrongBsonType {
+                                            crate::server::mongo::mongo_get_documents_as_string_vector::MongoGetDocumentsAsStringVectorErrorNamed::WrongBsonType {
                                                 bson: other_bson_type.clone(),
                                                 code_occurence: crate::code_occurence_tufa_common!()
                                             }

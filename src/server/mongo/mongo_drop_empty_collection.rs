@@ -18,7 +18,7 @@ pub async fn mongo_drop_empty_collection<'a>(
     config: &'static impl crate::traits::config_fields::GetMongoClient,
     db_name: &'a str,
     db_collection_name: String,
-) -> Result<(), Box<crate::server::mongo_integration::mongo_drop_empty_collection::MongoDropEmptyCollectionErrorNamed<'a>>> {
+) -> Result<(), Box<crate::server::mongo::mongo_drop_empty_collection::MongoDropEmptyCollectionErrorNamed<'a>>> {
     let collection: mongodb::Collection<mongodb::bson::Document> = config
         .get_mongo_client()
         .database(db_name)
@@ -29,7 +29,7 @@ pub async fn mongo_drop_empty_collection<'a>(
         .await 
     {
         Err(e) => Err(Box::new(
-            crate::server::mongo_integration::mongo_drop_empty_collection::MongoDropEmptyCollectionErrorNamed::MongoDB {
+            crate::server::mongo::mongo_drop_empty_collection::MongoDropEmptyCollectionErrorNamed::MongoDB {
                 mongodb: e,
                 code_occurence: crate::code_occurence_tufa_common!(),
             }
@@ -37,7 +37,7 @@ pub async fn mongo_drop_empty_collection<'a>(
         Ok(documents_number) => {
             if documents_number > 0 {
                 Err(Box::new(
-                    crate::server::mongo_integration::mongo_drop_empty_collection::MongoDropEmptyCollectionErrorNamed::CollectionIsNotEmpty {
+                    crate::server::mongo::mongo_drop_empty_collection::MongoDropEmptyCollectionErrorNamed::CollectionIsNotEmpty {
                         collection_name: db_collection_name,
                         collection_len: documents_number,
                         code_occurence: crate::code_occurence_tufa_common!(),
@@ -46,7 +46,7 @@ pub async fn mongo_drop_empty_collection<'a>(
             } else {
                 if let Err(e) = collection.drop(None).await {
                     return Err(Box::new(
-                        crate::server::mongo_integration::mongo_drop_empty_collection::MongoDropEmptyCollectionErrorNamed::MongoDB {
+                        crate::server::mongo::mongo_drop_empty_collection::MongoDropEmptyCollectionErrorNamed::MongoDB {
                             mongodb: e,
                             code_occurence: crate::code_occurence_tufa_common!(),
                         }

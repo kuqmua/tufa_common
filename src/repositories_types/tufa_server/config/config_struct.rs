@@ -162,7 +162,7 @@ impl TryFrom<ConfigUnchecked> for Config {
             },
             false => config_unchecked.mongo_url,
         };
-        let mongo_client_handle = match crate::server::mongo_integration::mongo_try_get_client::mongo_try_get_client(&mongo_url_handle) {
+        let mongo_client_handle = match crate::server::mongo::mongo_try_get_client::mongo_try_get_client(&mongo_url_handle) {
             Ok(mongo_client) => mongo_client,
             Err(e) => {
                 return Err(ConfigCheckError::MongoClient(e));
@@ -291,7 +291,7 @@ pub enum ConfigCheckError {
     RedisIp(std::string::String),
     RedisPort(crate::common::user_port::UserPortTryFromStringError),
     MongoUrl(std::string::String),
-    MongoClient(crate::server::mongo_integration::mongo_try_get_client::MongoTryGetClientError),
+    MongoClient(crate::server::mongo::mongo_try_get_client::MongoTryGetClientError),
     MongoConnectionTimeout(u64),
     DatabaseUrl(std::string::String),
     PostgresFourthHandleUrlPart(std::string::String),

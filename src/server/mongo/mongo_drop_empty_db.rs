@@ -17,7 +17,7 @@ pub enum MongoDropEmptyDbErrorNamed<'a> {
 pub async fn mongo_drop_empty_db<'a>(
     config: &'static impl crate::traits::config_fields::GetMongoClient,
     db_name: &'a str,
-) -> Result<(), Box<crate::server::mongo_integration::mongo_drop_empty_db::MongoDropEmptyDbErrorNamed<'a>>> {
+) -> Result<(), Box<crate::server::mongo::mongo_drop_empty_db::MongoDropEmptyDbErrorNamed<'a>>> {
     let db = config
         .get_mongo_client()
         .database(db_name);
@@ -27,7 +27,7 @@ pub async fn mongo_drop_empty_db<'a>(
         .await 
     {
         Err(e) => Err(Box::new(
-            crate::server::mongo_integration::mongo_drop_empty_db::MongoDropEmptyDbErrorNamed::MongoDB {
+            crate::server::mongo::mongo_drop_empty_db::MongoDropEmptyDbErrorNamed::MongoDB {
                 mongodb: e,
                 code_occurence: crate::code_occurence_tufa_common!(),
             }
@@ -35,7 +35,7 @@ pub async fn mongo_drop_empty_db<'a>(
         Ok(collections_names_list) => {
             if !collections_names_list.is_empty() {
                 return Err(Box::new(
-                    crate::server::mongo_integration::mongo_drop_empty_db::MongoDropEmptyDbErrorNamed::CollectionNamesListIsNotEmpty {
+                    crate::server::mongo::mongo_drop_empty_db::MongoDropEmptyDbErrorNamed::CollectionNamesListIsNotEmpty {
                         database: db_name,
                         list_collection_names_len: collections_names_list.len(),
                         code_occurence: crate::code_occurence_tufa_common!(),
@@ -44,7 +44,7 @@ pub async fn mongo_drop_empty_db<'a>(
             }
             if let Err(e) = db.drop(None).await {
                 return Err(Box::new(
-                    crate::server::mongo_integration::mongo_drop_empty_db::MongoDropEmptyDbErrorNamed::MongoDB {
+                    crate::server::mongo::mongo_drop_empty_db::MongoDropEmptyDbErrorNamed::MongoDB {
                         mongodb: e,
                         code_occurence: crate::code_occurence_tufa_common!(),
                     }

@@ -5,4 +5,4 @@ pub mod redis;
 pub mod resource;
 pub mod tracing_type;
 pub mod postgres;
-pub mod mongo_integration;
+pub mod mongo;

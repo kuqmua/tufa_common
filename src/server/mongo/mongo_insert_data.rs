@@ -9,7 +9,7 @@
 
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 // pub enum MongoInsertDataErrorUnnamed<'a> {
-//     MongoInsertDocsInEmptyCollection(crate::server::mongo_integration::mongo_insert_docs_in_empty_collection::MongoInsertDocsInEmptyCollectionErrorNamed<'a>)
+//     MongoInsertDocsInEmptyCollection(crate::server::mongo::mongo_insert_docs_in_empty_collection::MongoInsertDocsInEmptyCollectionErrorNamed<'a>)
 // }
 
 // pub async fn mongo_insert_data<'a>(
@@ -22,14 +22,14 @@
         // + std::marker::Send 
         // + std::marker::Sync
 //     )
-// ) -> Result<(), Box<crate::server::mongo_integration::mongo_insert_data::MongoInsertDataErrorNamed<'a>>> {
+// ) -> Result<(), Box<crate::server::mongo::mongo_insert_data::MongoInsertDataErrorNamed<'a>>> {
 //     let error_hashmap = futures::future::join_all(vec_of_link_parts_hashmap.into_iter().map(
 //         |(pk, vec_of_link_parts)| {
 //             let mongodb_options_client_options_handle = mongodb_options_client_options.clone();
 //             async move {
 //                 (
 //                     pk,
-//                     crate::server::mongo_integration::mongo_insert_docs_in_empty_collection::mongo_insert_docs_in_empty_collection(
+//                     crate::server::mongo::mongo_insert_docs_in_empty_collection::mongo_insert_docs_in_empty_collection(
 //                         mongodb_options_client_options_handle,
 //                         db_name_handle,
 //                         format!(
@@ -49,15 +49,15 @@
 //         if let Err(e) = result {
 //             return Some((
 //                 pk.to_string(), 
-//                 crate::server::mongo_integration::mongo_insert_data::MongoInsertDataErrorUnnamed::MongoInsertDocsInEmptyCollection(*e)
+//                 crate::server::mongo::mongo_insert_data::MongoInsertDataErrorUnnamed::MongoInsertDocsInEmptyCollection(*e)
 //             ));
 //         }
 //         None
 //     })
-//     .collect::<std::collections::HashMap<std::string::String, crate::server::mongo_integration::mongo_insert_data::MongoInsertDataErrorUnnamed>>();
+//     .collect::<std::collections::HashMap<std::string::String, crate::server::mongo::mongo_insert_data::MongoInsertDataErrorUnnamed>>();
 //     if !error_hashmap.is_empty() {
 //         return Err(Box::new(
-//             crate::server::mongo_integration::mongo_insert_data::MongoInsertDataErrorNamed::Errors {
+//             crate::server::mongo::mongo_insert_data::MongoInsertDataErrorNamed::Errors {
 //                 errors_hashmap: error_hashmap,
 //                 code_occurence: crate::code_occurence_tufa_common!()
 //             }

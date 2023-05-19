@@ -14,7 +14,7 @@ pub enum CheckAvailabilityErrorNamed<'a> {
     },
     // Mongo {
     //     #[eo_error_occurence]
-    //     mongo: crate::server::mongo_integration::mongo_check_availability::MongoCheckAvailabilityErrorNamed<'a>,
+    //     mongo: crate::server::mongo::mongo_check_availability::MongoCheckAvailabilityErrorNamed<'a>,
     //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     // },
     NetAndPostgres {
@@ -28,14 +28,14 @@ pub enum CheckAvailabilityErrorNamed<'a> {
     //     #[eo_error_occurence]
     //     net: crate::server::net::net_check_availability::NetCheckAvailabilityErrorNamed<'a>,
     //     #[eo_error_occurence]
-    //     mongo: crate::server::mongo_integration::mongo_check_availability::MongoCheckAvailabilityErrorNamed<'a>,
+    //     mongo: crate::server::mongo::mongo_check_availability::MongoCheckAvailabilityErrorNamed<'a>,
     //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     // },
     // PostgresAndMongo {
     //     #[eo_error_occurence]
     //     postgres: crate::server::postgres::postgres_check_availability::PostgresCheckAvailabilityErrorNamed<'a>,
     //     #[eo_error_occurence]
-    //     mongo: crate::server::mongo_integration::mongo_check_availability::MongoCheckAvailabilityErrorNamed<'a>,
+    //     mongo: crate::server::mongo::mongo_check_availability::MongoCheckAvailabilityErrorNamed<'a>,
     //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     // },
     // NetAndPostgresAndMongo {
@@ -44,7 +44,7 @@ pub enum CheckAvailabilityErrorNamed<'a> {
     //     #[eo_error_occurence]
     //     postgres: crate::server::postgres::postgres_check_availability::PostgresCheckAvailabilityErrorNamed<'a>,
     //     #[eo_error_occurence]
-    //     mongo: crate::server::mongo_integration::mongo_check_availability::MongoCheckAvailabilityErrorNamed<'a>,
+    //     mongo: crate::server::mongo::mongo_check_availability::MongoCheckAvailabilityErrorNamed<'a>,
     //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     // },
 }
@@ -87,7 +87,7 @@ pub async fn check_availability<'a, SelfGeneric>(
     //         config.get_postgres_url(), 
     //         *config.get_postgres_connection_timeout()
     //     ),
-    //     crate::server::mongo_integration::mongo_check_availability::mongo_check_availability(
+    //     crate::server::mongo::mongo_check_availability::mongo_check_availability(
     //         config,
     //         "logs"
     //     ),

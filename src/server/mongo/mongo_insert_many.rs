@@ -29,7 +29,7 @@
         // + std::marker::Send 
         // + std::marker::Sync
 // )
-// ) -> Result<(), Box<crate::server::mongo_integration::mongo_insert_many::MongoInsertManyErrorNamed<'a>>> {
+// ) -> Result<(), Box<crate::server::mongo::mongo_insert_many::MongoInsertManyErrorNamed<'a>>> {
 //     let error_vec_insert_many = futures::future::join_all(
 //         providers_json_local_data_hashmap.iter().map(
 //                 |(pk, data_vec)|
@@ -59,8 +59,8 @@
 //         if let Err(e) = result {
 //             return Some((
 //                 pk.to_string(), 
-//                 crate::server::mongo_integration::mongo_insert_many::MongoInsertManyErrorUnnamed::InsertMany(
-//                     crate::server::mongo_integration::mongo_insert_many::MongoInsertManyHandleErrorNamed::InsertMany { 
+//                 crate::server::mongo::mongo_insert_many::MongoInsertManyErrorUnnamed::InsertMany(
+//                     crate::server::mongo::mongo_insert_many::MongoInsertManyHandleErrorNamed::InsertMany { 
 //                         insert_many: e, 
 //                         code_occurence: crate::code_occurence_tufa_common!()  
 //                     }
@@ -69,11 +69,11 @@
 //         }
 //         None
 //     })
-//     .collect::<std::collections::HashMap<String, crate::server::mongo_integration::mongo_insert_many::MongoInsertManyErrorUnnamed>>();
+//     .collect::<std::collections::HashMap<String, crate::server::mongo::mongo_insert_many::MongoInsertManyErrorUnnamed>>();
 //     match error_vec_insert_many.is_empty() {
 //         true => Ok(()),
 //         false => Err(Box::new(
-//             crate::server::mongo_integration::mongo_insert_many::MongoInsertManyErrorNamed::InsertMany { 
+//             crate::server::mongo::mongo_insert_many::MongoInsertManyErrorNamed::InsertMany { 
 //                 insert_many: error_vec_insert_many, 
 //                 code_occurence: crate::code_occurence_tufa_common!() 
 //             },
