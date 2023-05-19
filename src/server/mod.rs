@@ -7,3 +7,4 @@ pub mod redis;
 pub mod resource;
 pub mod tracing_type;
 pub mod postgres_integration;
+pub mod mongo_integration;

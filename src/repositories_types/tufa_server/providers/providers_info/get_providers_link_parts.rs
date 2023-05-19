@@ -7,7 +7,7 @@
 //     },
 //     MongoGetProvidersLinkParts {
 //          #[eo_error_occurence]
-//         mongo_get_providers_link_parts: crate::repositories_types::tufa_server::mongo_integration::mongo_get_providers_link_parts::MongoGetProvidersLinkPartsErrorNamed<'a>,
+//         mongo_get_providers_link_parts: crate::server::mongo_integration::mongo_get_providers_link_parts::MongoGetProvidersLinkPartsErrorNamed<'a>,
 //         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
 //     },
 //     // PostgreSql {
@@ -43,7 +43,7 @@
 //             )),
 //             Ok(success_hashmap) => Ok(success_hashmap),
 //         },
-//         crate::server::resource::Resource::Mongodb => match crate::repositories_types::tufa_server::mongo_integration::mongo_get_providers_link_parts::mongo_get_providers_link_parts(config).await {
+//         crate::server::resource::Resource::Mongodb => match crate::server::mongo_integration::mongo_get_providers_link_parts::mongo_get_providers_link_parts(config).await {
 //             Err(e) => Err(Box::new(
                 
 //                 GetProvidersLinkPartsErrorNamed::MongoGetProvidersLinkParts {

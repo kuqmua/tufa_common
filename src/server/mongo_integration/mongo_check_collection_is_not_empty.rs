@@ -35,7 +35,7 @@
 // pub async fn mongo_check_collections_is_not_empty<'a>(
 //     providers_json_local_data_hashmap: std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
 //     db: &mongodb::Database,
-// ) -> Result<(), Box<crate::repositories_types::tufa_server::mongo_integration::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorNamed<'a>>>{
+// ) -> Result<(), Box<crate::server::mongo_integration::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorNamed<'a>>>{
 //     let error_vec_count_documents =
 //         futures::future::join_all(providers_json_local_data_hashmap.keys().map(|pk| async move {
 //             (
@@ -50,8 +50,8 @@
 //         .filter_map(|(pk, result)| match result {
 //             Err(e) => Some((
 //                 pk.to_string(),
-//                 crate::repositories_types::tufa_server::mongo_integration::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorUnnamed::CountDocumentsOrigin(
-//                     crate::repositories_types::tufa_server::mongo_integration::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorCountDocumentsErrorNamed::CountDocuments { 
+//                 crate::server::mongo_integration::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorUnnamed::CountDocumentsOrigin(
+//                     crate::server::mongo_integration::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorCountDocumentsErrorNamed::CountDocuments { 
 //                         error: e, 
 //                         code_occurence: crate::code_occurence_tufa_common!(), 
 //                     }
@@ -61,8 +61,8 @@
 //                 if documents_number > 0 {
 //                     return Some((
 //                         pk.to_string(),
-//                         crate::repositories_types::tufa_server::mongo_integration::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorUnnamed::IsNotEmptyOrigin(
-//                             crate::repositories_types::tufa_server::mongo_integration::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorIsNotEmptyOriginErrorNamed::IsNotEmptyOrigin { 
+//                         crate::server::mongo_integration::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorUnnamed::IsNotEmptyOrigin(
+//                             crate::server::mongo_integration::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorIsNotEmptyOriginErrorNamed::IsNotEmptyOrigin { 
 //                                 error: documents_number, 
 //                                 code_occurence: crate::code_occurence_tufa_common!()
 //                             }
@@ -72,10 +72,10 @@
 //                 None
 //             }
 //         })
-//         .collect::<std::collections::HashMap<String, crate::repositories_types::tufa_server::mongo_integration::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorUnnamed>>();
+//         .collect::<std::collections::HashMap<String, crate::server::mongo_integration::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorUnnamed>>();
 //     if !error_vec_count_documents.is_empty() {
 //         return Err(Box::new(
-//             crate::repositories_types::tufa_server::mongo_integration::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorNamed::Mongo {        
+//             crate::server::mongo_integration::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorNamed::Mongo {        
 //                 inner_errors: error_vec_count_documents, 
 //                 code_occurence: crate::code_occurence_tufa_common!()
 //             }

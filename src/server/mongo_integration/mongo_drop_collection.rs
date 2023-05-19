@@ -11,11 +11,11 @@ pub async fn mongo_drop_collection<'a>(
     config: &'static impl crate::traits::config_fields::GetMongoClient,
     db_name: &'a str,
     db_collection_name: &'a str,
-) -> Result<(), Box<crate::repositories_types::tufa_server::mongo_integration::mongo_drop_collection::MongoDropCollectionErrorNamed<'a>>> {
+) -> Result<(), Box<crate::server::mongo_integration::mongo_drop_collection::MongoDropCollectionErrorNamed<'a>>> {
     let collection: mongodb::Collection<mongodb::bson::Document> = config.get_mongo_client().database(db_name).collection(db_collection_name);
     if let Err(e) = collection.drop(None).await {
         return Err(Box::new(
-            crate::repositories_types::tufa_server::mongo_integration::mongo_drop_collection::MongoDropCollectionErrorNamed::MongoDB {
+            crate::server::mongo_integration::mongo_drop_collection::MongoDropCollectionErrorNamed::MongoDB {
                 mongodb: e,
                 code_occurence: crate::code_occurence_tufa_common!(),
             }
