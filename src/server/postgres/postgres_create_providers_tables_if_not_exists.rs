@@ -10,7 +10,7 @@
 // pub async fn postgres_create_providers_tables_if_not_exists<'a>(
 //     providers_json_local_data_hashmap: &std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
 //     db: &sqlx::Pool<sqlx::Postgres>,
-// ) -> Result<(), Box<crate::server::postgres_integration::postgres_create_providers_tables_if_not_exists::PostgresCreateProvidersDbsErrorNamed<'a>>> {
+// ) -> Result<(), Box<crate::server::postgres::postgres_create_providers_tables_if_not_exists::PostgresCreateProvidersDbsErrorNamed<'a>>> {
 //     let table_creation_error_hashmap = futures::future::join_all(
 //         providers_json_local_data_hashmap.keys().map(|pk| async {
 //             let query_string = format!(
@@ -32,7 +32,7 @@
 //         .collect::<std::collections::HashMap<std::string::String, sqlx::Error>>();
 //     if !table_creation_error_hashmap.is_empty() {
 //         return Err(Box::new(
-//             crate::server::postgres_integration::postgres_create_providers_tables_if_not_exists::PostgresCreateProvidersDbsErrorNamed::Postgres {
+//             crate::server::postgres::postgres_create_providers_tables_if_not_exists::PostgresCreateProvidersDbsErrorNamed::Postgres {
 //                 sqlx_error_hashmap: table_creation_error_hashmap,
 //                 code_occurence: crate::code_occurence_tufa_common!()
 //             }
