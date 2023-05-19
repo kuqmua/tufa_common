@@ -10,6 +10,7 @@ pub struct ConfigUnchecked {
     hmac_secret: String,
     base_url: String,
     require_ssl: bool,
+    access_control_max_age: usize,
 
     github_name: String,
     github_token: String,
@@ -52,6 +53,7 @@ pub struct Config {
     hmac_secret: secrecy::Secret<std::string::String>,
     base_url: String,
     require_ssl: sqlx::postgres::PgSslMode,
+    access_control_max_age: usize,
 
     github_name: String,
     github_token: String,
@@ -110,6 +112,7 @@ impl TryFrom<ConfigUnchecked> for Config {
                 true => sqlx::postgres::PgSslMode::Require,
                 false => sqlx::postgres::PgSslMode::Prefer,
         };
+        let access_control_max_age_handle = config_unchecked.access_control_max_age;
 
         let github_name_handle = match config_unchecked.github_name.is_empty() {
             true => {
@@ -221,6 +224,7 @@ impl TryFrom<ConfigUnchecked> for Config {
             hmac_secret: hmac_secret_handle,
             base_url: base_url_handle,
             require_ssl: require_ssl_handle,
+            access_control_max_age: access_control_max_age_handle,
 
             github_name: github_name_handle,
             github_token: github_token_handle,

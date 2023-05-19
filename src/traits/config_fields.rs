@@ -10,6 +10,9 @@ pub trait GetBaseUrl {
 pub trait GetRequireSsl {
     fn get_require_ssl(&self) -> &sqlx::postgres::PgSslMode;
 }
+pub trait GetAccessControlMaxAge {
+    fn get_access_control_max_age(&self) -> &usize;
+}
 pub trait GetGithubName {
     fn get_github_name(&self) -> &String;
 }
