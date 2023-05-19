@@ -15,7 +15,7 @@
 // pub async fn postgres_check_providers_link_parts_tables_are_empty<'a>(
 //     providers_json_local_data_hashmap: &std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
 //     db: &sqlx::Pool<sqlx::Postgres>,
-// ) -> Result<(), Box<crate::repositories_types::tufa_server::postgres_integration::postgres_check_providers_link_parts_tables_are_empty::PostgresCheckProvidersLinkPartsTablesEmptyErrorNamed<'a>>> {
+// ) -> Result<(), Box<crate::server::postgres_integration::postgres_check_providers_link_parts_tables_are_empty::PostgresCheckProvidersLinkPartsTablesEmptyErrorNamed<'a>>> {
 //     let count_provider_links_tables_tasks_vec =
 //         providers_json_local_data_hashmap.keys().map(|pk| async {
 //             let query_string = format!(
@@ -47,7 +47,7 @@
 //     }
 //     if !count_provider_links_tables_error_hashmap.is_empty() {
 //         return Err(Box::new(
-//             crate::repositories_types::tufa_server::postgres_integration::postgres_check_providers_link_parts_tables_are_empty::PostgresCheckProvidersLinkPartsTablesEmptyErrorNamed::SelectCountOrigin {
+//             crate::server::postgres_integration::postgres_check_providers_link_parts_tables_are_empty::PostgresCheckProvidersLinkPartsTablesEmptyErrorNamed::SelectCountOrigin {
 //                 hashmap_provider_kind_sqlx_error: count_provider_links_tables_error_hashmap,
 //                 code_occurence: crate::code_occurence_tufa_common!()
 //             }
@@ -55,7 +55,7 @@
 //     }
 //     if !provider_links_tables_not_empty_error_hashmap.is_empty() {
 //         return Err(Box::new(
-//             crate::repositories_types::tufa_server::postgres_integration::postgres_check_providers_link_parts_tables_are_empty::PostgresCheckProvidersLinkPartsTablesEmptyErrorNamed::NotEmptyOrigin {
+//             crate::server::postgres_integration::postgres_check_providers_link_parts_tables_are_empty::PostgresCheckProvidersLinkPartsTablesEmptyErrorNamed::NotEmptyOrigin {
 //                 hashmap_provider_kind_len: provider_links_tables_not_empty_error_hashmap,
 //                 code_occurence: crate::code_occurence_tufa_common!()
 //             }

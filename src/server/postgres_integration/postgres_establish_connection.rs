@@ -15,7 +15,7 @@ pub async fn postgres_establish_connection<'a, SelfGeneric>(
         + std::marker::Send 
         + std::marker::Sync
     )
-) -> Result<sqlx::Pool<sqlx::Postgres>, Box<crate::repositories_types::tufa_server::postgres_integration::postgres_establish_connection::PostgresEstablishConnectionErrorNamed<'a>>> {
+) -> Result<sqlx::Pool<sqlx::Postgres>, Box<crate::server::postgres_integration::postgres_establish_connection::PostgresEstablishConnectionErrorNamed<'a>>> {
     match sqlx::postgres::PgPoolOptions::new()
         .max_connections(max_connections)
         .connect_timeout(std::time::Duration::from_millis(*config.get_postgres_connection_timeout())) //todo add timeout constant or env var
@@ -23,7 +23,7 @@ pub async fn postgres_establish_connection<'a, SelfGeneric>(
         .await
     {
         Err(e) => Err(Box::new(
-            crate::repositories_types::tufa_server::postgres_integration::postgres_establish_connection::PostgresEstablishConnectionErrorNamed::Connect { 
+            crate::server::postgres_integration::postgres_establish_connection::PostgresEstablishConnectionErrorNamed::Connect { 
                 sqlx_error: e, 
                 code_occurence: crate::code_occurence_tufa_common!(), 
             }

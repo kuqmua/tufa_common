@@ -2,32 +2,32 @@
 // pub enum PostgresInitErrorNamed<'a> {
 //     EstablishConnection{
 //         #[eo_error_occurence]
-//         establish_connection: crate::repositories_types::tufa_server::postgres_integration::postgres_establish_connection::PostgresEstablishConnectionErrorNamed<'a>,
+//         establish_connection: crate::server::postgres_integration::postgres_establish_connection::PostgresEstablishConnectionErrorNamed<'a>,
 //         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
 //     },
 //     CreateTableQueries{
 //         #[eo_error_occurence]
-//         create_table_queries: crate::repositories_types::tufa_server::postgres_integration::postgres_create_providers_tables_if_not_exists::PostgresCreateProvidersDbsErrorNamed<'a>,
+//         create_table_queries: crate::server::postgres_integration::postgres_create_providers_tables_if_not_exists::PostgresCreateProvidersDbsErrorNamed<'a>,
 //         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
 //     },
 //     CheckProviderLinksTablesAreEmpty{
 //         #[eo_error_occurence]
-//         check_provider_links_tables_are_empty: crate::repositories_types::tufa_server::postgres_integration::postgres_check_providers_link_parts_tables_are_empty::PostgresCheckProvidersLinkPartsTablesEmptyErrorNamed<'a>,
+//         check_provider_links_tables_are_empty: crate::server::postgres_integration::postgres_check_providers_link_parts_tables_are_empty::PostgresCheckProvidersLinkPartsTablesEmptyErrorNamed<'a>,
 //         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
 //     },
 //     DeleteAllFromProvidersTables{
 //         #[eo_error_occurence]
-//         delete_all_from_providers_tables: crate::repositories_types::tufa_server::postgres_integration::postgres_delete_all_from_providers_link_parts_tables::PostgresDeleteAllFromProvidersTablesErrorNamed<'a>,
+//         delete_all_from_providers_tables: crate::server::postgres_integration::postgres_delete_all_from_providers_link_parts_tables::PostgresDeleteAllFromProvidersTablesErrorNamed<'a>,
 //         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
 //     },
 //     CheckProvidersLinksTablesLengthRowsEqualInitializationDataLength{
 //         #[eo_error_occurence]
-//         check_providers_links_tables_length_rows_equal_initialization_data_length: crate::repositories_types::tufa_server::postgres_integration::postgres_check_providers_links_tables_length_rows_equal_initialization_data_length::PostgresCheckProvidersLinksTablesLengthRowsEqualInitializationDataLengthWrapperErrorNamed<'a>,
+//         check_providers_links_tables_length_rows_equal_initialization_data_length: crate::server::postgres_integration::postgres_check_providers_links_tables_length_rows_equal_initialization_data_length::PostgresCheckProvidersLinksTablesLengthRowsEqualInitializationDataLengthWrapperErrorNamed<'a>,
 //         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
 //     },
 //     InsertLinkPartsIntoProvidersTables{
 //         #[eo_error_occurence]
-//         insert_link_parts_into_providers_tables: crate::repositories_types::tufa_server::postgres_integration::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginErrorNamed<'a>,
+//         insert_link_parts_into_providers_tables: crate::server::postgres_integration::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginErrorNamed<'a>,
 //         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
 //     },
 // }
@@ -41,7 +41,7 @@
         // + std::marker::Sync
 //     )
 // ) -> Result<(), Box<crate::repositories_types::tufa_server::init_dbs_logic::init_postgres::PostgresInitErrorNamed<'a>>> {
-//     match crate::repositories_types::tufa_server::postgres_integration::postgres_establish_connection::postgres_establish_connection(
+//     match crate::server::postgres_integration::postgres_establish_connection::postgres_establish_connection(
 //         providers_json_local_data_hashmap.len() as u32,
 //         config
 //     ).await {
@@ -52,7 +52,7 @@
 //             }
 //         )),
 //         Ok(pool) => {
-//             if let Err(e) = crate::repositories_types::tufa_server::postgres_integration::postgres_create_providers_tables_if_not_exists::postgres_create_providers_tables_if_not_exists(
+//             if let Err(e) = crate::server::postgres_integration::postgres_create_providers_tables_if_not_exists::postgres_create_providers_tables_if_not_exists(
 //                 &providers_json_local_data_hashmap,
 //                 &pool,
 //             )
@@ -65,7 +65,7 @@
 //                     }
 //                 ));
 //             }
-//             if let Err(e) = crate::repositories_types::tufa_server::postgres_integration::postgres_check_providers_link_parts_tables_are_empty::postgres_check_providers_link_parts_tables_are_empty(
+//             if let Err(e) = crate::server::postgres_integration::postgres_check_providers_link_parts_tables_are_empty::postgres_check_providers_link_parts_tables_are_empty(
 //                 &providers_json_local_data_hashmap,
 //                 &pool,
 //             )
@@ -78,7 +78,7 @@
 //                     }
 //                 ));
 //             }
-//             if let Err(e) = crate::repositories_types::tufa_server::postgres_integration::postgres_delete_all_from_providers_link_parts_tables::postgres_delete_all_from_providers_link_parts_tables(
+//             if let Err(e) = crate::server::postgres_integration::postgres_delete_all_from_providers_link_parts_tables::postgres_delete_all_from_providers_link_parts_tables(
 //                 &providers_json_local_data_hashmap,
 //                 &pool
 //             )
@@ -91,7 +91,7 @@
 //                     }
 //                 ));
 //             }
-//             if let Err(e) = crate::repositories_types::tufa_server::postgres_integration::postgres_check_providers_links_tables_length_rows_equal_initialization_data_length::postgres_check_providers_links_tables_length_rows_equal_initialization_data_length(
+//             if let Err(e) = crate::server::postgres_integration::postgres_check_providers_links_tables_length_rows_equal_initialization_data_length::postgres_check_providers_links_tables_length_rows_equal_initialization_data_length(
 //                 &providers_json_local_data_hashmap,
 //                 &pool,
 //             )
@@ -103,7 +103,7 @@
 //                     }
 //             ));
 //             }
-//             if let Err(e) = crate::repositories_types::tufa_server::postgres_integration::postgres_insert_link_parts_into_providers_tables::postgres_insert_link_parts_into_providers_tables(
+//             if let Err(e) = crate::server::postgres_integration::postgres_insert_link_parts_into_providers_tables::postgres_insert_link_parts_into_providers_tables(
 //                 &providers_json_local_data_hashmap,
 //                 &pool,
 //             )

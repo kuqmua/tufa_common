@@ -27,7 +27,7 @@
 // pub async fn postgres_insert_link_parts_into_providers_tables<'a>(
 //     providers_json_local_data_hashmap: &std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
 //     pool: &sqlx::Pool<sqlx::Postgres>,
-// ) -> Result<(), Box<crate::repositories_types::tufa_server::postgres_integration::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginErrorNamed<'a>>>{
+// ) -> Result<(), Box<crate::server::postgres_integration::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginErrorNamed<'a>>>{
 //     let insertion_error_hashmap = futures::future::join_all(providers_json_local_data_hashmap.iter().map(
 //         |(pk, string_vec)| async {
 //             let mut values_string = String::from("");
@@ -53,8 +53,8 @@
 //         if let Err(e) = result {
 //             return Some((
 //                 pk.to_string(), 
-//                 crate::repositories_types::tufa_server::postgres_integration::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginErrorEnumUnnamed::PostgresInsertLinkPartsIntoProvidersTablesOriginHandle(
-//                     crate::repositories_types::tufa_server::postgres_integration::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginHandleErrorNamed::Postgres { 
+//                 crate::server::postgres_integration::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginErrorEnumUnnamed::PostgresInsertLinkPartsIntoProvidersTablesOriginHandle(
+//                     crate::server::postgres_integration::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginHandleErrorNamed::Postgres { 
 //                         error: e, 
 //                         code_occurence: crate::code_occurence_tufa_common!()
 //                     }
@@ -64,11 +64,11 @@
 //         None
 //     })
 //     .collect::<std::collections::HashMap<
-//         String, crate::repositories_types::tufa_server::postgres_integration::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginErrorEnumUnnamed
+//         String, crate::server::postgres_integration::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginErrorEnumUnnamed
 //     >>();
 //     if !insertion_error_hashmap.is_empty() {
 //         return Err(Box::new(
-//             crate::repositories_types::tufa_server::postgres_integration::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginErrorNamed::Postgres { 
+//             crate::server::postgres_integration::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginErrorNamed::Postgres { 
 //                 inner_errors: insertion_error_hashmap, 
 //                 code_occurence: crate::code_occurence_tufa_common!() 
 //             }

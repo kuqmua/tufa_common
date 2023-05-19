@@ -10,7 +10,7 @@
 // pub async fn postgres_delete_all_from_providers_link_parts_tables<'a>(
 //     providers_json_local_data_hashmap: &std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
 //     pool: &sqlx::Pool<sqlx::Postgres>,
-// ) -> Result<(), Box<crate::repositories_types::tufa_server::postgres_integration::postgres_delete_all_from_providers_link_parts_tables::PostgresDeleteAllFromProvidersTablesErrorNamed<'a>>> {
+// ) -> Result<(), Box<crate::server::postgres_integration::postgres_delete_all_from_providers_link_parts_tables::PostgresDeleteAllFromProvidersTablesErrorNamed<'a>>> {
 //     let delete_from_tables_error_hashmap =
 //         futures::future::join_all(providers_json_local_data_hashmap.keys().map(|pk| async {
 //             let query_string = format!("DELETE FROM {} ;", {
@@ -30,7 +30,7 @@
 //         .collect::<std::collections::HashMap<std::string::String, sqlx::Error>>();
 //     if !delete_from_tables_error_hashmap.is_empty() {
 //         return Err(Box::new(
-//             crate::repositories_types::tufa_server::postgres_integration::postgres_delete_all_from_providers_link_parts_tables::PostgresDeleteAllFromProvidersTablesErrorNamed::DeleteTables { 
+//             crate::server::postgres_integration::postgres_delete_all_from_providers_link_parts_tables::PostgresDeleteAllFromProvidersTablesErrorNamed::DeleteTables { 
 //                 error_hashmap: delete_from_tables_error_hashmap, 
 //                 code_occurence: crate::code_occurence_tufa_common!()
 //             }

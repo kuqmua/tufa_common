@@ -7,7 +7,7 @@ pub enum CheckAvailabilityErrorNamed<'a> {
     },
     Postgres {
         #[eo_error_occurence]
-        postgres: crate::repositories_types::tufa_server::postgres_integration::postgres_check_availability::PostgresCheckAvailabilityErrorNamed<
+        postgres: crate::server::postgres_integration::postgres_check_availability::PostgresCheckAvailabilityErrorNamed<
             'a,
         >,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
@@ -21,7 +21,7 @@ pub enum CheckAvailabilityErrorNamed<'a> {
         #[eo_error_occurence]
         net: crate::server::net::net_check_availability::NetCheckAvailabilityErrorNamed<'a>,
         #[eo_error_occurence]
-        postgres: crate::repositories_types::tufa_server::postgres_integration::postgres_check_availability::PostgresCheckAvailabilityErrorNamed<'a>,
+        postgres: crate::server::postgres_integration::postgres_check_availability::PostgresCheckAvailabilityErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     // NetAndMongo {
@@ -33,7 +33,7 @@ pub enum CheckAvailabilityErrorNamed<'a> {
     // },
     // PostgresAndMongo {
     //     #[eo_error_occurence]
-    //     postgres: crate::repositories_types::tufa_server::postgres_integration::postgres_check_availability::PostgresCheckAvailabilityErrorNamed<'a>,
+    //     postgres: crate::server::postgres_integration::postgres_check_availability::PostgresCheckAvailabilityErrorNamed<'a>,
     //     #[eo_error_occurence]
     //     mongo: crate::repositories_types::tufa_server::mongo_integration::mongo_check_availability::MongoCheckAvailabilityErrorNamed<'a>,
     //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
@@ -42,7 +42,7 @@ pub enum CheckAvailabilityErrorNamed<'a> {
     //     #[eo_error_occurence]
     //     net: crate::server::net::net_check_availability::NetCheckAvailabilityErrorNamed<'a>,
     //     #[eo_error_occurence]
-    //     postgres: crate::repositories_types::tufa_server::postgres_integration::postgres_check_availability::PostgresCheckAvailabilityErrorNamed<'a>,
+    //     postgres: crate::server::postgres_integration::postgres_check_availability::PostgresCheckAvailabilityErrorNamed<'a>,
     //     #[eo_error_occurence]
     //     mongo: crate::repositories_types::tufa_server::mongo_integration::mongo_check_availability::MongoCheckAvailabilityErrorNamed<'a>,
     //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
@@ -61,7 +61,7 @@ pub async fn check_availability<'a, SelfGeneric>(
 ) -> Result<(), Box<crate::repositories_types::tufa_server::preparation::check_availability::CheckAvailabilityErrorNamed<'a>>>{
     match futures::join!(
         crate::server::net::net_check_availability::net_check_availability(config.get_starting_check_link()),
-        crate::repositories_types::tufa_server::postgres_integration::postgres_check_availability::postgres_check_availability(
+        crate::server::postgres_integration::postgres_check_availability::postgres_check_availability(
             config.get_postgres_url(), 
             *config.get_postgres_connection_timeout()
         )
@@ -83,7 +83,7 @@ pub async fn check_availability<'a, SelfGeneric>(
     }
     // match futures::join!(
     //     crate::server::net::net_check_availability::net_check_availability(config.get_starting_check_link()),
-    //     crate::repositories_types::tufa_server::postgres_integration::postgres_check_availability::postgres_check_availability(
+    //     crate::server::postgres_integration::postgres_check_availability::postgres_check_availability(
     //         config.get_postgres_url(), 
     //         *config.get_postgres_connection_timeout()
     //     ),
