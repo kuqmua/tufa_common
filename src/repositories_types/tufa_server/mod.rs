@@ -1,6 +1,5 @@
 pub mod authentication;
 pub mod init_dbs_logic;
-pub mod preparation;
 pub mod providers;
 pub mod routes;
 pub mod telemetry;
