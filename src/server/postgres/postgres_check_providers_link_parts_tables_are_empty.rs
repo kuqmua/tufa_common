@@ -14,7 +14,11 @@
 
 // pub async fn postgres_check_providers_link_parts_tables_are_empty<'a>(
 //     providers_json_local_data_hashmap: &std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
-//     db: &sqlx::Pool<sqlx::Postgres>,
+//     config: &'static (
+//         impl crate::traits::config_fields::GetPostgresPool
+//         + std::marker::Send 
+//         + std::marker::Sync
+//     ),
 // ) -> Result<(), Box<crate::server::postgres::postgres_check_providers_link_parts_tables_are_empty::PostgresCheckProvidersLinkPartsTablesEmptyErrorNamed<'a>>> {
 //     let count_provider_links_tables_tasks_vec =
 //         providers_json_local_data_hashmap.keys().map(|pk| async {
@@ -25,7 +29,7 @@
 //                     pk.get_postgres_table_name()
 //                 }
 //             );
-//             (*pk, sqlx::query_as(&query_string).fetch_one(db).await)
+//             (*pk, sqlx::query_as(&query_string).fetch_one(config.get_postgres_pool()).await)
 //         });
 //     let count_provider_links_tables_error_vec: Vec<(crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Result<(i64,), sqlx::Error>)> =
 //         futures::future::join_all(count_provider_links_tables_tasks_vec).await;
