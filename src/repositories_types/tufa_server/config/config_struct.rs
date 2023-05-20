@@ -59,105 +59,104 @@ pub struct Config {
 impl TryFrom<ConfigUnchecked> for Config {
     type Error = ConfigCheckError;
     fn try_from(config_unchecked: ConfigUnchecked) -> Result<Self, ConfigCheckError> {
-        //todo - remove _handle prefix
-        let server_port_handle = match crate::common::user_port::UserPort::try_from(config_unchecked.server_port) {
+        let server_port = match crate::common::user_port::UserPort::try_from(config_unchecked.server_port) {
             Ok(user_port) => user_port,
             Err(e) => {
                 return Err(ConfigCheckError::ServerPort(e));
             },
         };
-        let hmac_secret_handle = match config_unchecked.hmac_secret.is_empty() {
+        let hmac_secret = match config_unchecked.hmac_secret.is_empty() {
             true => {
                 return Err(ConfigCheckError::HmacSecret(config_unchecked.hmac_secret));
             },
             false => secrecy::Secret::new(config_unchecked.hmac_secret),
         };
-        let base_url_handle = match config_unchecked.base_url.is_empty() {
+        let base_url = match config_unchecked.base_url.is_empty() {
             true => {
                 return Err(ConfigCheckError::BaseUrl(config_unchecked.base_url));
             },
             false => config_unchecked.base_url,
         };
-        let access_control_max_age_handle = config_unchecked.access_control_max_age;
-        let access_control_allow_origin_handle = match config_unchecked.access_control_allow_origin.is_empty() {
+        let access_control_max_age = config_unchecked.access_control_max_age;
+        let access_control_allow_origin = match config_unchecked.access_control_allow_origin.is_empty() {
             true => {
                 return Err(ConfigCheckError::AccessControlAllowOrigin(config_unchecked.access_control_allow_origin));//todo - maybe add check if its uri\url
             },
             false => config_unchecked.access_control_allow_origin,
         };
 
-        let github_name_handle = match config_unchecked.github_name.is_empty() {
+        let github_name = match config_unchecked.github_name.is_empty() {
             true => {
                 return Err(ConfigCheckError::GithubName(config_unchecked.github_name));
             },
             false => config_unchecked.github_name,
         };
-        let github_token_handle = match config_unchecked.github_token.is_empty() {
+        let github_token = match config_unchecked.github_token.is_empty() {
             true => {
                 return Err(ConfigCheckError::GithubToken(config_unchecked.github_token));
             },
             false => config_unchecked.github_token,
         };
 
-        let timezone_handle = match chrono::FixedOffset::east_opt(config_unchecked.timezone) {
+        let timezone = match chrono::FixedOffset::east_opt(config_unchecked.timezone) {
             Some(fixed_offset) => fixed_offset,
             None => {
                 return Err(ConfigCheckError::Timezone(config_unchecked.timezone));
             },
         };
 
-        let redis_url_handle = match config_unchecked.redis_url.is_empty() {
+        let redis_url = match config_unchecked.redis_url.is_empty() {
             true => {
                 return Err(ConfigCheckError::RedisUrl(config_unchecked.redis_url));
             },
             false => config_unchecked.redis_url,
         };
 
-        let mongo_url_handle = match config_unchecked.mongo_url.is_empty() {
+        let mongo_url = match config_unchecked.mongo_url.is_empty() {
             true => {
                 return Err(ConfigCheckError::MongoUrl(config_unchecked.mongo_url));
             },
             false => config_unchecked.mongo_url,
         };
 
-        let database_url_handle = match config_unchecked.database_url.is_empty() {
+        let database_url = match config_unchecked.database_url.is_empty() {
             true => {
                 return Err(ConfigCheckError::DatabaseUrl(config_unchecked.database_url));
             },
             false => config_unchecked.database_url,
         };//postgres_url = config_unchecked.; naming required by sqlx::query::query!
 
-        let starting_check_link_handle = match config_unchecked.starting_check_link.is_empty() {
+        let starting_check_link = match config_unchecked.starting_check_link.is_empty() {
             true => {
                 return Err(ConfigCheckError::StartingCheckLink(config_unchecked.starting_check_link));
             },
             false => config_unchecked.starting_check_link,
         }; //todo add browser url limit check
 
-        let tracing_type_handle = config_unchecked.tracing_type;
-        let source_place_type_handle = config_unchecked.source_place_type;
+        let tracing_type = config_unchecked.tracing_type;
+        let source_place_type = config_unchecked.source_place_type;
         Ok(Self {
-            server_port: server_port_handle,
-            hmac_secret: hmac_secret_handle,
-            base_url: base_url_handle,
-            access_control_max_age: access_control_max_age_handle,
-            access_control_allow_origin: access_control_allow_origin_handle,
+            server_port,
+            hmac_secret,
+            base_url,
+            access_control_max_age,
+            access_control_allow_origin,
 
-            github_name: github_name_handle,
-            github_token: github_token_handle,
+            github_name,
+            github_token,
 
-            timezone: timezone_handle,
+            timezone,
 
-            redis_url: redis_url_handle,
+            redis_url,
 
-            mongo_url: mongo_url_handle,
+            mongo_url,
 
-            database_url: database_url_handle,//postgres_url, naming required by sqlx::query::query!
+            database_url,//postgres_url, naming required by sqlx::query::query!
 
-            starting_check_link: starting_check_link_handle, //todo add browser url limit check
+            starting_check_link, //todo add browser url limit check
 
-            tracing_type: tracing_type_handle,
-            source_place_type: source_place_type_handle,
+            tracing_type,
+            source_place_type,
         })
     }
 }
