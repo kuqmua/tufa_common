@@ -27,16 +27,6 @@ pub struct ConfigUnchecked {
 
     database_url: String,//postgres_url, naming required by sqlx::query::query!
 
-    postgres_fourth_handle_url_part: String,
-    postgres_fifth_handle_url_part: String,
-
-    postgres_login: String,
-    postgres_password: String,
-    postgres_ip: String, //todo: 4x u8
-    postgres_port: u16,
-    postgres_db: String,
-    postgres_params: String,
-
     postgres_connection_timeout: u64,
 
     starting_check_link: String, //todo add browser url limit check
@@ -72,16 +62,6 @@ pub struct Config {
 
     postgres_pool: sqlx::Pool<sqlx::Postgres>,
     database_url: String,//postgres_url, naming required by sqlx::query::query!
-
-    postgres_fourth_handle_url_part: String,
-    postgres_fifth_handle_url_part: String,
-
-    postgres_login: String,
-    postgres_password: secrecy::Secret<std::string::String>,
-    postgres_ip: String, //todo: 4x u8
-    postgres_port: crate::common::user_port::UserPort,
-    postgres_db: String,
-    postgres_params: String,
 
     postgres_connection_timeout: u64,
 
@@ -189,51 +169,6 @@ impl TryFrom<ConfigUnchecked> for Config {
             false => config_unchecked.database_url,
         };//postgres_url = config_unchecked.; naming required by sqlx::query::query!
 
-        let postgres_fourth_handle_url_part_handle = match config_unchecked.postgres_fourth_handle_url_part.is_empty() {
-            true => {
-                return Err(ConfigCheckError::PostgresFourthHandleUrlPart(config_unchecked.postgres_fourth_handle_url_part));
-            },
-            false => config_unchecked.postgres_fourth_handle_url_part,
-        };
-        let postgres_fifth_handle_url_part_handle = match config_unchecked.postgres_fifth_handle_url_part.is_empty() {
-            true => {
-                return Err(ConfigCheckError::PostgresFifthHandleUrlpart(config_unchecked.postgres_fifth_handle_url_part));
-            },
-            false => config_unchecked.postgres_fifth_handle_url_part,
-        };
-
-        let postgres_login_handle = match config_unchecked.postgres_login.is_empty() {
-            true => {
-                return Err(ConfigCheckError::PostgresLogin(config_unchecked.postgres_login));
-            },
-            false => config_unchecked.postgres_login,
-        };
-        let postgres_password_handle = match config_unchecked.postgres_password.is_empty() {
-            true => {
-                return Err(ConfigCheckError::PostgresPassword(config_unchecked.postgres_password));
-            },
-            false => secrecy::Secret::new(config_unchecked.postgres_password),
-        };
-        let postgres_ip_handle = match config_unchecked.postgres_ip.is_empty() {
-            true => {
-                return Err(ConfigCheckError::PostgresIp(config_unchecked.postgres_ip));
-            },
-            false => config_unchecked.postgres_ip,
-        }; //todo_handle: 4x u8
-        let postgres_port_handle = match crate::common::user_port::UserPort::try_from(config_unchecked.postgres_port) {
-            Ok(user_port) => user_port,
-            Err(e) => {
-                return Err(ConfigCheckError::PostgresPort(e));
-            },
-        };
-        let postgres_db_handle = match config_unchecked.postgres_db.is_empty() {
-            true => {
-                return Err(ConfigCheckError::PostgresDb(config_unchecked.postgres_db));
-            },
-            false => config_unchecked.postgres_db,
-        };
-        let postgres_params_handle = config_unchecked.postgres_params;//can be empty
-
         let starting_check_link_handle = match config_unchecked.starting_check_link.is_empty() {
             true => {
                 return Err(ConfigCheckError::StartingCheckLink(config_unchecked.starting_check_link));
@@ -266,16 +201,6 @@ impl TryFrom<ConfigUnchecked> for Config {
 
             postgres_pool: postgres_pool_handle,
             database_url: database_url_handle,//postgres_url, naming required by sqlx::query::query!
-
-            postgres_fourth_handle_url_part: postgres_fourth_handle_url_part_handle,
-            postgres_fifth_handle_url_part: postgres_fifth_handle_url_part_handle,
-
-            postgres_login: postgres_login_handle,
-            postgres_password: postgres_password_handle,
-            postgres_ip: postgres_ip_handle, //todo: 4x u8
-            postgres_port: postgres_port_handle,
-            postgres_db: postgres_db_handle,
-            postgres_params: postgres_params_handle,
 
             postgres_connection_timeout: postgres_connection_timeout_handle,
 

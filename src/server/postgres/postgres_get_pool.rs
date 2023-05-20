@@ -14,6 +14,36 @@ pub fn postgres_get_pool(
         .build()
     {
         Ok(runtime) => runtime.block_on(async move {
+    // let pool = sqlx::postgres::PgPoolOptions::new()
+    //     .max_connections(10)//todo
+    //     // .min_connections(min)
+    //     // .max_lifetime(lifetime)
+    //     .connect_timeout(std::time::Duration::from_secs(*config.get_postgres_connection_timeout()))
+    //     //
+    //     //
+    //     // .connect_lazy_with({
+    //     //     //
+    //     //     let mut options = {
+    //     //         sqlx::postgres::PgConnectOptions::new()
+    //     //         .host(&config.get_postgres_ip())
+    //     //         .username(&config.get_postgres_login())
+    //     //         .password({
+    //     //             use secrecy::ExposeSecret;
+    //     //             config.get_postgres_password().expose_secret()
+    //     //         })
+    //     //         .port(*config.get_postgres_port().port())
+    //     //         .ssl_mode(*config.get_require_ssl())
+    //     //     }.database(&config.get_postgres_db());
+    //     //     {
+    //     //         use sqlx::ConnectOptions;
+    //     //         options.log_statements(tracing::log::LevelFilter::Trace)
+    //     //     };
+    //     //     options
+    //     //     //
+    //     // })
+    //     .connect(&config.get_database_url())
+    //     .await
+    // .expect("error");
             match sqlx::postgres::PgPoolOptions::new()
                 // .max_connections(10)//todo
                 .connect_timeout(std::time::Duration::from_millis(*connection_timeout))// //todo add timeout constant or env var

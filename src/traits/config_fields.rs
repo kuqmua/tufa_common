@@ -49,30 +49,6 @@ pub trait GetPostgresPool {
 pub trait GetDatabaseUrl {
     fn get_database_url(&self) -> &String;//postgres database url. required to exists in env
 }
-pub trait GetPostgresFourthHandleUrlPart {
-    fn get_postgres_fourth_handle_url_part(&self) -> &String;
-}
-pub trait GetPostgresFifthHandleUrlPart {
-    fn get_postgres_fifth_handle_url_part(&self) -> &String;
-}
-pub trait GetPostgresLogin {
-    fn get_postgres_login(&self) -> &String;
-}
-pub trait GetPostgresPassword {
-    fn get_postgres_password(&self) -> &secrecy::Secret<std::string::String>;
-}
-pub trait GetPostgresIp {
-    fn get_postgres_ip(&self) -> &String;
-}
-pub trait GetPostgresPort {
-    fn get_postgres_port(&self) -> &crate::common::user_port::UserPort;
-}
-pub trait GetPostgresDb {
-    fn get_postgres_db(&self) -> &String;
-}
-pub trait GetPostgresParams {
-    fn get_postgres_params(&self) -> &String;
-}
 pub trait GetStartingCheckLink {
     fn get_starting_check_link(&self) -> &String;
 }

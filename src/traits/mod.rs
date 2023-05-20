@@ -16,8 +16,5 @@ pub mod get_line;
 pub mod get_column;
 pub mod get_redis_url;
 pub mod get_email_client;
-pub mod get_postgres_connect_options_without_db;
-pub mod get_postgres_connect_options_with_db;
-pub mod get_postgres_connection_pool;
 pub mod get_server_address;
 pub mod try_create_tcp_listener;
