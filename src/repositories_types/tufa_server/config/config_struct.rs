@@ -44,7 +44,6 @@ pub struct Config {
 
     timezone: chrono::FixedOffset,
 
-    redis_session_storage: actix_session::storage::RedisSessionStore,
     redis_url: String,
 
     mongo_url: String,
@@ -108,12 +107,6 @@ impl TryFrom<ConfigUnchecked> for Config {
             },
         };
 
-        let redis_session_store_handle = match crate::server::redis::redis_try_get_session_storage::redis_try_get_session_storage(&config_unchecked.redis_url) {
-            Ok(redis_session_store) => redis_session_store,
-            Err(e) => {
-                return Err(ConfigCheckError::RedisSessionStore(e));
-            }
-        };
         let redis_url_handle = match config_unchecked.redis_url.is_empty() {
             true => {
                 return Err(ConfigCheckError::RedisUrl(config_unchecked.redis_url));
@@ -162,7 +155,6 @@ impl TryFrom<ConfigUnchecked> for Config {
 
             timezone: timezone_handle,
 
-            redis_session_storage: redis_session_store_handle,
             redis_url: redis_url_handle,
 
             mongo_url: mongo_url_handle,
@@ -189,12 +181,10 @@ pub enum ConfigCheckError {
     GithubName(std::string::String),
     GithubToken(std::string::String),
     Timezone(i32),
-    RedisSessionStore(crate::server::redis::redis_try_get_session_storage::RedisTryGetSessionStorageError),
     RedisUrl(std::string::String),
     MongoUrl(std::string::String),
     MongoClient(crate::server::mongo::mongo_try_get_client::MongoTryGetClientError),
     MongoConnectionTimeout(u64),
-    PostgresPool(crate::server::postgres::postgres_try_get_pool::PostgresTryGetPoolError),
     DatabaseUrl(std::string::String),
     PostgresFourthHandleUrlPart(std::string::String),
     PostgresFifthHandleUrlpart(std::string::String),

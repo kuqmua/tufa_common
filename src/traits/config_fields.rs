@@ -25,9 +25,6 @@ pub trait GetTimezone {
 pub trait GetRedisUrl {
     fn get_redis_url(&self) -> &String;
 }
-pub trait GetRedisSessionStorage {
-    fn get_redis_session_storage(&self) -> &actix_session::storage::RedisSessionStore;
-}
 pub trait GetMongoUrl {
     fn get_mongo_url(&self) -> &String;
 }
