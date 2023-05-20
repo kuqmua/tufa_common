@@ -36,7 +36,7 @@ pub struct ConfigUnchecked {
 
 #[derive(
     Debug,
-    generate_getter_traits_for_struct_fields::GenerateGetterTraitsForStructFields,
+    generate_getter_traits_for_struct_fields::GenerateGetterTraitsForStructFields,//todo - add 2 attributes - for reference\borrow(&) and for value(move)
 )]
 pub struct Config {
     server_port: crate::common::user_port::UserPort,
