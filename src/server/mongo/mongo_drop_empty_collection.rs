@@ -15,12 +15,11 @@ pub enum MongoDropEmptyCollectionErrorNamed<'a> {
 }
 
 pub async fn mongo_drop_empty_collection<'a>(
-    config: &'static impl crate::traits::config_fields::GetMongoClient,
+    mongo_client: &mongodb::Client,
     db_name: &'a str,
     db_collection_name: String,
 ) -> Result<(), Box<crate::server::mongo::mongo_drop_empty_collection::MongoDropEmptyCollectionErrorNamed<'a>>> {
-    let collection: mongodb::Collection<mongodb::bson::Document> = config
-        .get_mongo_client()
+    let collection: mongodb::Collection<mongodb::bson::Document> = mongo_client
         .database(db_name)
         .collection(&db_collection_name);
     match 

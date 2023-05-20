@@ -53,11 +53,7 @@
 
 // pub async fn postgres_check_providers_links_tables_length_rows_equal_initialization_data_length<'a>(
 //     providers_json_local_data_hashmap: &std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
-//     config: &'static (
-//         impl crate::traits::config_fields::GetPostgresPool
-//         + std::marker::Send 
-//         + std::marker::Sync
-//     ),
+//     postgres_pool: &sqlx::Pool<sqlx::Postgres>,
 // ) -> Result<
 //     (),
 //     Box<PostgresCheckProvidersLinksTablesLengthRowsEqualInitializationDataLengthWrapperErrorNamed<'a>>,
@@ -76,7 +72,7 @@
 //                 (
 //                     pk,
 //                     string_vec,
-//                     sqlx::query_as(&query_string).fetch_one(config.get_postgres_pool()).await,
+//                     sqlx::query_as(&query_string).fetch_one(postgres_pool).await,
 //                 )
 //             });
 //     let count_provider_links_tables_error_vec: Vec<(

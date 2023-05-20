@@ -47,7 +47,6 @@ pub struct Config {
     redis_url: String,
 
     mongo_url: String,
-    mongo_client: mongodb::Client,
 
     database_url: String,//postgres_url, naming required by sqlx::query::query!
 
@@ -120,12 +119,6 @@ impl TryFrom<ConfigUnchecked> for Config {
             },
             false => config_unchecked.mongo_url,
         };
-        let mongo_client_handle = match crate::server::mongo::mongo_try_get_client::mongo_try_get_client(&mongo_url_handle) {
-            Ok(mongo_client) => mongo_client,
-            Err(e) => {
-                return Err(ConfigCheckError::MongoClient(e));
-            },
-        };
 
         let database_url_handle = match config_unchecked.database_url.is_empty() {
             true => {
@@ -158,7 +151,6 @@ impl TryFrom<ConfigUnchecked> for Config {
             redis_url: redis_url_handle,
 
             mongo_url: mongo_url_handle,
-            mongo_client: mongo_client_handle,
 
             database_url: database_url_handle,//postgres_url, naming required by sqlx::query::query!
 
@@ -183,19 +175,7 @@ pub enum ConfigCheckError {
     Timezone(i32),
     RedisUrl(std::string::String),
     MongoUrl(std::string::String),
-    MongoClient(crate::server::mongo::mongo_try_get_client::MongoTryGetClientError),
-    MongoConnectionTimeout(u64),
     DatabaseUrl(std::string::String),
-    PostgresFourthHandleUrlPart(std::string::String),
-    PostgresFifthHandleUrlpart(std::string::String),
-    PostgresSixthHandleUrlPart(std::string::String),
-    PostgresLogin(std::string::String),
-    PostgresPassword(std::string::String),
-    PostgresIp(std::string::String),
-    PostgresPort(crate::common::user_port::UserPortTryFromStringError),
-    PostgresDb(std::string::String),
-    PostgresParams(std::string::String),
-    PostgresConnectionTimeout(u64),
     StartingCheckLink(std::string::String),
     TracingType(crate::server::tracing_type::TracingType),
     SourcePlaceType(crate::common::source_place_type::SourcePlaceType)

@@ -8,10 +8,10 @@ pub enum MongoDropDbErrorNamed<'a> {
 }
 
 pub async fn mongo_drop_db<'a>(
-    config: &'static impl crate::traits::config_fields::GetMongoClient,
+    mongo_client: &mongodb::Client,
     db_name: &'a str,
 ) -> Result<(), Box<crate::server::mongo::mongo_drop_db::MongoDropDbErrorNamed<'a>>> {
-    if let Err(e) = config.get_mongo_client().database(db_name).drop(None).await {
+    if let Err(e) = mongo_client.database(db_name).drop(None).await {
         return Err(Box::new(
             crate::server::mongo::mongo_drop_db::MongoDropDbErrorNamed::MongoDB {
                 mongodb: e,

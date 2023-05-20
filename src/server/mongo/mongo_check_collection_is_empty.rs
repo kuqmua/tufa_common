@@ -13,12 +13,11 @@ pub enum MongoCheckCollectionIsEmptyErrorNamed<'a> {
 }
 
 pub async fn mongo_check_collection_is_empty<'a>(
-    config: &'static impl crate::traits::config_fields::GetMongoClient,
+    mongo_client: &mongodb::Client,
     db_name: &str,
     db_collection_name: &str
 ) -> Result<(), Box<MongoCheckCollectionIsEmptyErrorNamed<'a>>> {
-    match config
-        .get_mongo_client()
+    match mongo_client
         .database(db_name)
         .collection::<mongodb::bson::Document>(db_collection_name)
         .count_documents(None, None)

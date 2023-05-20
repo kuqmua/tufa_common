@@ -26,11 +26,7 @@
 
 // pub async fn postgres_insert_link_parts_into_providers_tables<'a>(
 //     providers_json_local_data_hashmap: &std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
-//     config: &'static (
-//         impl crate::traits::config_fields::GetPostgresPool
-//         + std::marker::Send 
-//         + std::marker::Sync
-//     ),
+//     postgres_pool: &sqlx::Pool<sqlx::Postgres>,
 // ) -> Result<(), Box<crate::server::postgres::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginErrorNamed<'a>>>{
 //     let insertion_error_hashmap = futures::future::join_all(providers_json_local_data_hashmap.iter().map(
 //         |(pk, string_vec)| async {
@@ -48,7 +44,7 @@
 //                     pk.get_postgres_table_name()
 //                 }
 //             );
-//             (*pk, sqlx::query(&query_string).execute(config.get_postgres_pool()).await)
+//             (*pk, sqlx::query(&query_string).execute(postgres_pool).await)
 //         },
 //     ))
 //     .await

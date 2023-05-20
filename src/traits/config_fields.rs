@@ -28,9 +28,6 @@ pub trait GetRedisUrl {
 pub trait GetMongoUrl {
     fn get_mongo_url(&self) -> &String;
 }
-pub trait GetMongoClient {
-    fn get_mongo_client(&self) -> &mongodb::Client;
-}
 pub trait GetDatabaseUrl {
     fn get_database_url(&self) -> &String;//postgres database url. required to exists in env
 }
