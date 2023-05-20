@@ -34,9 +34,6 @@ pub trait GetMongoUrl {
 pub trait GetMongoClient {
     fn get_mongo_client(&self) -> &mongodb::Client;
 }
-pub trait GetPostgresPool {
-    fn get_postgres_pool(&self) -> &sqlx::Pool<sqlx::Postgres>;
-}
 pub trait GetDatabaseUrl {
     fn get_database_url(&self) -> &String;//postgres database url. required to exists in env
 }

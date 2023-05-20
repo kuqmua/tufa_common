@@ -50,7 +50,6 @@ pub struct Config {
     mongo_url: String,
     mongo_client: mongodb::Client,
 
-    postgres_pool: sqlx::Pool<sqlx::Postgres>,
     database_url: String,//postgres_url, naming required by sqlx::query::query!
 
     starting_check_link: String, //todo add browser url limit check
@@ -135,12 +134,6 @@ impl TryFrom<ConfigUnchecked> for Config {
             },
         };
 
-        let postgres_pool_handle = match crate::server::postgres::postgres_try_get_pool::postgres_try_get_pool(&config_unchecked.database_url){
-            Ok(pool) => pool,
-            Err(e) => {
-                return Err(ConfigCheckError::PostgresPool(e));
-            },
-        };
         let database_url_handle = match config_unchecked.database_url.is_empty() {
             true => {
                 return Err(ConfigCheckError::DatabaseUrl(config_unchecked.database_url));
@@ -175,7 +168,6 @@ impl TryFrom<ConfigUnchecked> for Config {
             mongo_url: mongo_url_handle,
             mongo_client: mongo_client_handle,
 
-            postgres_pool: postgres_pool_handle,
             database_url: database_url_handle,//postgres_url, naming required by sqlx::query::query!
 
             starting_check_link: starting_check_link_handle, //todo add browser url limit check
