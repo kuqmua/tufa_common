@@ -7,6 +7,11 @@ pub enum ServerWrapperErrorNamed<'a> {
         tcp_listener_bind: crate::traits::try_create_tcp_listener::TryCreateTcpListenerErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
+    TryGetPostgresPool {
+        #[eo_display]
+        try_get_postgres_pool: crate::traits::try_get_postgres_pool::TryGetPostgresPoolError,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
     ApplicationBuild {
         #[eo_error_occurence]
         application_build: crate::repositories_types::tufa_server::try_build_actix_web_dev_server::TryBuildActixWebDevServer<'a>,

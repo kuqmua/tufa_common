@@ -62,6 +62,7 @@ pub struct Config {
 impl TryFrom<ConfigUnchecked> for Config {
     type Error = ConfigCheckError;
     fn try_from(config_unchecked: ConfigUnchecked) -> Result<Self, ConfigCheckError> {
+        //todo - remove _handle prefix
         let server_port_handle = match crate::common::user_port::UserPort::try_from(config_unchecked.server_port) {
             Ok(user_port) => user_port,
             Err(e) => {

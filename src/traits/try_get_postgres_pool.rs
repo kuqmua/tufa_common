@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Debug, strum_macros::Display)]
 pub enum TryGetPostgresPoolError {
     Connect(sqlx::Error),
 }
