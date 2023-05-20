@@ -21,7 +21,7 @@ pub enum UserPortTryFromStringError {
     SystemPort(u16),//used for system services e.g. HTTP, FTP, SSH, DHCP ... 
     EphemeralPort(u16)//https://www.ncftp.com/ncftpd/doc/misc/ephemeral_ports.html
 }
-
+//todo maybe instead of proc_macro use builder pattern with phantom data state?
 impl TryFrom<u16> for UserPort {
     type Error = UserPortTryFromStringError;
     fn try_from(possible_port: u16) -> Result<UserPort, UserPortTryFromStringError> {
