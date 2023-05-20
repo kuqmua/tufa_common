@@ -1,23 +1,23 @@
 #[derive(Debug)]
-pub enum PostgresTryGetPoolError {
+pub enum TryGetPostgresPoolError {
     Connect(sqlx::Error),
 }
 
-pub trait PostgresTryGetPool {
-    async fn postgres_try_get_pool(&self) -> Result<sqlx::Pool<sqlx::Postgres>, PostgresTryGetPoolError>;
+pub trait TryGetPostgresPool {
+    async fn try_get_postgres_pool(&self) -> Result<sqlx::Pool<sqlx::Postgres>, TryGetPostgresPoolError>;
 }
 
-impl<SelfGeneric> PostgresTryGetPool for SelfGeneric
+impl<SelfGeneric> TryGetPostgresPool for SelfGeneric
 where
     Self: crate::traits::config_fields::GetDatabaseUrl,//meaning postgres. sqlx::query! macro uses DATABASE_URL env var for compile time checks 
 {
-    async fn postgres_try_get_pool(&self) -> Result<sqlx::Pool<sqlx::Postgres>, PostgresTryGetPoolError> {
+    async fn try_get_postgres_pool(&self) -> Result<sqlx::Pool<sqlx::Postgres>, TryGetPostgresPoolError> {
         match 
             sqlx::postgres::PgPoolOptions::new()
             .connect(self.get_database_url())
             .await
         {
-            Err(e) => Err(PostgresTryGetPoolError::Connect(e)),
+            Err(e) => Err(TryGetPostgresPoolError::Connect(e)),
             Ok(pool) => Ok(pool),
         }
     }
