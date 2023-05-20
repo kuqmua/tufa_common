@@ -24,8 +24,6 @@ pub struct ConfigUnchecked {
 
     database_url: String,//postgres_url, naming required by sqlx::query::query!
 
-    postgres_connection_timeout: u64,
-
     starting_check_link: String, //todo add browser url limit check
 
     tracing_type: crate::server::tracing_type::TracingType,
@@ -56,8 +54,6 @@ pub struct Config {
 
     postgres_pool: sqlx::Pool<sqlx::Postgres>,
     database_url: String,//postgres_url, naming required by sqlx::query::query!
-
-    postgres_connection_timeout: u64,
 
     starting_check_link: String, //todo add browser url limit check
 
@@ -140,11 +136,7 @@ impl TryFrom<ConfigUnchecked> for Config {
             },
         };
 
-        let postgres_connection_timeout_handle = config_unchecked.postgres_connection_timeout;
-        let postgres_pool_handle = match crate::server::postgres::postgres_get_pool::postgres_get_pool(
-            &config_unchecked.postgres_connection_timeout,
-            &config_unchecked.database_url
-        ){
+        let postgres_pool_handle = match crate::server::postgres::postgres_get_pool::postgres_get_pool(&config_unchecked.database_url){
             Ok(pool) => pool,
             Err(e) => {
                 return Err(ConfigCheckError::PostgresPool(e));
@@ -186,8 +178,6 @@ impl TryFrom<ConfigUnchecked> for Config {
 
             postgres_pool: postgres_pool_handle,
             database_url: database_url_handle,//postgres_url, naming required by sqlx::query::query!
-
-            postgres_connection_timeout: postgres_connection_timeout_handle,
 
             starting_check_link: starting_check_link_handle, //todo add browser url limit check
 
