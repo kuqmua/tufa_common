@@ -1,10 +1,10 @@
 #[derive(Debug)]
-pub enum PostgresGetPoolError {
+pub enum PostgresTryGetPoolError {
     Tokio(std::io::Error),
     Connect(sqlx::Error),
 }
 //todo move it to config logic mod
-pub fn postgres_get_pool(url: &std::string::String) -> Result<sqlx::Pool<sqlx::Postgres>, PostgresGetPoolError> {
+pub fn postgres_try_get_pool(url: &std::string::String) -> Result<sqlx::Pool<sqlx::Postgres>, PostgresTryGetPoolError> {
     match tokio::runtime::Builder::new_multi_thread()
         .worker_threads(num_cpus::get())
         .enable_all()
@@ -53,10 +53,10 @@ pub fn postgres_get_pool(url: &std::string::String) -> Result<sqlx::Pool<sqlx::P
                 .connect(url)
                 .await
             {
-                Err(e) => Err(PostgresGetPoolError::Connect(e)),
+                Err(e) => Err(PostgresTryGetPoolError::Connect(e)),
                 Ok(pool) => Ok(pool),
             }
         }),
-        Err(e) => Err(PostgresGetPoolError::Tokio(e)),
+        Err(e) => Err(PostgresTryGetPoolError::Tokio(e)),
     }
 }

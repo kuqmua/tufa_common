@@ -4,7 +4,7 @@ pub enum MongoTryGetClientError {
     MongoDB(mongodb::error::Error),
 }
 //this function must be use only in config logic. maybe create some config mod and move it there later
-pub fn mongo_try_get_client<'a>(mongo_url: &std::string::String) -> Result<mongodb::Client, MongoTryGetClientError> {
+pub fn mongo_try_get_client(mongo_url: &std::string::String) -> Result<mongodb::Client, MongoTryGetClientError> {
     match tokio::runtime::Builder::new_multi_thread()
         .worker_threads(num_cpus::get())
         .enable_all()

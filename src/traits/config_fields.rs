@@ -22,11 +22,8 @@ pub trait GetGithubToken {
 pub trait GetTimezone {
     fn get_timezone(&self) -> &chrono::FixedOffset;
 }
-pub trait GetRedisIp {
-    fn get_redis_ip(&self) -> &String;
-}
-pub trait GetRedisPort {
-    fn get_redis_port(&self) -> &crate::common::user_port::UserPort;
+pub trait GetRedisSessionStorage {
+    fn get_redis_session_storage(&self) -> &actix_session::storage::RedisSessionStore;
 }
 pub trait GetMongoUrl {
     fn get_mongo_url(&self) -> &String;

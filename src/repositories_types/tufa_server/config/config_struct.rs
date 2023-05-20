@@ -17,8 +17,7 @@ pub struct ConfigUnchecked {
 
     timezone: i32,//for some reason chrono::FixedOffset::east_opt uses i32 but i16 is enough 
 
-    redis_ip: String,
-    redis_port: u16,
+    redis_url: String,
 
     mongo_url: String,
 
@@ -31,7 +30,6 @@ pub struct ConfigUnchecked {
 }
 
 #[derive(
-    Debug,
     generate_getter_traits_for_struct_fields::GenerateGetterTraitsForStructFields,//todo - add 2 attributes - for reference\borrow(&) and for value(move)
 )]
 pub struct Config {
@@ -46,8 +44,7 @@ pub struct Config {
 
     timezone: chrono::FixedOffset,
 
-    redis_ip: String,
-    redis_port: crate::common::user_port::UserPort,
+    redis_session_storage: actix_session::storage::RedisSessionStore,
 
     mongo_url: String,
     mongo_client: mongodb::Client,
@@ -110,17 +107,11 @@ impl TryFrom<ConfigUnchecked> for Config {
             },
         };
 
-        let redis_ip_handle = match config_unchecked.redis_ip.is_empty() {
-            true => {
-                return Err(ConfigCheckError::RedisIp(config_unchecked.redis_ip));
-            },
-            false => config_unchecked.redis_ip,
-        };
-        let redis_port_handle = match crate::common::user_port::UserPort::try_from(config_unchecked.redis_port) {
-            Ok(user_port) => user_port,
+        let redis_session_store_handle = match crate::server::redis::redis_try_get_session_storage::redis_try_get_session_storage(&config_unchecked.redis_url) {
+            Ok(redis_session_store) => redis_session_store,
             Err(e) => {
-                return Err(ConfigCheckError::RedisPort(e));
-            },
+                return Err(ConfigCheckError::RedisSessionStore(e));
+            }
         };
 
         let mongo_url_handle = match config_unchecked.mongo_url.is_empty() {
@@ -136,7 +127,7 @@ impl TryFrom<ConfigUnchecked> for Config {
             },
         };
 
-        let postgres_pool_handle = match crate::server::postgres::postgres_get_pool::postgres_get_pool(&config_unchecked.database_url){
+        let postgres_pool_handle = match crate::server::postgres::postgres_try_get_pool::postgres_try_get_pool(&config_unchecked.database_url){
             Ok(pool) => pool,
             Err(e) => {
                 return Err(ConfigCheckError::PostgresPool(e));
@@ -170,8 +161,7 @@ impl TryFrom<ConfigUnchecked> for Config {
 
             timezone: timezone_handle,
 
-            redis_ip: redis_ip_handle,
-            redis_port: redis_port_handle,
+            redis_session_storage: redis_session_store_handle,
 
             mongo_url: mongo_url_handle,
             mongo_client: mongo_client_handle,
@@ -198,12 +188,11 @@ pub enum ConfigCheckError {
     GithubName(std::string::String),
     GithubToken(std::string::String),
     Timezone(i32),
-    RedisIp(std::string::String),
-    RedisPort(crate::common::user_port::UserPortTryFromStringError),
+    RedisSessionStore(crate::server::redis::redis_try_get_session_storage::RedisTryGetSessionStorageError),
     MongoUrl(std::string::String),
     MongoClient(crate::server::mongo::mongo_try_get_client::MongoTryGetClientError),
     MongoConnectionTimeout(u64),
-    PostgresPool(crate::server::postgres::postgres_get_pool::PostgresGetPoolError),
+    PostgresPool(crate::server::postgres::postgres_try_get_pool::PostgresTryGetPoolError),
     DatabaseUrl(std::string::String),
     PostgresFourthHandleUrlPart(std::string::String),
     PostgresFifthHandleUrlpart(std::string::String),
