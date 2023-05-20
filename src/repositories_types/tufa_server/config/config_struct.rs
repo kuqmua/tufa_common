@@ -3,7 +3,7 @@
     Default,
     PartialEq,
     Eq,
-    init_from_env::InitFromEnvWithPanicIfFailedWithPanicIfFailed,
+    init_from_env::InitFromEnv,
 )]
 pub struct ConfigUnchecked {
     server_port: u16,
