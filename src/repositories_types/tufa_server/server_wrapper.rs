@@ -2,6 +2,11 @@ use tokio::task::JoinError;
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum ServerWrapperErrorNamed<'a> {
+    TcpListenerBind {
+        #[eo_error_occurence]
+        tcp_listener_bind: crate::traits::try_create_tcp_listener::TryCreateTcpListenerErrorNamed<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
     ApplicationBuild {
         #[eo_error_occurence]
         application_build: crate::repositories_types::tufa_server::try_build_actix_web_dev_server::TryBuildActixWebDevServer<'a>,
