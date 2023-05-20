@@ -40,6 +40,9 @@ pub trait GetMongoClient {
 pub trait GetMongoConnectionTimeout {
     fn get_mongo_connection_timeout(&self) -> &u64;
 }
+pub trait GetPostgresPool {
+    fn get_postgres_pool(&self) -> &sqlx::Pool<sqlx::Postgres>;
+}
 pub trait GetDatabaseUrl {
     fn get_database_url(&self) -> &String;//postgres database url. required to exists in env
 }

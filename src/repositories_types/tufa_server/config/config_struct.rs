@@ -70,6 +70,7 @@ pub struct Config {
 
     mongo_connection_timeout: u64,
 
+    postgres_pool: sqlx::Pool<sqlx::Postgres>,
     database_url: String,//postgres_url, naming required by sqlx::query::query!
 
     postgres_fourth_handle_url_part: String,
@@ -171,6 +172,12 @@ impl TryFrom<ConfigUnchecked> for Config {
 
         let mongo_connection_timeout_handle = config_unchecked.mongo_connection_timeout;
 
+        let postgres_pool_handle = match crate::server::postgres::postgres_get_pool::postgres_get_pool(&config_unchecked.database_url){
+            Ok(pool) => pool,
+            Err(e) => {
+                return Err(ConfigCheckError::PostgresPool(e));
+            },
+        };
         let database_url_handle = match config_unchecked.database_url.is_empty() {
             true => {
                 return Err(ConfigCheckError::DatabaseUrl(config_unchecked.database_url));
@@ -255,6 +262,7 @@ impl TryFrom<ConfigUnchecked> for Config {
 
             mongo_connection_timeout: mongo_connection_timeout_handle,
 
+            postgres_pool: postgres_pool_handle,
             database_url: database_url_handle,//postgres_url, naming required by sqlx::query::query!
 
             postgres_fourth_handle_url_part: postgres_fourth_handle_url_part_handle,
@@ -293,6 +301,7 @@ pub enum ConfigCheckError {
     MongoUrl(std::string::String),
     MongoClient(crate::server::mongo::mongo_try_get_client::MongoTryGetClientError),
     MongoConnectionTimeout(u64),
+    PostgresPool(crate::server::postgres::postgres_get_pool::PostgresGetPoolError),
     DatabaseUrl(std::string::String),
     PostgresFourthHandleUrlPart(std::string::String),
     PostgresFifthHandleUrlpart(std::string::String),
