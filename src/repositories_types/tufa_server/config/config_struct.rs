@@ -22,8 +22,6 @@ pub struct ConfigUnchecked {
 
     mongo_url: String,
 
-    mongo_connection_timeout: u64,
-
     database_url: String,//postgres_url, naming required by sqlx::query::query!
 
     postgres_connection_timeout: u64,
@@ -55,8 +53,6 @@ pub struct Config {
 
     mongo_url: String,
     mongo_client: mongodb::Client,
-
-    mongo_connection_timeout: u64,
 
     postgres_pool: sqlx::Pool<sqlx::Postgres>,
     database_url: String,//postgres_url, naming required by sqlx::query::query!
@@ -144,8 +140,6 @@ impl TryFrom<ConfigUnchecked> for Config {
             },
         };
 
-        let mongo_connection_timeout_handle = config_unchecked.mongo_connection_timeout;
-
         let postgres_connection_timeout_handle = config_unchecked.postgres_connection_timeout;
         let postgres_pool_handle = match crate::server::postgres::postgres_get_pool::postgres_get_pool(
             &config_unchecked.postgres_connection_timeout,
@@ -189,8 +183,6 @@ impl TryFrom<ConfigUnchecked> for Config {
 
             mongo_url: mongo_url_handle,
             mongo_client: mongo_client_handle,
-
-            mongo_connection_timeout: mongo_connection_timeout_handle,
 
             postgres_pool: postgres_pool_handle,
             database_url: database_url_handle,//postgres_url, naming required by sqlx::query::query!

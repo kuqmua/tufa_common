@@ -34,9 +34,6 @@ pub trait GetMongoUrl {
 pub trait GetMongoClient {
     fn get_mongo_client(&self) -> &mongodb::Client;
 }
-pub trait GetMongoConnectionTimeout {
-    fn get_mongo_connection_timeout(&self) -> &u64;
-}
 pub trait GetPostgresConnectionTimeout {
     fn get_postgres_connection_timeout(&self) -> &u64;
 }
