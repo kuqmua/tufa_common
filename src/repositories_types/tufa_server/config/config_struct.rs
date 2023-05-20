@@ -9,7 +9,6 @@ pub struct ConfigUnchecked {
     server_port: u16,
     hmac_secret: String,
     base_url: String,
-    require_ssl: bool,
     access_control_max_age: usize,
     access_control_allow_origin: String,
 
@@ -43,7 +42,6 @@ pub struct Config {
     server_port: crate::common::user_port::UserPort,
     hmac_secret: secrecy::Secret<std::string::String>,
     base_url: String,
-    require_ssl: sqlx::postgres::PgSslMode,
     access_control_max_age: usize,
     access_control_allow_origin: String,
 
@@ -91,10 +89,6 @@ impl TryFrom<ConfigUnchecked> for Config {
                 return Err(ConfigCheckError::BaseUrl(config_unchecked.base_url));
             },
             false => config_unchecked.base_url,
-        };
-        let require_ssl_handle = match config_unchecked.require_ssl {
-                true => sqlx::postgres::PgSslMode::Require,
-                false => sqlx::postgres::PgSslMode::Prefer,
         };
         let access_control_max_age_handle = config_unchecked.access_control_max_age;
         let access_control_allow_origin_handle = match config_unchecked.access_control_allow_origin.is_empty() {
@@ -182,7 +176,6 @@ impl TryFrom<ConfigUnchecked> for Config {
             server_port: server_port_handle,
             hmac_secret: hmac_secret_handle,
             base_url: base_url_handle,
-            require_ssl: require_ssl_handle,
             access_control_max_age: access_control_max_age_handle,
             access_control_allow_origin: access_control_allow_origin_handle,
 

@@ -7,9 +7,6 @@ pub trait GetHmacSecret {
 pub trait GetBaseUrl {
     fn get_base_url(&self) -> &String;
 }
-pub trait GetRequireSsl {
-    fn get_require_ssl(&self) -> &sqlx::postgres::PgSslMode;
-}
 pub trait GetAccessControlMaxAge {
     fn get_access_control_max_age(&self) -> &usize;
 }

@@ -14,6 +14,12 @@ pub fn postgres_get_pool(
         .build()
     {
         Ok(runtime) => runtime.block_on(async move {
+            //
+        // let require_ssl_handle = match config_unchecked.require_ssl {
+        //         true => sqlx::postgres::PgSslMode::Require,
+        //         false => sqlx::postgres::PgSslMode::Prefer,
+        // };
+            //
     // let pool = sqlx::postgres::PgPoolOptions::new()
     //     .max_connections(10)//todo
     //     // .min_connections(min)
