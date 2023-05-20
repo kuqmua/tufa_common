@@ -172,7 +172,11 @@ impl TryFrom<ConfigUnchecked> for Config {
 
         let mongo_connection_timeout_handle = config_unchecked.mongo_connection_timeout;
 
-        let postgres_pool_handle = match crate::server::postgres::postgres_get_pool::postgres_get_pool(&config_unchecked.database_url){
+        let postgres_connection_timeout_handle = config_unchecked.postgres_connection_timeout;
+        let postgres_pool_handle = match crate::server::postgres::postgres_get_pool::postgres_get_pool(
+            &config_unchecked.postgres_connection_timeout,
+            &config_unchecked.database_url
+        ){
             Ok(pool) => pool,
             Err(e) => {
                 return Err(ConfigCheckError::PostgresPool(e));
@@ -229,8 +233,6 @@ impl TryFrom<ConfigUnchecked> for Config {
             false => config_unchecked.postgres_db,
         };
         let postgres_params_handle = config_unchecked.postgres_params;//can be empty
-
-        let postgres_connection_timeout_handle = config_unchecked.postgres_connection_timeout;
 
         let starting_check_link_handle = match config_unchecked.starting_check_link.is_empty() {
             true => {

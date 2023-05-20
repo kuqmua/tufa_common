@@ -40,6 +40,9 @@ pub trait GetMongoClient {
 pub trait GetMongoConnectionTimeout {
     fn get_mongo_connection_timeout(&self) -> &u64;
 }
+pub trait GetPostgresConnectionTimeout {
+    fn get_postgres_connection_timeout(&self) -> &u64;
+}
 pub trait GetPostgresPool {
     fn get_postgres_pool(&self) -> &sqlx::Pool<sqlx::Postgres>;
 }
@@ -69,9 +72,6 @@ pub trait GetPostgresDb {
 }
 pub trait GetPostgresParams {
     fn get_postgres_params(&self) -> &String;
-}
-pub trait GetPostgresConnectionTimeout {
-    fn get_postgres_connection_timeout(&self) -> &u64;
 }
 pub trait GetStartingCheckLink {
     fn get_starting_check_link(&self) -> &String;
