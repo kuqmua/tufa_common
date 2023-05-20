@@ -22,6 +22,9 @@ pub trait GetGithubToken {
 pub trait GetTimezone {
     fn get_timezone(&self) -> &chrono::FixedOffset;
 }
+pub trait GetRedisUrl {
+    fn get_redis_url(&self) -> &String;
+}
 pub trait GetRedisSessionStorage {
     fn get_redis_session_storage(&self) -> &actix_session::storage::RedisSessionStore;
 }

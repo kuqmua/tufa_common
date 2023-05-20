@@ -45,6 +45,7 @@ pub struct Config {
     timezone: chrono::FixedOffset,
 
     redis_session_storage: actix_session::storage::RedisSessionStore,
+    redis_url: String,
 
     mongo_url: String,
     mongo_client: mongodb::Client,
@@ -113,6 +114,12 @@ impl TryFrom<ConfigUnchecked> for Config {
                 return Err(ConfigCheckError::RedisSessionStore(e));
             }
         };
+        let redis_url_handle = match config_unchecked.redis_url.is_empty() {
+            true => {
+                return Err(ConfigCheckError::RedisUrl(config_unchecked.redis_url));
+            },
+            false => config_unchecked.redis_url,
+        };
 
         let mongo_url_handle = match config_unchecked.mongo_url.is_empty() {
             true => {
@@ -162,6 +169,7 @@ impl TryFrom<ConfigUnchecked> for Config {
             timezone: timezone_handle,
 
             redis_session_storage: redis_session_store_handle,
+            redis_url: redis_url_handle,
 
             mongo_url: mongo_url_handle,
             mongo_client: mongo_client_handle,
@@ -189,6 +197,7 @@ pub enum ConfigCheckError {
     GithubToken(std::string::String),
     Timezone(i32),
     RedisSessionStore(crate::server::redis::redis_try_get_session_storage::RedisTryGetSessionStorageError),
+    RedisUrl(std::string::String),
     MongoUrl(std::string::String),
     MongoClient(crate::server::mongo::mongo_try_get_client::MongoTryGetClientError),
     MongoConnectionTimeout(u64),

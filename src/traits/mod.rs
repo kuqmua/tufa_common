@@ -19,3 +19,4 @@ pub mod get_server_address;
 pub mod try_create_tcp_listener;
 pub mod postgres_try_get_pool;
 pub mod mongo_try_get_client;
+pub mod try_get_redis_session_storage;
