@@ -56,6 +56,26 @@ pub struct Config {
     source_place_type: crate::common::source_place_type::SourcePlaceType,
 }
 
+// #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+// pub enum MongoCheckCollectionIsEmptyErrorNamed<'a> {
+//     MongoDB {
+//         #[eo_display]
+//         mongodb: mongodb::error::Error,
+//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//     },
+//     CollectionIsNotEmpty {
+//         #[eo_display_with_serialize_deserialize]
+//         collection_documents: u64,
+//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//     },
+// }
+
+// impl Config {
+//     pub fn try_from_config_unchecked(config_unchecked: ConfigUnchecked) -> Result<Self, ConfigCheckError> {
+
+//     }
+// }
+
 impl TryFrom<ConfigUnchecked> for Config {
     type Error = ConfigCheckError;
     fn try_from(config_unchecked: ConfigUnchecked) -> Result<Self, ConfigCheckError> {
