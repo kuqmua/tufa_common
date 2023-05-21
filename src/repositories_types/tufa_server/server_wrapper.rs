@@ -4,17 +4,17 @@ use tokio::task::JoinError;
 pub enum ServerWrapperErrorNamed<'a> {
     TcpListenerBind {
         #[eo_error_occurence]
-        tcp_listener_bind: crate::traits::try_create_tcp_listener::TryCreateTcpListenerErrorNamed<'a>,
+        tcp_listener_bind: crate::common::config::try_create_tcp_listener::TryCreateTcpListenerErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     TryGetPostgresPool {
         #[eo_display]
-        try_get_postgres_pool: crate::traits::try_get_postgres_pool::TryGetPostgresPoolError,
+        try_get_postgres_pool: crate::common::config::try_get_postgres_pool::TryGetPostgresPoolError,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     TryGetRedisSessionStorage {
         #[eo_display]
-        try_get_redis_session_storage: crate::traits::try_get_redis_session_storage::TryGetRedisSessionStorageError,
+        try_get_redis_session_storage: crate::common::config::try_get_redis_session_storage::TryGetRedisSessionStorageError,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     ApplicationBuild {
