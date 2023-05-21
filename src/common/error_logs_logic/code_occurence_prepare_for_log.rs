@@ -38,7 +38,6 @@ where
     SelfGeneric: crate::common::error_logs_logic::get_file::GetFile
         + crate::common::error_logs_logic::get_line::GetLine
         + crate::common::error_logs_logic::get_column::GetColumn
-        //above its for crate::common::error_logs_logic::get_code_path_without_config::GetCodePathWithoutConfig
         + crate::common::error_logs_logic::get_code_path_without_config::GetCodePathWithoutConfig
         + crate::common::error_logs_logic::get_duration::GetDuration
 {

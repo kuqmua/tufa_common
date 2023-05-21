@@ -11,7 +11,7 @@ where
     fn to_string_without_config(&self) -> String {
         crate::common::error_logs_logic::helpers::source_and_code_occurence_formatter(
             self.source_to_string_without_config(),
-            self.get_code_occurence().to_string(),
+            self.get_code_occurence(),
         )
     }
 }
@@ -29,7 +29,7 @@ where
     fn to_string_without_config_with_serialize_deserialize(&self) -> String {
         crate::common::error_logs_logic::helpers::source_and_code_occurence_formatter(
             self.source_to_string_without_config(),
-            self.get_code_occurence_with_serialize_deserialize().to_string(),//todo - do .to_string() inside inner
+            self.get_code_occurence_with_serialize_deserialize(),
         )
     }
 }

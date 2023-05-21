@@ -147,12 +147,8 @@ impl<'a> crate::common::error_logs_logic::get_duration::GetDuration for CodeOccu
 
 impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::common::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithoutConfigWithSerializeDeserialize;//here
-        write!(
-            f,
-            "{}",
-            self.code_occurence_prepare_for_log_without_config_with_serialize_deserialize()
-        )
+        use crate::common::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithoutConfigWithSerializeDeserialize;
+        write!(f, "{}", self.code_occurence_prepare_for_log_without_config_with_serialize_deserialize())
     }
 }
 
