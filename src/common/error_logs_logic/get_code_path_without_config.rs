@@ -4,9 +4,9 @@ pub trait GetCodePathWithoutConfig {
 
 impl<SelfGeneric> GetCodePathWithoutConfig for SelfGeneric
 where
-    SelfGeneric: crate::traits::get_file::GetFile
-        + crate::traits::get_line::GetLine
-        + crate::traits::get_column::GetColumn,
+    SelfGeneric: crate::common::error_logs_logic::get_file::GetFile
+        + crate::common::error_logs_logic::get_line::GetLine
+        + crate::common::error_logs_logic::get_column::GetColumn,
 {
     fn get_code_path_without_config(&self) -> String {
         format!(

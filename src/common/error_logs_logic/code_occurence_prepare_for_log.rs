@@ -9,11 +9,11 @@ pub trait CodeOccurencePrepareForLogWithConfig<
 impl<'a, SelfGeneric, ConfigGeneric> CodeOccurencePrepareForLogWithConfig<ConfigGeneric>
     for SelfGeneric
 where
-    SelfGeneric: crate::traits::get_file::GetFile
-        + crate::traits::get_line::GetLine
-        + crate::traits::get_column::GetColumn
-        + crate::traits::get_code_path_without_config::GetCodePathWithoutConfig
-        + crate::traits::get_duration::GetDuration
+    SelfGeneric: crate::common::error_logs_logic::get_file::GetFile
+        + crate::common::error_logs_logic::get_line::GetLine
+        + crate::common::error_logs_logic::get_column::GetColumn
+        + crate::common::error_logs_logic::get_code_path_without_config::GetCodePathWithoutConfig
+        + crate::common::error_logs_logic::get_duration::GetDuration
         + crate::common::git::get_git_source_file_link::GetGitSourceFileLink<'a>,
     ConfigGeneric: crate::common::config::config_fields::GetTimezone
         + crate::common::config::config_fields::GetSourcePlaceType
@@ -35,12 +35,12 @@ pub trait CodeOccurencePrepareForLogWithoutConfig {
 
 impl<SelfGeneric> CodeOccurencePrepareForLogWithoutConfig for SelfGeneric
 where
-    SelfGeneric: crate::traits::get_file::GetFile
-        + crate::traits::get_line::GetLine
-        + crate::traits::get_column::GetColumn
-        //above its for crate::traits::get_code_path_without_config::GetCodePathWithoutConfig
-        + crate::traits::get_code_path_without_config::GetCodePathWithoutConfig
-        + crate::traits::get_duration::GetDuration
+    SelfGeneric: crate::common::error_logs_logic::get_file::GetFile
+        + crate::common::error_logs_logic::get_line::GetLine
+        + crate::common::error_logs_logic::get_column::GetColumn
+        //above its for crate::common::error_logs_logic::get_code_path_without_config::GetCodePathWithoutConfig
+        + crate::common::error_logs_logic::get_code_path_without_config::GetCodePathWithoutConfig
+        + crate::common::error_logs_logic::get_duration::GetDuration
 {
     fn code_occurence_prepare_for_log_without_config(&self) -> String {
         prepare_for_log(
@@ -59,12 +59,12 @@ pub trait CodeOccurencePrepareForLogWithoutConfigWithSerializeDeserialize {
 
 impl<'a, SelfGeneric> CodeOccurencePrepareForLogWithoutConfigWithSerializeDeserialize for SelfGeneric
 where
-    SelfGeneric: crate::traits::get_file::GetFile
-        + crate::traits::get_line::GetLine
-        + crate::traits::get_column::GetColumn
-        + crate::traits::get_code_path_without_config::GetCodePathWithoutConfig
+    SelfGeneric: crate::common::error_logs_logic::get_file::GetFile
+        + crate::common::error_logs_logic::get_line::GetLine
+        + crate::common::error_logs_logic::get_column::GetColumn
+        + crate::common::error_logs_logic::get_code_path_without_config::GetCodePathWithoutConfig
         + crate::common::git::get_git_source_file_link::GetGitSourceFileLink<'a>
-        + crate::traits::get_duration::GetDuration
+        + crate::common::error_logs_logic::get_duration::GetDuration
 {
     fn code_occurence_prepare_for_log_without_config_with_serialize_deserialize(&self) -> String {
         use crate::common::error_logs_logic::form_error_path::FormErrorPathGithub;

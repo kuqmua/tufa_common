@@ -26,19 +26,19 @@ impl<'a> CodeOccurence<'a> {
     }
 }
 
-impl<'a> crate::traits::get_file::GetFile for CodeOccurence<'a> {
+impl<'a> crate::common::error_logs_logic::get_file::GetFile for CodeOccurence<'a> {
     fn get_file(&self) -> &str {
         &self.file
     }
 }
 
-impl<'a> crate::traits::get_line::GetLine for CodeOccurence<'a> {
+impl<'a> crate::common::error_logs_logic::get_line::GetLine for CodeOccurence<'a> {
     fn get_line(&self) -> &u32 {
         &self.line
     }
 }
 
-impl<'a> crate::traits::get_column::GetColumn for CodeOccurence<'a> {
+impl<'a> crate::common::error_logs_logic::get_column::GetColumn for CodeOccurence<'a> {
     fn get_column(&self) -> &u32 {
         &self.column
     }
@@ -50,7 +50,7 @@ impl<'a> crate::common::git::get_git_info::GetGitInfo<'a> for CodeOccurence<'a> 
     }
 }
 
-impl<'a> crate::traits::get_duration::GetDuration for CodeOccurence<'a> {
+impl<'a> crate::common::error_logs_logic::get_duration::GetDuration for CodeOccurence<'a> {
     fn get_duration(&self) -> std::time::Duration {
         self.duration
     }
@@ -115,19 +115,19 @@ impl<'a> CodeOccurenceWithSerializeDeserialize<'a> {
     }
 }
 
-impl<'a> crate::traits::get_file::GetFile for CodeOccurenceWithSerializeDeserialize<'a> {
+impl<'a> crate::common::error_logs_logic::get_file::GetFile for CodeOccurenceWithSerializeDeserialize<'a> {
     fn get_file(&self) -> &str {
         &self.file
     }
 }
 
-impl<'a> crate::traits::get_line::GetLine for CodeOccurenceWithSerializeDeserialize<'a> {
+impl<'a> crate::common::error_logs_logic::get_line::GetLine for CodeOccurenceWithSerializeDeserialize<'a> {
     fn get_line(&self) -> &u32 {
         &self.line
     }
 }
 
-impl<'a> crate::traits::get_column::GetColumn for CodeOccurenceWithSerializeDeserialize<'a> {
+impl<'a> crate::common::error_logs_logic::get_column::GetColumn for CodeOccurenceWithSerializeDeserialize<'a> {
     fn get_column(&self) -> &u32 {
         &self.column
     }
@@ -139,7 +139,7 @@ impl<'a> crate::common::git::get_git_info::GetGitInfo<'a> for CodeOccurenceWithS
     }
 }
 
-impl<'a> crate::traits::get_duration::GetDuration for CodeOccurenceWithSerializeDeserialize<'a> {
+impl<'a> crate::common::error_logs_logic::get_duration::GetDuration for CodeOccurenceWithSerializeDeserialize<'a> {
     fn get_duration(&self) -> std::time::Duration {
         self.duration
     }

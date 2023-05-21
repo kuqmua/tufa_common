@@ -15,9 +15,9 @@ pub enum SourcePlaceType {
 impl<'a> SourcePlaceType {
     pub fn get_code_path(
         &self,
-        code_occurence: &(impl crate::traits::get_file::GetFile
-              + crate::traits::get_line::GetLine
-              + crate::traits::get_column::GetColumn
+        code_occurence: &(impl crate::common::error_logs_logic::get_file::GetFile
+              + crate::common::error_logs_logic::get_line::GetLine
+              + crate::common::error_logs_logic::get_column::GetColumn
               + crate::common::git::get_git_source_file_link::GetGitSourceFileLink<'a>),
     ) -> String {
         match self {
