@@ -1,7 +1,7 @@
 pub fn generate_github_links(
     github_names: Vec<String>,
     config: &'static (
-        impl crate::traits::config_fields::GetGithubToken
+        impl crate::common::config::config_fields::GetGithubToken
         + std::marker::Send 
         + std::marker::Sync
     )

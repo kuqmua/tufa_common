@@ -30,7 +30,7 @@
 // pub async fn init_postgres<'a, SelfGeneric>(
 //     providers_json_local_data_hashmap: std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
 //     config: &'static (
-//         impl crate::traits::config_fields::GetPostgresPool
+//         impl crate::common::config::config_fields::GetPostgresPool
 //         + std::marker::Send 
 //         + std::marker::Sync
 //     )

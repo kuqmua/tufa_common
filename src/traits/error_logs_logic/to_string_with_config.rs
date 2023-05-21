@@ -13,8 +13,8 @@ where
                 'a,
                 ConfigGeneric,
             > + crate::traits::error_logs_logic::get_code_occurence::GetCodeOccurence<'a>,
-    ConfigGeneric: crate::traits::config_fields::GetSourcePlaceType
-        + crate::traits::config_fields::GetTimezone,
+    ConfigGeneric: crate::common::config::config_fields::GetSourcePlaceType
+        + crate::common::config::config_fields::GetTimezone,
 {
     fn to_string_with_config(
         &self,

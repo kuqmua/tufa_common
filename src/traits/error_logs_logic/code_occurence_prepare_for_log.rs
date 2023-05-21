@@ -1,6 +1,6 @@
 pub trait CodeOccurencePrepareForLogWithConfig<
-    ConfigGeneric: crate::traits::config_fields::GetTimezone
-        + crate::traits::config_fields::GetSourcePlaceType
+    ConfigGeneric: crate::common::config::config_fields::GetTimezone
+        + crate::common::config::config_fields::GetSourcePlaceType
 >
 {
     fn code_occurence_prepare_for_log_with_config(&self, config: &ConfigGeneric) -> String;
@@ -15,8 +15,8 @@ where
         + crate::traits::get_code_path_without_config::GetCodePathWithoutConfig
         + crate::traits::get_duration::GetDuration
         + crate::traits::get_git_source_file_link::GetGitSourceFileLink<'a>,
-    ConfigGeneric: crate::traits::config_fields::GetTimezone
-        + crate::traits::config_fields::GetSourcePlaceType
+    ConfigGeneric: crate::common::config::config_fields::GetTimezone
+        + crate::common::config::config_fields::GetSourcePlaceType
 {
     fn code_occurence_prepare_for_log_with_config(&self, config: &ConfigGeneric) -> String {
         prepare_for_log(

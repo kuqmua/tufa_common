@@ -68,15 +68,15 @@
 
 // pub async fn get_providers_posts<'a>(
 //     config: &'static (
-//         impl crate::traits::config_fields::GetGithubToken
-//         + crate::traits::config_fields::GetProvidersLinkPartsSource
+//         impl crate::common::config::config_fields::GetGithubToken
+//         + crate::common::config::config_fields::GetProvidersLinkPartsSource
 
-//         + crate::traits::config_fields::GetPathToProviderLinkPartsFolder
-//         + crate::traits::config_fields::GetLogFileExtension
-//         + crate::traits::config_fields::GetMongoUrl
-//         + crate::traits::config_fields::GetMongoProvidersLinkPartsDbName
-//         + crate::traits::config_fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
-//         + crate::traits::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart
+//         + crate::common::config::config_fields::GetPathToProviderLinkPartsFolder
+//         + crate::common::config::config_fields::GetLogFileExtension
+//         + crate::common::config::config_fields::GetMongoUrl
+//         + crate::common::config::config_fields::GetMongoProvidersLinkPartsDbName
+//         + crate::common::config::config_fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
+//         + crate::common::config::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart
         // + std::marker::Send 
         // + std::marker::Sync
 //     )

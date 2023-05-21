@@ -9,7 +9,7 @@ pub trait TryGetRedisSessionStorage {
 
 impl<SelfGeneric> TryGetRedisSessionStorage for SelfGeneric
 where
-    Self: crate::traits::config_fields::GetRedisUrl,
+    Self: crate::common::config::config_fields::GetRedisUrl,
 {
     async fn try_get_redis_session_storage(&self) -> Result<actix_session::storage::RedisSessionStore, TryGetRedisSessionStorageError> {
         match actix_session::storage::RedisSessionStore::new({

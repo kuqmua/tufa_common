@@ -9,7 +9,7 @@ pub trait TryGetPostgresPool {
 
 impl<SelfGeneric> TryGetPostgresPool for SelfGeneric
 where
-    Self: crate::traits::config_fields::GetDatabaseUrl,//meaning postgres. sqlx::query! macro uses DATABASE_URL env var for compile time checks 
+    Self: crate::common::config::config_fields::GetDatabaseUrl,//meaning postgres. sqlx::query! macro uses DATABASE_URL env var for compile time checks 
 {
     async fn try_get_postgres_pool(&self) -> Result<sqlx::Pool<sqlx::Postgres>, TryGetPostgresPoolError> {
         match 

@@ -1,7 +1,7 @@
 // pub async fn check_new_providers_posts<'a>(
 //     providers_link_parts: std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
 //     config: &'static (
-//     impl crate::traits::config_fields::GetGithubToken
+//     impl crate::common::config::config_fields::GetGithubToken
         // + std::marker::Send 
         // + std::marker::Sync
 // )

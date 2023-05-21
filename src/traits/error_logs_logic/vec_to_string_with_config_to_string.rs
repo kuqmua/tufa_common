@@ -10,8 +10,8 @@ where
             'a,
             ConfigGeneric,
         >,
-    ConfigGeneric: crate::traits::config_fields::GetSourcePlaceType
-        + crate::traits::config_fields::GetTimezone,
+    ConfigGeneric: crate::common::config::config_fields::GetSourcePlaceType
+        + crate::common::config::config_fields::GetTimezone,
 {
     fn vec_to_string_with_config_to_string(&self, config: &ConfigGeneric) -> String {
         crate::traits::error_logs_logic::helpers::stringified_lines_error_vec(self.iter().fold(

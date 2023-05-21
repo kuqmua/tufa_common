@@ -4,7 +4,7 @@ pub trait GetServerAddress {
 
 impl<SelfGeneric> GetServerAddress for SelfGeneric
 where
-    Self: crate::traits::config_fields::GetServerPort,
+    Self: crate::common::config::config_fields::GetServerPort,
 {
     fn get_server_address(&self) -> std::string::String {
         format!("localhost:{}", *self.get_server_port().port())

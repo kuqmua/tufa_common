@@ -235,8 +235,8 @@
 //     pub async fn get_link_parts_from_local_json_file<'a>(
 //         self,
 //         config: &'static (
-//             impl crate::traits::config_fields::GetPathToProviderLinkPartsFolder
-//             + crate::traits::config_fields::GetLogFileExtension
+//             impl crate::common::config::config_fields::GetPathToProviderLinkPartsFolder
+//             + crate::common::config::config_fields::GetLogFileExtension
         // + std::marker::Send 
         // + std::marker::Sync
 //         )
