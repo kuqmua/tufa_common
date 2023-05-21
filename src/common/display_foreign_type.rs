@@ -5,7 +5,7 @@ pub trait DisplayForeignType {
     fn display_foreign_type(&self) -> String;
 }
 
-// impl crate::traits::display_foreign_type::DisplayForeignType for sqlx::Error {
+// impl crate::common::display_foreign_type::DisplayForeignType for sqlx::Error {
 //     fn display_foreign_type(&self) -> String {
 //         format!("{self}")
 //         // let link_to_crate = format!("{CRATES_IO_SLASH_CRATES_SLASH_LINK}sqlx");
@@ -30,7 +30,7 @@ pub trait DisplayForeignType {
 //     }
 // }
 
-impl crate::traits::display_foreign_type::DisplayForeignType
+impl crate::common::display_foreign_type::DisplayForeignType
     for tracing::dispatcher::SetGlobalDefaultError
 {
     fn display_foreign_type(&self) -> String {
@@ -38,13 +38,13 @@ impl crate::traits::display_foreign_type::DisplayForeignType
     }
 }
 
-impl crate::traits::display_foreign_type::DisplayForeignType for tracing::log::SetLoggerError {
+impl crate::common::display_foreign_type::DisplayForeignType for tracing::log::SetLoggerError {
     fn display_foreign_type(&self) -> String {
         String::from("tracing::log::SetLoggerError")
     }
 }
 
-// impl crate::traits::display_foreign_type::DisplayForeignType for mongodb::error::Error {
+// impl crate::common::display_foreign_type::DisplayForeignType for mongodb::error::Error {
 //     fn display_foreign_type(&self) -> String {
 //         format!("{self}")
 //         // let link_to_crate = format!("{CRATES_IO_SLASH_CRATES_SLASH_LINK}mongodb");
@@ -78,13 +78,13 @@ impl crate::traits::display_foreign_type::DisplayForeignType for tracing::log::S
 //     }
 // }
 
-impl crate::traits::display_foreign_type::DisplayForeignType for reqwest::Error {
+impl crate::common::display_foreign_type::DisplayForeignType for reqwest::Error {
     fn display_foreign_type(&self) -> String {
         format!("{self}")
     }
 }
 
-impl crate::traits::display_foreign_type::DisplayForeignType for reqwest::StatusCode {
+impl crate::common::display_foreign_type::DisplayForeignType for reqwest::StatusCode {
     fn display_foreign_type(&self) -> String {
         format!("{self}")
     }

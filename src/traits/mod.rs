@@ -1,5 +1,4 @@
 pub mod console;
-pub mod display_foreign_type;
 pub mod error_logs_logic;
 pub mod get_code_path_without_config;
 pub mod get_duration;

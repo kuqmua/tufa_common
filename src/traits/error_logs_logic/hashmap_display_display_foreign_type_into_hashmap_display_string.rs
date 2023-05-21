@@ -9,7 +9,7 @@ impl<HashMapKeyGeneric, HashMapValueGeneric>
     for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
 where
     HashMapKeyGeneric: std::fmt::Display + std::cmp::Eq + std::hash::Hash,
-    HashMapValueGeneric: crate::traits::display_foreign_type::DisplayForeignType,
+    HashMapValueGeneric: crate::common::display_foreign_type::DisplayForeignType,
 {
     fn hashmap_display_display_foreign_type_into_hashmap_display_string(
         self,

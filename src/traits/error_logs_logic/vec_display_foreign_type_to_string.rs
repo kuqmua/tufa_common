@@ -4,7 +4,7 @@ pub trait VecDisplayForeignTypeToString {
 
 impl<VecElementGeneric> VecDisplayForeignTypeToString for Vec<VecElementGeneric>
 where
-    VecElementGeneric: crate::traits::display_foreign_type::DisplayForeignType,
+    VecElementGeneric: crate::common::display_foreign_type::DisplayForeignType,
 {
     fn vec_display_foreign_type_to_string(&self) -> String {
         crate::traits::error_logs_logic::helpers::stringified_lines_error_vec(self.iter().fold(

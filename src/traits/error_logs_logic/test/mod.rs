@@ -340,7 +340,7 @@ impl<'a> std::fmt::Display for DisplayWithSerializeDeserializeStructLifetime<'a>
 pub struct DisplayForeignTypeSerializeDeserializeStruct {
     display_foreign_type_serialize_deserialize_struct: String
 }
-impl crate::traits::display_foreign_type::DisplayForeignType
+impl crate::common::display_foreign_type::DisplayForeignType
     for DisplayForeignTypeSerializeDeserializeStruct
 {
     fn display_foreign_type(&self) -> String {
@@ -351,7 +351,7 @@ impl crate::traits::display_foreign_type::DisplayForeignType
 pub struct DisplayForeignTypeSerializeDeserializeStructLifetime<'a> {
     display_foreign_type_serialize_deserialize_struct: &'a str
 }
-impl<'a> crate::traits::display_foreign_type::DisplayForeignType
+impl<'a> crate::common::display_foreign_type::DisplayForeignType
     for DisplayForeignTypeSerializeDeserializeStructLifetime<'a>
 {
     fn display_foreign_type(&self) -> String {
@@ -363,7 +363,7 @@ impl<'a> crate::traits::display_foreign_type::DisplayForeignType
 pub struct DisplayForeignTypeStruct {
     display_foreign_type_struct: String
 }
-impl crate::traits::display_foreign_type::DisplayForeignType
+impl crate::common::display_foreign_type::DisplayForeignType
     for DisplayForeignTypeStruct
 {
     fn display_foreign_type(&self) -> String {
@@ -374,7 +374,7 @@ impl crate::traits::display_foreign_type::DisplayForeignType
 pub struct DisplayForeignTypeStructLifetime<'a> {
     display_foreign_type_struct: &'a str
 }
-impl<'a> crate::traits::display_foreign_type::DisplayForeignType
+impl<'a> crate::common::display_foreign_type::DisplayForeignType
     for DisplayForeignTypeStructLifetime<'a>
 {
     fn display_foreign_type(&self) -> String {
