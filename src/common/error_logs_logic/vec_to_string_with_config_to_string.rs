@@ -6,7 +6,7 @@ impl<'a, VecElementGeneric, ConfigGeneric> VecToStringWithConfigToString<'a, Con
     for Vec<VecElementGeneric>
 where
     VecElementGeneric:
-        crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfig<
+        crate::common::error_logs_logic::to_string_with_config::ToStringWithConfig<
             'a,
             ConfigGeneric,
         >,
@@ -14,11 +14,11 @@ where
         + crate::common::config::config_fields::GetTimezone,
 {
     fn vec_to_string_with_config_to_string(&self, config: &ConfigGeneric) -> String {
-        crate::traits::error_logs_logic::helpers::stringified_lines_error_vec(self.iter().fold(
+        crate::common::error_logs_logic::helpers::stringified_lines_error_vec(self.iter().fold(
             String::from(""),
             |mut acc, vec_element| {
                 acc.push_str(
-                    &crate::traits::error_logs_logic::helpers::lines_space_backslash_addition(
+                    &crate::common::error_logs_logic::helpers::lines_space_backslash_addition(
                         vec_element.to_string_with_config(config),
                     ),
                 );

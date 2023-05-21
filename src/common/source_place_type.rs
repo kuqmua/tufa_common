@@ -22,11 +22,11 @@ impl<'a> SourcePlaceType {
     ) -> String {
         match self {
             SourcePlaceType::Source => {
-                use crate::traits::error_logs_logic::form_error_path::FormErrorPathDirectory;
+                use crate::common::error_logs_logic::form_error_path::FormErrorPathDirectory;
                 code_occurence.form_error_path_directory()
             }
             SourcePlaceType::Github => {
-                use crate::traits::error_logs_logic::form_error_path::FormErrorPathGithub;
+                use crate::common::error_logs_logic::form_error_path::FormErrorPathGithub;
                 code_occurence.form_error_path_github()
             }
         }

@@ -1,5 +1,4 @@
 pub mod console;
-pub mod error_logs_logic;
 pub mod get_code_path_without_config;
 pub mod get_duration;
 pub mod get_source;

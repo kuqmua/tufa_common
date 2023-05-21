@@ -3,11 +3,11 @@ pub trait ErrorLog<'a, ConfigGeneric> {
 }
 
 impl<'a, SelfGeneric, ConfigGeneric>
-    crate::traits::error_logs_logic::error_log::ErrorLog<'a, ConfigGeneric> for SelfGeneric
+    crate::common::error_logs_logic::error_log::ErrorLog<'a, ConfigGeneric> for SelfGeneric
 where
     ConfigGeneric: crate::common::config::config_fields::GetSourcePlaceType
         + crate::common::config::config_fields::GetTimezone,
-    SelfGeneric: crate::traits::error_logs_logic::to_string_with_config::ToStringWithConfig<
+    SelfGeneric: crate::common::error_logs_logic::to_string_with_config::ToStringWithConfig<
         'a,
         ConfigGeneric,
     >,

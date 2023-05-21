@@ -7,13 +7,13 @@ impl<'a, HashMapKeyGeneric, HashMapValueGeneric> HashMapDisplayToStringWithoutCo
 where
     HashMapKeyGeneric: std::fmt::Display,
     HashMapValueGeneric:
-        crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfig<'a>,
+        crate::common::error_logs_logic::to_string_without_config::ToStringWithoutConfig<'a>,
 {
     fn hashmap_display_to_string_without_config_to_string(&self) -> String {
-        crate::traits::error_logs_logic::helpers::error_occurence_hashmap_formatter(
+        crate::common::error_logs_logic::helpers::error_occurence_hashmap_formatter(
             self.iter().fold(String::from(""), |mut acc, (key, value)| {
                 acc.push_str(
-                    &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
+                    &crate::common::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
                         key,
                         value.to_string_without_config(),
                     ),
@@ -33,15 +33,15 @@ impl<'a, HashMapKeyGeneric, HashMapValueGeneric> HashMapDisplayToStringWithoutCo
 where
     HashMapKeyGeneric: std::fmt::Display,
     HashMapValueGeneric:
-        crate::traits::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithSerializeDeserialize<
+        crate::common::error_logs_logic::to_string_without_config::ToStringWithoutConfigWithSerializeDeserialize<
             'a,
         >,
 {
     fn hashmap_display_to_string_without_config_to_string_with_serialize_deserialize(&self) -> String {
-        crate::traits::error_logs_logic::helpers::error_occurence_hashmap_formatter(
+        crate::common::error_logs_logic::helpers::error_occurence_hashmap_formatter(
             self.iter().fold(String::from(""), |mut acc, (key, value)| {
                 acc.push_str(
-                    &crate::traits::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
+                    &crate::common::error_logs_logic::helpers::stringified_lines_error_hashmap_element(
                         key,
                         value.to_string_without_config_with_serialize_deserialize(),
                     ),

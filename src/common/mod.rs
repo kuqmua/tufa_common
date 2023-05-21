@@ -8,3 +8,4 @@ pub mod source_place_type;
 pub mod user_port;
 pub mod config;
 pub mod display_foreign_type;
+pub mod error_logs_logic;

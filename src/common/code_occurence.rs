@@ -58,7 +58,7 @@ impl<'a> crate::traits::get_duration::GetDuration for CodeOccurence<'a> {
 
 impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurence<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithoutConfig;
+        use crate::common::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithoutConfig;
         write!(
             f,
             "{}",
@@ -147,7 +147,7 @@ impl<'a> crate::traits::get_duration::GetDuration for CodeOccurenceWithSerialize
 
 impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::traits::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithoutConfigWithSerializeDeserialize;//here
+        use crate::common::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithoutConfigWithSerializeDeserialize;//here
         write!(
             f,
             "{}",

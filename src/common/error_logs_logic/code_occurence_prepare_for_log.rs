@@ -67,7 +67,7 @@ where
         + crate::traits::get_duration::GetDuration
 {
     fn code_occurence_prepare_for_log_without_config_with_serialize_deserialize(&self) -> String {
-        use crate::traits::error_logs_logic::form_error_path::FormErrorPathGithub;
+        use crate::common::error_logs_logic::form_error_path::FormErrorPathGithub;
         prepare_for_log(
             self.form_error_path_github(),
             chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
