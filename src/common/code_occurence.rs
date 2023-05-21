@@ -44,7 +44,7 @@ impl<'a> crate::traits::get_column::GetColumn for CodeOccurence<'a> {
     }
 }
 
-impl<'a> crate::traits::get_git_info::GetGitInfo<'a> for CodeOccurence<'a> {
+impl<'a> crate::common::git::get_git_info::GetGitInfo<'a> for CodeOccurence<'a> {
     fn get_git_info(&self) -> &crate::common::git::git_info::GitInformation {
         &self.git_info
     }
@@ -67,7 +67,7 @@ impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurence<'a> 
     }
 }
 
-impl<'a> crate::traits::get_git_source_file_link::GetGitSourceFileLink<'a>
+impl<'a> crate::common::git::get_git_source_file_link::GetGitSourceFileLink<'a>
     for crate::common::code_occurence::CodeOccurence<'a>
 {
     fn get_git_source_file_link(&self, file: &str, line: u32) -> String {
@@ -133,7 +133,7 @@ impl<'a> crate::traits::get_column::GetColumn for CodeOccurenceWithSerializeDese
     }
 }
 
-impl<'a> crate::traits::get_git_info::GetGitInfo<'a> for CodeOccurenceWithSerializeDeserialize<'a> {
+impl<'a> crate::common::git::get_git_info::GetGitInfo<'a> for CodeOccurenceWithSerializeDeserialize<'a> {
     fn get_git_info(&self) -> &crate::common::git::git_info::GitInformation {
         &self.git_info
     }
@@ -156,7 +156,7 @@ impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurenceWithS
     }
 }
 
-impl<'a> crate::traits::get_git_source_file_link::GetGitSourceFileLink<'a>
+impl<'a> crate::common::git::get_git_source_file_link::GetGitSourceFileLink<'a>
     for crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize<'a>
 {
     fn get_git_source_file_link(&self, file: &str, line: u32) -> String {

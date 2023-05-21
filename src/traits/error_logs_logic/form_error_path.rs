@@ -27,7 +27,7 @@ where
     SelfGeneric: crate::traits::get_file::GetFile
         + crate::traits::get_line::GetLine
         + crate::traits::get_column::GetColumn
-        + crate::traits::get_git_source_file_link::GetGitSourceFileLink<'a>,
+        + crate::common::git::get_git_source_file_link::GetGitSourceFileLink<'a>,
 {
     fn form_error_path_github(&self) -> String {
         let backslash = "/";

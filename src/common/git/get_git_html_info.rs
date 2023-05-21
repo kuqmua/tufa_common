@@ -4,14 +4,14 @@ pub trait GetGitHtmlInfo {
 
 impl<'a, T> GetGitHtmlInfo for T
 where
-    T: crate::traits::git_fields::GetGitAuthor<'a>
-        + crate::traits::git_fields::GetGitAuthorEmail<'a>
-        + crate::traits::git_fields::GetGitCommitId<'a>
-        + crate::traits::git_fields::GetGitCommitUnixTime<'a>
-        + crate::traits::git_fields::GetGitMessage<'a>
-        + crate::traits::git_fields::GetGitRepoLink<'a>
-        + crate::traits::git_fields::GetGitTimezone<'a>
-        + crate::traits::get_git_commit_link::GetGitCommitLink,
+    T: crate::common::git::git_fields::GetGitAuthor<'a>
+        + crate::common::git::git_fields::GetGitAuthorEmail<'a>
+        + crate::common::git::git_fields::GetGitCommitId<'a>
+        + crate::common::git::git_fields::GetGitCommitUnixTime<'a>
+        + crate::common::git::git_fields::GetGitMessage<'a>
+        + crate::common::git::git_fields::GetGitRepoLink<'a>
+        + crate::common::git::git_fields::GetGitTimezone<'a>
+        + crate::common::git::get_git_commit_link::GetGitCommitLink,
 {
     fn get_git_html_info(&self) -> String {
         let git_commit_id = &self.get_git_commit_id();
