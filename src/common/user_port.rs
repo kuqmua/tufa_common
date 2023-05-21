@@ -16,17 +16,29 @@ impl std::fmt::Display for UserPort {
     }
 }
 
-#[derive(Debug, strum_macros::Display, thiserror::Error)]
-pub enum UserPortTryFromStringError {
-    SystemPort(u16),//used for system services e.g. HTTP, FTP, SSH, DHCP ... 
-    EphemeralPort(u16)//https://www.ncftp.com/ncftpd/doc/misc/ephemeral_ports.html
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum UserPortTryFromStringErrorNamed<'a> {
+    SystemPort {
+        #[eo_display_with_serialize_deserialize]
+        port: u16,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    EphemeralPort {
+        #[eo_display_with_serialize_deserialize]
+        port: u16,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
 }
-//todo maybe instead of proc_macro use builder pattern with phantom data state?
-impl TryFrom<u16> for UserPort {
-    type Error = UserPortTryFromStringError;
-    fn try_from(possible_port: u16) -> Result<UserPort, UserPortTryFromStringError> {
+
+impl UserPort {
+    //its not TryFrom<u16> coz its not supported lifetimes in Error annotation
+    pub fn try_from_u16<'a>(possible_port: u16) -> Result<UserPort, UserPortTryFromStringErrorNamed<'a>> {
         if possible_port < 1024 {
-            Err(UserPortTryFromStringError::SystemPort(possible_port))
+            Err(UserPortTryFromStringErrorNamed::SystemPort {
+                port: possible_port,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            })
         }
         else if possible_port < 49152 {
             Ok(Self {
@@ -34,7 +46,10 @@ impl TryFrom<u16> for UserPort {
             })
         }
         else {
-            Err(UserPortTryFromStringError::EphemeralPort(possible_port))
+            Err(UserPortTryFromStringErrorNamed::EphemeralPort { 
+                port: possible_port,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            })
         }
     }
 }
