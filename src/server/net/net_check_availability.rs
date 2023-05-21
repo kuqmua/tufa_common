@@ -12,8 +12,14 @@ pub enum NetCheckAvailabilityErrorNamed<'a> {
     }
 }
 
-pub async fn net_check_availability<'a>(link: &String) -> Result<(), Box<NetCheckAvailabilityErrorNamed<'a>>> {
-    match reqwest::get(link).await {
+pub async fn net_check_availability<'a>(
+    config: &'static (
+        impl crate::traits::config_fields::GetStartingCheckLink
+        + std::marker::Send 
+        + std::marker::Sync
+    ),
+) -> Result<(), Box<NetCheckAvailabilityErrorNamed<'a>>> {
+    match reqwest::get(config.get_starting_check_link()).await {
         Err(e) => Err(Box::new(NetCheckAvailabilityErrorNamed::ReqwestGet {
             reqwest_get: e,
             code_occurence: crate::code_occurence_tufa_common!(),
