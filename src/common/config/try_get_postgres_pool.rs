@@ -1,6 +1,14 @@
-#[derive(Debug, strum_macros::Display)]
+#[derive(Debug)]
 pub enum TryGetPostgresPoolError {
     Connect(sqlx::Error),
+}
+
+impl std::fmt::Display for TryGetPostgresPoolError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            TryGetPostgresPoolError::Connect(e) => write!(f, "{e}"),
+        }
+    }
 }
 
 pub trait TryGetPostgresPool {
