@@ -7,23 +7,23 @@
 )]
 pub struct ConfigUnchecked {
     server_port: u16,
-    hmac_secret: String,
-    base_url: String,
+    hmac_secret: std::string::String,
+    base_url: std::string::String,
     access_control_max_age: usize,
-    access_control_allow_origin: String,
+    access_control_allow_origin: std::string::String,
 
-    github_name: String,
-    github_token: String,
+    github_name: std::string::String,
+    github_token: std::string::String,
 
     timezone: i32,//for some reason chrono::FixedOffset::east_opt uses i32 but i16 is enough 
 
-    redis_url: String,
+    redis_url: std::string::String,
 
-    mongo_url: String,
+    mongo_url: std::string::String,
 
-    database_url: String,//postgres_url, naming required by sqlx::query::query!
+    database_url: std::string::String,//postgres_url, naming required by sqlx::query::query!
 
-    starting_check_link: String, //todo add browser url limit check
+    starting_check_link: std::string::String, //todo add browser url limit check
 
     tracing_type: crate::server::tracing_type::TracingType,
     source_place_type: crate::common::source_place_type::SourcePlaceType,
@@ -35,22 +35,22 @@ pub struct ConfigUnchecked {
 pub struct Config {
     server_port: crate::common::user_port::UserPort,
     hmac_secret: secrecy::Secret<std::string::String>,
-    base_url: String,
+    base_url: std::string::String,
     access_control_max_age: usize,
-    access_control_allow_origin: String,
+    access_control_allow_origin: std::string::String,
 
-    github_name: String,
-    github_token: String,
+    github_name: std::string::String,
+    github_token: std::string::String,
 
     timezone: chrono::FixedOffset,
 
-    redis_url: String,
+    redis_url: secrecy::Secret<std::string::String>,
 
-    mongo_url: String,
+    mongo_url: secrecy::Secret<std::string::String>,
 
-    database_url: String,//postgres_url, naming required by sqlx::query::query!
+    database_url: secrecy::Secret<std::string::String>,//postgres_url, naming required by sqlx::query::query!
 
-    starting_check_link: String, //todo add browser url limit check
+    starting_check_link: std::string::String, //todo add browser url limit check
 
     tracing_type: crate::server::tracing_type::TracingType,
     source_place_type: crate::common::source_place_type::SourcePlaceType,
@@ -109,21 +109,21 @@ impl TryFrom<ConfigUnchecked> for Config {
             true => {
                 return Err(ConfigCheckError::RedisUrl(config_unchecked.redis_url));
             },
-            false => config_unchecked.redis_url,
+            false => secrecy::Secret::new(config_unchecked.redis_url),
         };
 
         let mongo_url = match config_unchecked.mongo_url.is_empty() {
             true => {
                 return Err(ConfigCheckError::MongoUrl(config_unchecked.mongo_url));
             },
-            false => config_unchecked.mongo_url,
+            false => secrecy::Secret::new(config_unchecked.mongo_url),
         };
 
         let database_url = match config_unchecked.database_url.is_empty() {
             true => {
                 return Err(ConfigCheckError::DatabaseUrl(config_unchecked.database_url));
             },
-            false => config_unchecked.database_url,
+            false => secrecy::Secret::new(config_unchecked.database_url),
         };//postgres_url = config_unchecked.; naming required by sqlx::query::query!
 
         let starting_check_link = match config_unchecked.starting_check_link.is_empty() {

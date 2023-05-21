@@ -14,7 +14,10 @@ where
     async fn try_get_postgres_pool(&self) -> Result<sqlx::Pool<sqlx::Postgres>, TryGetPostgresPoolError> {
         match 
             sqlx::postgres::PgPoolOptions::new()
-            .connect(self.get_database_url())
+            .connect({
+                use secrecy::ExposeSecret;
+                self.get_database_url().expose_secret()
+            })
             .await
         {
             Err(e) => Err(TryGetPostgresPoolError::Connect(e)),

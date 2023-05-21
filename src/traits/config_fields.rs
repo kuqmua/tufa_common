@@ -23,13 +23,13 @@ pub trait GetTimezone {
     fn get_timezone(&self) -> &chrono::FixedOffset;
 }
 pub trait GetRedisUrl {
-    fn get_redis_url(&self) -> &String;
+    fn get_redis_url(&self) -> &secrecy::Secret<String>;
 }
 pub trait GetMongoUrl {
-    fn get_mongo_url(&self) -> &String;
+    fn get_mongo_url(&self) -> &secrecy::Secret<String>;
 }
 pub trait GetDatabaseUrl {
-    fn get_database_url(&self) -> &String;//postgres database url. required to exists in env
+    fn get_database_url(&self) -> &secrecy::Secret<String>;//postgres database url. required to exists in env
 }
 pub trait GetStartingCheckLink {
     fn get_starting_check_link(&self) -> &String;

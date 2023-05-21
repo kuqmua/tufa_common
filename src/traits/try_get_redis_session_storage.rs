@@ -12,7 +12,10 @@ where
     Self: crate::traits::config_fields::GetRedisUrl,
 {
     async fn try_get_redis_session_storage(&self) -> Result<actix_session::storage::RedisSessionStore, TryGetRedisSessionStorageError> {
-        match actix_session::storage::RedisSessionStore::new(self.get_redis_url()).await {
+        match actix_session::storage::RedisSessionStore::new({
+                use secrecy::ExposeSecret;
+                self.get_redis_url().expose_secret()
+            }).await {
             Ok(redis_session_store) => Ok(redis_session_store),
             Err(e) => {
                 return Err(TryGetRedisSessionStorageError::Redis(format!("{e}")));
