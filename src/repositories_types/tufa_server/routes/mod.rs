@@ -12,3 +12,4 @@ pub use login::*;
 pub use subscriptions::*;
 pub use subscriptions_confirm::*;
 pub mod git;
+pub mod cats;
