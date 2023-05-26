@@ -19,7 +19,6 @@ pub async fn net_check_availability<'a>(
         + std::marker::Sync
     ),
 ) -> Result<(), Box<NetCheckAvailabilityErrorNamed<'a>>> {
-    println!("checking net availability...");
     match reqwest::get(config.get_starting_check_link()).await {
         Err(e) => Err(Box::new(NetCheckAvailabilityErrorNamed::ReqwestGet {
             reqwest_get: e,
