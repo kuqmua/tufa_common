@@ -2,7 +2,7 @@
 pub enum GetResponse<'a> {
     Ok(Vec<super::Cat>),
     #[serde(borrow)]
-    Err(PostgresSelectCatsErrorNamedWithSerializeDeserialize<'a>)
+    Err(PostgresSelectCatsError<'a>)
 }
 
 
@@ -13,4 +13,24 @@ pub enum PostgresSelectCatsErrorNamed<'a> {
         select_cats: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
+}
+
+#[derive(Debug, thiserror::Error, serde::Serialize, serde::Deserialize)]
+pub struct PostgresSelectCatsError<'a> {
+    #[serde(borrow)]
+    pub error: PostgresSelectCatsErrorNamedWithSerializeDeserialize<'a>,
+    pub port: crate::common::user_port::UserPort,
+    pub pid: u32,
+}
+
+impl<'a> std::fmt::Display for PostgresSelectCatsError<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(
+          f, 
+          "ERROR: port: {} pid: {}\n{}",
+          self.port,
+          self.pid,
+          crate::common::error_logs_logic::helpers::lines_space_backslash_addition(&self.error)
+        )
+    }
 }
