@@ -1,1 +1,2 @@
-pub mod get_cats;
+pub mod get;
+pub mod post;
