@@ -33,11 +33,22 @@ pub struct SelectByIdPathParameters {
     pub id: i64,
 }
 
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum PostgresSelectCatErrorNamed<'a> {
+    SelectCat {
+        #[eo_display]
+        select_cat: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub enum SelectByIdResponse<'a> {
-    // Ok(Vec<Cat>),
     #[serde(borrow)]
-    Err(crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamedWithSerializeDeserialize<'a>)
+    BigserialError(crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamedWithSerializeDeserialize<'a>),
+    Ok(Cat),
+    #[serde(borrow)]
+    Select(PostgresSelectCatErrorNamedWithSerializeDeserialize<'a>)
 }
 
 #[derive(serde::Deserialize)]
