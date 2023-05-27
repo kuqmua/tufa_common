@@ -39,7 +39,7 @@
 //                 count_provider_links_tables_error_hashmap.insert(pk.to_string(), e);
 //             }
 //             Ok((count,)) => {
-//                 if count > 0 {
+//                 if count.is_positive() {
 //                     provider_links_tables_not_empty_error_hashmap.insert(pk.to_string(), count);
 //                 }
 //             }

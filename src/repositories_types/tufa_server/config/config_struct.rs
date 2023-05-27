@@ -197,7 +197,7 @@ impl Config {
 pub enum ConfigCheckErrorNamed<'a> {
     ServerPort{
         #[eo_error_occurence]
-        server_port: crate::common::user_port::UserPortTryFromStringErrorNamed<'a>,
+        server_port: crate::common::user_port::UserPortTryFromU16ErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     HmacSecret{

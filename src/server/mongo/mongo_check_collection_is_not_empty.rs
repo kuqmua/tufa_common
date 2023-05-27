@@ -58,7 +58,7 @@
 //                 ),
 //             )),
 //             Ok(documents_number) => {
-//                 if documents_number > 0 {
+//                 if documents_number.is_positive() {
 //                     return Some((
 //                         pk.to_string(),
 //                         crate::server::mongo::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorUnnamed::IsNotEmptyOrigin(
