@@ -7,7 +7,7 @@ pub struct Cat {
 
 #[derive(serde::Deserialize)]
 pub struct SelectAllQueryParameters {
-    pub username: Option<String>,
+    pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
