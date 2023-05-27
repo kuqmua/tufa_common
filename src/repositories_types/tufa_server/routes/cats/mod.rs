@@ -5,6 +5,11 @@ pub struct Cat {
   pub color: String,
 }
 
+#[derive(serde::Deserialize)]
+pub struct SelectAllQueryParameters {
+    pub username: Option<String>,
+}
+
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub enum GetAllResponse<'a> {
     Ok(Vec<Cat>),
@@ -19,6 +24,13 @@ pub enum PostgresSelectAllCatsErrorNamed<'a> {
         select_cats: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
+}
+
+#[derive(serde::Deserialize)]
+pub struct GetPathParameters {
+    // pub id: i64,//bigserial
+    pub name: String,
+    pub color: String,
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
