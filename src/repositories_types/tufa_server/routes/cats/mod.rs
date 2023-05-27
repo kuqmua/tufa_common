@@ -29,6 +29,18 @@ pub enum PostgresSelectAllCatsErrorNamed<'a> {
 }
 
 #[derive(serde::Deserialize)]
+pub struct SelectByIdPathParameters {
+    pub id: i64,
+}
+
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+pub enum SelectByIdResponse<'a> {
+    // Ok(Vec<Cat>),
+    #[serde(borrow)]
+    Err(crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamedWithSerializeDeserialize<'a>)
+}
+
+#[derive(serde::Deserialize)]
 pub struct GetPathParameters {
     // pub id: i64,//bigserial
     pub name: String,
