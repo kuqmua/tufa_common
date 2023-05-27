@@ -10,6 +10,8 @@ pub struct SelectAllQueryParameters {
     pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
 }
 
+pub static DEFAULT_SELECT_ALL_LIMIT: u32 = 10;
+
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub enum GetAllResponse<'a> {
     Ok(Vec<Cat>),
