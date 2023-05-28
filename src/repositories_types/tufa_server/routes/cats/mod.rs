@@ -8,6 +8,8 @@ pub struct Cat {
 #[derive(serde::Deserialize)]
 pub struct SelectAllQueryParameters {
     pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
+    pub name: Option<String>,
+    pub color: Option<String>,
 }
 
 pub static DEFAULT_SELECT_ALL_LIMIT: u32 = 10;
