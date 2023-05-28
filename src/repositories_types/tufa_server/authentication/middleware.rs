@@ -23,20 +23,33 @@ pub async fn reject_anonymous_users(
         let (http_request, payload) = req.parts_mut();
         {
             use actix_web::FromRequest;
-            crate::repositories_types::tufa_server::session_state::TypedSession::from_request(http_request, payload)
-        }.await
+            crate::repositories_types::tufa_server::session_state::TypedSession::from_request(
+                http_request,
+                payload,
+            )
+        }
+        .await
     }?;
-    match session.get_user_id().map_err(crate::repositories_types::tufa_server::utils::status_codes::e500)? {
+    match session
+        .get_user_id()
+        .map_err(crate::repositories_types::tufa_server::utils::status_codes::e500)?
+    {
         Some(user_id) => {
             {
                 use actix_web::HttpMessage;
                 req.extensions_mut()
-            }.insert(UserId(user_id));
+            }
+            .insert(UserId(user_id));
             next.call(req).await
         }
         None => {
-            let response = crate::repositories_types::tufa_server::utils::status_codes::see_other("/login");
-            Err(actix_web::error::InternalError::from_response("The user has not logged in", response).into())
+            let response =
+                crate::repositories_types::tufa_server::utils::status_codes::see_other("/login");
+            Err(actix_web::error::InternalError::from_response(
+                "The user has not logged in",
+                response,
+            )
+            .into())
         }
     }
 }

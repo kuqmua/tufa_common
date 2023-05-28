@@ -77,8 +77,8 @@
 //         + crate::common::config::config_fields::GetMongoProvidersLinkPartsDbName
 //         + crate::common::config::config_fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
 //         + crate::common::config::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart
-        // + std::marker::Send 
-        // + std::marker::Sync
+// + std::marker::Send
+// + std::marker::Sync
 //     )
 // ) -> Result<(), Box<GetProviderPostsErrorNamed<'a>>> {
 //     todo!()

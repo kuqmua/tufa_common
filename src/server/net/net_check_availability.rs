@@ -9,15 +9,13 @@ pub enum NetCheckAvailabilityErrorNamed<'a> {
         #[eo_display_foreign_type]
         status: reqwest::StatusCode,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    }
+    },
 }
 
 pub async fn net_check_availability<'a>(
-    config: &'static (
-        impl crate::common::config::config_fields::GetStartingCheckLink
-        + std::marker::Send 
-        + std::marker::Sync
-    ),
+    config: &'static (impl crate::common::config::config_fields::GetStartingCheckLink
+                  + std::marker::Send
+                  + std::marker::Sync),
 ) -> Result<(), Box<NetCheckAvailabilityErrorNamed<'a>>> {
     match reqwest::get(config.get_starting_check_link()).await {
         Err(e) => Err(Box::new(NetCheckAvailabilityErrorNamed::ReqwestGet {

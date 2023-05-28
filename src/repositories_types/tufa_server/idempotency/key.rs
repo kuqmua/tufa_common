@@ -21,11 +21,15 @@ impl TryFrom<String> for IdempotencyKey {
 
     fn try_from(s: String) -> Result<Self, Self::Error> {
         if s.is_empty() {
-            return Err(IdempotencyKeyTryFromStringError::CannotBeEmpty(std::string::String::from("The idempotency key cannot be empty")))
+            return Err(IdempotencyKeyTryFromStringError::CannotBeEmpty(
+                std::string::String::from("The idempotency key cannot be empty"),
+            ));
         }
         let max_length = 50;
         if s.len() >= max_length {
-            return Err(IdempotencyKeyTryFromStringError::MustBeShorter(format!("The idempotency key must be shorter than {max_length} characters")))
+            return Err(IdempotencyKeyTryFromStringError::MustBeShorter(format!(
+                "The idempotency key must be shorter than {max_length} characters"
+            )));
         }
         Ok(Self(s))
     }

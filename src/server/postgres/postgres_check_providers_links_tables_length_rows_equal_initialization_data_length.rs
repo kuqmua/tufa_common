@@ -37,7 +37,6 @@
 //     Postgres(PostgresCheckProvidersLinksTablesLengthRowsEqualInitializationDataLengthWrapperErrorSelectCountOriginErrorNamed<'a>),
 // }
 
-
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 // pub enum PostgresCheckProvidersLinksTablesLengthRowsEqualInitializationDataLengthWrapperErrorSelectCountOriginErrorNamed<
 //     'a,
@@ -90,7 +89,7 @@
 //         match result {
 //             Err(e) => {
 //                 count_provider_links_tables_error_hashmap.insert(
-//                     pk.to_string(), 
+//                     pk.to_string(),
 //                  PostgresCheckProvidersLinksTablesLengthRowsEqualInitializationDataLengthWrapperErrorSelectCountOriginErrorSqlxUnnamed::Postgres(
 //                         PostgresCheckProvidersLinksTablesLengthRowsEqualInitializationDataLengthWrapperErrorSelectCountOriginErrorSqlxNamed::Postgres {
 //                             error: e,

@@ -9,7 +9,7 @@ pub fn test_code_occurence() {
         {
             use crate::common::config::config_fields::GetServerPort;
             *crate::config_mods::config_struct::ConfigUnchecked::default().get_server_port()
-        }
+        },
     );
     let e = ErrorNamed::Something {
         eo_display: crate::common::error_logs_logic::test::DisplayStruct {
@@ -300,7 +300,7 @@ pub fn test_code_occurence() {
 
 #[derive(Debug)]
 pub struct DisplayStruct {
-    display_struct: String
+    display_struct: String,
 }
 impl std::fmt::Display for DisplayStruct {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
@@ -310,7 +310,7 @@ impl std::fmt::Display for DisplayStruct {
 
 #[derive(Debug)]
 pub struct DisplayStructLifetime<'a> {
-    display_struct_lifetime: &'a str
+    display_struct_lifetime: &'a str,
 }
 impl<'a> std::fmt::Display for DisplayStructLifetime<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
@@ -338,7 +338,7 @@ impl<'a> std::fmt::Display for DisplayWithSerializeDeserializeStructLifetime<'a>
 
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct DisplayForeignTypeSerializeDeserializeStruct {
-    display_foreign_type_serialize_deserialize_struct: String
+    display_foreign_type_serialize_deserialize_struct: String,
 }
 impl crate::common::display_foreign_type::DisplayForeignType
     for DisplayForeignTypeSerializeDeserializeStruct
@@ -349,7 +349,7 @@ impl crate::common::display_foreign_type::DisplayForeignType
 }
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct DisplayForeignTypeSerializeDeserializeStructLifetime<'a> {
-    display_foreign_type_serialize_deserialize_struct: &'a str
+    display_foreign_type_serialize_deserialize_struct: &'a str,
 }
 impl<'a> crate::common::display_foreign_type::DisplayForeignType
     for DisplayForeignTypeSerializeDeserializeStructLifetime<'a>
@@ -361,18 +361,16 @@ impl<'a> crate::common::display_foreign_type::DisplayForeignType
 
 #[derive(Debug, Hash, Eq, PartialEq)]
 pub struct DisplayForeignTypeStruct {
-    display_foreign_type_struct: String
+    display_foreign_type_struct: String,
 }
-impl crate::common::display_foreign_type::DisplayForeignType
-    for DisplayForeignTypeStruct
-{
+impl crate::common::display_foreign_type::DisplayForeignType for DisplayForeignTypeStruct {
     fn display_foreign_type(&self) -> String {
         std::string::String::from("DisplayForeignTypeStruct")
     }
 }
 #[derive(Debug, Hash, Eq, PartialEq)]
 pub struct DisplayForeignTypeStructLifetime<'a> {
-    display_foreign_type_struct: &'a str
+    display_foreign_type_struct: &'a str,
 }
 impl<'a> crate::common::display_foreign_type::DisplayForeignType
     for DisplayForeignTypeStructLifetime<'a>
@@ -388,7 +386,8 @@ pub enum InnerErrorNamed<'a> {
         #[eo_display_with_serialize_deserialize]
         string: String,
         #[eo_display_with_serialize_deserialize]
-        display_with_serialize_deserialize_struct_lifetime: DisplayWithSerializeDeserializeStructLifetime<'a>,
+        display_with_serialize_deserialize_struct_lifetime:
+            DisplayWithSerializeDeserializeStructLifetime<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }

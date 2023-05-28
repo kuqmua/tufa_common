@@ -1,11 +1,5 @@
 #[derive(
-    Debug, 
-    Clone, 
-    PartialEq, 
-    Eq,
-    strum_macros::Display,
-    serde::Serialize,
-    serde::Deserialize,
+    Debug, Clone, PartialEq, Eq, strum_macros::Display, serde::Serialize, serde::Deserialize,
 )]
 pub enum SourcePlaceType {
     Source,

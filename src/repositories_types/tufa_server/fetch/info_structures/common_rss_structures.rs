@@ -1,4 +1,3 @@
-
 #[derive(Debug, Clone, serde_derive::Serialize, serde_derive::Deserialize, Default)] // PartialEq,//Default,
 pub struct CommonRssPostStruct {
     #[serde(rename = "item", default)]

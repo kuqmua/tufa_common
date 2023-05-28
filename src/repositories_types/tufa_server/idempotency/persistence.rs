@@ -75,5 +75,5 @@ pub enum TryProcessingErrorNamed<'a> {
         #[eo_display_with_serialize_deserialize]
         message: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    }
+    },
 }

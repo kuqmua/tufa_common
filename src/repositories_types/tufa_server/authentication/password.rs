@@ -31,7 +31,6 @@ pub enum ValidateCredentialsErrorNamed<'a> {
     },
 }
 
-
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum VerifyPasswordHashErrorNamed<'a> {
     ExposeSecret {
@@ -41,9 +40,9 @@ pub enum VerifyPasswordHashErrorNamed<'a> {
     },
     InvalidPassword {
         #[eo_display]
-        invalid_password: argon2::password_hash::Error,//todo - should add here or just addd message?
+        invalid_password: argon2::password_hash::Error, //todo - should add here or just addd message?
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    }
+    },
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
@@ -62,7 +61,7 @@ pub enum ChangePasswordErrorNamed<'a> {
         #[eo_display]
         query_error: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    }
+    },
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]

@@ -25,9 +25,9 @@
 //     providers_json_local_data_hashmap: std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
 //     db: mongodb::Database,
 //     config: &'static (
-    // impl crate::common::config::config_fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
-        // + std::marker::Send 
-        // + std::marker::Sync
+// impl crate::common::config::config_fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
+// + std::marker::Send
+// + std::marker::Sync
 // )
 // ) -> Result<(), Box<crate::server::mongo::mongo_insert_many::MongoInsertManyErrorNamed<'a>>> {
 //     let error_vec_insert_many = futures::future::join_all(
@@ -35,7 +35,7 @@
 //                 |(pk, data_vec)|
 //                 async {
 //                     (
-//                         pk.to_string(), 
+//                         pk.to_string(),
 //                         db
 //                         .collection(&{
 //                             use crate::repositories_types::tufa_server::traits::provider_kind_methods::ProviderKindMethods;
@@ -47,7 +47,7 @@
 //                             .map(|data|
 //                                 mongodb::bson::doc! { "data": data }//maybe "data" was without quotes
 //                             )
-//                             .collect::<Vec<mongodb::bson::Document>>(), 
+//                             .collect::<Vec<mongodb::bson::Document>>(),
 //                             None
 //                         ).await
 //                     )
@@ -58,11 +58,11 @@
 //         .filter_map(|(pk, result)| {
 //         if let Err(e) = result {
 //             return Some((
-//                 pk.to_string(), 
+//                 pk.to_string(),
 //                 crate::server::mongo::mongo_insert_many::MongoInsertManyErrorUnnamed::InsertMany(
-//                     crate::server::mongo::mongo_insert_many::MongoInsertManyHandleErrorNamed::InsertMany { 
-//                         insert_many: e, 
-//                         code_occurence: crate::code_occurence_tufa_common!()  
+//                     crate::server::mongo::mongo_insert_many::MongoInsertManyHandleErrorNamed::InsertMany {
+//                         insert_many: e,
+//                         code_occurence: crate::code_occurence_tufa_common!()
 //                     }
 //                 )
 //             ));
@@ -73,9 +73,9 @@
 //     match error_vec_insert_many.is_empty() {
 //         true => Ok(()),
 //         false => Err(Box::new(
-//             crate::server::mongo::mongo_insert_many::MongoInsertManyErrorNamed::InsertMany { 
-//                 insert_many: error_vec_insert_many, 
-//                 code_occurence: crate::code_occurence_tufa_common!() 
+//             crate::server::mongo::mongo_insert_many::MongoInsertManyErrorNamed::InsertMany {
+//                 insert_many: error_vec_insert_many,
+//                 code_occurence: crate::code_occurence_tufa_common!()
 //             },
 //         ))
 //     }

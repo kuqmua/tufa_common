@@ -40,5 +40,5 @@ pub enum RunUntilStoppedErrorNamed<'a> {
         #[eo_display]
         run_until_stopped: std::io::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    }
+    },
 }

@@ -29,14 +29,14 @@
 //         + crate::common::config::config_fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
 //         + crate::common::config::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart
 //         + crate::common::config::config_fields::GetMongoClient
-//         + std::marker::Send 
+//         + std::marker::Send
 //         + std::marker::Sync
 //     )
 // ) -> Result<
 //         std::collections::HashMap<
-//                 crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, 
+//                 crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind,
 //                 Vec<String>
-//         >, 
+//         >,
 //         crate::server::mongo::mongo_get_providers_link_parts::MongoGetProvidersLinkPartsErrorNamed<'a>
 //     > {
 //         let db = config.get_mongo_client().database("providers_link_parts");
@@ -95,7 +95,7 @@
 //                     match result {
 //                         Err(e) => {
 //                             error_hashmap.insert(
-//                                 pk.to_string(), 
+//                                 pk.to_string(),
 //                                 crate::server::mongo::mongo_get_providers_link_parts::MongoGetDocumentsAsStringVectorErrorUnnamed::MongoGetDocumentsAsStringVector(*e)
 //                             );
 //                         }

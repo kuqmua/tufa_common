@@ -1,10 +1,4 @@
-#[derive(
-    Debug, 
-    Clone, 
-    serde::Serialize,
-    serde::Deserialize,
-    getset::Getters,
-)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize, getset::Getters)]
 pub struct UserPort {
     #[getset(get = "pub")]
     port: u16,
@@ -15,7 +9,6 @@ impl std::fmt::Display for UserPort {
         write!(f, "{}", self.port)
     }
 }
-
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum UserPortTryFromU16ErrorNamed<'a> {
@@ -33,20 +26,20 @@ pub enum UserPortTryFromU16ErrorNamed<'a> {
 
 impl UserPort {
     //its not TryFrom<u16> coz its not supported lifetimes in Error annotation
-    pub fn try_from_u16<'a>(possible_port: u16) -> Result<UserPort, UserPortTryFromU16ErrorNamed<'a>> {
+    pub fn try_from_u16<'a>(
+        possible_port: u16,
+    ) -> Result<UserPort, UserPortTryFromU16ErrorNamed<'a>> {
         if possible_port < 1024 {
             Err(UserPortTryFromU16ErrorNamed::SystemPort {
                 port: possible_port,
                 code_occurence: crate::code_occurence_tufa_common!(),
             })
-        }
-        else if possible_port < 49152 {
+        } else if possible_port < 49152 {
             Ok(Self {
-                port: possible_port
+                port: possible_port,
             })
-        }
-        else {
-            Err(UserPortTryFromU16ErrorNamed::EphemeralPort { 
+        } else {
+            Err(UserPortTryFromU16ErrorNamed::EphemeralPort {
                 port: possible_port,
                 code_occurence: crate::code_occurence_tufa_common!(),
             })

@@ -15,9 +15,9 @@ where
     fn error_log(&self, config: &ConfigGeneric) {
         eprintln!(
             "{}",
-            ansi_term::Colour::RGB(255,0,0)
-            .bold()
-            .paint(self.to_string_with_config(config))
+            ansi_term::Colour::RGB(255, 0, 0)
+                .bold()
+                .paint(self.to_string_with_config(config))
         );
     }
 }

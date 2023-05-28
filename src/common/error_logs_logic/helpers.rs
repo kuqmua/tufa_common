@@ -26,8 +26,6 @@ pub(crate) fn source_and_code_occurence_formatter(
     format!("{}\n{}", stringified_source, stringified_code_occurence)
 }
 
-pub(crate) fn error_occurence_hashmap_formatter(
-    inner: impl std::fmt::Display,
-) -> String {
+pub(crate) fn error_occurence_hashmap_formatter(inner: impl std::fmt::Display) -> String {
     format!("{{\n{}}}", lines_space_backslash_addition(inner))
 }

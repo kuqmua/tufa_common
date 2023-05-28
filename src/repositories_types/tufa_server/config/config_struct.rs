@@ -1,10 +1,4 @@
-#[derive(
-    Debug,
-    Default,
-    PartialEq,
-    Eq,
-    init_from_env::InitFromEnv,
-)]
+#[derive(Debug, Default, PartialEq, Eq, init_from_env::InitFromEnv)]
 pub struct ConfigUnchecked {
     server_port: u16,
     hmac_secret: std::string::String,
@@ -15,13 +9,13 @@ pub struct ConfigUnchecked {
     github_name: std::string::String,
     github_token: std::string::String,
 
-    timezone: i32,//for some reason chrono::FixedOffset::east_opt uses i32 but i16 is enough 
+    timezone: i32, //for some reason chrono::FixedOffset::east_opt uses i32 but i16 is enough
 
     redis_url: std::string::String,
 
     mongo_url: std::string::String,
 
-    database_url: std::string::String,//postgres_url, naming required by sqlx::query::query!
+    database_url: std::string::String, //postgres_url, naming required by sqlx::query::query!
 
     starting_check_link: std::string::String, //todo add browser url limit check
 
@@ -30,7 +24,7 @@ pub struct ConfigUnchecked {
 }
 
 #[derive(
-    generate_getter_traits_for_struct_fields::GenerateGetterTraitsForStructFields,//todo - add 2 attributes - for reference\borrow(&) and for value(move)
+    generate_getter_traits_for_struct_fields::GenerateGetterTraitsForStructFields, //todo - add 2 attributes - for reference\borrow(&) and for value(move)
 )]
 pub struct Config {
     server_port: crate::common::user_port::UserPort,
@@ -48,7 +42,7 @@ pub struct Config {
 
     mongo_url: secrecy::Secret<std::string::String>,
 
-    database_url: secrecy::Secret<std::string::String>,//postgres_url, naming required by sqlx::query::query!
+    database_url: secrecy::Secret<std::string::String>, //postgres_url, naming required by sqlx::query::query!
 
     starting_check_link: std::string::String, //todo add browser url limit check
 
@@ -57,23 +51,26 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn try_from_config_unchecked<'a>(config_unchecked: ConfigUnchecked) -> Result<Self, ConfigCheckErrorNamed<'a>> {
-        let server_port = match crate::common::user_port::UserPort::try_from_u16(config_unchecked.server_port) {
-            Ok(user_port) => user_port,
-            Err(e) => {
-                return Err(ConfigCheckErrorNamed::ServerPort{
-                    server_port: e,
-                    code_occurence: crate::code_occurence_tufa_common!(),
-                });
-            },
-        };
+    pub fn try_from_config_unchecked<'a>(
+        config_unchecked: ConfigUnchecked,
+    ) -> Result<Self, ConfigCheckErrorNamed<'a>> {
+        let server_port =
+            match crate::common::user_port::UserPort::try_from_u16(config_unchecked.server_port) {
+                Ok(user_port) => user_port,
+                Err(e) => {
+                    return Err(ConfigCheckErrorNamed::ServerPort {
+                        server_port: e,
+                        code_occurence: crate::code_occurence_tufa_common!(),
+                    });
+                }
+            };
         let hmac_secret = match config_unchecked.hmac_secret.is_empty() {
             true => {
                 return Err(ConfigCheckErrorNamed::HmacSecret {
                     hmac_secret: config_unchecked.hmac_secret,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
-            },
+            }
             false => secrecy::Secret::new(config_unchecked.hmac_secret),
         };
         let base_url = match config_unchecked.base_url.is_empty() {
@@ -82,19 +79,20 @@ impl Config {
                     base_url: config_unchecked.base_url,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
-            },
+            }
             false => config_unchecked.base_url,
         };
         let access_control_max_age = config_unchecked.access_control_max_age;
-        let access_control_allow_origin = match config_unchecked.access_control_allow_origin.is_empty() {
-            true => {
-                return Err(ConfigCheckErrorNamed::AccessControlAllowOrigin {
-                    access_control_allow_origin: config_unchecked.access_control_allow_origin,
-                    code_occurence: crate::code_occurence_tufa_common!(),
-                });//todo - maybe add check if its uri\url
-            },
-            false => config_unchecked.access_control_allow_origin,
-        };
+        let access_control_allow_origin =
+            match config_unchecked.access_control_allow_origin.is_empty() {
+                true => {
+                    return Err(ConfigCheckErrorNamed::AccessControlAllowOrigin {
+                        access_control_allow_origin: config_unchecked.access_control_allow_origin,
+                        code_occurence: crate::code_occurence_tufa_common!(),
+                    }); //todo - maybe add check if its uri\url
+                }
+                false => config_unchecked.access_control_allow_origin,
+            };
 
         let github_name = match config_unchecked.github_name.is_empty() {
             true => {
@@ -102,7 +100,7 @@ impl Config {
                     github_name: config_unchecked.github_name,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
-            },
+            }
             false => config_unchecked.github_name,
         };
         let github_token = match config_unchecked.github_token.is_empty() {
@@ -111,7 +109,7 @@ impl Config {
                     github_token: config_unchecked.github_token,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
-            },
+            }
             false => config_unchecked.github_token,
         };
 
@@ -122,7 +120,7 @@ impl Config {
                     timezone: config_unchecked.timezone,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
-            },
+            }
         };
 
         let redis_url = match config_unchecked.redis_url.is_empty() {
@@ -131,7 +129,7 @@ impl Config {
                     redis_url: config_unchecked.redis_url,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
-            },
+            }
             false => secrecy::Secret::new(config_unchecked.redis_url),
         };
 
@@ -141,7 +139,7 @@ impl Config {
                     mongo_url: config_unchecked.mongo_url,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
-            },
+            }
             false => secrecy::Secret::new(config_unchecked.mongo_url),
         };
 
@@ -151,9 +149,9 @@ impl Config {
                     database_url: config_unchecked.database_url,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
-            },
+            }
             false => secrecy::Secret::new(config_unchecked.database_url),
-        };//postgres_url = config_unchecked.; naming required by sqlx::query::query!
+        }; //postgres_url = config_unchecked.; naming required by sqlx::query::query!
 
         let starting_check_link = match config_unchecked.starting_check_link.is_empty() {
             true => {
@@ -161,7 +159,7 @@ impl Config {
                     starting_check_link: config_unchecked.starting_check_link,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
-            },
+            }
             false => config_unchecked.starting_check_link,
         }; //todo add browser url limit check
 
@@ -183,7 +181,7 @@ impl Config {
 
             mongo_url,
 
-            database_url,//postgres_url, naming required by sqlx::query::query!
+            database_url, //postgres_url, naming required by sqlx::query::query!
 
             starting_check_link, //todo add browser url limit check
 
@@ -195,75 +193,75 @@ impl Config {
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum ConfigCheckErrorNamed<'a> {
-    ServerPort{
+    ServerPort {
         #[eo_error_occurence]
         server_port: crate::common::user_port::UserPortTryFromU16ErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    HmacSecret{
+    HmacSecret {
         #[eo_display_with_serialize_deserialize]
         hmac_secret: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    BaseUrl{
+    BaseUrl {
         #[eo_display_with_serialize_deserialize]
         base_url: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     //
-    RequireSsl{
+    RequireSsl {
         #[eo_display_with_serialize_deserialize]
         require_ssl: bool,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    AccessControlAllowOrigin{
+    AccessControlAllowOrigin {
         #[eo_display_with_serialize_deserialize]
         access_control_allow_origin: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    GithubName{
+    GithubName {
         #[eo_display_with_serialize_deserialize]
         github_name: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    GithubToken{
+    GithubToken {
         #[eo_display_with_serialize_deserialize]
         github_token: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    Timezone{
+    Timezone {
         #[eo_display_with_serialize_deserialize]
         timezone: i32,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    RedisUrl{
+    RedisUrl {
         #[eo_display_with_serialize_deserialize]
         redis_url: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    MongoUrl{
+    MongoUrl {
         #[eo_display_with_serialize_deserialize]
         mongo_url: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    DatabaseUrl{
+    DatabaseUrl {
         #[eo_display_with_serialize_deserialize]
         database_url: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    StartingCheckLink{
+    StartingCheckLink {
         #[eo_display_with_serialize_deserialize]
         starting_check_link: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    TracingType{
+    TracingType {
         #[eo_display_with_serialize_deserialize]
         tracing_type: crate::server::tracing_type::TracingType,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    SourcePlaceType{
+    SourcePlaceType {
         #[eo_display_with_serialize_deserialize]
         source_place_type: crate::common::source_place_type::SourcePlaceType,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    }
+    },
 }

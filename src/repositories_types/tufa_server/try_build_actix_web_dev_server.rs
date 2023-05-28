@@ -21,5 +21,3 @@ pub enum TryBuildActixWebDevServer<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
-
-

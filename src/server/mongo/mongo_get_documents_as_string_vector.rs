@@ -21,7 +21,7 @@ pub async fn mongo_get_documents_as_string_vector(
     collection: mongodb::Collection<mongodb::bson::Document>,
     db_collection_document_field_name_handle: &str,
     option_aggregation: Option<mongodb::bson::Document>,
-) -> Result<Vec<String>, Box<crate::server::mongo::mongo_get_documents_as_string_vector::MongoGetDocumentsAsStringVectorErrorNamed>> {
+) -> Result<Vec<String>, Box<crate::server::mongo::mongo_get_documents_as_string_vector::MongoGetDocumentsAsStringVectorErrorNamed>>{
     match collection.aggregate(option_aggregation, None).await {
         Err(e) => Err(Box::new(
             crate::server::mongo::mongo_get_documents_as_string_vector::MongoGetDocumentsAsStringVectorErrorNamed::MongoDB {

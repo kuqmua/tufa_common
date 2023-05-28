@@ -15,7 +15,7 @@ pub enum MongoCheckCollectionIsEmptyErrorNamed<'a> {
 pub async fn mongo_check_collection_is_empty<'a>(
     mongo_client: &mongodb::Client,
     db_name: &str,
-    db_collection_name: &str
+    db_collection_name: &str,
 ) -> Result<(), Box<MongoCheckCollectionIsEmptyErrorNamed<'a>>> {
     match mongo_client
         .database(db_name)
@@ -23,19 +23,17 @@ pub async fn mongo_check_collection_is_empty<'a>(
         .count_documents(None, None)
         .await
     {
-        Err(e) => Err(Box::new(
-            MongoCheckCollectionIsEmptyErrorNamed::MongoDB {
-                mongodb: e,
-                code_occurence: crate::code_occurence_tufa_common!(),
-            }
-        )),
+        Err(e) => Err(Box::new(MongoCheckCollectionIsEmptyErrorNamed::MongoDB {
+            mongodb: e,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        })),
         Ok(documents_number) => {
             if documents_number > 0 {
                 return Err(Box::new(
                     MongoCheckCollectionIsEmptyErrorNamed::CollectionIsNotEmpty {
                         collection_documents: documents_number,
                         code_occurence: crate::code_occurence_tufa_common!(),
-                    }
+                    },
                 ));
             }
             Ok(())

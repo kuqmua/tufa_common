@@ -22,24 +22,20 @@ pub async fn mongo_insert_docs_in_empty_collection<'a>(
     let collection = mongo_client
         .database(db_name_handle)
         .collection(&db_collection_handle);
-    match 
-        collection
-        .count_documents(None, None)
-        .await 
-    {
+    match collection.count_documents(None, None).await {
         Err(e) => Err(Box::new(
-            MongoInsertDocsInEmptyCollectionErrorNamed::MongoDB{
+            MongoInsertDocsInEmptyCollectionErrorNamed::MongoDB {
                 mongodb: e,
-                code_occurence: crate::code_occurence_tufa_common!()
-            }
+                code_occurence: crate::code_occurence_tufa_common!(),
+            },
         )),
         Ok(documents_number) => {
             if documents_number > 0 {
                 Err(Box::new(
-                    MongoInsertDocsInEmptyCollectionErrorNamed::CollectionIsNotEmpty{
+                    MongoInsertDocsInEmptyCollectionErrorNamed::CollectionIsNotEmpty {
                         collection_is_not_empty: documents_number,
-                        code_occurence: crate::code_occurence_tufa_common!()
-                    }
+                        code_occurence: crate::code_occurence_tufa_common!(),
+                    },
                 ))
             } else {
                 if let Err(e) = collection
@@ -53,10 +49,10 @@ pub async fn mongo_insert_docs_in_empty_collection<'a>(
                     .await
                 {
                     return Err(Box::new(
-                        MongoInsertDocsInEmptyCollectionErrorNamed::MongoDB{
+                        MongoInsertDocsInEmptyCollectionErrorNamed::MongoDB {
                             mongodb: e,
-                            code_occurence: crate::code_occurence_tufa_common!()
-                        }
+                            code_occurence: crate::code_occurence_tufa_common!(),
+                        },
                     ));
                 }
                 Ok(())

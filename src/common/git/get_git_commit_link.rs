@@ -4,7 +4,8 @@ pub trait GetGitCommitLink {
 
 impl<'a, T> GetGitCommitLink for T
 where
-    T: crate::common::git::git_fields::GetGitCommitId<'a> + crate::common::git::git_fields::GetGitRepoLink<'a>,
+    T: crate::common::git::git_fields::GetGitCommitId<'a>
+        + crate::common::git::git_fields::GetGitRepoLink<'a>,
 {
     fn get_git_commit_link(&self) -> String {
         format!(

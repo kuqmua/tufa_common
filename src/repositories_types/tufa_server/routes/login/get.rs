@@ -1,4 +1,6 @@
-pub async fn login_form(flash_messages: actix_web_flash_messages::IncomingFlashMessages) -> actix_web::HttpResponse {
+pub async fn login_form(
+    flash_messages: actix_web_flash_messages::IncomingFlashMessages,
+) -> actix_web::HttpResponse {
     let mut error_html = String::new();
     for m in flash_messages.iter() {
         use std::fmt::Write;

@@ -18,18 +18,13 @@ pub async fn mongo_drop_empty_db<'a>(
     mongo_client: &mongodb::Client,
     db_name: &'a str,
 ) -> Result<(), Box<crate::server::mongo::mongo_drop_empty_db::MongoDropEmptyDbErrorNamed<'a>>> {
-    let db = mongo_client
-        .database(db_name);
-    match 
-        db
-        .list_collection_names(None)
-        .await 
-    {
+    let db = mongo_client.database(db_name);
+    match db.list_collection_names(None).await {
         Err(e) => Err(Box::new(
             crate::server::mongo::mongo_drop_empty_db::MongoDropEmptyDbErrorNamed::MongoDB {
                 mongodb: e,
                 code_occurence: crate::code_occurence_tufa_common!(),
-            }
+            },
         )),
         Ok(collections_names_list) => {
             if !collections_names_list.is_empty() {

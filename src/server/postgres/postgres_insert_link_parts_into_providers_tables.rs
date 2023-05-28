@@ -52,10 +52,10 @@
 //     .filter_map(|(pk, result)| {
 //         if let Err(e) = result {
 //             return Some((
-//                 pk.to_string(), 
+//                 pk.to_string(),
 //                 crate::server::postgres::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginErrorEnumUnnamed::PostgresInsertLinkPartsIntoProvidersTablesOriginHandle(
-//                     crate::server::postgres::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginHandleErrorNamed::Postgres { 
-//                         error: e, 
+//                     crate::server::postgres::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginHandleErrorNamed::Postgres {
+//                         error: e,
 //                         code_occurence: crate::code_occurence_tufa_common!()
 //                     }
 //                 )
@@ -68,9 +68,9 @@
 //     >>();
 //     if !insertion_error_hashmap.is_empty() {
 //         return Err(Box::new(
-//             crate::server::postgres::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginErrorNamed::Postgres { 
-//                 inner_errors: insertion_error_hashmap, 
-//                 code_occurence: crate::code_occurence_tufa_common!() 
+//             crate::server::postgres::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginErrorNamed::Postgres {
+//                 inner_errors: insertion_error_hashmap,
+//                 code_occurence: crate::code_occurence_tufa_common!()
 //             }
 //         ));
 //     }

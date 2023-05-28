@@ -17,12 +17,10 @@ pub fn write_json_into_file_async<'a>(
     json_object: serde_json::Value,
 ) -> Result<(), Box<WriteJsonIntoFileSyncErrorNamed<'a>>> {
     match serde_json::to_string_pretty(&json_object) {
-        Err(e) => Err(Box::new(
-            WriteJsonIntoFileSyncErrorNamed::SerdeJson{
-                serde_json: e,
-                code_occurence: crate::code_occurence_tufa_common!()
-            }
-        )),
+        Err(e) => Err(Box::new(WriteJsonIntoFileSyncErrorNamed::SerdeJson {
+            serde_json: e,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        })),
         Ok(stringified_json) => {
             if let Err(e) = crate::server::file_system::write_bytes_into_file::write_bytes_into_file_sync::write_bytes_into_file_sync(
                 path,

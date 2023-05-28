@@ -215,9 +215,9 @@
 //                                     if !rss_page_struct.items.is_empty() {
 //                                         Ok(rss_page_struct)
 //                                     } else {
-//                                         Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed::ThereIsTag{ 
+//                                         Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed::ThereIsTag{
 //                                             tag: fetch_result_string,
-//                                             code_occurence: crate::code_occurence_tufa_common!() 
+//                                             code_occurence: crate::code_occurence_tufa_common!()
 //                                         })
 //                                     }
 //                                 }
@@ -461,7 +461,7 @@
 //                                     if !rss_page_struct.items.is_empty() {
 //                                         Ok(rss_page_struct)
 //                                     } else {
-//                                         Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed::ThereIsTag{ 
+//                                         Err(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed::ThereIsTag{
 //                                             tag: fetch_result_string,
 //                                             code_occurence: crate::code_occurence_tufa_common!()
 //                                         })

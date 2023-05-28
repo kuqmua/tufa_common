@@ -16,7 +16,7 @@ pub async fn mongo_drop_db<'a>(
             crate::server::mongo::mongo_drop_db::MongoDropDbErrorNamed::MongoDB {
                 mongodb: e,
                 code_occurence: crate::code_occurence_tufa_common!(),
-            }
+            },
         ));
     }
     Ok(())

@@ -22,11 +22,21 @@ pub enum NoItemsErrorNamed<'a> {
 impl<'a> NoItemsErrorNamed<'a> {
     pub fn get_stringified_kind(error: &NoItemsErrorNamed) -> &'static str {
         match error {
-            NoItemsErrorNamed::ThereIsTag{ tag: _tag, code_occurence: _code_occurence } => stringify!(NoItemsErrorNamed::ThereIsTag),
-            NoItemsErrorNamed::ConversionFromStrError{ string: _string, error: _error, code_occurence: _code_occurence} => {
+            NoItemsErrorNamed::ThereIsTag {
+                tag: _tag,
+                code_occurence: _code_occurence,
+            } => stringify!(NoItemsErrorNamed::ThereIsTag),
+            NoItemsErrorNamed::ConversionFromStrError {
+                string: _string,
+                error: _error,
+                code_occurence: _code_occurence,
+            } => {
                 stringify!(NoItemsErrorNamed::ConversionFromStrError)
             }
-            NoItemsErrorNamed::NoTag{ no_tag: _no_tag, code_occurence: _code_occurence } => stringify!(NoItemsErrorNamed::NoTag),
+            NoItemsErrorNamed::NoTag {
+                no_tag: _no_tag,
+                code_occurence: _code_occurence,
+            } => stringify!(NoItemsErrorNamed::NoTag),
         }
     }
     // pub fn into_json_with_link_and_provider_kind(

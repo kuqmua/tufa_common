@@ -38,13 +38,10 @@ impl EmailClient {
         };
         self.http_client
             .post(&url)
-            .header(
-                "X-Postmark-Server-Token",
-                {
-                    use secrecy::ExposeSecret;
-                    self.authorization_token.expose_secret()
-                },
-            )
+            .header("X-Postmark-Server-Token", {
+                use secrecy::ExposeSecret;
+                self.authorization_token.expose_secret()
+            })
             .json(&request_body)
             .send()
             .await?
@@ -65,8 +62,8 @@ struct SendEmailRequest<'a> {
 
 #[cfg(test)]
 mod tests {
-    use crate::repositories_types::tufa_server::domain::SubscriberEmail;
     use crate::email_client::EmailClient;
+    use crate::repositories_types::tufa_server::domain::SubscriberEmail;
     use claim::{assert_err, assert_ok};
     use fake::faker::internet::en::SafeEmail;
     use fake::faker::lorem::en::{Paragraph, Sentence};
@@ -98,7 +95,10 @@ mod tests {
         Paragraph(1..10).fake()
     }
     fn email() -> crate::repositories_types::tufa_server::domain::SubscriberEmail {
-        crate::repositories_types::tufa_server::domain::SubscriberEmail::try_from(SafeEmail().fake()).unwrap()
+        crate::repositories_types::tufa_server::domain::SubscriberEmail::try_from(
+            SafeEmail().fake(),
+        )
+        .unwrap()
     }
     fn email_client(base_url: String) -> EmailClient {
         EmailClient::new(

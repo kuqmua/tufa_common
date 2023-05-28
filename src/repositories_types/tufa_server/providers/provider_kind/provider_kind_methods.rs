@@ -13,9 +13,9 @@
 //     fn get_mongo_log_collection_name(
 //         &self,
 //         config: &'static (
-    // impl crate::common::config::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart 
-        // + std::marker::Send 
-        // + std::marker::Sync
+// impl crate::common::config::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart
+// + std::marker::Send
+// + std::marker::Sync
 // )
 //     ) -> String {
 //         format!(
@@ -30,12 +30,12 @@
 //         )
 //     }
 //     fn generate_provider_links(
-//         &self, 
+//         &self,
 //         names_vector: Vec<String>,
 //         config: &'static (
-    // impl crate::common::config::config_fields::GetGithubToken
-        // + std::marker::Send 
-        // + std::marker::Sync
+// impl crate::common::config::config_fields::GetGithubToken
+// + std::marker::Send
+// + std::marker::Sync
 // )
 //     ) -> Vec<String> {
 //         match self {

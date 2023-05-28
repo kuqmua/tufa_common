@@ -21,7 +21,6 @@
 //     }
 // }
 
-
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 // pub enum FetchAndParseProviderDataErrorNamed<'a> {
 //     // AsyncFetchLinks {
@@ -157,7 +156,7 @@
 //             return Err(
 //                 FetchAndParseProviderDataErrorNamed::AsyncFetchLinks {
 //                     fetch_links: async_fetch_links_error_vec,
-//                     code_occurence: crate::code_occurence_tufa_common!() 
+//                     code_occurence: crate::code_occurence_tufa_common!()
 //                 },
 //             );
 //         }
@@ -174,7 +173,7 @@
 //         if !no_items_error_vec.is_empty() {
 //             return Err(Box::new(FetchAndParseProviderDataErrorNamed::NoItems {
 //                 no_items: no_items_error_vec,
-//                 code_occurence: crate::code_occurence_tufa_common!() 
+//                 code_occurence: crate::code_occurence_tufa_common!()
 //             }));
 //         }
 //         Ok(success_vec)
@@ -183,9 +182,9 @@
 
 // impl ProviderKind {
 //     pub fn get_mongo_provider_link_parts_aggregation(&self) -> Option<mongodb::bson::Document> {
-//         // if 
+//         // if
 //         //     *config.get_is_links_limit_enabled_providers()
-//         //     && 
+//         //     &&
 //         //     *self.is_mongo_link_parts_randomize_order_enabled(config)
 //         // {
 //         //     Some(mongodb::bson::doc! { "$sample" : {"size": *config.get_links_limit_providers() as i64}});
@@ -237,8 +236,8 @@
 //         config: &'static (
 //             impl crate::common::config::config_fields::GetPathToProviderLinkPartsFolder
 //             + crate::common::config::config_fields::GetLogFileExtension
-        // + std::marker::Send 
-        // + std::marker::Sync
+// + std::marker::Send
+// + std::marker::Sync
 //         )
 //     ) -> Result<Vec<String>, Box<GetLinkPartsFromLocalJsonFileErrorNamed<'a>>> {
 //         match tokio::fs::File::open(&{
@@ -277,10 +276,10 @@
 //                             }.collect();
 //                         let return_vec: Vec<String>;
 //                         //todo - add correct impl for is_links_limit_enabled - like is_links_limit_enabled_providers && is_links_limit_enabled_arxiv
-//                         if 
+//                         if
 //                             // *config.get_is_links_limit_enabled_providers()
 //                             false
-//                             && 
+//                             &&
 //                             // *self.is_links_limit_enabled(config)
 //                             false
 //                         {

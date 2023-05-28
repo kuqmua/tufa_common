@@ -51,9 +51,9 @@
 //             Err(e) => Some((
 //                 pk.to_string(),
 //                 crate::server::mongo::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorUnnamed::CountDocumentsOrigin(
-//                     crate::server::mongo::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorCountDocumentsErrorNamed::CountDocuments { 
-//                         error: e, 
-//                         code_occurence: crate::code_occurence_tufa_common!(), 
+//                     crate::server::mongo::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorCountDocumentsErrorNamed::CountDocuments {
+//                         error: e,
+//                         code_occurence: crate::code_occurence_tufa_common!(),
 //                     }
 //                 ),
 //             )),
@@ -62,8 +62,8 @@
 //                     return Some((
 //                         pk.to_string(),
 //                         crate::server::mongo::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorUnnamed::IsNotEmptyOrigin(
-//                             crate::server::mongo::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorIsNotEmptyOriginErrorNamed::IsNotEmptyOrigin { 
-//                                 error: documents_number, 
+//                             crate::server::mongo::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorIsNotEmptyOriginErrorNamed::IsNotEmptyOrigin {
+//                                 error: documents_number,
 //                                 code_occurence: crate::code_occurence_tufa_common!()
 //                             }
 //                         )
@@ -75,8 +75,8 @@
 //         .collect::<std::collections::HashMap<String, crate::server::mongo::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorUnnamed>>();
 //     if !error_vec_count_documents.is_empty() {
 //         return Err(Box::new(
-//             crate::server::mongo::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorNamed::Mongo {        
-//                 inner_errors: error_vec_count_documents, 
+//             crate::server::mongo::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorNamed::Mongo {
+//                 inner_errors: error_vec_count_documents,
 //                 code_occurence: crate::code_occurence_tufa_common!()
 //             }
 //         ));

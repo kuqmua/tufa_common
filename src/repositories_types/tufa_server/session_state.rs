@@ -6,7 +6,7 @@ pub enum InsertUserIdErrorNamed<'a> {
         #[eo_display]
         session_insert: actix_session::SessionInsertError,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    }
+    },
 }
 
 impl TypedSession {
@@ -14,7 +14,10 @@ impl TypedSession {
     pub fn renew(&self) {
         self.0.renew();
     }
-    pub fn insert_user_id<'a>(&self, user_id: uuid::Uuid) -> Result<(), InsertUserIdErrorNamed<'a>> {
+    pub fn insert_user_id<'a>(
+        &self,
+        user_id: uuid::Uuid,
+    ) -> Result<(), InsertUserIdErrorNamed<'a>> {
         match self.0.insert(Self::USER_ID_KEY, user_id) {
             Err(e) => Err(InsertUserIdErrorNamed::SessionInsert {
                 session_insert: e,
@@ -43,7 +46,10 @@ impl actix_web::FromRequest for TypedSession {
     // so we wrap `TypedSession` into `std::future::Ready` to convert it into a `Future` that
     // resolves to the wrapped value the first time it's polled by the executor.
     type Future = std::future::Ready<Result<TypedSession, Self::Error>>;
-    fn from_request(req: &actix_web::HttpRequest, _payload: &mut actix_web::dev::Payload) -> Self::Future {
+    fn from_request(
+        req: &actix_web::HttpRequest,
+        _payload: &mut actix_web::dev::Payload,
+    ) -> Self::Future {
         std::future::ready(Ok(TypedSession({
             use actix_session::SessionExt;
             req.get_session()

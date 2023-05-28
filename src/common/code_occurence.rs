@@ -21,7 +21,7 @@ impl<'a> CodeOccurence<'a> {
             git_info,
             duration: std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
-                .expect("cannot convert time to unix_epoch")
+                .expect("cannot convert time to unix_epoch"),
         }
     }
 }
@@ -115,40 +115,56 @@ impl<'a> CodeOccurenceWithSerializeDeserialize<'a> {
     }
 }
 
-impl<'a> crate::common::error_logs_logic::get_file::GetFile for CodeOccurenceWithSerializeDeserialize<'a> {
+impl<'a> crate::common::error_logs_logic::get_file::GetFile
+    for CodeOccurenceWithSerializeDeserialize<'a>
+{
     fn get_file(&self) -> &str {
         &self.file
     }
 }
 
-impl<'a> crate::common::error_logs_logic::get_line::GetLine for CodeOccurenceWithSerializeDeserialize<'a> {
+impl<'a> crate::common::error_logs_logic::get_line::GetLine
+    for CodeOccurenceWithSerializeDeserialize<'a>
+{
     fn get_line(&self) -> &u32 {
         &self.line
     }
 }
 
-impl<'a> crate::common::error_logs_logic::get_column::GetColumn for CodeOccurenceWithSerializeDeserialize<'a> {
+impl<'a> crate::common::error_logs_logic::get_column::GetColumn
+    for CodeOccurenceWithSerializeDeserialize<'a>
+{
     fn get_column(&self) -> &u32 {
         &self.column
     }
 }
 
-impl<'a> crate::common::git::get_git_info::GetGitInfo<'a> for CodeOccurenceWithSerializeDeserialize<'a> {
+impl<'a> crate::common::git::get_git_info::GetGitInfo<'a>
+    for CodeOccurenceWithSerializeDeserialize<'a>
+{
     fn get_git_info(&self) -> &crate::common::git::git_info::GitInformation {
         &self.git_info
     }
 }
 
-impl<'a> crate::common::error_logs_logic::get_duration::GetDuration for CodeOccurenceWithSerializeDeserialize<'a> {
+impl<'a> crate::common::error_logs_logic::get_duration::GetDuration
+    for CodeOccurenceWithSerializeDeserialize<'a>
+{
     fn get_duration(&self) -> std::time::Duration {
         self.duration
     }
 }
 
-impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize<'a> {
+impl<'a> std::fmt::Display
+    for crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize<'a>
+{
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         use crate::common::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithoutConfigWithSerializeDeserialize;
-        write!(f, "{}", self.code_occurence_prepare_for_log_without_config_with_serialize_deserialize())
+        write!(
+            f,
+            "{}",
+            self.code_occurence_prepare_for_log_without_config_with_serialize_deserialize()
+        )
     }
 }
 

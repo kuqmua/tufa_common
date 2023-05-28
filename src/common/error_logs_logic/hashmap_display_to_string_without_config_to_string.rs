@@ -25,7 +25,9 @@ where
 }
 
 pub trait HashMapDisplayToStringWithoutConfigToStringWithSerializeDeserialize<'a> {
-    fn hashmap_display_to_string_without_config_to_string_with_serialize_deserialize(&self) -> String;
+    fn hashmap_display_to_string_without_config_to_string_with_serialize_deserialize(
+        &self,
+    ) -> String;
 }
 
 impl<'a, HashMapKeyGeneric, HashMapValueGeneric> HashMapDisplayToStringWithoutConfigToStringWithSerializeDeserialize<'a>

@@ -1,4 +1,6 @@
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize, Clone, Eq, Hash, PartialEq, Default)]
+#[derive(
+    Debug, serde_derive::Serialize, serde_derive::Deserialize, Clone, Eq, Hash, PartialEq, Default,
+)]
 pub struct GitInformation<'a> {
     pub git_commit_id: &'a str,
     pub git_repo_link: &'a str,

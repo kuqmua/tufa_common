@@ -53,7 +53,7 @@ impl crate::common::display_foreign_type::DisplayForeignType for tracing::log::S
 //         //     mongodb::error::ErrorKind::Authentication { message, .. } => format!("mongodb::error::ErrorKind::Authentication{{message: {message}}} {link_to_crate}"),
 //         //     mongodb::error::ErrorKind::BsonDeserialization(e) => format!("mongodb::error::ErrorKind::BsonDeserialization({e}) {link_to_crate}"),
 //         //     mongodb::error::ErrorKind::BsonSerialization(e) => format!("mongodb::error::ErrorKind::BsonSerialization({e}) {link_to_crate}"),
-//         //     mongodb::error::ErrorKind::BulkWrite(e) => format!("mongodb::error::ErrorKind::BulkWrite(todo - error too big to show) {link_to_crate}"),//todo this error is too big. maybe 
+//         //     mongodb::error::ErrorKind::BulkWrite(e) => format!("mongodb::error::ErrorKind::BulkWrite(todo - error too big to show) {link_to_crate}"),//todo this error is too big. maybe
 //         //     mongodb::error::ErrorKind::Command(e) => format!("mongodb::error::ErrorKind::Command({e}) {link_to_crate}"),
 //         //     mongodb::error::ErrorKind::DnsResolve { message, .. } => format!("mongodb::error::ErrorKind::DnsResolve{{message: {message}}} {link_to_crate}"),
 //         //     mongodb::error::ErrorKind::Internal { message, .. } => format!("mongodb::error::ErrorKind::Internal{{message: {message}}} {link_to_crate}"),

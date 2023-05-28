@@ -27,7 +27,6 @@ pub fn dev() {
     // tracing::error!(valuable = false, user = ?user);
 }
 
-
 //builder pattern example
 // #[derive(Debug)]
 // pub struct PortHandle {
@@ -112,7 +111,6 @@ pub fn dev() {
 // //mongodb app_name
 // client_options.app_name = Some("Rust Demo".to_string());
 // //mongodb app_name
-
 
 // //treadpool example
 //  use std::sync::mpsc::channel;

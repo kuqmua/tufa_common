@@ -4,7 +4,7 @@ pub enum WriteBytesIntoFileAsyncTokioErrorNamed<'a> {
         #[eo_display]
         std_io_error: std::io::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    }
+    },
 }
 
 pub async fn write_bytes_into_file_async_tokio<'a>(
@@ -14,32 +14,34 @@ pub async fn write_bytes_into_file_async_tokio<'a>(
     if let Some(prefix) = path.parent() {
         if let Err(e) = std::fs::create_dir_all(prefix) {
             return Err(Box::new(
-                WriteBytesIntoFileAsyncTokioErrorNamed::StdIoError {        
+                WriteBytesIntoFileAsyncTokioErrorNamed::StdIoError {
                     std_io_error: e,
-                    code_occurence: crate::code_occurence_tufa_common!()
-                }
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                },
             ));
         }
     }
     match tokio::fs::File::open(path).await {
         Err(e) => {
             return Err(Box::new(
-                WriteBytesIntoFileAsyncTokioErrorNamed::StdIoError {        
+                WriteBytesIntoFileAsyncTokioErrorNamed::StdIoError {
                     std_io_error: e,
-                    code_occurence: crate::code_occurence_tufa_common!()
-                }
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                },
             ));
         }
         Ok(mut file) => {
             if let Err(e) = {
                 use tokio::io::AsyncWriteExt;
                 file.write_all(bytes)
-            }.await {
+            }
+            .await
+            {
                 return Err(Box::new(
-                    WriteBytesIntoFileAsyncTokioErrorNamed::StdIoError {        
+                    WriteBytesIntoFileAsyncTokioErrorNamed::StdIoError {
                         std_io_error: e,
-                        code_occurence: crate::code_occurence_tufa_common!()
-                    }
+                        code_occurence: crate::code_occurence_tufa_common!(),
+                    },
                 ));
             }
             Ok(())

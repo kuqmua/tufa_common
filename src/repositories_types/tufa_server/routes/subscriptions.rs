@@ -4,11 +4,15 @@ pub struct FormData {
     pub name: String,
 }
 
-impl std::convert::TryFrom<FormData> for crate::repositories_types::tufa_server::domain::NewSubscriber {
+impl std::convert::TryFrom<FormData>
+    for crate::repositories_types::tufa_server::domain::NewSubscriber
+{
     type Error = String;
     fn try_from(value: FormData) -> Result<Self, Self::Error> {
-        let name = crate::repositories_types::tufa_server::domain::SubscriberName::parse(value.name)?;
-        let email = crate::repositories_types::tufa_server::domain::SubscriberEmail::try_from(value.email)?;
+        let name =
+            crate::repositories_types::tufa_server::domain::SubscriberName::parse(value.name)?;
+        let email =
+            crate::repositories_types::tufa_server::domain::SubscriberEmail::try_from(value.email)?;
         Ok(Self { email, name })
     }
 }
@@ -50,29 +54,29 @@ pub enum SubscribeErrorNamed<'a> {
 impl<'a> actix_web::ResponseError for SubscribeErrorNamed<'a> {
     fn status_code(&self) -> actix_web::http::StatusCode {
         match self {
-            SubscribeErrorNamed::TryIntoNewSubscriber { 
-                try_into_new_subscriber: _try_into_new_subscriber, 
-                code_occurence: _code_occurence 
+            SubscribeErrorNamed::TryIntoNewSubscriber {
+                try_into_new_subscriber: _try_into_new_subscriber,
+                code_occurence: _code_occurence,
             } => actix_web::http::StatusCode::BAD_REQUEST,
-            SubscribeErrorNamed::PostgresPoolBegin { 
-                postgres_pool_begin: _postgres_pool_begin, 
-                code_occurence: _code_occurence 
+            SubscribeErrorNamed::PostgresPoolBegin {
+                postgres_pool_begin: _postgres_pool_begin,
+                code_occurence: _code_occurence,
             } => actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
-            SubscribeErrorNamed::InsertSubscriber { 
-                insert_subscriber: _insert_subscriber, 
-                code_occurence: _code_occurence 
+            SubscribeErrorNamed::InsertSubscriber {
+                insert_subscriber: _insert_subscriber,
+                code_occurence: _code_occurence,
             } => actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
-            SubscribeErrorNamed::StoreToken { 
-                store_token: _store_token, 
-                code_occurence: _code_occurence 
+            SubscribeErrorNamed::StoreToken {
+                store_token: _store_token,
+                code_occurence: _code_occurence,
             } => actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
-            SubscribeErrorNamed::PostgresTransactionCommit { 
-                postgres_transaction_commit: _postgres_transaction_commit, 
-                code_occurence: _code_occurence 
+            SubscribeErrorNamed::PostgresTransactionCommit {
+                postgres_transaction_commit: _postgres_transaction_commit,
+                code_occurence: _code_occurence,
             } => actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
-            SubscribeErrorNamed::SendConfirmationEmail { 
-                send_confirmation_email: _send_confirmation_email, 
-                code_occurence: _code_occurence 
+            SubscribeErrorNamed::SendConfirmationEmail {
+                send_confirmation_email: _send_confirmation_email,
+                code_occurence: _code_occurence,
             } => actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
         }
     }
@@ -84,9 +88,9 @@ pub fn generate_subscription_token() -> String {
         use rand::Rng;
         rng.sample(rand::distributions::Alphanumeric)
     })
-        .map(char::from)
-        .take(25)
-        .collect()
+    .map(char::from)
+    .take(25)
+    .collect()
 }
 
 #[tracing::instrument(

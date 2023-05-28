@@ -25,11 +25,11 @@
 // pub async fn init_mongo<'a>(
 //     providers_json_local_data_hashmap: std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
 //     config: &'static (
-//         impl crate::common::config::config_fields::GetMongoProvidersLinkPartsDbName 
+//         impl crate::common::config::config_fields::GetMongoProvidersLinkPartsDbName
 //         + crate::common::config::config_fields::GetMongoUrl
 //         + crate::common::config::config_fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
-        // + std::marker::Send 
-        // + std::marker::Sync
+// + std::marker::Send
+// + std::marker::Sync
 //     ),
 // ) -> Result<(), Box<crate::repositories_types::tufa_server::init_dbs_logic::init_mongo::InitMongoErrorNamed<'a>>>{
 //     match crate::server::mongo::mongo_client_options_parse::mongo_client_options_parse(config).await {

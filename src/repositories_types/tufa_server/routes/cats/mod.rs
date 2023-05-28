@@ -1,14 +1,14 @@
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct Cat {
-  pub id: i64,
-  pub name: String,
-  pub color: String,
+    pub id: i64,
+    pub name: String,
+    pub color: String,
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct CatToInsert {
-  pub name: String,
-  pub color: String,
+    pub name: String,
+    pub color: String,
 }
 
 #[derive(serde::Deserialize)]
@@ -24,7 +24,7 @@ pub static DEFAULT_SELECT_ALL_LIMIT: u32 = 10;
 pub enum GetAllResponse<'a> {
     Ok(Vec<Cat>),
     #[serde(borrow)]
-    Err(PostgresSelectCatsErrorNamedWithSerializeDeserialize<'a>)
+    Err(PostgresSelectCatsErrorNamedWithSerializeDeserialize<'a>),
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
@@ -53,10 +53,14 @@ pub enum PostgresSelectErrorNamed<'a> {
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub enum SelectByIdResponse<'a> {
     #[serde(borrow)]
-    BigserialError(crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamedWithSerializeDeserialize<'a>),
+    BigserialError(
+        crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamedWithSerializeDeserialize<
+            'a,
+        >,
+    ),
     Ok(Cat),
     #[serde(borrow)]
-    Select(PostgresSelectCatErrorNamedWithSerializeDeserialize<'a>)
+    Select(PostgresSelectCatErrorNamedWithSerializeDeserialize<'a>),
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]

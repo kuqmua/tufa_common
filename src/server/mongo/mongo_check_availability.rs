@@ -11,11 +11,17 @@ pub async fn mongo_check_availability<'a>(
     mongo_client: &mongodb::Client,
     db_name: &str,
 ) -> Result<(), Box<MongoCheckAvailabilityErrorNamed<'a>>> {
-    if let Err(e) = mongo_client.database(db_name).list_collection_names(None).await {
-        return Err(Box::new(MongoCheckAvailabilityErrorNamed::ListCollectionNames {
-            list_collection_names: e,
-            code_occurence: crate::code_occurence_tufa_common!(),
-        }));
+    if let Err(e) = mongo_client
+        .database(db_name)
+        .list_collection_names(None)
+        .await
+    {
+        return Err(Box::new(
+            MongoCheckAvailabilityErrorNamed::ListCollectionNames {
+                list_collection_names: e,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            },
+        ));
     }
     Ok(())
 }

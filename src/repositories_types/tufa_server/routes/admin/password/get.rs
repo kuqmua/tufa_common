@@ -2,8 +2,14 @@ pub async fn change_password_form(
     session: crate::repositories_types::tufa_server::session_state::TypedSession,
     flash_messages: actix_web_flash_messages::IncomingFlashMessages,
 ) -> Result<actix_web::HttpResponse, actix_web::Error> {
-    if session.get_user_id().map_err(crate::repositories_types::tufa_server::utils::status_codes::e500)?.is_none() {
-        return Ok(crate::repositories_types::tufa_server::utils::status_codes::see_other("/login"));
+    if session
+        .get_user_id()
+        .map_err(crate::repositories_types::tufa_server::utils::status_codes::e500)?
+        .is_none()
+    {
+        return Ok(
+            crate::repositories_types::tufa_server::utils::status_codes::see_other("/login"),
+        );
     };
     let mut msg_html = String::new();
     for m in flash_messages.iter() {

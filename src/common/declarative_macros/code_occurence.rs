@@ -5,7 +5,7 @@ macro_rules! code_occurence {
             &crate::global_variables::compile_time::git_info::GIT_INFO,
             file!(),
             line!(),
-            column!()
+            column!(),
         )
     }};
 }
@@ -17,7 +17,7 @@ macro_rules! code_occurence_tufa_common {
             &crate::global_variables::compile_time::git_info::GIT_INFO,
             file!(),
             line!(),
-            column!()
+            column!(),
         )
     }};
 }

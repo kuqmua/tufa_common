@@ -12,16 +12,19 @@ impl std::fmt::Display for TryGetPostgresPoolError {
 }
 
 pub trait TryGetPostgresPool {
-    async fn try_get_postgres_pool(&self) -> Result<sqlx::Pool<sqlx::Postgres>, TryGetPostgresPoolError>;
+    async fn try_get_postgres_pool(
+        &self,
+    ) -> Result<sqlx::Pool<sqlx::Postgres>, TryGetPostgresPoolError>;
 }
 
 impl<SelfGeneric> TryGetPostgresPool for SelfGeneric
 where
-    Self: crate::common::config::config_fields::GetDatabaseUrl,//meaning postgres. sqlx::query! macro uses DATABASE_URL env var for compile time checks 
+    Self: crate::common::config::config_fields::GetDatabaseUrl, //meaning postgres. sqlx::query! macro uses DATABASE_URL env var for compile time checks
 {
-    async fn try_get_postgres_pool(&self) -> Result<sqlx::Pool<sqlx::Postgres>, TryGetPostgresPoolError> {
-        match 
-            sqlx::postgres::PgPoolOptions::new()
+    async fn try_get_postgres_pool(
+        &self,
+    ) -> Result<sqlx::Pool<sqlx::Postgres>, TryGetPostgresPoolError> {
+        match sqlx::postgres::PgPoolOptions::new()
             .connect({
                 use secrecy::ExposeSecret;
                 self.get_database_url().expose_secret()

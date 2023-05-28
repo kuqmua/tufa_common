@@ -1,9 +1,9 @@
 // pub trait ProviderKindMethods {
 //     fn get_item_handle(&self) -> Option<&'static str>;
 //     fn get_mongo_log_collection_name(&self, config: &'static (
-    // impl crate::common::config::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart
-        // + std::marker::Send 
-        // + std::marker::Sync
+// impl crate::common::config::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart
+// + std::marker::Send
+// + std::marker::Sync
 // )
 // ) -> String;
 //     fn get_init_local_data_file_path(
@@ -11,18 +11,18 @@
 //         config: &'static (
 //             impl crate::common::config::config_fields::GetPathToProviderLinkPartsFolder
 //             + crate::common::config::config_fields::GetLogFileExtension
-            // + std::marker::Send 
-            // + std::marker::Sync
+// + std::marker::Send
+// + std::marker::Sync
 //         )
 //     ) -> String;
 //     fn generate_provider_links(
-//         &self, 
+//         &self,
 //         names_vector: Vec<String>,
 //         config: &'static (
-            //  impl crate::common::config::config_fields::GetGithubToken
-            // + std::marker::Send 
-            // + std::marker::Sync
-            // )
+//  impl crate::common::config::config_fields::GetGithubToken
+// + std::marker::Send
+// + std::marker::Sync
+// )
 //     ) -> Vec<String>;
 //     fn generate_hashmap_with_empty_string_vecs_for_enabled_providers() -> std::collections::HashMap<Self, Vec<String>>
 //     where

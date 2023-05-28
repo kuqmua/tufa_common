@@ -19,8 +19,8 @@
 //     config: &'static (
 //         impl crate::common::config::config_fields::GetMongoProvidersLogsDbCollectionHandleSecondPart
 //         + crate::common::config::config_fields::GetMongoProvidersLogsDbCollectionDocumentFieldNameHandle
-        // + std::marker::Send 
-        // + std::marker::Sync
+// + std::marker::Send
+// + std::marker::Sync
 //     )
 // ) -> Result<(), Box<crate::server::mongo::mongo_insert_data::MongoInsertDataErrorNamed<'a>>> {
 //     let error_hashmap = futures::future::join_all(vec_of_link_parts_hashmap.into_iter().map(
@@ -48,7 +48,7 @@
 //     .filter_map(|(pk, result)| {
 //         if let Err(e) = result {
 //             return Some((
-//                 pk.to_string(), 
+//                 pk.to_string(),
 //                 crate::server::mongo::mongo_insert_data::MongoInsertDataErrorUnnamed::MongoInsertDocsInEmptyCollection(*e)
 //             ));
 //         }
