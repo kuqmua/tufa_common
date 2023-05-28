@@ -5,8 +5,14 @@ pub struct Cat {
   pub color: String,
 }
 
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+pub struct CatToInsert {
+  pub name: String,
+  pub color: String,
+}
+
 #[derive(serde::Deserialize)]
-pub struct SelectAllQueryParameters {
+pub struct SelectQueryParameters {
     pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
     pub name: Option<String>,
     pub color: Option<String>,
@@ -18,11 +24,11 @@ pub static DEFAULT_SELECT_ALL_LIMIT: u32 = 10;
 pub enum GetAllResponse<'a> {
     Ok(Vec<Cat>),
     #[serde(borrow)]
-    Err(PostgresSelectAllCatsErrorNamedWithSerializeDeserialize<'a>)
+    Err(PostgresSelectCatsErrorNamedWithSerializeDeserialize<'a>)
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum PostgresSelectAllCatsErrorNamed<'a> {
+pub enum PostgresSelectCatsErrorNamed<'a> {
     SelectCats {
         #[eo_display]
         select_cats: sqlx::Error,
@@ -36,7 +42,7 @@ pub struct SelectByIdPathParameters {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum PostgresSelectCatErrorNamed<'a> {
+pub enum PostgresSelectErrorNamed<'a> {
     SelectCat {
         #[eo_display]
         select_cat: sqlx::Error,
@@ -53,26 +59,20 @@ pub enum SelectByIdResponse<'a> {
     Select(PostgresSelectCatErrorNamedWithSerializeDeserialize<'a>)
 }
 
-#[derive(serde::Deserialize)]
-pub struct GetPathParameters {
-    // pub id: i64,//bigserial
-    pub name: String,
-    pub color: String,
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum PostgresSelectCatErrorNamed<'a> {
+    SelectCat {
+        #[eo_display]
+        select_cat: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
 }
-
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub enum GetResponse<'a> {
-    Ok(Vec<Cat>),
-    #[serde(borrow)]
-    Err(PostgresSelectCatsErrorNamedWithSerializeDeserialize<'a>)
-}
-
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum PostgresSelectCatsErrorNamed<'a> {
-    SelectCats {
+pub enum PostgresInsertCatErrorNamed<'a> {
+    InsertCat {
         #[eo_display]
-        select_cats: sqlx::Error,
+        select_cat: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
