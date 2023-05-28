@@ -11,6 +11,13 @@ pub struct CatToInsert {
     pub color: String,
 }
 
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+pub struct CatToUpdate {
+    pub id: i64,
+    pub name: Option<String>,
+    pub color: Option<String>,
+}
+
 #[derive(serde::Deserialize)]
 pub struct SelectQueryParameters {
     pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
@@ -73,10 +80,29 @@ pub enum PostgresSelectCatErrorNamed<'a> {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum PostgresInsertCatErrorNamed<'a> {
-    InsertCat {
+pub enum PostgresInsertOneErrorNamed<'a> {
+    Insert {
         #[eo_display]
-        select_cat: sqlx::Error,
+        insert: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum PostgresUpdateOneErrorNamed<'a> {
+    Bigserial {
+        #[eo_error_occurence]
+        bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamed<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    NoParameters {
+        #[eo_display_with_serialize_deserialize]
+        no_parameters: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Update {
+        #[eo_display]
+        update: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
