@@ -168,3 +168,17 @@ pub enum PostgresDeleteWhereErrorNamed<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum UpsertErrorNamed<'a> {
+    Bigserial {
+        #[eo_error_occurence]
+        bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamed<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PostgresInsertOrUpdate {
+        #[eo_display]
+        insert_or_update: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
