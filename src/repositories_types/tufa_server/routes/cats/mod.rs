@@ -57,21 +57,13 @@ pub enum PostgresSelectErrorNamed<'a> {
     },
 }
 
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub enum SelectByIdResponse<'a> {
-    #[serde(borrow)]
-    BigserialError(
-        crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamedWithSerializeDeserialize<
-            'a,
-        >,
-    ),
-    Ok(Cat),
-    #[serde(borrow)]
-    Select(PostgresSelectCatErrorNamedWithSerializeDeserialize<'a>),
-}
-
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum PostgresSelectCatErrorNamed<'a> {
+pub enum SelectByIdErrorNamed<'a> {
+    Bigserial {
+        #[eo_error_occurence]
+        bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamed<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
     SelectCat {
         #[eo_display]
         select_cat: sqlx::Error,
