@@ -100,7 +100,7 @@ pub enum PostgresUpdateOneErrorNamed<'a> {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum PostgresUpdateOnePatchErrorNamed<'a> {
+pub enum UpdateOnePatchErrorNamed<'a> {
     Bigserial {
         #[eo_error_occurence]
         bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamed<'a>,
@@ -116,9 +116,9 @@ pub enum PostgresUpdateOnePatchErrorNamed<'a> {
         please_use_post: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    Update {
+    PostgresUpdate {
         #[eo_display]
-        update: sqlx::Error,
+        postgres_update: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
