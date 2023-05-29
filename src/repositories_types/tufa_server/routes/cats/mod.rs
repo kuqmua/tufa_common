@@ -149,15 +149,15 @@ pub struct DeleteWhereQueryParameters {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum PostgresDeleteWhereErrorNamed<'a> {
+pub enum DeleteWhereErrorNamed<'a> {
     NoParameters {
         #[eo_display_with_serialize_deserialize]
         no_parameters: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    Delete {
+    PostgresDelete {
         #[eo_display]
-        delete: sqlx::Error,
+        postgres_delete: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
