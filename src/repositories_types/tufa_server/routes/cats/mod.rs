@@ -80,6 +80,24 @@ pub enum CreateErrorNamed<'a> {
     },
 }
 
+//
+pub enum CreateRouteHttpResponseBuilder {
+    Created,
+    InternalServerError,
+}
+
+impl CreateRouteHttpResponseBuilder {
+    pub fn into_http_response_builder(self) -> actix_web::HttpResponseBuilder {
+        match self {
+            CreateRouteHttpResponseBuilder::Created => actix_web::HttpResponse::Created(),
+            CreateRouteHttpResponseBuilder::InternalServerError => {
+                actix_web::HttpResponse::InternalServerError()
+            }
+        }
+    }
+}
+//
+
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum UpdateOneErrorNamed<'a> {
     Bigserial {
@@ -171,7 +189,7 @@ pub enum UpsertErrorNamed<'a> {
     },
     PostgresInsertOrUpdate {
         #[eo_display]
-        insert_or_update: sqlx::Error,
+        postgres_insert_or_update: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
