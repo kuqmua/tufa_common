@@ -34,18 +34,11 @@ pub struct SelectQueryParameters {
 
 pub static DEFAULT_SELECT_ALL_LIMIT: u32 = 10;
 
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub enum GetAllResponse<'a> {
-    Ok(Vec<Cat>),
-    #[serde(borrow)]
-    Err(PostgresSelectCatsErrorNamedWithSerializeDeserialize<'a>),
-}
-
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum PostgresSelectCatsErrorNamed<'a> {
-    SelectCats {
+pub enum GetErrorNamed<'a> {
+    PostgresSelect {
         #[eo_display]
-        select_cats: sqlx::Error,
+        postgres_select: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
@@ -71,9 +64,9 @@ pub enum SelectByIdErrorNamed<'a> {
         bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    SelectCat {
+    PostgresSelect {
         #[eo_display]
-        select_cat: sqlx::Error,
+        postgres_select: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
