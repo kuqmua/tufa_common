@@ -79,10 +79,10 @@ pub enum SelectByIdErrorNamed<'a> {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum PostgresInsertOneErrorNamed<'a> {
-    Insert {
+pub enum CreateErrorNamed<'a> {
+    PostgresInsert {
         #[eo_display]
-        insert: sqlx::Error,
+        postgres_insert: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
