@@ -11,12 +11,12 @@ pub struct CatToInsert {
     pub color: String,
 }
 
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct CatToUpdate {
-    pub id: i64,
-    pub name: Option<String>,
-    pub color: Option<String>,
-}
+// #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+// pub struct CatToUpdate {
+//     pub id: i64,
+//     pub name: Option<String>,
+//     pub color: Option<String>,
+// }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct CatToPatch {
