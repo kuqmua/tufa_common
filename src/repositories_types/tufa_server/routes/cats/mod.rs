@@ -148,3 +148,23 @@ pub enum DeleteByIdErrorNamed<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
+
+#[derive(serde::Deserialize)]
+pub struct DeleteWhereQueryParameters {
+    pub name: Option<String>,
+    pub color: Option<String>,
+}
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum PostgresDeleteWhereErrorNamed<'a> {
+    NoParameters {
+        #[eo_display_with_serialize_deserialize]
+        no_parameters: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Delete {
+        #[eo_display]
+        delete: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
