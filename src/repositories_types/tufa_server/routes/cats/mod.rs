@@ -106,3 +106,22 @@ pub enum PostgresUpdateOneErrorNamed<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
+
+#[derive(serde::Deserialize)]
+pub struct DeleteByIdPathParameters {
+    pub id: i64,
+}
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum DeleteByIdErrorNamed<'a> {
+    Bigserial {
+        #[eo_error_occurence]
+        bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamed<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Delete {
+        #[eo_display]
+        delete: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
