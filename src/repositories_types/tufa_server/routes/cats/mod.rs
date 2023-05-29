@@ -135,9 +135,9 @@ pub enum DeleteByIdErrorNamed<'a> {
         bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    Delete {
+    PostgresDelete {
         #[eo_display]
-        delete: sqlx::Error,
+        postgres_delete: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
