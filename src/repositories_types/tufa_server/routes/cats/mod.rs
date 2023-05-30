@@ -111,7 +111,7 @@ pub enum CreateRouteHttpResponseBuilder<'a> {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum UpdateOnePatchErrorNamed<'a> {
+pub enum PatchErrorNamed<'a> {
     Bigserial {
         #[eo_error_occurence]
         bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamed<'a>,
@@ -122,9 +122,9 @@ pub enum UpdateOnePatchErrorNamed<'a> {
         no_parameters: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    PleaseUsePost {
+    PleaseUsePut {
         #[eo_display_with_serialize_deserialize]
-        please_use_post: std::string::String,
+        please_use_put: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     PostgresUpdate {
