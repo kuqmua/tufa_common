@@ -32,6 +32,38 @@ pub struct SelectQueryParameters {
     pub color: Option<String>,
 }
 
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum TryGetCatsErrorNamed<'a> {
+    Reqwest {
+        #[eo_display_foreign_type]
+        reqwest_get: reqwest::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    DeserializeJson {
+        #[eo_display_foreign_type]
+        reqwest_get: reqwest::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
+pub async fn try_get_cats<'a>(
+    server_location: std::string::String,
+) -> Result<Vec<Cat>, TryGetCatsErrorNamed<'a>> {
+    match reqwest::get(&format!("{server_location}/api/cats/")).await {
+        Ok(r) => match r.json::<Vec<Cat>>().await {
+            Ok(vec_cats) => Ok(vec_cats),
+            Err(e) => Err(TryGetCatsErrorNamed::DeserializeJson {
+                reqwest_get: e,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            }),
+        },
+        Err(e) => Err(TryGetCatsErrorNamed::Reqwest {
+            reqwest_get: e,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        }),
+    }
+}
+
 pub static DEFAULT_SELECT_ALL_LIMIT: u32 = 10;
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
