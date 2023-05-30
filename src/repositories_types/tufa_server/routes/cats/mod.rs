@@ -80,23 +80,10 @@ pub enum CreateErrorNamed<'a> {
     },
 }
 
-//
-pub enum CreateRouteHttpResponseBuilder {
+pub enum CreateRouteHttpResponseBuilder<'a> {
     Created,
-    InternalServerError,
+    InternalServerError(CreateErrorNamed<'a>),
 }
-
-impl CreateRouteHttpResponseBuilder {
-    pub fn into_http_response_builder(self) -> actix_web::HttpResponseBuilder {
-        match self {
-            CreateRouteHttpResponseBuilder::Created => actix_web::HttpResponse::Created(),
-            CreateRouteHttpResponseBuilder::InternalServerError => {
-                actix_web::HttpResponse::InternalServerError()
-            }
-        }
-    }
-}
-//
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum UpdateOneErrorNamed<'a> {
