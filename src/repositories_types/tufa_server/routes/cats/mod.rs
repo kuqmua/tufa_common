@@ -12,13 +12,6 @@ pub struct CatToInsert {
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct CatToUpdate {
-    pub id: i64,
-    pub name: Option<String>,
-    pub color: Option<String>,
-}
-
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct CatToPatch {
     pub id: i64,
     pub name: Option<String>,
@@ -115,25 +108,6 @@ pub enum CreateErrorNamed<'a> {
 pub enum CreateRouteHttpResponseBuilder<'a> {
     Created,
     InternalServerError(CreateErrorNamed<'a>),
-}
-
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum UpdateOneErrorNamed<'a> {
-    Bigserial {
-        #[eo_error_occurence]
-        bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamed<'a>,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    NoParameters {
-        #[eo_display_with_serialize_deserialize]
-        no_parameters: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    PostgresUpdate {
-        #[eo_display]
-        postgres_update: sqlx::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
