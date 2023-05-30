@@ -1,3 +1,9 @@
+// pub enum CreateRouteHttpResponseBuilder<'a> {
+//     Created,
+//     InternalServerError(PostErrorNamed<'a>),
+// }
+pub static DEFAULT_SELECT_ALL_LIMIT: u32 = 10;
+
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct Cat {
     pub id: i64,
@@ -6,7 +12,7 @@ pub struct Cat {
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct CatToInsert {
+pub struct CatToPost {
     pub name: String,
     pub color: String,
 }
@@ -19,7 +25,7 @@ pub struct CatToPatch {
 }
 
 #[derive(serde::Deserialize)]
-pub struct SelectQueryParameters {
+pub struct GetQueryParameters {
     pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
     pub name: Option<String>,
     pub color: Option<String>,
@@ -57,8 +63,6 @@ pub async fn try_get_cats<'a>(
     }
 }
 
-pub static DEFAULT_SELECT_ALL_LIMIT: u32 = 10;
-
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum GetErrorNamed<'a> {
     PostgresSelect {
@@ -66,11 +70,6 @@ pub enum GetErrorNamed<'a> {
         postgres_select: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-}
-
-#[derive(serde::Deserialize)]
-pub struct SelectByIdPathParameters {
-    pub id: i64,
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
@@ -82,8 +81,13 @@ pub enum PostgresSelectErrorNamed<'a> {
     },
 }
 
+#[derive(serde::Deserialize)]
+pub struct GetByIdPathParameters {
+    pub id: i64,
+}
+
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum SelectByIdErrorNamed<'a> {
+pub enum GetByIdErrorNamed<'a> {
     Bigserial {
         #[eo_error_occurence]
         bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamed<'a>,
@@ -97,7 +101,7 @@ pub enum SelectByIdErrorNamed<'a> {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum CreateErrorNamed<'a> {
+pub enum PostErrorNamed<'a> {
     PostgresInsert {
         #[eo_display]
         postgres_insert: sqlx::Error,
@@ -105,9 +109,18 @@ pub enum CreateErrorNamed<'a> {
     },
 }
 
-pub enum CreateRouteHttpResponseBuilder<'a> {
-    Created,
-    InternalServerError(CreateErrorNamed<'a>),
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum PutErrorNamed<'a> {
+    Bigserial {
+        #[eo_error_occurence]
+        bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamed<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PostgresInsertOrUpdate {
+        #[eo_display]
+        postgres_insert_or_update: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
@@ -135,6 +148,26 @@ pub enum PatchErrorNamed<'a> {
 }
 
 #[derive(serde::Deserialize)]
+pub struct DeleteQueryParameters {
+    pub name: Option<String>,
+    pub color: Option<String>,
+}
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum DeleteErrorNamed<'a> {
+    NoParameters {
+        #[eo_display_with_serialize_deserialize]
+        no_parameters: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PostgresDelete {
+        #[eo_display]
+        postgres_delete: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
+#[derive(serde::Deserialize)]
 pub struct DeleteByIdPathParameters {
     pub id: i64,
 }
@@ -149,40 +182,6 @@ pub enum DeleteByIdErrorNamed<'a> {
     PostgresDelete {
         #[eo_display]
         postgres_delete: sqlx::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-}
-
-#[derive(serde::Deserialize)]
-pub struct DeleteWhereQueryParameters {
-    pub name: Option<String>,
-    pub color: Option<String>,
-}
-
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum DeleteWhereErrorNamed<'a> {
-    NoParameters {
-        #[eo_display_with_serialize_deserialize]
-        no_parameters: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    PostgresDelete {
-        #[eo_display]
-        postgres_delete: sqlx::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-}
-
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum PutErrorNamed<'a> {
-    Bigserial {
-        #[eo_error_occurence]
-        bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamed<'a>,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    PostgresInsertOrUpdate {
-        #[eo_display]
-        postgres_insert_or_update: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
