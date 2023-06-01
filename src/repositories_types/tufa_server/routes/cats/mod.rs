@@ -193,12 +193,18 @@ pub enum PatchErrorNamed<'a> {
 //////////////////////////////////////
 #[derive(serde::Deserialize)]
 pub struct DeleteQueryParameters {
+    pub check: ApiUsageCheckerType,
     pub name: Option<String>,
     pub color: Option<String>,
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum DeleteErrorNamed<'a> {
+    CheckApiUsage {
+        #[eo_display_with_serialize_deserialize]
+        check: &'a str,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
     NoParameters {
         #[eo_display_with_serialize_deserialize]
         no_parameters: std::string::String,
