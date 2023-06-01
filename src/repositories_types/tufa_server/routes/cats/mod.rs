@@ -3,7 +3,8 @@
 //     InternalServerError(PostErrorNamed<'a>),
 // }
 pub static DEFAULT_SELECT_ALL_LIMIT: u32 = 10;
-pub static API_USAGE_CHECKER: u64 = 18446744073709551615; //todo not a str coz dont want to deal with lifetimes yet //todo use github commit instead - just for testing need to change it it every time after commit in browser
+pub type ApiUsageCheckerType = u64;
+pub static API_USAGE_CHECKER: ApiUsageCheckerType = 18446744073709551615; //todo not a str coz dont want to deal with lifetimes yet //todo use github commit instead - just for testing need to change it it every time after commit in browser
 pub static API_USAGE_CHECKER_DOES_NOT_MATCH_MESSAGE: &str = "please use special http request function from https://github.com/kuqmua/tufa_project for this API";
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
@@ -15,7 +16,7 @@ pub struct Cat {
 //////////////////////////////////////
 #[derive(serde::Deserialize)]
 pub struct GetQueryParameters {
-    pub check: u64,
+    pub check: ApiUsageCheckerType,
     pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
     pub name: Option<String>,
     pub color: Option<String>,
