@@ -3,6 +3,8 @@
 //     InternalServerError(PostErrorNamed<'a>),
 // }
 pub static DEFAULT_SELECT_ALL_LIMIT: u32 = 10;
+pub static API_USAGE_CHECKER: u64 = 18446744073709551615; //todo not a str coz dont want to deal with lifetimes yet //todo use github commit instead - just for testing need to change it it every time after commit in browser
+pub static API_USAGE_CHECKER_DOES_NOT_MATCH_MESSAGE: &str = "please use special http request function from https://github.com/kuqmua/tufa_project for this API";
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct Cat {
@@ -26,6 +28,7 @@ pub struct CatToPatch {
 
 #[derive(serde::Deserialize)]
 pub struct GetQueryParameters {
+    pub check: u64,
     pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
     pub name: Option<String>,
     pub color: Option<String>,
@@ -50,7 +53,11 @@ pub async fn try_get_cats<'a>(
 ) -> Result<Vec<Cat>, TryGetCatsErrorNamed<'a>> {
     //todo - add some constant in request and route for check if sent constant is queal to route constant so code users must use only one request implementation from there. (make constant private)
     //todo in the future add hash of git commit and private constant
-    match reqwest::get(&format!("{server_location}/api/cats/")).await {
+    match reqwest::get(&format!(
+        "{server_location}/api/cats/?check={API_USAGE_CHECKER}"
+    ))
+    .await
+    {
         Ok(r) => match r.json::<Vec<Cat>>().await {
             Ok(vec_cats) => Ok(vec_cats),
             Err(e) => Err(TryGetCatsErrorNamed::DeserializeJson {
@@ -67,6 +74,11 @@ pub async fn try_get_cats<'a>(
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum GetErrorNamed<'a> {
+    CheckApiUsage {
+        #[eo_display_with_serialize_deserialize]
+        check: &'a str,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
     PostgresSelect {
         #[eo_display]
         postgres_select: sqlx::Error,
