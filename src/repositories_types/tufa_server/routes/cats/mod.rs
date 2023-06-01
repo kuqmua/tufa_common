@@ -48,6 +48,8 @@ pub enum TryGetCatsErrorNamed<'a> {
 pub async fn try_get_cats<'a>(
     server_location: std::string::String,
 ) -> Result<Vec<Cat>, TryGetCatsErrorNamed<'a>> {
+    //todo - add some constant in request and route for check if sent constant is queal to route constant so code users must use only one request implementation from there. (make constant private)
+    //todo in the future add hash of git commit and private constant
     match reqwest::get(&format!("{server_location}/api/cats/")).await {
         Ok(r) => match r.json::<Vec<Cat>>().await {
             Ok(vec_cats) => Ok(vec_cats),
