@@ -1,6 +1,6 @@
 #![deny(
     clippy::indexing_slicing,
-    clippy::integer_arithmetic,
+    clippy::arithmetic_side_effects,
     clippy::unwrap_used,
     clippy::float_arithmetic
 )]
