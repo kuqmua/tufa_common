@@ -101,6 +101,11 @@ pub enum GetByIdErrorNamed<'a> {
     },
 }
 //////////////////////////////////////
+#[derive(serde::Deserialize)]
+pub struct PostQueryParameters {
+    pub check: ApiUsageCheckerType,
+}
+
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct CatToPost {
     pub name: String,
@@ -109,6 +114,11 @@ pub struct CatToPost {
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum PostErrorNamed<'a> {
+    CheckApiUsage {
+        #[eo_display_with_serialize_deserialize]
+        check: &'a str,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
     PostgresInsert {
         #[eo_display]
         postgres_insert: sqlx::Error,
