@@ -12,26 +12,27 @@ pub struct Cat {
     pub name: String,
     pub color: String,
 }
-
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct CatToPost {
-    pub name: String,
-    pub color: String,
-}
-
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct CatToPatch {
-    pub id: i64,
-    pub name: Option<String>,
-    pub color: Option<String>,
-}
-
+//////////////////////////////////////
 #[derive(serde::Deserialize)]
 pub struct GetQueryParameters {
     pub check: u64,
     pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
     pub name: Option<String>,
     pub color: Option<String>,
+}
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum GetErrorNamed<'a> {
+    CheckApiUsage {
+        #[eo_display_with_serialize_deserialize]
+        check: &'a str,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PostgresSelect {
+        #[eo_display]
+        postgres_select: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
@@ -51,7 +52,6 @@ pub enum TryGetCatsErrorNamed<'a> {
 pub async fn try_get_cats<'a>(
     server_location: std::string::String,
 ) -> Result<Vec<Cat>, TryGetCatsErrorNamed<'a>> {
-    //todo in the future add hash of git commit
     match reqwest::get(&format!(
         "{server_location}/api/cats/?check={API_USAGE_CHECKER}"
     ))
@@ -70,21 +70,7 @@ pub async fn try_get_cats<'a>(
         }),
     }
 }
-
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum GetErrorNamed<'a> {
-    CheckApiUsage {
-        #[eo_display_with_serialize_deserialize]
-        check: &'a str,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    PostgresSelect {
-        #[eo_display]
-        postgres_select: sqlx::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-}
-
+//////////////////////////////////////
 #[derive(serde::Deserialize)]
 pub struct GetByIdPathParameters {
     pub id: i64,
@@ -103,6 +89,12 @@ pub enum GetByIdErrorNamed<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
+//////////////////////////////////////
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+pub struct CatToPost {
+    pub name: String,
+    pub color: String,
+}
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum PostErrorNamed<'a> {
@@ -112,7 +104,7 @@ pub enum PostErrorNamed<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
-
+//////////////////////////////////////
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum PutErrorNamed<'a> {
     Bigserial {
@@ -125,6 +117,13 @@ pub enum PutErrorNamed<'a> {
         postgres_insert_or_update: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
+}
+//////////////////////////////////////
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+pub struct CatToPatch {
+    pub id: i64,
+    pub name: Option<String>,
+    pub color: Option<String>,
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
@@ -150,7 +149,7 @@ pub enum PatchErrorNamed<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
-
+//////////////////////////////////////
 #[derive(serde::Deserialize)]
 pub struct DeleteQueryParameters {
     pub name: Option<String>,
@@ -170,7 +169,7 @@ pub enum DeleteErrorNamed<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
-
+//////////////////////////////////////
 #[derive(serde::Deserialize)]
 pub struct DeleteByIdPathParameters {
     pub id: i64,
@@ -189,3 +188,4 @@ pub enum DeleteByIdErrorNamed<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
+//////////////////////////////////////
