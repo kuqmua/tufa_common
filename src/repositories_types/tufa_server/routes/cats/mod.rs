@@ -51,8 +51,7 @@ pub enum TryGetCatsErrorNamed<'a> {
 pub async fn try_get_cats<'a>(
     server_location: std::string::String,
 ) -> Result<Vec<Cat>, TryGetCatsErrorNamed<'a>> {
-    //todo - add some constant in request and route for check if sent constant is queal to route constant so code users must use only one request implementation from there. (make constant private)
-    //todo in the future add hash of git commit and private constant
+    //todo in the future add hash of git commit
     match reqwest::get(&format!(
         "{server_location}/api/cats/?check={API_USAGE_CHECKER}"
     ))
@@ -82,15 +81,6 @@ pub enum GetErrorNamed<'a> {
     PostgresSelect {
         #[eo_display]
         postgres_select: sqlx::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-}
-
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum PostgresSelectErrorNamed<'a> {
-    SelectCat {
-        #[eo_display]
-        select_cat: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
