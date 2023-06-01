@@ -150,6 +150,11 @@ pub enum PutErrorNamed<'a> {
     },
 }
 //////////////////////////////////////
+#[derive(serde::Deserialize)]
+pub struct PatchQueryParameters {
+    pub check: ApiUsageCheckerType,
+}
+
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct CatToPatch {
     pub id: i64,
@@ -159,6 +164,11 @@ pub struct CatToPatch {
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum PatchErrorNamed<'a> {
+    CheckApiUsage {
+        #[eo_display_with_serialize_deserialize]
+        check: &'a str,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
     Bigserial {
         #[eo_error_occurence]
         bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamed<'a>,
