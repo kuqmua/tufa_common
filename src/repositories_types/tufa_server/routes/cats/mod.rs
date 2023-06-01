@@ -77,8 +77,18 @@ pub struct GetByIdPathParameters {
     pub id: i64,
 }
 
+#[derive(serde::Deserialize)]
+pub struct GetByIdQueryParameters {
+    pub check: ApiUsageCheckerType,
+}
+
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum GetByIdErrorNamed<'a> {
+    CheckApiUsage {
+        #[eo_display_with_serialize_deserialize]
+        check: &'a str,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
     Bigserial {
         #[eo_error_occurence]
         bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamed<'a>,
