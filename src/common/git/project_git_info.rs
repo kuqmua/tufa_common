@@ -5,6 +5,12 @@ pub struct ProjectGitInfo<'a> {
     pub git_commit_id: &'a str,
 }
 
+impl ProjectGitInfo<'_> {
+    pub fn does_not_match_message(&self) -> &'static str {
+        "please use special http request function from https://github.com/kuqmua/tufa_project for this API"
+    }
+}
+
 impl<'a> crate::common::git::git_fields::GetGitCommitId<'a> for ProjectGitInfo<'a> {
     fn get_git_commit_id(&self) -> &'a str {
         self.git_commit_id

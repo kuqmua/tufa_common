@@ -4,8 +4,6 @@
 // }
 pub static DEFAULT_SELECT_ALL_LIMIT: u32 = 10;
 pub type ApiUsageCheckerType = u64;
-pub static API_USAGE_CHECKER: ApiUsageCheckerType = 18446744073709551615; //todo not a str coz dont want to deal with lifetimes yet //todo use github commit instead - just for testing need to change it it every time after commit in browser
-pub static API_USAGE_CHECKER_DOES_NOT_MATCH_MESSAGE: &str = "please use special http request function from https://github.com/kuqmua/tufa_project for this API";
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct Cat {
@@ -16,7 +14,7 @@ pub struct Cat {
 //////////////////////////////////////
 #[derive(serde::Deserialize)]
 pub struct GetQueryParameters {
-    pub check: ApiUsageCheckerType,
+    pub check: String,
     pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
     pub name: Option<String>,
     pub color: Option<String>,
@@ -84,7 +82,8 @@ pub async fn try_get<'a>(
         false => format!("&{query_parameters_stringified}"),
     };
     match reqwest::get(&format!(
-        "{server_location}/api/cats/?check={API_USAGE_CHECKER}{additional_query_parameters}"
+        "{server_location}/api/cats/?check={}{additional_query_parameters}",
+        crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.git_commit_id
     ))
     .await
     {
@@ -124,7 +123,7 @@ pub struct GetByIdPathParameters {
 
 #[derive(serde::Deserialize)]
 pub struct GetByIdQueryParameters {
-    pub check: ApiUsageCheckerType,
+    pub check: String,
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
@@ -189,8 +188,9 @@ pub async fn try_get_by_id<'a>(
     path_parameters: TryGetByIdPathParameters,
 ) -> Result<Cat, TryGetByIdErrorNamed<'a>> {
     match reqwest::get(&format!(
-        "{server_location}/api/cats/{}?check={API_USAGE_CHECKER}",
-        path_parameters.id
+        "{server_location}/api/cats/{}?check={}",
+        path_parameters.id,
+        crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.git_commit_id
     ))
     .await
     {
@@ -211,7 +211,7 @@ pub async fn try_get_by_id<'a>(
 //////////////////////////////////////
 #[derive(serde::Deserialize)]
 pub struct PostQueryParameters {
-    pub check: ApiUsageCheckerType,
+    pub check: String,
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
@@ -236,7 +236,7 @@ pub enum PostErrorNamed<'a> {
 //////////////////////////////////////
 #[derive(serde::Deserialize)]
 pub struct PutQueryParameters {
-    pub check: ApiUsageCheckerType,
+    pub check: String,
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
@@ -260,7 +260,7 @@ pub enum PutErrorNamed<'a> {
 //////////////////////////////////////
 #[derive(serde::Deserialize)]
 pub struct PatchQueryParameters {
-    pub check: ApiUsageCheckerType,
+    pub check: String,
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
@@ -301,7 +301,7 @@ pub enum PatchErrorNamed<'a> {
 //////////////////////////////////////
 #[derive(serde::Deserialize)]
 pub struct DeleteQueryParameters {
-    pub check: ApiUsageCheckerType,
+    pub check: String,
     pub name: Option<String>,
     pub color: Option<String>,
 }
@@ -332,7 +332,7 @@ pub struct DeleteByIdPathParameters {
 
 #[derive(serde::Deserialize)]
 pub struct DeleteByIdQueryParameters {
-    pub check: ApiUsageCheckerType,
+    pub check: String,
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
