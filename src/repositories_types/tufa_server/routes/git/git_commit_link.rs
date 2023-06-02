@@ -3,6 +3,7 @@ pub struct GitCommitLinkWrapper {
     git_commit_link: std::string::String,
 }
 pub async fn git_commit_link() -> impl actix_web::Responder {
+    //todo - maybe make it git_info trait method ?
     actix_web::web::Json(GitCommitLinkWrapper {
         git_commit_link: {
             use crate::common::git::get_git_commit_link::GetGitCommitLink;
