@@ -1,6 +1,6 @@
 #[test]
 pub fn test_code_occurence() {
-    let git_info = crate::common::git::git_info::GitInformation::default();
+    let git_info = crate::common::git::git_info::GitInfo::default();
     let code_occurence = crate::common::code_occurence::CodeOccurence::new(
         &git_info,
         file!(),

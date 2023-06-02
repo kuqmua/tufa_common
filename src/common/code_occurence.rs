@@ -3,13 +3,13 @@ pub struct CodeOccurence<'a> {
     file: &'a str,
     line: u32,
     column: u32,
-    git_info: &'a crate::common::git::git_info::GitInformation<'a>,
+    git_info: &'a crate::common::git::git_info::GitInfo<'a>,
     duration: std::time::Duration,
 }
 
 impl<'a> CodeOccurence<'a> {
     pub fn new(
-        git_info: &'a crate::common::git::git_info::GitInformation<'a>,
+        git_info: &'a crate::common::git::git_info::GitInfo<'a>,
         file: &'a str,
         line: u32,
         column: u32,
@@ -45,7 +45,7 @@ impl<'a> crate::common::error_logs_logic::get_column::GetColumn for CodeOccurenc
 }
 
 impl<'a> crate::common::git::get_git_info::GetGitInfo<'a> for CodeOccurence<'a> {
-    fn get_git_info(&self) -> &crate::common::git::git_info::GitInformation {
+    fn get_git_info(&self) -> &crate::common::git::git_info::GitInfo {
         &self.git_info
     }
 }
@@ -92,13 +92,13 @@ pub struct CodeOccurenceWithSerializeDeserialize<'a> {
     file: &'a str,
     line: u32,
     column: u32,
-    git_info: crate::common::git::git_info::GitInformation<'a>,
+    git_info: crate::common::git::git_info::GitInfo<'a>,
     duration: std::time::Duration,
 }
 
 impl<'a> CodeOccurenceWithSerializeDeserialize<'a> {
     pub fn new(
-        git_info: &'a crate::common::git::git_info::GitInformation<'a>,
+        git_info: &'a crate::common::git::git_info::GitInfo<'a>,
         file: &'a str,
         line: u32,
         column: u32,
@@ -142,7 +142,7 @@ impl<'a> crate::common::error_logs_logic::get_column::GetColumn
 impl<'a> crate::common::git::get_git_info::GetGitInfo<'a>
     for CodeOccurenceWithSerializeDeserialize<'a>
 {
-    fn get_git_info(&self) -> &crate::common::git::git_info::GitInformation {
+    fn get_git_info(&self) -> &crate::common::git::git_info::GitInfo {
         &self.git_info
     }
 }

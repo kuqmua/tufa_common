@@ -15,7 +15,7 @@ where
         )
     }
 }
-// //implemented coz you cant deserialize field into &'a GitInformation(not implememnted in serde)
+// //implemented coz you cant deserialize field into &'a GitInfo(not implememnted in serde)
 pub trait ToStringWithoutConfigWithSerializeDeserialize<'a> {
     fn to_string_without_config_with_serialize_deserialize(&self) -> String;
 }
