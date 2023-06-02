@@ -7,10 +7,10 @@ pub enum WriteBytesIntoFileSyncErrorNamed<'a> {
     },
 }
 
-pub fn write_bytes_into_file_sync<'a>(
-    path: &'a std::path::Path,
+pub fn write_bytes_into_file_sync(
+    path: &std::path::Path,
     bytes: std::string::String,
-) -> Result<(), Box<WriteBytesIntoFileSyncErrorNamed<'a>>> {
+) -> Result<(), Box<WriteBytesIntoFileSyncErrorNamed>> {
     if let Some(prefix) = path.parent() {
         if let Err(e) = std::fs::create_dir_all(prefix) {
             return Err(Box::new(WriteBytesIntoFileSyncErrorNamed::StdIo {
@@ -20,12 +20,10 @@ pub fn write_bytes_into_file_sync<'a>(
         }
     }
     match std::fs::File::create(path) {
-        Err(e) => {
-            return Err(Box::new(WriteBytesIntoFileSyncErrorNamed::StdIo {
-                std_io_error: e,
-                code_occurence: crate::code_occurence_tufa_common!(),
-            }));
-        }
+        Err(e) => Err(Box::new(WriteBytesIntoFileSyncErrorNamed::StdIo {
+            std_io_error: e,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        })),
         Ok(mut file) => {
             if let Err(e) = {
                 use std::io::Write;

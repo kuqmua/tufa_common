@@ -2,7 +2,7 @@ pub trait LinesSpaceBackslash {
     fn lines_space_backslash(&self) -> String;
 }
 
-impl<'a, SelfGeneric> LinesSpaceBackslash for SelfGeneric
+impl<SelfGeneric> LinesSpaceBackslash for SelfGeneric
 where
     SelfGeneric: std::fmt::Display,
 {

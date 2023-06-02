@@ -22,14 +22,12 @@ pub async fn write_bytes_into_file_async_tokio<'a>(
         }
     }
     match tokio::fs::File::open(path).await {
-        Err(e) => {
-            return Err(Box::new(
-                WriteBytesIntoFileAsyncTokioErrorNamed::StdIoError {
-                    std_io_error: e,
-                    code_occurence: crate::code_occurence_tufa_common!(),
-                },
-            ));
-        }
+        Err(e) => Err(Box::new(
+            WriteBytesIntoFileAsyncTokioErrorNamed::StdIoError {
+                std_io_error: e,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            },
+        )),
         Ok(mut file) => {
             if let Err(e) = {
                 use tokio::io::AsyncWriteExt;

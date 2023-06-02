@@ -5,7 +5,7 @@ pub mod home;
 pub mod login;
 pub mod subscriptions;
 pub mod subscriptions_confirm;
-pub use admin::*;
+// pub use admin::*;
 pub use health_check::*;
 pub use home::*;
 pub use login::*;

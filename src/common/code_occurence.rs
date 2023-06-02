@@ -46,7 +46,7 @@ impl<'a> crate::common::error_logs_logic::get_column::GetColumn for CodeOccurenc
 
 impl<'a> crate::common::git::get_git_info::GetGitInfo<'a> for CodeOccurence<'a> {
     fn get_git_info(&self) -> &crate::common::git::git_info::GitInfo {
-        &self.git_info
+        self.git_info
     }
 }
 
@@ -119,7 +119,7 @@ impl<'a> crate::common::error_logs_logic::get_file::GetFile
     for CodeOccurenceWithSerializeDeserialize<'a>
 {
     fn get_file(&self) -> &str {
-        &self.file
+        self.file
     }
 }
 

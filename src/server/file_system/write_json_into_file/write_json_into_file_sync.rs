@@ -12,10 +12,10 @@ pub enum WriteJsonIntoFileSyncErrorNamed<'a> {
     },
 }
 
-pub fn write_json_into_file_async<'a>(
-    path: &'a std::path::Path,
+pub fn write_json_into_file_async(
+    path: &std::path::Path,
     json_object: serde_json::Value,
-) -> Result<(), Box<WriteJsonIntoFileSyncErrorNamed<'a>>> {
+) -> Result<(), Box<WriteJsonIntoFileSyncErrorNamed<'_>>> {
     match serde_json::to_string_pretty(&json_object) {
         Err(e) => Err(Box::new(WriteJsonIntoFileSyncErrorNamed::SerdeJson {
             serde_json: e,

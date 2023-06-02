@@ -12,18 +12,18 @@ pub enum WriteJsonIntoFileAsyncTokioErrorNamed<'a> {
     }, 
 }
 
-pub async fn write_json_into_file_async_tokio<'a>(
-    path: &'a std::path::Path,
+pub async fn write_json_into_file_async_tokio(
+    path: &std::path::Path,
     json_object: serde_json::Value,
-) -> Result<(), Box<WriteJsonIntoFileAsyncTokioErrorNamed<'a>>> {
+) -> Result<(), Box<WriteJsonIntoFileAsyncTokioErrorNamed>> {
     match serde_json::to_string_pretty(&json_object) {
         Err(e) => {
-            return Err(Box::new(
+            Err(Box::new(
                 WriteJsonIntoFileAsyncTokioErrorNamed::SerdeJson {
                     serde_json_error: e, 
                     code_occurence: crate::code_occurence_tufa_common!() 
                 },
-            ));
+            ))
         }
         Ok(stringified_json) => {
             match crate::server::file_system::write_bytes_into_file::write_bytes_into_file_async_tokio::write_bytes_into_file_async_tokio(
@@ -32,12 +32,12 @@ pub async fn write_json_into_file_async_tokio<'a>(
             )
             .await {
                 Err(e) => {
-                    return Err(Box::new(
+                    Err(Box::new(
                         WriteJsonIntoFileAsyncTokioErrorNamed::WriteBytesIntoFile {
                             write_bytes_into_file: *e, 
                             code_occurence: crate::code_occurence_tufa_common!() 
                         },
-                    ));
+                    ))
                 },
                 Ok(_) => Ok(())
             }
