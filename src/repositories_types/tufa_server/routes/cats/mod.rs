@@ -36,6 +36,30 @@ pub enum GetErrorNamed<'a> {
     },
 }
 
+#[derive(serde::Deserialize)]
+pub struct TryGetQueryParameters {
+    pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
+    pub name: Option<String>,
+    pub color: Option<String>,
+}
+
+impl std::string::ToString for TryGetQueryParameters {
+    fn to_string(&self) -> String {
+        match (&self.limit, &self.name, &self.color) {
+            (None, None, None) => String::from(""),
+            (None, None, Some(color)) => format!("color={color}"),
+            (None, Some(name), None) => format!("name={name}"),
+            (None, Some(name), Some(color)) => format!("name={name}&color={color}"),
+            (Some(limit), None, None) => format!("limit={limit}"),
+            (Some(limit), None, Some(color)) => format!("limit={limit}&color={color}"),
+            (Some(limit), Some(name), None) => format!("limit={limit}&name={name}"),
+            (Some(limit), Some(name), Some(color)) => {
+                format!("limit={limit}&name={name}&color={color}")
+            }
+        }
+    }
+}
+
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TryGetErrorNamed<'a> {
     Reqwest {
@@ -47,9 +71,15 @@ pub enum TryGetErrorNamed<'a> {
 
 pub async fn try_get<'a>(
     server_location: std::string::String,
+    query_parameters: TryGetQueryParameters,
 ) -> Result<Vec<Cat>, TryGetErrorNamed<'a>> {
+    let query_parameters_stringified = query_parameters.to_string();
+    let additional_query_parameters = match query_parameters_stringified.is_empty() {
+        true => String::from(""),
+        false => format!("&{query_parameters_stringified}"),
+    };
     match reqwest::get(&format!(
-        "{server_location}/api/cats/?check={API_USAGE_CHECKER}"
+        "{server_location}/api/cats/?check={API_USAGE_CHECKER}{additional_query_parameters}"
     ))
     .await
     {
