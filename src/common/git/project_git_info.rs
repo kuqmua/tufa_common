@@ -14,7 +14,7 @@ impl<'a> crate::common::git::git_fields::GetGitCommitId<'a> for ProjectGitInfo<'
 impl<'a> crate::common::git::get_git_commit_link::GetGitCommitLink for ProjectGitInfo<'a> {
     fn get_git_commit_link(&self) -> String {
         format!(
-            "https://github.com/kuqmua/tufa_project/commit/{}",
+            "https://github.com/kuqmua/tufa_project/commit/{}", //todo get git_author and git_name from .git directory
             self.git_commit_id
         )
     }
