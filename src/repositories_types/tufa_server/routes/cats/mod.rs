@@ -37,22 +37,17 @@ pub enum GetErrorNamed<'a> {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum TryGetCatsErrorNamed<'a> {
+pub enum TryGetErrorNamed<'a> {
     Reqwest {
         #[eo_display_foreign_type]
-        reqwest_get: reqwest::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    DeserializeJson {
-        #[eo_display_foreign_type]
-        reqwest_get: reqwest::Error,
+        reqwest: reqwest::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
 
-pub async fn try_get_cats<'a>(
+pub async fn try_get<'a>(
     server_location: std::string::String,
-) -> Result<Vec<Cat>, TryGetCatsErrorNamed<'a>> {
+) -> Result<Vec<Cat>, TryGetErrorNamed<'a>> {
     match reqwest::get(&format!(
         "{server_location}/api/cats/?check={API_USAGE_CHECKER}"
     ))
@@ -60,13 +55,13 @@ pub async fn try_get_cats<'a>(
     {
         Ok(r) => match r.json::<Vec<Cat>>().await {
             Ok(vec_cats) => Ok(vec_cats),
-            Err(e) => Err(TryGetCatsErrorNamed::DeserializeJson {
-                reqwest_get: e,
+            Err(e) => Err(TryGetErrorNamed::Reqwest {
+                reqwest: e,
                 code_occurence: crate::code_occurence_tufa_common!(),
             }),
         },
-        Err(e) => Err(TryGetCatsErrorNamed::Reqwest {
-            reqwest_get: e,
+        Err(e) => Err(TryGetErrorNamed::Reqwest {
+            reqwest: e,
             code_occurence: crate::code_occurence_tufa_common!(),
         }),
     }
