@@ -2,8 +2,6 @@
 //     Created,
 //     InternalServerError(PostErrorNamed<'a>),
 // }
-pub static DEFAULT_SELECT_ALL_LIMIT: u32 = 10;
-pub type ApiUsageCheckerType = u64;
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct Cat {
