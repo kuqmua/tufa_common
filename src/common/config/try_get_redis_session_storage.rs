@@ -23,9 +23,7 @@ where
         .await
         {
             Ok(redis_session_store) => Ok(redis_session_store),
-            Err(e) => {
-                return Err(TryGetRedisSessionStorageError::Redis(format!("{e}")));
-            }
+            Err(e) => Err(TryGetRedisSessionStorageError::Redis(format!("{e}"))),
         }
     }
 }

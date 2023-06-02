@@ -1,5 +1,5 @@
-pub static CRATES_IO_SLASH_CRATES_SLASH_LINK: &'static str = "https://crates.io/crates/";
-pub static NON_EXHAUSTIVE: &'static str = "#[non_exhaustive]";
+pub static CRATES_IO_SLASH_CRATES_SLASH_LINK: &str = "https://crates.io/crates/";
+pub static NON_EXHAUSTIVE: &str = "#[non_exhaustive]";
 
 pub trait DisplayForeignType {
     fn display_foreign_type(&self) -> String;

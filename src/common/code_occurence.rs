@@ -28,7 +28,7 @@ impl<'a> CodeOccurence<'a> {
 
 impl<'a> crate::common::error_logs_logic::get_file::GetFile for CodeOccurence<'a> {
     fn get_file(&self) -> &str {
-        &self.file
+        self.file
     }
 }
 
