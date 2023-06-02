@@ -67,6 +67,11 @@ pub enum TryGetErrorNamed<'a> {
         reqwest: reqwest::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
+    UnexpectedStatusCode {
+        #[eo_display]
+        status_code: http::StatusCode,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
 }
 
 pub async fn try_get<'a>(
@@ -83,13 +88,28 @@ pub async fn try_get<'a>(
     ))
     .await
     {
-        Ok(r) => match r.json::<Vec<Cat>>().await {
-            Ok(vec_cats) => Ok(vec_cats),
-            Err(e) => Err(TryGetErrorNamed::Reqwest {
-                reqwest: e,
-                code_occurence: crate::code_occurence_tufa_common!(),
-            }),
-        },
+        Ok(response) => {
+            let response_status = response.status();
+            println!("try_get response status code {}", response.status());
+            if response_status == http::StatusCode::OK {
+                match response.json::<Vec<Cat>>().await {
+                    Ok(vec_cats) => Ok(vec_cats),
+                    Err(e) => Err(TryGetErrorNamed::Reqwest {
+                        reqwest: e,
+                        code_occurence: crate::code_occurence_tufa_common!(),
+                    }),
+                }
+            } else if response_status == http::StatusCode::BAD_REQUEST
+                || response_status == http::StatusCode::INTERNAL_SERVER_ERROR
+            {
+                todo!()
+            } else {
+                Err(TryGetErrorNamed::UnexpectedStatusCode {
+                    status_code: response_status,
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                })
+            }
+        }
         Err(e) => Err(TryGetErrorNamed::Reqwest {
             reqwest: e,
             code_occurence: crate::code_occurence_tufa_common!(),
