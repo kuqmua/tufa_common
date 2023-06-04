@@ -12,7 +12,7 @@ pub struct Cat {
 //////////////////////////////////////
 #[derive(serde::Deserialize)]
 pub struct GetQueryParameters {
-    pub check: String,
+    pub project_commit: String,
     pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
     pub name: Option<String>,
     pub color: Option<String>,
@@ -22,7 +22,7 @@ pub struct GetQueryParameters {
 pub enum GetErrorNamed<'a> {
     CheckApiUsage {
         #[eo_display_with_serialize_deserialize]
-        check: &'a str,
+        project_commit: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     PostgresSelect {
@@ -80,7 +80,7 @@ pub async fn try_get<'a>(
         false => format!("&{query_parameters_stringified}"),
     };
     match reqwest::get(&format!(
-        "{server_location}/api/cats/?check={}{additional_query_parameters}",
+        "{server_location}/api/cats/?project_commit={}{additional_query_parameters}",
         crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.project_commit
     ))
     .await
@@ -121,14 +121,14 @@ pub struct GetByIdPathParameters {
 
 #[derive(serde::Deserialize)]
 pub struct GetByIdQueryParameters {
-    pub check: String,
+    pub project_commit: String,
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum GetByIdErrorNamed<'a> {
     CheckApiUsage {
         #[eo_display_with_serialize_deserialize]
-        check: &'a str,
+        project_commit: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     Bigserial {
@@ -186,7 +186,7 @@ pub async fn try_get_by_id<'a>(
     path_parameters: TryGetByIdPathParameters,
 ) -> Result<Cat, TryGetByIdErrorNamed<'a>> {
     match reqwest::get(&format!(
-        "{server_location}/api/cats/{}?check={}",
+        "{server_location}/api/cats/{}?project_commit={}",
         path_parameters.id,
         crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.project_commit
     ))
@@ -209,7 +209,7 @@ pub async fn try_get_by_id<'a>(
 //////////////////////////////////////
 #[derive(serde::Deserialize)]
 pub struct PostQueryParameters {
-    pub check: String,
+    pub project_commit: String,
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
@@ -222,7 +222,7 @@ pub struct CatToPost {
 pub enum PostErrorNamed<'a> {
     CheckApiUsage {
         #[eo_display_with_serialize_deserialize]
-        check: &'a str,
+        project_commit: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     PostgresInsert {
@@ -234,14 +234,14 @@ pub enum PostErrorNamed<'a> {
 //////////////////////////////////////
 #[derive(serde::Deserialize)]
 pub struct PutQueryParameters {
-    pub check: String,
+    pub project_commit: String,
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum PutErrorNamed<'a> {
     CheckApiUsage {
         #[eo_display_with_serialize_deserialize]
-        check: &'a str,
+        project_commit: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     Bigserial {
@@ -258,7 +258,7 @@ pub enum PutErrorNamed<'a> {
 //////////////////////////////////////
 #[derive(serde::Deserialize)]
 pub struct PatchQueryParameters {
-    pub check: String,
+    pub project_commit: String,
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
@@ -272,7 +272,7 @@ pub struct CatToPatch {
 pub enum PatchErrorNamed<'a> {
     CheckApiUsage {
         #[eo_display_with_serialize_deserialize]
-        check: &'a str,
+        project_commit: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     Bigserial {
@@ -299,7 +299,7 @@ pub enum PatchErrorNamed<'a> {
 //////////////////////////////////////
 #[derive(serde::Deserialize)]
 pub struct DeleteQueryParameters {
-    pub check: String,
+    pub project_commit: String,
     pub name: Option<String>,
     pub color: Option<String>,
 }
@@ -308,7 +308,7 @@ pub struct DeleteQueryParameters {
 pub enum DeleteErrorNamed<'a> {
     CheckApiUsage {
         #[eo_display_with_serialize_deserialize]
-        check: &'a str,
+        project_commit: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     NoParameters {
@@ -330,14 +330,14 @@ pub struct DeleteByIdPathParameters {
 
 #[derive(serde::Deserialize)]
 pub struct DeleteByIdQueryParameters {
-    pub check: String,
+    pub project_commit: String,
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum DeleteByIdErrorNamed<'a> {
     CheckApiUsage {
         #[eo_display_with_serialize_deserialize]
-        check: &'a str,
+        project_commit: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     Bigserial {
