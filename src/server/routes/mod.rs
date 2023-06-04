@@ -1,1 +1,1 @@
-pub mod project_commit;
+pub mod git_info;

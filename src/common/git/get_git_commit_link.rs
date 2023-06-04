@@ -9,7 +9,7 @@ where
 {
     fn get_git_commit_link(&self) -> String {
         format!(
-            "{}/tree/{}/",
+            "{}/tree/{}",
             self.get_git_repo_link(),
             self.get_git_commit_id()
         )
