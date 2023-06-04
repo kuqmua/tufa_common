@@ -496,6 +496,73 @@ pub enum DeleteErrorNamed<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
+//
+#[derive(serde::Deserialize)]
+pub struct TryDeleteQueryParameters {
+    pub name: Option<String>,
+    pub color: Option<String>,
+}
+
+impl std::string::ToString for TryDeleteQueryParameters {
+    fn to_string(&self) -> String {
+        match (&self.name, &self.color) {
+            (None, None) => String::from(""),
+            (None, Some(color)) => format!("color={color}"),
+            (Some(name), None) => format!("name={name}"),
+            (Some(name), Some(color)) => format!("name={name}&color={color}"),
+        }
+    }
+}
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum TryDeleteErrorNamed<'a> {
+    SerdeJsonToString {
+        #[eo_display]
+        serde_json_to_string: serde_json::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    UnexpectedStatusCode {
+        #[eo_display]
+        unexpected_status_code: http::StatusCode,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Reqwest {
+        #[eo_display_foreign_type]
+        reqwest: reqwest::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
+pub async fn try_delete<'a>(
+    server_location: std::string::String,
+    query_parameters: TryDeleteQueryParameters,
+) -> Result<(), TryDeleteErrorNamed<'a>> {
+    let query_parameters_stringified = query_parameters.to_string();
+    let additional_query_parameters = match query_parameters_stringified.is_empty() {
+        true => String::from(""),
+        false => format!("&{query_parameters_stringified}"),
+    };
+    let url = format!(
+        "{server_location}/api/cats/?project_commit={}{additional_query_parameters}",
+        crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.project_commit
+    );
+    match reqwest::Client::new().delete(&url).send().await {
+        Ok(r) => {
+            let response_status = r.status();
+            match response_status == http::StatusCode::OK {
+                true => Ok(()),
+                false => Err(TryDeleteErrorNamed::UnexpectedStatusCode {
+                    unexpected_status_code: response_status,
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                }),
+            }
+        }
+        Err(e) => Err(TryDeleteErrorNamed::Reqwest {
+            reqwest: e,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        }),
+    }
+}
 //////////////////////////////////////
 #[derive(serde::Deserialize)]
 pub struct DeleteByIdPathParameters {
