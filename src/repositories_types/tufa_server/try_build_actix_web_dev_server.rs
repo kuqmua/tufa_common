@@ -21,3 +21,9 @@ pub enum TryBuildActixWebDevServer<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
+
+pub struct AppInfo<'a> {
+    pub postgres_pool: sqlx::PgPool,
+    pub config: &'a crate::repositories_types::tufa_server::config::config_struct::Config,
+    pub project_git_info: &'a crate::common::git::project_git_info::ProjectGitInfo<'a>,
+}
