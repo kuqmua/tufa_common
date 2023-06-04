@@ -1,8 +1,4 @@
-// pub enum CreateRouteHttpResponseBuilder<'a> {
-//     Created,
-//     InternalServerError(PostErrorNamed<'a>),
-// }
-
+//todo server_location: std::string::String, 0 maybe change it to ip port
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct Cat {
     pub id: i64,
@@ -79,12 +75,11 @@ pub async fn try_get<'a>(
         true => String::from(""),
         false => format!("&{query_parameters_stringified}"),
     };
-    match reqwest::get(&format!(
+    let url = format!(
         "{server_location}/api/cats/?project_commit={}{additional_query_parameters}",
         crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.project_commit
-    ))
-    .await
-    {
+    );
+    match reqwest::get(&url).await {
         Ok(response) => {
             let response_status = response.status();
             println!("try_get response status code {}", response.status());
@@ -144,27 +139,8 @@ pub enum GetByIdErrorNamed<'a> {
 }
 //
 #[derive(serde::Deserialize)]
-pub struct TryGetByIdQueryParameters {
-    pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
-    pub name: Option<String>,
-    pub color: Option<String>,
-}
-
-impl std::string::ToString for TryGetByIdQueryParameters {
-    fn to_string(&self) -> String {
-        match (&self.limit, &self.name, &self.color) {
-            (None, None, None) => String::from(""),
-            (None, None, Some(color)) => format!("color={color}"),
-            (None, Some(name), None) => format!("name={name}"),
-            (None, Some(name), Some(color)) => format!("name={name}&color={color}"),
-            (Some(limit), None, None) => format!("limit={limit}"),
-            (Some(limit), None, Some(color)) => format!("limit={limit}&color={color}"),
-            (Some(limit), Some(name), None) => format!("limit={limit}&name={name}"),
-            (Some(limit), Some(name), Some(color)) => {
-                format!("limit={limit}&name={name}&color={color}")
-            }
-        }
-    }
+pub struct TryGetByIdPathParameters {
+    pub id: i64,
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
@@ -176,22 +152,16 @@ pub enum TryGetByIdErrorNamed<'a> {
     },
 }
 
-#[derive(serde::Deserialize)]
-pub struct TryGetByIdPathParameters {
-    pub id: i64,
-}
-
 pub async fn try_get_by_id<'a>(
     server_location: std::string::String,
     path_parameters: TryGetByIdPathParameters,
 ) -> Result<Cat, TryGetByIdErrorNamed<'a>> {
-    match reqwest::get(&format!(
+    let url = format!(
         "{server_location}/api/cats/{}?project_commit={}",
         path_parameters.id,
         crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.project_commit
-    ))
-    .await
-    {
+    );
+    match reqwest::get(&url).await {
         Ok(r) => match r.json::<Cat>().await {
             Ok(vec_cats) => Ok(vec_cats),
             Err(e) => Err(TryGetByIdErrorNamed::Reqwest {
@@ -205,7 +175,6 @@ pub async fn try_get_by_id<'a>(
         }),
     }
 }
-//
 //////////////////////////////////////
 #[derive(serde::Deserialize)]
 pub struct PostQueryParameters {
@@ -231,6 +200,68 @@ pub enum PostErrorNamed<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
+
+//
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum TryPostErrorNamed<'a> {
+    SerdeJsonToString {
+        #[eo_display]
+        serde_json_to_string: serde_json::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    UnexpectedStatusCode {
+        #[eo_display]
+        unexpected_status_code: http::StatusCode,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Reqwest {
+        #[eo_display_foreign_type]
+        reqwest: reqwest::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
+pub async fn try_post<'a>(
+    server_location: std::string::String,
+    cat: CatToPost,
+) -> Result<(), TryPostErrorNamed<'a>> {
+    let stringified_json = match serde_json::to_string(&cat) {
+        Ok(stringified_json) => stringified_json,
+        Err(e) => {
+            return Err(TryPostErrorNamed::SerdeJsonToString {
+                serde_json_to_string: e,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            });
+        }
+    };
+    let url = format!(
+        "{server_location}/api/cats/?project_commit={}",
+        crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.project_commit
+    );
+    match reqwest::Client::new()
+        .post(&url)
+        .header(reqwest::header::CONTENT_TYPE, "application/json")
+        .body(stringified_json)
+        .send()
+        .await
+    {
+        Ok(r) => {
+            let response_status = r.status();
+            match response_status == http::StatusCode::CREATED {
+                true => Ok(()),
+                false => Err(TryPostErrorNamed::UnexpectedStatusCode {
+                    unexpected_status_code: response_status,
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                }),
+            }
+        }
+        Err(e) => Err(TryPostErrorNamed::Reqwest {
+            reqwest: e,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        }),
+    }
+}
+//
 //////////////////////////////////////
 #[derive(serde::Deserialize)]
 pub struct PutQueryParameters {
