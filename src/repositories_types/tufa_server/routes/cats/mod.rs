@@ -94,6 +94,7 @@ pub async fn try_get<'a>(
             } else if response_status == http::StatusCode::BAD_REQUEST
                 || response_status == http::StatusCode::INTERNAL_SERVER_ERROR
             {
+                //todo - for each possibel status code try response.json::<TYPE>().await for different types ? then wrap it to enum?
                 todo!()
             } else {
                 Err(TryGetErrorNamed::UnexpectedStatusCode {
