@@ -138,13 +138,14 @@ pub enum GetByIdErrorNamed<'a> {
     },
 }
 //
-#[derive(serde::Deserialize)]
-pub struct TryGetByIdPathParameters {
-    pub id: i64,
-}
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TryGetByIdErrorNamed<'a> {
+    BelowZero {
+        #[eo_display_with_serialize_deserialize]
+        below_zero: i64,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
     Reqwest {
         #[eo_display_foreign_type]
         reqwest: reqwest::Error,
@@ -154,8 +155,14 @@ pub enum TryGetByIdErrorNamed<'a> {
 
 pub async fn try_get_by_id<'a>(
     server_location: std::string::String,
-    path_parameters: TryGetByIdPathParameters,
+    path_parameters: GetByIdPathParameters,
 ) -> Result<Cat, TryGetByIdErrorNamed<'a>> {
+    if let true = path_parameters.id.is_negative() {
+        return Err(TryGetByIdErrorNamed::BelowZero {
+            below_zero: path_parameters.id,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        });
+    }
     let url = format!(
         "{server_location}/api/cats/{}?project_commit={}",
         path_parameters.id,
@@ -516,11 +523,6 @@ impl std::string::ToString for TryDeleteQueryParameters {
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TryDeleteErrorNamed<'a> {
-    SerdeJsonToString {
-        #[eo_display]
-        serde_json_to_string: serde_json::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
     UnexpectedStatusCode {
         #[eo_display]
         unexpected_status_code: http::StatusCode,
@@ -591,5 +593,58 @@ pub enum DeleteByIdErrorNamed<'a> {
         postgres_delete: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
+}
+//
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum TryDeleteByIdErrorNamed<'a> {
+    BelowZero {
+        #[eo_display_with_serialize_deserialize]
+        below_zero: i64,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    UnexpectedStatusCode {
+        #[eo_display]
+        unexpected_status_code: http::StatusCode,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Reqwest {
+        #[eo_display_foreign_type]
+        reqwest: reqwest::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
+pub async fn try_delete_by_id<'a>(
+    server_location: std::string::String,
+    path_parameters: DeleteByIdPathParameters,
+) -> Result<(), TryDeleteByIdErrorNamed<'a>> {
+    if let true = path_parameters.id.is_negative() {
+        return Err(TryDeleteByIdErrorNamed::BelowZero {
+            below_zero: path_parameters.id,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        });
+    }
+    let url = format!(
+        "{server_location}/api/cats/{}?project_commit={}",
+        path_parameters.id,
+        crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.project_commit
+    );
+    match reqwest::Client::new().delete(&url).send().await {
+        Ok(r) => {
+            let response_status = r.status();
+            match response_status == http::StatusCode::OK {
+                true => Ok(()),
+                false => Err(TryDeleteByIdErrorNamed::UnexpectedStatusCode {
+                    unexpected_status_code: response_status,
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                }),
+            }
+        }
+        Err(e) => Err(TryDeleteByIdErrorNamed::Reqwest {
+            reqwest: e,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        }),
+    }
 }
 //////////////////////////////////////
