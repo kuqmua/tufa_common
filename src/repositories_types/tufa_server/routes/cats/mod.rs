@@ -81,7 +81,7 @@ pub async fn try_get<'a>(
     };
     match reqwest::get(&format!(
         "{server_location}/api/cats/?check={}{additional_query_parameters}",
-        crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.git_commit_id
+        crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.project_commit
     ))
     .await
     {
@@ -188,7 +188,7 @@ pub async fn try_get_by_id<'a>(
     match reqwest::get(&format!(
         "{server_location}/api/cats/{}?check={}",
         path_parameters.id,
-        crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.git_commit_id
+        crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.project_commit
     ))
     .await
     {
