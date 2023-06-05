@@ -9,6 +9,12 @@ impl ProjectGitInfo<'_> {
     pub fn does_not_match_message(&self) -> &'static str {
         "please use special http request function from https://github.com/kuqmua/tufa_project for this API"
     }
+    pub fn cannot_convert_project_commit_to_str_message(&self) -> &'static str {
+        "cannot convert project commit to str, please check request headers"
+    }
+    pub fn no_project_commit_header_message(&self) -> &'static str {
+        "no project_commit header provided, please add project_commit to request headers"
+    }
 }
 
 impl<'a> crate::common::git::git_fields::GetGitCommitId<'a> for ProjectGitInfo<'a> {
