@@ -79,16 +79,20 @@ pub async fn try_get<'a>(
     server_location: std::string::String,
     query_parameters: TryGetQueryParameters,
 ) -> Result<Vec<Cat>, TryGetErrorNamed<'a>> {
-    let query_parameters_stringified = query_parameters.to_string();
-    let additional_query_parameters = match query_parameters_stringified.is_empty() {
-        true => String::from(""),
-        false => format!("&{query_parameters_stringified}"),
-    };
     let url = format!(
-        "{server_location}/api/cats/?project_commit={}{additional_query_parameters}",
-        crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.project_commit
+        "{server_location}/api/cats/?{}",
+        query_parameters.to_string()
     );
-    match reqwest::get(&url).await {
+    match reqwest::Client::new()
+        .get(&url)
+        .header(
+            crate::common::git::project_git_info::PROJECT_COMMIT,
+            crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
+                .project_commit,
+        )
+        .send()
+        .await
+    {
         Ok(response) => {
             let response_status = response.status();
             println!("try_get response status code {}", response.status());
@@ -153,7 +157,6 @@ pub enum GetByIdErrorNamed<'a> {
     },
 }
 //
-
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TryGetByIdErrorNamed<'a> {
     BelowZero {
@@ -172,18 +175,24 @@ pub async fn try_get_by_id<'a>(
     server_location: std::string::String,
     path_parameters: GetByIdPathParameters,
 ) -> Result<Cat, TryGetByIdErrorNamed<'a>> {
+    //todo maybe path_parameters already must be non zero?
     if let true = path_parameters.id.is_negative() {
         return Err(TryGetByIdErrorNamed::BelowZero {
             below_zero: path_parameters.id,
             code_occurence: crate::code_occurence_tufa_common!(),
         });
     }
-    let url = format!(
-        "{server_location}/api/cats/{}?project_commit={}",
-        path_parameters.id,
-        crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.project_commit
-    );
-    match reqwest::get(&url).await {
+    let url = format!("{server_location}/api/cats/{}", path_parameters.id);
+    match reqwest::Client::new()
+        .get(&url)
+        .header(
+            crate::common::git::project_git_info::PROJECT_COMMIT,
+            crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
+                .project_commit,
+        )
+        .send()
+        .await
+    {
         Ok(r) => match r.json::<Cat>().await {
             Ok(vec_cats) => Ok(vec_cats),
             Err(e) => Err(TryGetByIdErrorNamed::Reqwest {
@@ -261,12 +270,14 @@ pub async fn try_post<'a>(
             });
         }
     };
-    let url = format!(
-        "{server_location}/api/cats/?project_commit={}",
-        crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.project_commit
-    );
+    let url = format!("{server_location}/api/cats/");
     match reqwest::Client::new()
         .post(&url)
+        .header(
+            crate::common::git::project_git_info::PROJECT_COMMIT,
+            crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
+                .project_commit,
+        )
         .header(reqwest::header::CONTENT_TYPE, "application/json")
         .body(stringified_json)
         .send()
@@ -319,7 +330,6 @@ pub enum PutErrorNamed<'a> {
     },
 }
 //
-
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TryPutErrorNamed<'a> {
     BelowZero {
@@ -363,12 +373,14 @@ pub async fn try_put<'a>(
             });
         }
     };
-    let url = format!(
-        "{server_location}/api/cats/?project_commit={}",
-        crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.project_commit
-    );
+    let url = format!("{server_location}/api/cats/");
     match reqwest::Client::new()
         .put(&url)
+        .header(
+            crate::common::git::project_git_info::PROJECT_COMMIT,
+            crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
+                .project_commit,
+        )
         .header(reqwest::header::CONTENT_TYPE, "application/json")
         .body(stringified_json)
         .send()
@@ -480,12 +492,14 @@ pub async fn try_patch<'a>(
             });
         }
     };
-    let url = format!(
-        "{server_location}/api/cats/?project_commit={}",
-        crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.project_commit
-    );
+    let url = format!("{server_location}/api/cats/",);
     match reqwest::Client::new()
         .patch(&url)
+        .header(
+            crate::common::git::project_git_info::PROJECT_COMMIT,
+            crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
+                .project_commit,
+        )
         .header(reqwest::header::CONTENT_TYPE, "application/json")
         .body(stringified_json)
         .send()
@@ -578,16 +592,20 @@ pub async fn try_delete<'a>(
     server_location: std::string::String,
     query_parameters: TryDeleteQueryParameters,
 ) -> Result<(), TryDeleteErrorNamed<'a>> {
-    let query_parameters_stringified = query_parameters.to_string();
-    let additional_query_parameters = match query_parameters_stringified.is_empty() {
-        true => String::from(""),
-        false => format!("&{query_parameters_stringified}"),
-    };
     let url = format!(
-        "{server_location}/api/cats/?project_commit={}{additional_query_parameters}",
-        crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.project_commit
+        "{server_location}/api/cats/?{}",
+        query_parameters.to_string()
     );
-    match reqwest::Client::new().delete(&url).send().await {
+    match reqwest::Client::new()
+        .delete(&url)
+        .header(
+            crate::common::git::project_git_info::PROJECT_COMMIT,
+            crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
+                .project_commit,
+        )
+        .send()
+        .await
+    {
         Ok(r) => {
             let response_status = r.status();
             match response_status == http::StatusCode::OK {
@@ -639,7 +657,6 @@ pub enum DeleteByIdErrorNamed<'a> {
     },
 }
 //
-
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TryDeleteByIdErrorNamed<'a> {
     BelowZero {
@@ -669,12 +686,17 @@ pub async fn try_delete_by_id<'a>(
             code_occurence: crate::code_occurence_tufa_common!(),
         });
     }
-    let url = format!(
-        "{server_location}/api/cats/{}?project_commit={}",
-        path_parameters.id,
-        crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.project_commit
-    );
-    match reqwest::Client::new().delete(&url).send().await {
+    let url = format!("{server_location}/api/cats/{}", path_parameters.id);
+    match reqwest::Client::new()
+        .delete(&url)
+        .header(
+            crate::common::git::project_git_info::PROJECT_COMMIT,
+            crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
+                .project_commit,
+        )
+        .send()
+        .await
+    {
         Ok(r) => {
             let response_status = r.status();
             match response_status == http::StatusCode::OK {
