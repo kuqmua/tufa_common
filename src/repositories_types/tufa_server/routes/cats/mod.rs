@@ -8,7 +8,6 @@ pub struct Cat {
 //////////////////////////////////////
 #[derive(serde::Deserialize)]
 pub struct GetQueryParameters {
-    pub project_commit: String,
     pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
     pub name: Option<String>,
     pub color: Option<String>,
