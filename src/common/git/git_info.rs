@@ -2,6 +2,7 @@
     Debug, serde_derive::Serialize, serde_derive::Deserialize, Clone, Eq, Hash, PartialEq, Default,
 )]
 pub struct GitInfo<'a> {
+    //todo - two GitInfo struct - one &'static, second for runtime deserialization, without static
     pub git_commit_id: &'a str,
     pub git_repo_link: &'a str,
     // pub git_author: &'a str,
