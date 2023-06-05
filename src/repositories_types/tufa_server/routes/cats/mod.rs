@@ -510,7 +510,6 @@ pub async fn try_patch<'a>(
 //////////////////////////////////////
 #[derive(serde::Deserialize)]
 pub struct DeleteQueryParameters {
-    pub project_commit: String,
     pub name: Option<String>,
     pub color: Option<String>,
 }
@@ -520,6 +519,16 @@ pub enum DeleteErrorNamed<'a> {
     CheckApiUsage {
         #[eo_display_with_serialize_deserialize]
         project_commit: &'a str,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    CannotConvertProjectCommitToStr {
+        #[eo_display_with_serialize_deserialize]
+        cannot_convert_project_commit_to_str: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    NoProjectCommitHeader {
+        #[eo_display_with_serialize_deserialize]
+        no_project_commit_header: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     NoParameters {
