@@ -124,16 +124,21 @@ pub struct GetByIdPathParameters {
     pub id: i64,
 }
 
-#[derive(serde::Deserialize)]
-pub struct GetByIdQueryParameters {
-    pub project_commit: String,
-}
-
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum GetByIdErrorNamed<'a> {
     CheckApiUsage {
         #[eo_display_with_serialize_deserialize]
         project_commit: &'a str,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    CannotConvertProjectCommitToStr {
+        #[eo_display_with_serialize_deserialize]
+        cannot_convert_project_commit_to_str: &'a str,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    NoProjectCommitHeader {
+        #[eo_display_with_serialize_deserialize]
+        no_project_commit_header: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     Bigserial {
