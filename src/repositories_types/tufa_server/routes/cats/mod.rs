@@ -1,3 +1,4 @@
+pub static CATS: &str = "cats";
 //todo server_location: std::string::String, 0 maybe change it to ip port
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct Cat {
@@ -80,7 +81,7 @@ pub async fn try_get<'a>(
     query_parameters: TryGetQueryParameters,
 ) -> Result<Vec<Cat>, TryGetErrorNamed<'a>> {
     let url = format!(
-        "{server_location}/api/cats/?{}",
+        "{server_location}/api/{CATS}/?{}",
         query_parameters.to_string()
     );
     match reqwest::Client::new()
@@ -182,7 +183,7 @@ pub async fn try_get_by_id<'a>(
             code_occurence: crate::code_occurence_tufa_common!(),
         });
     }
-    let url = format!("{server_location}/api/cats/{}", path_parameters.id);
+    let url = format!("{server_location}/api/{CATS}/{}", path_parameters.id);
     match reqwest::Client::new()
         .get(&url)
         .header(
@@ -270,7 +271,7 @@ pub async fn try_post<'a>(
             });
         }
     };
-    let url = format!("{server_location}/api/cats/");
+    let url = format!("{server_location}/api/{CATS}/");
     match reqwest::Client::new()
         .post(&url)
         .header(
@@ -373,7 +374,7 @@ pub async fn try_put<'a>(
             });
         }
     };
-    let url = format!("{server_location}/api/cats/");
+    let url = format!("{server_location}/api/{CATS}/");
     match reqwest::Client::new()
         .put(&url)
         .header(
@@ -492,7 +493,7 @@ pub async fn try_patch<'a>(
             });
         }
     };
-    let url = format!("{server_location}/api/cats/",);
+    let url = format!("{server_location}/api/{CATS}/",);
     match reqwest::Client::new()
         .patch(&url)
         .header(
@@ -593,7 +594,7 @@ pub async fn try_delete<'a>(
     query_parameters: TryDeleteQueryParameters,
 ) -> Result<(), TryDeleteErrorNamed<'a>> {
     let url = format!(
-        "{server_location}/api/cats/?{}",
+        "{server_location}/api/{CATS}/?{}",
         query_parameters.to_string()
     );
     match reqwest::Client::new()
@@ -686,7 +687,7 @@ pub async fn try_delete_by_id<'a>(
             code_occurence: crate::code_occurence_tufa_common!(),
         });
     }
-    let url = format!("{server_location}/api/cats/{}", path_parameters.id);
+    let url = format!("{server_location}/api/{CATS}/{}", path_parameters.id);
     match reqwest::Client::new()
         .delete(&url)
         .header(
