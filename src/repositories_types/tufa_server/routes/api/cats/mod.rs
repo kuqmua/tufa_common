@@ -72,67 +72,66 @@ pub enum TryGetErrorNamed<'a> {
 
 /////////////
 //builder pattern example
-// #[derive(Debug)]
-// pub struct PortHandle {
-// 	port: u16,
-// }
-// #[derive(Default, Clone)]
-// pub struct Sealed;
-// #[derive(Default, Clone)]
-// pub struct NotSealed;
+#[derive(Debug)]
+pub struct TryGetParameters {
+    server_location: std::string::String,
+}
+#[derive(Default, Clone)]
+pub struct Sealed;
+#[derive(Default, Clone)]
+pub struct NotSealed;
 
-// #[derive(Default, Clone)]
-// pub struct NoPort;
-// #[derive(Default, Clone)]
-// pub struct Port(u16);
+#[derive(Default, Clone)]
+pub struct NoServerLocation;
+#[derive(Default, Clone)]
+pub struct ServerLocation(std::string::String);
 
-// #[derive(Default, Clone)]
-// pub struct PortHandleBuilder<PortGeneric, SealGeneric> {
-// 	port: PortGeneric,
-// 	marker_seal: core::marker::PhantomData<SealGeneric>,
-// }
-// impl PortHandleBuilder<NoPort, NotSealed> {
-// 	pub fn new() -> Self {
-// 		PortHandleBuilder::default()
-// 	}
-// }
-// impl<PortGeneric> PortHandleBuilder<PortGeneric, NotSealed> {
-// 	pub fn seal(self) -> PortHandleBuilder<PortGeneric, Sealed> {
-// 		PortHandleBuilder {
-// 			port: self.port,
-// 			marker_seal: core::marker::PhantomData,
-// 		}
-// 	}
-// }
-// impl<SealedGeneric> PortHandleBuilder<Port, SealedGeneric> {
-// 	pub fn build(self) -> Result<PortHandle, std::string::String> {
-// 		Ok(PortHandle {
-// 			port: self.port.0,
-// 		})
-// 	}
-// }
-// impl<PortGeneric> PortHandleBuilder<PortGeneric, NotSealed> {
-// 	pub fn port(
-// 		self,
-// 		port: u16,
-// 	) -> PortHandleBuilder<Port, NotSealed> {
-// 		PortHandleBuilder {
-// 			port: Port(port),
-// 			marker_seal: core::marker::PhantomData,
-// 		}
-// 	}
-// }
+#[derive(Default, Clone)]
+pub struct TryGetParametersBuilder<ServerLocationGeneric, SealGeneric> {
+    server_location: ServerLocationGeneric,
+    marker_seal: core::marker::PhantomData<SealGeneric>,
+}
+impl TryGetParametersBuilder<NoServerLocation, NotSealed> {
+    pub fn new() -> Self {
+        TryGetParametersBuilder::default()
+    }
+}
+impl<ServerLocationGeneric> TryGetParametersBuilder<ServerLocationGeneric, NotSealed> {
+    pub fn seal(self) -> TryGetParametersBuilder<ServerLocationGeneric, Sealed> {
+        TryGetParametersBuilder {
+            server_location: self.server_location,
+            marker_seal: core::marker::PhantomData,
+        }
+    }
+}
+impl<SealedGeneric> TryGetParametersBuilder<ServerLocation, SealedGeneric> {
+    pub fn build(self) -> Result<TryGetParameters, std::string::String> {
+        Ok(TryGetParameters {
+            server_location: self.server_location.0,
+        })
+    }
+}
+impl<ServerLocationGeneric> TryGetParametersBuilder<ServerLocationGeneric, NotSealed> {
+    pub fn server_location(
+        self,
+        server_location: std::string::String,
+    ) -> TryGetParametersBuilder<ServerLocation, NotSealed> {
+        TryGetParametersBuilder {
+            server_location: ServerLocation(server_location),
+            marker_seal: core::marker::PhantomData,
+        }
+    }
+}
 
-// fn something() {
-// 	let req_builder = PortHandleBuilder::new()
-// 		.port(3000);
+fn something() {
+    let req_builder =
+        TryGetParametersBuilder::new().server_location(std::string::String::from("127.0.0.1:8080"));
 
-// 	let req_builder = req_builder
-// 		.seal();
+    let req_builder = req_builder.seal();
 
-// 	let req = req_builder.build().expect("cannot build1");
-// 	println!("{req:#?}");
-// }
+    let req = req_builder.build().expect("cannot build1");
+    println!("{req:#?}");
+}
 /////////////
 pub async fn try_get<'a>(
     server_location: std::string::String,
