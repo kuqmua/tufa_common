@@ -8,5 +8,5 @@ pub use health_check::*;
 pub use login::*;
 pub use subscriptions::*;
 pub use subscriptions_confirm::*;
-pub mod cats;
+pub mod api;
 pub mod git;
