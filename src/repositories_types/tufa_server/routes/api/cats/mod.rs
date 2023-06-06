@@ -71,68 +71,6 @@ pub enum TryGetErrorNamed<'a> {
 }
 
 /////////////
-//builder pattern example
-#[derive(Debug)]
-pub struct TryGetParameters {
-    server_location: std::string::String,
-}
-#[derive(Default, Clone)]
-pub struct Sealed;
-#[derive(Default, Clone)]
-pub struct NotSealed;
-
-#[derive(Default, Clone)]
-pub struct NoServerLocation;
-#[derive(Default, Clone)]
-pub struct ServerLocation(std::string::String);
-
-#[derive(Default, Clone)]
-pub struct TryGetParametersBuilder<ServerLocationGeneric, SealGeneric> {
-    server_location: ServerLocationGeneric,
-    marker_seal: core::marker::PhantomData<SealGeneric>,
-}
-impl TryGetParametersBuilder<NoServerLocation, NotSealed> {
-    pub fn new() -> Self {
-        TryGetParametersBuilder::default()
-    }
-}
-impl<ServerLocationGeneric> TryGetParametersBuilder<ServerLocationGeneric, NotSealed> {
-    pub fn seal(self) -> TryGetParametersBuilder<ServerLocationGeneric, Sealed> {
-        TryGetParametersBuilder {
-            server_location: self.server_location,
-            marker_seal: core::marker::PhantomData,
-        }
-    }
-}
-impl<SealedGeneric> TryGetParametersBuilder<ServerLocation, SealedGeneric> {
-    pub fn build(self) -> Result<TryGetParameters, std::string::String> {
-        Ok(TryGetParameters {
-            server_location: self.server_location.0,
-        })
-    }
-}
-impl<ServerLocationGeneric> TryGetParametersBuilder<ServerLocationGeneric, NotSealed> {
-    pub fn server_location(
-        self,
-        server_location: std::string::String,
-    ) -> TryGetParametersBuilder<ServerLocation, NotSealed> {
-        TryGetParametersBuilder {
-            server_location: ServerLocation(server_location),
-            marker_seal: core::marker::PhantomData,
-        }
-    }
-}
-
-fn something() {
-    let req_builder =
-        TryGetParametersBuilder::new().server_location(std::string::String::from("127.0.0.1:8080"));
-
-    let req_builder = req_builder.seal();
-
-    let req = req_builder.build().expect("cannot build1");
-    println!("{req:#?}");
-}
-/////////////
 pub async fn try_get<'a>(
     server_location: std::string::String,
     query_parameters: GetQueryParameters,
@@ -529,6 +467,125 @@ pub enum TryPatchErrorNamed<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
+
+/////////////
+// //builder pattern example
+// #[derive(Debug)]
+// pub struct TryPatchParameters {
+//     server_location: std::string::String,
+//     limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
+//     name: Option<std::string::String>,
+//     // color: std::string::String,
+// }
+// #[derive(Default, Clone)]
+// pub struct Sealed;
+// #[derive(Default, Clone)]
+// pub struct NotSealed;
+
+// #[derive(Default, Clone)]
+// pub struct NoServerLocation;
+// #[derive(Default, Clone)]
+// pub struct NoLimit;
+// #[derive(Default, Clone)]
+// pub struct NoName;
+// // #[derive(Default, Clone)]
+// // pub struct NoColor;
+// #[derive(Default, Clone)]
+// pub struct ServerLocation(std::string::String);
+// #[derive(Default, Clone)]
+// pub struct Limit(crate::server::postgres::rows_per_table::RowsPerTable);
+// #[derive(Default, Clone)]
+// pub struct Name(std::string::String);
+// // #[derive(Default, Clone)]
+// // pub struct Color(std::string::String);
+
+// #[derive(Default, Clone)]
+// pub struct TryPatchParametersBuilder<ServerLocationGeneric, LimitGeneric, NameGeneric, SealGeneric>
+// {
+//     server_location: ServerLocationGeneric,
+//     limit: LimitGeneric,
+//     name: NameGeneric,
+//     marker_seal: core::marker::PhantomData<SealGeneric>,
+// }
+// impl TryPatchParametersBuilder<NoServerLocation, NoLimit, NoName, NotSealed> {
+//     pub fn new() -> Self {
+//         TryPatchParametersBuilder::default()
+//     }
+// }
+// impl<ServerLocationGeneric, LimitGeneric, NameGeneric>
+//     TryPatchParametersBuilder<ServerLocationGeneric, LimitGeneric, NameGeneric, NotSealed>
+// {
+//     pub fn seal(
+//         self,
+//     ) -> TryPatchParametersBuilder<ServerLocationGeneric, LimitGeneric, NameGeneric, Sealed> {
+//         TryPatchParametersBuilder {
+//             server_location: self.server_location,
+//             limit: self.limit,
+//             name: self.name,
+//             marker_seal: core::marker::PhantomData,
+//         }
+//     }
+// }
+// impl<SealedGeneric>
+//     TryPatchParametersBuilder<ServerLocation, Option<Limit>, Option<Name>, SealedGeneric>
+// {
+//     pub fn build(self) -> Result<TryPatchParameters, std::string::String> {
+//         Ok(TryPatchParameters {
+//             server_location: self.server_location.0,
+//             limit: self.limit.0,
+//             name: self.name.0,
+//             // color: self.color.0,
+//         })
+//     }
+// }
+// impl<ServerLocationGeneric>
+//     TryPatchParametersBuilder<ServerLocationGeneric, Limit, Name, NotSealed>
+// {
+//     pub fn server_location(
+//         self,
+//         server_location: std::string::String,
+//     ) -> TryPatchParametersBuilder<ServerLocation, Limit, Name, NotSealed> {
+//         TryPatchParametersBuilder {
+//             server_location: ServerLocation(server_location),
+//             limit: self.limit,
+//             name: self.name,
+//             marker_seal: core::marker::PhantomData,
+//         }
+//     }
+// }
+
+// // pub fn limit(
+// //     self,
+// //     limit: crate::server::postgres::rows_per_table::RowsPerTable,
+// // ) -> TryPatchParametersBuilder<ServerLocation, Limit, Name, NotSealed> {
+// //     TryPatchParametersBuilder {
+// //         server_location: self.server_location,
+// //         limit: self.limit,
+// //         name: self.name,
+// //         marker_seal: core::marker::PhantomData,
+// //     }
+// // }
+// // pub fn name(
+// //     self,
+// //     server_location: std::string::String,
+// // ) -> TryPatchParametersBuilder<ServerLocation, Limit, Name, NotSealed> {
+// //     TryPatchParametersBuilder {
+// //         server_location: ServerLocation(server_location),
+// //         limit: self.limit,
+// //         name: self.name,
+// //         marker_seal: core::marker::PhantomData,
+// //     }
+// // }
+
+// fn something() {
+//     let req_builder = TryPatchParametersBuilder::new()
+//         .server_location(std::string::String::from("127.0.0.1:8080"));
+
+//     let req_builder = req_builder.seal();
+
+//     let req = req_builder.build().expect("cannot build1");
+//     println!("{req:#?}");
+// }
 
 pub async fn try_patch<'a>(
     server_location: std::string::String,
