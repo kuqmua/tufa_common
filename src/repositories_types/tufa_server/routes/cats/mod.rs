@@ -1,3 +1,4 @@
+//todo maybe use builder pattern for route request functions?
 pub static CATS: &str = "cats";
 //todo server_location: std::string::String, 0 maybe change it to ip port
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
