@@ -399,10 +399,18 @@ pub async fn try_put<'a>(
 }
 //////////////////////////////////////
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct CatToPatch {
-    pub id: i64,
-    pub name: Option<String>,
-    pub color: Option<String>,
+pub enum CatToPatch {
+    IdName { id: i64, name: String },
+    IdColor { id: i64, color: String },
+}
+
+impl CatToPatch {
+    pub fn get_id(&self) -> &i64 {
+        match self {
+            CatToPatch::IdName { id, name: _name } => id,
+            CatToPatch::IdColor { id, color: _color } => id,
+        }
+    }
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
@@ -425,16 +433,6 @@ pub enum PatchErrorNamed<'a> {
     Bigserial {
         #[eo_error_occurence]
         bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamed<'a>,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    NoParameters {
-        #[eo_display_with_serialize_deserialize]
-        no_parameters: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    PleaseUsePut {
-        #[eo_display_with_serialize_deserialize]
-        please_use_put: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     PostgresUpdate {
@@ -468,132 +466,14 @@ pub enum TryPatchErrorNamed<'a> {
     },
 }
 
-/////////////
-// //builder pattern example
-// #[derive(Debug)]
-// pub struct TryPatchParameters {
-//     server_location: std::string::String,
-//     limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
-//     name: Option<std::string::String>,
-//     // color: std::string::String,
-// }
-// #[derive(Default, Clone)]
-// pub struct Sealed;
-// #[derive(Default, Clone)]
-// pub struct NotSealed;
-
-// #[derive(Default, Clone)]
-// pub struct NoServerLocation;
-// #[derive(Default, Clone)]
-// pub struct NoLimit;
-// #[derive(Default, Clone)]
-// pub struct NoName;
-// // #[derive(Default, Clone)]
-// // pub struct NoColor;
-// #[derive(Default, Clone)]
-// pub struct ServerLocation(std::string::String);
-// #[derive(Default, Clone)]
-// pub struct Limit(crate::server::postgres::rows_per_table::RowsPerTable);
-// #[derive(Default, Clone)]
-// pub struct Name(std::string::String);
-// // #[derive(Default, Clone)]
-// // pub struct Color(std::string::String);
-
-// #[derive(Default, Clone)]
-// pub struct TryPatchParametersBuilder<ServerLocationGeneric, LimitGeneric, NameGeneric, SealGeneric>
-// {
-//     server_location: ServerLocationGeneric,
-//     limit: LimitGeneric,
-//     name: NameGeneric,
-//     marker_seal: core::marker::PhantomData<SealGeneric>,
-// }
-// impl TryPatchParametersBuilder<NoServerLocation, NoLimit, NoName, NotSealed> {
-//     pub fn new() -> Self {
-//         TryPatchParametersBuilder::default()
-//     }
-// }
-// impl<ServerLocationGeneric, LimitGeneric, NameGeneric>
-//     TryPatchParametersBuilder<ServerLocationGeneric, LimitGeneric, NameGeneric, NotSealed>
-// {
-//     pub fn seal(
-//         self,
-//     ) -> TryPatchParametersBuilder<ServerLocationGeneric, LimitGeneric, NameGeneric, Sealed> {
-//         TryPatchParametersBuilder {
-//             server_location: self.server_location,
-//             limit: self.limit,
-//             name: self.name,
-//             marker_seal: core::marker::PhantomData,
-//         }
-//     }
-// }
-// impl<SealedGeneric>
-//     TryPatchParametersBuilder<ServerLocation, Option<Limit>, Option<Name>, SealedGeneric>
-// {
-//     pub fn build(self) -> Result<TryPatchParameters, std::string::String> {
-//         Ok(TryPatchParameters {
-//             server_location: self.server_location.0,
-//             limit: self.limit.0,
-//             name: self.name.0,
-//             // color: self.color.0,
-//         })
-//     }
-// }
-// impl<ServerLocationGeneric>
-//     TryPatchParametersBuilder<ServerLocationGeneric, Limit, Name, NotSealed>
-// {
-//     pub fn server_location(
-//         self,
-//         server_location: std::string::String,
-//     ) -> TryPatchParametersBuilder<ServerLocation, Limit, Name, NotSealed> {
-//         TryPatchParametersBuilder {
-//             server_location: ServerLocation(server_location),
-//             limit: self.limit,
-//             name: self.name,
-//             marker_seal: core::marker::PhantomData,
-//         }
-//     }
-// }
-
-// // pub fn limit(
-// //     self,
-// //     limit: crate::server::postgres::rows_per_table::RowsPerTable,
-// // ) -> TryPatchParametersBuilder<ServerLocation, Limit, Name, NotSealed> {
-// //     TryPatchParametersBuilder {
-// //         server_location: self.server_location,
-// //         limit: self.limit,
-// //         name: self.name,
-// //         marker_seal: core::marker::PhantomData,
-// //     }
-// // }
-// // pub fn name(
-// //     self,
-// //     server_location: std::string::String,
-// // ) -> TryPatchParametersBuilder<ServerLocation, Limit, Name, NotSealed> {
-// //     TryPatchParametersBuilder {
-// //         server_location: ServerLocation(server_location),
-// //         limit: self.limit,
-// //         name: self.name,
-// //         marker_seal: core::marker::PhantomData,
-// //     }
-// // }
-
-// fn something() {
-//     let req_builder = TryPatchParametersBuilder::new()
-//         .server_location(std::string::String::from("127.0.0.1:8080"));
-
-//     let req_builder = req_builder.seal();
-
-//     let req = req_builder.build().expect("cannot build1");
-//     println!("{req:#?}");
-// }
-
 pub async fn try_patch<'a>(
     server_location: std::string::String,
     cat: CatToPatch,
 ) -> Result<(), TryPatchErrorNamed<'a>> {
-    if let true = cat.id.is_negative() {
+    let id = cat.get_id();
+    if let true = id.is_negative() {
         return Err(TryPatchErrorNamed::BelowZero {
-            below_zero: cat.id,
+            below_zero: *id,
             code_occurence: crate::code_occurence_tufa_common!(),
         });
     }
