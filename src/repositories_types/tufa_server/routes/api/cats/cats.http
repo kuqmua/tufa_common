@@ -40,7 +40,7 @@ project_commit: 5d4315d3d482ca6f497a3addafb1695c284f89a5
 PATCH http://127.0.0.1:8080/api/cats/ HTTP/1.1
 Accept: */*
 content-type: application/json
-project_commit: f3804f5703317eb6d493f04b05ed55b8e6b01ac1
+project_commit: 4879e3ff5c7b1e3141a30bd2fc561a73d5ca4e52
 
 {
     "IdName": {
