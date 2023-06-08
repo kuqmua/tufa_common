@@ -1,3 +1,62 @@
-GET https://example.com/comments/1 HTTP/1.1
+#need to enable vscode rest client extension https://marketplace.visualstudio.com/items?itemName=humao.rest-client to send requests
+
+GET http://127.0.0.1:8080/api/cats/?name=leo&color=red HTTP/1.1
+Accept: */*
+project_commit: 5d4315d3d482ca6f497a3addafb1695c284f89a5
 
 ###
+
+GET http://127.0.0.1:8080/api/cats/7 HTTP/1.1
+Accept: */*
+project_commit: 5d4315d3d482ca6f497a3addafb1695c284f89a5
+
+###
+
+POST http://127.0.0.1:8080/api/cats/ HTTP/1.1
+Accept: */*
+content-type: application/json
+project_commit: 5d4315d3d482ca6f497a3addafb1695c284f89a5
+
+{
+    "name": "test_name",
+    "color": "test_color"
+}
+
+###
+
+PUT http://127.0.0.1:8080/api/cats/ HTTP/1.1
+Accept: */*
+content-type: application/json
+project_commit: 5d4315d3d482ca6f497a3addafb1695c284f89a5
+
+{
+    "id": 9223372036854775807,
+    "name": "test_name",
+    "color": "test_color"
+}
+
+###
+
+PATCH http://127.0.0.1:8080/api/cats/ HTTP/1.1
+Accept: */*
+content-type: application/json
+project_commit: 5d4315d3d482ca6f497a3addafb1695c284f89a5
+
+{
+    "IdName": {
+        "id":65,
+        "name":"testcatnamepatched"
+    }
+}
+
+###
+
+DELETE http://127.0.0.1:8080/api/cats/?name=kek&color=white HTTP/1.1
+Accept: */*
+project_commit: 5d4315d3d482ca6f497a3addafb1695c284f89a5
+
+###
+
+DELETE http://127.0.0.1:8080/api/cats/3 HTTP/1.1
+Accept: */*
+project_commit: 5d4315d3d482ca6f497a3addafb1695c284f89a5
