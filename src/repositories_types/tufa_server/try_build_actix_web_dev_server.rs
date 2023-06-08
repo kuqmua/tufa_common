@@ -28,3 +28,22 @@ pub struct AppInfo<'a> {
     pub project_git_info: &'a crate::common::git::project_git_info::ProjectGitInfo<'a>,
     pub repository_git_info: &'a crate::common::git::git_info::GitInfo<'a>,
 }
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum ProjectCommitCheckErrorNamed<'a> {
+    ProjectCommitNotEqual {
+        #[eo_display_with_serialize_deserialize]
+        project_commit_not_equal: &'a str,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ProjectCommitToStrConversion {
+        #[eo_display]
+        project_commit_to_str_conversion: http::header::ToStrError,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    NoProjectCommitHeader {
+        #[eo_display_with_serialize_deserialize]
+        no_project_commit_header: &'a str,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
