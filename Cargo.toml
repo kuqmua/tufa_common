@@ -48,6 +48,7 @@ tracing-subscriber = {version = "0.3", features = ["registry", "env-filter"]}
 tracing-bunyan-formatter = "0.3"
 tracing-log = "0.1"
 getset = "0.1.2"
+check_specific_dependency_version_usage = {path = "../proc_macros/check_specific_dependency_version_usage"}
 compile_time_git_info = {path = "../proc_macros/compile_time_git_info"}
 enum_extension = {path = "../proc_macros/enum_extension"}
 error_occurence = {path = "../proc_macros/error_occurence"}
