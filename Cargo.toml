@@ -7,47 +7,47 @@ version = "0.1.0"
 
 [dependencies]
 actix-web = {version = "4.0.1"}
-ansi_term = {version = "0.12"}
-bytes = {version = "1.2.1"}
-chrono = {version = "0.4"}
-convert_case = {version = "0.6.0"}
-dotenv = {version = "0.15.0"}
+ansi_term = {version = "=0.12"}
+bytes = {version = "=1.2.1"}
+chrono = {version = "=0.4"}
+convert_case = {version = "=0.6.0"}
+dotenv = {version = "=0.15.0"}
 futures = {version = "0.3.5"}
-http = {version = "0.2.8"}
+http = {version = "=0.2.8"}
 regex = {version = "1.5"}
-config = {version = "0.13.3"}
-rand = {version = "0.8", features = ["std_rng"]}
+config = {version = "=0.13.3"}
+rand = {version = "=0.8", features = ["std_rng"]}
 num_cpus = {version = "1.0"}
-argon2 = {version = "0.4.0", features = ["std"]}
+argon2 = {version = "=0.4.0", features = ["std"]}
 actix-cors = {version = "0.6.1"}
 actix-web-lab = {version = "0.18.3"}
 actix-session = {version = "0.7.2", features = ["redis-rs-tls-session"]}
 actix-web-flash-messages = {version = "0.4.1", features = ["cookies"]}
 tracing-actix-web = {version = "0.7.2"}
 # reqwest = {version = "0.11.0", default-features = false, features = ["json", "blocking", "rustls-tls", "cookies"]}
-mongodb = {version = "2.0.1"}
+mongodb = {version = "=2.0.1"}
 reqwest = {version = "0.11.0", default-features = false, features = ["json", "blocking", "rustls-tls", "cookies", "gzip", "brotli", "deflate", "trust-dns", "native-tls", "multipart", "stream", "cookies"]}
-secrecy = {version = "0.8", features = ["serde"]}
-serde = {version = "1.0", features = ["derive"]}
-serde-aux = {version = "4.0.0"}
-serde-xml-rs = {version = "0.6.0"}
-serde_derive = {version = "1.0"}
-serde_json = {version = "1.0"}
-strum = {version = "0.24.1"}
-strum_macros = {version = "0.24.3"}
-thiserror = {version = "1.0.30"}
+secrecy = {version = "=0.8", features = ["serde"]}
+serde = {version = "=1.0", features = ["derive"]}
+serde-aux = {version = "=4.0.0"}
+serde-xml-rs = {version = "=0.6.0"}
+serde_derive = {version = "=1.0"}
+serde_json = {version = "=1.0"}
+strum = {version = "=0.24.1"}
+strum_macros = {version = "=0.24.3"}
+thiserror = {version = "=1.0.30"}
 tokio = {version = "1.7.1", features = ["macros"]}
-tracing = {version = "0.1", features = ["log", "valuable"]}
-itertools = {version = "0.10.1"}
-uuid = {version = "0.8", features = ["v4", "serde"]}
-sqlx = {version = "0.5", default-features = false, features = ["postgres", "runtime-actix-rustls", "macros", "uuid", "chrono", "migrate", "offline"]}
-valuable = {version = "0.1.0", features = ["default", "std", "alloc", "derive", "valuable-derive"]}#maybe not all features needed
-unicode-segmentation = {version = "1"}
-validator = {version = "0.16.0"}
-tracing-subscriber = {version = "0.3", features = ["registry", "env-filter"]}
-tracing-bunyan-formatter = {version = "0.3"}
-tracing-log = {version = "0.1"}
-getset = {version = "0.1.2"}
+tracing = {version = "=0.1", features = ["log", "valuable"]}
+itertools = {version = "=0.10.1"}
+uuid = {version = "=0.8", features = ["v4", "serde"]}
+sqlx = {version = "=0.5", default-features = false, features = ["postgres", "runtime-actix-rustls", "macros", "uuid", "chrono", "migrate", "offline"]}
+valuable = {version = "=0.1.0", features = ["default", "std", "alloc", "derive", "valuable-derive"]}#maybe not all features needed
+unicode-segmentation = {version = "=1"}
+validator = {version = "=0.16.0"}
+tracing-subscriber = {version = "=0.3", features = ["registry", "env-filter"]}
+tracing-bunyan-formatter = {version = "=0.3"}
+tracing-log = {version = "=0.1"}
+getset = {version = "=0.1.2"}
 check_specific_dependency_version_usage = {path = "../proc_macros/check_specific_dependency_version_usage"}
 compile_time_git_info = {path = "../proc_macros/compile_time_git_info"}
 enum_extension = {path = "../proc_macros/enum_extension"}
