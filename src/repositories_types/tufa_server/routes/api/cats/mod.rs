@@ -36,7 +36,7 @@ impl std::string::ToString for GetQueryParameters {
 pub enum GetErrorNamed<'a> {
     CheckApiUsage {
         #[eo_display_with_serialize_deserialize]
-        project_commit: &'a str,
+        project_commit: std::string::String, //todo conversion to_string() for with_serialize_deserialize
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     CannotConvertProjectCommitToStr {
@@ -46,7 +46,7 @@ pub enum GetErrorNamed<'a> {
     },
     NoProjectCommitHeader {
         #[eo_display_with_serialize_deserialize]
-        no_project_commit_header: &'a str,
+        no_project_commit_header: std::string::String, //todo conversion to_string() for with_serialize_deserialize
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     PostgresSelect {
@@ -128,7 +128,7 @@ pub struct GetByIdPathParameters {
 pub enum GetByIdErrorNamed<'a> {
     CheckApiUsage {
         #[eo_display_with_serialize_deserialize]
-        project_commit: &'a str,
+        project_commit: std::string::String, //todo conversion to_string() for with_serialize_deserialize
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     CannotConvertProjectCommitToStr {
@@ -138,7 +138,7 @@ pub enum GetByIdErrorNamed<'a> {
     },
     NoProjectCommitHeader {
         #[eo_display_with_serialize_deserialize]
-        no_project_commit_header: &'a str,
+        no_project_commit_header: std::string::String, //todo conversion to_string() for with_serialize_deserialize
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     Bigserial {
@@ -165,42 +165,53 @@ pub enum TryGetByIdErrorNamed<'a> {
         reqwest: reqwest::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
+
+    //
+    Test {
+        #[eo_display_with_serialize_deserialize]
+        test: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
 }
 
 pub async fn try_get_by_id<'a>(
     server_location: std::string::String,
     path_parameters: GetByIdPathParameters,
 ) -> Result<Cat, TryGetByIdErrorNamed<'a>> {
+    Err(TryGetByIdErrorNamed::Test {
+        test: std::string::String::from("testvalue"),
+        code_occurence: crate::code_occurence_tufa_common!(),
+    })
     //todo maybe path_parameters already must be non zero?
-    if let true = path_parameters.id.is_negative() {
-        return Err(TryGetByIdErrorNamed::BelowZero {
-            below_zero: path_parameters.id,
-            code_occurence: crate::code_occurence_tufa_common!(),
-        });
-    }
-    let url = format!("{server_location}/api/{CATS}/{}", path_parameters.id);
-    match reqwest::Client::new()
-        .get(&url)
-        .header(
-            crate::common::git::project_git_info::PROJECT_COMMIT,
-            crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
-                .project_commit,
-        )
-        .send()
-        .await
-    {
-        Ok(r) => match r.json::<Cat>().await {
-            Ok(vec_cats) => Ok(vec_cats),
-            Err(e) => Err(TryGetByIdErrorNamed::Reqwest {
-                reqwest: e,
-                code_occurence: crate::code_occurence_tufa_common!(),
-            }),
-        },
-        Err(e) => Err(TryGetByIdErrorNamed::Reqwest {
-            reqwest: e,
-            code_occurence: crate::code_occurence_tufa_common!(),
-        }),
-    }
+    // if let true = path_parameters.id.is_negative() {
+    //     return Err(TryGetByIdErrorNamed::BelowZero {
+    //         below_zero: path_parameters.id,
+    //         code_occurence: crate::code_occurence_tufa_common!(),
+    //     });
+    // }
+    // let url = format!("{server_location}/api/{CATS}/{}", path_parameters.id);
+    // match reqwest::Client::new()
+    //     .get(&url)
+    //     .header(
+    //         crate::common::git::project_git_info::PROJECT_COMMIT,
+    //         crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
+    //             .project_commit,
+    //     )
+    //     .send()
+    //     .await
+    // {
+    //     Ok(r) => match r.json::<Cat>().await {
+    //         Ok(vec_cats) => Ok(vec_cats),
+    //         Err(e) => Err(TryGetByIdErrorNamed::Reqwest {
+    //             reqwest: e,
+    //             code_occurence: crate::code_occurence_tufa_common!(),
+    //         }),
+    //     },
+    //     Err(e) => Err(TryGetByIdErrorNamed::Reqwest {
+    //         reqwest: e,
+    //         code_occurence: crate::code_occurence_tufa_common!(),
+    //     }),
+    // }
 }
 //////////////////////////////////////
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
@@ -213,7 +224,7 @@ pub struct CatToPost {
 pub enum PostErrorNamed<'a> {
     CheckApiUsage {
         #[eo_display_with_serialize_deserialize]
-        project_commit: &'a str,
+        project_commit: std::string::String, //todo conversion to_string() for with_serialize_deserialize
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     CannotConvertProjectCommitToStr {
@@ -223,7 +234,7 @@ pub enum PostErrorNamed<'a> {
     },
     NoProjectCommitHeader {
         #[eo_display_with_serialize_deserialize]
-        no_project_commit_header: &'a str,
+        no_project_commit_header: std::string::String, //todo conversion to_string() for with_serialize_deserialize
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     PostgresInsert {
@@ -300,7 +311,7 @@ pub async fn try_post<'a>(
 pub enum PutErrorNamed<'a> {
     CheckApiUsage {
         #[eo_display_with_serialize_deserialize]
-        project_commit: &'a str,
+        project_commit: std::string::String, //todo conversion to_string() for with_serialize_deserialize
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     CannotConvertProjectCommitToStr {
@@ -310,7 +321,7 @@ pub enum PutErrorNamed<'a> {
     },
     NoProjectCommitHeader {
         #[eo_display_with_serialize_deserialize]
-        no_project_commit_header: &'a str,
+        no_project_commit_header: std::string::String, //todo conversion to_string() for with_serialize_deserialize
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     Bigserial {
@@ -417,7 +428,7 @@ impl CatToPatch {
 pub enum PatchErrorNamed<'a> {
     CheckApiUsage {
         #[eo_display_with_serialize_deserialize]
-        project_commit: &'a str,
+        project_commit: std::string::String, //todo conversion to_string() for with_serialize_deserialize
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     CannotConvertProjectCommitToStr {
@@ -427,7 +438,7 @@ pub enum PatchErrorNamed<'a> {
     },
     NoProjectCommitHeader {
         #[eo_display_with_serialize_deserialize]
-        no_project_commit_header: &'a str,
+        no_project_commit_header: std::string::String, //todo conversion to_string() for with_serialize_deserialize
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     Bigserial {
@@ -537,7 +548,7 @@ impl std::string::ToString for DeleteQueryParameters {
 pub enum DeleteErrorNamed<'a> {
     CheckApiUsage {
         #[eo_display_with_serialize_deserialize]
-        project_commit: &'a str,
+        project_commit: std::string::String, //todo conversion to_string() for with_serialize_deserialize
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     CannotConvertProjectCommitToStr {
@@ -547,7 +558,7 @@ pub enum DeleteErrorNamed<'a> {
     },
     NoProjectCommitHeader {
         #[eo_display_with_serialize_deserialize]
-        no_project_commit_header: &'a str,
+        no_project_commit_header: std::string::String, //todo conversion to_string() for with_serialize_deserialize
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     NoParameters {
@@ -620,7 +631,7 @@ pub struct DeleteByIdPathParameters {
 pub enum DeleteByIdErrorNamed<'a> {
     CheckApiUsage {
         #[eo_display_with_serialize_deserialize]
-        project_commit: &'a str,
+        project_commit: std::string::String, //todo conversion to_string() for with_serialize_deserialize
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     CannotConvertProjectCommitToStr {
@@ -630,7 +641,7 @@ pub enum DeleteByIdErrorNamed<'a> {
     },
     NoProjectCommitHeader {
         #[eo_display_with_serialize_deserialize]
-        no_project_commit_header: &'a str,
+        no_project_commit_header: std::string::String, //todo conversion to_string() for with_serialize_deserialize
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     Bigserial {

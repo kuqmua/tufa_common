@@ -4,8 +4,8 @@ pub trait GetGitSourceFileLink<'a> {
 
 impl<'a, SelfGeneric> GetGitSourceFileLink<'a> for SelfGeneric
 where
-    Self: crate::common::git::git_fields::GetGitRepoLink<'a>
-        + crate::common::git::git_fields::GetGitCommitId<'a>,
+    Self: crate::common::git::git_fields::GetGitRepoLink
+        + crate::common::git::git_fields::GetGitCommitId,
 {
     fn get_git_source_file_link(&self, file: &str, line: u32) -> String {
         format!(

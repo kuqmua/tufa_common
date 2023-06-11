@@ -19,9 +19,9 @@ impl ProjectGitInfo<'_> {
     }
 }
 
-impl<'a> crate::common::git::git_fields::GetGitCommitId<'a> for ProjectGitInfo<'a> {
-    fn get_git_commit_id(&self) -> &'a str {
-        self.project_commit
+impl<'a> crate::common::git::git_fields::GetGitCommitId for ProjectGitInfo<'a> {
+    fn get_git_commit_id(&self) -> std::string::String {
+        self.project_commit.to_string()
     }
 }
 

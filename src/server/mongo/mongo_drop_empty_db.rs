@@ -7,7 +7,7 @@ pub enum MongoDropEmptyDbErrorNamed<'a> {
     },
     CollectionNamesListIsNotEmpty {
         #[eo_display_with_serialize_deserialize]
-        database: &'a str,
+        database: std::string::String, //todo conversion to_string() for with_serialize_deserialize
         #[eo_display_with_serialize_deserialize]
         list_collection_names_len: usize,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
@@ -30,7 +30,7 @@ pub async fn mongo_drop_empty_db<'a>(
             if !collections_names_list.is_empty() {
                 return Err(Box::new(
                     crate::server::mongo::mongo_drop_empty_db::MongoDropEmptyDbErrorNamed::CollectionNamesListIsNotEmpty {
-                        database: db_name,
+                        database: db_name.to_string(),
                         list_collection_names_len: collections_names_list.len(),
                         code_occurence: crate::code_occurence_tufa_common!(),
                     }
