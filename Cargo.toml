@@ -6,7 +6,6 @@ version = "0.1.0"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-actix-web = {version = "4.0.1"}
 ansi_term = {version = "=0.12"}
 bytes = {version = "=1.2.1"}
 chrono = {version = "=0.4"}
@@ -17,8 +16,9 @@ http = {version = "=0.2.8"}
 regex = {version = "1.5"}
 config = {version = "=0.13.3"}
 rand = {version = "=0.8", features = ["std_rng"]}
-num_cpus = {version = "1.0"}
+num_cpus = {version = "=1.15.0"}
 argon2 = {version = "=0.4.0", features = ["std"]}
+actix-web = {version = "4.0.1"}
 actix-cors = {version = "0.6.1"}
 actix-web-lab = {version = "0.18.3"}
 actix-session = {version = "0.7.2", features = ["redis-rs-tls-session"]}
