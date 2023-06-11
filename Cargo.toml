@@ -13,7 +13,7 @@ convert_case = {version = "=0.6.0"}
 dotenv = {version = "=0.15.0"}
 futures = {version = "0.3.5"}
 http = {version = "=0.2.8"}
-regex = {version = "1.5"}
+regex = {version = "=1.5.6"}
 config = {version = "=0.13.3"}
 rand = {version = "=0.8", features = ["std_rng"]}
 num_cpus = {version = "=1.15.0"}
