@@ -24,7 +24,6 @@ actix-web-lab = {version = "=0.19.1"}
 actix-session = {version = "=0.7.2", features = ["redis-rs-tls-session"]}
 actix-web-flash-messages = {version = "=0.4.2", features = ["cookies"]}
 tracing-actix-web = {version = "=0.7.2"}
-# reqwest = {version = "0.11.0", default-features = false, features = ["json", "blocking", "rustls-tls", "cookies"]}
 mongodb = {version = "=2.0.1"}
 reqwest = {version = "0.11.0", default-features = false, features = ["json", "blocking", "rustls-tls", "cookies", "gzip", "brotli", "deflate", "trust-dns", "native-tls", "multipart", "stream", "cookies"]}
 secrecy = {version = "=0.8", features = ["serde"]}
