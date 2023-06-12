@@ -12,7 +12,7 @@ pub enum MongoGetDocumentsAsStringVectorErrorNamed<'a> {
     },
     NoKeyInDocument {
         #[eo_display_with_serialize_deserialize]
-        key: std::string::String, //todo conversion to_string() for with_serialize_deserialize
+        key: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
@@ -52,7 +52,7 @@ pub async fn mongo_get_documents_as_string_vector(
                             match document.get(db_collection_document_field_name_handle) {
                                 None => return Err(Box::new(
                                     crate::server::mongo::mongo_get_documents_as_string_vector::MongoGetDocumentsAsStringVectorErrorNamed::NoKeyInDocument {
-                                        key: db_collection_document_field_name_handle.to_string(),
+                                        key: db_collection_document_field_name_handle,
                                         code_occurence: crate::code_occurence_tufa_common!()
                                     }
                                 )),

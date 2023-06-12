@@ -36,7 +36,7 @@ impl std::string::ToString for GetQueryParameters {
 pub enum GetErrorNamed<'a> {
     CheckApiUsage {
         #[eo_display_with_serialize_deserialize]
-        project_commit: std::string::String, //todo conversion to_string() for with_serialize_deserialize
+        project_commit: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     CannotConvertProjectCommitToStr {
@@ -46,7 +46,7 @@ pub enum GetErrorNamed<'a> {
     },
     NoProjectCommitHeader {
         #[eo_display_with_serialize_deserialize]
-        no_project_commit_header: std::string::String, //todo conversion to_string() for with_serialize_deserialize
+        no_project_commit_header: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     PostgresSelect {
@@ -128,7 +128,7 @@ pub struct GetByIdPathParameters {
 pub enum GetByIdErrorNamed<'a> {
     CheckApiUsage {
         #[eo_display_with_serialize_deserialize]
-        project_commit: std::string::String, //todo conversion to_string() for with_serialize_deserialize
+        project_commit: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     CannotConvertProjectCommitToStr {
@@ -138,7 +138,7 @@ pub enum GetByIdErrorNamed<'a> {
     },
     NoProjectCommitHeader {
         #[eo_display_with_serialize_deserialize]
-        no_project_commit_header: std::string::String, //todo conversion to_string() for with_serialize_deserialize
+        no_project_commit_header: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     Bigserial {
@@ -213,7 +213,7 @@ pub struct CatToPost {
 pub enum PostErrorNamed<'a> {
     CheckApiUsage {
         #[eo_display_with_serialize_deserialize]
-        project_commit: std::string::String, //todo conversion to_string() for with_serialize_deserialize
+        project_commit: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     CannotConvertProjectCommitToStr {
@@ -223,7 +223,7 @@ pub enum PostErrorNamed<'a> {
     },
     NoProjectCommitHeader {
         #[eo_display_with_serialize_deserialize]
-        no_project_commit_header: std::string::String, //todo conversion to_string() for with_serialize_deserialize
+        no_project_commit_header: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     PostgresInsert {
@@ -300,7 +300,7 @@ pub async fn try_post<'a>(
 pub enum PutErrorNamed<'a> {
     CheckApiUsage {
         #[eo_display_with_serialize_deserialize]
-        project_commit: std::string::String, //todo conversion to_string() for with_serialize_deserialize
+        project_commit: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     CannotConvertProjectCommitToStr {
@@ -310,7 +310,7 @@ pub enum PutErrorNamed<'a> {
     },
     NoProjectCommitHeader {
         #[eo_display_with_serialize_deserialize]
-        no_project_commit_header: std::string::String, //todo conversion to_string() for with_serialize_deserialize
+        no_project_commit_header: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     Bigserial {
@@ -417,7 +417,7 @@ impl CatToPatch {
 pub enum PatchErrorNamed<'a> {
     CheckApiUsage {
         #[eo_display_with_serialize_deserialize]
-        project_commit: std::string::String, //todo conversion to_string() for with_serialize_deserialize
+        project_commit: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     CannotConvertProjectCommitToStr {
@@ -427,7 +427,7 @@ pub enum PatchErrorNamed<'a> {
     },
     NoProjectCommitHeader {
         #[eo_display_with_serialize_deserialize]
-        no_project_commit_header: std::string::String, //todo conversion to_string() for with_serialize_deserialize
+        no_project_commit_header: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     Bigserial {
@@ -537,7 +537,7 @@ impl std::string::ToString for DeleteQueryParameters {
 pub enum DeleteErrorNamed<'a> {
     CheckApiUsage {
         #[eo_display_with_serialize_deserialize]
-        project_commit: std::string::String, //todo conversion to_string() for with_serialize_deserialize
+        project_commit: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     CannotConvertProjectCommitToStr {
@@ -547,7 +547,7 @@ pub enum DeleteErrorNamed<'a> {
     },
     NoProjectCommitHeader {
         #[eo_display_with_serialize_deserialize]
-        no_project_commit_header: std::string::String, //todo conversion to_string() for with_serialize_deserialize
+        no_project_commit_header: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     NoParameters {
@@ -620,7 +620,7 @@ pub struct DeleteByIdPathParameters {
 pub enum DeleteByIdErrorNamed<'a> {
     CheckApiUsage {
         #[eo_display_with_serialize_deserialize]
-        project_commit: std::string::String, //todo conversion to_string() for with_serialize_deserialize
+        project_commit: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     CannotConvertProjectCommitToStr {
@@ -630,7 +630,7 @@ pub enum DeleteByIdErrorNamed<'a> {
     },
     NoProjectCommitHeader {
         #[eo_display_with_serialize_deserialize]
-        no_project_commit_header: std::string::String, //todo conversion to_string() for with_serialize_deserialize
+        no_project_commit_header: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     Bigserial {

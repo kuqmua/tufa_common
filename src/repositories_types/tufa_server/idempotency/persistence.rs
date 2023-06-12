@@ -73,7 +73,7 @@ pub enum TryProcessingErrorNamed<'a> {
     },
     SavedResponseIsNone {
         #[eo_display_with_serialize_deserialize]
-        message: std::string::String, //todo conversion to_string() for with_serialize_deserialize
+        message: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }

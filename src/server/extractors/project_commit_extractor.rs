@@ -5,7 +5,7 @@ pub struct ProjectCommitExtractor {}
 pub enum ProjectCommitExtractorCheckErrorNamed<'a> {
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
-        project_commit_not_equal: std::string::String, //todo conversion to_string() for with_serialize_deserialize
+        project_commit_not_equal: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     ProjectCommitExtractorToStrConversion {
@@ -15,7 +15,7 @@ pub enum ProjectCommitExtractorCheckErrorNamed<'a> {
     },
     NoProjectCommitExtractorHeader {
         #[eo_display_with_serialize_deserialize]
-        no_project_commit_header: std::string::String, //todo conversion to_string() for with_serialize_deserialize
+        no_project_commit_header: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
@@ -36,7 +36,7 @@ impl actix_web::FromRequest for ProjectCommitExtractor {
                             actix_web::error::ErrorBadRequest(
                                 actix_web::web::Json(
                                     ProjectCommitExtractorCheckErrorNamed::ProjectCommitExtractorNotEqual {              
-                                        project_commit_not_equal: "different project commit provided, services must work only with equal project commits".to_string(), 
+                                        project_commit_not_equal: "different project commit provided, services must work only with equal project commits", 
                                         code_occurence: crate::code_occurence_tufa_common!(),
                                     }.into_serialize_deserialize_version()
                                 )
@@ -58,7 +58,7 @@ impl actix_web::FromRequest for ProjectCommitExtractor {
                 actix_web::error::ErrorBadRequest(
                     actix_web::web::Json(
                         ProjectCommitExtractorCheckErrorNamed::NoProjectCommitExtractorHeader{              
-                            no_project_commit_header: "project_commit header is not provided".to_string(),
+                            no_project_commit_header: "project_commit header is not provided",
                             code_occurence: crate::code_occurence_tufa_common!(),
                         }.into_serialize_deserialize_version()
                     )
