@@ -152,7 +152,42 @@ pub enum GetByIdErrorNamed<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
-//
+
+#[derive(Debug)]
+pub enum GetByIdExpectedStatusCode {
+    Ok,
+    BadRequest,
+    InternalServerError,
+    //todo logic aound unexpected status code
+}
+
+impl GetByIdExpectedStatusCode {
+    pub fn to_status_code(&self) -> http::StatusCode {
+        match self {
+            GetByIdExpectedStatusCode::Ok => http::StatusCode::OK,
+            GetByIdExpectedStatusCode::BadRequest => http::StatusCode::BAD_REQUEST,
+            GetByIdExpectedStatusCode::InternalServerError => {
+                http::StatusCode::INTERNAL_SERVER_ERROR
+            }
+        }
+    }
+}
+
+impl std::convert::TryFrom<http::StatusCode> for GetByIdExpectedStatusCode {
+    type Error = http::StatusCode;
+    fn try_from(value: http::StatusCode) -> Result<Self, Self::Error> {
+        if http::StatusCode::OK == value {
+            Ok(Self::Ok)
+        } else if http::StatusCode::BAD_REQUEST == value {
+            Ok(Self::BadRequest)
+        } else if http::StatusCode::INTERNAL_SERVER_ERROR == value {
+            Ok(Self::InternalServerError)
+        } else {
+            Err(value)
+        }
+    }
+}
+
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TryGetByIdErrorNamed<'a> {
     BelowZero {
