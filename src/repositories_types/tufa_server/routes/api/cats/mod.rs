@@ -188,6 +188,115 @@ impl std::convert::TryFrom<http::StatusCode> for GetByIdExpectedStatusCode {
     }
 }
 
+impl GetByIdExpectedStatusCode {
+    pub async fn to_expected_type<'a>(
+        &self,
+        response: reqwest::Response,
+    ) -> Result<
+        Result<Cat, reqwest::Error>, //TryGetByIdValueFromJsonErrorNamed<'a>
+        Result<GetByIdExpectedErrorStatusCodesErrorUnnamed, GetByIdExpectedErrorStatusCodesJsonConversionErrorNamed<'a>>,
+    > {
+        match self {
+            GetByIdExpectedStatusCode::Ok => Ok(response.json::<Cat>().await),
+            GetByIdExpectedStatusCode::BadRequest => match response.json::<GetByIdStatusCodeBadRequestExpectedBodyTypeWithSerializeDeserialize>().await {
+                Ok(bad_req) => Err(Ok(GetByIdExpectedErrorStatusCodesErrorUnnamed::GetByIdStatusCodeBadRequestExpectedBodyType(bad_req))),
+                Err(_) => Err(Err(GetByIdExpectedErrorStatusCodesJsonConversionErrorNamed::GetByIdStatusCodeBadRequestExpectedBodyType { 
+                    bad_request: String::from("unexpected bad request"), 
+                    code_occurence: crate::code_occurence_tufa_common!() 
+                })),
+            },
+            GetByIdExpectedStatusCode::InternalServerError => match response.json::<GetByIdStatusCodeInternalServerErrorExpectedBodyTypeWithSerializeDeserialize>().await {
+                Ok(internal_server_error) => Err(Ok(GetByIdExpectedErrorStatusCodesErrorUnnamed::GetByIdStatusCodeInternalServerErrorExpectedBodyType(internal_server_error))),
+                Err(_) => Err(Err(GetByIdExpectedErrorStatusCodesJsonConversionErrorNamed::GetByIdStatusCodeInternalServerErrorExpectedBodyType { 
+                    internal_server_error: String::from("unexpected internal_server_error"), 
+                    code_occurence: crate::code_occurence_tufa_common!() 
+                })),
+            },
+        }
+    }
+}
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum TryGetByIdValueFromJsonErrorNamed<'a> {
+    Reqwest {
+        #[eo_display_foreign_type]
+        reqwest: reqwest::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
+#[derive(Debug)]
+pub enum GetByIdStatusCodeOkExpectedBodyType {
+    Cat(Cat), //todo add logic around unexpected
+}
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum GetByIdStatusCodeBadRequestExpectedBodyType<'a> {
+    //
+    ProjectCommitExtractorNotEqual {
+        #[eo_display_with_serialize_deserialize]
+        project_commit_not_equal: &'a str,
+        #[eo_display_with_serialize_deserialize]
+        project_commit_to_use: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ProjectCommitExtractorToStrConversion {
+        #[eo_display]
+        project_commit_to_str_conversion: http::header::ToStrError,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    NoProjectCommitExtractorHeader {
+        #[eo_display_with_serialize_deserialize]
+        no_project_commit_header: &'a str,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    //
+    Bigserial {
+        #[eo_error_occurence]
+        bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamed<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    //todo add logic around unexpected
+}
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum GetByIdStatusCodeInternalServerErrorExpectedBodyType<'a> {
+    //
+    PostgresSelect {
+        #[eo_display]
+        postgres_select: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    //todo add logic around unexpected
+}
+
+#[derive(Debug)]
+pub enum GetByIdExpectedErrorStatusCodesErrorUnnamed {
+    //todo - is that a problem - serialize_deserialize case?
+    GetByIdStatusCodeBadRequestExpectedBodyType(GetByIdStatusCodeBadRequestExpectedBodyTypeWithSerializeDeserialize),
+    GetByIdStatusCodeInternalServerErrorExpectedBodyType(
+        GetByIdStatusCodeInternalServerErrorExpectedBodyTypeWithSerializeDeserialize,
+    ),
+}
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum GetByIdExpectedErrorStatusCodesJsonConversionErrorNamed<'a> {
+    GetByIdStatusCodeBadRequestExpectedBodyType {
+        #[eo_display_with_serialize_deserialize]
+        bad_request: std::string::String,//just for example
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    GetByIdStatusCodeInternalServerErrorExpectedBodyType {
+        #[eo_display_with_serialize_deserialize]
+        internal_server_error: std::string::String,//just for example
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
+///////////////////++++
+
+///////////////////++++
+
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TryGetByIdErrorNamed<'a> {
     BelowZero {
