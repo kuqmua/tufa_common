@@ -6,6 +6,8 @@ pub enum ProjectCommitExtractorCheckErrorNamed<'a> {
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
         project_commit_not_equal: &'a str,
+        #[eo_display_with_serialize_deserialize]
+        project_commit_to_use: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     ProjectCommitExtractorToStrConversion {
@@ -37,6 +39,10 @@ impl actix_web::FromRequest for ProjectCommitExtractor {
                                 actix_web::web::Json(
                                     ProjectCommitExtractorCheckErrorNamed::ProjectCommitExtractorNotEqual {              
                                         project_commit_not_equal: "different project commit provided, services must work only with equal project commits", 
+                                        project_commit_to_use: {
+                                            use crate::common::git::get_git_commit_link::GetGitCommitLink;
+                                            crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.get_git_commit_link()
+                                        },
                                         code_occurence: crate::code_occurence_tufa_common!(),
                                     }.into_serialize_deserialize_version()
                                 )
