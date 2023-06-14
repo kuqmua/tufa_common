@@ -189,7 +189,7 @@ impl std::convert::TryFrom<http::StatusCode> for GetByIdExpectedStatusCode {
 }
 
 impl GetByIdExpectedStatusCode {
-    pub async fn to_expected_type<'a>(
+    pub async fn try_into_expected_type<'a>(
         &self,
         response: reqwest::Response,
     ) -> Result<
@@ -239,14 +239,10 @@ pub enum TryGetByIdValueFromJsonErrorNamed<'a> {
     },
 }
 
-#[derive(Debug)]
-pub enum GetByIdStatusCodeOkExpectedBodyType {
-    Cat(Cat), //todo add logic around unexpected
-}
-
+// #[mixin::insert(crate::server::extractors::project_commit_extractor::ProjectCommitExtractorCheckErrorNamed)]
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum GetByIdStatusCodeBadRequestExpectedBodyType<'a> {
-    //
+    //todo struct concatination
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
         project_commit_not_equal: &'a str,
@@ -284,13 +280,22 @@ pub enum GetByIdStatusCodeInternalServerErrorExpectedBodyType<'a> {
     //todo add logic around unexpected
 }
 
-#[derive(Debug)]
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub enum GetByIdExpectedErrorStatusCodesErrorUnnamed {
     //todo - is that a problem - serialize_deserialize case?
     BadRequest(GetByIdStatusCodeBadRequestExpectedBodyTypeWithSerializeDeserialize),
     InternalServerError(
         GetByIdStatusCodeInternalServerErrorExpectedBodyTypeWithSerializeDeserialize,
     ),
+}
+
+impl std::fmt::Display for GetByIdExpectedErrorStatusCodesErrorUnnamed {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            GetByIdExpectedErrorStatusCodesErrorUnnamed::BadRequest(e) => write!(f, "{e}"),
+            GetByIdExpectedErrorStatusCodesErrorUnnamed::InternalServerError(e) => write!(f, "{e}"),
+        }
+    }
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
@@ -312,15 +317,29 @@ pub enum GetByIdExpectedStatusCodesJsonConversionErrorNamed<'a> {
     },
 }
 
-///////////////////++++
-
-///////////////////++++
-
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TryGetByIdErrorNamed<'a> {
     BelowZero {
         #[eo_display_with_serialize_deserialize]
         below_zero: i64,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ExpectedServerError {
+        #[eo_display_with_serialize_deserialize]//todo - instead of display_with_serialize_deserialize make new tag for deserialized errors
+        expected_server_error: GetByIdExpectedErrorStatusCodesErrorUnnamed,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ExpectedStatusCodeBodyConversion {
+        #[eo_display]
+        expected_status_code: http::StatusCode,
+        #[eo_error_occurence]
+        conversion_error: GetByIdExpectedStatusCodesJsonConversionErrorNamed<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    UnexpectedStatusCode {
+        //todo add headers? body? as Option<String>
+        #[eo_display]
+        unexpected_status_code: http::StatusCode,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     Reqwest {
@@ -352,12 +371,28 @@ pub async fn try_get_by_id<'a>(
         .send()
         .await
     {
-        Ok(r) => match r.json::<Cat>().await {
-            Ok(vec_cats) => Ok(vec_cats),
-            Err(e) => Err(TryGetByIdErrorNamed::Reqwest {
-                reqwest: e,
-                code_occurence: crate::code_occurence_tufa_common!(),
-            }),
+        Ok(response) => {
+            let response_status = response.status();
+            match GetByIdExpectedStatusCode::try_from(response.status()) {
+                Ok(expected_status_code) => match expected_status_code.try_into_expected_type(response).await {
+                    Ok(value) => Ok(value),
+                    Err(error_result) => match error_result {
+                        Ok(expected_server_error) => Err(TryGetByIdErrorNamed::ExpectedServerError {
+                            expected_server_error,
+                            code_occurence: crate::code_occurence_tufa_common!(),
+                        }),
+                        Err(conversion_error) => Err(TryGetByIdErrorNamed::ExpectedStatusCodeBodyConversion {
+                            expected_status_code: response_status,
+                            conversion_error,
+                            code_occurence: crate::code_occurence_tufa_common!(),
+                        }),
+                    },
+                },
+                Err(unexpected_status_code) => Err(TryGetByIdErrorNamed::UnexpectedStatusCode {
+                    unexpected_status_code,
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                }),
+            }
         },
         Err(e) => Err(TryGetByIdErrorNamed::Reqwest {
             reqwest: e,
