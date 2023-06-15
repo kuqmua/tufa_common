@@ -9,13 +9,11 @@ pub trait CodeOccurencePrepareForLogWithConfig<
 impl<'a, SelfGeneric, ConfigGeneric> CodeOccurencePrepareForLogWithConfig<ConfigGeneric>
     for SelfGeneric
 where
-    SelfGeneric:
-        crate::common::error_logs_logic::get_file::GetFile
-            + crate::common::error_logs_logic::get_line::GetLine
-            + crate::common::error_logs_logic::get_column::GetColumn
-            + crate::common::error_logs_logic::get_code_path_without_config::GetCodePathWithoutConfig
-            + crate::common::error_logs_logic::get_duration::GetDuration
-            + crate::common::git::get_git_source_file_link::GetGitSourceFileLink<'a>,
+    SelfGeneric: crate::common::error_logs_logic::get_file::GetFile
+        + crate::common::error_logs_logic::get_line::GetLine
+        + crate::common::error_logs_logic::get_column::GetColumn
+        + crate::common::error_logs_logic::get_duration::GetDuration
+        + crate::common::git::get_git_source_file_link::GetGitSourceFileLink<'a>,
     ConfigGeneric: crate::common::config::config_fields::GetTimezone
         + crate::common::config::config_fields::GetSourcePlaceType,
 {
@@ -36,16 +34,12 @@ pub trait CodeOccurencePrepareForLogWithoutConfig {
 
 impl<SelfGeneric> CodeOccurencePrepareForLogWithoutConfig for SelfGeneric
 where
-    SelfGeneric:
-        crate::common::error_logs_logic::get_file::GetFile
-            + crate::common::error_logs_logic::get_line::GetLine
-            + crate::common::error_logs_logic::get_column::GetColumn
-            + crate::common::error_logs_logic::get_code_path_without_config::GetCodePathWithoutConfig
-            + crate::common::error_logs_logic::get_duration::GetDuration,
+    SelfGeneric: crate::common::error_logs_logic::form_error_path::FormErrorPathGithub
+        + crate::common::error_logs_logic::get_duration::GetDuration,
 {
     fn code_occurence_prepare_for_log_without_config(&self) -> String {
         prepare_for_log(
-            self.get_code_path_without_config(),
+            self.form_error_path_github(),
             chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
                 .with_timezone(&chrono::FixedOffset::east_opt(10800).unwrap())
                 .format("%Y-%m-%d %H:%M:%S")
@@ -61,16 +55,10 @@ pub trait CodeOccurencePrepareForLogWithoutConfigWithSerializeDeserialize {
 impl<'a, SelfGeneric> CodeOccurencePrepareForLogWithoutConfigWithSerializeDeserialize
     for SelfGeneric
 where
-    SelfGeneric:
-        crate::common::error_logs_logic::get_file::GetFile
-            + crate::common::error_logs_logic::get_line::GetLine
-            + crate::common::error_logs_logic::get_column::GetColumn
-            + crate::common::error_logs_logic::get_code_path_without_config::GetCodePathWithoutConfig
-            + crate::common::git::get_git_source_file_link::GetGitSourceFileLink<'a>
-            + crate::common::error_logs_logic::get_duration::GetDuration,
+    SelfGeneric: crate::common::error_logs_logic::form_error_path::FormErrorPathGithub
+        + crate::common::error_logs_logic::get_duration::GetDuration,
 {
     fn code_occurence_prepare_for_log_without_config_with_serialize_deserialize(&self) -> String {
-        use crate::common::error_logs_logic::form_error_path::FormErrorPathGithub;
         prepare_for_log(
             self.form_error_path_github(),
             chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
