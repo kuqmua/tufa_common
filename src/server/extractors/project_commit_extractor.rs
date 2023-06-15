@@ -22,10 +22,27 @@ pub enum ProjectCommitExtractorCheckErrorNamed<'a> {
     },
 }
 
+impl<'a> crate::common::error_logs_logic::into_actix_web_error::IntoActixWebError for ProjectCommitExtractorCheckErrorNamed<'a> 
+{
+    fn into_actix_web_error(
+        self, 
+    ) -> actix_web::Error {
+        println!("{self}");
+        actix_web::error::ErrorBadRequest(
+            actix_web::web::Json(
+                self.into_serialize_deserialize_version()
+            )
+        )
+    }
+}
+
 impl actix_web::FromRequest for ProjectCommitExtractor {
     type Error = actix_web::Error;
     type Future = std::future::Ready<Result<Self, Self::Error>>;
-    fn from_request(req: &actix_web::HttpRequest, _payload: &mut actix_web::dev::Payload) -> Self::Future {
+    fn from_request(
+        req: &actix_web::HttpRequest, 
+        _payload: &mut actix_web::dev::Payload, 
+    ) -> Self::Future {
         match req
             .headers()
             .get(crate::common::git::project_git_info::PROJECT_COMMIT)
@@ -34,40 +51,35 @@ impl actix_web::FromRequest for ProjectCommitExtractor {
                 Ok(possible_project_commit) => {
                     match possible_project_commit == crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.project_commit {
                         true => std::future::ready(Ok(ProjectCommitExtractor {})),
-                        false => std::future::ready(Err(//todo maybe add logs here?
-                            actix_web::error::ErrorBadRequest(
-                                actix_web::web::Json(
-                                    ProjectCommitExtractorCheckErrorNamed::ProjectCommitExtractorNotEqual {              
-                                        project_commit_not_equal: "different project commit provided, services must work only with equal project commits", 
-                                        project_commit_to_use: {
-                                            use crate::common::git::get_git_commit_link::GetGitCommitLink;
-                                            crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.get_git_commit_link()
-                                        },
-                                        code_occurence: crate::code_occurence_tufa_common!(),
-                                    }.into_serialize_deserialize_version()
-                                )
+                        false => std::future::ready(Err(
+                            crate::common::error_logs_logic::into_actix_web_error::IntoActixWebError::into_actix_web_error(
+                                ProjectCommitExtractorCheckErrorNamed::ProjectCommitExtractorNotEqual {              
+                                    project_commit_not_equal: "different project commit provided, services must work only with equal project commits", 
+                                    project_commit_to_use: {
+                                        use crate::common::git::get_git_commit_link::GetGitCommitLink;
+                                        crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.get_git_commit_link()
+                                    },
+                                    code_occurence: crate::code_occurence_tufa_common!(),
+                                }
                             )
                         )),
                     }
                 }
-                Err(e) => std::future::ready(Err(actix_web::error::ErrorBadRequest(//todo maybe use some different status code in this case
-                    actix_web::web::Json(
-                            ProjectCommitExtractorCheckErrorNamed::ProjectCommitExtractorToStrConversion{              
-                                project_commit_to_str_conversion: e, 
-                                code_occurence: crate::code_occurence_tufa_common!(),
-                            }.into_serialize_deserialize_version()
-                        )
+                Err(e) => std::future::ready(Err(
+                    crate::common::error_logs_logic::into_actix_web_error::IntoActixWebError::into_actix_web_error(
+                    ProjectCommitExtractorCheckErrorNamed::ProjectCommitExtractorToStrConversion{              
+                            project_commit_to_str_conversion: e, 
+                            code_occurence: crate::code_occurence_tufa_common!(),
+                        }
                     )
                 )),
             },
             None => std::future::ready(Err(
-                actix_web::error::ErrorBadRequest(
-                    actix_web::web::Json(
-                        ProjectCommitExtractorCheckErrorNamed::NoProjectCommitExtractorHeader{              
-                            no_project_commit_header: "project_commit header is not provided",
-                            code_occurence: crate::code_occurence_tufa_common!(),
-                        }.into_serialize_deserialize_version()
-                    )
+                crate::common::error_logs_logic::into_actix_web_error::IntoActixWebError::into_actix_web_error(
+                    ProjectCommitExtractorCheckErrorNamed::NoProjectCommitExtractorHeader{              
+                        no_project_commit_header: "project_commit header is not provided",
+                        code_occurence: crate::code_occurence_tufa_common!(),
+                    }
                 )
             ))
         }
