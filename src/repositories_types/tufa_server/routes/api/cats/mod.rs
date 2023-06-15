@@ -138,6 +138,19 @@ pub enum GetByIdErrorNamed<'a> {
     },
 }
 
+impl<'a> crate::common::error_logs_logic::into_actix_web_http_response::IntoActixWebHttpResponse for GetByIdErrorNamed<'a>{
+    fn into_actix_web_http_response(self) -> actix_web::HttpResponse {
+            println!("{self}");
+            match &self {
+                GetByIdErrorNamed::Bigserial { bigserial: _, code_occurence: _ } => actix_web::HttpResponse::BadRequest()
+                    .json(actix_web::web::Json(self.into_serialize_deserialize_version())),
+                GetByIdErrorNamed::PostgresSelect { postgres_select: _, code_occurence: _ } => actix_web::HttpResponse::InternalServerError()
+                    .json(actix_web::web::Json(self.into_serialize_deserialize_version())),
+            }
+            
+    }
+}
+
 #[derive(Debug)]
 pub enum GetByIdExpectedStatusCode {
     Ok,
