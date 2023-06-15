@@ -158,19 +158,6 @@ pub enum GetByIdExpectedStatusCode {
     Ok,
     BadRequest,
     InternalServerError,
-    //todo logic aound unexpected status code
-}
-
-impl GetByIdExpectedStatusCode {
-    pub fn to_status_code(&self) -> http::StatusCode {
-        match self {
-            GetByIdExpectedStatusCode::Ok => http::StatusCode::OK,
-            GetByIdExpectedStatusCode::BadRequest => http::StatusCode::BAD_REQUEST,
-            GetByIdExpectedStatusCode::InternalServerError => {
-                http::StatusCode::INTERNAL_SERVER_ERROR
-            }
-        }
-    }
 }
 
 impl std::convert::TryFrom<http::StatusCode> for GetByIdExpectedStatusCode {
@@ -231,16 +218,6 @@ impl GetByIdExpectedStatusCode {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum TryGetByIdValueFromJsonErrorNamed<'a> {
-    Reqwest {
-        #[eo_display_foreign_type]
-        reqwest: reqwest::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-}
-
-// #[mixin::insert(crate::server::extractors::project_commit_extractor::ProjectCommitExtractorCheckErrorNamed)]
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum GetByIdStatusCodeBadRequestExpectedBodyType<'a> {
     //todo struct concatination
     ProjectCommitExtractorNotEqual {
@@ -266,23 +243,19 @@ pub enum GetByIdStatusCodeBadRequestExpectedBodyType<'a> {
         bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    //todo add logic around unexpected
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum GetByIdStatusCodeInternalServerErrorExpectedBodyType<'a> {
-    //
     PostgresSelect {
         #[eo_display]
         postgres_select: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    //todo add logic around unexpected
 }
 
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub enum GetByIdExpectedErrorStatusCodesErrorUnnamed {
-    //todo - is that a problem - serialize_deserialize case?
     BadRequest(GetByIdStatusCodeBadRequestExpectedBodyTypeWithSerializeDeserialize),
     InternalServerError(
         GetByIdStatusCodeInternalServerErrorExpectedBodyTypeWithSerializeDeserialize,
@@ -325,7 +298,7 @@ pub enum TryGetByIdErrorNamed<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     ExpectedServerError {
-        #[eo_display_with_serialize_deserialize]//todo - instead of display_with_serialize_deserialize make new tag for deserialized errors
+        #[eo_display_with_serialize_deserialize]
         expected_server_error: GetByIdExpectedErrorStatusCodesErrorUnnamed,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
@@ -361,6 +334,7 @@ pub async fn try_get_by_id<'a>(
         });
     }
     let url = format!("{server_location}/api/{CATS}/{}", path_parameters.id);
+    // println!("{url}");
     match reqwest::Client::new()
         .get(&url)
         .header(
@@ -381,11 +355,14 @@ pub async fn try_get_by_id<'a>(
                             expected_server_error,
                             code_occurence: crate::code_occurence_tufa_common!(),
                         }),
-                        Err(conversion_error) => Err(TryGetByIdErrorNamed::ExpectedStatusCodeBodyConversion {
-                            expected_status_code: response_status,
-                            conversion_error,
-                            code_occurence: crate::code_occurence_tufa_common!(),
-                        }),
+                        Err(conversion_error) => {
+                            let e = TryGetByIdErrorNamed::ExpectedStatusCodeBodyConversion {
+                                expected_status_code: response_status,
+                                conversion_error,
+                                code_occurence: crate::code_occurence_tufa_common!(),
+                            };
+                            Err(e)
+                        },
                     },
                 },
                 Err(unexpected_status_code) => Err(TryGetByIdErrorNamed::UnexpectedStatusCode {
