@@ -16,7 +16,7 @@ impl<'a> GitInfo<'a> {
     pub fn to_git_info_without_lifetime(&self) -> GitInfoWithoutLifetime {
         GitInfoWithoutLifetime {
             git_commit_id: self.git_commit_id.to_owned(),
-            git_repo_link: self.git_commit_id.to_owned(),
+            git_repo_link: self.git_repo_link.to_owned(),
         }
     }
 }
