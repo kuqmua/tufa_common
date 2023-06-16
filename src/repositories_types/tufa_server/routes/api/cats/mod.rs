@@ -34,27 +34,23 @@ impl std::string::ToString for GetQueryParameters {
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum GetErrorNamed<'a> {
-    CheckApiUsage {
-        #[eo_display_with_serialize_deserialize]
-        project_commit: &'a str,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    CannotConvertProjectCommitToStr {
-        #[eo_display_with_serialize_deserialize]
-        cannot_convert_project_commit_to_str: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    NoProjectCommitHeader {
-        #[eo_display_with_serialize_deserialize]
-        no_project_commit_header: &'a str,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
     PostgresSelect {
         #[eo_display]
         postgres_select: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
+
+impl<'a> crate::common::error_logs_logic::into_actix_web_http_response::IntoActixWebHttpResponse for GetErrorNamed<'a>{
+    fn into_actix_web_http_response(self) -> actix_web::HttpResponse {
+            println!("{self}");
+            match &self {
+                GetErrorNamed::PostgresSelect { postgres_select: _, code_occurence: _ } => actix_web::HttpResponse::BadRequest()
+                    .json(actix_web::web::Json(self.into_serialize_deserialize_version())),
+            }
+            
+    }
+} 
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TryGetErrorNamed<'a> {
