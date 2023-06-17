@@ -47,7 +47,8 @@ where
         + crate::common::config::config_fields::GetTimezone,
 {
     fn into_actix_web_http_response(self, config: &ConfigGeneric) -> actix_web::HttpResponse {
-            println!("{self}");
+            use crate::common::error_logs_logic::error_log::ErrorLog;
+            self.error_log(config);
             match &self {
                 GetErrorNamed::PostgresSelect { postgres_select: _, code_occurence: _ } => actix_web::HttpResponse::BadRequest()
                     .json(actix_web::web::Json(self.into_serialize_deserialize_version())),
@@ -144,7 +145,8 @@ where
         + crate::common::config::config_fields::GetTimezone,
 {
     fn into_actix_web_http_response(self, config: &ConfigGeneric) -> actix_web::HttpResponse {
-            println!("{self}");
+            use crate::common::error_logs_logic::error_log::ErrorLog;
+            self.error_log(config);
             match &self {
                 GetByIdErrorNamed::Bigserial { bigserial: _, code_occurence: _ } => actix_web::HttpResponse::BadRequest()
                     .json(actix_web::web::Json(self.into_serialize_deserialize_version())),
@@ -401,7 +403,8 @@ where
         + crate::common::config::config_fields::GetTimezone,
 {
     fn into_actix_web_http_response(self, config: &ConfigGeneric) -> actix_web::HttpResponse {
-            println!("{self}");
+            use crate::common::error_logs_logic::error_log::ErrorLog;
+            self.error_log(config);
             match &self {
                 PostErrorNamed::PostgresInsert { postgres_insert: _, code_occurence: _ } => actix_web::HttpResponse::InternalServerError().json(actix_web::web::Json(self.into_serialize_deserialize_version())),
             }
