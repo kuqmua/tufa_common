@@ -380,27 +380,23 @@ pub struct CatToPost {
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum PostErrorNamed<'a> {
-    CheckApiUsage {
-        #[eo_display_with_serialize_deserialize]
-        project_commit: &'a str,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    CannotConvertProjectCommitToStr {
-        #[eo_display_with_serialize_deserialize]
-        cannot_convert_project_commit_to_str: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    NoProjectCommitHeader {
-        #[eo_display_with_serialize_deserialize]
-        no_project_commit_header: &'a str,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
     PostgresInsert {
         #[eo_display]
         postgres_insert: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
+
+impl<'a> crate::common::error_logs_logic::into_actix_web_http_response::IntoActixWebHttpResponse for PostErrorNamed<'a>{
+    fn into_actix_web_http_response(self) -> actix_web::HttpResponse {
+            println!("{self}");
+            match &self {
+                PostErrorNamed::PostgresInsert { postgres_insert: _, code_occurence: _ } => actix_web::HttpResponse::InternalServerError().json(actix_web::web::Json(self.into_serialize_deserialize_version())),
+            }
+            
+    }
+}
+
 //
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TryPostErrorNamed<'a> {
