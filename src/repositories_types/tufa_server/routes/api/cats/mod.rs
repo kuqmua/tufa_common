@@ -41,8 +41,12 @@ pub enum GetErrorNamed<'a> {
     },
 }
 
-impl<'a> crate::common::error_logs_logic::into_actix_web_http_response::IntoActixWebHttpResponse for GetErrorNamed<'a>{
-    fn into_actix_web_http_response(self) -> actix_web::HttpResponse {
+impl<'a, ConfigGeneric> crate::common::error_logs_logic::into_actix_web_http_response::IntoActixWebHttpResponse<ConfigGeneric> for GetErrorNamed<'a>
+where
+    ConfigGeneric: crate::common::config::config_fields::GetSourcePlaceType
+        + crate::common::config::config_fields::GetTimezone,
+{
+    fn into_actix_web_http_response(self, config: &ConfigGeneric) -> actix_web::HttpResponse {
             println!("{self}");
             match &self {
                 GetErrorNamed::PostgresSelect { postgres_select: _, code_occurence: _ } => actix_web::HttpResponse::BadRequest()
@@ -134,8 +138,12 @@ pub enum GetByIdErrorNamed<'a> {
     },
 }
 
-impl<'a> crate::common::error_logs_logic::into_actix_web_http_response::IntoActixWebHttpResponse for GetByIdErrorNamed<'a>{
-    fn into_actix_web_http_response(self) -> actix_web::HttpResponse {
+impl<'a, ConfigGeneric> crate::common::error_logs_logic::into_actix_web_http_response::IntoActixWebHttpResponse<ConfigGeneric> for GetByIdErrorNamed<'a>
+where
+    ConfigGeneric: crate::common::config::config_fields::GetSourcePlaceType
+        + crate::common::config::config_fields::GetTimezone,
+{
+    fn into_actix_web_http_response(self, config: &ConfigGeneric) -> actix_web::HttpResponse {
             println!("{self}");
             match &self {
                 GetByIdErrorNamed::Bigserial { bigserial: _, code_occurence: _ } => actix_web::HttpResponse::BadRequest()
@@ -387,8 +395,12 @@ pub enum PostErrorNamed<'a> {
     },
 }
 
-impl<'a> crate::common::error_logs_logic::into_actix_web_http_response::IntoActixWebHttpResponse for PostErrorNamed<'a>{
-    fn into_actix_web_http_response(self) -> actix_web::HttpResponse {
+impl<'a, ConfigGeneric> crate::common::error_logs_logic::into_actix_web_http_response::IntoActixWebHttpResponse<ConfigGeneric> for PostErrorNamed<'a>
+where
+    ConfigGeneric: crate::common::config::config_fields::GetSourcePlaceType
+        + crate::common::config::config_fields::GetTimezone,
+{
+    fn into_actix_web_http_response(self, config: &ConfigGeneric) -> actix_web::HttpResponse {
             println!("{self}");
             match &self {
                 PostErrorNamed::PostgresInsert { postgres_insert: _, code_occurence: _ } => actix_web::HttpResponse::InternalServerError().json(actix_web::web::Json(self.into_serialize_deserialize_version())),

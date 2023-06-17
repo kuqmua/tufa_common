@@ -1,4 +1,7 @@
-pub trait IntoActixWebHttpResponse {
-    //todo - config here
-    fn into_actix_web_http_response(self) -> actix_web::HttpResponse;
+pub trait IntoActixWebHttpResponse<ConfigGeneric>
+where
+    ConfigGeneric: crate::common::config::config_fields::GetSourcePlaceType
+        + crate::common::config::config_fields::GetTimezone,
+{
+    fn into_actix_web_http_response(self, config: &ConfigGeneric) -> actix_web::HttpResponse;
 }
