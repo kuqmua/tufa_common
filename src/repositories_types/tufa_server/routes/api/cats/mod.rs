@@ -35,8 +35,8 @@ impl std::string::ToString for GetQueryParameters {
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum GetErrorNamed<'a> {
     PostgresSelect {
-        #[eo_display]
-        postgres_select: sqlx::Error,
+        #[eo_error_occurence]
+        postgres_select: crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
@@ -133,8 +133,8 @@ pub enum GetByIdErrorNamed<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     PostgresSelect {
-        #[eo_display]
-        postgres_select: sqlx::Error,
+        #[eo_error_occurence]
+        postgres_select: crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
@@ -391,8 +391,8 @@ pub struct CatToPost {
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum PostErrorNamed<'a> {
     PostgresInsert {
-        #[eo_display]
-        postgres_insert: sqlx::Error,
+        #[eo_error_occurence]
+        postgres_insert: crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
@@ -484,8 +484,8 @@ pub enum PutErrorNamed<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     PostgresInsertOrUpdate {
-        #[eo_display]
-        postgres_insert_or_update: sqlx::Error,
+        #[eo_error_occurence]
+        postgres_insert_or_update: crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
@@ -608,8 +608,8 @@ pub enum PatchErrorNamed<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     PostgresUpdate {
-        #[eo_display]
-        postgres_update: sqlx::Error,
+        #[eo_error_occurence]
+        postgres_update: crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
@@ -735,8 +735,8 @@ pub enum DeleteErrorNamed<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     PostgresDelete {
-        #[eo_display]
-        postgres_delete: sqlx::Error,
+        #[eo_error_occurence]
+        postgres_delete: crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
@@ -826,8 +826,8 @@ pub enum DeleteByIdErrorNamed<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     PostgresDelete {
-        #[eo_display]
-        postgres_delete: sqlx::Error,
+        #[eo_error_occurence]
+        postgres_delete: crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
