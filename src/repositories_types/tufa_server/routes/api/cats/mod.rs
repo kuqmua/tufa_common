@@ -41,21 +41,14 @@ pub enum GetErrorNamed<'a> {
     },
 }
 
-impl<'a, ConfigGeneric> crate::common::error_logs_logic::into_actix_web_http_response::IntoActixWebHttpResponse<ConfigGeneric> for GetErrorNamed<'a>
-where
-    ConfigGeneric: crate::common::config::config_fields::GetSourcePlaceType
-        + crate::common::config::config_fields::GetTimezone,
-{
-    fn into_actix_web_http_response(self, config: &ConfigGeneric) -> actix_web::HttpResponse {
-            use crate::common::error_logs_logic::error_log::ErrorLog;
-            self.error_log(config);
-            match &self {
-                GetErrorNamed::PostgresSelect { postgres_select: _, code_occurence: _ } => actix_web::HttpResponse::BadRequest()
-                    .json(actix_web::web::Json(self.into_serialize_deserialize_version())),
-            }
-            
+impl<'a> From<GetErrorNamed<'a>> for actix_web::HttpResponse {
+    fn from(val: GetErrorNamed<'a>) -> Self {
+        match &val {
+            GetErrorNamed::PostgresSelect { postgres_select: _, code_occurence: _ } => actix_web::HttpResponse::BadRequest()
+                .json(actix_web::web::Json(val.into_serialize_deserialize_version())),
+        }
     }
-} 
+}
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TryGetErrorNamed<'a> {
@@ -139,21 +132,14 @@ pub enum GetByIdErrorNamed<'a> {
     },
 }
 
-impl<'a, ConfigGeneric> crate::common::error_logs_logic::into_actix_web_http_response::IntoActixWebHttpResponse<ConfigGeneric> for GetByIdErrorNamed<'a>
-where
-    ConfigGeneric: crate::common::config::config_fields::GetSourcePlaceType
-        + crate::common::config::config_fields::GetTimezone,
-{
-    fn into_actix_web_http_response(self, config: &ConfigGeneric) -> actix_web::HttpResponse {
-            use crate::common::error_logs_logic::error_log::ErrorLog;
-            self.error_log(config);
-            match &self {
-                GetByIdErrorNamed::Bigserial { bigserial: _, code_occurence: _ } => actix_web::HttpResponse::BadRequest()
-                    .json(actix_web::web::Json(self.into_serialize_deserialize_version())),
-                GetByIdErrorNamed::PostgresSelect { postgres_select: _, code_occurence: _ } => actix_web::HttpResponse::InternalServerError()
-                    .json(actix_web::web::Json(self.into_serialize_deserialize_version())),
-            }
-            
+impl<'a> From<GetByIdErrorNamed<'a>> for actix_web::HttpResponse {
+    fn from(val: GetByIdErrorNamed<'a>) -> Self {
+        match &val {
+            GetByIdErrorNamed::Bigserial { bigserial: _, code_occurence: _ } => actix_web::HttpResponse::BadRequest()
+                .json(actix_web::web::Json(val.into_serialize_deserialize_version())),
+            GetByIdErrorNamed::PostgresSelect { postgres_select: _, code_occurence: _ } => actix_web::HttpResponse::InternalServerError()
+                .json(actix_web::web::Json(val.into_serialize_deserialize_version())),
+        }
     }
 }
 
@@ -397,18 +383,11 @@ pub enum PostErrorNamed<'a> {
     },
 }
 
-impl<'a, ConfigGeneric> crate::common::error_logs_logic::into_actix_web_http_response::IntoActixWebHttpResponse<ConfigGeneric> for PostErrorNamed<'a>
-where
-    ConfigGeneric: crate::common::config::config_fields::GetSourcePlaceType
-        + crate::common::config::config_fields::GetTimezone,
-{
-    fn into_actix_web_http_response(self, config: &ConfigGeneric) -> actix_web::HttpResponse {
-            use crate::common::error_logs_logic::error_log::ErrorLog;
-            self.error_log(config);
-            match &self {
-                PostErrorNamed::PostgresInsert { postgres_insert: _, code_occurence: _ } => actix_web::HttpResponse::InternalServerError().json(actix_web::web::Json(self.into_serialize_deserialize_version())),
-            }
-            
+impl<'a> From<PostErrorNamed<'a>> for actix_web::HttpResponse {
+    fn from(val: PostErrorNamed<'a>) -> Self {
+        match &val {
+            PostErrorNamed::PostgresInsert { postgres_insert: _, code_occurence: _ } => actix_web::HttpResponse::InternalServerError().json(actix_web::web::Json(val.into_serialize_deserialize_version())),
+        }
     }
 }
 
@@ -490,27 +469,21 @@ pub enum PutErrorNamed<'a> {
     },
 }
 
-impl<'a, ConfigGeneric> crate::common::error_logs_logic::into_actix_web_http_response::IntoActixWebHttpResponse<ConfigGeneric> for PutErrorNamed<'a>
-where
-    ConfigGeneric: crate::common::config::config_fields::GetSourcePlaceType
-        + crate::common::config::config_fields::GetTimezone,
-{
-    fn into_actix_web_http_response(self, config: &ConfigGeneric) -> actix_web::HttpResponse {
-            use crate::common::error_logs_logic::error_log::ErrorLog;
-            self.error_log(config);
-            match &self {
-                PutErrorNamed::Bigserial { 
-                    bigserial: _, 
-                    code_occurence: _ 
-                } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(self.into_serialize_deserialize_version())),
-                PutErrorNamed::PostgresInsertOrUpdate { 
-                    postgres_insert_or_update: _, 
-                    code_occurence: _ 
-                } => actix_web::HttpResponse::InternalServerError().json(actix_web::web::Json(self.into_serialize_deserialize_version())),
-            }
-            
+impl<'a> From<PutErrorNamed<'a>> for actix_web::HttpResponse {
+    fn from(val: PutErrorNamed<'a>) -> Self {
+        match &val {
+            PutErrorNamed::Bigserial { 
+                bigserial: _, 
+                code_occurence: _ 
+            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(val.into_serialize_deserialize_version())),
+            PutErrorNamed::PostgresInsertOrUpdate { 
+                postgres_insert_or_update: _, 
+                code_occurence: _ 
+            } => actix_web::HttpResponse::InternalServerError().json(actix_web::web::Json(val.into_serialize_deserialize_version())),
+        }
     }
 }
+
 //
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TryPutErrorNamed<'a> {
@@ -614,25 +587,18 @@ pub enum PatchErrorNamed<'a> {
     },
 }
 
-impl<'a, ConfigGeneric> crate::common::error_logs_logic::into_actix_web_http_response::IntoActixWebHttpResponse<ConfigGeneric> for PatchErrorNamed<'a>
-where
-    ConfigGeneric: crate::common::config::config_fields::GetSourcePlaceType
-        + crate::common::config::config_fields::GetTimezone,
-{
-    fn into_actix_web_http_response(self, config: &ConfigGeneric) -> actix_web::HttpResponse {
-            use crate::common::error_logs_logic::error_log::ErrorLog;
-            self.error_log(config);
-            match &self {
-                PatchErrorNamed::Bigserial { 
-                    bigserial: _, 
-                    code_occurence: _ 
-                } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(self.into_serialize_deserialize_version())),
-                PatchErrorNamed::PostgresUpdate { 
-                    postgres_update: _, 
-                    code_occurence: _ 
-                } => actix_web::HttpResponse::InternalServerError().json(actix_web::web::Json(self.into_serialize_deserialize_version())),
-            }
-            
+impl<'a> From<PatchErrorNamed<'a>> for actix_web::HttpResponse {
+    fn from(val: PatchErrorNamed<'a>) -> Self {
+        match &val {
+            PatchErrorNamed::Bigserial { 
+                bigserial: _, 
+                code_occurence: _ 
+            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(val.into_serialize_deserialize_version())),
+            PatchErrorNamed::PostgresUpdate { 
+                postgres_update: _, 
+                code_occurence: _ 
+            } => actix_web::HttpResponse::InternalServerError().json(actix_web::web::Json(val.into_serialize_deserialize_version())),
+        }
     }
 }
 
@@ -741,25 +707,18 @@ pub enum DeleteErrorNamed<'a> {
     },
 }
 
-impl<'a, ConfigGeneric> crate::common::error_logs_logic::into_actix_web_http_response::IntoActixWebHttpResponse<ConfigGeneric> for DeleteErrorNamed<'a>
-where
-    ConfigGeneric: crate::common::config::config_fields::GetSourcePlaceType
-        + crate::common::config::config_fields::GetTimezone,
-{
-    fn into_actix_web_http_response(self, config: &ConfigGeneric) -> actix_web::HttpResponse {
-            use crate::common::error_logs_logic::error_log::ErrorLog;
-            self.error_log(config);
-            match &self {
-                DeleteErrorNamed::NoParameters { 
-                    no_parameters: _, 
-                    code_occurence: _ 
-                } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(self.into_serialize_deserialize_version())),
-                DeleteErrorNamed::PostgresDelete { 
-                    postgres_delete: _, 
-                    code_occurence: _ 
-                } => actix_web::HttpResponse::InternalServerError().json(actix_web::web::Json(self.into_serialize_deserialize_version())),
-            }
-            
+impl<'a> From<DeleteErrorNamed<'a>> for actix_web::HttpResponse {
+    fn from(val: DeleteErrorNamed<'a>) -> Self {
+        match &val {
+            DeleteErrorNamed::NoParameters { 
+                no_parameters: _, 
+                code_occurence: _ 
+            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(val.into_serialize_deserialize_version())),
+            DeleteErrorNamed::PostgresDelete { 
+                postgres_delete: _, 
+                code_occurence: _ 
+            } => actix_web::HttpResponse::InternalServerError().json(actix_web::web::Json(val.into_serialize_deserialize_version())),
+        }
     }
 }
 
@@ -832,25 +791,18 @@ pub enum DeleteByIdErrorNamed<'a> {
     },
 }
 
-impl<'a, ConfigGeneric> crate::common::error_logs_logic::into_actix_web_http_response::IntoActixWebHttpResponse<ConfigGeneric> for DeleteByIdErrorNamed<'a>
-where
-    ConfigGeneric: crate::common::config::config_fields::GetSourcePlaceType
-        + crate::common::config::config_fields::GetTimezone,
-{
-    fn into_actix_web_http_response(self, config: &ConfigGeneric) -> actix_web::HttpResponse {
-            use crate::common::error_logs_logic::error_log::ErrorLog;
-            self.error_log(config);
-            match &self {
-                DeleteByIdErrorNamed::Bigserial { 
-                    bigserial: _, 
-                    code_occurence: _ 
-                } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(self.into_serialize_deserialize_version())),
-                DeleteByIdErrorNamed::PostgresDelete { 
-                    postgres_delete: _,
-                    code_occurence: _ 
-                } => actix_web::HttpResponse::InternalServerError().json(actix_web::web::Json(self.into_serialize_deserialize_version())),
-            }
-            
+impl<'a> From<DeleteByIdErrorNamed<'a>> for actix_web::HttpResponse {
+    fn from(val: DeleteByIdErrorNamed<'a>) -> Self {
+        match &val {
+            DeleteByIdErrorNamed::Bigserial { 
+                bigserial: _, 
+                code_occurence: _ 
+            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(val.into_serialize_deserialize_version())),
+            DeleteByIdErrorNamed::PostgresDelete { 
+                postgres_delete: _,
+                code_occurence: _ 
+            } => actix_web::HttpResponse::InternalServerError().json(actix_web::web::Json(val.into_serialize_deserialize_version())),
+        }
     }
 }
 
