@@ -381,3 +381,76 @@ impl<'a> From<SqlxPostgresErrorErrorNamed<'a>> for actix_web::HttpResponse {
         }
     }
 }
+
+impl<'a> From<SqlxPostgresErrorErrorNamed<'a>> for http::StatusCode {
+    fn from(val: SqlxPostgresErrorErrorNamed<'a>) -> Self {
+        match &val {
+            SqlxPostgresErrorErrorNamed::Configuration {
+                configuration_box_dyn_error: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+            SqlxPostgresErrorErrorNamed::Database {
+                box_dyn_database_error: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+            SqlxPostgresErrorErrorNamed::Io {
+                io_error: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+            SqlxPostgresErrorErrorNamed::Tls {
+                box_dyn_error: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+            SqlxPostgresErrorErrorNamed::Protocol {
+                protocol: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+            SqlxPostgresErrorErrorNamed::RowNotFound {
+                row_not_found: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+            SqlxPostgresErrorErrorNamed::TypeNotFound {
+                type_not_found: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+            SqlxPostgresErrorErrorNamed::ColumnIndexOutOfBounds {
+                column_index_out_of_bounds: _,
+                len: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+            SqlxPostgresErrorErrorNamed::ColumnNotFound {
+                column_not_found: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+            SqlxPostgresErrorErrorNamed::ColumnDecode {
+                column_decode_index: _,
+                source_handle: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+            SqlxPostgresErrorErrorNamed::Decode {
+                decode_box_dyn_error: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+            SqlxPostgresErrorErrorNamed::PoolTimedOut {
+                pool_timed_out: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+            SqlxPostgresErrorErrorNamed::PoolClosed {
+                pool_closed: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+            SqlxPostgresErrorErrorNamed::WorkerCrashed {
+                worker_crashed: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+            SqlxPostgresErrorErrorNamed::Migrate {
+                migrate: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+            SqlxPostgresErrorErrorNamed::UnexpectedCase {
+                unexpected_case: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+        }
+    }
+}

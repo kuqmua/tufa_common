@@ -44,8 +44,8 @@ pub enum GetErrorNamed<'a> {
 impl<'a> From<GetErrorNamed<'a>> for actix_web::HttpResponse {
     fn from(val: GetErrorNamed<'a>) -> Self {
         match &val {
-            GetErrorNamed::PostgresSelect { postgres_select: _, code_occurence: _ } => actix_web::HttpResponse::BadRequest()
-                .json(actix_web::web::Json(val.into_serialize_deserialize_version())),
+            GetErrorNamed::PostgresSelect { postgres_select: _, code_occurence: _ } => actix_web::HttpResponse::InternalServerError()
+                .json(actix_web::web::Json(val.into_serialize_deserialize_version())),//or something like that? try to get http code from inner value maybe
         }
     }
 }
