@@ -172,43 +172,51 @@ impl<'a> std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed<'a> {
     }
 }
 
+impl<'a> From<SqlxPostgresErrorErrorNamed<'a>>
+    for actix_web::web::Json<SqlxPostgresErrorErrorNamedWithSerializeDeserialize>
+{
+    fn from(val: SqlxPostgresErrorErrorNamed<'a>) -> Self {
+        actix_web::web::Json(val.into_serialize_deserialize_version())
+    }
+}
+
 impl<'a> From<SqlxPostgresErrorErrorNamed<'a>> for actix_web::Error {
     fn from(val: SqlxPostgresErrorErrorNamed<'a>) -> Self {
         match &val {
             SqlxPostgresErrorErrorNamed::Configuration {
                 configuration_box_dyn_error: _,
                 code_occurence: _,
-            } => actix_web::error::ErrorBadRequest(actix_web::web::Json(
+            } => actix_web::error::ErrorInternalServerError(actix_web::web::Json(
                 val.into_serialize_deserialize_version(),
             )),
             SqlxPostgresErrorErrorNamed::Database {
                 box_dyn_database_error: _,
                 code_occurence: _,
-            } => actix_web::error::ErrorBadRequest(actix_web::web::Json(
+            } => actix_web::error::ErrorInternalServerError(actix_web::web::Json(
                 val.into_serialize_deserialize_version(),
             )),
             SqlxPostgresErrorErrorNamed::Io {
                 io_error: _,
                 code_occurence: _,
-            } => actix_web::error::ErrorBadRequest(actix_web::web::Json(
+            } => actix_web::error::ErrorInternalServerError(actix_web::web::Json(
                 val.into_serialize_deserialize_version(),
             )),
             SqlxPostgresErrorErrorNamed::Tls {
                 box_dyn_error: _,
                 code_occurence: _,
-            } => actix_web::error::ErrorBadRequest(actix_web::web::Json(
+            } => actix_web::error::ErrorInternalServerError(actix_web::web::Json(
                 val.into_serialize_deserialize_version(),
             )),
             SqlxPostgresErrorErrorNamed::Protocol {
                 protocol: _,
                 code_occurence: _,
-            } => actix_web::error::ErrorBadRequest(actix_web::web::Json(
+            } => actix_web::error::ErrorInternalServerError(actix_web::web::Json(
                 val.into_serialize_deserialize_version(),
             )),
             SqlxPostgresErrorErrorNamed::RowNotFound {
                 row_not_found: _,
                 code_occurence: _,
-            } => actix_web::error::ErrorBadRequest(actix_web::web::Json(
+            } => actix_web::error::ErrorNotFound(actix_web::web::Json(
                 val.into_serialize_deserialize_version(),
             )),
             SqlxPostgresErrorErrorNamed::TypeNotFound {
@@ -221,7 +229,7 @@ impl<'a> From<SqlxPostgresErrorErrorNamed<'a>> for actix_web::Error {
                 column_index_out_of_bounds: _,
                 len: _,
                 code_occurence: _,
-            } => actix_web::error::ErrorBadRequest(actix_web::web::Json(
+            } => actix_web::error::ErrorInternalServerError(actix_web::web::Json(
                 val.into_serialize_deserialize_version(),
             )),
             SqlxPostgresErrorErrorNamed::ColumnNotFound {
@@ -234,43 +242,43 @@ impl<'a> From<SqlxPostgresErrorErrorNamed<'a>> for actix_web::Error {
                 column_decode_index: _,
                 source_handle: _,
                 code_occurence: _,
-            } => actix_web::error::ErrorBadRequest(actix_web::web::Json(
+            } => actix_web::error::ErrorInternalServerError(actix_web::web::Json(
                 val.into_serialize_deserialize_version(),
             )),
             SqlxPostgresErrorErrorNamed::Decode {
                 decode_box_dyn_error: _,
                 code_occurence: _,
-            } => actix_web::error::ErrorBadRequest(actix_web::web::Json(
+            } => actix_web::error::ErrorInternalServerError(actix_web::web::Json(
                 val.into_serialize_deserialize_version(),
             )),
             SqlxPostgresErrorErrorNamed::PoolTimedOut {
                 pool_timed_out: _,
                 code_occurence: _,
-            } => actix_web::error::ErrorBadRequest(actix_web::web::Json(
+            } => actix_web::error::ErrorRequestTimeout(actix_web::web::Json(
                 val.into_serialize_deserialize_version(),
             )),
             SqlxPostgresErrorErrorNamed::PoolClosed {
                 pool_closed: _,
                 code_occurence: _,
-            } => actix_web::error::ErrorBadRequest(actix_web::web::Json(
+            } => actix_web::error::ErrorInternalServerError(actix_web::web::Json(
                 val.into_serialize_deserialize_version(),
             )),
             SqlxPostgresErrorErrorNamed::WorkerCrashed {
                 worker_crashed: _,
                 code_occurence: _,
-            } => actix_web::error::ErrorBadRequest(actix_web::web::Json(
+            } => actix_web::error::ErrorInternalServerError(actix_web::web::Json(
                 val.into_serialize_deserialize_version(),
             )),
             SqlxPostgresErrorErrorNamed::Migrate {
                 migrate: _,
                 code_occurence: _,
-            } => actix_web::error::ErrorBadRequest(actix_web::web::Json(
+            } => actix_web::error::ErrorInternalServerError(actix_web::web::Json(
                 val.into_serialize_deserialize_version(),
             )),
             SqlxPostgresErrorErrorNamed::UnexpectedCase {
                 unexpected_case: _,
                 code_occurence: _,
-            } => actix_web::error::ErrorBadRequest(actix_web::web::Json(
+            } => actix_web::error::ErrorInternalServerError(actix_web::web::Json(
                 val.into_serialize_deserialize_version(),
             )),
         }
@@ -279,112 +287,15 @@ impl<'a> From<SqlxPostgresErrorErrorNamed<'a>> for actix_web::Error {
 
 impl<'a> From<SqlxPostgresErrorErrorNamed<'a>> for actix_web::HttpResponse {
     fn from(val: SqlxPostgresErrorErrorNamed<'a>) -> Self {
-        match &val {
-            SqlxPostgresErrorErrorNamed::Configuration {
-                configuration_box_dyn_error: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(
-                val.into_serialize_deserialize_version(),
-            )),
-            SqlxPostgresErrorErrorNamed::Database {
-                box_dyn_database_error: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(
-                val.into_serialize_deserialize_version(),
-            )),
-            SqlxPostgresErrorErrorNamed::Io {
-                io_error: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(
-                val.into_serialize_deserialize_version(),
-            )),
-            SqlxPostgresErrorErrorNamed::Tls {
-                box_dyn_error: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(
-                val.into_serialize_deserialize_version(),
-            )),
-            SqlxPostgresErrorErrorNamed::Protocol {
-                protocol: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(
-                val.into_serialize_deserialize_version(),
-            )),
-            SqlxPostgresErrorErrorNamed::RowNotFound {
-                row_not_found: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(
-                val.into_serialize_deserialize_version(),
-            )),
-            SqlxPostgresErrorErrorNamed::TypeNotFound {
-                type_not_found: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(
-                val.into_serialize_deserialize_version(),
-            )),
-            SqlxPostgresErrorErrorNamed::ColumnIndexOutOfBounds {
-                column_index_out_of_bounds: _,
-                len: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(
-                val.into_serialize_deserialize_version(),
-            )),
-            SqlxPostgresErrorErrorNamed::ColumnNotFound {
-                column_not_found: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(
-                val.into_serialize_deserialize_version(),
-            )),
-            SqlxPostgresErrorErrorNamed::ColumnDecode {
-                column_decode_index: _,
-                source_handle: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(
-                val.into_serialize_deserialize_version(),
-            )),
-            SqlxPostgresErrorErrorNamed::Decode {
-                decode_box_dyn_error: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(
-                val.into_serialize_deserialize_version(),
-            )),
-            SqlxPostgresErrorErrorNamed::PoolTimedOut {
-                pool_timed_out: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(
-                val.into_serialize_deserialize_version(),
-            )),
-            SqlxPostgresErrorErrorNamed::PoolClosed {
-                pool_closed: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(
-                val.into_serialize_deserialize_version(),
-            )),
-            SqlxPostgresErrorErrorNamed::WorkerCrashed {
-                worker_crashed: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(
-                val.into_serialize_deserialize_version(),
-            )),
-            SqlxPostgresErrorErrorNamed::Migrate {
-                migrate: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(
-                val.into_serialize_deserialize_version(),
-            )),
-            SqlxPostgresErrorErrorNamed::UnexpectedCase {
-                unexpected_case: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(
-                val.into_serialize_deserialize_version(),
-            )),
-        }
+        actix_web::HttpResponseBuilder::from(&val).json(actix_web::web::Json(
+            val.into_serialize_deserialize_version(),
+        ))
     }
 }
 
-impl<'a> From<SqlxPostgresErrorErrorNamed<'a>> for http::StatusCode {
-    fn from(val: SqlxPostgresErrorErrorNamed<'a>) -> Self {
-        match &val {
+impl<'a> From<&SqlxPostgresErrorErrorNamed<'a>> for http::StatusCode {
+    fn from(val: &SqlxPostgresErrorErrorNamed<'a>) -> Self {
+        match val {
             SqlxPostgresErrorErrorNamed::Configuration {
                 configuration_box_dyn_error: _,
                 code_occurence: _,
@@ -426,7 +337,7 @@ impl<'a> From<SqlxPostgresErrorErrorNamed<'a>> for http::StatusCode {
                 column_decode_index: _,
                 source_handle: _,
                 code_occurence: _,
-            } => http::StatusCode::BAD_REQUEST,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             SqlxPostgresErrorErrorNamed::Decode {
                 decode_box_dyn_error: _,
                 code_occurence: _,
@@ -451,6 +362,79 @@ impl<'a> From<SqlxPostgresErrorErrorNamed<'a>> for http::StatusCode {
                 unexpected_case: _,
                 code_occurence: _,
             } => http::StatusCode::INTERNAL_SERVER_ERROR,
+        }
+    }
+}
+
+impl<'a> From<&SqlxPostgresErrorErrorNamed<'a>> for actix_web::HttpResponseBuilder {
+    fn from(val: &SqlxPostgresErrorErrorNamed<'a>) -> Self {
+        match val {
+            SqlxPostgresErrorErrorNamed::Configuration {
+                configuration_box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            SqlxPostgresErrorErrorNamed::Database {
+                box_dyn_database_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            SqlxPostgresErrorErrorNamed::Io {
+                io_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            SqlxPostgresErrorErrorNamed::Tls {
+                box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            SqlxPostgresErrorErrorNamed::Protocol {
+                protocol: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            SqlxPostgresErrorErrorNamed::RowNotFound {
+                row_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::NotFound(),
+            SqlxPostgresErrorErrorNamed::TypeNotFound {
+                type_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::BadRequest(),
+            SqlxPostgresErrorErrorNamed::ColumnIndexOutOfBounds {
+                column_index_out_of_bounds: _,
+                len: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            SqlxPostgresErrorErrorNamed::ColumnNotFound {
+                column_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::BadRequest(),
+            SqlxPostgresErrorErrorNamed::ColumnDecode {
+                column_decode_index: _,
+                source_handle: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            SqlxPostgresErrorErrorNamed::Decode {
+                decode_box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            SqlxPostgresErrorErrorNamed::PoolTimedOut {
+                pool_timed_out: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::RequestTimeout(),
+            SqlxPostgresErrorErrorNamed::PoolClosed {
+                pool_closed: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            SqlxPostgresErrorErrorNamed::WorkerCrashed {
+                worker_crashed: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            SqlxPostgresErrorErrorNamed::Migrate {
+                migrate: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            SqlxPostgresErrorErrorNamed::UnexpectedCase {
+                unexpected_case: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
         }
     }
 }
