@@ -388,27 +388,27 @@ impl<'a> From<SqlxPostgresErrorErrorNamed<'a>> for http::StatusCode {
             SqlxPostgresErrorErrorNamed::Configuration {
                 configuration_box_dyn_error: _,
                 code_occurence: _,
-            } => http::StatusCode::BAD_REQUEST,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             SqlxPostgresErrorErrorNamed::Database {
                 box_dyn_database_error: _,
                 code_occurence: _,
-            } => http::StatusCode::BAD_REQUEST,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             SqlxPostgresErrorErrorNamed::Io {
                 io_error: _,
                 code_occurence: _,
-            } => http::StatusCode::BAD_REQUEST,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             SqlxPostgresErrorErrorNamed::Tls {
                 box_dyn_error: _,
                 code_occurence: _,
-            } => http::StatusCode::BAD_REQUEST,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             SqlxPostgresErrorErrorNamed::Protocol {
                 protocol: _,
                 code_occurence: _,
-            } => http::StatusCode::BAD_REQUEST,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             SqlxPostgresErrorErrorNamed::RowNotFound {
                 row_not_found: _,
                 code_occurence: _,
-            } => http::StatusCode::BAD_REQUEST,
+            } => http::StatusCode::NOT_FOUND,
             SqlxPostgresErrorErrorNamed::TypeNotFound {
                 type_not_found: _,
                 code_occurence: _,
@@ -417,7 +417,7 @@ impl<'a> From<SqlxPostgresErrorErrorNamed<'a>> for http::StatusCode {
                 column_index_out_of_bounds: _,
                 len: _,
                 code_occurence: _,
-            } => http::StatusCode::BAD_REQUEST,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             SqlxPostgresErrorErrorNamed::ColumnNotFound {
                 column_not_found: _,
                 code_occurence: _,
@@ -430,27 +430,27 @@ impl<'a> From<SqlxPostgresErrorErrorNamed<'a>> for http::StatusCode {
             SqlxPostgresErrorErrorNamed::Decode {
                 decode_box_dyn_error: _,
                 code_occurence: _,
-            } => http::StatusCode::BAD_REQUEST,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             SqlxPostgresErrorErrorNamed::PoolTimedOut {
                 pool_timed_out: _,
                 code_occurence: _,
-            } => http::StatusCode::BAD_REQUEST,
+            } => http::StatusCode::REQUEST_TIMEOUT,
             SqlxPostgresErrorErrorNamed::PoolClosed {
                 pool_closed: _,
                 code_occurence: _,
-            } => http::StatusCode::BAD_REQUEST,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             SqlxPostgresErrorErrorNamed::WorkerCrashed {
                 worker_crashed: _,
                 code_occurence: _,
-            } => http::StatusCode::BAD_REQUEST,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             SqlxPostgresErrorErrorNamed::Migrate {
                 migrate: _,
                 code_occurence: _,
-            } => http::StatusCode::BAD_REQUEST,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             SqlxPostgresErrorErrorNamed::UnexpectedCase {
                 unexpected_case: _,
                 code_occurence: _,
-            } => http::StatusCode::BAD_REQUEST,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
         }
     }
 }
