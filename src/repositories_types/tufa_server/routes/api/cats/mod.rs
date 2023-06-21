@@ -32,7 +32,7 @@ impl std::string::ToString for GetQueryParameters {
     }
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence, from_sqlx_postgres_error::FromSqlxPostgresError)]
 pub enum GetErrorNamed<'a> {
     Configuration {
         #[eo_display_with_serialize_deserialize]
@@ -194,98 +194,6 @@ impl<'a> From<&GetErrorNamed<'a>> for actix_web::HttpResponseBuilder {
     }
 }
 
-impl<'a> From<GetErrorNamed<'a>> for actix_web::HttpResponse {
-    fn from(val: GetErrorNamed<'a>) -> Self {
-        let mut actix_web_http_response: actix_web::HttpResponseBuilder = (&val).into();
-        actix_web_http_response.json(actix_web::web::Json(
-            val.into_serialize_deserialize_version(),
-        ))
-    }
-}
-
-impl<'a> From<sqlx::Error> for GetErrorNamed<'a> {
-    fn from(val: sqlx::Error) -> Self {
-        match val {
-            sqlx::Error::Configuration(box_dyn_error) => {
-                Self::Configuration {
-                    configuration_box_dyn_error: box_dyn_error.to_string(),
-                    code_occurence: crate::code_occurence_tufa_common!(),
-                }
-            }
-            sqlx::Error::Database(box_dyn_database_error) => {
-                Self::Database {
-                    box_dyn_database_error: box_dyn_database_error.message().to_string(),
-                    code_occurence: crate::code_occurence_tufa_common!(),
-                }
-            }
-            sqlx::Error::Io(io_error) => Self::Io {
-                io_error,
-                code_occurence: crate::code_occurence_tufa_common!(),
-            },
-            sqlx::Error::Tls(box_dyn_error) => Self::Tls {
-                box_dyn_error: box_dyn_error.to_string(),
-                code_occurence: crate::code_occurence_tufa_common!(),
-            },
-            sqlx::Error::Protocol(string) => Self::Protocol {
-                protocol: string,
-                code_occurence: crate::code_occurence_tufa_common!(),
-            },
-            sqlx::Error::RowNotFound => Self::RowNotFound {
-                row_not_found: std::string::String::from("row_not_found"),
-                code_occurence: crate::code_occurence_tufa_common!(),
-            },
-            sqlx::Error::TypeNotFound { type_name } => Self::TypeNotFound {
-                type_not_found: type_name,
-                code_occurence: crate::code_occurence_tufa_common!(),
-            },
-            sqlx::Error::ColumnIndexOutOfBounds { index, len } => {
-                Self::ColumnIndexOutOfBounds {
-                    column_index_out_of_bounds: index,
-                    len,
-                    code_occurence: crate::code_occurence_tufa_common!(),
-                }
-            }
-            sqlx::Error::ColumnNotFound(column_not_found) => {
-                Self::ColumnNotFound {
-                    column_not_found,
-                    code_occurence: crate::code_occurence_tufa_common!(),
-                }
-            }
-            sqlx::Error::ColumnDecode { index, source } => {
-                Self::ColumnDecode {
-                    column_decode_index: index,
-                    source_handle: source.to_string(),
-                    code_occurence: crate::code_occurence_tufa_common!(),
-                }
-            }
-            sqlx::Error::Decode(decode_box_dyn_error) => Self::Decode {
-                decode_box_dyn_error: decode_box_dyn_error.to_string(),
-                code_occurence: crate::code_occurence_tufa_common!(),
-            },
-            sqlx::Error::PoolTimedOut => Self::PoolTimedOut {
-                pool_timed_out: std::string::String::from("pool timed out"),
-                code_occurence: crate::code_occurence_tufa_common!(),
-            },
-            sqlx::Error::PoolClosed => Self::PoolClosed {
-                pool_closed: std::string::String::from("pool closed"),
-                code_occurence: crate::code_occurence_tufa_common!(),
-            },
-            sqlx::Error::WorkerCrashed => Self::WorkerCrashed {
-                worker_crashed: std::string::String::from("worker crashed"),
-                code_occurence: crate::code_occurence_tufa_common!(),
-            },
-            sqlx::Error::Migrate(migrate_error) => Self::Migrate {
-                migrate: *migrate_error,
-                code_occurence: crate::code_occurence_tufa_common!(),
-            },
-            _ => Self::UnexpectedCase {
-                unexpected_case: std::string::String::from("unexpected_case"),
-                code_occurence: crate::code_occurence_tufa_common!(),
-            },
-        }
-    }
-}
-
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TryGetErrorNamed<'a> {
     Reqwest {
@@ -354,27 +262,171 @@ pub struct GetByIdPathParameters {
     pub id: i64,
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence, from_sqlx_postgres_error::FromSqlxPostgresError)]
 pub enum GetByIdErrorNamed<'a> {
     Bigserial {
         #[eo_error_occurence]
         bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    PostgresSelect {
-        #[eo_error_occurence]
-        postgres_select: crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamed<'a>,
+    //
+    Configuration {
+        #[eo_display_with_serialize_deserialize]
+        configuration_box_dyn_error: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
+    Database {
+        #[eo_display_with_serialize_deserialize]
+        box_dyn_database_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Io {
+        #[eo_display]
+        io_error: std::io::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Tls {
+        #[eo_display_with_serialize_deserialize]
+        box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Protocol {
+        #[eo_display_with_serialize_deserialize]
+        protocol: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    RowNotFound {
+        #[eo_display_with_serialize_deserialize]
+        row_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    TypeNotFound {
+        #[eo_display_with_serialize_deserialize]
+        type_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ColumnIndexOutOfBounds {
+        #[eo_display_with_serialize_deserialize]
+        column_index_out_of_bounds: usize,
+        #[eo_display_with_serialize_deserialize]
+        len: usize,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ColumnNotFound {
+        #[eo_display_with_serialize_deserialize]
+        column_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ColumnDecode {
+        #[eo_display_with_serialize_deserialize]
+        column_decode_index: std::string::String,
+        #[eo_display_with_serialize_deserialize]
+        source_handle: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Decode {
+        #[eo_display_with_serialize_deserialize]
+        decode_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PoolTimedOut {
+        #[eo_display_with_serialize_deserialize]
+        pool_timed_out: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PoolClosed {
+        #[eo_display_with_serialize_deserialize]
+        pool_closed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    WorkerCrashed {
+        #[eo_display_with_serialize_deserialize]
+        worker_crashed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Migrate {
+        #[eo_display]
+        migrate: sqlx::migrate::MigrateError,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    //#[non_exhaustive] case
+    UnexpectedCase {
+        #[eo_display_with_serialize_deserialize]
+        unexpected_case: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    }
 }
 
-impl<'a> From<GetByIdErrorNamed<'a>> for actix_web::HttpResponse {
-    fn from(val: GetByIdErrorNamed<'a>) -> Self {
+impl<'a> From<&GetByIdErrorNamed<'a>> for actix_web::HttpResponseBuilder {
+    fn from(val: &GetByIdErrorNamed<'a>) -> Self {
         match &val {
-            GetByIdErrorNamed::Bigserial { bigserial: _, code_occurence: _ } => actix_web::HttpResponse::BadRequest()
-                .json(actix_web::web::Json(val.into_serialize_deserialize_version())),
-            GetByIdErrorNamed::PostgresSelect { postgres_select: _, code_occurence: _ } => actix_web::HttpResponse::InternalServerError()
-                .json(actix_web::web::Json(val.into_serialize_deserialize_version())),
+            GetByIdErrorNamed::Bigserial { bigserial: _, code_occurence: _ } => actix_web::HttpResponse::BadRequest(),
+            GetByIdErrorNamed::Configuration {
+                configuration_box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            GetByIdErrorNamed::Database {
+                box_dyn_database_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            GetByIdErrorNamed::Io {
+                io_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            GetByIdErrorNamed::Tls {
+                box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            GetByIdErrorNamed::Protocol {
+                protocol: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            GetByIdErrorNamed::RowNotFound {
+                row_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::NotFound(),
+            GetByIdErrorNamed::TypeNotFound {
+                type_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::BadRequest(),
+            GetByIdErrorNamed::ColumnIndexOutOfBounds {
+                column_index_out_of_bounds: _,
+                len: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            GetByIdErrorNamed::ColumnNotFound {
+                column_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::BadRequest(),
+            GetByIdErrorNamed::ColumnDecode {
+                column_decode_index: _,
+                source_handle: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            GetByIdErrorNamed::Decode {
+                decode_box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            GetByIdErrorNamed::PoolTimedOut {
+                pool_timed_out: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::RequestTimeout(),
+            GetByIdErrorNamed::PoolClosed {
+                pool_closed: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            GetByIdErrorNamed::WorkerCrashed {
+                worker_crashed: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            GetByIdErrorNamed::Migrate {
+                migrate: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            GetByIdErrorNamed::UnexpectedCase {
+                unexpected_case: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
         }
     }
 }
@@ -610,19 +662,164 @@ pub struct CatToPost {
     pub color: String,
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence, from_sqlx_postgres_error::FromSqlxPostgresError)]
 pub enum PostErrorNamed<'a> {
-    PostgresInsert {
-        #[eo_error_occurence]
-        postgres_insert: crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamed<'a>,
+    Configuration {
+        #[eo_display_with_serialize_deserialize]
+        configuration_box_dyn_error: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
+    Database {
+        #[eo_display_with_serialize_deserialize]
+        box_dyn_database_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Io {
+        #[eo_display]
+        io_error: std::io::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Tls {
+        #[eo_display_with_serialize_deserialize]
+        box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Protocol {
+        #[eo_display_with_serialize_deserialize]
+        protocol: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    RowNotFound {
+        #[eo_display_with_serialize_deserialize]
+        row_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    TypeNotFound {
+        #[eo_display_with_serialize_deserialize]
+        type_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ColumnIndexOutOfBounds {
+        #[eo_display_with_serialize_deserialize]
+        column_index_out_of_bounds: usize,
+        #[eo_display_with_serialize_deserialize]
+        len: usize,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ColumnNotFound {
+        #[eo_display_with_serialize_deserialize]
+        column_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ColumnDecode {
+        #[eo_display_with_serialize_deserialize]
+        column_decode_index: std::string::String,
+        #[eo_display_with_serialize_deserialize]
+        source_handle: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Decode {
+        #[eo_display_with_serialize_deserialize]
+        decode_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PoolTimedOut {
+        #[eo_display_with_serialize_deserialize]
+        pool_timed_out: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PoolClosed {
+        #[eo_display_with_serialize_deserialize]
+        pool_closed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    WorkerCrashed {
+        #[eo_display_with_serialize_deserialize]
+        worker_crashed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Migrate {
+        #[eo_display]
+        migrate: sqlx::migrate::MigrateError,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    //#[non_exhaustive] case
+    UnexpectedCase {
+        #[eo_display_with_serialize_deserialize]
+        unexpected_case: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    }
 }
 
-impl<'a> From<PostErrorNamed<'a>> for actix_web::HttpResponse {
-    fn from(val: PostErrorNamed<'a>) -> Self {
+impl<'a> From<&PostErrorNamed<'a>> for actix_web::HttpResponseBuilder {
+    fn from(val: &PostErrorNamed<'a>) -> Self {
         match &val {
-            PostErrorNamed::PostgresInsert { postgres_insert: _, code_occurence: _ } => actix_web::HttpResponse::InternalServerError().json(actix_web::web::Json(val.into_serialize_deserialize_version())),
+            PostErrorNamed::Configuration {
+                configuration_box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PostErrorNamed::Database {
+                box_dyn_database_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PostErrorNamed::Io {
+                io_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PostErrorNamed::Tls {
+                box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PostErrorNamed::Protocol {
+                protocol: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PostErrorNamed::RowNotFound {
+                row_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::NotFound(),
+            PostErrorNamed::TypeNotFound {
+                type_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::BadRequest(),
+            PostErrorNamed::ColumnIndexOutOfBounds {
+                column_index_out_of_bounds: _,
+                len: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PostErrorNamed::ColumnNotFound {
+                column_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::BadRequest(),
+            PostErrorNamed::ColumnDecode {
+                column_decode_index: _,
+                source_handle: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PostErrorNamed::Decode {
+                decode_box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PostErrorNamed::PoolTimedOut {
+                pool_timed_out: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::RequestTimeout(),
+            PostErrorNamed::PoolClosed {
+                pool_closed: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PostErrorNamed::WorkerCrashed {
+                worker_crashed: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PostErrorNamed::Migrate {
+                migrate: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PostErrorNamed::UnexpectedCase {
+                unexpected_case: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
         }
     }
 }
@@ -691,31 +888,174 @@ pub async fn try_post<'a>(
 }
 //
 //////////////////////////////////////
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence, from_sqlx_postgres_error::FromSqlxPostgresError)]
 pub enum PutErrorNamed<'a> {
     Bigserial {
         #[eo_error_occurence]
         bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    PostgresInsertOrUpdate {
-        #[eo_error_occurence]
-        postgres_insert_or_update: crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamed<'a>,
+    //
+    Configuration {
+        #[eo_display_with_serialize_deserialize]
+        configuration_box_dyn_error: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
+    Database {
+        #[eo_display_with_serialize_deserialize]
+        box_dyn_database_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Io {
+        #[eo_display]
+        io_error: std::io::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Tls {
+        #[eo_display_with_serialize_deserialize]
+        box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Protocol {
+        #[eo_display_with_serialize_deserialize]
+        protocol: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    RowNotFound {
+        #[eo_display_with_serialize_deserialize]
+        row_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    TypeNotFound {
+        #[eo_display_with_serialize_deserialize]
+        type_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ColumnIndexOutOfBounds {
+        #[eo_display_with_serialize_deserialize]
+        column_index_out_of_bounds: usize,
+        #[eo_display_with_serialize_deserialize]
+        len: usize,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ColumnNotFound {
+        #[eo_display_with_serialize_deserialize]
+        column_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ColumnDecode {
+        #[eo_display_with_serialize_deserialize]
+        column_decode_index: std::string::String,
+        #[eo_display_with_serialize_deserialize]
+        source_handle: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Decode {
+        #[eo_display_with_serialize_deserialize]
+        decode_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PoolTimedOut {
+        #[eo_display_with_serialize_deserialize]
+        pool_timed_out: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PoolClosed {
+        #[eo_display_with_serialize_deserialize]
+        pool_closed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    WorkerCrashed {
+        #[eo_display_with_serialize_deserialize]
+        worker_crashed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Migrate {
+        #[eo_display]
+        migrate: sqlx::migrate::MigrateError,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    //#[non_exhaustive] case
+    UnexpectedCase {
+        #[eo_display_with_serialize_deserialize]
+        unexpected_case: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    }
 }
 
-impl<'a> From<PutErrorNamed<'a>> for actix_web::HttpResponse {
-    fn from(val: PutErrorNamed<'a>) -> Self {
+impl<'a> From<&PutErrorNamed<'a>> for actix_web::HttpResponseBuilder {
+    fn from(val: &PutErrorNamed<'a>) -> Self {
         match &val {
-            PutErrorNamed::Bigserial { 
-                bigserial: _, 
-                code_occurence: _ 
-            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(val.into_serialize_deserialize_version())),
-            PutErrorNamed::PostgresInsertOrUpdate { 
-                postgres_insert_or_update: _, 
-                code_occurence: _ 
-            } => actix_web::HttpResponse::InternalServerError().json(actix_web::web::Json(val.into_serialize_deserialize_version())),
+            PutErrorNamed::Bigserial {
+                bigserial: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::BadRequest(),
+            PutErrorNamed::Configuration {
+                configuration_box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PutErrorNamed::Database {
+                box_dyn_database_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PutErrorNamed::Io {
+                io_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PutErrorNamed::Tls {
+                box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PutErrorNamed::Protocol {
+                protocol: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PutErrorNamed::RowNotFound {
+                row_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::NotFound(),
+            PutErrorNamed::TypeNotFound {
+                type_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::BadRequest(),
+            PutErrorNamed::ColumnIndexOutOfBounds {
+                column_index_out_of_bounds: _,
+                len: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PutErrorNamed::ColumnNotFound {
+                column_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::BadRequest(),
+            PutErrorNamed::ColumnDecode {
+                column_decode_index: _,
+                source_handle: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PutErrorNamed::Decode {
+                decode_box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PutErrorNamed::PoolTimedOut {
+                pool_timed_out: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::RequestTimeout(),
+            PutErrorNamed::PoolClosed {
+                pool_closed: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PutErrorNamed::WorkerCrashed {
+                worker_crashed: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PutErrorNamed::Migrate {
+                migrate: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PutErrorNamed::UnexpectedCase {
+                unexpected_case: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
         }
     }
 }
@@ -809,31 +1149,174 @@ impl CatToPatch {
     }
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence, from_sqlx_postgres_error::FromSqlxPostgresError)]
 pub enum PatchErrorNamed<'a> {
     Bigserial {
         #[eo_error_occurence]
         bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    PostgresUpdate {
-        #[eo_error_occurence]
-        postgres_update: crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamed<'a>,
+    //
+    Configuration {
+        #[eo_display_with_serialize_deserialize]
+        configuration_box_dyn_error: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
+    Database {
+        #[eo_display_with_serialize_deserialize]
+        box_dyn_database_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Io {
+        #[eo_display]
+        io_error: std::io::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Tls {
+        #[eo_display_with_serialize_deserialize]
+        box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Protocol {
+        #[eo_display_with_serialize_deserialize]
+        protocol: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    RowNotFound {
+        #[eo_display_with_serialize_deserialize]
+        row_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    TypeNotFound {
+        #[eo_display_with_serialize_deserialize]
+        type_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ColumnIndexOutOfBounds {
+        #[eo_display_with_serialize_deserialize]
+        column_index_out_of_bounds: usize,
+        #[eo_display_with_serialize_deserialize]
+        len: usize,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ColumnNotFound {
+        #[eo_display_with_serialize_deserialize]
+        column_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ColumnDecode {
+        #[eo_display_with_serialize_deserialize]
+        column_decode_index: std::string::String,
+        #[eo_display_with_serialize_deserialize]
+        source_handle: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Decode {
+        #[eo_display_with_serialize_deserialize]
+        decode_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PoolTimedOut {
+        #[eo_display_with_serialize_deserialize]
+        pool_timed_out: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PoolClosed {
+        #[eo_display_with_serialize_deserialize]
+        pool_closed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    WorkerCrashed {
+        #[eo_display_with_serialize_deserialize]
+        worker_crashed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Migrate {
+        #[eo_display]
+        migrate: sqlx::migrate::MigrateError,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    //#[non_exhaustive] case
+    UnexpectedCase {
+        #[eo_display_with_serialize_deserialize]
+        unexpected_case: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    }
 }
 
-impl<'a> From<PatchErrorNamed<'a>> for actix_web::HttpResponse {
-    fn from(val: PatchErrorNamed<'a>) -> Self {
+impl<'a> From<&PatchErrorNamed<'a>> for actix_web::HttpResponseBuilder {
+    fn from(val: &PatchErrorNamed<'a>) -> Self {
         match &val {
             PatchErrorNamed::Bigserial { 
                 bigserial: _, 
                 code_occurence: _ 
-            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(val.into_serialize_deserialize_version())),
-            PatchErrorNamed::PostgresUpdate { 
-                postgres_update: _, 
-                code_occurence: _ 
-            } => actix_web::HttpResponse::InternalServerError().json(actix_web::web::Json(val.into_serialize_deserialize_version())),
+            } => actix_web::HttpResponse::BadRequest(),
+            PatchErrorNamed::Configuration {
+                configuration_box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PatchErrorNamed::Database {
+                box_dyn_database_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PatchErrorNamed::Io {
+                io_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PatchErrorNamed::Tls {
+                box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PatchErrorNamed::Protocol {
+                protocol: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PatchErrorNamed::RowNotFound {
+                row_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::NotFound(),
+            PatchErrorNamed::TypeNotFound {
+                type_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::BadRequest(),
+            PatchErrorNamed::ColumnIndexOutOfBounds {
+                column_index_out_of_bounds: _,
+                len: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PatchErrorNamed::ColumnNotFound {
+                column_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::BadRequest(),
+            PatchErrorNamed::ColumnDecode {
+                column_decode_index: _,
+                source_handle: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PatchErrorNamed::Decode {
+                decode_box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PatchErrorNamed::PoolTimedOut {
+                pool_timed_out: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::RequestTimeout(),
+            PatchErrorNamed::PoolClosed {
+                pool_closed: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PatchErrorNamed::WorkerCrashed {
+                worker_crashed: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PatchErrorNamed::Migrate {
+                migrate: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PatchErrorNamed::UnexpectedCase {
+                unexpected_case: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
         }
     }
 }
@@ -929,31 +1412,174 @@ impl std::string::ToString for DeleteQueryParameters {
     }
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence, from_sqlx_postgres_error::FromSqlxPostgresError)]
 pub enum DeleteErrorNamed<'a> {
     NoParameters {
         #[eo_display_with_serialize_deserialize]
         no_parameters: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    PostgresDelete {
-        #[eo_error_occurence]
-        postgres_delete: crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamed<'a>,
+    //
+    Configuration {
+        #[eo_display_with_serialize_deserialize]
+        configuration_box_dyn_error: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
+    Database {
+        #[eo_display_with_serialize_deserialize]
+        box_dyn_database_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Io {
+        #[eo_display]
+        io_error: std::io::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Tls {
+        #[eo_display_with_serialize_deserialize]
+        box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Protocol {
+        #[eo_display_with_serialize_deserialize]
+        protocol: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    RowNotFound {
+        #[eo_display_with_serialize_deserialize]
+        row_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    TypeNotFound {
+        #[eo_display_with_serialize_deserialize]
+        type_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ColumnIndexOutOfBounds {
+        #[eo_display_with_serialize_deserialize]
+        column_index_out_of_bounds: usize,
+        #[eo_display_with_serialize_deserialize]
+        len: usize,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ColumnNotFound {
+        #[eo_display_with_serialize_deserialize]
+        column_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ColumnDecode {
+        #[eo_display_with_serialize_deserialize]
+        column_decode_index: std::string::String,
+        #[eo_display_with_serialize_deserialize]
+        source_handle: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Decode {
+        #[eo_display_with_serialize_deserialize]
+        decode_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PoolTimedOut {
+        #[eo_display_with_serialize_deserialize]
+        pool_timed_out: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PoolClosed {
+        #[eo_display_with_serialize_deserialize]
+        pool_closed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    WorkerCrashed {
+        #[eo_display_with_serialize_deserialize]
+        worker_crashed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Migrate {
+        #[eo_display]
+        migrate: sqlx::migrate::MigrateError,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    //#[non_exhaustive] case
+    UnexpectedCase {
+        #[eo_display_with_serialize_deserialize]
+        unexpected_case: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    }
 }
 
-impl<'a> From<DeleteErrorNamed<'a>> for actix_web::HttpResponse {
-    fn from(val: DeleteErrorNamed<'a>) -> Self {
+impl<'a> From<&DeleteErrorNamed<'a>> for actix_web::HttpResponseBuilder {
+    fn from(val: &DeleteErrorNamed<'a>) -> Self {
         match &val {
             DeleteErrorNamed::NoParameters { 
                 no_parameters: _, 
                 code_occurence: _ 
-            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(val.into_serialize_deserialize_version())),
-            DeleteErrorNamed::PostgresDelete { 
-                postgres_delete: _, 
-                code_occurence: _ 
-            } => actix_web::HttpResponse::InternalServerError().json(actix_web::web::Json(val.into_serialize_deserialize_version())),
+            } => actix_web::HttpResponse::BadRequest(),
+            DeleteErrorNamed::Configuration {
+                configuration_box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            DeleteErrorNamed::Database {
+                box_dyn_database_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            DeleteErrorNamed::Io {
+                io_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            DeleteErrorNamed::Tls {
+                box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            DeleteErrorNamed::Protocol {
+                protocol: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            DeleteErrorNamed::RowNotFound {
+                row_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::NotFound(),
+            DeleteErrorNamed::TypeNotFound {
+                type_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::BadRequest(),
+            DeleteErrorNamed::ColumnIndexOutOfBounds {
+                column_index_out_of_bounds: _,
+                len: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            DeleteErrorNamed::ColumnNotFound {
+                column_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::BadRequest(),
+            DeleteErrorNamed::ColumnDecode {
+                column_decode_index: _,
+                source_handle: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            DeleteErrorNamed::Decode {
+                decode_box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            DeleteErrorNamed::PoolTimedOut {
+                pool_timed_out: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::RequestTimeout(),
+            DeleteErrorNamed::PoolClosed {
+                pool_closed: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            DeleteErrorNamed::WorkerCrashed {
+                worker_crashed: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            DeleteErrorNamed::Migrate {
+                migrate: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            DeleteErrorNamed::UnexpectedCase {
+                unexpected_case: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
         }
     }
 }
@@ -1013,31 +1639,174 @@ pub struct DeleteByIdPathParameters {
     pub id: i64,
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence, from_sqlx_postgres_error::FromSqlxPostgresError)]
 pub enum DeleteByIdErrorNamed<'a> {
     Bigserial {
         #[eo_error_occurence]
         bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    PostgresDelete {
-        #[eo_error_occurence]
-        postgres_delete: crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamed<'a>,
+    //
+    Configuration {
+        #[eo_display_with_serialize_deserialize]
+        configuration_box_dyn_error: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
+    Database {
+        #[eo_display_with_serialize_deserialize]
+        box_dyn_database_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Io {
+        #[eo_display]
+        io_error: std::io::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Tls {
+        #[eo_display_with_serialize_deserialize]
+        box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Protocol {
+        #[eo_display_with_serialize_deserialize]
+        protocol: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    RowNotFound {
+        #[eo_display_with_serialize_deserialize]
+        row_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    TypeNotFound {
+        #[eo_display_with_serialize_deserialize]
+        type_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ColumnIndexOutOfBounds {
+        #[eo_display_with_serialize_deserialize]
+        column_index_out_of_bounds: usize,
+        #[eo_display_with_serialize_deserialize]
+        len: usize,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ColumnNotFound {
+        #[eo_display_with_serialize_deserialize]
+        column_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ColumnDecode {
+        #[eo_display_with_serialize_deserialize]
+        column_decode_index: std::string::String,
+        #[eo_display_with_serialize_deserialize]
+        source_handle: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Decode {
+        #[eo_display_with_serialize_deserialize]
+        decode_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PoolTimedOut {
+        #[eo_display_with_serialize_deserialize]
+        pool_timed_out: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PoolClosed {
+        #[eo_display_with_serialize_deserialize]
+        pool_closed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    WorkerCrashed {
+        #[eo_display_with_serialize_deserialize]
+        worker_crashed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Migrate {
+        #[eo_display]
+        migrate: sqlx::migrate::MigrateError,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    //#[non_exhaustive] case
+    UnexpectedCase {
+        #[eo_display_with_serialize_deserialize]
+        unexpected_case: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    }
 }
 
-impl<'a> From<DeleteByIdErrorNamed<'a>> for actix_web::HttpResponse {
-    fn from(val: DeleteByIdErrorNamed<'a>) -> Self {
+impl<'a> From<&DeleteByIdErrorNamed<'a>> for actix_web::HttpResponseBuilder {
+    fn from(val: &DeleteByIdErrorNamed<'a>) -> Self {
         match &val {
             DeleteByIdErrorNamed::Bigserial { 
                 bigserial: _, 
                 code_occurence: _ 
-            } => actix_web::HttpResponse::BadRequest().json(actix_web::web::Json(val.into_serialize_deserialize_version())),
-            DeleteByIdErrorNamed::PostgresDelete { 
-                postgres_delete: _,
-                code_occurence: _ 
-            } => actix_web::HttpResponse::InternalServerError().json(actix_web::web::Json(val.into_serialize_deserialize_version())),
+            } => actix_web::HttpResponse::BadRequest(),
+            DeleteByIdErrorNamed::Configuration {
+                configuration_box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            DeleteByIdErrorNamed::Database {
+                box_dyn_database_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            DeleteByIdErrorNamed::Io {
+                io_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            DeleteByIdErrorNamed::Tls {
+                box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            DeleteByIdErrorNamed::Protocol {
+                protocol: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            DeleteByIdErrorNamed::RowNotFound {
+                row_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::NotFound(),
+            DeleteByIdErrorNamed::TypeNotFound {
+                type_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::BadRequest(),
+            DeleteByIdErrorNamed::ColumnIndexOutOfBounds {
+                column_index_out_of_bounds: _,
+                len: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            DeleteByIdErrorNamed::ColumnNotFound {
+                column_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::BadRequest(),
+            DeleteByIdErrorNamed::ColumnDecode {
+                column_decode_index: _,
+                source_handle: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            DeleteByIdErrorNamed::Decode {
+                decode_box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            DeleteByIdErrorNamed::PoolTimedOut {
+                pool_timed_out: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::RequestTimeout(),
+            DeleteByIdErrorNamed::PoolClosed {
+                pool_closed: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            DeleteByIdErrorNamed::WorkerCrashed {
+                worker_crashed: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            DeleteByIdErrorNamed::Migrate {
+                migrate: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            DeleteByIdErrorNamed::UnexpectedCase {
+                unexpected_case: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
         }
     }
 }
