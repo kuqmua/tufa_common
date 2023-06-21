@@ -254,7 +254,10 @@ impl TryFrom<GetHttpResponse>
             GetHttpResponse::Database {
                 box_dyn_database_error,
                 code_occurence,
-            } => todo!(),
+            } => Err(GetErrorNamedWithSerializeDeserialize::Database {
+                box_dyn_database_error,
+                code_occurence,
+            }),
             GetHttpResponse::Io {
                 io_error,
                 code_occurence,
