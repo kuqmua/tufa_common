@@ -164,3 +164,155 @@ impl<'a> From<&GetErrorNamed<'a>> for actix_web::HttpResponseBuilder {
         }
     }
 }
+
+////////////////
+#[derive(Debug, serde :: Serialize, serde :: Deserialize)] //thiserror :: Error
+pub enum GetHttpResponse {
+    Cats(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>),
+    Configuration {
+        configuration_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Database {
+        box_dyn_database_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Io {
+        io_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Tls {
+        box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Protocol {
+        protocol: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    RowNotFound {
+        row_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    TypeNotFound {
+        type_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ColumnIndexOutOfBounds {
+        column_index_out_of_bounds: usize,
+        len: usize,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ColumnNotFound {
+        column_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ColumnDecode {
+        column_decode_index: std::string::String,
+        source_handle: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Decode {
+        decode_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    PoolTimedOut {
+        pool_timed_out: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    PoolClosed {
+        pool_closed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    WorkerCrashed {
+        worker_crashed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Migrate {
+        migrate: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    UnexpectedCase {
+        unexpected_case: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+}
+
+impl TryFrom<GetHttpResponse>
+    for Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>
+{
+    type Error = GetErrorNamedWithSerializeDeserialize;
+    fn try_from(value: GetHttpResponse) -> Result<Self, GetErrorNamedWithSerializeDeserialize> {
+        match value {
+            GetHttpResponse::Cats(cats) => Ok(cats),
+            GetHttpResponse::Configuration {
+                configuration_box_dyn_error,
+                code_occurence,
+            } => Err(GetErrorNamedWithSerializeDeserialize::Configuration {
+                configuration_box_dyn_error,
+                code_occurence,
+            }),
+            GetHttpResponse::Database {
+                box_dyn_database_error,
+                code_occurence,
+            } => todo!(),
+            GetHttpResponse::Io {
+                io_error,
+                code_occurence,
+            } => todo!(),
+            GetHttpResponse::Tls {
+                box_dyn_error,
+                code_occurence,
+            } => todo!(),
+            GetHttpResponse::Protocol {
+                protocol,
+                code_occurence,
+            } => todo!(),
+            GetHttpResponse::RowNotFound {
+                row_not_found,
+                code_occurence,
+            } => todo!(),
+            GetHttpResponse::TypeNotFound {
+                type_not_found,
+                code_occurence,
+            } => todo!(),
+            GetHttpResponse::ColumnIndexOutOfBounds {
+                column_index_out_of_bounds,
+                len,
+                code_occurence,
+            } => todo!(),
+            GetHttpResponse::ColumnNotFound {
+                column_not_found,
+                code_occurence,
+            } => todo!(),
+            GetHttpResponse::ColumnDecode {
+                column_decode_index,
+                source_handle,
+                code_occurence,
+            } => todo!(),
+            GetHttpResponse::Decode {
+                decode_box_dyn_error,
+                code_occurence,
+            } => todo!(),
+            GetHttpResponse::PoolTimedOut {
+                pool_timed_out,
+                code_occurence,
+            } => todo!(),
+            GetHttpResponse::PoolClosed {
+                pool_closed,
+                code_occurence,
+            } => todo!(),
+            GetHttpResponse::WorkerCrashed {
+                worker_crashed,
+                code_occurence,
+            } => todo!(),
+            GetHttpResponse::Migrate {
+                migrate,
+                code_occurence,
+            } => todo!(),
+            GetHttpResponse::UnexpectedCase {
+                unexpected_case,
+                code_occurence,
+            } => todo!(),
+        }
+    }
+}
