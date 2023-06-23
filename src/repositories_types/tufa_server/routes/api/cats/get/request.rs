@@ -20,7 +20,7 @@ pub async fn try_get<'a>(
     let url = format!(
         "{server_location}/api/{}/{}",
         crate::repositories_types::tufa_server::routes::api::cats::CATS,
-        query_parameters.to_string()
+        crate::common::url_encode::UrlEncode::url_encode(&query_parameters)
     );
     match reqwest::Client::new()
         .get(&url)

@@ -17,9 +17,9 @@ pub async fn try_delete<'a>(
     query_parameters: crate::repositories_types::tufa_server::routes::api::cats::delete::DeleteQueryParameters,
 ) -> Result<(), TryDeleteErrorNamed<'a>> {
     let url = format!(
-        "{server_location}/api/{}/?{}",
+        "{server_location}/api/{}/{}",
         crate::repositories_types::tufa_server::routes::api::cats::CATS,
-        query_parameters.to_string()
+        crate::common::url_encode::UrlEncode::url_encode(&query_parameters)
     );
     match reqwest::Client::new()
         .delete(&url)

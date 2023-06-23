@@ -7,13 +7,21 @@ pub struct DeleteQueryParameters {
     pub color: Option<String>,
 }
 
-impl std::string::ToString for DeleteQueryParameters {
-    fn to_string(&self) -> String {
-        match (&self.name, &self.color) {
+impl crate::common::url_encode::UrlEncode for DeleteQueryParameters {
+    fn url_encode(&self) -> String {
+        let parameters = match (&self.name, &self.color) {
             (None, None) => String::from(""),
-            (None, Some(color)) => format!("color={color}"),
-            (Some(name), None) => format!("name={name}"),
-            (Some(name), Some(color)) => format!("name={name}&color={color}"),
+            (None, Some(color)) => format!("color={}", urlencoding::encode(color)),
+            (Some(name), None) => format!("name={}", urlencoding::encode(name)),
+            (Some(name), Some(color)) => format!(
+                "name={}&color={}",
+                urlencoding::encode(name),
+                urlencoding::encode(color)
+            ),
+        };
+        match parameters.is_empty() {
+            true => String::from(""),
+            false => format!("?{parameters}"),
         }
     }
 }

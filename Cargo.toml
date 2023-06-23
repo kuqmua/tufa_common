@@ -47,6 +47,7 @@ tracing-subscriber = {version = "=0.3", features = ["registry", "env-filter"]}
 tracing-bunyan-formatter = {version = "=0.3"}
 tracing-log = {version = "=0.1"}
 getset = {version = "=0.1.2"}
+urlencoding = {version = "=2.1.2"}
 check_specific_dependency_version_usage = {path = "../proc_macros/check_specific_dependency_version_usage"}
 from_sqlx_postgres_error = {path = "../proc_macros/from_sqlx_postgres_error"}
 compile_time_git_info = {path = "../proc_macros/compile_time_git_info"}
