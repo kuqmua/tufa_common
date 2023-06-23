@@ -92,6 +92,15 @@ pub enum PostErrorNamed<'a> {
     },
 }
 
+impl<'a> From<PostErrorNamed<'a>> for actix_web::HttpResponse {
+    fn from(val: PostErrorNamed<'a>) -> Self {
+        let mut actix_web_http_response: actix_web::HttpResponseBuilder = (&val).into();
+        actix_web_http_response.json(actix_web::web::Json(
+            val.into_serialize_deserialize_version(),
+        ))
+    }
+}
+
 impl<'a> From<&PostErrorNamed<'a>> for actix_web::HttpResponseBuilder {
     fn from(val: &PostErrorNamed<'a>) -> Self {
         match &val {

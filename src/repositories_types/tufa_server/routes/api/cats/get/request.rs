@@ -22,6 +22,10 @@ pub async fn try_get<'a>(
         crate::repositories_types::tufa_server::routes::api::cats::CATS,
         crate::common::url_encode::UrlEncode::url_encode(&query_parameters)
     );
+    println!(
+        "try_get_project_commit {}",
+        crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.project_commit
+    );
     match reqwest::Client::new()
         .get(&url)
         .header(

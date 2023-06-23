@@ -98,6 +98,15 @@ pub enum PatchErrorNamed<'a> {
     },
 }
 
+impl<'a> From<PatchErrorNamed<'a>> for actix_web::HttpResponse {
+    fn from(val: PatchErrorNamed<'a>) -> Self {
+        let mut actix_web_http_response: actix_web::HttpResponseBuilder = (&val).into();
+        actix_web_http_response.json(actix_web::web::Json(
+            val.into_serialize_deserialize_version(),
+        ))
+    }
+}
+
 impl<'a> From<&PatchErrorNamed<'a>> for actix_web::HttpResponseBuilder {
     fn from(val: &PatchErrorNamed<'a>) -> Self {
         match &val {
