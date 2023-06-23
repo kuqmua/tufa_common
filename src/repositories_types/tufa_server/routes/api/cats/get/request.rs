@@ -12,6 +12,80 @@ pub enum TryGetErrorNamed<'a> {
     },
 }
 
+//
+#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
+pub enum TryGetHttpResponse {
+    Cats(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>),
+    //postgres
+    Configuration {
+        configuration_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Database {
+        box_dyn_database_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Io {
+        io_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Tls {
+        box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Protocol {
+        protocol: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    RowNotFound {
+        row_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    TypeNotFound {
+        type_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ColumnIndexOutOfBounds {
+        column_index_out_of_bounds: usize,
+        len: usize,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ColumnNotFound {
+        column_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ColumnDecode {
+        column_decode_index: std::string::String,
+        source_handle: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Decode {
+        decode_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    PoolTimedOut {
+        pool_timed_out: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    PoolClosed {
+        pool_closed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    WorkerCrashed {
+        worker_crashed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Migrate {
+        migrate: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    UnexpectedCase {
+        unexpected_case: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+}
+//
+
 pub async fn try_get<'a>(
     server_location: std::string::String, //todo server_location: std::string::String, 0 maybe change it to ip port
     query_parameters: crate::repositories_types::tufa_server::routes::api::cats::get::GetQueryParameters,
@@ -38,7 +112,7 @@ pub async fn try_get<'a>(
     {
         Ok(response) => {
             match response
-                .json::<crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse>()
+                .json::<crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse>()//wrong coz middlewares
                 .await
             {
                 Ok(get_http_response) => {
