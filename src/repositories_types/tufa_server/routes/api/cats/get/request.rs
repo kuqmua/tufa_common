@@ -1,13 +1,13 @@
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TryGetErrorNamed<'a> {
+    ExpectedType {
+        #[eo_display_with_serialize_deserialize]
+        get: crate::repositories_types::tufa_server::routes::api::cats::get::route::GetErrorNamedWithSerializeDeserialize,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
     Reqwest {
         #[eo_display_foreign_type]
         reqwest: reqwest::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    UnexpectedStatusCode {
-        #[eo_display]
-        status_code: http::StatusCode,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
@@ -18,7 +18,7 @@ pub async fn try_get<'a>(
 ) -> Result<Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>, TryGetErrorNamed<'a>>
 {
     let url = format!(
-        "{server_location}/api/{}/?{}",
+        "{server_location}/api/{}/{}",
         crate::repositories_types::tufa_server::routes::api::cats::CATS,
         query_parameters.to_string()
     );
@@ -33,29 +33,21 @@ pub async fn try_get<'a>(
         .await
     {
         Ok(response) => {
-            let response_status = response.status();
-            println!("try_get response status code {}", response.status());
-            if response_status == http::StatusCode::OK {
-                match response
-                    .json::<Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>>()
-                    .await
-                {
-                    Ok(vec_cats) => Ok(vec_cats),
-                    Err(e) => Err(TryGetErrorNamed::Reqwest {
-                        reqwest: e,
-                        code_occurence: crate::code_occurence_tufa_common!(),
-                    }),
-                }
-            } else if response_status == http::StatusCode::BAD_REQUEST
-                || response_status == http::StatusCode::INTERNAL_SERVER_ERROR
+            match response
+                .json::<crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse>()
+                .await
             {
-                //todo - for each possibel status code try response.json::<TYPE>().await for different types ? then wrap it to enum?
-                todo!()
-            } else {
-                Err(TryGetErrorNamed::UnexpectedStatusCode {
-                    status_code: response_status,
+                Ok(get_http_response) => {
+                    println!("{get_http_response:#?}");
+                    match Vec::<crate::repositories_types::tufa_server::routes::api::cats::Cat>::try_from(get_http_response) {
+                        Ok(vec_cats) => Ok(vec_cats),
+                        Err(e) => Err(TryGetErrorNamed::ExpectedType { get: e, code_occurence: crate::code_occurence_tufa_common!() }),
+                    }
+                },
+                Err(e) => Err(TryGetErrorNamed::Reqwest {
+                    reqwest: e,
                     code_occurence: crate::code_occurence_tufa_common!(),
-                })
+                }),
             }
         }
         Err(e) => Err(TryGetErrorNamed::Reqwest {

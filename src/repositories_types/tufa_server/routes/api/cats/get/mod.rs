@@ -10,7 +10,7 @@ pub struct GetQueryParameters {
 //todo - or maybe write or find some trait for url encode
 impl std::string::ToString for GetQueryParameters {
     fn to_string(&self) -> String {
-        match (&self.limit, &self.name, &self.color) {
+        let parameters = match (&self.limit, &self.name, &self.color) {
             (None, None, None) => String::from(""),
             (None, None, Some(color)) => format!("color={color}"),
             (None, Some(name), None) => format!("name={name}"),
@@ -21,6 +21,10 @@ impl std::string::ToString for GetQueryParameters {
             (Some(limit), Some(name), Some(color)) => {
                 format!("limit={limit}&name={name}&color={color}")
             }
+        };
+        match parameters.is_empty() {
+            true => String::from(""),
+            false => format!("?{parameters}"),
         }
     }
 }
