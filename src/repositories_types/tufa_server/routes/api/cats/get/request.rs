@@ -214,6 +214,8 @@ impl TryFrom<GetHttpResponseVariants>
         value: GetHttpResponseVariants,
     ) -> Result<Self, TryGetErrorHttpResponseWithSerializeDeserialize> {
         match value {
+            GetHttpResponseVariants::Cats(cats) => Ok(cats),
+            //
             GetHttpResponseVariants::ProjectCommitExtractorNotEqual {
                 project_commit_not_equal,
                 project_commit_to_use,
@@ -228,7 +230,6 @@ impl TryFrom<GetHttpResponseVariants>
                 code_occurence,
             } => Err(TryGetErrorHttpResponseWithSerializeDeserialize::NoProjectCommitExtractorHeader { no_project_commit_header, code_occurence }),
             //
-            GetHttpResponseVariants::Cats(cats) => Ok(cats),
             GetHttpResponseVariants::Configuration {
                 configuration_box_dyn_error,
                 code_occurence,
@@ -394,13 +395,16 @@ pub async fn try_get<'a>(
         .await
     {
         Ok(response) => match response.json::<GetHttpResponseVariants>().await {
-            Ok(get_http_response) => {
-                println!("{get_http_response:#?}");
-                match Vec::<crate::repositories_types::tufa_server::routes::api::cats::Cat>::try_from(get_http_response) {
-                        Ok(vec_cats) => Ok(vec_cats),
-                        Err(e) =>Err(TryGetErrorNamed::ExpectedType { get: e, code_occurence: crate::code_occurence_tufa_common!() }),
-                    }
-            }
+            Ok(get_http_response) => match Vec::<
+                crate::repositories_types::tufa_server::routes::api::cats::Cat,
+            >::try_from(get_http_response)
+            {
+                Ok(vec_cats) => Ok(vec_cats),
+                Err(e) => Err(TryGetErrorNamed::ExpectedType {
+                    get: e,
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                }),
+            },
             Err(e) => Err(TryGetErrorNamed::Reqwest {
                 reqwest: e,
                 code_occurence: crate::code_occurence_tufa_common!(),
