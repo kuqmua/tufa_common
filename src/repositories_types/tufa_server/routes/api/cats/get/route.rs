@@ -70,6 +70,7 @@ pub enum GetHttpResponse {
     },
 }
 
+//todo make it a proc_macro
 impl From<GetHttpResponse> for actix_web::HttpResponse {
     fn from(val: GetHttpResponse) -> Self {
         let mut actix_web_http_response: actix_web::HttpResponseBuilder = (&val).into();
@@ -151,135 +152,14 @@ impl From<&GetHttpResponse> for actix_web::HttpResponseBuilder {
     }
 }
 
-impl<'a> From<GetErrorNamed<'a>> for GetHttpResponse {
-    fn from(val: GetErrorNamed<'a>) -> Self {
-        match val.into_serialize_deserialize_version() {
-            GetErrorNamedWithSerializeDeserialize::Configuration {
-                configuration_box_dyn_error,
-                code_occurence,
-            } => GetHttpResponse::Configuration {
-                configuration_box_dyn_error,
-                code_occurence,
-            },
-            GetErrorNamedWithSerializeDeserialize::Database {
-                box_dyn_database_error,
-                code_occurence,
-            } => GetHttpResponse::Database {
-                box_dyn_database_error,
-                code_occurence,
-            },
-            GetErrorNamedWithSerializeDeserialize::Io {
-                io_error,
-                code_occurence,
-            } => GetHttpResponse::Io {
-                io_error,
-                code_occurence,
-            },
-            GetErrorNamedWithSerializeDeserialize::Tls {
-                box_dyn_error,
-                code_occurence,
-            } => GetHttpResponse::Tls {
-                box_dyn_error,
-                code_occurence,
-            },
-            GetErrorNamedWithSerializeDeserialize::Protocol {
-                protocol,
-                code_occurence,
-            } => GetHttpResponse::Protocol {
-                protocol,
-                code_occurence,
-            },
-            GetErrorNamedWithSerializeDeserialize::RowNotFound {
-                row_not_found,
-                code_occurence,
-            } => GetHttpResponse::RowNotFound {
-                row_not_found,
-                code_occurence,
-            },
-            GetErrorNamedWithSerializeDeserialize::TypeNotFound {
-                type_not_found,
-                code_occurence,
-            } => GetHttpResponse::TypeNotFound {
-                type_not_found,
-                code_occurence,
-            },
-            GetErrorNamedWithSerializeDeserialize::ColumnIndexOutOfBounds {
-                column_index_out_of_bounds,
-                len,
-                code_occurence,
-            } => GetHttpResponse::ColumnIndexOutOfBounds {
-                column_index_out_of_bounds,
-                len,
-                code_occurence,
-            },
-            GetErrorNamedWithSerializeDeserialize::ColumnNotFound {
-                column_not_found,
-                code_occurence,
-            } => GetHttpResponse::ColumnNotFound {
-                column_not_found,
-                code_occurence,
-            },
-            GetErrorNamedWithSerializeDeserialize::ColumnDecode {
-                column_decode_index,
-                source_handle,
-                code_occurence,
-            } => GetHttpResponse::ColumnDecode {
-                column_decode_index,
-                source_handle,
-                code_occurence,
-            },
-            GetErrorNamedWithSerializeDeserialize::Decode {
-                decode_box_dyn_error,
-                code_occurence,
-            } => GetHttpResponse::Decode {
-                decode_box_dyn_error,
-                code_occurence,
-            },
-            GetErrorNamedWithSerializeDeserialize::PoolTimedOut {
-                pool_timed_out,
-                code_occurence,
-            } => GetHttpResponse::PoolTimedOut {
-                pool_timed_out,
-                code_occurence,
-            },
-            GetErrorNamedWithSerializeDeserialize::PoolClosed {
-                pool_closed,
-                code_occurence,
-            } => GetHttpResponse::PoolClosed {
-                pool_closed,
-                code_occurence,
-            },
-            GetErrorNamedWithSerializeDeserialize::WorkerCrashed {
-                worker_crashed,
-                code_occurence,
-            } => GetHttpResponse::WorkerCrashed {
-                worker_crashed,
-                code_occurence,
-            },
-            GetErrorNamedWithSerializeDeserialize::Migrate {
-                migrate,
-                code_occurence,
-            } => GetHttpResponse::Migrate {
-                migrate,
-                code_occurence,
-            },
-            GetErrorNamedWithSerializeDeserialize::UnexpectedCase {
-                unexpected_case,
-                code_occurence,
-            } => GetHttpResponse::UnexpectedCase {
-                unexpected_case,
-                code_occurence,
-            },
-        }
-    }
-}
-
 #[derive(
     Debug,
     thiserror::Error,
     error_occurence::ErrorOccurence,
     from_sqlx_postgres_error::FromSqlxPostgresError,
+    from_enum::FromEnumWithLifetime,
 )]
+#[from_enum::from_enum_paths(GetHttpResponse)] //todo maybe add lifetime here ?
 pub enum GetErrorNamed<'a> {
     Configuration {
         #[eo_display_with_serialize_deserialize]
