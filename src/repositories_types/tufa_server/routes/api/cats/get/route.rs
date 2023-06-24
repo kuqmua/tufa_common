@@ -69,35 +69,6 @@ pub enum GetHttpResponse {
     },
 }
 
-//
-impl From<crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamedWithSerializeDeserialize>
-    for GetHttpResponse
-{
-    fn from(
-        val: crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamedWithSerializeDeserialize,
-    ) -> Self {
-        match val {
-            crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Configuration { configuration_box_dyn_error, code_occurence } => Self::Configuration { configuration_box_dyn_error, code_occurence },
-            crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Database { box_dyn_database_error, code_occurence } => Self::Database { box_dyn_database_error, code_occurence },
-            crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Io { io_error, code_occurence } => Self::Io { io_error, code_occurence },
-            crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Tls { box_dyn_error, code_occurence } => Self::Tls { box_dyn_error, code_occurence },
-            crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Protocol { protocol, code_occurence } => Self::Protocol { protocol, code_occurence },
-            crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamedWithSerializeDeserialize::RowNotFound { row_not_found, code_occurence } => Self::RowNotFound { row_not_found, code_occurence },
-            crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamedWithSerializeDeserialize::TypeNotFound { type_not_found, code_occurence } => Self::TypeNotFound { type_not_found, code_occurence },
-            crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamedWithSerializeDeserialize::ColumnIndexOutOfBounds { column_index_out_of_bounds, len, code_occurence } => Self::ColumnIndexOutOfBounds { column_index_out_of_bounds, len, code_occurence },
-            crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamedWithSerializeDeserialize::ColumnNotFound { column_not_found, code_occurence } => Self::ColumnNotFound { column_not_found, code_occurence },
-            crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamedWithSerializeDeserialize::ColumnDecode { column_decode_index, source_handle, code_occurence } => Self::ColumnDecode { column_decode_index, source_handle, code_occurence },
-            crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Decode { decode_box_dyn_error, code_occurence } => Self::Decode { decode_box_dyn_error, code_occurence },
-            crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamedWithSerializeDeserialize::PoolTimedOut { pool_timed_out, code_occurence } => Self::PoolTimedOut { pool_timed_out, code_occurence },
-            crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamedWithSerializeDeserialize::PoolClosed { pool_closed, code_occurence } => Self::PoolClosed { pool_closed, code_occurence },
-            crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamedWithSerializeDeserialize::WorkerCrashed { worker_crashed, code_occurence } => Self::WorkerCrashed { worker_crashed, code_occurence },
-            crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Migrate { migrate, code_occurence } => Self::Migrate { migrate, code_occurence },
-            crate::server::postgres::sqlx_postgres_error::SqlxPostgresErrorErrorNamedWithSerializeDeserialize::UnexpectedCase { unexpected_case, code_occurence } => Self::UnexpectedCase { unexpected_case, code_occurence },
-        }
-    }
-}
-//
-
 impl From<GetHttpResponse> for actix_web::HttpResponse {
     fn from(val: GetHttpResponse) -> Self {
         let mut actix_web_http_response: actix_web::HttpResponseBuilder = (&val).into();
