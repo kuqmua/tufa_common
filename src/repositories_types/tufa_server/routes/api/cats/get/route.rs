@@ -74,7 +74,7 @@ pub enum GetHttpResponse {
 impl From<GetHttpResponse> for actix_web::HttpResponse {
     fn from(val: GetHttpResponse) -> Self {
         let mut actix_web_http_response: actix_web::HttpResponseBuilder = (&val).into();
-        actix_web_http_response.json(val)
+        actix_web_http_response.json(actix_web::web::Json(val))
     }
 }
 
