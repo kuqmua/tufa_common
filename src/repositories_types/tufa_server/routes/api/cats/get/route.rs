@@ -1,6 +1,21 @@
 #[derive(Debug, serde :: Serialize, serde :: Deserialize)]
 pub enum GetHttpResponse {
     Cats(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>),
+    //
+    // ProjectCommitExtractorNotEqual {
+    //     project_commit_not_equal: std::string::String,
+    //     project_commit_to_use: std::string::String,
+    //     code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    // },
+    // ProjectCommitExtractorToStrConversion {
+    //     project_commit_to_str_conversion: std::string::String,
+    //     code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    // },
+    // NoProjectCommitExtractorHeader {
+    //     no_project_commit_header: std::string::String,
+    //     code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    // },
+    //
     Configuration {
         configuration_box_dyn_error: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
@@ -368,133 +383,4 @@ pub enum GetErrorNamed<'a> {
         unexpected_case: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-}
-
-impl TryFrom<GetHttpResponse>
-    for Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>
-{
-    type Error = GetErrorNamedWithSerializeDeserialize;
-    fn try_from(value: GetHttpResponse) -> Result<Self, GetErrorNamedWithSerializeDeserialize> {
-        match value {
-            GetHttpResponse::Cats(cats) => Ok(cats),
-            GetHttpResponse::Configuration {
-                configuration_box_dyn_error,
-                code_occurence,
-            } => Err(GetErrorNamedWithSerializeDeserialize::Configuration {
-                configuration_box_dyn_error,
-                code_occurence,
-            }),
-            GetHttpResponse::Database {
-                box_dyn_database_error,
-                code_occurence,
-            } => Err(GetErrorNamedWithSerializeDeserialize::Database {
-                box_dyn_database_error,
-                code_occurence,
-            }),
-            GetHttpResponse::Io {
-                io_error,
-                code_occurence,
-            } => Err(GetErrorNamedWithSerializeDeserialize::Io {
-                io_error,
-                code_occurence,
-            }),
-            GetHttpResponse::Tls {
-                box_dyn_error,
-                code_occurence,
-            } => Err(GetErrorNamedWithSerializeDeserialize::Tls {
-                box_dyn_error,
-                code_occurence,
-            }),
-            GetHttpResponse::Protocol {
-                protocol,
-                code_occurence,
-            } => Err(GetErrorNamedWithSerializeDeserialize::Protocol {
-                protocol,
-                code_occurence,
-            }),
-            GetHttpResponse::RowNotFound {
-                row_not_found,
-                code_occurence,
-            } => Err(GetErrorNamedWithSerializeDeserialize::RowNotFound {
-                row_not_found,
-                code_occurence,
-            }),
-            GetHttpResponse::TypeNotFound {
-                type_not_found,
-                code_occurence,
-            } => Err(GetErrorNamedWithSerializeDeserialize::TypeNotFound {
-                type_not_found,
-                code_occurence,
-            }),
-            GetHttpResponse::ColumnIndexOutOfBounds {
-                column_index_out_of_bounds,
-                len,
-                code_occurence,
-            } => Err(
-                GetErrorNamedWithSerializeDeserialize::ColumnIndexOutOfBounds {
-                    column_index_out_of_bounds,
-                    len,
-                    code_occurence,
-                },
-            ),
-            GetHttpResponse::ColumnNotFound {
-                column_not_found,
-                code_occurence,
-            } => Err(GetErrorNamedWithSerializeDeserialize::ColumnNotFound {
-                column_not_found,
-                code_occurence,
-            }),
-            GetHttpResponse::ColumnDecode {
-                column_decode_index,
-                source_handle,
-                code_occurence,
-            } => Err(GetErrorNamedWithSerializeDeserialize::ColumnDecode {
-                column_decode_index,
-                source_handle,
-                code_occurence,
-            }),
-            GetHttpResponse::Decode {
-                decode_box_dyn_error,
-                code_occurence,
-            } => Err(GetErrorNamedWithSerializeDeserialize::Decode {
-                decode_box_dyn_error,
-                code_occurence,
-            }),
-            GetHttpResponse::PoolTimedOut {
-                pool_timed_out,
-                code_occurence,
-            } => Err(GetErrorNamedWithSerializeDeserialize::PoolTimedOut {
-                pool_timed_out,
-                code_occurence,
-            }),
-            GetHttpResponse::PoolClosed {
-                pool_closed,
-                code_occurence,
-            } => Err(GetErrorNamedWithSerializeDeserialize::PoolClosed {
-                pool_closed,
-                code_occurence,
-            }),
-            GetHttpResponse::WorkerCrashed {
-                worker_crashed,
-                code_occurence,
-            } => Err(GetErrorNamedWithSerializeDeserialize::WorkerCrashed {
-                worker_crashed,
-                code_occurence,
-            }),
-            GetHttpResponse::Migrate {
-                migrate,
-                code_occurence,
-            } => Err(GetErrorNamedWithSerializeDeserialize::Migrate {
-                migrate,
-                code_occurence,
-            }),
-            GetHttpResponse::UnexpectedCase {
-                unexpected_case,
-                code_occurence,
-            } => Err(GetErrorNamedWithSerializeDeserialize::UnexpectedCase {
-                unexpected_case,
-                code_occurence,
-            }),
-        }
-    }
 }
