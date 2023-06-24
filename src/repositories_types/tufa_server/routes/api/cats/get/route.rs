@@ -87,10 +87,7 @@ pub enum GetHttpResponse {
 impl From<GetHttpResponse> for actix_web::HttpResponse {
     fn from(val: GetHttpResponse) -> Self {
         let mut actix_web_http_response: actix_web::HttpResponseBuilder = (&val).into();
-        match Vec::<crate::repositories_types::tufa_server::routes::api::cats::Cat>::try_from(val) {
-            Ok(vec_cat) => actix_web_http_response.json(vec_cat),
-            Err(e) => actix_web_http_response.json(actix_web::web::Json(e)),
-        }
+        actix_web_http_response.json(val)
     }
 }
 

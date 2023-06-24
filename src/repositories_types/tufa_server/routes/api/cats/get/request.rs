@@ -1,3 +1,89 @@
+#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
+pub enum GetHttpResponseVariants {
+    Cats(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>),
+    //
+    // ProjectCommitExtractorNotEqual {
+    //     project_commit_not_equal: std::string::String,
+    //     project_commit_to_use: std::string::String,
+    //     code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    // },
+    // ProjectCommitExtractorToStrConversion {
+    //     project_commit_to_str_conversion: std::string::String,
+    //     code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    // },
+    // NoProjectCommitExtractorHeader {
+    //     no_project_commit_header: std::string::String,
+    //     code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    // },
+    //
+    Configuration {
+        configuration_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Database {
+        box_dyn_database_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Io {
+        io_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Tls {
+        box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Protocol {
+        protocol: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    RowNotFound {
+        row_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    TypeNotFound {
+        type_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ColumnIndexOutOfBounds {
+        column_index_out_of_bounds: usize,
+        len: usize,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ColumnNotFound {
+        column_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ColumnDecode {
+        column_decode_index: std::string::String,
+        source_handle: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Decode {
+        decode_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    PoolTimedOut {
+        pool_timed_out: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    PoolClosed {
+        pool_closed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    WorkerCrashed {
+        worker_crashed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Migrate {
+        migrate: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    UnexpectedCase {
+        unexpected_case: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+}
+
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TryGetErrorNamed<'a> {
     ExpectedType {
@@ -101,79 +187,85 @@ pub enum TryGetErrorHttpResponse<'a> {
     },
 }
 
-impl TryFrom<crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse>
+impl TryFrom<GetHttpResponseVariants>
     for Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>
 {
     type Error = TryGetErrorHttpResponseWithSerializeDeserialize;
     fn try_from(
-        value: crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse,
+        value: GetHttpResponseVariants,
     ) -> Result<Self, TryGetErrorHttpResponseWithSerializeDeserialize> {
         match value {
-            // crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse::ProjectCommitExtractorNotEqual {
+            // GetHttpResponseVariants::ProjectCommitExtractorNotEqual {
             //     project_commit_not_equal,
             //     project_commit_to_use,
             //     code_occurence,
             // } => todo!(),
-            // crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse::ProjectCommitExtractorToStrConversion {
+            // GetHttpResponseVariants::ProjectCommitExtractorToStrConversion {
             //     project_commit_to_str_conversion,
             //     code_occurence,
             // } => todo!(),
-            // crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse::NoProjectCommitExtractorHeader {
+            // GetHttpResponseVariants::NoProjectCommitExtractorHeader {
             //     no_project_commit_header,
             //     code_occurence,
             // } => todo!(),
             //
-            crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse::Cats(cats) => Ok(cats),
-            crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse::Configuration {
+            GetHttpResponseVariants::Cats(cats) => Ok(cats),
+            GetHttpResponseVariants::Configuration {
                 configuration_box_dyn_error,
                 code_occurence,
-            } => Err(TryGetErrorHttpResponseWithSerializeDeserialize::Configuration {
-                configuration_box_dyn_error,
-                code_occurence,
-            }),
-            crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse::Database {
+            } => Err(
+                TryGetErrorHttpResponseWithSerializeDeserialize::Configuration {
+                    configuration_box_dyn_error,
+                    code_occurence,
+                },
+            ),
+            GetHttpResponseVariants::Database {
                 box_dyn_database_error,
                 code_occurence,
             } => Err(TryGetErrorHttpResponseWithSerializeDeserialize::Database {
                 box_dyn_database_error,
                 code_occurence,
             }),
-            crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse::Io {
+            GetHttpResponseVariants::Io {
                 io_error,
                 code_occurence,
             } => Err(TryGetErrorHttpResponseWithSerializeDeserialize::Io {
                 io_error,
                 code_occurence,
             }),
-            crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse::Tls {
+            GetHttpResponseVariants::Tls {
                 box_dyn_error,
                 code_occurence,
             } => Err(TryGetErrorHttpResponseWithSerializeDeserialize::Tls {
                 box_dyn_error,
                 code_occurence,
             }),
-            crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse::Protocol {
+            GetHttpResponseVariants::Protocol {
                 protocol,
                 code_occurence,
             } => Err(TryGetErrorHttpResponseWithSerializeDeserialize::Protocol {
                 protocol,
                 code_occurence,
             }),
-            crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse::RowNotFound {
+            GetHttpResponseVariants::RowNotFound {
                 row_not_found,
                 code_occurence,
-            } => Err(TryGetErrorHttpResponseWithSerializeDeserialize::RowNotFound {
-                row_not_found,
-                code_occurence,
-            }),
-            crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse::TypeNotFound {
+            } => Err(
+                TryGetErrorHttpResponseWithSerializeDeserialize::RowNotFound {
+                    row_not_found,
+                    code_occurence,
+                },
+            ),
+            GetHttpResponseVariants::TypeNotFound {
                 type_not_found,
                 code_occurence,
-            } => Err(TryGetErrorHttpResponseWithSerializeDeserialize::TypeNotFound {
-                type_not_found,
-                code_occurence,
-            }),
-            crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse::ColumnIndexOutOfBounds {
+            } => Err(
+                TryGetErrorHttpResponseWithSerializeDeserialize::TypeNotFound {
+                    type_not_found,
+                    code_occurence,
+                },
+            ),
+            GetHttpResponseVariants::ColumnIndexOutOfBounds {
                 column_index_out_of_bounds,
                 len,
                 code_occurence,
@@ -184,64 +276,76 @@ impl TryFrom<crate::repositories_types::tufa_server::routes::api::cats::get::rou
                     code_occurence,
                 },
             ),
-            crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse::ColumnNotFound {
+            GetHttpResponseVariants::ColumnNotFound {
                 column_not_found,
                 code_occurence,
-            } => Err(TryGetErrorHttpResponseWithSerializeDeserialize::ColumnNotFound {
-                column_not_found,
-                code_occurence,
-            }),
-            crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse::ColumnDecode {
+            } => Err(
+                TryGetErrorHttpResponseWithSerializeDeserialize::ColumnNotFound {
+                    column_not_found,
+                    code_occurence,
+                },
+            ),
+            GetHttpResponseVariants::ColumnDecode {
                 column_decode_index,
                 source_handle,
                 code_occurence,
-            } => Err(TryGetErrorHttpResponseWithSerializeDeserialize::ColumnDecode {
-                column_decode_index,
-                source_handle,
-                code_occurence,
-            }),
-            crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse::Decode {
+            } => Err(
+                TryGetErrorHttpResponseWithSerializeDeserialize::ColumnDecode {
+                    column_decode_index,
+                    source_handle,
+                    code_occurence,
+                },
+            ),
+            GetHttpResponseVariants::Decode {
                 decode_box_dyn_error,
                 code_occurence,
             } => Err(TryGetErrorHttpResponseWithSerializeDeserialize::Decode {
                 decode_box_dyn_error,
                 code_occurence,
             }),
-            crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse::PoolTimedOut {
+            GetHttpResponseVariants::PoolTimedOut {
                 pool_timed_out,
                 code_occurence,
-            } => Err(TryGetErrorHttpResponseWithSerializeDeserialize::PoolTimedOut {
-                pool_timed_out,
-                code_occurence,
-            }),
-            crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse::PoolClosed {
+            } => Err(
+                TryGetErrorHttpResponseWithSerializeDeserialize::PoolTimedOut {
+                    pool_timed_out,
+                    code_occurence,
+                },
+            ),
+            GetHttpResponseVariants::PoolClosed {
                 pool_closed,
                 code_occurence,
-            } => Err(TryGetErrorHttpResponseWithSerializeDeserialize::PoolClosed {
-                pool_closed,
-                code_occurence,
-            }),
-            crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse::WorkerCrashed {
+            } => Err(
+                TryGetErrorHttpResponseWithSerializeDeserialize::PoolClosed {
+                    pool_closed,
+                    code_occurence,
+                },
+            ),
+            GetHttpResponseVariants::WorkerCrashed {
                 worker_crashed,
                 code_occurence,
-            } => Err(TryGetErrorHttpResponseWithSerializeDeserialize::WorkerCrashed {
-                worker_crashed,
-                code_occurence,
-            }),
-            crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse::Migrate {
+            } => Err(
+                TryGetErrorHttpResponseWithSerializeDeserialize::WorkerCrashed {
+                    worker_crashed,
+                    code_occurence,
+                },
+            ),
+            GetHttpResponseVariants::Migrate {
                 migrate,
                 code_occurence,
             } => Err(TryGetErrorHttpResponseWithSerializeDeserialize::Migrate {
                 migrate,
                 code_occurence,
             }),
-            crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse::UnexpectedCase {
+            GetHttpResponseVariants::UnexpectedCase {
                 unexpected_case,
                 code_occurence,
-            } => Err(TryGetErrorHttpResponseWithSerializeDeserialize::UnexpectedCase {
-                unexpected_case,
-                code_occurence,
-            }),
+            } => Err(
+                TryGetErrorHttpResponseWithSerializeDeserialize::UnexpectedCase {
+                    unexpected_case,
+                    code_occurence,
+                },
+            ),
         }
     }
 }
@@ -272,7 +376,7 @@ pub async fn try_get<'a>(
     {
         Ok(response) => {
             match response
-                .json::<crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse>()//wrong coz middlewares
+                .json::<GetHttpResponseVariants>() //wrong coz middlewares
                 .await
             {
                 Ok(get_http_response) => {
@@ -281,7 +385,7 @@ pub async fn try_get<'a>(
                         Ok(vec_cats) => Ok(vec_cats),
                         Err(e) =>Err(TryGetErrorNamed::ExpectedType { get: e, code_occurence: crate::code_occurence_tufa_common!() }),
                     }
-                },
+                }
                 Err(e) => Err(TryGetErrorNamed::Reqwest {
                     reqwest: e,
                     code_occurence: crate::code_occurence_tufa_common!(),
