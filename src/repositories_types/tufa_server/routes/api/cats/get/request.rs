@@ -2,19 +2,19 @@
 pub enum GetHttpResponseVariants {
     Cats(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>),
     //
-    // ProjectCommitExtractorNotEqual {
-    //     project_commit_not_equal: std::string::String,
-    //     project_commit_to_use: std::string::String,
-    //     code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    // },
-    // ProjectCommitExtractorToStrConversion {
-    //     project_commit_to_str_conversion: std::string::String,
-    //     code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    // },
-    // NoProjectCommitExtractorHeader {
-    //     no_project_commit_header: std::string::String,
-    //     code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    // },
+    ProjectCommitExtractorNotEqual {
+        project_commit_not_equal: std::string::String,
+        project_commit_to_use: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ProjectCommitExtractorToStrConversion {
+        project_commit_to_str_conversion: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    NoProjectCommitExtractorHeader {
+        no_project_commit_header: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
     //
     Configuration {
         configuration_box_dyn_error: std::string::String,
@@ -100,6 +100,25 @@ pub enum TryGetErrorNamed<'a> {
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TryGetErrorHttpResponse<'a> {
+    //
+    ProjectCommitExtractorNotEqual {
+        #[eo_display_with_serialize_deserialize]
+        project_commit_not_equal: &'a str,
+        #[eo_display_with_serialize_deserialize]
+        project_commit_to_use: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ProjectCommitExtractorToStrConversion {
+        #[eo_display]
+        project_commit_to_str_conversion: http::header::ToStrError,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    NoProjectCommitExtractorHeader {
+        #[eo_display_with_serialize_deserialize]
+        no_project_commit_header: &'a str,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    //
     Configuration {
         #[eo_display_with_serialize_deserialize]
         configuration_box_dyn_error: std::string::String,
@@ -195,19 +214,19 @@ impl TryFrom<GetHttpResponseVariants>
         value: GetHttpResponseVariants,
     ) -> Result<Self, TryGetErrorHttpResponseWithSerializeDeserialize> {
         match value {
-            // GetHttpResponseVariants::ProjectCommitExtractorNotEqual {
-            //     project_commit_not_equal,
-            //     project_commit_to_use,
-            //     code_occurence,
-            // } => todo!(),
-            // GetHttpResponseVariants::ProjectCommitExtractorToStrConversion {
-            //     project_commit_to_str_conversion,
-            //     code_occurence,
-            // } => todo!(),
-            // GetHttpResponseVariants::NoProjectCommitExtractorHeader {
-            //     no_project_commit_header,
-            //     code_occurence,
-            // } => todo!(),
+            GetHttpResponseVariants::ProjectCommitExtractorNotEqual {
+                project_commit_not_equal,
+                project_commit_to_use,
+                code_occurence,
+            } => Err(TryGetErrorHttpResponseWithSerializeDeserialize::ProjectCommitExtractorNotEqual { project_commit_not_equal, project_commit_to_use, code_occurence }),
+            GetHttpResponseVariants::ProjectCommitExtractorToStrConversion {
+                project_commit_to_str_conversion,
+                code_occurence,
+            } => Err(TryGetErrorHttpResponseWithSerializeDeserialize::ProjectCommitExtractorToStrConversion { project_commit_to_str_conversion, code_occurence }),
+            GetHttpResponseVariants::NoProjectCommitExtractorHeader {
+                no_project_commit_header,
+                code_occurence,
+            } => Err(TryGetErrorHttpResponseWithSerializeDeserialize::NoProjectCommitExtractorHeader { no_project_commit_header, code_occurence }),
             //
             GetHttpResponseVariants::Cats(cats) => Ok(cats),
             GetHttpResponseVariants::Configuration {
@@ -374,24 +393,19 @@ pub async fn try_get<'a>(
         .send()
         .await
     {
-        Ok(response) => {
-            match response
-                .json::<GetHttpResponseVariants>() //wrong coz middlewares
-                .await
-            {
-                Ok(get_http_response) => {
-                    println!("{get_http_response:#?}");
-                    match Vec::<crate::repositories_types::tufa_server::routes::api::cats::Cat>::try_from(get_http_response) {
+        Ok(response) => match response.json::<GetHttpResponseVariants>().await {
+            Ok(get_http_response) => {
+                println!("{get_http_response:#?}");
+                match Vec::<crate::repositories_types::tufa_server::routes::api::cats::Cat>::try_from(get_http_response) {
                         Ok(vec_cats) => Ok(vec_cats),
                         Err(e) =>Err(TryGetErrorNamed::ExpectedType { get: e, code_occurence: crate::code_occurence_tufa_common!() }),
                     }
-                }
-                Err(e) => Err(TryGetErrorNamed::Reqwest {
-                    reqwest: e,
-                    code_occurence: crate::code_occurence_tufa_common!(),
-                }),
             }
-        }
+            Err(e) => Err(TryGetErrorNamed::Reqwest {
+                reqwest: e,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            }),
+        },
         Err(e) => Err(TryGetErrorNamed::Reqwest {
             reqwest: e,
             code_occurence: crate::code_occurence_tufa_common!(),

@@ -1,20 +1,6 @@
-#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub enum GetHttpResponse {
     Cats(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>),
-    //
-    // ProjectCommitExtractorNotEqual {
-    //     project_commit_not_equal: std::string::String,
-    //     project_commit_to_use: std::string::String,
-    //     code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    // },
-    // ProjectCommitExtractorToStrConversion {
-    //     project_commit_to_str_conversion: std::string::String,
-    //     code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    // },
-    // NoProjectCommitExtractorHeader {
-    //     no_project_commit_header: std::string::String,
-    //     code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    // },
     //
     Configuration {
         configuration_box_dyn_error: std::string::String,

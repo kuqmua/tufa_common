@@ -1,6 +1,7 @@
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence, from_enum::FromEnum)]
 #[from_enum::from_enum_paths(
-    crate::repositories_types::tufa_server::routes::api::cats::get::route::GetErrorNamedWithSerializeDeserialize
+    crate::repositories_types::tufa_server::routes::api::cats::get::route::GetErrorNamedWithSerializeDeserialize,
+    crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetErrorHttpResponseWithSerializeDeserialize
 )]
 pub enum SqlxPostgresErrorErrorNamed<'a> {
     Configuration {
