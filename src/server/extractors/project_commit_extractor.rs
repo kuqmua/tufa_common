@@ -1,7 +1,11 @@
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct ProjectCommitExtractor {}
 
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence, from_enum::FromEnum)]
+#[from_enum::from_enum_paths(
+    crate::repositories_types::tufa_server::routes::api::cats::get::request::GetHttpResponseVariants,
+    crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetErrorHttpResponseWithSerializeDeserialize
+)]
 pub enum ProjectCommitExtractorCheckErrorNamed<'a> {
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
