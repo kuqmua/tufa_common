@@ -388,9 +388,8 @@ pub async fn try_get<'a>(
         .get(&url)
         .header(
             crate::common::git::project_git_info::PROJECT_COMMIT,
-            // crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
-            //     .project_commit,
-            "4597reu947597",
+            crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
+                .project_commit,
         )
         .send()
         .await
