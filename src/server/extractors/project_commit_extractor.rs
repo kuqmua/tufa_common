@@ -26,8 +26,8 @@ pub enum ProjectCommitExtractorCheckErrorNamed<'a> {
     },
 }
 //todo make a proc macro for it(or maybe put it into error occurence?)
-impl ProjectCommitExtractorCheckErrorNamedWithSerializeDeserialize {
-    pub fn to_default_stringified_json(&self) -> std::string::String {
+impl crate::common::to_default_stringified_json::ToDefaultStringifiedJson for ProjectCommitExtractorCheckErrorNamedWithSerializeDeserialize {
+    fn to_default_stringified_json(&self) -> std::string::String {
         match self {
             ProjectCommitExtractorCheckErrorNamedWithSerializeDeserialize::ProjectCommitExtractorNotEqual { project_commit_not_equal: _, project_commit_to_use: _, code_occurence: _ } => std::string::String::from(
                 "{\"ProjectCommitExtractorNotEqual\":{\"project_commit_not_equal\":\"different project commit provided, services must work only with equal project commits\",\"project_commit_to_use\":\"https://github.com/kuqmua/tufa_project/tree/079765a71ebd7fe8e1f60605a3e64782aaf8cbd1\",\"code_occurence\":{\"file\":\"tufa_common/src/server/extractors/project_commit_extractor.rs\",\"line\":89,\"column\":53,\"git_info\":{\"git_commit_id\":\"6a5e0d5be18d84f12e942988f84adb502b5acad6\",\"git_repo_link\":\"https://github.com/kuqmua/tufa_common\"},\"duration\":{\"secs\":1687636488,\"nanos\":502075805}}}}"
@@ -108,7 +108,7 @@ impl actix_web::FromRequest for ProjectCommitExtractor {
                                     code_occurence: crate::code_occurence_tufa_common!(),
                                 }.into_serialize_deserialize_version();
                                 actix_web::error::ErrorBadRequest(actix_web::web::Json(serde_json::to_string(&error_with_serialize_deserialize).unwrap_or_else(|_|{
-                                    error_with_serialize_deserialize.to_default_stringified_json()
+                                    crate::common::to_default_stringified_json::ToDefaultStringifiedJson::to_default_stringified_json(&error_with_serialize_deserialize)
                                 })))
                             }))
                         }
@@ -120,7 +120,7 @@ impl actix_web::FromRequest for ProjectCommitExtractor {
                             code_occurence: crate::code_occurence_tufa_common!() 
                         }.into_serialize_deserialize_version();
                         actix_web::error::ErrorBadRequest(actix_web::web::Json(serde_json::to_string(&error_with_serialize_deserialize).unwrap_or_else(|_|{
-                            error_with_serialize_deserialize.to_default_stringified_json()
+                            crate::common::to_default_stringified_json::ToDefaultStringifiedJson::to_default_stringified_json(&error_with_serialize_deserialize)
                         })))
                     })),
                 }
@@ -131,7 +131,7 @@ impl actix_web::FromRequest for ProjectCommitExtractor {
                     code_occurence: crate::code_occurence_tufa_common!() 
                 }.into_serialize_deserialize_version();
                 actix_web::error::ErrorBadRequest(actix_web::web::Json(serde_json::to_string(&error_with_serialize_deserialize).unwrap_or_else(|_|{
-                    error_with_serialize_deserialize.to_default_stringified_json()
+                    crate::common::to_default_stringified_json::ToDefaultStringifiedJson::to_default_stringified_json(&error_with_serialize_deserialize)
                 })))
             })),
         }
