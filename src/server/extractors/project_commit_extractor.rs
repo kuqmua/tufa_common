@@ -30,53 +30,17 @@ impl crate::common::to_default_stringified_json::ToDefaultStringifiedJson for Pr
     fn to_default_stringified_json(&self) -> std::string::String {
         match self {
             ProjectCommitExtractorCheckErrorNamedWithSerializeDeserialize::ProjectCommitExtractorNotEqual { project_commit_not_equal: _, project_commit_to_use: _, code_occurence: _ } => std::string::String::from(
-                "{\"ProjectCommitExtractorNotEqual\":{\"project_commit_not_equal\":\"different project commit provided, services must work only with equal project commits\",\"project_commit_to_use\":\"https://github.com/kuqmua/tufa_project/tree/079765a71ebd7fe8e1f60605a3e64782aaf8cbd1\",\"code_occurence\":{\"file\":\"tufa_common/src/server/extractors/project_commit_extractor.rs\",\"line\":89,\"column\":53,\"git_info\":{\"git_commit_id\":\"6a5e0d5be18d84f12e942988f84adb502b5acad6\",\"git_repo_link\":\"https://github.com/kuqmua/tufa_common\"},\"duration\":{\"secs\":1687636488,\"nanos\":502075805}}}}"
+                "{\"ProjectCommitExtractorNotEqual\":{\"project_commit_not_equal\":\"\",\"project_commit_to_use\":\"\",\"code_occurence\":{\"file\":\"\",\"line\":0,\"column\":0,\"git_info\":{\"git_commit_id\":\"\",\"git_repo_link\":\"\"},\"duration\":{\"secs\":0,\"nanos\":0}}}}"
             ),
             ProjectCommitExtractorCheckErrorNamedWithSerializeDeserialize::ProjectCommitExtractorToStrConversion { project_commit_to_str_conversion: _, code_occurence: _ } => std::string::String::from(
-                "{\"ProjectCommitExtractorToStrConversion\":{\"project_commit_to_str_conversion\":\"project_commit_to_str_conversion\",\"code_occurence\":{\"file\":\"tufa_common/src/server/extractors/project_commit_extractor.rs\",\"line\":114,\"column\":53,\"git_info\":{\"git_commit_id\":\"6a5e0d5be18d84f12e942988f84adb502b5acad6\",\"git_repo_link\":\"https://github.com/kuqmua/tufa_common\"},\"duration\":{\"secs\":1687651477,\"nanos\":748898424}}}}"
+                "{\"ProjectCommitExtractorToStrConversion\":{\"project_commit_to_str_conversion\":\"\",\"code_occurence\":{\"file\":\"\",\"line\":0,\"column\":0,\"git_info\":{\"git_commit_id\":\"\",\"git_repo_link\":\"\"},\"duration\":{\"secs\":0,\"nanos\":0}}}}"
             ),
             ProjectCommitExtractorCheckErrorNamedWithSerializeDeserialize::NoProjectCommitExtractorHeader { no_project_commit_header: _, code_occurence: _ } => std::string::String::from(
-                "{\"NoProjectCommitExtractorHeader\":{\"no_project_commit_header\":\"no_project_commit_header\",\"code_occurence\":{\"file\":\"tufa_common/src/server/extractors/project_commit_extractor.rs\",\"line\":124,\"column\":53,\"git_info\":{\"git_commit_id\":\"6a5e0d5be18d84f12e942988f84adb502b5acad6\",\"git_repo_link\":\"https://github.com/kuqmua/tufa_common\"},\"duration\":{\"secs\":1687651477,\"nanos\":748910819}}}}"
+                "{\"NoProjectCommitExtractorHeader\":{\"no_project_commit_header\":\"no_project_commit_header\",\"code_occurence\":{\"file\":\"\",\"line\":124,\"column\":53,\"git_info\":{\"git_commit_id\":\"\",\"git_repo_link\":\"\"},\"duration\":{\"secs\":0,\"nanos\":0}}}}"
             ),
         }
     }
 }
-
-// impl<'a> From<ProjectCommitExtractorCheckErrorNamed<'a>> for actix_web::Error  {
-//     fn from(val: ProjectCommitExtractorCheckErrorNamed<'a>) -> Self {
-//         match &val {
-//             ProjectCommitExtractorCheckErrorNamed::ProjectCommitExtractorNotEqual {
-//                 project_commit_not_equal: _,
-//                 project_commit_to_use: _,
-//                 code_occurence: _
-//             } => {
-//                 let des = val.into_serialize_deserialize_version();
-//                 println!("{des:#?}");
-//                 actix_web::error::ErrorBadRequest(
-//                     actix_web::web::Json(
-//                         des
-//                     )
-//                 )
-//             },
-//             ProjectCommitExtractorCheckErrorNamed::ProjectCommitExtractorToStrConversion {
-//                 project_commit_to_str_conversion: _,
-//                 code_occurence: _
-//             } => actix_web::error::ErrorBadRequest(
-//                 actix_web::web::Json(
-//                     val.into_serialize_deserialize_version()
-//                 )
-//             ),
-//             ProjectCommitExtractorCheckErrorNamed::NoProjectCommitExtractorHeader {
-//                 no_project_commit_header: _,
-//                 code_occurence: _
-//             } => actix_web::error::ErrorBadRequest(
-//                 actix_web::web::Json(
-//                     val.into_serialize_deserialize_version()
-//                 )
-//             ),
-//         }
-//     }
-// }
 
 impl actix_web::FromRequest for ProjectCommitExtractor {
     type Error = actix_web::Error;
