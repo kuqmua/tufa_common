@@ -156,7 +156,7 @@ impl From<&GetHttpResponse> for actix_web::HttpResponseBuilder {
     from_sqlx_postgres_error::FromSqlxPostgresError,
     from_enum::FromEnumWithLifetime,
 )]
-#[from_enum::from_enum_paths(GetHttpResponse)] //todo maybe add lifetime here ?
+#[from_enum::from_enum_paths_with_lifetime(GetHttpResponse)] //todo maybe add lifetime here ?
 pub enum GetErrorNamed<'a> {
     Configuration {
         #[eo_display_with_serialize_deserialize]

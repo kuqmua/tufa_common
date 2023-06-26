@@ -167,7 +167,7 @@ impl From<&GetByIdHttpResponse> for actix_web::HttpResponseBuilder {
     from_sqlx_postgres_error::FromSqlxPostgresError,
     from_enum::FromEnumWithLifetime,
 )]
-#[from_enum::from_enum_paths(GetByIdHttpResponse)]
+#[from_enum::from_enum_paths_with_lifetime(GetByIdHttpResponse)]
 pub enum GetByIdErrorNamed<'a> {
     Bigserial {
         #[eo_error_occurence]
