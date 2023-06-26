@@ -1,3 +1,99 @@
+impl<'a>
+    From<crate::repositories_types::tufa_server::routes::api::cats::post::route::PostErrorNamed<'a>>
+    for actix_web::HttpResponse
+{
+    fn from(
+        val: crate::repositories_types::tufa_server::routes::api::cats::post::route::PostErrorNamed<
+            'a,
+        >,
+    ) -> Self {
+        let mut actix_web_http_response: actix_web::HttpResponseBuilder = (&val).into();
+        actix_web_http_response.json(actix_web::web::Json(
+            val.into_serialize_deserialize_version(),
+        ))
+    }
+}
+
+impl<'a>
+    From<
+        &crate::repositories_types::tufa_server::routes::api::cats::post::route::PostErrorNamed<'a>,
+    > for actix_web::HttpResponseBuilder
+{
+    fn from(
+        val: &crate::repositories_types::tufa_server::routes::api::cats::post::route::PostErrorNamed<'a>,
+    ) -> Self {
+        match &val {
+            crate::repositories_types::tufa_server::routes::api::cats::post::route::PostErrorNamed::Configuration {
+                configuration_box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            crate::repositories_types::tufa_server::routes::api::cats::post::route::PostErrorNamed::Database {
+                box_dyn_database_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            crate::repositories_types::tufa_server::routes::api::cats::post::route::PostErrorNamed::Io {
+                io_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            crate::repositories_types::tufa_server::routes::api::cats::post::route::PostErrorNamed::Tls {
+                box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            crate::repositories_types::tufa_server::routes::api::cats::post::route::PostErrorNamed::Protocol {
+                protocol: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            crate::repositories_types::tufa_server::routes::api::cats::post::route::PostErrorNamed::RowNotFound {
+                row_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::NotFound(),
+            crate::repositories_types::tufa_server::routes::api::cats::post::route::PostErrorNamed::TypeNotFound {
+                type_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::BadRequest(),
+            crate::repositories_types::tufa_server::routes::api::cats::post::route::PostErrorNamed::ColumnIndexOutOfBounds {
+                column_index_out_of_bounds: _,
+                len: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            crate::repositories_types::tufa_server::routes::api::cats::post::route::PostErrorNamed::ColumnNotFound {
+                column_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::BadRequest(),
+            crate::repositories_types::tufa_server::routes::api::cats::post::route::PostErrorNamed::ColumnDecode {
+                column_decode_index: _,
+                source_handle: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            crate::repositories_types::tufa_server::routes::api::cats::post::route::PostErrorNamed::Decode {
+                decode_box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            crate::repositories_types::tufa_server::routes::api::cats::post::route::PostErrorNamed::PoolTimedOut {
+                pool_timed_out: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::RequestTimeout(),
+            crate::repositories_types::tufa_server::routes::api::cats::post::route::PostErrorNamed::PoolClosed {
+                pool_closed: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            crate::repositories_types::tufa_server::routes::api::cats::post::route::PostErrorNamed::WorkerCrashed {
+                worker_crashed: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            crate::repositories_types::tufa_server::routes::api::cats::post::route::PostErrorNamed::Migrate {
+                migrate: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            crate::repositories_types::tufa_server::routes::api::cats::post::route::PostErrorNamed::UnexpectedCase {
+                unexpected_case: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+        }
+    }
+}
+//
+
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TryPostErrorNamed<'a> {
     SerdeJsonToString {

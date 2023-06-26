@@ -1,9 +1,162 @@
 #[derive(
     Debug,
+    serde::Serialize,
+    serde::Deserialize,
+    into_actix_web_http_response::IntoActixWebHttpResponse,
+)]
+pub enum PostHttpResponse {
+    Ok, //wrong?
+    //
+    Configuration {
+        configuration_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Database {
+        box_dyn_database_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Io {
+        io_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Tls {
+        box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Protocol {
+        protocol: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    RowNotFound {
+        row_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    TypeNotFound {
+        type_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ColumnIndexOutOfBounds {
+        column_index_out_of_bounds: usize,
+        len: usize,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ColumnNotFound {
+        column_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ColumnDecode {
+        column_decode_index: std::string::String,
+        source_handle: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Decode {
+        decode_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    PoolTimedOut {
+        pool_timed_out: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    PoolClosed {
+        pool_closed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    WorkerCrashed {
+        worker_crashed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Migrate {
+        migrate: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    UnexpectedCase {
+        unexpected_case: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+}
+
+impl From<&PostHttpResponse> for actix_web::HttpResponseBuilder {
+    fn from(val: &PostHttpResponse) -> Self {
+        match &val {
+            PostHttpResponse::Ok => actix_web::HttpResponse::Ok(),
+            PostHttpResponse::Configuration {
+                configuration_box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PostHttpResponse::Database {
+                box_dyn_database_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PostHttpResponse::Io {
+                io_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PostHttpResponse::Tls {
+                box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PostHttpResponse::Protocol {
+                protocol: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PostHttpResponse::RowNotFound {
+                row_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::NotFound(),
+            PostHttpResponse::TypeNotFound {
+                type_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::BadRequest(),
+            PostHttpResponse::ColumnIndexOutOfBounds {
+                column_index_out_of_bounds: _,
+                len: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PostHttpResponse::ColumnNotFound {
+                column_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::BadRequest(),
+            PostHttpResponse::ColumnDecode {
+                column_decode_index: _,
+                source_handle: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PostHttpResponse::Decode {
+                decode_box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PostHttpResponse::PoolTimedOut {
+                pool_timed_out: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::RequestTimeout(),
+            PostHttpResponse::PoolClosed {
+                pool_closed: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PostHttpResponse::WorkerCrashed {
+                worker_crashed: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PostHttpResponse::Migrate {
+                migrate: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            PostHttpResponse::UnexpectedCase {
+                unexpected_case: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+        }
+    }
+}
+
+#[derive(
+    Debug,
     thiserror::Error,
     error_occurence::ErrorOccurence,
     from_sqlx_postgres_error::FromSqlxPostgresError,
+    from_enum::FromEnumWithLifetime,
 )]
+#[from_enum::from_enum_paths_with_lifetime(PostHttpResponse)] //todo maybe add lifetime here ?
 pub enum PostErrorNamed<'a> {
     Configuration {
         #[eo_display_with_serialize_deserialize]
@@ -90,86 +243,4 @@ pub enum PostErrorNamed<'a> {
         unexpected_case: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-}
-
-impl<'a> From<PostErrorNamed<'a>> for actix_web::HttpResponse {
-    fn from(val: PostErrorNamed<'a>) -> Self {
-        let mut actix_web_http_response: actix_web::HttpResponseBuilder = (&val).into();
-        actix_web_http_response.json(actix_web::web::Json(
-            val.into_serialize_deserialize_version(),
-        ))
-    }
-}
-
-impl<'a> From<&PostErrorNamed<'a>> for actix_web::HttpResponseBuilder {
-    fn from(val: &PostErrorNamed<'a>) -> Self {
-        match &val {
-            PostErrorNamed::Configuration {
-                configuration_box_dyn_error: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-            PostErrorNamed::Database {
-                box_dyn_database_error: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-            PostErrorNamed::Io {
-                io_error: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-            PostErrorNamed::Tls {
-                box_dyn_error: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-            PostErrorNamed::Protocol {
-                protocol: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-            PostErrorNamed::RowNotFound {
-                row_not_found: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::NotFound(),
-            PostErrorNamed::TypeNotFound {
-                type_not_found: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest(),
-            PostErrorNamed::ColumnIndexOutOfBounds {
-                column_index_out_of_bounds: _,
-                len: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-            PostErrorNamed::ColumnNotFound {
-                column_not_found: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest(),
-            PostErrorNamed::ColumnDecode {
-                column_decode_index: _,
-                source_handle: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-            PostErrorNamed::Decode {
-                decode_box_dyn_error: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-            PostErrorNamed::PoolTimedOut {
-                pool_timed_out: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::RequestTimeout(),
-            PostErrorNamed::PoolClosed {
-                pool_closed: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-            PostErrorNamed::WorkerCrashed {
-                worker_crashed: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-            PostErrorNamed::Migrate {
-                migrate: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-            PostErrorNamed::UnexpectedCase {
-                unexpected_case: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-        }
-    }
 }
