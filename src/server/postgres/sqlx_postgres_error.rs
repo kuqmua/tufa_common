@@ -3,7 +3,12 @@
     crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse,
     crate::repositories_types::tufa_server::routes::api::cats::get::route::GetErrorNamedWithSerializeDeserialize,
     crate::repositories_types::tufa_server::routes::api::cats::get::request::GetHttpResponseVariants,
-    crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetErrorHttpResponseWithSerializeDeserialize
+    crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetErrorHttpResponseWithSerializeDeserialize,
+
+    crate::repositories_types::tufa_server::routes::api::cats::get_by_id::route::GetByIdHttpResponse,
+    crate::repositories_types::tufa_server::routes::api::cats::get_by_id::route::GetByIdErrorNamedWithSerializeDeserialize,
+    crate::repositories_types::tufa_server::routes::api::cats::get_by_id::request::GetByIdHttpResponseVariants,
+    crate::repositories_types::tufa_server::routes::api::cats::get_by_id::request::TryGetByIdErrorHttpResponseWithSerializeDeserialize
 )]
 pub enum SqlxPostgresErrorErrorNamed<'a> {
     Configuration {
