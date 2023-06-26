@@ -1,4 +1,173 @@
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence, from_sqlx_postgres_error::FromSqlxPostgresError)]
+#[derive(
+    Debug,
+    serde::Serialize,
+    serde::Deserialize,
+    into_actix_web_http_response::IntoActixWebHttpResponse,
+)]
+pub enum GetByIdHttpResponse {
+    Cat(crate::repositories_types::tufa_server::routes::api::cats::Cat),
+    //
+    Bigserial {
+        bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamedWithSerializeDeserialize,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    //
+    Configuration {
+        configuration_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Database {
+        box_dyn_database_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Io {
+        io_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Tls {
+        box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Protocol {
+        protocol: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    RowNotFound {
+        row_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    TypeNotFound {
+        type_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ColumnIndexOutOfBounds {
+        column_index_out_of_bounds: usize,
+        len: usize,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ColumnNotFound {
+        column_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ColumnDecode {
+        column_decode_index: std::string::String,
+        source_handle: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Decode {
+        decode_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    PoolTimedOut {
+        pool_timed_out: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    PoolClosed {
+        pool_closed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    WorkerCrashed {
+        worker_crashed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Migrate {
+        migrate: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    UnexpectedCase {
+        unexpected_case: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+}
+
+impl From<&GetByIdHttpResponse> for actix_web::HttpResponseBuilder {
+    fn from(val: &GetByIdHttpResponse) -> Self {
+        match &val {
+            GetByIdHttpResponse::Cat(_) => actix_web::HttpResponse::Ok(),
+            //
+            GetByIdHttpResponse::Bigserial {
+                bigserial: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::BadRequest(),
+            //
+            GetByIdHttpResponse::Configuration {
+                configuration_box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            GetByIdHttpResponse::Database {
+                box_dyn_database_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            GetByIdHttpResponse::Io {
+                io_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            GetByIdHttpResponse::Tls {
+                box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            GetByIdHttpResponse::Protocol {
+                protocol: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            GetByIdHttpResponse::RowNotFound {
+                row_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::NotFound(),
+            GetByIdHttpResponse::TypeNotFound {
+                type_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::BadRequest(),
+            GetByIdHttpResponse::ColumnIndexOutOfBounds {
+                column_index_out_of_bounds: _,
+                len: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            GetByIdHttpResponse::ColumnNotFound {
+                column_not_found: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::BadRequest(),
+            GetByIdHttpResponse::ColumnDecode {
+                column_decode_index: _,
+                source_handle: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            GetByIdHttpResponse::Decode {
+                decode_box_dyn_error: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            GetByIdHttpResponse::PoolTimedOut {
+                pool_timed_out: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::RequestTimeout(),
+            GetByIdHttpResponse::PoolClosed {
+                pool_closed: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            GetByIdHttpResponse::WorkerCrashed {
+                worker_crashed: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            GetByIdHttpResponse::Migrate {
+                migrate: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+            GetByIdHttpResponse::UnexpectedCase {
+                unexpected_case: _,
+                code_occurence: _,
+            } => actix_web::HttpResponse::InternalServerError(),
+        }
+    }
+}
+
+#[derive(
+    Debug,
+    thiserror::Error,
+    error_occurence::ErrorOccurence,
+    from_sqlx_postgres_error::FromSqlxPostgresError,
+    from_enum::FromEnumWithLifetime,
+)]
+#[from_enum::from_enum_paths(GetByIdHttpResponse)]
 pub enum GetByIdErrorNamed<'a> {
     Bigserial {
         #[eo_error_occurence]
@@ -89,227 +258,6 @@ pub enum GetByIdErrorNamed<'a> {
     UnexpectedCase {
         #[eo_display_with_serialize_deserialize]
         unexpected_case: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    }
-}
-
-impl<'a> From<GetByIdErrorNamed<'a>> for actix_web::HttpResponse {
-    fn from(val: GetByIdErrorNamed<'a>) -> Self {
-        let mut actix_web_http_response: actix_web::HttpResponseBuilder = (&val).into();
-        actix_web_http_response.json(actix_web::web::Json(
-            val.into_serialize_deserialize_version(),
-        ))
-    }
-}
-
-
-impl<'a> From<&GetByIdErrorNamed<'a>> for actix_web::HttpResponseBuilder {
-    fn from(val: &GetByIdErrorNamed<'a>) -> Self {
-        match &val {
-            GetByIdErrorNamed::Bigserial { bigserial: _, code_occurence: _ } => actix_web::HttpResponse::BadRequest(),
-            GetByIdErrorNamed::Configuration {
-                configuration_box_dyn_error: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-            GetByIdErrorNamed::Database {
-                box_dyn_database_error: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-            GetByIdErrorNamed::Io {
-                io_error: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-            GetByIdErrorNamed::Tls {
-                box_dyn_error: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-            GetByIdErrorNamed::Protocol {
-                protocol: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-            GetByIdErrorNamed::RowNotFound {
-                row_not_found: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::NotFound(),
-            GetByIdErrorNamed::TypeNotFound {
-                type_not_found: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest(),
-            GetByIdErrorNamed::ColumnIndexOutOfBounds {
-                column_index_out_of_bounds: _,
-                len: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-            GetByIdErrorNamed::ColumnNotFound {
-                column_not_found: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest(),
-            GetByIdErrorNamed::ColumnDecode {
-                column_decode_index: _,
-                source_handle: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-            GetByIdErrorNamed::Decode {
-                decode_box_dyn_error: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-            GetByIdErrorNamed::PoolTimedOut {
-                pool_timed_out: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::RequestTimeout(),
-            GetByIdErrorNamed::PoolClosed {
-                pool_closed: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-            GetByIdErrorNamed::WorkerCrashed {
-                worker_crashed: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-            GetByIdErrorNamed::Migrate {
-                migrate: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-            GetByIdErrorNamed::UnexpectedCase {
-                unexpected_case: _,
-                code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
-        }
-    }
-}
-
-#[derive(Debug)]
-pub enum GetByIdExpectedStatusCode {
-    Ok,
-    BadRequest,
-    InternalServerError,
-}
-
-impl std::convert::TryFrom<http::StatusCode> for GetByIdExpectedStatusCode {
-    type Error = http::StatusCode;
-    fn try_from(value: http::StatusCode) -> Result<Self, Self::Error> {
-        if http::StatusCode::OK == value {
-            Ok(Self::Ok)
-        } else if http::StatusCode::BAD_REQUEST == value {
-            Ok(Self::BadRequest)
-        } else if http::StatusCode::INTERNAL_SERVER_ERROR == value {
-            Ok(Self::InternalServerError)
-        } else {
-            Err(value)
-        }
-    }
-}
-
-impl GetByIdExpectedStatusCode {
-    pub async fn try_into_expected_type<'a>(
-        &self,
-        response: reqwest::Response,
-    ) -> Result<
-        crate::repositories_types::tufa_server::routes::api::cats::Cat,
-        Result<GetByIdExpectedErrorStatusCodesErrorUnnamed, GetByIdExpectedStatusCodesJsonConversionErrorNamed<'a>>,
-    > {
-        match self {
-            GetByIdExpectedStatusCode::Ok => match response.json::<crate::repositories_types::tufa_server::routes::api::cats::Cat>().await {
-                Ok(value) => Ok(value),
-                Err(e) => Err(Err(GetByIdExpectedStatusCodesJsonConversionErrorNamed::Ok {
-                    ok: e,
-                    code_occurence: crate::code_occurence_tufa_common!()
-                })),
-            },
-            GetByIdExpectedStatusCode::BadRequest => match response.json::<GetByIdStatusCodeBadRequestExpectedBodyTypeWithSerializeDeserialize>().await {
-                Ok(bad_req) => Err(
-                    Ok(
-                        GetByIdExpectedErrorStatusCodesErrorUnnamed::BadRequest(bad_req)
-                    )
-                ),
-                Err(e) => Err(
-                    Err(
-                        GetByIdExpectedStatusCodesJsonConversionErrorNamed::BadRequest { 
-                            bad_request: e, 
-                            code_occurence: crate::code_occurence_tufa_common!() 
-                        }
-                    )
-                ),
-            },
-            GetByIdExpectedStatusCode::InternalServerError => match response.json::<GetByIdStatusCodeInternalServerErrorExpectedBodyTypeWithSerializeDeserialize>().await {
-                Ok(internal_server_error) => Err(Ok(GetByIdExpectedErrorStatusCodesErrorUnnamed::InternalServerError(internal_server_error))),
-                Err(e) => Err(Err(GetByIdExpectedStatusCodesJsonConversionErrorNamed::InternalServerError { 
-                    internal_server_error: e, 
-                    code_occurence: crate::code_occurence_tufa_common!() 
-                })),
-            },
-        }
-    }
-}
-
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum GetByIdStatusCodeBadRequestExpectedBodyType<'a> {
-    //todo struct concatination
-    ProjectCommitExtractorNotEqual {
-        #[eo_display_with_serialize_deserialize]
-        project_commit_not_equal: &'a str,
-        #[eo_display_with_serialize_deserialize]
-        project_commit_to_use: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    ProjectCommitExtractorToStrConversion {
-        #[eo_display]
-        project_commit_to_str_conversion: http::header::ToStrError,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    NoProjectCommitExtractorHeader {
-        #[eo_display_with_serialize_deserialize]
-        no_project_commit_header: &'a str,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    //
-    Bigserial {
-        #[eo_error_occurence]
-        bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamed<'a>,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-}
-
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum GetByIdStatusCodeInternalServerErrorExpectedBodyType<'a> {
-    PostgresSelect {
-        #[eo_display]
-        postgres_select: sqlx::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-}
-
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub enum GetByIdExpectedErrorStatusCodesErrorUnnamed {
-    BadRequest(GetByIdStatusCodeBadRequestExpectedBodyTypeWithSerializeDeserialize),
-    InternalServerError(
-        GetByIdStatusCodeInternalServerErrorExpectedBodyTypeWithSerializeDeserialize,
-    ),
-}
-
-impl std::fmt::Display for GetByIdExpectedErrorStatusCodesErrorUnnamed {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        match self {
-            GetByIdExpectedErrorStatusCodesErrorUnnamed::BadRequest(e) => write!(f, "{e}"),
-            GetByIdExpectedErrorStatusCodesErrorUnnamed::InternalServerError(e) => write!(f, "{e}"),
-        }
-    }
-}
-
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum GetByIdExpectedStatusCodesJsonConversionErrorNamed<'a> {
-    Ok {
-        #[eo_display]
-        ok: reqwest::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    BadRequest {
-        #[eo_display]
-        bad_request: reqwest::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    InternalServerError {
-        #[eo_display]
-        internal_server_error: reqwest::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }

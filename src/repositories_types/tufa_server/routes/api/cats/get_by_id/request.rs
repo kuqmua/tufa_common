@@ -7,14 +7,14 @@ pub enum TryGetByIdErrorNamed<'a> {
     },
     ExpectedServerError {
         #[eo_display_with_serialize_deserialize]
-        expected_server_error: crate::repositories_types::tufa_server::routes::api::cats::get_by_id::route::GetByIdExpectedErrorStatusCodesErrorUnnamed,
+        expected_server_error: crate::repositories_types::tufa_server::routes::api::cats::get::request::GetByIdExpectedErrorStatusCodesErrorUnnamed,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     ExpectedStatusCodeBodyConversion {
         #[eo_display]
         expected_status_code: http::StatusCode,
         #[eo_error_occurence]
-        conversion_error: crate::repositories_types::tufa_server::routes::api::cats::get_by_id::route::GetByIdExpectedStatusCodesJsonConversionErrorNamed<'a>,
+        conversion_error: crate::repositories_types::tufa_server::routes::api::cats::get::request::GetByIdExpectedStatusCodesJsonConversionErrorNamed<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
     UnexpectedStatusCode {
@@ -60,7 +60,7 @@ pub async fn try_get_by_id<'a>(
     {
         Ok(response) => {
             let response_status = response.status();
-            match crate::repositories_types::tufa_server::routes::api::cats::get_by_id::route::GetByIdExpectedStatusCode::try_from(response.status()) {
+            match crate::repositories_types::tufa_server::routes::api::cats::get::request::GetByIdExpectedStatusCode::try_from(response.status()) {
                 Ok(expected_status_code) => {
                     match expected_status_code.try_into_expected_type(response).await {
                         Ok(value) => Ok(value),
