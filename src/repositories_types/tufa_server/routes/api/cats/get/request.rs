@@ -397,11 +397,11 @@ pub async fn try_get<'a>(
         .await
     {
         Ok(response) => match response.json::<GetHttpResponseVariants>().await {
-            Ok(get_http_response) => match Vec::<
+            Ok(varinats) => match Vec::<
                 crate::repositories_types::tufa_server::routes::api::cats::Cat,
-            >::try_from(get_http_response)
+            >::try_from(varinats)
             {
-                Ok(vec_cats) => Ok(vec_cats),
+                Ok(value) => Ok(value),
                 Err(e) => Err(TryGetErrorNamed::ExpectedType {
                     get: e,
                     code_occurence: crate::code_occurence_tufa_common!(),
