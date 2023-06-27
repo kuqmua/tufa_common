@@ -2,7 +2,7 @@
     Debug,
     serde::Serialize,
     serde::Deserialize,
-    into_actix_web_http_response::IntoActixWebHttpResponse,
+    // into_actix_web_http_response::IntoActixWebHttpResponse,
 )]
 pub enum GetHttpResponse {
     Cats(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>),
@@ -75,76 +75,84 @@ pub enum GetHttpResponse {
     },
 }
 
-impl From<&GetHttpResponse> for actix_web::HttpResponseBuilder {
+impl From<GetHttpResponse> for actix_web::HttpResponse {
+    fn from(val: GetHttpResponse) -> Self {
+        let mut actix_web_http_response: actix_web::HttpResponseBuilder =
+            actix_web::HttpResponseBuilder::new((&val).into());
+        actix_web_http_response.json(actix_web::web::Json(val))
+    }
+}
+
+impl From<&GetHttpResponse> for http::StatusCode {
     fn from(val: &GetHttpResponse) -> Self {
         match &val {
-            GetHttpResponse::Cats(_vec_cats) => actix_web::HttpResponse::Ok(),
+            GetHttpResponse::Cats(_vec_cats) => http::StatusCode::OK,
             GetHttpResponse::Configuration {
                 configuration_box_dyn_error: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             GetHttpResponse::Database {
                 box_dyn_database_error: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             GetHttpResponse::Io {
                 io_error: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             GetHttpResponse::Tls {
                 box_dyn_error: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             GetHttpResponse::Protocol {
                 protocol: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             GetHttpResponse::RowNotFound {
                 row_not_found: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::NotFound(),
+            } => http::StatusCode::NOT_FOUND,
             GetHttpResponse::TypeNotFound {
                 type_not_found: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest(),
+            } => http::StatusCode::BAD_REQUEST,
             GetHttpResponse::ColumnIndexOutOfBounds {
                 column_index_out_of_bounds: _,
                 len: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             GetHttpResponse::ColumnNotFound {
                 column_not_found: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest(),
+            } => http::StatusCode::BAD_REQUEST,
             GetHttpResponse::ColumnDecode {
                 column_decode_index: _,
                 source_handle: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             GetHttpResponse::Decode {
                 decode_box_dyn_error: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             GetHttpResponse::PoolTimedOut {
                 pool_timed_out: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::RequestTimeout(),
+            } => http::StatusCode::REQUEST_TIMEOUT,
             GetHttpResponse::PoolClosed {
                 pool_closed: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             GetHttpResponse::WorkerCrashed {
                 worker_crashed: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             GetHttpResponse::Migrate {
                 migrate: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             GetHttpResponse::UnexpectedCase {
                 unexpected_case: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
         }
     }
 }
