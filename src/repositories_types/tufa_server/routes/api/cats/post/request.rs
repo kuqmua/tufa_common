@@ -1,3 +1,201 @@
+#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
+pub enum PostHttpResponseVariants {
+    Ok,
+    //
+    ProjectCommitExtractorNotEqual {
+        project_commit_not_equal: std::string::String,
+        project_commit_to_use: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ProjectCommitExtractorToStrConversion {
+        project_commit_to_str_conversion: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    NoProjectCommitExtractorHeader {
+        no_project_commit_header: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    //
+    Configuration {
+        configuration_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Database {
+        box_dyn_database_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Io {
+        io_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Tls {
+        box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Protocol {
+        protocol: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    RowNotFound {
+        row_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    TypeNotFound {
+        type_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ColumnIndexOutOfBounds {
+        column_index_out_of_bounds: usize,
+        len: usize,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ColumnNotFound {
+        column_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ColumnDecode {
+        column_decode_index: std::string::String,
+        source_handle: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Decode {
+        decode_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    PoolTimedOut {
+        pool_timed_out: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    PoolClosed {
+        pool_closed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    WorkerCrashed {
+        worker_crashed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Migrate {
+        migrate: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    UnexpectedCase {
+        unexpected_case: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+}
+
+#[derive(
+    Debug, thiserror::Error, error_occurence::ErrorOccurence, from_enum::FromEnumWithLifetime,
+)]
+#[from_enum::from_enum_paths_with_lifetime(PostHttpResponseVariants)]
+pub enum TryPostErrorHttpResponse<'a> {
+    ProjectCommitExtractorNotEqual {
+        #[eo_display_with_serialize_deserialize]
+        project_commit_not_equal: &'a str,
+        #[eo_display_with_serialize_deserialize]
+        project_commit_to_use: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ProjectCommitExtractorToStrConversion {
+        #[eo_display]
+        project_commit_to_str_conversion: http::header::ToStrError,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    NoProjectCommitExtractorHeader {
+        #[eo_display_with_serialize_deserialize]
+        no_project_commit_header: &'a str,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    //
+    Configuration {
+        #[eo_display_with_serialize_deserialize]
+        configuration_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Database {
+        #[eo_display_with_serialize_deserialize]
+        box_dyn_database_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Io {
+        #[eo_display]
+        io_error: std::io::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Tls {
+        #[eo_display_with_serialize_deserialize]
+        box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Protocol {
+        #[eo_display_with_serialize_deserialize]
+        protocol: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    RowNotFound {
+        #[eo_display_with_serialize_deserialize]
+        row_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    TypeNotFound {
+        #[eo_display_with_serialize_deserialize]
+        type_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ColumnIndexOutOfBounds {
+        #[eo_display_with_serialize_deserialize]
+        column_index_out_of_bounds: usize,
+        #[eo_display_with_serialize_deserialize]
+        len: usize,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ColumnNotFound {
+        #[eo_display_with_serialize_deserialize]
+        column_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    ColumnDecode {
+        #[eo_display_with_serialize_deserialize]
+        column_decode_index: std::string::String,
+        #[eo_display_with_serialize_deserialize]
+        source_handle: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Decode {
+        #[eo_display_with_serialize_deserialize]
+        decode_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PoolTimedOut {
+        #[eo_display_with_serialize_deserialize]
+        pool_timed_out: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    PoolClosed {
+        #[eo_display_with_serialize_deserialize]
+        pool_closed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    WorkerCrashed {
+        #[eo_display_with_serialize_deserialize]
+        worker_crashed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Migrate {
+        #[eo_display]
+        migrate: sqlx::migrate::MigrateError,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    //#[non_exhaustive] case
+    UnexpectedCase {
+        #[eo_display_with_serialize_deserialize]
+        unexpected_case: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
+///////////////////////////
+
 impl<'a>
     From<crate::repositories_types::tufa_server::routes::api::cats::post::route::PostErrorNamed<'a>>
     for actix_web::HttpResponse

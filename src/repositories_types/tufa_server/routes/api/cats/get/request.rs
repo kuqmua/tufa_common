@@ -396,6 +396,7 @@ pub async fn try_get<'a>(
         .send()
         .await
     {
+        //todo - expected status code body deserialization logic
         Ok(response) => match response.json::<GetHttpResponseVariants>().await {
             Ok(varinats) => match Vec::<
                 crate::repositories_types::tufa_server::routes::api::cats::Cat,
