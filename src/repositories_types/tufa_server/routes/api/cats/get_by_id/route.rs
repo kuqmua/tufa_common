@@ -80,82 +80,80 @@ pub enum GetByIdHttpResponse {
     },
 }
 
-impl From<&GetByIdHttpResponse> for actix_web::HttpResponseBuilder {
+impl From<&GetByIdHttpResponse> for http::StatusCode {
     fn from(val: &GetByIdHttpResponse) -> Self {
-        match &val {
-            GetByIdHttpResponse::Cat(_) => actix_web::HttpResponse::Ok(),
-            //
+        match val {
+            GetByIdHttpResponse::Cat(_) => http::StatusCode::OK,
             GetByIdHttpResponse::Bigserial {
                 bigserial: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest(),
-            //
+            } => http::StatusCode::BAD_REQUEST,
             GetByIdHttpResponse::Configuration {
                 configuration_box_dyn_error: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             GetByIdHttpResponse::Database {
                 box_dyn_database_error: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             GetByIdHttpResponse::Io {
                 io_error: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             GetByIdHttpResponse::Tls {
                 box_dyn_error: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             GetByIdHttpResponse::Protocol {
                 protocol: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             GetByIdHttpResponse::RowNotFound {
                 row_not_found: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::NotFound(),
+            } => http::StatusCode::NOT_FOUND,
             GetByIdHttpResponse::TypeNotFound {
                 type_not_found: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest(),
+            } => http::StatusCode::BAD_REQUEST,
             GetByIdHttpResponse::ColumnIndexOutOfBounds {
                 column_index_out_of_bounds: _,
                 len: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             GetByIdHttpResponse::ColumnNotFound {
                 column_not_found: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::BadRequest(),
+            } => http::StatusCode::BAD_REQUEST,
             GetByIdHttpResponse::ColumnDecode {
                 column_decode_index: _,
                 source_handle: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             GetByIdHttpResponse::Decode {
                 decode_box_dyn_error: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             GetByIdHttpResponse::PoolTimedOut {
                 pool_timed_out: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::RequestTimeout(),
+            } => http::StatusCode::REQUEST_TIMEOUT,
             GetByIdHttpResponse::PoolClosed {
                 pool_closed: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             GetByIdHttpResponse::WorkerCrashed {
                 worker_crashed: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             GetByIdHttpResponse::Migrate {
                 migrate: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
             GetByIdHttpResponse::UnexpectedCase {
                 unexpected_case: _,
                 code_occurence: _,
-            } => actix_web::HttpResponse::InternalServerError(),
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
         }
     }
 }
