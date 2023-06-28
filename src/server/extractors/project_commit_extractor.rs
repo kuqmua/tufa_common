@@ -28,6 +28,17 @@ pub enum ProjectCommitExtractorCheckErrorNamed<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
+
+impl<'a> From<&ProjectCommitExtractorCheckErrorNamed<'a>> for http::StatusCode {
+    fn from(val: &ProjectCommitExtractorCheckErrorNamed<'a>) -> Self {
+        match &val {
+            ProjectCommitExtractorCheckErrorNamed::ProjectCommitExtractorNotEqual { project_commit_not_equal: _, project_commit_to_use: _, code_occurence: _ } => http::StatusCode::BAD_REQUEST,
+            ProjectCommitExtractorCheckErrorNamed::ProjectCommitExtractorToStrConversion { project_commit_to_str_conversion: _, code_occurence: _ } => http::StatusCode::BAD_REQUEST,
+            ProjectCommitExtractorCheckErrorNamed::NoProjectCommitExtractorHeader { no_project_commit_header: _, code_occurence: _ } => http::StatusCode::BAD_REQUEST,
+        }
+    }
+}
+
 //todo make a proc macro for it(or maybe put it into error occurence?)
 impl crate::common::to_default_stringified_json::ToDefaultStringifiedJson for ProjectCommitExtractorCheckErrorNamedWithSerializeDeserialize {
     fn to_default_stringified_json(&self) -> std::string::String {

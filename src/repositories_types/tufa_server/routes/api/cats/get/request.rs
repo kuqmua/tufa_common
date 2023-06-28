@@ -84,6 +84,94 @@ pub enum GetHttpResponseVariants {
     },
 }
 
+impl From<&GetHttpResponseVariants> for http::StatusCode {
+    fn from(val: &GetHttpResponseVariants) -> Self {
+        match val {
+            GetHttpResponseVariants::Cats(_) => http::StatusCode::OK,
+            GetHttpResponseVariants::ProjectCommitExtractorNotEqual {
+                project_commit_not_equal: _,
+                project_commit_to_use: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+            GetHttpResponseVariants::ProjectCommitExtractorToStrConversion {
+                project_commit_to_str_conversion: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+            GetHttpResponseVariants::NoProjectCommitExtractorHeader {
+                no_project_commit_header: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+
+            GetHttpResponseVariants::Configuration {
+                configuration_box_dyn_error: _,
+                code_occurence: _,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
+            GetHttpResponseVariants::Database {
+                box_dyn_database_error: _,
+                code_occurence: _,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
+            GetHttpResponseVariants::Io {
+                io_error: _,
+                code_occurence: _,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
+            GetHttpResponseVariants::Tls {
+                box_dyn_error: _,
+                code_occurence: _,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
+            GetHttpResponseVariants::Protocol {
+                protocol: _,
+                code_occurence: _,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
+            GetHttpResponseVariants::RowNotFound {
+                row_not_found: _,
+                code_occurence: _,
+            } => http::StatusCode::NOT_FOUND,
+            GetHttpResponseVariants::TypeNotFound {
+                type_not_found: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+            GetHttpResponseVariants::ColumnIndexOutOfBounds {
+                column_index_out_of_bounds: _,
+                len: _,
+                code_occurence: _,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
+            GetHttpResponseVariants::ColumnNotFound {
+                column_not_found: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+            GetHttpResponseVariants::ColumnDecode {
+                column_decode_index: _,
+                source_handle: _,
+                code_occurence: _,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
+            GetHttpResponseVariants::Decode {
+                decode_box_dyn_error: _,
+                code_occurence: _,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
+            GetHttpResponseVariants::PoolTimedOut {
+                pool_timed_out: _,
+                code_occurence: _,
+            } => http::StatusCode::REQUEST_TIMEOUT,
+            GetHttpResponseVariants::PoolClosed {
+                pool_closed: _,
+                code_occurence: _,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
+            GetHttpResponseVariants::WorkerCrashed {
+                worker_crashed: _,
+                code_occurence: _,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
+            GetHttpResponseVariants::Migrate {
+                migrate: _,
+                code_occurence: _,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
+            GetHttpResponseVariants::UnexpectedCase {
+                unexpected_case: _,
+                code_occurence: _,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
+        }
+    }
+}
+
 impl
     std::convert::From<
         crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse,
