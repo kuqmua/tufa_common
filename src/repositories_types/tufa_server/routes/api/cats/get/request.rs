@@ -84,10 +84,153 @@ pub enum GetHttpResponseVariants {
     },
 }
 
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
+pub enum GetHttpResponseOkVariants {
+    Cats(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>),
+}
+
+//
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
+pub enum GetHttpResponseBadRequestVariants {
+    Cats(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>),
+    //
+    ProjectCommitExtractorNotEqual {
+        project_commit_not_equal: std::string::String,
+        project_commit_to_use: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ProjectCommitExtractorToStrConversion {
+        project_commit_to_str_conversion: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    NoProjectCommitExtractorHeader {
+        no_project_commit_header: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    //
+    TypeNotFound {
+        type_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ColumnNotFound {
+        column_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+}
+//
+#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
+pub enum GetHttpResponseInternalServerErrorVariants {
+    //
+    //
+    Configuration {
+        configuration_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Database {
+        box_dyn_database_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Io {
+        io_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Tls {
+        box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Protocol {
+        protocol: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ColumnIndexOutOfBounds {
+        column_index_out_of_bounds: usize,
+        len: usize,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    ColumnDecode {
+        column_decode_index: std::string::String,
+        source_handle: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Decode {
+        decode_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    PoolClosed {
+        pool_closed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    WorkerCrashed {
+        worker_crashed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    Migrate {
+        migrate: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+    UnexpectedCase {
+        unexpected_case: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+}
+
+#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
+pub enum GetHttpResponseNotFoundVariants {
+    RowNotFound {
+        row_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+}
+
+#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
+pub enum GetHttpResponseRequestTimeoutVariants {
+    PoolTimedOut {
+        pool_timed_out: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
+    },
+}
+
+// impl TryFrom<reqwest::Response> for GetHttpResponseVariants {
+//     type Error = String; //todo
+
+//     fn try_from(value: reqwest::Response) -> Result<Self, Self::Error> {
+//         let status_code = value.status();
+//         if status_code == http::StatusCode::OK {
+
+//         }
+//         else if {
+
+//         }
+//         else if {
+
+//         }
+//         else if {
+
+//         }
+//         else if {
+
+//         }
+//         else if {
+
+//         }
+//         else if {
+
+//         }
+//         else if {
+
+//         }
+//         else {
+
+//         }
+//         todo!()
+//     }
+// }
+
 impl From<&GetHttpResponseVariants> for http::StatusCode {
     fn from(val: &GetHttpResponseVariants) -> Self {
         match val {
             GetHttpResponseVariants::Cats(_) => http::StatusCode::OK,
+
             GetHttpResponseVariants::ProjectCommitExtractorNotEqual {
                 project_commit_not_equal: _,
                 project_commit_to_use: _,
@@ -615,22 +758,46 @@ pub async fn try_get<'a>(
         .await
     {
         //todo - expected status code body deserialization logic
-        Ok(response) => match response.json::<GetHttpResponseVariants>().await {
-            Ok(varinats) => match Vec::<
-                crate::repositories_types::tufa_server::routes::api::cats::Cat,
-            >::try_from(varinats)
-            {
-                Ok(value) => Ok(value),
-                Err(e) => Err(TryGetErrorNamed::ExpectedType {
-                    get: e,
+        Ok(response) => {
+            //
+            let status_code = response.status();
+            if status_code == http::StatusCode::OK {
+                match response
+                    .json::<Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>>()
+                    .await
+                {
+                    Ok(_) => todo!(),
+                    Err(_) => todo!(),
+                }
+            } else if status_code == http::StatusCode::BAD_REQUEST {
+                todo!()
+            } else if status_code == http::StatusCode::INTERNAL_SERVER_ERROR {
+                todo!()
+            } else if status_code == http::StatusCode::NOT_FOUND {
+                todo!()
+            } else if status_code == http::StatusCode::REQUEST_TIMEOUT {
+                todo!()
+            } else {
+                todo!()
+            }
+            //
+            match response.json::<GetHttpResponseVariants>().await {
+                Ok(varinats) => match Vec::<
+                    crate::repositories_types::tufa_server::routes::api::cats::Cat,
+                >::try_from(varinats)
+                {
+                    Ok(value) => Ok(value),
+                    Err(e) => Err(TryGetErrorNamed::ExpectedType {
+                        get: e,
+                        code_occurence: crate::code_occurence_tufa_common!(),
+                    }),
+                },
+                Err(e) => Err(TryGetErrorNamed::Reqwest {
+                    reqwest: e,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 }),
-            },
-            Err(e) => Err(TryGetErrorNamed::Reqwest {
-                reqwest: e,
-                code_occurence: crate::code_occurence_tufa_common!(),
-            }),
-        },
+            }
+        }
         Err(e) => Err(TryGetErrorNamed::Reqwest {
             reqwest: e,
             code_occurence: crate::code_occurence_tufa_common!(),
