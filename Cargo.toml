@@ -50,6 +50,7 @@ getset = {version = "=0.1.2"}
 urlencoding = {version = "=2.1.2"}
 from_enum = {path = "../proc_macros/from_enum"}
 into_actix_web_http_response = {path = "../proc_macros/into_actix_web_http_response"}
+type_variants_from_reqwest_response = {path = "../proc_macros/type_variants_from_reqwest_response"}
 check_specific_dependency_version_usage = {path = "../proc_macros/check_specific_dependency_version_usage"}
 from_sqlx_postgres_error = {path = "../proc_macros/from_sqlx_postgres_error"}
 compile_time_git_info = {path = "../proc_macros/compile_time_git_info"}
