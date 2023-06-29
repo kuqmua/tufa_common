@@ -85,15 +85,20 @@ pub enum GetHttpResponseVariants {
 }
 
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub enum GetHttpResponseOkVariants {
+pub enum GetHttpResponseVariantsOk {
     Cats(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>),
 }
 
-//
+impl From<GetHttpResponseVariantsOk> for GetHttpResponseVariants {
+    fn from(val: GetHttpResponseVariantsOk) -> Self {
+        match val {
+            GetHttpResponseVariantsOk::Cats(i) => Self::Cats(i),
+        }
+    }
+}
+
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub enum GetHttpResponseBadRequestVariants {
-    Cats(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>),
-    //
+pub enum GetHttpResponseVariantsBadRequest {
     ProjectCommitExtractorNotEqual {
         project_commit_not_equal: std::string::String,
         project_commit_to_use: std::string::String,
@@ -117,11 +122,54 @@ pub enum GetHttpResponseBadRequestVariants {
         code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
     },
 }
+
+impl From<GetHttpResponseVariantsBadRequest> for GetHttpResponseVariants {
+    fn from(val: GetHttpResponseVariantsBadRequest) -> Self {
+        match val {
+            GetHttpResponseVariantsBadRequest::ProjectCommitExtractorNotEqual {
+                project_commit_not_equal,
+                project_commit_to_use,
+                code_occurence,
+            } => Self::ProjectCommitExtractorNotEqual {
+                project_commit_not_equal,
+                project_commit_to_use,
+                code_occurence,
+            },
+            GetHttpResponseVariantsBadRequest::ProjectCommitExtractorToStrConversion {
+                project_commit_to_str_conversion,
+                code_occurence,
+            } => Self::ProjectCommitExtractorToStrConversion {
+                project_commit_to_str_conversion,
+                code_occurence,
+            },
+            GetHttpResponseVariantsBadRequest::NoProjectCommitExtractorHeader {
+                no_project_commit_header,
+                code_occurence,
+            } => Self::NoProjectCommitExtractorHeader {
+                no_project_commit_header,
+                code_occurence,
+            },
+            GetHttpResponseVariantsBadRequest::TypeNotFound {
+                type_not_found,
+                code_occurence,
+            } => Self::TypeNotFound {
+                type_not_found,
+                code_occurence,
+            },
+            GetHttpResponseVariantsBadRequest::ColumnNotFound {
+                column_not_found,
+                code_occurence,
+            } => Self::ColumnNotFound {
+                column_not_found,
+                code_occurence,
+            },
+        }
+    }
+}
+
 //
 #[derive(Debug, serde :: Serialize, serde :: Deserialize)]
-pub enum GetHttpResponseInternalServerErrorVariants {
-    //
-    //
+pub enum GetHttpResponseVariantsInternalServerError {
     Configuration {
         configuration_box_dyn_error: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
@@ -174,57 +222,224 @@ pub enum GetHttpResponseInternalServerErrorVariants {
     },
 }
 
+impl From<GetHttpResponseVariantsInternalServerError> for GetHttpResponseVariants {
+    fn from(val: GetHttpResponseVariantsInternalServerError) -> Self {
+        match val {
+            GetHttpResponseVariantsInternalServerError::Configuration {
+                configuration_box_dyn_error,
+                code_occurence,
+            } => Self::Configuration {
+                configuration_box_dyn_error,
+                code_occurence,
+            },
+            GetHttpResponseVariantsInternalServerError::Database {
+                box_dyn_database_error,
+                code_occurence,
+            } => Self::Database {
+                box_dyn_database_error,
+                code_occurence,
+            },
+            GetHttpResponseVariantsInternalServerError::Io {
+                io_error,
+                code_occurence,
+            } => Self::Io {
+                io_error,
+                code_occurence,
+            },
+            GetHttpResponseVariantsInternalServerError::Tls {
+                box_dyn_error,
+                code_occurence,
+            } => Self::Tls {
+                box_dyn_error,
+                code_occurence,
+            },
+            GetHttpResponseVariantsInternalServerError::Protocol {
+                protocol,
+                code_occurence,
+            } => Self::Protocol {
+                protocol,
+                code_occurence,
+            },
+            GetHttpResponseVariantsInternalServerError::ColumnIndexOutOfBounds {
+                column_index_out_of_bounds,
+                len,
+                code_occurence,
+            } => Self::ColumnIndexOutOfBounds {
+                column_index_out_of_bounds,
+                len,
+                code_occurence,
+            },
+            GetHttpResponseVariantsInternalServerError::ColumnDecode {
+                column_decode_index,
+                source_handle,
+                code_occurence,
+            } => Self::ColumnDecode {
+                column_decode_index,
+                source_handle,
+                code_occurence,
+            },
+            GetHttpResponseVariantsInternalServerError::Decode {
+                decode_box_dyn_error,
+                code_occurence,
+            } => Self::Decode {
+                decode_box_dyn_error,
+                code_occurence,
+            },
+            GetHttpResponseVariantsInternalServerError::PoolClosed {
+                pool_closed,
+                code_occurence,
+            } => Self::PoolClosed {
+                pool_closed,
+                code_occurence,
+            },
+            GetHttpResponseVariantsInternalServerError::WorkerCrashed {
+                worker_crashed,
+                code_occurence,
+            } => Self::WorkerCrashed {
+                worker_crashed,
+                code_occurence,
+            },
+            GetHttpResponseVariantsInternalServerError::Migrate {
+                migrate,
+                code_occurence,
+            } => Self::Migrate {
+                migrate,
+                code_occurence,
+            },
+            GetHttpResponseVariantsInternalServerError::UnexpectedCase {
+                unexpected_case,
+                code_occurence,
+            } => Self::UnexpectedCase {
+                unexpected_case,
+                code_occurence,
+            },
+        }
+    }
+}
+
 #[derive(Debug, serde :: Serialize, serde :: Deserialize)]
-pub enum GetHttpResponseNotFoundVariants {
+pub enum GetHttpResponseVariantsNotFound {
     RowNotFound {
         row_not_found: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
     },
 }
 
+impl From<GetHttpResponseVariantsNotFound> for GetHttpResponseVariants {
+    fn from(val: GetHttpResponseVariantsNotFound) -> Self {
+        match val {
+            GetHttpResponseVariantsNotFound::RowNotFound {
+                row_not_found,
+                code_occurence,
+            } => GetHttpResponseVariants::RowNotFound {
+                row_not_found,
+                code_occurence,
+            },
+        }
+    }
+}
+
 #[derive(Debug, serde :: Serialize, serde :: Deserialize)]
-pub enum GetHttpResponseRequestTimeoutVariants {
+pub enum GetHttpResponseVariantsRequestTimeout {
     PoolTimedOut {
         pool_timed_out: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
     },
 }
 
-// impl TryFrom<reqwest::Response> for GetHttpResponseVariants {
-//     type Error = String; //todo
+impl From<GetHttpResponseVariantsRequestTimeout> for GetHttpResponseVariants {
+    fn from(val: GetHttpResponseVariantsRequestTimeout) -> Self {
+        match val {
+            GetHttpResponseVariantsRequestTimeout::PoolTimedOut {
+                pool_timed_out,
+                code_occurence,
+            } => GetHttpResponseVariants::PoolTimedOut {
+                pool_timed_out,
+                code_occurence,
+            },
+        }
+    }
+}
+//todo additional request info
+#[derive(Debug)]
+pub enum GetHttpResponseVariantsTryFromReqwestResponseVariant {
+    UnexpectedStatusCode {
+        status_code: http::StatusCode,
+    },
+    DeserializeResponse {
+        reqwest: reqwest::Error,
+        status_code: http::StatusCode,
+    },
+}
 
-//     fn try_from(value: reqwest::Response) -> Result<Self, Self::Error> {
-//         let status_code = value.status();
-//         if status_code == http::StatusCode::OK {
-
-//         }
-//         else if {
-
-//         }
-//         else if {
-
-//         }
-//         else if {
-
-//         }
-//         else if {
-
-//         }
-//         else if {
-
-//         }
-//         else if {
-
-//         }
-//         else if {
-
-//         }
-//         else {
-
-//         }
-//         todo!()
-//     }
-// }
+impl TryFrom<reqwest::Response> for GetHttpResponseVariants {
+    type Error = GetHttpResponseVariantsTryFromReqwestResponseVariant;
+    fn try_from(response: reqwest::Response) -> Result<Self, Self::Error> {
+        let status_code = response.status();
+        if status_code == http::StatusCode::OK {
+            match futures::executor::block_on(response.json::<GetHttpResponseVariantsOk>()) {
+                Ok(value) => Ok(GetHttpResponseVariants::from(value)),
+                Err(e) => Err(
+                    GetHttpResponseVariantsTryFromReqwestResponseVariant::DeserializeResponse {
+                        reqwest: e,
+                        status_code,
+                    },
+                ),
+            }
+        } else if status_code == http::StatusCode::BAD_REQUEST {
+            match futures::executor::block_on(response.json::<GetHttpResponseVariantsBadRequest>())
+            {
+                Ok(value) => Ok(GetHttpResponseVariants::from(value)),
+                Err(e) => Err(
+                    GetHttpResponseVariantsTryFromReqwestResponseVariant::DeserializeResponse {
+                        reqwest: e,
+                        status_code,
+                    },
+                ),
+            }
+        } else if status_code == http::StatusCode::INTERNAL_SERVER_ERROR {
+            match futures::executor::block_on(
+                response.json::<GetHttpResponseVariantsInternalServerError>(),
+            ) {
+                Ok(value) => Ok(GetHttpResponseVariants::from(value)),
+                Err(e) => Err(
+                    GetHttpResponseVariantsTryFromReqwestResponseVariant::DeserializeResponse {
+                        reqwest: e,
+                        status_code,
+                    },
+                ),
+            }
+        } else if status_code == http::StatusCode::NOT_FOUND {
+            match futures::executor::block_on(response.json::<GetHttpResponseVariantsNotFound>()) {
+                Ok(value) => Ok(GetHttpResponseVariants::from(value)),
+                Err(e) => Err(
+                    GetHttpResponseVariantsTryFromReqwestResponseVariant::DeserializeResponse {
+                        reqwest: e,
+                        status_code,
+                    },
+                ),
+            }
+        } else if status_code == http::StatusCode::REQUEST_TIMEOUT {
+            match futures::executor::block_on(
+                response.json::<GetHttpResponseVariantsRequestTimeout>(),
+            ) {
+                Ok(value) => Ok(GetHttpResponseVariants::from(value)),
+                Err(e) => Err(
+                    GetHttpResponseVariantsTryFromReqwestResponseVariant::DeserializeResponse {
+                        reqwest: e,
+                        status_code,
+                    },
+                ),
+            }
+        } else {
+            Err(
+                GetHttpResponseVariantsTryFromReqwestResponseVariant::UnexpectedStatusCode {
+                    status_code,
+                },
+            )
+        }
+    }
+}
 
 impl From<&GetHttpResponseVariants> for http::StatusCode {
     fn from(val: &GetHttpResponseVariants) -> Self {
@@ -726,6 +941,18 @@ pub enum TryGetErrorNamed<'a> {
         get: TryGetErrorHttpResponseWithSerializeDeserialize,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
+    UnexpectedStatusCode { 
+        #[eo_display]
+        status_code: http::StatusCode,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    DeserializeResponse {
+        #[eo_display_foreign_type]
+        reqwest: reqwest::Error,
+        #[eo_display]
+        status_code: http::StatusCode,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
     Reqwest {
         #[eo_display_foreign_type]
         reqwest: reqwest::Error,
@@ -757,34 +984,11 @@ pub async fn try_get<'a>(
         .send()
         .await
     {
-        //todo - expected status code body deserialization logic
         Ok(response) => {
-            //
-            let status_code = response.status();
-            if status_code == http::StatusCode::OK {
-                match response
-                    .json::<Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>>()
-                    .await
-                {
-                    Ok(_) => todo!(),
-                    Err(_) => todo!(),
-                }
-            } else if status_code == http::StatusCode::BAD_REQUEST {
-                todo!()
-            } else if status_code == http::StatusCode::INTERNAL_SERVER_ERROR {
-                todo!()
-            } else if status_code == http::StatusCode::NOT_FOUND {
-                todo!()
-            } else if status_code == http::StatusCode::REQUEST_TIMEOUT {
-                todo!()
-            } else {
-                todo!()
-            }
-            //
-            match response.json::<GetHttpResponseVariants>().await {
-                Ok(varinats) => match Vec::<
+            match GetHttpResponseVariants::try_from(response) {
+                Ok(variants) => match Vec::<
                     crate::repositories_types::tufa_server::routes::api::cats::Cat,
-                >::try_from(varinats)
+                >::try_from(variants)
                 {
                     Ok(value) => Ok(value),
                     Err(e) => Err(TryGetErrorNamed::ExpectedType {
@@ -792,10 +996,20 @@ pub async fn try_get<'a>(
                         code_occurence: crate::code_occurence_tufa_common!(),
                     }),
                 },
-                Err(e) => Err(TryGetErrorNamed::Reqwest {
-                    reqwest: e,
-                    code_occurence: crate::code_occurence_tufa_common!(),
-                }),
+                Err(e) => match e {//todo impl from?
+                    GetHttpResponseVariantsTryFromReqwestResponseVariant::UnexpectedStatusCode { status_code } => Err(
+                        TryGetErrorNamed::UnexpectedStatusCode { 
+                            status_code, code_occurence: crate::code_occurence_tufa_common!() 
+                        }
+                    ),
+                    GetHttpResponseVariantsTryFromReqwestResponseVariant::DeserializeResponse { reqwest, status_code } => Err(
+                        TryGetErrorNamed::DeserializeResponse { 
+                            reqwest, 
+                            status_code, 
+                            code_occurence: crate::code_occurence_tufa_common!() 
+                        }
+                    ),
+                },
             }
         }
         Err(e) => Err(TryGetErrorNamed::Reqwest {
