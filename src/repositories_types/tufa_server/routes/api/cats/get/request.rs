@@ -1,7 +1,9 @@
-#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
+#[derive(Debug, serde::Serialize, serde::Deserialize, type_variants_from_reqwest_response::TypeVariantsFromReqwestResponse)]
 pub enum GetHttpResponseVariants {
+    
     Cats(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>),
     //
+    #[tvfrr_404]
     ProjectCommitExtractorNotEqual {
         project_commit_not_equal: std::string::String,
         project_commit_to_use: std::string::String,
