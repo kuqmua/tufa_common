@@ -103,291 +103,12 @@ pub enum GetHttpResponseVariants {
     },
 }
 
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub enum GetHttpResponseVariantsOk {
-    Cats(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>),
-}
-
-impl From<GetHttpResponseVariantsOk> for GetHttpResponseVariants {
-    fn from(val: GetHttpResponseVariantsOk) -> Self {
-        match val {
-            GetHttpResponseVariantsOk::Cats(i) => Self::Cats(i),
-        }
-    }
-}
-
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub enum GetHttpResponseVariantsBadRequest {
-    ProjectCommitExtractorNotEqual {
-        project_commit_not_equal: std::string::String,
-        project_commit_to_use: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    },
-    ProjectCommitExtractorToStrConversion {
-        project_commit_to_str_conversion: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    },
-    NoProjectCommitExtractorHeader {
-        no_project_commit_header: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    },
-    //
-    TypeNotFound {
-        type_not_found: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    },
-    ColumnNotFound {
-        column_not_found: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    },
-}
-
-impl From<GetHttpResponseVariantsBadRequest> for GetHttpResponseVariants {
-    fn from(val: GetHttpResponseVariantsBadRequest) -> Self {
-        match val {
-            GetHttpResponseVariantsBadRequest::ProjectCommitExtractorNotEqual {
-                project_commit_not_equal,
-                project_commit_to_use,
-                code_occurence,
-            } => Self::ProjectCommitExtractorNotEqual {
-                project_commit_not_equal,
-                project_commit_to_use,
-                code_occurence,
-            },
-            GetHttpResponseVariantsBadRequest::ProjectCommitExtractorToStrConversion {
-                project_commit_to_str_conversion,
-                code_occurence,
-            } => Self::ProjectCommitExtractorToStrConversion {
-                project_commit_to_str_conversion,
-                code_occurence,
-            },
-            GetHttpResponseVariantsBadRequest::NoProjectCommitExtractorHeader {
-                no_project_commit_header,
-                code_occurence,
-            } => Self::NoProjectCommitExtractorHeader {
-                no_project_commit_header,
-                code_occurence,
-            },
-            GetHttpResponseVariantsBadRequest::TypeNotFound {
-                type_not_found,
-                code_occurence,
-            } => Self::TypeNotFound {
-                type_not_found,
-                code_occurence,
-            },
-            GetHttpResponseVariantsBadRequest::ColumnNotFound {
-                column_not_found,
-                code_occurence,
-            } => Self::ColumnNotFound {
-                column_not_found,
-                code_occurence,
-            },
-        }
-    }
-}
-
-//
-#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
-pub enum GetHttpResponseVariantsInternalServerError {
-    Configuration {
-        configuration_box_dyn_error: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    },
-    Database {
-        box_dyn_database_error: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    },
-    Io {
-        io_error: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    },
-    Tls {
-        box_dyn_error: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    },
-    Protocol {
-        protocol: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    },
-    ColumnIndexOutOfBounds {
-        column_index_out_of_bounds: usize,
-        len: usize,
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    },
-    ColumnDecode {
-        column_decode_index: std::string::String,
-        source_handle: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    },
-    Decode {
-        decode_box_dyn_error: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    },
-    PoolClosed {
-        pool_closed: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    },
-    WorkerCrashed {
-        worker_crashed: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    },
-    Migrate {
-        migrate: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    },
-    UnexpectedCase {
-        unexpected_case: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    },
-}
-
-impl From<GetHttpResponseVariantsInternalServerError> for GetHttpResponseVariants {
-    fn from(val: GetHttpResponseVariantsInternalServerError) -> Self {
-        match val {
-            GetHttpResponseVariantsInternalServerError::Configuration {
-                configuration_box_dyn_error,
-                code_occurence,
-            } => Self::Configuration {
-                configuration_box_dyn_error,
-                code_occurence,
-            },
-            GetHttpResponseVariantsInternalServerError::Database {
-                box_dyn_database_error,
-                code_occurence,
-            } => Self::Database {
-                box_dyn_database_error,
-                code_occurence,
-            },
-            GetHttpResponseVariantsInternalServerError::Io {
-                io_error,
-                code_occurence,
-            } => Self::Io {
-                io_error,
-                code_occurence,
-            },
-            GetHttpResponseVariantsInternalServerError::Tls {
-                box_dyn_error,
-                code_occurence,
-            } => Self::Tls {
-                box_dyn_error,
-                code_occurence,
-            },
-            GetHttpResponseVariantsInternalServerError::Protocol {
-                protocol,
-                code_occurence,
-            } => Self::Protocol {
-                protocol,
-                code_occurence,
-            },
-            GetHttpResponseVariantsInternalServerError::ColumnIndexOutOfBounds {
-                column_index_out_of_bounds,
-                len,
-                code_occurence,
-            } => Self::ColumnIndexOutOfBounds {
-                column_index_out_of_bounds,
-                len,
-                code_occurence,
-            },
-            GetHttpResponseVariantsInternalServerError::ColumnDecode {
-                column_decode_index,
-                source_handle,
-                code_occurence,
-            } => Self::ColumnDecode {
-                column_decode_index,
-                source_handle,
-                code_occurence,
-            },
-            GetHttpResponseVariantsInternalServerError::Decode {
-                decode_box_dyn_error,
-                code_occurence,
-            } => Self::Decode {
-                decode_box_dyn_error,
-                code_occurence,
-            },
-            GetHttpResponseVariantsInternalServerError::PoolClosed {
-                pool_closed,
-                code_occurence,
-            } => Self::PoolClosed {
-                pool_closed,
-                code_occurence,
-            },
-            GetHttpResponseVariantsInternalServerError::WorkerCrashed {
-                worker_crashed,
-                code_occurence,
-            } => Self::WorkerCrashed {
-                worker_crashed,
-                code_occurence,
-            },
-            GetHttpResponseVariantsInternalServerError::Migrate {
-                migrate,
-                code_occurence,
-            } => Self::Migrate {
-                migrate,
-                code_occurence,
-            },
-            GetHttpResponseVariantsInternalServerError::UnexpectedCase {
-                unexpected_case,
-                code_occurence,
-            } => Self::UnexpectedCase {
-                unexpected_case,
-                code_occurence,
-            },
-        }
-    }
-}
-
-#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
-pub enum GetHttpResponseVariantsNotFound {
-    RowNotFound {
-        row_not_found: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    },
-}
-
-impl From<GetHttpResponseVariantsNotFound> for GetHttpResponseVariants {
-    fn from(val: GetHttpResponseVariantsNotFound) -> Self {
-        match val {
-            GetHttpResponseVariantsNotFound::RowNotFound {
-                row_not_found,
-                code_occurence,
-            } => GetHttpResponseVariants::RowNotFound {
-                row_not_found,
-                code_occurence,
-            },
-        }
-    }
-}
-
-#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
-pub enum GetHttpResponseVariantsRequestTimeout {
-    PoolTimedOut {
-        pool_timed_out: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
-    },
-}
-
-impl From<GetHttpResponseVariantsRequestTimeout> for GetHttpResponseVariants {
-    fn from(val: GetHttpResponseVariantsRequestTimeout) -> Self {
-        match val {
-            GetHttpResponseVariantsRequestTimeout::PoolTimedOut {
-                pool_timed_out,
-                code_occurence,
-            } => GetHttpResponseVariants::PoolTimedOut {
-                pool_timed_out,
-                code_occurence,
-            },
-        }
-    }
-}
-//todo additional request info
-
-
 impl TryFrom<reqwest::Response> for GetHttpResponseVariants {
     type Error = crate::common::api_request_unexpected_error::ApiRequestUnexpectedError;
     fn try_from(response: reqwest::Response) -> Result<Self, Self::Error> {
         let status_code = response.status();
         if status_code == http::StatusCode::OK {
-            match futures::executor::block_on(response.json::<GetHttpResponseVariantsOk>()) {
+            match futures::executor::block_on(response.json::<GetHttpResponseVariantsTvfrr200Ok>()) {
                 Ok(value) => Ok(GetHttpResponseVariants::from(value)),
                 Err(e) => Err(
                     crate::common::api_request_unexpected_error::ApiRequestUnexpectedError::DeserializeBody {
@@ -397,7 +118,7 @@ impl TryFrom<reqwest::Response> for GetHttpResponseVariants {
                 ),
             }
         } else if status_code == http::StatusCode::BAD_REQUEST {
-            match futures::executor::block_on(response.json::<GetHttpResponseVariantsBadRequest>())
+            match futures::executor::block_on(response.json::<GetHttpResponseVariantsTvfrr400BadRequest>())
             {
                 Ok(value) => Ok(GetHttpResponseVariants::from(value)),
                 Err(e) => Err(
@@ -409,7 +130,7 @@ impl TryFrom<reqwest::Response> for GetHttpResponseVariants {
             }
         } else if status_code == http::StatusCode::INTERNAL_SERVER_ERROR {
             match futures::executor::block_on(
-                response.json::<GetHttpResponseVariantsInternalServerError>(),
+                response.json::<GetHttpResponseVariantsTvfrr500InternalServerError>(),
             ) {
                 Ok(value) => Ok(GetHttpResponseVariants::from(value)),
                 Err(e) => Err(
@@ -420,7 +141,7 @@ impl TryFrom<reqwest::Response> for GetHttpResponseVariants {
                 ),
             }
         } else if status_code == http::StatusCode::NOT_FOUND {
-            match futures::executor::block_on(response.json::<GetHttpResponseVariantsNotFound>()) {
+            match futures::executor::block_on(response.json::<GetHttpResponseVariantsTvfrr404NotFound>()) {
                 Ok(value) => Ok(GetHttpResponseVariants::from(value)),
                 Err(e) => Err(
                     crate::common::api_request_unexpected_error::ApiRequestUnexpectedError::DeserializeBody {
@@ -431,7 +152,7 @@ impl TryFrom<reqwest::Response> for GetHttpResponseVariants {
             }
         } else if status_code == http::StatusCode::REQUEST_TIMEOUT {
             match futures::executor::block_on(
-                response.json::<GetHttpResponseVariantsRequestTimeout>(),
+                response.json::<GetHttpResponseVariantsTvfrr408RequestTimeout>(),
             ) {
                 Ok(value) => Ok(GetHttpResponseVariants::from(value)),
                 Err(e) => Err(
@@ -447,95 +168,6 @@ impl TryFrom<reqwest::Response> for GetHttpResponseVariants {
                     status_code,
                 },
             )
-        }
-    }
-}
-
-impl From<&GetHttpResponseVariants> for http::StatusCode {
-    fn from(val: &GetHttpResponseVariants) -> Self {
-        match val {
-            GetHttpResponseVariants::Cats(_) => http::StatusCode::OK,
-
-            GetHttpResponseVariants::ProjectCommitExtractorNotEqual {
-                project_commit_not_equal: _,
-                project_commit_to_use: _,
-                code_occurence: _,
-            } => http::StatusCode::BAD_REQUEST,
-            GetHttpResponseVariants::ProjectCommitExtractorToStrConversion {
-                project_commit_to_str_conversion: _,
-                code_occurence: _,
-            } => http::StatusCode::BAD_REQUEST,
-            GetHttpResponseVariants::NoProjectCommitExtractorHeader {
-                no_project_commit_header: _,
-                code_occurence: _,
-            } => http::StatusCode::BAD_REQUEST,
-
-            GetHttpResponseVariants::Configuration {
-                configuration_box_dyn_error: _,
-                code_occurence: _,
-            } => http::StatusCode::INTERNAL_SERVER_ERROR,
-            GetHttpResponseVariants::Database {
-                box_dyn_database_error: _,
-                code_occurence: _,
-            } => http::StatusCode::INTERNAL_SERVER_ERROR,
-            GetHttpResponseVariants::Io {
-                io_error: _,
-                code_occurence: _,
-            } => http::StatusCode::INTERNAL_SERVER_ERROR,
-            GetHttpResponseVariants::Tls {
-                box_dyn_error: _,
-                code_occurence: _,
-            } => http::StatusCode::INTERNAL_SERVER_ERROR,
-            GetHttpResponseVariants::Protocol {
-                protocol: _,
-                code_occurence: _,
-            } => http::StatusCode::INTERNAL_SERVER_ERROR,
-            GetHttpResponseVariants::RowNotFound {
-                row_not_found: _,
-                code_occurence: _,
-            } => http::StatusCode::NOT_FOUND,
-            GetHttpResponseVariants::TypeNotFound {
-                type_not_found: _,
-                code_occurence: _,
-            } => http::StatusCode::BAD_REQUEST,
-            GetHttpResponseVariants::ColumnIndexOutOfBounds {
-                column_index_out_of_bounds: _,
-                len: _,
-                code_occurence: _,
-            } => http::StatusCode::INTERNAL_SERVER_ERROR,
-            GetHttpResponseVariants::ColumnNotFound {
-                column_not_found: _,
-                code_occurence: _,
-            } => http::StatusCode::BAD_REQUEST,
-            GetHttpResponseVariants::ColumnDecode {
-                column_decode_index: _,
-                source_handle: _,
-                code_occurence: _,
-            } => http::StatusCode::INTERNAL_SERVER_ERROR,
-            GetHttpResponseVariants::Decode {
-                decode_box_dyn_error: _,
-                code_occurence: _,
-            } => http::StatusCode::INTERNAL_SERVER_ERROR,
-            GetHttpResponseVariants::PoolTimedOut {
-                pool_timed_out: _,
-                code_occurence: _,
-            } => http::StatusCode::REQUEST_TIMEOUT,
-            GetHttpResponseVariants::PoolClosed {
-                pool_closed: _,
-                code_occurence: _,
-            } => http::StatusCode::INTERNAL_SERVER_ERROR,
-            GetHttpResponseVariants::WorkerCrashed {
-                worker_crashed: _,
-                code_occurence: _,
-            } => http::StatusCode::INTERNAL_SERVER_ERROR,
-            GetHttpResponseVariants::Migrate {
-                migrate: _,
-                code_occurence: _,
-            } => http::StatusCode::INTERNAL_SERVER_ERROR,
-            GetHttpResponseVariants::UnexpectedCase {
-                unexpected_case: _,
-                code_occurence: _,
-            } => http::StatusCode::INTERNAL_SERVER_ERROR,
         }
     }
 }

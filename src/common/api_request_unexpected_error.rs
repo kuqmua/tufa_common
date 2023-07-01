@@ -8,3 +8,4 @@ pub enum ApiRequestUnexpectedError {
         status_code: http::StatusCode,
     },
 }
+//todo additional request info
