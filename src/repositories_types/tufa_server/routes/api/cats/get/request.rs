@@ -380,26 +380,17 @@ impl From<GetHttpResponseVariantsRequestTimeout> for GetHttpResponseVariants {
     }
 }
 //todo additional request info
-#[derive(Debug)]
-pub enum GetHttpResponseVariantsTryFromReqwestResponseVariant {
-    UnexpectedStatusCode {
-        status_code: http::StatusCode,
-    },
-    DeserializeResponse {
-        reqwest: reqwest::Error,
-        status_code: http::StatusCode,
-    },
-}
+
 
 impl TryFrom<reqwest::Response> for GetHttpResponseVariants {
-    type Error = GetHttpResponseVariantsTryFromReqwestResponseVariant;
+    type Error = crate::common::api_request_unexpected_error::ApiRequestUnexpectedError;
     fn try_from(response: reqwest::Response) -> Result<Self, Self::Error> {
         let status_code = response.status();
         if status_code == http::StatusCode::OK {
             match futures::executor::block_on(response.json::<GetHttpResponseVariantsOk>()) {
                 Ok(value) => Ok(GetHttpResponseVariants::from(value)),
                 Err(e) => Err(
-                    GetHttpResponseVariantsTryFromReqwestResponseVariant::DeserializeResponse {
+                    crate::common::api_request_unexpected_error::ApiRequestUnexpectedError::DeserializeBody {
                         reqwest: e,
                         status_code,
                     },
@@ -410,7 +401,7 @@ impl TryFrom<reqwest::Response> for GetHttpResponseVariants {
             {
                 Ok(value) => Ok(GetHttpResponseVariants::from(value)),
                 Err(e) => Err(
-                    GetHttpResponseVariantsTryFromReqwestResponseVariant::DeserializeResponse {
+                    crate::common::api_request_unexpected_error::ApiRequestUnexpectedError::DeserializeBody {
                         reqwest: e,
                         status_code,
                     },
@@ -422,7 +413,7 @@ impl TryFrom<reqwest::Response> for GetHttpResponseVariants {
             ) {
                 Ok(value) => Ok(GetHttpResponseVariants::from(value)),
                 Err(e) => Err(
-                    GetHttpResponseVariantsTryFromReqwestResponseVariant::DeserializeResponse {
+                    crate::common::api_request_unexpected_error::ApiRequestUnexpectedError::DeserializeBody {
                         reqwest: e,
                         status_code,
                     },
@@ -432,7 +423,7 @@ impl TryFrom<reqwest::Response> for GetHttpResponseVariants {
             match futures::executor::block_on(response.json::<GetHttpResponseVariantsNotFound>()) {
                 Ok(value) => Ok(GetHttpResponseVariants::from(value)),
                 Err(e) => Err(
-                    GetHttpResponseVariantsTryFromReqwestResponseVariant::DeserializeResponse {
+                    crate::common::api_request_unexpected_error::ApiRequestUnexpectedError::DeserializeBody {
                         reqwest: e,
                         status_code,
                     },
@@ -444,7 +435,7 @@ impl TryFrom<reqwest::Response> for GetHttpResponseVariants {
             ) {
                 Ok(value) => Ok(GetHttpResponseVariants::from(value)),
                 Err(e) => Err(
-                    GetHttpResponseVariantsTryFromReqwestResponseVariant::DeserializeResponse {
+                    crate::common::api_request_unexpected_error::ApiRequestUnexpectedError::DeserializeBody {
                         reqwest: e,
                         status_code,
                     },
@@ -452,7 +443,7 @@ impl TryFrom<reqwest::Response> for GetHttpResponseVariants {
             }
         } else {
             Err(
-                GetHttpResponseVariantsTryFromReqwestResponseVariant::UnexpectedStatusCode {
+                crate::common::api_request_unexpected_error::ApiRequestUnexpectedError::StatusCode {
                     status_code,
                 },
             )
@@ -1016,12 +1007,12 @@ pub async fn try_get<'a>(
                     }),
                 },
                 Err(e) => match e {//todo impl from?
-                    GetHttpResponseVariantsTryFromReqwestResponseVariant::UnexpectedStatusCode { status_code } => Err(
+                    crate::common::api_request_unexpected_error::ApiRequestUnexpectedError::StatusCode { status_code } => Err(
                         TryGetErrorNamed::UnexpectedStatusCode { 
                             status_code, code_occurence: crate::code_occurence_tufa_common!() 
                         }
                     ),
-                    GetHttpResponseVariantsTryFromReqwestResponseVariant::DeserializeResponse { reqwest, status_code } => Err(
+                    crate::common::api_request_unexpected_error::ApiRequestUnexpectedError::DeserializeBody { reqwest, status_code } => Err(
                         TryGetErrorNamed::DeserializeResponse { 
                             reqwest, 
                             status_code, 
