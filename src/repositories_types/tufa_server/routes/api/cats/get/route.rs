@@ -3,6 +3,10 @@
     serde::Serialize,
     serde::Deserialize,
     into_actix_web_http_response::IntoActixWebHttpResponse,
+    from_enum::FromEnumWithoutSerializeDeserialize,
+)]
+#[from_enum::from_enum_paths_without_serialize_deserialize(
+    crate::repositories_types::tufa_server::routes::api::cats::get::request::GetHttpResponseVariants
 )]
 pub enum GetHttpResponse {
     Cats(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>),
