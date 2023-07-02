@@ -248,13 +248,7 @@ pub enum TryFromGetErrorNamed<'a> {
         status_code: http::StatusCode,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    // Reqwest {
-    //     #[eo_display_foreign_type]
-    //     reqwest: reqwest::Error,
-    //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    // },
 }
-
 
 pub struct ExpectedGetType {
     pub value: Vec::<crate::repositories_types::tufa_server::routes::api::cats::Cat>
@@ -298,41 +292,39 @@ impl<'a> ExpectedGetType {
     }
 }
 
-pub async fn try_get<'a>(
-    server_location: std::string::String, //todo server_location: std::string::String, 0 maybe change it to ip port
-    query_parameters: crate::repositories_types::tufa_server::routes::api::cats::get::GetQueryParameters,
-) -> Result<Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>, TryGetErrorNamed<'a>>
-{
-    let url = format!(
-        "{server_location}/api/{}/{}",
-        crate::repositories_types::tufa_server::routes::api::cats::CATS,
-        crate::common::url_encode::UrlEncode::url_encode(&query_parameters)
-    );
-    println!(
-        "try_get_project_commit {}",
-        crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.project_commit
-    );
-    let f = reqwest::Client::new()
-        .get(&url)
-        .header(
-            crate::common::git::project_git_info::PROJECT_COMMIT,
-            crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
-                .project_commit,
-        )
-        .send();
-    match 
-        f.await
-    {
+async fn get_extraction_logic<'a>(future: impl std::future::Future<Output = Result<reqwest::Response, reqwest::Error>>) -> Result<Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>, TryGetErrorNamed<'a>> {
+    match future.await {
         Ok(response) => match ExpectedGetType::try_from(response) {
             Ok(exp) => Ok(exp.value),
             Err(e) => Err(TryGetErrorNamed::TryFrom { 
                 try_from: e, 
                 code_occurence: crate::code_occurence_tufa_common!() 
             }),
-        }
+        },
         Err(e) => Err(TryGetErrorNamed::Reqwest {
             reqwest: e,
             code_occurence: crate::code_occurence_tufa_common!(),
         }),
     }
+}
+
+pub async fn try_get<'a>(
+    server_location: std::string::String, //todo server_location: std::string::String, 0 maybe change it to ip port
+    query_parameters: crate::repositories_types::tufa_server::routes::api::cats::get::GetQueryParameters,
+) -> Result<Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>, TryGetErrorNamed<'a>>
+{
+    get_extraction_logic(
+        reqwest::Client::new()
+        .get(&format!(
+            "{server_location}/api/{}/{}",
+            crate::repositories_types::tufa_server::routes::api::cats::CATS,
+            crate::common::url_encode::UrlEncode::url_encode(&query_parameters)
+        ))
+        .header(
+            crate::common::git::project_git_info::PROJECT_COMMIT,
+            crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
+                .project_commit,
+        )
+        .send()
+    ).await
 }
