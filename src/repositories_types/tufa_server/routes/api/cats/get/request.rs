@@ -103,7 +103,7 @@ pub enum GetHttpResponseVariants {
         code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
     },
 }
-
+//todo what if not going to use upper enum but this? for status code logic
 #[derive(
     Debug, thiserror::Error, error_occurence::ErrorOccurence, from_enum::FromEnumWithLifetime,
 )]
@@ -216,6 +216,21 @@ pub enum TryGetHttpResponseVariants<'a> {
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TryGetErrorNamed<'a> {
+    TryFrom {
+        #[eo_error_occurence]
+        try_from: TryFromGetErrorNamed<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    Reqwest {
+        #[eo_display_foreign_type]
+        reqwest: reqwest::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    
+}
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum TryFromGetErrorNamed<'a> {
     ExpectedType {
         #[eo_display_with_serialize_deserialize]
         get: TryGetHttpResponseVariantsWithSerializeDeserialize,
@@ -233,11 +248,54 @@ pub enum TryGetErrorNamed<'a> {
         status_code: http::StatusCode,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    Reqwest {
-        #[eo_display_foreign_type]
-        reqwest: reqwest::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
+    // Reqwest {
+    //     #[eo_display_foreign_type]
+    //     reqwest: reqwest::Error,
+    //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    // },
+}
+
+
+pub struct ExpectedGetType {
+    pub value: Vec::<crate::repositories_types::tufa_server::routes::api::cats::Cat>
+}
+
+#[allow(clippy::result_large_err)]
+impl<'a> ExpectedGetType {
+    fn try_from(
+        value: reqwest::Response,
+    ) -> Result<Self, TryFromGetErrorNamed<'a>> {
+        match GetHttpResponseVariants::try_from(value) {
+            Ok(variants) => match Vec::<
+                crate::repositories_types::tufa_server::routes::api::cats::Cat,
+            >::try_from(variants)
+            {
+                Ok(value) => Ok(Self { value }),
+                Err(e) => Err(TryFromGetErrorNamed::ExpectedType {
+                    get: e,
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                }),
+            },
+            Err(e) => match e {//todo impl from?
+                crate::common::api_request_unexpected_error::ApiRequestUnexpectedError::StatusCode { status_code } => Err(
+                    TryFromGetErrorNamed::UnexpectedStatusCode { 
+                        status_code, 
+                        code_occurence: crate::code_occurence_tufa_common!() 
+                    }
+                ),
+                crate::common::api_request_unexpected_error::ApiRequestUnexpectedError::DeserializeBody { 
+                    reqwest, 
+                    status_code 
+                } => Err(
+                    TryFromGetErrorNamed::DeserializeResponse { 
+                        reqwest, 
+                        status_code, 
+                        code_occurence: crate::code_occurence_tufa_common!() 
+                    }
+                ),
+            },
+        }
+    }
 }
 
 pub async fn try_get<'a>(
@@ -254,43 +312,23 @@ pub async fn try_get<'a>(
         "try_get_project_commit {}",
         crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO.project_commit
     );
-    match reqwest::Client::new()
+    let f = reqwest::Client::new()
         .get(&url)
         .header(
             crate::common::git::project_git_info::PROJECT_COMMIT,
             crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
                 .project_commit,
         )
-        .send()
-        .await
+        .send();
+    match 
+        f.await
     {
-        Ok(response) => {
-            match GetHttpResponseVariants::try_from(response) {
-                Ok(variants) => match Vec::<
-                    crate::repositories_types::tufa_server::routes::api::cats::Cat,
-                >::try_from(variants)
-                {
-                    Ok(value) => Ok(value),
-                    Err(e) => Err(TryGetErrorNamed::ExpectedType {
-                        get: e,
-                        code_occurence: crate::code_occurence_tufa_common!(),
-                    }),
-                },
-                Err(e) => match e {//todo impl from?
-                    crate::common::api_request_unexpected_error::ApiRequestUnexpectedError::StatusCode { status_code } => Err(
-                        TryGetErrorNamed::UnexpectedStatusCode { 
-                            status_code, code_occurence: crate::code_occurence_tufa_common!() 
-                        }
-                    ),
-                    crate::common::api_request_unexpected_error::ApiRequestUnexpectedError::DeserializeBody { reqwest, status_code } => Err(
-                        TryGetErrorNamed::DeserializeResponse { 
-                            reqwest, 
-                            status_code, 
-                            code_occurence: crate::code_occurence_tufa_common!() 
-                        }
-                    ),
-                },
-            }
+        Ok(response) => match ExpectedGetType::try_from(response) {
+            Ok(exp) => Ok(exp.value),
+            Err(e) => Err(TryGetErrorNamed::TryFrom { 
+                try_from: e, 
+                code_occurence: crate::code_occurence_tufa_common!() 
+            }),
         }
         Err(e) => Err(TryGetErrorNamed::Reqwest {
             reqwest: e,
