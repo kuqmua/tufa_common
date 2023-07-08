@@ -1,9 +1,9 @@
 #[derive(
     Debug, thiserror::Error, error_occurence::ErrorOccurence, from_enum::FromEnumWithLifetime, type_variants_from_reqwest_response::TypeVariantsFromReqwestResponseHandle
 )]
-#[from_enum::from_enum_paths_with_lifetime(TryGetHttpResponseVariantsResponseVariants)]
+#[from_enum::from_enum_paths_with_lifetime(TryGetResponseVariants)]
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_handle_attribute(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>,tvfrr_200_ok)]
-pub enum TryGetHttpResponseVariants<'a> {
+pub enum TryGet<'a> {
     #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
@@ -128,39 +128,12 @@ pub enum TryGetHttpResponseVariants<'a> {
     },
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum TryGetErrorNamed<'a> {
-    ExpectedType {
-        #[eo_display_with_serialize_deserialize]
-        get: TryGetHttpResponseVariantsWithSerializeDeserialize,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    UnexpectedStatusCode { 
-        #[eo_display]
-        status_code: http::StatusCode,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    DeserializeResponse {
-        #[eo_display_foreign_type]
-        reqwest: reqwest::Error,
-        #[eo_display]
-        status_code: http::StatusCode,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    Reqwest {
-        #[eo_display_foreign_type]
-        reqwest: reqwest::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    
-}
-
 async fn get_extraction_logic<'a>(
     future: impl std::future::Future<Output = Result<reqwest::Response, reqwest::Error>>
 ) -> Result<Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>, TryGetErrorNamed<'a>> 
 {
     match future.await {
-        Ok(response) => match TryGetHttpResponseVariantsResponseVariants::try_from(response) {
+        Ok(response) => match TryGetResponseVariants::try_from(response) {
             Ok(variants) => match Vec::<
                 crate::repositories_types::tufa_server::routes::api::cats::Cat,
             >::try_from(variants)

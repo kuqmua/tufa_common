@@ -3,8 +3,8 @@ pub struct ProjectCommitExtractor {}
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence, from_enum::FromEnum)]
 #[from_enum::from_enum_paths(
-    crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetHttpResponseVariantsResponseVariants,
-    crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetHttpResponseVariantsWithSerializeDeserialize,
+    crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetResponseVariants,
+    crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetWithSerializeDeserialize,
 
     crate::repositories_types::tufa_server::routes::api::cats::get_by_id::request::GetByIdHttpResponseVariants,
     crate::repositories_types::tufa_server::routes::api::cats::get_by_id::request::TryGetByIdErrorHttpResponseWithSerializeDeserialize
