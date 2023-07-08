@@ -3,7 +3,7 @@
     Debug, thiserror::Error, error_occurence::ErrorOccurence, from_enum::FromEnumWithLifetime, type_variants_from_reqwest_response::TypeVariantsFromReqwestResponseHandle
 )]
 #[from_enum::from_enum_paths_with_lifetime(TryGetHttpResponseVariantsResponseVariants)]
-#[type_variants_from_reqwest_response::type_variants_from_reqwest_response_handle_attribute(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>, http::StatusCode::OK)]
+#[type_variants_from_reqwest_response::type_variants_from_reqwest_response_handle_attribute(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>,tvfrr_200_ok)]//http::StatusCode::OK
 pub enum TryGetHttpResponseVariants<'a> {
     #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
@@ -220,22 +220,6 @@ pub async fn try_get<'a>(
 }
 
 /////////////
-#[derive(Debug, serde :: Serialize, serde :: Deserialize)] enum
-TryGetHttpResponseVariantsResponseVariantsTvfrr200Ok
-{
-    DesirableType(Vec < crate :: repositories_types :: tufa_server :: routes :: api ::
-    cats :: Cat >)
-} 
-
-impl std :: convert :: From < TryGetHttpResponseVariantsResponseVariantsTvfrr200Ok > for
-TryGetHttpResponseVariantsResponseVariants
-{
-    fn from(value : TryGetHttpResponseVariantsResponseVariantsTvfrr200Ok) -> Self
-    {
-        match value
-        { TryGetHttpResponseVariantsResponseVariantsTvfrr200Ok :: DesirableType(i) => Self :: DesirableType(i) }
-    }
-} 
 
 impl std :: convert :: TryFrom < reqwest :: Response > for
 TryGetHttpResponseVariantsResponseVariants
