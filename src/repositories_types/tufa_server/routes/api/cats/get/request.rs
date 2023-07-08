@@ -3,10 +3,10 @@
     thiserror::Error,
     error_occurence::ErrorOccurence,
     from_enum::FromEnumWithLifetime,
-    type_variants_from_reqwest_response::TypeVariantsFromReqwestResponseHandle,
+    type_variants_from_reqwest_response::TypeVariantsFromReqwestResponse,
 )]
 #[from_enum::from_enum_paths_with_lifetime(TryGetResponseVariants)]
-#[type_variants_from_reqwest_response::type_variants_from_reqwest_response_handle_attribute(Vec::<crate::repositories_types::tufa_server::routes::api::cats::Cat>,tvfrr_200_ok)]
+#[type_variants_from_reqwest_response::type_variants_from_reqwest_response_attribute(Vec::<crate::repositories_types::tufa_server::routes::api::cats::Cat>,tvfrr_200_ok)]
 pub enum TryGet<'a> {
     #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
