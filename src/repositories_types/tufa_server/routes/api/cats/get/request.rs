@@ -1,9 +1,8 @@
-//todo what if not going to use upper enum but this? for status code logic
 #[derive(
     Debug, thiserror::Error, error_occurence::ErrorOccurence, from_enum::FromEnumWithLifetime, type_variants_from_reqwest_response::TypeVariantsFromReqwestResponseHandle
 )]
 #[from_enum::from_enum_paths_with_lifetime(TryGetHttpResponseVariantsResponseVariants)]
-#[type_variants_from_reqwest_response::type_variants_from_reqwest_response_handle_attribute(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>,tvfrr_200_ok)]//http::StatusCode::OK
+#[type_variants_from_reqwest_response::type_variants_from_reqwest_response_handle_attribute(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>,tvfrr_200_ok)]
 pub enum TryGetHttpResponseVariants<'a> {
     #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
@@ -217,100 +216,4 @@ pub async fn try_get<'a>(
         )
         .send()
     ).await
-}
-
-/////////////
-
-
-impl TryFrom < TryGetHttpResponseVariantsResponseVariants > for Vec < crate::repositories_types::tufa_server::routes::api :: cats :: Cat >
-{
-    type Error = TryGetHttpResponseVariantsWithSerializeDeserialize ; fn
-    try_from(value : TryGetHttpResponseVariantsResponseVariants,) -> Result < Self, Self :: Error
-    >
-    {
-        match value
-        {
-            TryGetHttpResponseVariantsResponseVariants :: DesirableType(i) => Ok(i),
-            TryGetHttpResponseVariantsResponseVariants :: ProjectCommitExtractorNotEqual
-            {
-                project_commit_not_equal, project_commit_to_use,
-                code_occurence
-            } =>
-            Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
-            ProjectCommitExtractorNotEqual
-            {
-                project_commit_not_equal, project_commit_to_use,
-                code_occurence
-            }), TryGetHttpResponseVariantsResponseVariants ::
-            ProjectCommitExtractorToStrConversion
-            { project_commit_to_str_conversion, code_occurence } =>
-            Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
-            ProjectCommitExtractorToStrConversion
-            { project_commit_to_str_conversion, code_occurence }),
-            TryGetHttpResponseVariantsResponseVariants:: NoProjectCommitExtractorHeader
-            { no_project_commit_header, code_occurence } =>
-            Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
-            NoProjectCommitExtractorHeader
-            { no_project_commit_header, code_occurence }),
-            TryGetHttpResponseVariantsResponseVariants:: Configuration
-            { configuration_box_dyn_error, code_occurence } =>
-            Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
-            Configuration { configuration_box_dyn_error, code_occurence }),
-            TryGetHttpResponseVariantsResponseVariants:: Database
-            { box_dyn_database_error, code_occurence } =>
-            Err(TryGetHttpResponseVariantsWithSerializeDeserialize :: Database
-            { box_dyn_database_error, code_occurence }),
-            TryGetHttpResponseVariantsResponseVariants:: Io { io_error, code_occurence } =>
-            Err(TryGetHttpResponseVariantsWithSerializeDeserialize :: Io
-            { io_error, code_occurence }), TryGetHttpResponseVariantsResponseVariants:: Tls
-            { box_dyn_error, code_occurence } =>
-            Err(TryGetHttpResponseVariantsWithSerializeDeserialize :: Tls
-            { box_dyn_error, code_occurence }), TryGetHttpResponseVariantsResponseVariants::
-            Protocol { protocol, code_occurence } =>
-            Err(TryGetHttpResponseVariantsWithSerializeDeserialize :: Protocol
-            { protocol, code_occurence }), TryGetHttpResponseVariantsResponseVariants::
-            RowNotFound { row_not_found, code_occurence } =>
-            Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
-            RowNotFound { row_not_found, code_occurence }),
-            TryGetHttpResponseVariantsResponseVariants:: TypeNotFound
-            { type_not_found, code_occurence } =>
-            Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
-            TypeNotFound { type_not_found, code_occurence }),
-            TryGetHttpResponseVariantsResponseVariants:: ColumnIndexOutOfBounds
-            { column_index_out_of_bounds, len, code_occurence } =>
-            Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
-            ColumnIndexOutOfBounds
-            { column_index_out_of_bounds, len, code_occurence }),
-            TryGetHttpResponseVariantsResponseVariants:: ColumnNotFound
-            { column_not_found, code_occurence } =>
-            Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
-            ColumnNotFound { column_not_found, code_occurence }),
-            TryGetHttpResponseVariantsResponseVariants:: ColumnDecode
-            { column_decode_index, source_handle, code_occurence } =>
-            Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
-            ColumnDecode
-            { column_decode_index, source_handle, code_occurence }),
-            TryGetHttpResponseVariantsResponseVariants:: Decode
-            { decode_box_dyn_error, code_occurence } =>
-            Err(TryGetHttpResponseVariantsWithSerializeDeserialize :: Decode
-            { decode_box_dyn_error, code_occurence }), TryGetHttpResponseVariantsResponseVariants
-            :: PoolTimedOut { pool_timed_out, code_occurence } =>
-            Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
-            PoolTimedOut { pool_timed_out, code_occurence }),
-            TryGetHttpResponseVariantsResponseVariants:: PoolClosed
-            { pool_closed, code_occurence } =>
-            Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
-            PoolClosed { pool_closed, code_occurence }),
-            TryGetHttpResponseVariantsResponseVariants:: WorkerCrashed
-            { worker_crashed, code_occurence } =>
-            Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
-            WorkerCrashed { worker_crashed, code_occurence }),
-            TryGetHttpResponseVariantsResponseVariants:: Migrate { migrate, code_occurence } =>
-            Err(TryGetHttpResponseVariantsWithSerializeDeserialize :: Migrate
-            { migrate, code_occurence }), TryGetHttpResponseVariantsResponseVariants::
-            UnexpectedCase { unexpected_case, code_occurence } =>
-            Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
-            UnexpectedCase { unexpected_case, code_occurence })
-        }
-    }
 }
