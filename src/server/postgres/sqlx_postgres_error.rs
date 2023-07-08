@@ -2,7 +2,7 @@
 #[from_enum::from_enum_paths(
     crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse,
     crate::repositories_types::tufa_server::routes::api::cats::get::route::GetErrorNamedWithSerializeDeserialize,
-    crate::repositories_types::tufa_server::routes::api::cats::get::request::GetHttpResponseVariants,
+    crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetHttpResponseVariantsResponseVariants,
     crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetHttpResponseVariantsWithSerializeDeserialize,
 
     crate::repositories_types::tufa_server::routes::api::cats::get_by_id::route::GetByIdHttpResponse,

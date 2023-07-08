@@ -1,7 +1,7 @@
 #[derive(Debug, serde::Serialize, serde::Deserialize
     // , type_variants_from_reqwest_response::TypeVariantsFromReqwestResponse
 )]
-pub enum GetHttpResponseVariants {
+pub enum TryGetHttpResponseVariantsResponseVariants {
     //#[tvfrr_desirable_type]
     //#[tvfrr_200_ok]
     Cats(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>),
@@ -109,7 +109,7 @@ pub enum GetHttpResponseVariants {
 #[derive(
     Debug, thiserror::Error, error_occurence::ErrorOccurence, from_enum::FromEnumWithLifetime, type_variants_from_reqwest_response::TypeVariantsFromReqwestResponseHandle
 )]
-#[from_enum::from_enum_paths_with_lifetime(GetHttpResponseVariants)]
+#[from_enum::from_enum_paths_with_lifetime(TryGetHttpResponseVariantsResponseVariants)]
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_handle_attribute(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>, http::StatusCode::OK)]
 pub enum TryGetHttpResponseVariants<'a> {
     #[tvfrr_400_bad_request]
@@ -268,7 +268,7 @@ async fn get_extraction_logic<'a>(
 ) -> Result<Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>, TryGetErrorNamed<'a>> 
 {
     match future.await {
-        Ok(response) => match GetHttpResponseVariants::try_from(response) {
+        Ok(response) => match TryGetHttpResponseVariantsResponseVariants::try_from(response) {
             Ok(variants) => match Vec::<
                 crate::repositories_types::tufa_server::routes::api::cats::Cat,
             >::try_from(variants)
@@ -327,78 +327,78 @@ pub async fn try_get<'a>(
 }
 
 /////////////
-impl std :: convert :: From < & GetHttpResponseVariants > for http ::
+impl std :: convert :: From < & TryGetHttpResponseVariantsResponseVariants > for http ::
 StatusCode
 {
-    fn from(value : & GetHttpResponseVariants) -> Self
+    fn from(value : & TryGetHttpResponseVariantsResponseVariants) -> Self
     {
         match value
         {
-            GetHttpResponseVariants :: Cats(_) => http :: StatusCode :: OK,
-            GetHttpResponseVariants :: ProjectCommitExtractorNotEqual
+            TryGetHttpResponseVariantsResponseVariants :: Cats(_) => http :: StatusCode :: OK,
+            TryGetHttpResponseVariantsResponseVariants :: ProjectCommitExtractorNotEqual
             {
                 project_commit_not_equal : _, project_commit_to_use : _,
                 code_occurence : _
-            } => http :: StatusCode :: BAD_REQUEST, GetHttpResponseVariants ::
+            } => http :: StatusCode :: BAD_REQUEST, TryGetHttpResponseVariantsResponseVariants ::
             ProjectCommitExtractorToStrConversion
             { project_commit_to_str_conversion : _, code_occurence : _ } =>
-            http :: StatusCode :: BAD_REQUEST, GetHttpResponseVariants ::
+            http :: StatusCode :: BAD_REQUEST, TryGetHttpResponseVariantsResponseVariants ::
             NoProjectCommitExtractorHeader
             { no_project_commit_header : _, code_occurence : _ } => http ::
-            StatusCode :: BAD_REQUEST, GetHttpResponseVariants ::
+            StatusCode :: BAD_REQUEST, TryGetHttpResponseVariantsResponseVariants ::
             Configuration
             { configuration_box_dyn_error : _, code_occurence : _ } => http ::
-            StatusCode :: INTERNAL_SERVER_ERROR, GetHttpResponseVariants ::
+            StatusCode :: INTERNAL_SERVER_ERROR, TryGetHttpResponseVariantsResponseVariants ::
             Database { box_dyn_database_error : _, code_occurence : _ } =>
             http :: StatusCode :: INTERNAL_SERVER_ERROR,
-            GetHttpResponseVariants :: Io { io_error : _, code_occurence : _ }
+            TryGetHttpResponseVariantsResponseVariants :: Io { io_error : _, code_occurence : _ }
             => http :: StatusCode :: INTERNAL_SERVER_ERROR,
-            GetHttpResponseVariants :: Tls
+            TryGetHttpResponseVariantsResponseVariants :: Tls
             { box_dyn_error : _, code_occurence : _ } => http :: StatusCode ::
-            INTERNAL_SERVER_ERROR, GetHttpResponseVariants :: Protocol
+            INTERNAL_SERVER_ERROR, TryGetHttpResponseVariantsResponseVariants :: Protocol
             { protocol : _, code_occurence : _ } => http :: StatusCode ::
-            INTERNAL_SERVER_ERROR, GetHttpResponseVariants :: RowNotFound
+            INTERNAL_SERVER_ERROR, TryGetHttpResponseVariantsResponseVariants :: RowNotFound
             { row_not_found : _, code_occurence : _ } => http :: StatusCode ::
-            NOT_FOUND, GetHttpResponseVariants :: TypeNotFound
+            NOT_FOUND, TryGetHttpResponseVariantsResponseVariants :: TypeNotFound
             { type_not_found : _, code_occurence : _ } => http :: StatusCode
-            :: BAD_REQUEST, GetHttpResponseVariants :: ColumnIndexOutOfBounds
+            :: BAD_REQUEST, TryGetHttpResponseVariantsResponseVariants :: ColumnIndexOutOfBounds
             { column_index_out_of_bounds : _, len : _, code_occurence : _ } =>
             http :: StatusCode :: INTERNAL_SERVER_ERROR,
-            GetHttpResponseVariants :: ColumnNotFound
+            TryGetHttpResponseVariantsResponseVariants :: ColumnNotFound
             { column_not_found : _, code_occurence : _ } => http :: StatusCode
-            :: BAD_REQUEST, GetHttpResponseVariants :: ColumnDecode
+            :: BAD_REQUEST, TryGetHttpResponseVariantsResponseVariants :: ColumnDecode
             { column_decode_index : _, source_handle : _, code_occurence : _ }
             => http :: StatusCode :: INTERNAL_SERVER_ERROR,
-            GetHttpResponseVariants :: Decode
+            TryGetHttpResponseVariantsResponseVariants :: Decode
             { decode_box_dyn_error : _, code_occurence : _ } => http ::
-            StatusCode :: INTERNAL_SERVER_ERROR, GetHttpResponseVariants ::
+            StatusCode :: INTERNAL_SERVER_ERROR, TryGetHttpResponseVariantsResponseVariants ::
             PoolTimedOut { pool_timed_out : _, code_occurence : _ } => http ::
-            StatusCode :: REQUEST_TIMEOUT, GetHttpResponseVariants ::
+            StatusCode :: REQUEST_TIMEOUT, TryGetHttpResponseVariantsResponseVariants ::
             PoolClosed { pool_closed : _, code_occurence : _ } => http ::
-            StatusCode :: INTERNAL_SERVER_ERROR, GetHttpResponseVariants ::
+            StatusCode :: INTERNAL_SERVER_ERROR, TryGetHttpResponseVariantsResponseVariants ::
             WorkerCrashed { worker_crashed : _, code_occurence : _ } => http
-            :: StatusCode :: INTERNAL_SERVER_ERROR, GetHttpResponseVariants ::
+            :: StatusCode :: INTERNAL_SERVER_ERROR, TryGetHttpResponseVariantsResponseVariants ::
             Migrate { migrate : _, code_occurence : _ } => http :: StatusCode
-            :: INTERNAL_SERVER_ERROR, GetHttpResponseVariants ::
+            :: INTERNAL_SERVER_ERROR, TryGetHttpResponseVariantsResponseVariants ::
             UnexpectedCase { unexpected_case : _, code_occurence : _ } => http
             :: StatusCode :: INTERNAL_SERVER_ERROR
         }
     }
 } #[derive(Debug, serde :: Serialize, serde :: Deserialize)] enum
-GetHttpResponseVariantsTvfrr200Ok
+TryGetHttpResponseVariantsResponseVariantsTvfrr200Ok
 {
     Cats(Vec < crate :: repositories_types :: tufa_server :: routes :: api ::
     cats :: Cat >)
-} impl std :: convert :: From < GetHttpResponseVariantsTvfrr200Ok > for
-GetHttpResponseVariants
+} impl std :: convert :: From < TryGetHttpResponseVariantsResponseVariantsTvfrr200Ok > for
+TryGetHttpResponseVariantsResponseVariants
 {
-    fn from(value : GetHttpResponseVariantsTvfrr200Ok) -> Self
+    fn from(value : TryGetHttpResponseVariantsResponseVariantsTvfrr200Ok) -> Self
     {
         match value
-        { GetHttpResponseVariantsTvfrr200Ok :: Cats(i) => Self :: Cats(i) }
+        { TryGetHttpResponseVariantsResponseVariantsTvfrr200Ok :: Cats(i) => Self :: Cats(i) }
     }
 } #[derive(Debug, serde :: Serialize, serde :: Deserialize)] enum
-GetHttpResponseVariantsTvfrr400BadRequest
+TryGetHttpResponseVariantsResponseVariantsTvfrr400BadRequest
 {
     ProjectCommitExtractorNotEqual
     {
@@ -425,14 +425,14 @@ GetHttpResponseVariantsTvfrr400BadRequest
         column_not_found : std :: string :: String, code_occurence : crate ::
         common :: code_occurence :: CodeOccurenceWithSerializeDeserialize
     }
-} impl std :: convert :: From < GetHttpResponseVariantsTvfrr400BadRequest >
-for GetHttpResponseVariants
+} impl std :: convert :: From < TryGetHttpResponseVariantsResponseVariantsTvfrr400BadRequest >
+for TryGetHttpResponseVariantsResponseVariants
 {
-    fn from(value : GetHttpResponseVariantsTvfrr400BadRequest) -> Self
+    fn from(value : TryGetHttpResponseVariantsResponseVariantsTvfrr400BadRequest) -> Self
     {
         match value
         {
-            GetHttpResponseVariantsTvfrr400BadRequest ::
+            TryGetHttpResponseVariantsResponseVariantsTvfrr400BadRequest ::
             ProjectCommitExtractorNotEqual
             {
                 project_commit_not_equal, project_commit_to_use,
@@ -441,26 +441,26 @@ for GetHttpResponseVariants
             {
                 project_commit_not_equal, project_commit_to_use,
                 code_occurence
-            }, GetHttpResponseVariantsTvfrr400BadRequest ::
+            }, TryGetHttpResponseVariantsResponseVariantsTvfrr400BadRequest ::
             ProjectCommitExtractorToStrConversion
             { project_commit_to_str_conversion, code_occurence } => Self ::
             ProjectCommitExtractorToStrConversion
             { project_commit_to_str_conversion, code_occurence },
-            GetHttpResponseVariantsTvfrr400BadRequest ::
+            TryGetHttpResponseVariantsResponseVariantsTvfrr400BadRequest ::
             NoProjectCommitExtractorHeader
             { no_project_commit_header, code_occurence } => Self ::
             NoProjectCommitExtractorHeader
             { no_project_commit_header, code_occurence },
-            GetHttpResponseVariantsTvfrr400BadRequest :: TypeNotFound
+            TryGetHttpResponseVariantsResponseVariantsTvfrr400BadRequest :: TypeNotFound
             { type_not_found, code_occurence } => Self :: TypeNotFound
             { type_not_found, code_occurence },
-            GetHttpResponseVariantsTvfrr400BadRequest :: ColumnNotFound
+            TryGetHttpResponseVariantsResponseVariantsTvfrr400BadRequest :: ColumnNotFound
             { column_not_found, code_occurence } => Self :: ColumnNotFound
             { column_not_found, code_occurence }
         }
     }
 } #[derive(Debug, serde :: Serialize, serde :: Deserialize)] enum
-GetHttpResponseVariantsTvfrr500InternalServerError
+TryGetHttpResponseVariantsResponseVariantsTvfrr500InternalServerError
 {
     Configuration
     {
@@ -516,52 +516,52 @@ GetHttpResponseVariantsTvfrr500InternalServerError
         common :: code_occurence :: CodeOccurenceWithSerializeDeserialize
     }
 } impl std :: convert :: From <
-GetHttpResponseVariantsTvfrr500InternalServerError > for
-GetHttpResponseVariants
+TryGetHttpResponseVariantsResponseVariantsTvfrr500InternalServerError > for
+TryGetHttpResponseVariantsResponseVariants
 {
-    fn from(value : GetHttpResponseVariantsTvfrr500InternalServerError) ->
+    fn from(value : TryGetHttpResponseVariantsResponseVariantsTvfrr500InternalServerError) ->
     Self
     {
         match value
         {
-            GetHttpResponseVariantsTvfrr500InternalServerError ::
+            TryGetHttpResponseVariantsResponseVariantsTvfrr500InternalServerError ::
             Configuration { configuration_box_dyn_error, code_occurence } =>
             Self :: Configuration
             { configuration_box_dyn_error, code_occurence },
-            GetHttpResponseVariantsTvfrr500InternalServerError :: Database
+            TryGetHttpResponseVariantsResponseVariantsTvfrr500InternalServerError :: Database
             { box_dyn_database_error, code_occurence } => Self :: Database
             { box_dyn_database_error, code_occurence },
-            GetHttpResponseVariantsTvfrr500InternalServerError :: Io
+            TryGetHttpResponseVariantsResponseVariantsTvfrr500InternalServerError :: Io
             { io_error, code_occurence } => Self :: Io
             { io_error, code_occurence },
-            GetHttpResponseVariantsTvfrr500InternalServerError :: Tls
+            TryGetHttpResponseVariantsResponseVariantsTvfrr500InternalServerError :: Tls
             { box_dyn_error, code_occurence } => Self :: Tls
             { box_dyn_error, code_occurence },
-            GetHttpResponseVariantsTvfrr500InternalServerError :: Protocol
+            TryGetHttpResponseVariantsResponseVariantsTvfrr500InternalServerError :: Protocol
             { protocol, code_occurence } => Self :: Protocol
             { protocol, code_occurence },
-            GetHttpResponseVariantsTvfrr500InternalServerError ::
+            TryGetHttpResponseVariantsResponseVariantsTvfrr500InternalServerError ::
             ColumnIndexOutOfBounds
             { column_index_out_of_bounds, len, code_occurence } => Self ::
             ColumnIndexOutOfBounds
             { column_index_out_of_bounds, len, code_occurence },
-            GetHttpResponseVariantsTvfrr500InternalServerError :: ColumnDecode
+            TryGetHttpResponseVariantsResponseVariantsTvfrr500InternalServerError :: ColumnDecode
             { column_decode_index, source_handle, code_occurence } => Self ::
             ColumnDecode
             { column_decode_index, source_handle, code_occurence },
-            GetHttpResponseVariantsTvfrr500InternalServerError :: Decode
+            TryGetHttpResponseVariantsResponseVariantsTvfrr500InternalServerError :: Decode
             { decode_box_dyn_error, code_occurence } => Self :: Decode
             { decode_box_dyn_error, code_occurence },
-            GetHttpResponseVariantsTvfrr500InternalServerError :: PoolClosed
+            TryGetHttpResponseVariantsResponseVariantsTvfrr500InternalServerError :: PoolClosed
             { pool_closed, code_occurence } => Self :: PoolClosed
             { pool_closed, code_occurence },
-            GetHttpResponseVariantsTvfrr500InternalServerError ::
+            TryGetHttpResponseVariantsResponseVariantsTvfrr500InternalServerError ::
             WorkerCrashed { worker_crashed, code_occurence } => Self ::
             WorkerCrashed { worker_crashed, code_occurence },
-            GetHttpResponseVariantsTvfrr500InternalServerError :: Migrate
+            TryGetHttpResponseVariantsResponseVariantsTvfrr500InternalServerError :: Migrate
             { migrate, code_occurence } => Self :: Migrate
             { migrate, code_occurence },
-            GetHttpResponseVariantsTvfrr500InternalServerError ::
+            TryGetHttpResponseVariantsResponseVariantsTvfrr500InternalServerError ::
             UnexpectedCase { unexpected_case, code_occurence } => Self ::
             UnexpectedCase { unexpected_case, code_occurence }
         }
@@ -570,7 +570,7 @@ GetHttpResponseVariants
 
 
 #[derive(Debug, serde :: Serialize, serde :: Deserialize)] enum
-GetHttpResponseVariantsTvfrr404NotFound
+TryGetHttpResponseVariantsResponseVariantsTvfrr404NotFound
 {
     RowNotFound
     {
@@ -580,20 +580,20 @@ GetHttpResponseVariantsTvfrr404NotFound
 } 
 
 
-impl std :: convert :: From < GetHttpResponseVariantsTvfrr404NotFound > for
-GetHttpResponseVariants
+impl std :: convert :: From < TryGetHttpResponseVariantsResponseVariantsTvfrr404NotFound > for
+TryGetHttpResponseVariantsResponseVariants
 {
-    fn from(value : GetHttpResponseVariantsTvfrr404NotFound) -> Self
+    fn from(value : TryGetHttpResponseVariantsResponseVariantsTvfrr404NotFound) -> Self
     {
         match value
         {
-            GetHttpResponseVariantsTvfrr404NotFound :: RowNotFound
+            TryGetHttpResponseVariantsResponseVariantsTvfrr404NotFound :: RowNotFound
             { row_not_found, code_occurence } => Self :: RowNotFound
             { row_not_found, code_occurence }
         }
     }
 } #[derive(Debug, serde :: Serialize, serde :: Deserialize)] enum
-GetHttpResponseVariantsTvfrr408RequestTimeout
+TryGetHttpResponseVariantsResponseVariantsTvfrr408RequestTimeout
 {
     PoolTimedOut
     {
@@ -603,14 +603,14 @@ GetHttpResponseVariantsTvfrr408RequestTimeout
 } 
 
 
-impl std :: convert :: From < GetHttpResponseVariantsTvfrr408RequestTimeout
-> for GetHttpResponseVariants
+impl std :: convert :: From < TryGetHttpResponseVariantsResponseVariantsTvfrr408RequestTimeout
+> for TryGetHttpResponseVariantsResponseVariants
 {
-    fn from(value : GetHttpResponseVariantsTvfrr408RequestTimeout) -> Self
+    fn from(value : TryGetHttpResponseVariantsResponseVariantsTvfrr408RequestTimeout) -> Self
     {
         match value
         {
-            GetHttpResponseVariantsTvfrr408RequestTimeout :: PoolTimedOut
+            TryGetHttpResponseVariantsResponseVariantsTvfrr408RequestTimeout :: PoolTimedOut
             { pool_timed_out, code_occurence } => Self :: PoolTimedOut
             { pool_timed_out, code_occurence }
         }
@@ -619,7 +619,7 @@ impl std :: convert :: From < GetHttpResponseVariantsTvfrr408RequestTimeout
 
 
 impl std :: convert :: TryFrom < reqwest :: Response > for
-GetHttpResponseVariants
+TryGetHttpResponseVariantsResponseVariants
 {
     type Error = crate :: common :: api_request_unexpected_error ::
     ApiRequestUnexpectedError ; fn try_from(response : reqwest :: Response) ->
@@ -629,10 +629,10 @@ GetHttpResponseVariants
         StatusCode :: OK
         {
             match futures :: executor ::
-            block_on(response.json :: < GetHttpResponseVariantsTvfrr200Ok >
+            block_on(response.json :: < TryGetHttpResponseVariantsResponseVariantsTvfrr200Ok >
             ())
             {
-                Ok(value) => Ok(GetHttpResponseVariants :: from(value)),
+                Ok(value) => Ok(TryGetHttpResponseVariantsResponseVariants :: from(value)),
                 Err(e) =>
                 Err(crate :: common :: api_request_unexpected_error ::
                 ApiRequestUnexpectedError :: DeserializeBody
@@ -642,9 +642,9 @@ GetHttpResponseVariants
         {
             match futures :: executor ::
             block_on(response.json :: <
-            GetHttpResponseVariantsTvfrr400BadRequest > (),)
+            TryGetHttpResponseVariantsResponseVariantsTvfrr400BadRequest > (),)
             {
-                Ok(value) => Ok(GetHttpResponseVariants :: from(value)),
+                Ok(value) => Ok(TryGetHttpResponseVariantsResponseVariants :: from(value)),
                 Err(e) =>
                 Err(crate :: common :: api_request_unexpected_error ::
                 ApiRequestUnexpectedError :: DeserializeBody
@@ -654,9 +654,9 @@ GetHttpResponseVariants
         {
             match futures :: executor ::
             block_on(response.json :: <
-            GetHttpResponseVariantsTvfrr500InternalServerError > (),)
+            TryGetHttpResponseVariantsResponseVariantsTvfrr500InternalServerError > (),)
             {
-                Ok(value) => Ok(GetHttpResponseVariants :: from(value)),
+                Ok(value) => Ok(TryGetHttpResponseVariantsResponseVariants :: from(value)),
                 Err(e) =>
                 Err(crate :: common :: api_request_unexpected_error ::
                 ApiRequestUnexpectedError :: DeserializeBody
@@ -666,9 +666,9 @@ GetHttpResponseVariants
         {
             match futures :: executor ::
             block_on(response.json :: <
-            GetHttpResponseVariantsTvfrr404NotFound > (),)
+            TryGetHttpResponseVariantsResponseVariantsTvfrr404NotFound > (),)
             {
-                Ok(value) => Ok(GetHttpResponseVariants :: from(value)),
+                Ok(value) => Ok(TryGetHttpResponseVariantsResponseVariants :: from(value)),
                 Err(e) =>
                 Err(crate :: common :: api_request_unexpected_error ::
                 ApiRequestUnexpectedError :: DeserializeBody
@@ -684,16 +684,16 @@ GetHttpResponseVariants
 
 
 
-impl TryFrom < GetHttpResponseVariants > for Vec < crate::repositories_types::tufa_server::routes::api :: cats :: Cat >
+impl TryFrom < TryGetHttpResponseVariantsResponseVariants > for Vec < crate::repositories_types::tufa_server::routes::api :: cats :: Cat >
 {
     type Error = TryGetHttpResponseVariantsWithSerializeDeserialize ; fn
-    try_from(value : GetHttpResponseVariants,) -> Result < Self, Self :: Error
+    try_from(value : TryGetHttpResponseVariantsResponseVariants,) -> Result < Self, Self :: Error
     >
     {
         match value
         {
-            GetHttpResponseVariants :: Cats(i) => Ok(i),
-            GetHttpResponseVariants :: ProjectCommitExtractorNotEqual
+            TryGetHttpResponseVariantsResponseVariants :: Cats(i) => Ok(i),
+            TryGetHttpResponseVariantsResponseVariants :: ProjectCommitExtractorNotEqual
             {
                 project_commit_not_equal, project_commit_to_use,
                 code_occurence
@@ -703,73 +703,73 @@ impl TryFrom < GetHttpResponseVariants > for Vec < crate::repositories_types::tu
             {
                 project_commit_not_equal, project_commit_to_use,
                 code_occurence
-            }), GetHttpResponseVariants ::
+            }), TryGetHttpResponseVariantsResponseVariants ::
             ProjectCommitExtractorToStrConversion
             { project_commit_to_str_conversion, code_occurence } =>
             Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
             ProjectCommitExtractorToStrConversion
             { project_commit_to_str_conversion, code_occurence }),
-            GetHttpResponseVariants :: NoProjectCommitExtractorHeader
+            TryGetHttpResponseVariantsResponseVariants:: NoProjectCommitExtractorHeader
             { no_project_commit_header, code_occurence } =>
             Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
             NoProjectCommitExtractorHeader
             { no_project_commit_header, code_occurence }),
-            GetHttpResponseVariants :: Configuration
+            TryGetHttpResponseVariantsResponseVariants:: Configuration
             { configuration_box_dyn_error, code_occurence } =>
             Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
             Configuration { configuration_box_dyn_error, code_occurence }),
-            GetHttpResponseVariants :: Database
+            TryGetHttpResponseVariantsResponseVariants:: Database
             { box_dyn_database_error, code_occurence } =>
             Err(TryGetHttpResponseVariantsWithSerializeDeserialize :: Database
             { box_dyn_database_error, code_occurence }),
-            GetHttpResponseVariants :: Io { io_error, code_occurence } =>
+            TryGetHttpResponseVariantsResponseVariants:: Io { io_error, code_occurence } =>
             Err(TryGetHttpResponseVariantsWithSerializeDeserialize :: Io
-            { io_error, code_occurence }), GetHttpResponseVariants :: Tls
+            { io_error, code_occurence }), TryGetHttpResponseVariantsResponseVariants:: Tls
             { box_dyn_error, code_occurence } =>
             Err(TryGetHttpResponseVariantsWithSerializeDeserialize :: Tls
-            { box_dyn_error, code_occurence }), GetHttpResponseVariants ::
+            { box_dyn_error, code_occurence }), TryGetHttpResponseVariantsResponseVariants::
             Protocol { protocol, code_occurence } =>
             Err(TryGetHttpResponseVariantsWithSerializeDeserialize :: Protocol
-            { protocol, code_occurence }), GetHttpResponseVariants ::
+            { protocol, code_occurence }), TryGetHttpResponseVariantsResponseVariants::
             RowNotFound { row_not_found, code_occurence } =>
             Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
             RowNotFound { row_not_found, code_occurence }),
-            GetHttpResponseVariants :: TypeNotFound
+            TryGetHttpResponseVariantsResponseVariants:: TypeNotFound
             { type_not_found, code_occurence } =>
             Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
             TypeNotFound { type_not_found, code_occurence }),
-            GetHttpResponseVariants :: ColumnIndexOutOfBounds
+            TryGetHttpResponseVariantsResponseVariants:: ColumnIndexOutOfBounds
             { column_index_out_of_bounds, len, code_occurence } =>
             Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
             ColumnIndexOutOfBounds
             { column_index_out_of_bounds, len, code_occurence }),
-            GetHttpResponseVariants :: ColumnNotFound
+            TryGetHttpResponseVariantsResponseVariants:: ColumnNotFound
             { column_not_found, code_occurence } =>
             Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
             ColumnNotFound { column_not_found, code_occurence }),
-            GetHttpResponseVariants :: ColumnDecode
+            TryGetHttpResponseVariantsResponseVariants:: ColumnDecode
             { column_decode_index, source_handle, code_occurence } =>
             Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
             ColumnDecode
             { column_decode_index, source_handle, code_occurence }),
-            GetHttpResponseVariants :: Decode
+            TryGetHttpResponseVariantsResponseVariants:: Decode
             { decode_box_dyn_error, code_occurence } =>
             Err(TryGetHttpResponseVariantsWithSerializeDeserialize :: Decode
-            { decode_box_dyn_error, code_occurence }), GetHttpResponseVariants
+            { decode_box_dyn_error, code_occurence }), TryGetHttpResponseVariantsResponseVariants
             :: PoolTimedOut { pool_timed_out, code_occurence } =>
             Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
             PoolTimedOut { pool_timed_out, code_occurence }),
-            GetHttpResponseVariants :: PoolClosed
+            TryGetHttpResponseVariantsResponseVariants:: PoolClosed
             { pool_closed, code_occurence } =>
             Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
             PoolClosed { pool_closed, code_occurence }),
-            GetHttpResponseVariants :: WorkerCrashed
+            TryGetHttpResponseVariantsResponseVariants:: WorkerCrashed
             { worker_crashed, code_occurence } =>
             Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
             WorkerCrashed { worker_crashed, code_occurence }),
-            GetHttpResponseVariants :: Migrate { migrate, code_occurence } =>
+            TryGetHttpResponseVariantsResponseVariants:: Migrate { migrate, code_occurence } =>
             Err(TryGetHttpResponseVariantsWithSerializeDeserialize :: Migrate
-            { migrate, code_occurence }), GetHttpResponseVariants ::
+            { migrate, code_occurence }), TryGetHttpResponseVariantsResponseVariants::
             UnexpectedCase { unexpected_case, code_occurence } =>
             Err(TryGetHttpResponseVariantsWithSerializeDeserialize ::
             UnexpectedCase { unexpected_case, code_occurence })
