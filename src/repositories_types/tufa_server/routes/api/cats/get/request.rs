@@ -1,8 +1,12 @@
 #[derive(
-    Debug, thiserror::Error, error_occurence::ErrorOccurence, from_enum::FromEnumWithLifetime, type_variants_from_reqwest_response::TypeVariantsFromReqwestResponseHandle
+    Debug,
+    thiserror::Error,
+    error_occurence::ErrorOccurence,
+    from_enum::FromEnumWithLifetime,
+    type_variants_from_reqwest_response::TypeVariantsFromReqwestResponseHandle,
 )]
 #[from_enum::from_enum_paths_with_lifetime(TryGetResponseVariants)]
-#[type_variants_from_reqwest_response::type_variants_from_reqwest_response_handle_attribute(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>,tvfrr_200_ok)]
+#[type_variants_from_reqwest_response::type_variants_from_reqwest_response_handle_attribute(Vec::<crate::repositories_types::tufa_server::routes::api::cats::Cat>,tvfrr_200_ok)]
 pub enum TryGet<'a> {
     #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
@@ -128,48 +132,6 @@ pub enum TryGet<'a> {
     },
 }
 
-async fn get_extraction_logic<'a>(
-    future: impl std::future::Future<Output = Result<reqwest::Response, reqwest::Error>>
-) -> Result<Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>, TryGetErrorNamed<'a>> 
-{
-    match future.await {
-        Ok(response) => match TryGetResponseVariants::try_from(response) {
-            Ok(variants) => match Vec::<
-                crate::repositories_types::tufa_server::routes::api::cats::Cat,
-            >::try_from(variants)
-            {
-                Ok(value) => Ok(value),
-                Err(e) => Err(TryGetErrorNamed::ExpectedType {
-                    get: e,
-                    code_occurence: crate::code_occurence_tufa_common!(),
-                }),
-            },
-            Err(e) => match e {//todo impl from?
-                crate::common::api_request_unexpected_error::ApiRequestUnexpectedError::StatusCode { status_code } => Err(
-                    TryGetErrorNamed::UnexpectedStatusCode { 
-                        status_code, 
-                        code_occurence: crate::code_occurence_tufa_common!() 
-                    }
-                ),
-                crate::common::api_request_unexpected_error::ApiRequestUnexpectedError::DeserializeBody { 
-                    reqwest, 
-                    status_code 
-                } => Err(
-                    TryGetErrorNamed::DeserializeResponse { 
-                        reqwest, 
-                        status_code, 
-                        code_occurence: crate::code_occurence_tufa_common!() 
-                    }
-                ),
-            },
-        },
-        Err(e) => Err(TryGetErrorNamed::Reqwest {
-            reqwest: e,
-            code_occurence: crate::code_occurence_tufa_common!(),
-        }),
-    }
-}
-
 pub async fn try_get<'a>(
     server_location: std::string::String, //todo server_location: std::string::String, 0 maybe change it to ip port
     query_parameters: crate::repositories_types::tufa_server::routes::api::cats::get::GetQueryParameters,
@@ -177,16 +139,17 @@ pub async fn try_get<'a>(
 {
     get_extraction_logic(
         reqwest::Client::new()
-        .get(&format!(
-            "{server_location}/api/{}/{}",
-            crate::repositories_types::tufa_server::routes::api::cats::CATS,
-            crate::common::url_encode::UrlEncode::url_encode(&query_parameters)
-        ))
-        .header(
-            crate::common::git::project_git_info::PROJECT_COMMIT,
-            crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
-                .project_commit,
-        )
-        .send()
-    ).await
+            .get(&format!(
+                "{server_location}/api/{}/{}",
+                crate::repositories_types::tufa_server::routes::api::cats::CATS,
+                crate::common::url_encode::UrlEncode::url_encode(&query_parameters)
+            ))
+            .header(
+                crate::common::git::project_git_info::PROJECT_COMMIT,
+                crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
+                    .project_commit,
+            )
+            .send(),
+    )
+    .await
 }
