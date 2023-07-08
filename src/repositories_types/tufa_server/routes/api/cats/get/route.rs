@@ -9,7 +9,7 @@
     crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetHttpResponseVariantsResponseVariants
 )]
 pub enum GetHttpResponse {
-    Cats(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>),
+    DesirableType(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>),
     //
     Configuration {
         configuration_box_dyn_error: std::string::String,
@@ -82,7 +82,7 @@ pub enum GetHttpResponse {
 impl From<&GetHttpResponse> for http::StatusCode {
     fn from(val: &GetHttpResponse) -> Self {
         match &val {
-            GetHttpResponse::Cats(_vec_cats) => http::StatusCode::OK,
+            GetHttpResponse::DesirableType(_vec_cats) => http::StatusCode::OK,
             GetHttpResponse::Configuration {
                 configuration_box_dyn_error: _,
                 code_occurence: _,
