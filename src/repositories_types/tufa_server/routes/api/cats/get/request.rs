@@ -132,7 +132,7 @@ pub enum TryGet<'a> {
 }
 
 pub async fn try_get<'a>(
-    server_location: std::string::String, //todo server_location: std::string::String, 0 maybe change it to ip port
+    server_location: &str,
     query_parameters: crate::repositories_types::tufa_server::routes::api::cats::get::GetQueryParameters,
 ) -> Result<Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>, TryGetErrorNamed<'a>>
 {
