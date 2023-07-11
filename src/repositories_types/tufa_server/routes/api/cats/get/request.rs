@@ -3,6 +3,7 @@
     thiserror::Error,
     error_occurence::ErrorOccurence,
     type_variants_from_reqwest_response::TypeVariantsFromReqwestResponse,
+    //todo check equal status codes for variants
 )]
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_attribute(Vec::<crate::repositories_types::tufa_server::routes::api::cats::Cat>,tvfrr_200_ok)]
 pub enum TryGet<'a> {
