@@ -7,7 +7,7 @@ pub struct GetQueryParameters {
     pub name: Option<String>,
     pub color: Option<String>,
 }
-
+//todo - make a macro for it?
 impl crate::common::url_encode::UrlEncode for GetQueryParameters {
     fn url_encode(&self) -> String {
         let parameters = match (&self.limit, &self.name, &self.color) {
