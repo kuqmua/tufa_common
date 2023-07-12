@@ -89,3 +89,9 @@ impl crate::common::display_foreign_type::DisplayForeignType for reqwest::Status
         format!("{self}")
     }
 }
+
+impl crate::common::display_foreign_type::DisplayForeignType for reqwest::header::HeaderMap {
+    fn display_foreign_type(&self) -> String {
+        format!("{self:#?}") //todo
+    }
+}

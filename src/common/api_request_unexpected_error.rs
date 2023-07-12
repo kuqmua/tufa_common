@@ -2,10 +2,13 @@
 pub enum ApiRequestUnexpectedError {
     StatusCode {
         status_code: http::StatusCode,
+        headers: reqwest::header::HeaderMap,
+        response_text: std::string::String,
     },
     DeserializeBody {
-        reqwest: reqwest::Error,
+        serde: serde_json::Error,
         status_code: http::StatusCode,
+        headers: reqwest::header::HeaderMap,
+        response_text: std::string::String,
     },
 }
-//todo additional request info
