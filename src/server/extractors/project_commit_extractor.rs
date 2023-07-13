@@ -1,7 +1,7 @@
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct ProjectCommitExtractor {}
 
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence, from_enum::FromEnum)]
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence, from_enum::FromEnum, type_variants_from_reqwest_response::EnumStatusCodesChecker)]
 #[from_enum::from_enum_paths(
     crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetResponseVariants,
     crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetWithSerializeDeserialize,
@@ -9,7 +9,11 @@ pub struct ProjectCommitExtractor {}
     crate::repositories_types::tufa_server::routes::api::cats::get_by_id::request::GetByIdHttpResponseVariants,
     crate::repositories_types::tufa_server::routes::api::cats::get_by_id::request::TryGetByIdErrorHttpResponseWithSerializeDeserialize
 )]
+#[type_variants_from_reqwest_response::enum_status_codes_checker_from(
+    crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetStatusCodesChecker
+)]
 pub enum ProjectCommitExtractorCheckErrorNamed<'a> {
+    #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
         project_commit_not_equal: &'a str,
@@ -17,26 +21,18 @@ pub enum ProjectCommitExtractorCheckErrorNamed<'a> {
         project_commit_to_use: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
+    #[tvfrr_400_bad_request]
     ProjectCommitExtractorToStrConversion {
         #[eo_display]
         project_commit_to_str_conversion: http::header::ToStrError,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
+    #[tvfrr_400_bad_request]
     NoProjectCommitExtractorHeader {
         #[eo_display_with_serialize_deserialize]
         no_project_commit_header: &'a str,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-}
-
-impl<'a> From<&ProjectCommitExtractorCheckErrorNamed<'a>> for http::StatusCode {
-    fn from(val: &ProjectCommitExtractorCheckErrorNamed<'a>) -> Self {
-        match &val {
-            ProjectCommitExtractorCheckErrorNamed::ProjectCommitExtractorNotEqual { project_commit_not_equal: _, project_commit_to_use: _, code_occurence: _ } => http::StatusCode::BAD_REQUEST,
-            ProjectCommitExtractorCheckErrorNamed::ProjectCommitExtractorToStrConversion { project_commit_to_str_conversion: _, code_occurence: _ } => http::StatusCode::BAD_REQUEST,
-            ProjectCommitExtractorCheckErrorNamed::NoProjectCommitExtractorHeader { no_project_commit_header: _, code_occurence: _ } => http::StatusCode::BAD_REQUEST,
-        }
-    }
 }
 
 //todo make a proc macro for it(or maybe put it into error occurence?)
