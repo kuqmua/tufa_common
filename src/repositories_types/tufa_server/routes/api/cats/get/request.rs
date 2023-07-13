@@ -5,7 +5,10 @@
     type_variants_from_reqwest_response::TypeVariantsFromReqwestResponse,
     //todo check equal status codes for variants
 )]
-#[type_variants_from_reqwest_response::type_variants_from_reqwest_response_attribute(Vec::<crate::repositories_types::tufa_server::routes::api::cats::Cat>,tvfrr_200_ok)]
+#[type_variants_from_reqwest_response::type_variants_from_reqwest_response_attribute(
+    crate::repositories_types::tufa_server::routes::api::cats::get::route::GetDesirableType,
+    tvfrr_200_ok
+)]
 pub enum TryGet<'a> {
     #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
@@ -134,8 +137,10 @@ pub enum TryGet<'a> {
 pub async fn try_get<'a>(
     server_location: &str,
     query_parameters: crate::repositories_types::tufa_server::routes::api::cats::get::GetQueryParameters,
-) -> Result<Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>, TryGetErrorNamed<'a>>
-{
+) -> Result<
+    crate::repositories_types::tufa_server::routes::api::cats::get::route::GetDesirableType,
+    TryGetErrorNamed<'a>,
+> {
     get_extraction_logic(
         reqwest::Client::new()
             .get(&format!(

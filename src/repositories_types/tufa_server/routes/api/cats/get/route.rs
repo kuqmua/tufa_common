@@ -1,3 +1,5 @@
+pub type GetDesirableType = Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>;
+
 #[derive(
     Debug,
     serde::Serialize,
@@ -9,7 +11,7 @@
     crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetResponseVariants
 )]
 pub enum GetHttpResponse {
-    DesirableType(Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>),
+    DesirableType(GetDesirableType),
     //
     Configuration {
         configuration_box_dyn_error: std::string::String,
