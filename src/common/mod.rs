@@ -10,6 +10,5 @@ pub mod numeric;
 pub mod postgres_credentials;
 pub mod source_place_type;
 pub mod to_default_stringified_json;
-pub mod tvfrr_status_code_traits;
 pub mod url_encode;
 pub mod user_port;
