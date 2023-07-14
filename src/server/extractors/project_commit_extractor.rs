@@ -10,7 +10,7 @@ pub struct ProjectCommitExtractor {}
     crate::repositories_types::tufa_server::routes::api::cats::get_by_id::request::TryGetByIdErrorHttpResponseWithSerializeDeserialize
 )]
 #[type_variants_from_reqwest_response::enum_status_codes_checker_from(
-    crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetStatusCodesChecker
+    crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetStatusCodesChecker//todo - without StatusCodeChecker
 )]
 pub enum ProjectCommitExtractorCheckErrorNamed<'a> {
     #[tvfrr_400_bad_request]
