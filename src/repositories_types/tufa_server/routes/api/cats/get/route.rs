@@ -5,9 +5,9 @@ pub type GetDesirableType = Vec<crate::repositories_types::tufa_server::routes::
     serde::Serialize,
     serde::Deserialize,
     into_actix_web_http_response::IntoActixWebHttpResponse,
-    from_enum::FromEnumWithoutSerializeDeserialize,
+    type_variants_from_reqwest_response::FromEnumWithoutSerializeDeserialize,
 )]
-#[from_enum::from_enum_paths_without_serialize_deserialize(
+#[type_variants_from_reqwest_response::from_enum_paths_without_serialize_deserialize(
     crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetResponseVariants
 )]
 pub enum GetHttpResponse {
@@ -160,9 +160,9 @@ impl From<&GetHttpResponse> for http::StatusCode {
     thiserror::Error,
     error_occurence::ErrorOccurence,
     from_sqlx_postgres_error::FromSqlxPostgresError,
-    from_enum::FromEnumWithLifetime,
+    type_variants_from_reqwest_response::FromEnumWithLifetime,
 )]
-#[from_enum::from_enum_paths_with_lifetime(GetHttpResponse)] //todo maybe add lifetime here ?
+#[type_variants_from_reqwest_response::from_enum_paths_with_lifetime(GetHttpResponse)] //todo maybe add lifetime here ?
 pub enum GetErrorNamed<'a> {
     Configuration {
         #[eo_display_with_serialize_deserialize]

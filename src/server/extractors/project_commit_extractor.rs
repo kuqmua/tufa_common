@@ -1,8 +1,10 @@
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct ProjectCommitExtractor {}
 
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence, from_enum::FromEnum, type_variants_from_reqwest_response::EnumStatusCodesChecker)]
-#[from_enum::from_enum_paths(
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence, 
+    type_variants_from_reqwest_response::FromEnum,
+    type_variants_from_reqwest_response::EnumStatusCodesChecker)]
+#[type_variants_from_reqwest_response::from_enum_paths(
     crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetResponseVariants,
     crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetWithSerializeDeserialize
 )]

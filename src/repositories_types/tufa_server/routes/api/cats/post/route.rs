@@ -154,9 +154,9 @@ impl From<&PostHttpResponse> for http::StatusCode {
     thiserror::Error,
     error_occurence::ErrorOccurence,
     from_sqlx_postgres_error::FromSqlxPostgresError,
-    from_enum::FromEnumWithLifetime,
+    type_variants_from_reqwest_response::FromEnumWithLifetime,
 )]
-#[from_enum::from_enum_paths_with_lifetime(PostHttpResponse)] //todo maybe add lifetime here ?
+#[type_variants_from_reqwest_response::from_enum_paths_with_lifetime(PostHttpResponse)] //todo maybe add lifetime here ?
 pub enum PostErrorNamed<'a> {
     Configuration {
         #[eo_display_with_serialize_deserialize]

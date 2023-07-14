@@ -1,5 +1,5 @@
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence, from_enum::FromEnum)]
-#[from_enum::from_enum_paths(
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence, type_variants_from_reqwest_response::FromEnum)]
+#[type_variants_from_reqwest_response::from_enum_paths(
     crate::repositories_types::tufa_server::routes::api::cats::get::route::GetHttpResponse,
     crate::repositories_types::tufa_server::routes::api::cats::get::route::GetErrorNamedWithSerializeDeserialize,
     crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetResponseVariants,

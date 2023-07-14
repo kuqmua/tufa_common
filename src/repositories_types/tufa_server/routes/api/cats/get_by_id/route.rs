@@ -163,9 +163,9 @@ impl From<&GetByIdHttpResponse> for http::StatusCode {
     thiserror::Error,
     error_occurence::ErrorOccurence,
     from_sqlx_postgres_error::FromSqlxPostgresError,
-    from_enum::FromEnumWithLifetime,
+    type_variants_from_reqwest_response::FromEnumWithLifetime,
 )]
-#[from_enum::from_enum_paths_with_lifetime(GetByIdHttpResponse)]
+#[type_variants_from_reqwest_response::from_enum_paths_with_lifetime(GetByIdHttpResponse)]
 pub enum GetByIdErrorNamed<'a> {
     Bigserial {
         #[eo_error_occurence]

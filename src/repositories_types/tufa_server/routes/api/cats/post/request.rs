@@ -85,9 +85,12 @@ pub enum PostHttpResponseVariants {
 }
 
 #[derive(
-    Debug, thiserror::Error, error_occurence::ErrorOccurence, from_enum::FromEnumWithLifetime,
+    Debug,
+    thiserror::Error,
+    error_occurence::ErrorOccurence,
+    type_variants_from_reqwest_response::FromEnumWithLifetime,
 )]
-#[from_enum::from_enum_paths_with_lifetime(PostHttpResponseVariants)]
+#[type_variants_from_reqwest_response::from_enum_paths_with_lifetime(PostHttpResponseVariants)]
 pub enum TryPostErrorHttpResponse<'a> {
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
