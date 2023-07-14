@@ -4,13 +4,10 @@ pub struct ProjectCommitExtractor {}
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence, from_enum::FromEnum, type_variants_from_reqwest_response::EnumStatusCodesChecker)]
 #[from_enum::from_enum_paths(
     crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetResponseVariants,
-    crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetWithSerializeDeserialize,
-
-    crate::repositories_types::tufa_server::routes::api::cats::get_by_id::request::GetByIdHttpResponseVariants,
-    crate::repositories_types::tufa_server::routes::api::cats::get_by_id::request::TryGetByIdErrorHttpResponseWithSerializeDeserialize
+    crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetWithSerializeDeserialize
 )]
 #[type_variants_from_reqwest_response::enum_status_codes_checker_from(
-    crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetStatusCodesChecker//todo - without StatusCodeChecker
+    crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGet
 )]
 pub enum ProjectCommitExtractorCheckErrorNamed<'a> {
     #[tvfrr_400_bad_request]
@@ -111,3 +108,4 @@ impl actix_web::FromRequest for ProjectCommitExtractor {
         }
     }
 }
+
