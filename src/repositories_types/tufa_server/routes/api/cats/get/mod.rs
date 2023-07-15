@@ -50,10 +50,8 @@ pub type GetDesirableType = Vec<crate::repositories_types::tufa_server::routes::
     thiserror::Error,
     error_occurence::ErrorOccurence,
     from_sqlx_postgres_error::FromSqlxPostgresError,
-    type_variants_from_reqwest_response::FromEnumWithLifetime,
     type_variants_from_reqwest_response::TypeVariantsFromReqwestResponse,
 )]
-#[type_variants_from_reqwest_response::from_enum_paths_with_lifetime(TryGetResponseVariants)]
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_attribute(
     crate::repositories_types::tufa_server::routes::api::cats::get::GetDesirableType,
     tvfrr_200_ok
