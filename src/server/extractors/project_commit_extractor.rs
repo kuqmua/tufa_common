@@ -5,11 +5,11 @@ pub struct ProjectCommitExtractor {}
     type_variants_from_reqwest_response::FromEnum,
     type_variants_from_reqwest_response::EnumStatusCodesChecker)]
 #[type_variants_from_reqwest_response::from_enum_paths(
-    crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetResponseVariants,
-    crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGetWithSerializeDeserialize
+    crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants,
+    crate::repositories_types::tufa_server::routes::api::cats::get::TryGetWithSerializeDeserialize
 )]
 #[type_variants_from_reqwest_response::enum_status_codes_checker_from(
-    crate::repositories_types::tufa_server::routes::api::cats::get::request::TryGet
+    crate::repositories_types::tufa_server::routes::api::cats::get::TryGet
 )]
 pub enum ProjectCommitExtractorCheckErrorNamed<'a> {
     #[tvfrr_400_bad_request]
