@@ -89,13 +89,7 @@ pub enum GetByIdHttpResponseVariants {
     },
 }
 
-#[derive(
-    Debug,
-    thiserror::Error,
-    error_occurence::ErrorOccurence,
-    type_variants_from_reqwest_response::FromEnumWithLifetime,
-)]
-#[type_variants_from_reqwest_response::from_enum_paths_with_lifetime(GetByIdHttpResponseVariants)]
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TryGetByIdErrorHttpResponse<'a> {
     Bigserial {
         #[eo_error_occurence]

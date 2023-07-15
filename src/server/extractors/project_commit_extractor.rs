@@ -1,7 +1,7 @@
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct ProjectCommitExtractor {}
 
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence, 
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence,
     type_variants_from_reqwest_response::FromEnum,
     type_variants_from_reqwest_response::EnumStatusCodesChecker)]
 #[type_variants_from_reqwest_response::from_enum_paths(
