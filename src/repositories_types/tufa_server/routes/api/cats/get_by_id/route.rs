@@ -1,9 +1,4 @@
-#[derive(
-    Debug,
-    serde::Serialize,
-    serde::Deserialize,
-    into_actix_web_http_response::IntoActixWebHttpResponse,
-)]
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub enum GetByIdHttpResponse {
     Cat(crate::repositories_types::tufa_server::routes::api::cats::Cat),
     //
@@ -78,6 +73,14 @@ pub enum GetByIdHttpResponse {
         unexpected_case: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
     },
+}
+
+//its was in into_actix_web_http_response::IntoActixWebHttpResponse macro and will be in type_variants_from_reqwest_response
+impl From<GetByIdHttpResponse> for actix_web::HttpResponse {
+    fn from(val: GetByIdHttpResponse) -> Self {
+        let mut actix_web_http_response = actix_web::HttpResponseBuilder::new((&val).into());
+        actix_web_http_response.json(actix_web::web::Json(val))
+    }
 }
 
 impl From<&GetByIdHttpResponse> for http::StatusCode {

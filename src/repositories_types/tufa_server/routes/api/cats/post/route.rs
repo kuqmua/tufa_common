@@ -1,9 +1,4 @@
-#[derive(
-    Debug,
-    serde::Serialize,
-    serde::Deserialize,
-    into_actix_web_http_response::IntoActixWebHttpResponse,
-)]
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub enum PostHttpResponse {
     Ok, //wrong?
     //
@@ -73,6 +68,14 @@ pub enum PostHttpResponse {
         unexpected_case: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize,
     },
+}
+
+//its was in into_actix_web_http_response::IntoActixWebHttpResponse macro and will be in type_variants_from_reqwest_response
+impl From<PostHttpResponse> for actix_web::HttpResponse {
+    fn from(val: PostHttpResponse) -> Self {
+        let mut actix_web_http_response = actix_web::HttpResponseBuilder::new((&val).into());
+        actix_web_http_response.json(actix_web::web::Json(val))
+    }
 }
 
 impl From<&PostHttpResponse> for http::StatusCode {
