@@ -5,8 +5,8 @@
     type_variants_from_reqwest_response::FromEnum,
 )]
 #[type_variants_from_reqwest_response::from_enum_paths(
-    crate::repositories_types::tufa_server::routes::api::cats::get::GetHttpResponse,
-    crate::repositories_types::tufa_server::routes::api::cats::get::GetErrorNamedWithSerializeDeserialize,
+    // crate::repositories_types::tufa_server::routes::api::cats::get::GetHttpResponse,
+    // crate::repositories_types::tufa_server::routes::api::cats::get::GetErrorNamedWithSerializeDeserialize,
     crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants,
     crate::repositories_types::tufa_server::routes::api::cats::get::TryGetWithSerializeDeserialize
 )]
