@@ -1,5 +1,3 @@
-type GetDesirableType = Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>;
-
 #[derive(serde::Deserialize)]
 pub struct GetQueryParameters {
     pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
@@ -53,7 +51,7 @@ impl crate::common::url_encode::UrlEncode for GetQueryParameters {
     type_variants_from_reqwest_response::TypeVariantsFromReqwestResponse,
 )]
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_attribute(
-    GetDesirableType,
+    Vec::<crate::repositories_types::tufa_server::routes::api::cats::Cat>,
     tvfrr_200_ok
 )]
 pub enum TryGet<'a> {
@@ -184,7 +182,8 @@ pub enum TryGet<'a> {
 pub async fn try_get<'a>(
     server_location: &str,
     query_parameters: GetQueryParameters,
-) -> Result<GetDesirableType, TryGetErrorNamed<'a>> {
+) -> Result<Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>, TryGetErrorNamed<'a>>
+{
     extraction_logic(
         reqwest::Client::new()
             .get(&format!(
