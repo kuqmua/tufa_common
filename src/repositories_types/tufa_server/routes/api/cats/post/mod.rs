@@ -154,7 +154,7 @@ pub async fn try_post<'a>(
     //         });
     //     }
     // }
-    extraction_logic(
+    tvfrr_extraction_logic(
         reqwest::Client::new()
             .post(&format!(
                 "{server_location}/api/{}/",
