@@ -1,8 +1,8 @@
 #[derive(serde::Deserialize)]
 pub struct GetQueryParameters {
     pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
-    pub name: Option<String>,
-    pub color: Option<String>,
+    pub name: Option<std::string::String>,
+    pub color: Option<std::string::String>,
 }
 //todo - make a macro for it?
 impl crate::common::url_encode::UrlEncode for GetQueryParameters {
