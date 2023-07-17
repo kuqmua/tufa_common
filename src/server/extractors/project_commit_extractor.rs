@@ -1,11 +1,16 @@
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct ProjectCommitExtractor {}
 
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence,
+#[derive(
+    Debug, 
+    thiserror::Error, 
+    error_occurence::ErrorOccurence,
     type_variants_from_reqwest_response::TypeVariantsFromReqwestResponseFromChecker,
 )]
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_from_checker_paths(
-    crate::repositories_types::tufa_server::routes::api::cats::get::TryGet
+    crate::repositories_types::tufa_server::routes::api::cats::get::TryGet,
+    crate::repositories_types::tufa_server::routes::api::cats::get_by_id::TryGetById,
+    crate::repositories_types::tufa_server::routes::api::cats::post::TryPost
 )]
 pub enum ProjectCommitExtractorCheckErrorNamed<'a> {
     #[tvfrr_400_bad_request]
