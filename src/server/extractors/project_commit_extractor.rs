@@ -3,11 +3,8 @@ pub struct ProjectCommitExtractor {}
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence,
     type_variants_from_reqwest_response::TypeVariantsFromReqwestResponseFromChecker,
-    type_variants_from_reqwest_response::EnumStatusCodesChecker)]
-#[type_variants_from_reqwest_response::type_variants_from_reqwest_response_from_checker_paths(
-    crate::repositories_types::tufa_server::routes::api::cats::get::TryGet
 )]
-#[type_variants_from_reqwest_response::enum_status_codes_checker_from(
+#[type_variants_from_reqwest_response::type_variants_from_reqwest_response_from_checker_paths(
     crate::repositories_types::tufa_server::routes::api::cats::get::TryGet
 )]
 pub enum ProjectCommitExtractorCheckErrorNamed<'a> {
