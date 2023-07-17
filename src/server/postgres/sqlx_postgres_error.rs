@@ -6,8 +6,7 @@
     type_variants_from_reqwest_response::EnumStatusCodesChecker,
 )]
 #[type_variants_from_reqwest_response::from_enum_paths(
-    crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants,
-    crate::repositories_types::tufa_server::routes::api::cats::get::TryGetWithSerializeDeserialize
+    crate::repositories_types::tufa_server::routes::api::cats::get::TryGet
 )]
 #[type_variants_from_reqwest_response::enum_status_codes_checker_from(
     crate::repositories_types::tufa_server::routes::api::cats::get::TryGet
