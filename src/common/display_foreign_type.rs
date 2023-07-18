@@ -1,6 +1,6 @@
 pub static CRATES_IO_SLASH_CRATES_SLASH_LINK: &str = "https://crates.io/crates/";
 pub static NON_EXHAUSTIVE: &str = "#[non_exhaustive]";
-
+//todo move impl to types modules
 pub trait DisplayForeignType {
     fn display_foreign_type(&self) -> String;
 }
