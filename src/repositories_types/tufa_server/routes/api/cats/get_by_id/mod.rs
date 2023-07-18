@@ -139,25 +139,37 @@ pub enum TryGetById<'a> {
     },
 }
 
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum TryGetByIdErrorNamed<'a> {
+    RequestError {
+        #[eo_error_occurence]
+        request_error: TryGetByIdRequestError<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    BelowZero {
+        #[eo_display_with_serialize_deserialize]
+        below_zero: i64,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
 pub async fn try_get_by_id<'a>(
     server_location: &str,
     path_parameters: crate::repositories_types::tufa_server::routes::api::cats::get_by_id::GetByIdPathParameters,
-) -> Result<
-    crate::repositories_types::tufa_server::routes::api::cats::Cat,
-    TryGetByIdRequestError<'a>,
-> {
-    // if let true = path_parameters.id.is_negative() {
-    //     return Err(TryGetByIdErrorNamed::BelowZero {
-    //         below_zero: path_parameters.id,
-    //         code_occurence: crate::code_occurence_tufa_common!(),
-    //     });
-    // }
+) -> Result<crate::repositories_types::tufa_server::routes::api::cats::Cat, TryGetByIdErrorNamed<'a>>
+{
+    if let true = path_parameters.id.is_negative() {
+        return Err(TryGetByIdErrorNamed::BelowZero {
+            below_zero: path_parameters.id,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        });
+    }
     let url = format!(
         "{server_location}/api/{}/{}",
         crate::repositories_types::tufa_server::routes::api::cats::CATS,
         path_parameters.id
     );
-    tvfrr_extraction_logic(
+    match tvfrr_extraction_logic(
         reqwest::Client::new()
             .get(&url)
             .header(
@@ -168,4 +180,11 @@ pub async fn try_get_by_id<'a>(
             .send(),
     )
     .await
+    {
+        Ok(value) => Ok(value),
+        Err(e) => Err(TryGetByIdErrorNamed::RequestError {
+            request_error: e,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        }),
+    }
 }
