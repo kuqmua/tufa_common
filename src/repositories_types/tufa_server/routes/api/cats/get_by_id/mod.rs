@@ -142,8 +142,10 @@ pub enum TryGetById<'a> {
 pub async fn try_get_by_id<'a>(
     server_location: &str,
     path_parameters: crate::repositories_types::tufa_server::routes::api::cats::get_by_id::GetByIdPathParameters,
-) -> Result<crate::repositories_types::tufa_server::routes::api::cats::Cat, TryGetByIdErrorNamed<'a>>
-{
+) -> Result<
+    crate::repositories_types::tufa_server::routes::api::cats::Cat,
+    TryGetByIdRequestError<'a>,
+> {
     // if let true = path_parameters.id.is_negative() {
     //     return Err(TryGetByIdErrorNamed::BelowZero {
     //         below_zero: path_parameters.id,

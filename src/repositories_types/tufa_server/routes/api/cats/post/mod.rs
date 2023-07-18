@@ -143,7 +143,7 @@ pub enum TryPost<'a> {
 pub async fn try_post<'a>(
     server_location: &str,
     cat: crate::repositories_types::tufa_server::routes::api::cats::post::CatToPost,
-) -> Result<(), TryPostErrorNamed<'a>> {
+) -> Result<(), TryPostRequestError<'a>> {
     let stringified_json = serde_json::to_string(&cat).unwrap();
     // match serde_json::to_string(&cat) {
     //     Ok(stringified_json) => stringified_json,

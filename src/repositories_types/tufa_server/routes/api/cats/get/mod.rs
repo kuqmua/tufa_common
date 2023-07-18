@@ -182,8 +182,10 @@ pub enum TryGet<'a> {
 pub async fn try_get<'a>(
     server_location: &str,
     query_parameters: GetQueryParameters,
-) -> Result<Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>, TryGetErrorNamed<'a>>
-{
+) -> Result<
+    Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>,
+    TryGetRequestError<'a>,
+> {
     tvfrr_extraction_logic(
         reqwest::Client::new()
             .get(&format!(
@@ -200,5 +202,3 @@ pub async fn try_get<'a>(
     )
     .await
 }
-
-//////////////////////////
