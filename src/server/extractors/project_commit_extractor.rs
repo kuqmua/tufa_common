@@ -35,7 +35,7 @@ pub enum ProjectCommitExtractorCheckErrorNamed<'a> {
     },
 }
 
-//todo make a proc macro for it(or maybe put it into error occurence?)
+//todo make a proc macro for it or maybe put it into error occurence?
 impl crate::common::to_default_stringified_json::ToDefaultStringifiedJson for ProjectCommitExtractorCheckErrorNamedWithSerializeDeserialize {
     fn to_default_stringified_json(&self) -> std::string::String {
         match self {
