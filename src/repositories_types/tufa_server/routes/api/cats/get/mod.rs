@@ -179,14 +179,21 @@ pub enum TryGet<'a> {
     },
 }
 
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum TryGetErrorNamed<'a> {
+    RequestError {
+        #[eo_error_occurence]
+        request_error: TryGetRequestError<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
 pub async fn try_get<'a>(
     server_location: &str,
     query_parameters: GetQueryParameters,
-) -> Result<
-    Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>,
-    TryGetRequestError<'a>,
-> {
-    tvfrr_extraction_logic(
+) -> Result<Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>, TryGetErrorNamed<'a>>
+{
+    match tvfrr_extraction_logic(
         reqwest::Client::new()
             .get(&format!(
                 "{server_location}/api/{}/{}",
@@ -201,4 +208,11 @@ pub async fn try_get<'a>(
             .send(),
     )
     .await
+    {
+        Ok(value) => Ok(value),
+        Err(e) => Err(TryGetErrorNamed::RequestError {
+            request_error: e,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        }),
+    }
 }

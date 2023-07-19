@@ -140,21 +140,34 @@ pub enum TryPost<'a> {
     },
 }
 
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum TryPostErrorNamed<'a> {
+    RequestError {
+        #[eo_error_occurence]
+        request_error: TryPostRequestError<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    SerdeJsonToString {
+        #[eo_display]
+        serde_json_to_string: serde_json::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
 pub async fn try_post<'a>(
     server_location: &str,
     cat: crate::repositories_types::tufa_server::routes::api::cats::post::CatToPost,
-) -> Result<(), TryPostRequestError<'a>> {
-    let stringified_json = serde_json::to_string(&cat).unwrap();
-    // match serde_json::to_string(&cat) {
-    //     Ok(stringified_json) => stringified_json,
-    //     Err(e) => {
-    //         return Err(TryPostErrorNamed::SerdeJsonToString {
-    //             serde_json_to_string: e,
-    //             code_occurence: crate::code_occurence_tufa_common!(),
-    //         });
-    //     }
-    // }
-    tvfrr_extraction_logic(
+) -> Result<(), TryPostErrorNamed<'a>> {
+    let stringified_json = match serde_json::to_string(&cat) {
+        Ok(stringified_json) => stringified_json,
+        Err(e) => {
+            return Err(TryPostErrorNamed::SerdeJsonToString {
+                serde_json_to_string: e,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            });
+        }
+    };
+    match tvfrr_extraction_logic(
         reqwest::Client::new()
             .post(&format!(
                 "{server_location}/api/{}/",
@@ -170,4 +183,11 @@ pub async fn try_post<'a>(
             .send(),
     )
     .await
+    {
+        Ok(_) => Ok(()),
+        Err(e) => Err(TryPostErrorNamed::RequestError {
+            request_error: e,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        }),
+    }
 }
