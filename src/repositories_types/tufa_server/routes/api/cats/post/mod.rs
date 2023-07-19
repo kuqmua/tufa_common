@@ -156,9 +156,9 @@ pub enum TryPostErrorNamed<'a> {
 
 pub async fn try_post<'a>(
     server_location: &str,
-    cat: crate::repositories_types::tufa_server::routes::api::cats::post::CatToPost,
+    body_type: crate::repositories_types::tufa_server::routes::api::cats::post::CatToPost,
 ) -> Result<(), TryPostErrorNamed<'a>> {
-    let stringified_json = match serde_json::to_string(&cat) {
+    let stringified_json = match serde_json::to_string(&body_type) {
         Ok(stringified_json) => stringified_json,
         Err(e) => {
             return Err(TryPostErrorNamed::SerdeJsonToString {
