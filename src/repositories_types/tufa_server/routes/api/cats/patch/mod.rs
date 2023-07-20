@@ -177,16 +177,16 @@ pub enum TryPatchErrorNamed<'a> {
 
 pub async fn try_patch<'a>(
     server_location: &str,
-    body_type: crate::repositories_types::tufa_server::routes::api::cats::patch::CatToPatch,
+    body: crate::repositories_types::tufa_server::routes::api::cats::patch::CatToPatch,
 ) -> Result<(), TryPatchErrorNamed<'a>> {
-    let id = body_type.get_id();
+    let id = body.get_id();
     if let true = id.is_negative() {
         return Err(TryPatchErrorNamed::BelowZero {
             below_zero: *id,
             code_occurence: crate::code_occurence_tufa_common!(),
         });
     }
-    let stringified_json = match serde_json::to_string(&body_type) {
+    let stringified_json = match serde_json::to_string(&body) {
         Ok(stringified_json) => stringified_json,
         Err(e) => {
             return Err(TryPatchErrorNamed::SerdeJsonToString {
