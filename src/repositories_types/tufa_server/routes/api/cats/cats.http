@@ -60,3 +60,10 @@ project_commit: 5d4315d3d482ca6f497a3addafb1695c284f89a5
 DELETE http://127.0.0.1:8080/api/cats/3 HTTP/1.1
 Accept: */*
 project_commit: 5d4315d3d482ca6f497a3addafb1695c284f89a5
+
+###
+
+
+GET http://127.0.0.1:3000/ HTTP/1.1
+Accept: */*
+project_commit: 0fa5a3c7674d0d1a99ca6bbb9d466fef9df53a6f
