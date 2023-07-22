@@ -67,3 +67,21 @@ project_commit: 5d4315d3d482ca6f497a3addafb1695c284f89a5
 GET http://127.0.0.1:3000/ HTTP/1.1
 Accept: */*
 project_commit: 0fa5a3c7674d0d1a99ca6bbb9d466fef9df53a6f
+
+
+###
+GET http://127.0.0.1:8080/api/cats/65 HTTP/1.1
+Accept: */*
+project_commit: 260b73c82c97fefa26e4edbdc2fc1b8b8017d11d
+
+###
+GET http://127.0.0.1:8080/api/cats/?limit=10 HTTP/1.1
+Accept: */*
+project_commit: 260b73c82c97fefa26e4edbdc2fc1b8b8017d11d
+
+###
+
+GET http://127.0.0.1:8080/kekw HTTP/1.1
+Accept: */*
+project_commit: 260b73c82c97fefa26e4edbdc2fc1b8b8017d11d
+
