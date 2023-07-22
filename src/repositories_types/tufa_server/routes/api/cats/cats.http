@@ -2,20 +2,20 @@
 
 GET http://127.0.0.1:8080/api/cats/?limit=10 HTTP/1.1
 Accept: */*
-project_commit: 8b9b9484f28a8b2bf394bc36504420fe515142f8
+project_commit: c4e781934d56afb53fcaa8d21824e1ec482653df
 //name=leo&color=red
 ###
 
 GET http://127.0.0.1:8080/api/cats/65 HTTP/1.1
 Accept: */*
-project_commit: 8b9b9484f28a8b2bf394bc36504420fe515142f
+project_commit: c4e781934d56afb53fcaa8d21824e1ec482653df
 
 ###
 
 POST http://127.0.0.1:8080/api/cats/ HTTP/1.1
 Accept: */*
 content-type: application/json
-project_commit: 5d4315d3d482ca6f497a3addafb1695c284f89a5
+project_commit: c4e781934d56afb53fcaa8d21824e1ec482653df
 
 {
     "name": "test_name",
@@ -27,7 +27,7 @@ project_commit: 5d4315d3d482ca6f497a3addafb1695c284f89a5
 PUT http://127.0.0.1:8080/api/cats/ HTTP/1.1
 Accept: */*
 content-type: application/json
-project_commit: 5d4315d3d482ca6f497a3addafb1695c284f89a5
+project_commit: c4e781934d56afb53fcaa8d21824e1ec482653df
 
 {
     "id": 9223372036854775807,
@@ -40,7 +40,7 @@ project_commit: 5d4315d3d482ca6f497a3addafb1695c284f89a5
 PATCH http://127.0.0.1:8080/api/cats/ HTTP/1.1
 Accept: */*
 content-type: application/json
-project_commit: 4879e3ff5c7b1e3141a30bd2fc561a73d5ca4e52
+project_commit: c4e781934d56afb53fcaa8d21824e1ec482653df
 
 {
     "IdName": {
@@ -53,35 +53,20 @@ project_commit: 4879e3ff5c7b1e3141a30bd2fc561a73d5ca4e52
 
 DELETE http://127.0.0.1:8080/api/cats/?name=kek&color=white HTTP/1.1
 Accept: */*
-project_commit: 5d4315d3d482ca6f497a3addafb1695c284f89a5
+project_commit: c4e781934d56afb53fcaa8d21824e1ec482653df
 
 ###
 
 DELETE http://127.0.0.1:8080/api/cats/3 HTTP/1.1
 Accept: */*
-project_commit: 5d4315d3d482ca6f497a3addafb1695c284f89a5
+project_commit: c4e781934d56afb53fcaa8d21824e1ec482653df
 
 ###
 
 
-GET http://127.0.0.1:3000/ HTTP/1.1
-Accept: */*
-project_commit: 0fa5a3c7674d0d1a99ca6bbb9d466fef9df53a6f
-
-
-###
-GET http://127.0.0.1:8080/api/cats/65 HTTP/1.1
-Accept: */*
-project_commit: 260b73c82c97fefa26e4edbdc2fc1b8b8017d11d
-
-###
-GET http://127.0.0.1:8080/api/cats/?limit=10 HTTP/1.1
-Accept: */*
-project_commit: 260b73c82c97fefa26e4edbdc2fc1b8b8017d11d
-
 ###
 
-GET http://127.0.0.1:8080/kekw HTTP/1.1
+GET http://127.0.0.1:8080/api/git_info HTTP/1.1
 Accept: */*
 project_commit: 260b73c82c97fefa26e4edbdc2fc1b8b8017d11d
 
