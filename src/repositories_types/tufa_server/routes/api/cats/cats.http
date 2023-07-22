@@ -2,7 +2,7 @@
 
 GET http://127.0.0.1:8080/api/cats/?limit=10 HTTP/1.1
 Accept: */*
-project_commit: c4e781934d56afb53fcaa8d21824e1ec482653df
+project_commit: 96dc76c68a68c987ac6ac33ac2778c213db12a66
 //name=leo&color=red
 ###
 
@@ -63,16 +63,17 @@ project_commit: c4e781934d56afb53fcaa8d21824e1ec482653df
 
 ###
 
-GET http://127.0.0.1:8080/api/health_check HTTP/1.1
+GET http://127.0.0.1:8080/health_check HTTP/1.1
 Accept: */*
-project_commit: 260b73c82c97fefa26e4edbdc2fc1b8b8017d11d
+project_commit: 96dc76c68a68c987ac6ac33ac2778c213db12a66
 
 ###
 
-GET http://127.0.0.1:8080/api/git_info HTTP/1.1
+GET http://127.0.0.1:8080/git_info HTTP/1.1
 Accept: */*
-project_commit: 260b73c82c97fefa26e4edbdc2fc1b8b8017d11d
+project_commit: 96dc76c68a68c987ac6ac33ac2778c213db12a66
 
 ###
 
-GET http://127.0.0.1:8080/hello HTTP/1.1
+GET http://127.0.0.1:8080/foo HTTP/1.1
+project_commit: 96dc76c68a68c987ac6ac33ac2778c213db12a66
