@@ -63,6 +63,9 @@ project_commit: c4e781934d56afb53fcaa8d21824e1ec482653df
 
 ###
 
+GET http://127.0.0.1:8080/api/health_check HTTP/1.1
+Accept: */*
+project_commit: 260b73c82c97fefa26e4edbdc2fc1b8b8017d11d
 
 ###
 
