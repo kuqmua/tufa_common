@@ -76,4 +76,9 @@ project_commit: 96dc76c68a68c987ac6ac33ac2778c213db12a66
 ###
 
 GET http://127.0.0.1:8080/foo HTTP/1.1
-project_commit: 96dc76c68a68c987ac6ac33ac2778c213db12a66
+project_commit: 9d1d4f2cf3cd3b74b4ddd5c221e1ccec7d229c08
+
+###
+
+GET http://127.0.0.1:8080/src/main.rs HTTP/1.1
+project_commit: 9d1d4f2cf3cd3b74b4ddd5c221e1ccec7d229c08

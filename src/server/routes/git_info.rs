@@ -1,7 +1,7 @@
 #[derive(serde::Serialize)]
 pub struct GitInfo {
-    project_commit: std::string::String,
-    repository_commit: std::string::String,
+    pub project_commit: std::string::String,
+    pub repository_commit: std::string::String,
 }
 
 impl axum::response::IntoResponse for GitInfo {
@@ -19,14 +19,14 @@ pub async fn git_info(
     >,
 ) -> impl actix_web::Responder {
     actix_web::HttpResponse::Ok().json(actix_web::web::Json(GitInfo {
-        project_commit: {
-            use crate::common::git::get_git_commit_link::GetGitCommitLink;
-            app_info.project_git_info.get_git_commit_link()
-        },
-        repository_commit: {
-            use crate::common::git::get_git_commit_link::GetGitCommitLink;
-            app_info.repository_git_info.get_git_commit_link()
-        },
+        project_commit:
+            crate::common::git::get_git_commit_link::GetGitCommitLink::get_git_commit_link(
+                app_info.project_git_info,
+            ),
+        repository_commit:
+            crate::common::git::get_git_commit_link::GetGitCommitLink::get_git_commit_link(
+                app_info.repository_git_info,
+            ),
     }))
 }
 
