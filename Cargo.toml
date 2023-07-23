@@ -38,7 +38,7 @@ serde_json = {version = "=1.0"}
 strum = {version = "=0.24.1"}
 strum_macros = {version = "=0.24.3"}
 thiserror = {version = "=1.0.30"}
-tokio = {version = "=1.29.1", features = ["macros"]}
+tokio = {version = "=1.29.1", features = ["macros", "rt-multi-thread"]}
 itertools = {version = "=0.10.1"}
 uuid = {version = "=0.8", features = ["v4", "serde"]}
 sqlx = {version = "=0.5", default-features = false, features = ["postgres", "runtime-actix-rustls", "macros", "uuid", "chrono", "migrate", "offline"]}
