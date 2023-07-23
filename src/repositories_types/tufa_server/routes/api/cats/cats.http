@@ -92,3 +92,8 @@ project_commit: 724eb1be666a28cf931ae14961c930aaf2ff2b94
 
 GET http://127.0.0.1:8080/extract_custom_header_example HTTP/1.1
 project_commit: 724eb1be666a28cf931ae14961c930aaf2ff2b94
+
+###
+
+GET http://127.0.0.1:8080/middleware_message_example HTTP/1.1
+project_commit: 2e5e76013bd405df5eed1fc9a80c1468ecb0e1df
