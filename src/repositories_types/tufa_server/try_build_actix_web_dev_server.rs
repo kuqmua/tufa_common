@@ -29,6 +29,19 @@ pub struct AppInfo<'a> {
     pub repository_git_info: &'a crate::common::git::git_info::GitInfo<'a>,
 }
 
+pub trait GetAppInfo {
+    fn get_postgres_pool(&self) -> &sqlx::PgPool;
+    fn get_config(&self) -> &crate::repositories_types::tufa_server::config::config_struct::Config;
+}
+impl<'a> GetAppInfo for AppInfo<'a> {
+    fn get_postgres_pool(&self) -> &sqlx::PgPool {
+        &self.postgres_pool
+    }
+    fn get_config(&self) -> &crate::repositories_types::tufa_server::config::config_struct::Config {
+        self.config
+    }
+}
+
 pub trait GetPostgresPool {
     fn get_postgres_pool(&self) -> &sqlx::PgPool;
 }
