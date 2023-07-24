@@ -33,3 +33,7 @@ impl<'a> crate::common::git::get_git_commit_link::GetGitCommitLink for ProjectGi
         )
     }
 }
+
+pub trait GetProjectGitInfo<'a> {
+    fn get_project_git_info(&self) -> &'a ProjectGitInfo<'a>;
+}

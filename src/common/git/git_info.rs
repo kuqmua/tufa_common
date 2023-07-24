@@ -63,6 +63,10 @@ impl<'a> crate::common::git::git_fields::GetGitRepoLink for GitInfo<'a> {
 //     }
 // }
 
+pub trait GetGitInfo<'a> {
+    fn get_git_info(&self) -> &'a GitInfo<'a>;
+}
+
 #[derive(
     Debug, serde_derive::Serialize, serde_derive::Deserialize, Clone, Eq, Hash, PartialEq, Default,
 )]

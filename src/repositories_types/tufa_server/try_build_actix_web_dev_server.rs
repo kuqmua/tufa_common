@@ -28,3 +28,33 @@ pub struct AppInfo<'a> {
     pub project_git_info: &'a crate::common::git::project_git_info::ProjectGitInfo<'a>,
     pub repository_git_info: &'a crate::common::git::git_info::GitInfo<'a>,
 }
+
+pub trait GetPostgresPool {
+    fn get_postgres_pool(&self) -> &sqlx::PgPool;
+}
+
+impl<'a> GetPostgresPool for AppInfo<'a> {
+    fn get_postgres_pool(&self) -> &sqlx::PgPool {
+        &self.postgres_pool
+    }
+}
+
+impl<'a> crate::common::git::project_git_info::GetProjectGitInfo<'a> for AppInfo<'a> {
+    fn get_project_git_info(&self) -> &'a crate::common::git::project_git_info::ProjectGitInfo<'a> {
+        self.project_git_info
+    }
+}
+
+impl<'a> crate::common::git::git_info::GetGitInfo<'a> for AppInfo<'a> {
+    fn get_git_info(&self) -> &'a crate::common::git::git_info::GitInfo<'a> {
+        self.repository_git_info
+    }
+}
+
+// impl<'a> crate::common::git::git_fields::GetGitCommitId for ProjectGitInfo<'a> {
+//     fn get_git_commit_id(&self) -> std::string::String {
+//         self.project_commit.to_string()
+//     }
+// }
+
+// impl<'a> crate::common::git::get_git_commit_link::GetGitCommitLink for ProjectGitInfo<'a> {
