@@ -41,7 +41,7 @@ pub async fn content_type_application_json<B>(
         {
             true => Ok(next.run(req).await),
             false => Err(axum::response::IntoResponse::into_response((
-                axum::http::StatusCode::BAD_REQUEST,
+                axum::http::StatusCode::UNSUPPORTED_MEDIA_TYPE,
                 axum::Json(
                     ContentTypeApplicationJsonErrorNamed::ContentTypeHeaderNotEqualToApplicationJson {
                         given: project_commit_checker_header,
