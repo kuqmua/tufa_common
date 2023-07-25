@@ -32,19 +32,17 @@ pub async fn git_info(
 
 pub async fn git_info_axum(
     axum::extract::State(app_info): axum::extract::State<
-        std::sync::Arc<
-            crate::repositories_types::tufa_server::try_build_actix_web_dev_server::AppInfo<'_>,
-        >,
+        crate::repositories_types::tufa_server::routes::app_info::DynArcGetAppInfoSendSync<'_>,
     >,
 ) -> GitInfo {
     GitInfo {
         project_commit:
             crate::common::git::get_git_commit_link::GetGitCommitLink::get_git_commit_link(
-                app_info.project_git_info,
+                app_info.get_project_git_info(),
             ),
         repository_commit:
             crate::common::git::get_git_commit_link::GetGitCommitLink::get_git_commit_link(
-                app_info.repository_git_info,
+                app_info.get_repository_git_info(),
             ),
     }
 }
