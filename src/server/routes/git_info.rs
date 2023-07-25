@@ -30,10 +30,16 @@ pub async fn git_info(
     }))
 }
 
+pub type DynArcGitInfoRouteParametersSendSync<'a> =
+    std::sync::Arc<dyn GitInfoRouteParameters<'a> + Send + Sync>;
+
+pub trait GitInfoRouteParameters<'a> {
+    fn get_project_git_info(&self) -> &'a crate::common::git::project_git_info::ProjectGitInfo<'a>;
+    fn get_repository_git_info(&self) -> &'a crate::common::git::git_info::GitInfo<'a>;
+}
+
 pub async fn git_info_axum(
-    axum::extract::State(app_info): axum::extract::State<
-        crate::repositories_types::tufa_server::routes::app_info::DynArcGetAppInfoSendSync<'_>,
-    >,
+    axum::extract::State(app_info): axum::extract::State<DynArcGitInfoRouteParametersSendSync<'_>>,
 ) -> GitInfo {
     GitInfo {
         project_commit:
