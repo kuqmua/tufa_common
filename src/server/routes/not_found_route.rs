@@ -1,8 +1,6 @@
 pub async fn not_found_route(
     axum::extract::State(app_info): axum::extract::State<
-        std::sync::Arc<
-            crate::repositories_types::tufa_server::try_build_actix_web_dev_server::AppInfo<'_>,
-        >,
+        std::sync::Arc<crate::repositories_types::tufa_server::routes::app_info::AppInfo<'_>>,
     >,
 ) -> (
     axum::http::StatusCode,

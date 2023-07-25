@@ -14,3 +14,15 @@ pub struct Cat {
     pub name: String,
     pub color: String,
 }
+
+pub trait GetConfigGetPostgresPool:
+    crate::repositories_types::tufa_server::config::config_struct::GetConfig
+    + crate::server::routes::helpers::get_postgres_pool::GetPostgresPool
+{
+}
+
+pub type DynArcGetConfigGetPostgresPoolSendSync = std::sync::Arc<
+    dyn crate::repositories_types::tufa_server::routes::api::cats::GetConfigGetPostgresPool
+        + Send
+        + Sync,
+>;

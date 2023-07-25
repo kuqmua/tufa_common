@@ -281,3 +281,7 @@ pub enum ConfigCheckErrorNamed<'a> {
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
+
+pub trait GetConfig {
+    fn get_config(&self) -> &Config;
+}
