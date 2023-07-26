@@ -16,7 +16,7 @@ impl<'a> crate::repositories_types::tufa_server::config::config_struct::GetConfi
     }
 }
 
-impl<'a> crate::server::routes::git_info::GitInfoRouteParameters<'a> for AppInfo<'a> {}
+impl<'a> crate::server::routes::git_info::GitInfoRouteParameters for AppInfo<'a> {}
 
 impl<'a> crate::server::routes::helpers::get_postgres_pool::GetPostgresPool for AppInfo<'a> {
     fn get_postgres_pool(&self) -> &sqlx::PgPool {
@@ -24,14 +24,14 @@ impl<'a> crate::server::routes::helpers::get_postgres_pool::GetPostgresPool for 
     }
 }
 
-impl<'a> crate::common::git::project_git_info::GetProjectGitInfo<'a> for AppInfo<'a> {
-    fn get_project_git_info(&self) -> &'a crate::common::git::project_git_info::ProjectGitInfo<'a> {
-        self.project_git_info
+impl<'a> crate::common::git::project_git_info::GetProjectGitCommitLink for AppInfo<'a> {
+    fn get_project_git_commit_link(&self) -> std::string::String {
+        self.project_git_info.get_project_git_commit_link()
     }
 }
 
-impl<'a> crate::common::git::git_info::GetGitInfo<'a> for AppInfo<'a> {
-    fn get_git_info(&self) -> &'a crate::common::git::git_info::GitInfo<'a> {
-        self.repository_git_info
+impl<'a> crate::common::git::git_fields::GetGitCommitId for AppInfo<'a> {
+    fn get_git_commit_id(&self) -> std::string::String {
+        self.repository_git_info.get_git_commit_id()
     }
 }

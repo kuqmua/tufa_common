@@ -13,10 +13,9 @@ pub async fn not_found_route(
                 crate::common::git::get_git_commit_link::GetGitCommitLink::get_git_commit_link(
                     app_info.project_git_info,
                 ),
-            repository_commit:
-                crate::common::git::get_git_commit_link::GetGitCommitLink::get_git_commit_link(
-                    app_info.repository_git_info,
-                ),
+            commit: crate::common::git::get_git_commit_link::GetGitCommitLink::get_git_commit_link(
+                app_info.repository_git_info,
+            ),
         },
     )
 }

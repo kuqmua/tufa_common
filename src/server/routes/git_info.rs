@@ -1,7 +1,7 @@
 #[derive(serde::Serialize)]
 pub struct GitInfo {
     pub project_commit: std::string::String,
-    pub repository_commit: std::string::String,
+    pub commit: std::string::String,
 }
 
 impl axum::response::IntoResponse for GitInfo {
@@ -23,33 +23,26 @@ pub async fn git_info(
             crate::common::git::get_git_commit_link::GetGitCommitLink::get_git_commit_link(
                 app_info.project_git_info,
             ),
-        repository_commit:
-            crate::common::git::get_git_commit_link::GetGitCommitLink::get_git_commit_link(
-                app_info.repository_git_info,
-            ),
+        commit: crate::common::git::get_git_commit_link::GetGitCommitLink::get_git_commit_link(
+            app_info.repository_git_info,
+        ),
     }))
 }
 
-pub type DynArcGitInfoRouteParametersSendSync<'a> =
-    std::sync::Arc<dyn GitInfoRouteParameters<'a> + Send + Sync>;
+pub type DynArcGitInfoRouteParametersSendSync =
+    std::sync::Arc<dyn GitInfoRouteParameters + Send + Sync>;
 
-pub trait GitInfoRouteParameters<'a>:
-    crate::common::git::project_git_info::GetProjectGitInfo<'a>
-    + crate::common::git::git_info::GetGitInfo<'a>
+pub trait GitInfoRouteParameters:
+    crate::common::git::project_git_info::GetProjectGitCommitLink
+    + crate::common::git::git_fields::GetGitCommitId
 {
 }
 
 pub async fn git_info_axum(
-    axum::extract::State(app_info): axum::extract::State<DynArcGitInfoRouteParametersSendSync<'_>>,
+    axum::extract::State(app_info): axum::extract::State<DynArcGitInfoRouteParametersSendSync>,
 ) -> GitInfo {
     GitInfo {
-        project_commit:
-            crate::common::git::get_git_commit_link::GetGitCommitLink::get_git_commit_link(
-                app_info.get_project_git_info(),
-            ),
-        repository_commit:
-            crate::common::git::get_git_commit_link::GetGitCommitLink::get_git_commit_link(
-                app_info.get_git_info(),
-            ),
+        project_commit: app_info.get_project_git_commit_link(),
+        commit: app_info.get_git_commit_id(),
     }
 }
