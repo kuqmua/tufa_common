@@ -15,7 +15,7 @@ project_commit: 702d5d892dc9a840b80dcf11d39db10e8fa366c8
 POST http://127.0.0.1:8080/api/cats/ HTTP/1.1
 Accept: */*
 content-type: application/json
-project_commit: 702d5d892dc9a840b80dcf11d39db10e8fa366c8
+project_commit: fa9e919d48fe894b9bee50ab1c6e81ad1aed5061
 
 {
     "name": "test_name",
