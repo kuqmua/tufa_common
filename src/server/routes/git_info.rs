@@ -12,23 +12,6 @@ impl axum::response::IntoResponse for GitInfo {
     }
 }
 
-#[actix_web::get("/git_info")]
-pub async fn git_info(
-    app_info: actix_web::web::Data<
-        crate::repositories_types::tufa_server::routes::app_info::AppInfo<'_>,
-    >,
-) -> impl actix_web::Responder {
-    actix_web::HttpResponse::Ok().json(actix_web::web::Json(GitInfo {
-        project_commit:
-            crate::common::git::get_git_commit_link::GetGitCommitLink::get_git_commit_link(
-                app_info.project_git_info,
-            ),
-        commit: crate::common::git::get_git_commit_link::GetGitCommitLink::get_git_commit_link(
-            app_info.repository_git_info,
-        ),
-    }))
-}
-
 pub(crate) type DynArcGitInfoRouteParametersSendSync =
     std::sync::Arc<dyn GitInfoRouteParameters + Send + Sync>;
 
