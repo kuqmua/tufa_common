@@ -29,7 +29,7 @@ pub async fn git_info(
     }))
 }
 
-type DynArcGitInfoRouteParametersSendSync =
+pub(crate) type DynArcGitInfoRouteParametersSendSync =
     std::sync::Arc<dyn GitInfoRouteParameters + Send + Sync>;
 
 pub trait GitInfoRouteParameters:
@@ -47,7 +47,7 @@ async fn git_info_axum(
     }
 }
 
-pub fn git_info_route(app_info: DynArcGitInfoRouteParametersSendSync) -> axum::Router {
+pub(crate) fn git_info_route(app_info: DynArcGitInfoRouteParametersSendSync) -> axum::Router {
     axum::Router::new()
         .route("/git_info", axum::routing::get(git_info_axum))
         .with_state(app_info)
