@@ -35,3 +35,9 @@ impl<'a> crate::common::git::git_fields::GetGitCommitId for AppInfo<'a> {
         self.repository_git_info.get_git_commit_id()
     }
 }
+
+impl<'a> crate::common::git::get_git_commit_link::GetGitCommitLink for AppInfo<'a> {
+    fn get_git_commit_link(&self) -> std::string::String {
+        self.repository_git_info.get_git_commit_link()
+    }
+}

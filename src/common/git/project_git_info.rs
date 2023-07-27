@@ -26,7 +26,7 @@ impl<'a> crate::common::git::git_fields::GetGitCommitId for ProjectGitInfo<'a> {
 }
 
 impl<'a> crate::common::git::get_git_commit_link::GetGitCommitLink for ProjectGitInfo<'a> {
-    fn get_git_commit_link(&self) -> String {
+    fn get_git_commit_link(&self) -> std::string::String {
         format!(
             "https://github.com/kuqmua/tufa_project/tree/{}", //todo get git_author and git_name from .git directory
             self.project_commit
@@ -40,6 +40,6 @@ pub trait GetProjectGitCommitLink {
 
 impl<'a> GetProjectGitCommitLink for ProjectGitInfo<'a> {
     fn get_project_git_commit_link(&self) -> std::string::String {
-        self.project_commit.to_string()
+        crate::common::git::get_git_commit_link::GetGitCommitLink::get_git_commit_link(self)
     }
 }

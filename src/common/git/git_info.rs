@@ -86,7 +86,3 @@ impl crate::common::git::git_fields::GetGitRepoLink for GitInfoWithoutLifetime {
 pub trait GetGitInfo<'a> {
     fn get_git_info(&self) -> &'a GitInfo<'a>;
 }
-
-pub trait GetRepositoryCommitLink {
-    fn get_repository_commit_link(&self) -> std::string::String;
-}
