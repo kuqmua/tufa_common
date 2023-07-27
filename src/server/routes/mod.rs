@@ -1,5 +1,12 @@
-pub mod common_routes;
 pub mod git_info;
-pub mod health_check;
+mod health_check;
 pub mod helpers;
-pub mod not_found_route;
+pub mod not_found;
+
+pub fn routes(
+    app_info: crate::server::routes::git_info::DynArcGitInfoRouteParametersSendSync,
+) -> axum::Router {
+    axum::Router::new()
+        .merge(crate::server::routes::health_check::health_check_route())
+        .merge(crate::server::routes::git_info::git_info_route(app_info))
+}
