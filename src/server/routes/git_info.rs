@@ -1,5 +1,3 @@
-use crate::common::git::get_git_commit_link::GetGitCommitLink;
-
 #[derive(serde::Serialize)]
 pub struct GitInfo {
     pub project_commit: std::string::String,
@@ -31,19 +29,26 @@ pub async fn git_info(
     }))
 }
 
-pub type DynArcGitInfoRouteParametersSendSync =
+type DynArcGitInfoRouteParametersSendSync =
     std::sync::Arc<dyn GitInfoRouteParameters + Send + Sync>;
 
 pub trait GitInfoRouteParameters:
-    crate::common::git::project_git_info::GetProjectGitCommitLink + GetGitCommitLink
+    crate::common::git::project_git_info::GetProjectGitCommitLink
+    + crate::common::git::get_git_commit_link::GetGitCommitLink
 {
 }
 
-pub async fn git_info_axum(
+async fn git_info_axum(
     axum::extract::State(app_info): axum::extract::State<DynArcGitInfoRouteParametersSendSync>,
 ) -> GitInfo {
     GitInfo {
         project_commit: app_info.get_project_git_commit_link(),
         commit: app_info.get_git_commit_link(),
     }
+}
+
+pub fn git_info_route(app_info: DynArcGitInfoRouteParametersSendSync) -> axum::Router {
+    axum::Router::new()
+        .route("/git_info", axum::routing::get(git_info_axum))
+        .with_state(app_info)
 }
