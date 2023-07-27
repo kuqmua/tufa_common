@@ -65,13 +65,11 @@ project_commit: 2e5e76013bd405df5eed1fc9a80c1468ecb0e1df
 
 GET http://127.0.0.1:8080/health_check HTTP/1.1
 Accept: */*
-project_commit: 96dc76c68a68c987ac6ac33ac2778c213db12a66
 
 ###
 
 GET http://127.0.0.1:8080/git_info HTTP/1.1
 Accept: */*
-project_commit: 83a31386109abc37d8b3a0e84f841500f61e8ba9
 
 ###
 
