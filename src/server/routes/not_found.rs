@@ -1,6 +1,6 @@
-#[derive(serde::Serialize)]
-pub struct NotFound {
-    pub message: std::string::String,
+#[derive(Debug, serde::Serialize)]
+pub struct NotFoundHandle {
+    // pub message: std::string::String,
     pub project_commit: std::string::String,
     // pub commit: std::string::String,
 }
@@ -19,18 +19,18 @@ pub struct NotFound {
 //         },
 //     )
 // }
-
-// pub async fn not_found(uri: http::Uri) -> (axum::http::StatusCode, NotFound) {
+//uri: http::Uri
+// pub async fn not_found() -> axum::response::Response {
 //     (
 //         axum::http::StatusCode::NOT_FOUND,
-//         NotFound {
-//             message: format!("No route for {uri}"),
+//         NotFoundHandle {
+//             // message: format!("No route for {uri}"),
 //             project_commit:
 //                 crate::common::git::project_git_info::GetProjectGitCommitLink::get_project_git_commit_link(
 //                     &crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
 //                 ),
 //         },
-//     )
+//     ).into_response()
 // }
 
 pub async fn not_found(uri: http::Uri) -> (axum::http::StatusCode, String) {

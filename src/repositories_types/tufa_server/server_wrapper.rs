@@ -16,24 +16,4 @@ pub enum ServerWrapperErrorNamed<'a> {
         build_server: crate::repositories_types::tufa_server::try_build_server::TryBuildServer<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    TokioSpawn {
-        #[eo_display]
-        tokio_spawn: tokio::task::JoinError,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-    RunUntilStopped {
-        #[eo_error_occurence]
-        run_until_stopped:
-            crate::repositories_types::tufa_server::server_wrapper::RunUntilStoppedErrorNamed<'a>,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
-}
-
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum RunUntilStoppedErrorNamed<'a> {
-    RunUntilStopped {
-        #[eo_display]
-        run_until_stopped: std::io::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
 }

@@ -26,10 +26,9 @@ where
     ) -> Result<sqlx::Pool<sqlx::Postgres>, TryGetPostgresPoolError> {
         println!("trying to create postgres pool...");
         match sqlx::postgres::PgPoolOptions::new()
-            .connect({
-                use secrecy::ExposeSecret;
-                self.get_database_url().expose_secret()
-            })
+            .connect(secrecy::ExposeSecret::expose_secret(
+                self.get_database_url(),
+            ))
             .await
         {
             Err(e) => Err(TryGetPostgresPoolError::Connect(e)),
@@ -55,10 +54,7 @@ where
 //     //         sqlx::postgres::PgConnectOptions::new()
 //     //         .host(&config.get_postgres_ip())
 //     //         .username(&config.get_postgres_login())
-//     //         .password({
-//     //             use secrecy::ExposeSecret;
-//     //             config.get_postgres_password().expose_secret()
-//     //         })
+//     //         .password(secrecy::ExposeSecret::expose_secret(config.get_postgres_password()))
 //     //         .port(*config.get_postgres_port().port())
 //     //         .ssl_mode(*config.get_require_ssl())
 //     //     }.database(&config.get_postgres_db());

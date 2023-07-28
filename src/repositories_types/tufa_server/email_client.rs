@@ -38,10 +38,10 @@ impl EmailClient {
         };
         self.http_client
             .post(&url)
-            .header("X-Postmark-Server-Token", {
-                use secrecy::ExposeSecret;
-                self.authorization_token.expose_secret()
-            })
+            .header(
+                "X-Postmark-Server-Token",
+                secrecy::ExposeSecret::expose_secret(&self.authorization_token),
+            )
             .json(&request_body)
             .send()
             .await?

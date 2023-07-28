@@ -12,10 +12,9 @@ where
     Self: crate::common::config::config_fields::GetMongoUrl,
 {
     async fn try_get_mongo_client(&self) -> Result<mongodb::Client, TryGetMongoClientError> {
-        match mongodb::options::ClientOptions::parse({
-            use secrecy::ExposeSecret;
-            self.get_mongo_url().expose_secret()
-        })
+        match mongodb::options::ClientOptions::parse(secrecy::ExposeSecret::expose_secret(
+            self.get_mongo_url(),
+        ))
         .await
         {
             Ok(mongo_client_options) => match mongodb::Client::with_options(mongo_client_options) {

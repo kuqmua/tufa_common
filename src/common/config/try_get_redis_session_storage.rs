@@ -16,10 +16,7 @@
 //     async fn try_get_redis_session_storage(
 //         &self,
 //     ) -> Result<actix_session::storage::RedisSessionStore, TryGetRedisSessionStorageError> {
-//         match actix_session::storage::RedisSessionStore::new({
-//             use secrecy::ExposeSecret;
-//             self.get_redis_url().expose_secret()
-//         })
+//         match actix_session::storage::RedisSessionStore::new(secrecy::ExposeSecret::expose_secret(self.get_redis_url()))
 //         .await
 //         {
 //             Ok(redis_session_store) => Ok(redis_session_store),
