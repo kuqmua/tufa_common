@@ -13,5 +13,5 @@ pub mod server_wrapper;
 pub mod session_state;
 pub mod telemetry;
 pub mod traits;
-pub mod try_build_actix_web_dev_server;
+pub mod try_build_server;
 pub mod utils;

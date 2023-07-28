@@ -2,7 +2,7 @@
 pub struct NotFound {
     pub message: std::string::String,
     pub project_commit: std::string::String,
-    pub commit: std::string::String,
+    // pub commit: std::string::String,
 }
 
 // pub async fn not_found(
@@ -16,6 +16,19 @@ pub struct NotFound {
 //             message: std::string::String::from("404 not found. please check api through git"),
 //             project_commit: app_info.get_project_git_commit_link(),
 //             commit: app_info.get_git_commit_link(),
+//         },
+//     )
+// }
+
+// pub async fn not_found(uri: http::Uri) -> (axum::http::StatusCode, NotFound) {
+//     (
+//         axum::http::StatusCode::NOT_FOUND,
+//         NotFound {
+//             message: format!("No route for {uri}"),
+//             project_commit:
+//                 crate::common::git::project_git_info::GetProjectGitCommitLink::get_project_git_commit_link(
+//                     &crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
+//                 ),
 //         },
 //     )
 // }

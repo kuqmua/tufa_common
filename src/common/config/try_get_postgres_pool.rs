@@ -24,6 +24,7 @@ where
     async fn try_get_postgres_pool(
         &self,
     ) -> Result<sqlx::Pool<sqlx::Postgres>, TryGetPostgresPoolError> {
+        println!("trying to create postgres pool...");
         match sqlx::postgres::PgPoolOptions::new()
             .connect({
                 use secrecy::ExposeSecret;
