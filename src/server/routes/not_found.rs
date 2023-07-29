@@ -5,11 +5,18 @@ pub struct NotFoundHandle {
     pub commit: std::string::String,
 }
 
+pub(crate) type DynArcNotFoundRouteParametersSendSync =
+    std::sync::Arc<dyn NotFoundRouteParameters + Send + Sync>;
+
+pub trait NotFoundRouteParameters:
+    crate::common::git::project_git_info::GetProjectGitCommitLink
+    + crate::common::git::get_git_commit_link::GetGitCommitLink
+{
+}
+
 async fn not_found(
     uri: http::Uri,
-    axum::extract::State(app_info): axum::extract::State<
-        crate::server::routes::git_info::DynArcGitInfoRouteParametersSendSync,
-    >,
+    axum::extract::State(app_info): axum::extract::State<DynArcNotFoundRouteParametersSendSync>,
 ) -> (axum::http::StatusCode, axum::Json<NotFoundHandle>) {
     (
         axum::http::StatusCode::NOT_FOUND,
@@ -21,8 +28,6 @@ async fn not_found(
     )
 }
 
-pub fn not_found_route(
-    app_info: crate::server::routes::git_info::DynArcGitInfoRouteParametersSendSync,
-) -> axum::Router {
+pub fn not_found_route(app_info: DynArcNotFoundRouteParametersSendSync) -> axum::Router {
     axum::Router::new().fallback(not_found).with_state(app_info)
 }

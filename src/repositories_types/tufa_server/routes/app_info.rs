@@ -17,6 +17,7 @@ impl<'a> crate::repositories_types::tufa_server::config::config_struct::GetConfi
 }
 
 impl<'a> crate::server::routes::git_info::GitInfoRouteParameters for AppInfo<'a> {}
+impl<'a> crate::server::routes::not_found::NotFoundRouteParameters for AppInfo<'a> {}
 
 impl<'a> crate::server::routes::helpers::get_postgres_pool::GetPostgresPool for AppInfo<'a> {
     fn get_postgres_pool(&self) -> &sqlx::PgPool {
