@@ -25,10 +25,7 @@ pub fn write_bytes_into_file_sync(
             code_occurence: crate::code_occurence_tufa_common!(),
         })),
         Ok(mut file) => {
-            if let Err(e) = {
-                use std::io::Write;
-                file.write_all(bytes.as_bytes())
-            } {
+            if let Err(e) = std::io::Write::write_all(&mut file, bytes.as_bytes()) {
                 return Err(Box::new(WriteBytesIntoFileSyncErrorNamed::StdIo {
                     std_io_error: e,
                     code_occurence: crate::code_occurence_tufa_common!(),

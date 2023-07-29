@@ -12,8 +12,11 @@
 //             match crate::repositories_types::tufa_server::providers::provider_kind::functions::rss_part::rss_part(
 //                 pk,
 //                 {
-//                     use crate::repositories_types::tufa_server::traits::provider_kind_methods::ProviderKindMethods;
-//                     pk.generate_provider_links(link_parts, config)
+// crate::repositories_types::tufa_server::traits::provider_kind_methods::ProviderKindMethods::generate_provider_links(
+//     pk,
+//     link_parts,
+//     config
+// )
 //                 },
 //             ).await {
 //                 Ok(posts_vec) => (pk, Ok(posts_vec)),

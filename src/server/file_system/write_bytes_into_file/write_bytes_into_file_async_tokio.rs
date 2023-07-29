@@ -29,12 +29,7 @@ pub async fn write_bytes_into_file_async_tokio<'a>(
             },
         )),
         Ok(mut file) => {
-            if let Err(e) = {
-                use tokio::io::AsyncWriteExt;
-                file.write_all(bytes)
-            }
-            .await
-            {
+            if let Err(e) = tokio::io::AsyncWriteExt::write_all(&mut file, bytes).await {
                 return Err(Box::new(
                     WriteBytesIntoFileAsyncTokioErrorNamed::StdIoError {
                         std_io_error: e,

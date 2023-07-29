@@ -13,11 +13,12 @@ where
         + crate::common::config::config_fields::GetTimezone,
 {
     fn to_string_with_config(&self, config: &ConfigGeneric) -> String {
-        use crate::common::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithConfig;
         crate::common::error_logs_logic::helpers::source_and_code_occurence_formatter(
             self.source_to_string_with_config(config),
-            self.get_code_occurence()
-                .code_occurence_prepare_for_log_with_config(config),
+            crate::common::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithConfig::code_occurence_prepare_for_log_with_config(
+                self.get_code_occurence(),
+                config
+            )
         )
     }
 }

@@ -52,11 +52,10 @@ impl<'a> crate::common::error_logs_logic::get_duration::GetDuration for CodeOccu
 
 impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurence<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::common::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithoutConfig;
         write!(
             f,
             "{}",
-            self.code_occurence_prepare_for_log_without_config()
+            crate::common::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithoutConfig::code_occurence_prepare_for_log_without_config(self)
         )
     }
 }
@@ -133,11 +132,10 @@ impl crate::common::error_logs_logic::get_duration::GetDuration
 
 impl std::fmt::Display for crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        use crate::common::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithoutConfigWithSerializeDeserialize;
         write!(
             f,
             "{}",
-            self.code_occurence_prepare_for_log_without_config_with_serialize_deserialize()
+            crate::common::error_logs_logic::code_occurence_prepare_for_log::CodeOccurencePrepareForLogWithoutConfigWithSerializeDeserialize::code_occurence_prepare_for_log_without_config_with_serialize_deserialize(self)
         )
     }
 }

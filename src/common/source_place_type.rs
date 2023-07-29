@@ -15,14 +15,8 @@ impl<'a> SourcePlaceType {
               + crate::common::git::get_git_source_file_link::GetGitSourceFileLink<'a>),
     ) -> String {
         match self {
-            SourcePlaceType::Source => {
-                use crate::common::error_logs_logic::form_error_path::FormErrorPathDirectory;
-                code_occurence.form_error_path_directory()
-            }
-            SourcePlaceType::Github => {
-                use crate::common::error_logs_logic::form_error_path::FormErrorPathGithub;
-                code_occurence.form_error_path_github()
-            }
+            SourcePlaceType::Source => crate::common::error_logs_logic::form_error_path::FormErrorPathDirectory::form_error_path_directory(code_occurence),
+            SourcePlaceType::Github => crate::common::error_logs_logic::form_error_path::FormErrorPathGithub::form_error_path_github(code_occurence)
         }
     }
 }

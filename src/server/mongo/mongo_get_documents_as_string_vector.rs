@@ -32,10 +32,7 @@ pub async fn mongo_get_documents_as_string_vector(
         Ok(mut cursor) => {
             let mut vec_of_strings: Vec<String> = Vec::new();
             loop {
-                match {
-                    use futures::stream::TryStreamExt;
-                    cursor.try_next()
-                }.await {
+                match futures::stream::TryStreamExt::try_next(&mut cursor).await {
                     Err(e) => {
                         return Err(Box::new(
                             crate::server::mongo::mongo_get_documents_as_string_vector::MongoGetDocumentsAsStringVectorErrorNamed::MongoDB {
