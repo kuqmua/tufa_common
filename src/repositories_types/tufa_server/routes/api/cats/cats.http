@@ -15,7 +15,7 @@ project_commit: 702d5d892dc9a840b80dcf11d39db10e8fa366c8
 POST http://127.0.0.1:8080/api/cats/ HTTP/1.1
 Accept: */*
 content-type: application/json
-project_commit: 13982e2ba6cc554123567d1026d54893548bb5c4
+project_commit: 2eaf2dd741dc9ceaa9b2186f4a67c3e7325b5721
 
 {
     "name": "test_name",
@@ -27,7 +27,7 @@ project_commit: 13982e2ba6cc554123567d1026d54893548bb5c4
 PUT http://127.0.0.1:8080/api/cats/ HTTP/1.1
 Accept: */*
 content-type: application/json
-project_commit: 2e5e76013bd405df5eed1fc9a80c1468ecb0e1df
+project_commit: 2eaf2dd741dc9ceaa9b2186f4a67c3e7325b5721
 
 {
     "id": 9223372036854775807,
