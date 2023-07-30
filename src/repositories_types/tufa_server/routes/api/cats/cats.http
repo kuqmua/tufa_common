@@ -2,20 +2,20 @@
 
 GET http://127.0.0.1:8080/api/cats/?limit=10 HTTP/1.1
 Accept: */*
-project_commit: 87fc7e2ec8b4c639abe5b6f09c3d65a324d23a17
+project_commit: d18efa585a50003ae53d44a6fc97bbb8faa16764
 //name=leo&color=red
 ###
 
 GET http://127.0.0.1:8080/api/cats/65 HTTP/1.1
 Accept: */*
-project_commit: 702d5d892dc9a840b80dcf11d39db10e8fa366c8
+project_commit: d18efa585a50003ae53d44a6fc97bbb8faa16764
 
 ###
 
 POST http://127.0.0.1:8080/api/cats/ HTTP/1.1
 Accept: */*
 content-type: application/json
-project_commit: 2eaf2dd741dc9ceaa9b2186f4a67c3e7325b5721
+project_commit: d18efa585a50003ae53d44a6fc97bbb8faa16764
 
 {
     "name": "test_name",
@@ -27,7 +27,7 @@ project_commit: 2eaf2dd741dc9ceaa9b2186f4a67c3e7325b5721
 PUT http://127.0.0.1:8080/api/cats/ HTTP/1.1
 Accept: */*
 content-type: application/json
-project_commit: 2eaf2dd741dc9ceaa9b2186f4a67c3e7325b5721
+project_commit: d18efa585a50003ae53d44a6fc97bbb8faa16764
 
 {
     "id": 9223372036854775807,
@@ -40,7 +40,7 @@ project_commit: 2eaf2dd741dc9ceaa9b2186f4a67c3e7325b5721
 PATCH http://127.0.0.1:8080/api/cats/ HTTP/1.1
 Accept: */*
 content-type: application/json
-project_commit: 2e5e76013bd405df5eed1fc9a80c1468ecb0e1df
+project_commit: d18efa585a50003ae53d44a6fc97bbb8faa16764
 
 {
     "IdName": {
@@ -53,13 +53,13 @@ project_commit: 2e5e76013bd405df5eed1fc9a80c1468ecb0e1df
 
 DELETE http://127.0.0.1:8080/api/cats/?name=kek&color=white HTTP/1.1
 Accept: */*
-project_commit: 2e5e76013bd405df5eed1fc9a80c1468ecb0e1df
+project_commit: d18efa585a50003ae53d44a6fc97bbb8faa16764
 
 ###
 
 DELETE http://127.0.0.1:8080/api/cats/3 HTTP/1.1
 Accept: */*
-project_commit: 2e5e76013bd405df5eed1fc9a80c1468ecb0e1df
+project_commit: d18efa585a50003ae53d44a6fc97bbb8faa16764
 
 ###
 
@@ -74,24 +74,23 @@ Accept: */*
 ###
 
 GET http://127.0.0.1:8080/src/main.rs HTTP/1.1
-project_commit: 9d1d4f2cf3cd3b74b4ddd5c221e1ccec7d229c08
+project_commit: d18efa585a50003ae53d44a6fc97bbb8faa16764
 
 ###
 
 GET http://127.0.0.1:8080/header_extractor_example HTTP/1.1
-project_commit: 724eb1be666a28cf931ae14961c930aaf2ff2b94
+project_commit: d18efa585a50003ae53d44a6fc97bbb8faa16764
 
 ###
 
 GET http://127.0.0.1:8080/extract_custom_header_example HTTP/1.1
-project_commit: 724eb1be666a28cf931ae14961c930aaf2ff2b94
+project_commit: d18efa585a50003ae53d44a6fc97bbb8faa16764
 
 ###
 
 GET http://127.0.0.1:8080/middleware_message_example HTTP/1.1
-project_commit: 2e5e76013bd405df5eed1fc9a80c1468ecb0e1df
 
 ###
 
 GET http://127.0.0.1:8080/read_middleware_custom_header HTTP/1.1
-project_commit: 2e5e76013bd405df5eed1fc9a80c1468ecb0e1df
+project_commit: d18efa585a50003ae53d44a6fc97bbb8faa16764

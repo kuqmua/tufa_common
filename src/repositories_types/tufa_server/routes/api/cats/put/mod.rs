@@ -125,6 +125,31 @@ pub enum TryPut<'a> {
         migrate: sqlx::migrate::MigrateError,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
+    //
+    #[tvfrr_400_bad_request]
+    JsonDataError {
+        #[eo_display_with_serialize_deserialize]
+        json_data_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    #[tvfrr_400_bad_request]
+    JsonSyntaxError {
+        #[eo_display_with_serialize_deserialize]
+        json_syntax_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    #[tvfrr_400_bad_request]
+    MissingJsonContentType {
+        #[eo_display_with_serialize_deserialize]
+        json_syntax_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    #[tvfrr_500_internal_server_error]
+    BytesRejection {
+        #[eo_display_with_serialize_deserialize]
+        bytes_rejection: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
     //#[non_exhaustive] case
     #[tvfrr_500_internal_server_error]
     UnexpectedCase {

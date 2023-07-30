@@ -5,7 +5,9 @@
     type_variants_from_reqwest_response::TypeVariantsFromReqwestResponseFromChecker,
 )]
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_from_checker_paths(
-    crate::repositories_types::tufa_server::routes::api::cats::post::TryPost
+    crate::repositories_types::tufa_server::routes::api::cats::post::TryPost,
+    crate::repositories_types::tufa_server::routes::api::cats::put::TryPut,
+    crate::repositories_types::tufa_server::routes::api::cats::patch::TryPatch
 )]
 pub enum JsonExtractorErrorNamed<'a> {
     #[tvfrr_400_bad_request]
