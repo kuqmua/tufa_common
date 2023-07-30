@@ -48,8 +48,8 @@ impl<'a> std::convert::From<axum::extract::rejection::JsonRejection>
 {
     fn from(e: axum::extract::rejection::JsonRejection) -> JsonExtractorErrorNamed<'a> {
         match e {
-            axum::extract::rejection::JsonRejection::JsonDataError(json_data_error) => JsonExtractorErrorNamed::serde_json_error_response_data(json_data_error),
-            axum::extract::rejection::JsonRejection::JsonSyntaxError(json_syntax_error) => JsonExtractorErrorNamed::serde_json_error_response_syntax(json_syntax_error),
+            axum::extract::rejection::JsonRejection::JsonDataError(json_data_error) => JsonExtractorErrorNamed::serde_json_error_response(json_data_error),
+            axum::extract::rejection::JsonRejection::JsonSyntaxError(json_syntax_error) => JsonExtractorErrorNamed::serde_json_error_response(json_syntax_error),
             axum::extract::rejection::JsonRejection::MissingJsonContentType(_) => Self::MissingJsonContentType { 
                 json_syntax_error: crate::server::routes::helpers::hardcode::MISSING_CONTENT_TYPE_APPLICATION_JSON_HEADER.to_string(), 
                 code_occurence: crate::code_occurence_tufa_common!(), 
@@ -76,40 +76,14 @@ impl<'a> std::convert::From<axum::extract::rejection::JsonRejection>
 //
 // `Json` uses `serde_path_to_error` so the error will be wrapped in `serde_path_to_error::Error`.
 impl<'a> JsonExtractorErrorNamed<'a> {
-    fn serde_json_error_response_data<E>(err: E) -> JsonExtractorErrorNamed<'a> 
+    fn serde_json_error_response<E>(err: E) -> Self 
     where
         E: std::error::Error + 'static,
     {
-        if let Some(err) = find_error_source::<serde_path_to_error::Error<serde_json::Error>>(&err) {
-            let serde_json_err = err.inner();
+        if let Some(find_error_source_err) = find_error_source::<serde_path_to_error::Error<serde_json::Error>>(&err) {
             JsonExtractorErrorNamed::JsonDataError { 
-                json_data_error: format!(
-                    "Failed to deserialize the JSON body into the target type: missing field `todo` at line {} column {}",//todo
-                    serde_json_err.line(),
-                    serde_json_err.column()
-                ), 
+                json_data_error: format!("{err}: {}", find_error_source_err.inner()), 
                 code_occurence: crate::code_occurence_tufa_common!(),
-            }
-        } else {
-            JsonExtractorErrorNamed::UnexpectedCase {
-                unexpected_case: crate::server::routes::helpers::hardcode::UNKNOWN_ERROR.to_string(),
-                code_occurence: crate::code_occurence_tufa_common!(),
-            }
-        }
-    }
-    fn serde_json_error_response_syntax<E>(err: E) -> JsonExtractorErrorNamed<'a> 
-    where
-        E: std::error::Error + 'static,
-    {
-        if let Some(err) = find_error_source::<serde_path_to_error::Error<serde_json::Error>>(&err) {
-            let serde_json_err = err.inner();
-            JsonExtractorErrorNamed::JsonSyntaxError { 
-                json_syntax_error: format!(
-                    "Failed to parse the request body as JSON: expected `:` at line {} column {}",//todo
-                    serde_json_err.line(),
-                    serde_json_err.column()
-                ), 
-                code_occurence: crate::code_occurence_tufa_common!(), 
             }
         } else {
             JsonExtractorErrorNamed::UnexpectedCase {
