@@ -1,8 +1,3 @@
-#[derive(serde::Deserialize)]
-pub struct GetByIdPathParameters {
-    pub id: i64,
-}
-
 #[derive(
     Debug,
     thiserror::Error,
@@ -162,7 +157,7 @@ pub enum TryGetByIdErrorNamed<'a> {
 
 pub async fn try_get_by_id<'a>(
     server_location: &str,
-    path_parameters: crate::repositories_types::tufa_server::routes::api::cats::get_by_id::GetByIdPathParameters,
+    path_parameters: crate::repositories_types::tufa_server::routes::api::cats::GetByIdPathParameters,
 ) -> Result<crate::repositories_types::tufa_server::routes::api::cats::Cat, TryGetByIdErrorNamed<'a>>
 {
     if let true = path_parameters.id.is_negative() {

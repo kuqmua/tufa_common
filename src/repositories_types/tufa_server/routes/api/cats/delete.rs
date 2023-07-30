@@ -1,28 +1,3 @@
-#[derive(serde::Deserialize)]
-pub struct DeleteQueryParameters {
-    pub name: Option<String>,
-    pub color: Option<String>,
-}
-
-impl crate::common::url_encode::UrlEncode for DeleteQueryParameters {
-    fn url_encode(&self) -> String {
-        let parameters = match (&self.name, &self.color) {
-            (None, None) => String::from(""),
-            (None, Some(color)) => format!("color={}", urlencoding::encode(color)),
-            (Some(name), None) => format!("name={}", urlencoding::encode(name)),
-            (Some(name), Some(color)) => format!(
-                "name={}&color={}",
-                urlencoding::encode(name),
-                urlencoding::encode(color)
-            ),
-        };
-        match parameters.is_empty() {
-            true => String::from(""),
-            false => format!("?{parameters}"),
-        }
-    }
-}
-
 #[derive(
     Debug,
     thiserror::Error,
@@ -176,7 +151,7 @@ pub enum TryDeleteErrorNamed<'a> {
 
 pub async fn try_delete<'a>(
     server_location: &str,
-    query_parameters: crate::repositories_types::tufa_server::routes::api::cats::delete::DeleteQueryParameters,
+    query_parameters: crate::repositories_types::tufa_server::routes::api::cats::DeleteQueryParameters,
 ) -> Result<(), TryDeleteErrorNamed<'a>> {
     match tvfrr_extraction_logic(
         reqwest::Client::new()

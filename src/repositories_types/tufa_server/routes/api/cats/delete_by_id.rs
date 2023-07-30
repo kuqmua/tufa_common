@@ -1,8 +1,3 @@
-#[derive(serde::Deserialize)]
-pub struct DeleteByIdPathParameters {
-    pub id: i64,
-}
-
 #[derive(
     Debug,
     thiserror::Error,
@@ -162,7 +157,7 @@ pub enum TryDeleteByIdErrorNamed<'a> {
 
 pub async fn try_delete_by_id<'a>(
     server_location: &str,
-    path_parameters: crate::repositories_types::tufa_server::routes::api::cats::delete_by_id::DeleteByIdPathParameters,
+    path_parameters: crate::repositories_types::tufa_server::routes::api::cats::DeleteByIdPathParameters,
 ) -> Result<(), TryDeleteByIdErrorNamed<'a>> {
     if let true = path_parameters.id.is_negative() {
         return Err(TryDeleteByIdErrorNamed::BelowZero {

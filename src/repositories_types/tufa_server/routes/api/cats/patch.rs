@@ -1,18 +1,3 @@
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub enum CatToPatch {
-    IdName { id: i64, name: String },
-    IdColor { id: i64, color: String },
-}
-
-impl CatToPatch {
-    pub fn get_id(&self) -> &i64 {
-        match self {
-            CatToPatch::IdName { id, name: _name } => id,
-            CatToPatch::IdColor { id, color: _color } => id,
-        }
-    }
-}
-
 #[derive(
     Debug,
     thiserror::Error,
@@ -202,7 +187,7 @@ pub enum TryPatchErrorNamed<'a> {
 
 pub async fn try_patch<'a>(
     server_location: &str,
-    body: crate::repositories_types::tufa_server::routes::api::cats::patch::CatToPatch,
+    body: crate::repositories_types::tufa_server::routes::api::cats::CatToPatch,
 ) -> Result<(), TryPatchErrorNamed<'a>> {
     let id = body.get_id();
     if let true = id.is_negative() {

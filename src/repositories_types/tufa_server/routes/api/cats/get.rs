@@ -4,6 +4,40 @@ pub struct GetQueryParameters {
     pub name: Option<std::string::String>,
     pub color: Option<std::string::String>,
 }
+
+//
+#[derive(serde::Deserialize)]
+pub struct GetQueryParametersSecond {
+    pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
+    pub filter: Option<GetFilter>,
+    pub select: Option<GetSelect>,
+}
+
+#[derive(serde::Deserialize)]
+pub struct GetFilter {
+    // pub ids: Option<Vec<i64>>,
+    pub name: Option<std::string::String>,
+    pub color: Option<std::string::String>,
+}
+//
+#[derive(serde::Deserialize)]
+pub enum GetSelect {
+    #[serde(rename(deserialize = "id"))]
+    Id,
+    #[serde(rename(deserialize = "name"))]
+    Name,
+    #[serde(rename(deserialize = "color"))]
+    Color,
+    #[serde(rename(deserialize = "idname"))]
+    IdName,
+    #[serde(rename(deserialize = "idcolor"))]
+    IdColor,
+    #[serde(rename(deserialize = "namecolor"))]
+    NameColor,
+    #[serde(rename(deserialize = "idnamecolor"))]
+    IdNameColor,
+}
+
 //todo - make a macro for it?
 impl crate::common::url_encode::UrlEncode for GetQueryParameters {
     fn url_encode(&self) -> String {
@@ -193,6 +227,14 @@ pub async fn try_get<'a>(
     query_parameters: GetQueryParameters,
 ) -> Result<Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>, TryGetErrorNamed<'a>>
 {
+    // let f = GetQueryParametersSecond {
+    //     limit: Some(10),
+    //     filter: Some(GetFilter {
+    //         name: Some(std::string::String::from("namefilter")),
+    //         color: Some(std::string::String::from("colorfilter")),
+    //     }),
+    //     select: Some(GetSelect::Id),
+    // };
     match tvfrr_extraction_logic(
         reqwest::Client::new()
             .get(&format!(

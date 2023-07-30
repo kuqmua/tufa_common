@@ -1,9 +1,3 @@
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct CatToPost {
-    pub name: String,
-    pub color: String,
-}
-
 #[derive(
     Debug,
     thiserror::Error,
@@ -181,7 +175,7 @@ pub enum TryPostErrorNamed<'a> {
 
 pub async fn try_post<'a>(
     server_location: &str,
-    body: crate::repositories_types::tufa_server::routes::api::cats::post::CatToPost,
+    body: crate::repositories_types::tufa_server::routes::api::cats::CatToPost,
 ) -> Result<(), TryPostErrorNamed<'a>> {
     let stringified_json = match serde_json::to_string(&body) {
         Ok(stringified_json) => stringified_json,
