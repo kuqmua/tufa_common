@@ -2,20 +2,20 @@
 
 GET http://127.0.0.1:8080/api/cats/?limit=10 HTTP/1.1
 Accept: */*
-project_commit: 5c975235896a35319ce29da55e77bff8adeb7400
+project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 //name=leo&color=red
 ###
 
 GET http://127.0.0.1:8080/api/cats/65 HTTP/1.1
 Accept: */*
-project_commit: 5c975235896a35319ce29da55e77bff8adeb7400
+project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
 
 POST http://127.0.0.1:8080/api/cats/ HTTP/1.1
 Accept: */*
 content-type: application/json
-project_commit: 5c975235896a35319ce29da55e77bff8adeb7400
+project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 {
     "name": "test_name",
@@ -27,10 +27,10 @@ project_commit: 5c975235896a35319ce29da55e77bff8adeb7400
 PUT http://127.0.0.1:8080/api/cats/ HTTP/1.1
 Accept: */*
 content-type: application/json
-project_commit: 5c975235896a35319ce29da55e77bff8adeb7400
+project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 {
-    "id": 9223372036854775807,
+    "id": 1,
     "name": "test_name",
     "color": "test_color"
 }
@@ -40,12 +40,12 @@ project_commit: 5c975235896a35319ce29da55e77bff8adeb7400
 PATCH http://127.0.0.1:8080/api/cats/ HTTP/1.1
 Accept: */*
 content-type: application/json
-project_commit: 5c975235896a35319ce29da55e77bff8adeb7400
+project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 {
     "IdName": {
-        "id":65,
-        "name":"testcatnamepatched"
+        "id":1,
+        "name":"testcatnamepatched123"
     }
 }
 
@@ -53,13 +53,13 @@ project_commit: 5c975235896a35319ce29da55e77bff8adeb7400
 
 DELETE http://127.0.0.1:8080/api/cats/?name=kek&color=white HTTP/1.1
 Accept: */*
-project_commit: 5c975235896a35319ce29da55e77bff8adeb7400
+project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
 
-DELETE http://127.0.0.1:8080/api/cats/3 HTTP/1.1
+DELETE http://127.0.0.1:8080/api/cats/1 HTTP/1.1
 Accept: */*
-project_commit: 5c975235896a35319ce29da55e77bff8adeb7400
+project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
 
@@ -74,17 +74,17 @@ Accept: */*
 ###
 
 GET http://127.0.0.1:8080/src/main.rs HTTP/1.1
-project_commit: 5c975235896a35319ce29da55e77bff8adeb7400
+project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
 
 GET http://127.0.0.1:8080/header_extractor_example HTTP/1.1
-project_commit: 5c975235896a35319ce29da55e77bff8adeb7400
+project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
 
 GET http://127.0.0.1:8080/extract_custom_header_example HTTP/1.1
-project_commit: 5c975235896a35319ce29da55e77bff8adeb7400
+project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
 
@@ -93,4 +93,4 @@ GET http://127.0.0.1:8080/middleware_message_example HTTP/1.1
 ###
 
 GET http://127.0.0.1:8080/read_middleware_custom_header HTTP/1.1
-project_commit: 5c975235896a35319ce29da55e77bff8adeb7400
+project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
