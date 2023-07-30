@@ -21,9 +21,11 @@ pub struct ConfigUnchecked {
 
     tracing_type: crate::server::tracing_type::TracingType,
     source_place_type: crate::common::source_place_type::SourcePlaceType,
+    enable_api_git_commit_check: bool,
 }
 
 #[derive(
+    Debug,
     generate_getter_traits_for_struct_fields::GenerateGetterTraitsForStructFields, //todo - add 2 attributes - for reference\borrow(&) and for value(move)
 )]
 pub struct Config {
@@ -49,6 +51,7 @@ pub struct Config {
 
     tracing_type: crate::server::tracing_type::TracingType,
     source_place_type: crate::common::source_place_type::SourcePlaceType,
+    enable_api_git_commit_check: bool,
 }
 
 impl Config {
@@ -175,6 +178,7 @@ impl Config {
 
         let tracing_type = config_unchecked.tracing_type;
         let source_place_type = config_unchecked.source_place_type;
+        let enable_api_git_commit_check = config_unchecked.enable_api_git_commit_check;
         Ok(Self {
             server_port,
             socket_addr,
@@ -198,6 +202,7 @@ impl Config {
 
             tracing_type,
             source_place_type,
+            enable_api_git_commit_check,
         })
     }
 }

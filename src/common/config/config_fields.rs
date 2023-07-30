@@ -43,3 +43,6 @@ pub trait GetTracingType {
 pub trait GetSourcePlaceType {
     fn get_source_place_type(&self) -> &crate::common::source_place_type::SourcePlaceType;
 }
+pub trait GetEnableApiGitCommitCheck {
+    fn get_enable_api_git_commit_check(&self) -> &bool;
+}
