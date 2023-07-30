@@ -1,82 +1,3 @@
-#[derive(serde::Deserialize)]
-pub struct GetQueryParameters {
-    pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
-    pub name: Option<std::string::String>,
-    pub color: Option<std::string::String>,
-}
-
-//
-#[derive(serde::Deserialize)]
-pub struct GetQueryParametersSecond {
-    pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
-    pub filter: Option<GetFilter>,
-    pub select: Option<GetSelect>,
-}
-
-#[derive(serde::Deserialize)]
-pub struct GetFilter {
-    // pub ids: Option<Vec<i64>>,
-    pub name: Option<std::string::String>,
-    pub color: Option<std::string::String>,
-}
-//
-#[derive(serde::Deserialize)]
-pub enum GetSelect {
-    #[serde(rename(deserialize = "id"))]
-    Id,
-    #[serde(rename(deserialize = "name"))]
-    Name,
-    #[serde(rename(deserialize = "color"))]
-    Color,
-    #[serde(rename(deserialize = "idname"))]
-    IdName,
-    #[serde(rename(deserialize = "idcolor"))]
-    IdColor,
-    #[serde(rename(deserialize = "namecolor"))]
-    NameColor,
-    #[serde(rename(deserialize = "idnamecolor"))]
-    IdNameColor,
-}
-
-//todo - make a macro for it?
-impl crate::common::url_encode::UrlEncode for GetQueryParameters {
-    fn url_encode(&self) -> String {
-        let parameters = match (&self.limit, &self.name, &self.color) {
-            (None, None, None) => String::from(""),
-            (None, None, Some(color)) => format!("color={}", urlencoding::encode(color)),
-            (None, Some(name), None) => format!("name={}", urlencoding::encode(name)),
-            (None, Some(name), Some(color)) => format!(
-                "name={}&color={}",
-                urlencoding::encode(name),
-                urlencoding::encode(color)
-            ),
-            (Some(limit), None, None) => format!("limit={limit}"),
-            (Some(limit), None, Some(color)) => format!(
-                "limit={}&color={}",
-                urlencoding::encode(&limit.to_string()),
-                urlencoding::encode(color)
-            ),
-            (Some(limit), Some(name), None) => format!(
-                "limit={}&name={}",
-                urlencoding::encode(&limit.to_string()),
-                urlencoding::encode(name)
-            ),
-            (Some(limit), Some(name), Some(color)) => {
-                format!(
-                    "limit={}&name={}&color={}",
-                    urlencoding::encode(&limit.to_string()),
-                    urlencoding::encode(name),
-                    urlencoding::encode(color)
-                )
-            }
-        };
-        match parameters.is_empty() {
-            true => String::from(""),
-            false => format!("?{parameters}"),
-        }
-    }
-}
-
 #[derive(
     Debug,
     thiserror::Error,
@@ -224,7 +145,7 @@ pub enum TryGetErrorNamed<'a> {
 
 pub async fn try_get<'a>(
     server_location: &str,
-    query_parameters: GetQueryParameters,
+    query_parameters: crate::repositories_types::tufa_server::routes::api::cats::GetQueryParameters,
 ) -> Result<Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>, TryGetErrorNamed<'a>>
 {
     // let f = GetQueryParametersSecond {
