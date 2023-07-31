@@ -189,7 +189,7 @@ pub async fn try_patch<'a>(
     server_location: &str,
     body: crate::repositories_types::tufa_server::routes::api::cats::CatToPatch,
 ) -> Result<(), TryPatchErrorNamed<'a>> {
-    let id = body.get_id();
+    let id = crate::server::postgres::get_postgres_bigserial_id::GetPostgresBigserialId::get_postgres_bigserial_id(&body);
     if let true = id.is_negative() {
         return Err(TryPatchErrorNamed::BelowZero {
             below_zero: *id,

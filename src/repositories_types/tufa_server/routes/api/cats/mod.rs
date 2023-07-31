@@ -69,9 +69,9 @@ pub enum CatToPatch {
     IdName { id: i64, name: String },
     IdColor { id: i64, color: String },
 }
-//tooo maybe add proc macro?
-impl CatToPatch {
-    pub fn get_id(&self) -> &i64 {
+
+impl crate::server::postgres::get_postgres_bigserial_id::GetPostgresBigserialId for CatToPatch {
+    fn get_postgres_bigserial_id(&self) -> &i64 {
         match self {
             CatToPatch::IdName { id, name: _name } => id,
             CatToPatch::IdColor { id, color: _color } => id,
@@ -90,39 +90,6 @@ pub struct GetQueryParameters {
     pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
     pub name: Option<std::string::String>,
     pub color: Option<std::string::String>,
-}
-
-//
-#[derive(serde::Deserialize)]
-pub struct GetQueryParametersSecond {
-    pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
-    pub filter: Option<GetFilter>,
-    pub select: Option<GetSelect>,
-}
-
-#[derive(serde::Deserialize)]
-pub struct GetFilter {
-    // pub ids: Option<Vec<i64>>,
-    pub name: Option<std::string::String>,
-    pub color: Option<std::string::String>,
-}
-//
-#[derive(serde::Deserialize)]
-pub enum GetSelect {
-    #[serde(rename(deserialize = "id"))]
-    Id,
-    #[serde(rename(deserialize = "name"))]
-    Name,
-    #[serde(rename(deserialize = "color"))]
-    Color,
-    #[serde(rename(deserialize = "idname"))]
-    IdName,
-    #[serde(rename(deserialize = "idcolor"))]
-    IdColor,
-    #[serde(rename(deserialize = "namecolor"))]
-    NameColor,
-    #[serde(rename(deserialize = "idnamecolor"))]
-    IdNameColor,
 }
 
 //todo - make a macro for it?
@@ -162,4 +129,36 @@ impl crate::common::url_encode::UrlEncode for GetQueryParameters {
             false => format!("?{parameters}"),
         }
     }
+}
+
+#[derive(serde::Deserialize)]
+pub struct GetQueryParametersSecond {
+    pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
+    pub filter: Option<GetFilter>,
+    pub select: Option<GetSelect>,
+}
+
+#[derive(serde::Deserialize)]
+pub struct GetFilter {
+    // pub ids: Option<Vec<i64>>,
+    pub name: Option<std::string::String>,
+    pub color: Option<std::string::String>,
+}
+//
+#[derive(serde::Deserialize)]
+pub enum GetSelect {
+    #[serde(rename(deserialize = "id"))]
+    Id,
+    #[serde(rename(deserialize = "name"))]
+    Name,
+    #[serde(rename(deserialize = "color"))]
+    Color,
+    #[serde(rename(deserialize = "idname"))]
+    IdName,
+    #[serde(rename(deserialize = "idcolor"))]
+    IdColor,
+    #[serde(rename(deserialize = "namecolor"))]
+    NameColor,
+    #[serde(rename(deserialize = "idnamecolor"))]
+    IdNameColor,
 }
