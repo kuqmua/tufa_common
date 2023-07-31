@@ -6,7 +6,7 @@
     type_variants_from_reqwest_response::TypeVariantsFromReqwestResponse,
 )]
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_attribute(
-    Vec::<crate::repositories_types::tufa_server::routes::api::cats::Cat>,
+    Vec::<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>,
     tvfrr_200_ok
 )]
 pub enum TryGet<'a> {
@@ -146,8 +146,10 @@ pub enum TryGetErrorNamed<'a> {
 pub async fn try_get<'a>(
     server_location: &str,
     query_parameters: crate::repositories_types::tufa_server::routes::api::cats::GetQueryParameters,
-) -> Result<Vec<crate::repositories_types::tufa_server::routes::api::cats::Cat>, TryGetErrorNamed<'a>>
-{
+) -> Result<
+    Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>,
+    TryGetErrorNamed<'a>,
+> {
     // let f = GetQueryParametersSecond {
     //     limit: Some(10),
     //     filter: Some(GetFilter {

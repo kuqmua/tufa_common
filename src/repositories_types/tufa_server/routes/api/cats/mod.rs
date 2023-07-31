@@ -29,6 +29,113 @@ pub struct Cat {
     pub color: String,
 }
 
+//
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+pub struct CatOptions {
+    pub id: Option<i64>, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
+    pub name: Option<String>,
+    pub color: Option<String>,
+}
+
+impl std::convert::From<Cat> for CatOptions {
+    fn from(value: Cat) -> Self {
+        CatOptions {
+            id: Some(value.id),
+            name: Some(value.name),
+            color: Some(value.color),
+        }
+    }
+}
+impl std::convert::From<CatId> for CatOptions {
+    fn from(value: CatId) -> Self {
+        CatOptions {
+            id: Some(value.id),
+            name: None,
+            color: None,
+        }
+    }
+}
+impl std::convert::From<CatName> for CatOptions {
+    fn from(value: CatName) -> Self {
+        CatOptions {
+            id: None,
+            name: Some(value.name),
+            color: None,
+        }
+    }
+}
+impl std::convert::From<CatColor> for CatOptions {
+    fn from(value: CatColor) -> Self {
+        CatOptions {
+            id: None,
+            name: None,
+            color: Some(value.color),
+        }
+    }
+}
+impl std::convert::From<CatIdName> for CatOptions {
+    fn from(value: CatIdName) -> Self {
+        CatOptions {
+            id: Some(value.id),
+            name: Some(value.name),
+            color: None,
+        }
+    }
+}
+impl std::convert::From<CatIdColor> for CatOptions {
+    fn from(value: CatIdColor) -> Self {
+        CatOptions {
+            id: Some(value.id),
+            name: None,
+            color: Some(value.color),
+        }
+    }
+}
+impl std::convert::From<CatNameColor> for CatOptions {
+    fn from(value: CatNameColor) -> Self {
+        CatOptions {
+            id: None,
+            name: Some(value.name),
+            color: Some(value.color),
+        }
+    }
+}
+
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+pub struct CatId {
+    pub id: i64,
+}
+
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+pub struct CatName {
+    pub name: String,
+}
+
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+pub struct CatColor {
+    pub color: String,
+}
+
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+pub struct CatIdName {
+    pub id: i64,
+    pub name: String,
+}
+
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+pub struct CatIdColor {
+    pub id: i64,
+    pub color: String,
+}
+
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+pub struct CatNameColor {
+    pub name: String,
+    pub color: String,
+}
+
+//
+
 #[derive(serde::Deserialize)]
 pub struct DeleteByIdPathParameters {
     pub id: i64,
@@ -85,11 +192,12 @@ pub struct CatToPost {
     pub color: String,
 }
 
-#[derive(serde::Deserialize)]
+#[derive(Debug, serde::Deserialize)]
 pub struct GetQueryParameters {
     pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
     pub name: Option<std::string::String>,
     pub color: Option<std::string::String>,
+    pub select: GetSelect,
 }
 
 //todo - make a macro for it?
@@ -124,10 +232,16 @@ impl crate::common::url_encode::UrlEncode for GetQueryParameters {
                 )
             }
         };
-        match parameters.is_empty() {
-            true => String::from(""),
-            false => format!("?{parameters}"),
-        }
+        let select_value = match self.select {
+            GetSelect::Id => "id",
+            GetSelect::Name => "name",
+            GetSelect::Color => "color",
+            GetSelect::IdName => "idname",
+            GetSelect::IdColor => "idcolor",
+            GetSelect::NameColor => "namecolor",
+            GetSelect::IdNameColor => "idnamecolor",
+        };
+        format!("?{parameters}&select={select_value}")
     }
 }
 
@@ -145,20 +259,39 @@ pub struct GetFilter {
     pub color: Option<std::string::String>,
 }
 //
-#[derive(serde::Deserialize)]
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub enum GetSelect {
-    #[serde(rename(deserialize = "id"))]
+    #[serde(rename(serialize = "id", deserialize = "id"))]
     Id,
-    #[serde(rename(deserialize = "name"))]
+    #[serde(rename(serialize = "name", deserialize = "name"))]
     Name,
-    #[serde(rename(deserialize = "color"))]
+    #[serde(rename(serialize = "color", deserialize = "color"))]
     Color,
-    #[serde(rename(deserialize = "idname"))]
+    #[serde(rename(serialize = "idname", deserialize = "idname"))]
     IdName,
-    #[serde(rename(deserialize = "idcolor"))]
+    #[serde(rename(serialize = "idcolor", deserialize = "idcolor"))]
     IdColor,
-    #[serde(rename(deserialize = "namecolor"))]
+    #[serde(rename(serialize = "namecolor", deserialize = "namecolor"))]
     NameColor,
-    #[serde(rename(deserialize = "idnamecolor"))]
+    #[serde(rename(serialize = "idnamecolor", deserialize = "idnamecolor"))]
     IdNameColor,
 }
+
+impl std::fmt::Display for GetSelect {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            GetSelect::Id => write!(f, "id"),
+            GetSelect::Name => write!(f, "name"),
+            GetSelect::Color => write!(f, "color"),
+            GetSelect::IdName => write!(f, "id,name"),
+            GetSelect::IdColor => write!(f, "id,color"),
+            GetSelect::NameColor => write!(f, "name,color"),
+            GetSelect::IdNameColor => write!(f, "id,name,color"),
+        }
+    }
+}
+// pub trait Something {
+//     fn get_static_str(&self) -> &'static str;
+// }
+
+// impl Something for
