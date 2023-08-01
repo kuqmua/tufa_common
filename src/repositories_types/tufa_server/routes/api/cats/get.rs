@@ -139,6 +139,7 @@ pub enum TryGet<'a> {
         unexpected_case: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
+    //todo - no parameters case?
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
