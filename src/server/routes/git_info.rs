@@ -21,7 +21,7 @@ pub trait GitInfoRouteParameters:
 {
 }
 
-async fn git_info_axum(
+async fn git_info(
     axum::extract::State(app_info): axum::extract::State<DynArcGitInfoRouteParametersSendSync>,
 ) -> GitInfo {
     GitInfo {
@@ -32,6 +32,6 @@ async fn git_info_axum(
 
 pub(crate) fn git_info_route(app_info: DynArcGitInfoRouteParametersSendSync) -> axum::Router {
     axum::Router::new()
-        .route("/git_info", axum::routing::get(git_info_axum))
+        .route("/git_info", axum::routing::get(git_info))
         .with_state(app_info)
 }

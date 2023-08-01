@@ -18,7 +18,7 @@ content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 {
-    "namee": "test_name",
+    "name": "test_name",
     "color": "test_color"
 }
 
