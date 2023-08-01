@@ -5,7 +5,8 @@
     type_variants_from_reqwest_response::TypeVariantsFromReqwestResponseFromChecker,
 )]
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_from_checker_paths(
-    crate::repositories_types::tufa_server::routes::api::cats::delete_by_id::TryDeleteById
+    crate::repositories_types::tufa_server::routes::api::cats::delete_by_id::TryDeleteById,
+    crate::repositories_types::tufa_server::routes::api::cats::get_by_id::TryGetById
 )]
 pub enum PathExtractorErrorNamed<'a> {
     #[tvfrr_400_bad_request]
