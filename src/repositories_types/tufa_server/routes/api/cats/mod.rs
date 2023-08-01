@@ -32,8 +32,11 @@ pub struct Cat {
 //
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct CatOptions {
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<i64>, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub color: Option<String>,
 }
 
