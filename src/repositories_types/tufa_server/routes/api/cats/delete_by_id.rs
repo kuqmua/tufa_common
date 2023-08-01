@@ -125,6 +125,20 @@ pub enum TryDeleteById<'a> {
         migrate: sqlx::migrate::MigrateError,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
+    //
+    #[tvfrr_400_bad_request]
+    FailedToDeserializePathParams {
+        #[eo_display_with_serialize_deserialize]
+        failed_to_deserialize_path_params: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    #[tvfrr_400_bad_request]
+    MissingPathParams {
+        #[eo_display_with_serialize_deserialize]
+        missing_path_params: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+    //
     //#[non_exhaustive] case
     #[tvfrr_500_internal_server_error]
     UnexpectedCase {
