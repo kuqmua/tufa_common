@@ -109,54 +109,46 @@ where
     }
 }
 
-// pub trait JsonValueResultExtractor<
-//     OkGeneric, 
-//     ErrorGeneric, 
-//     ConfigGeneric
-// > 
-// {
-//     fn try_extract_value(
-//         self, 
-//         app_info: std::sync::Arc<ConfigGeneric>
-//     ) -> Result<OkGeneric, ErrorGeneric>;
-// }
+pub trait JsonValueResultExtractor<
+    OkGeneric, 
+    ErrorGeneric, 
+> 
+{
+    fn try_extract_value(
+        self, 
+        app_info: &axum::extract::State<crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync>
+    ) -> Result<OkGeneric, ErrorGeneric>;
+}
 
-// impl<
-//     'a, 
-//     OkGeneric, 
-//     ErrorGeneric, 
-//     ConfigGeneric
-// > JsonValueResultExtractor<
-//     OkGeneric, 
-//     ErrorGeneric, 
-//     ConfigGeneric
-// > for Result<
-//         axum::Json<OkGeneric>,
-//         axum::extract::rejection::JsonRejection,
-//     >
-// where
-//     ErrorGeneric: std::convert::From<crate::server::routes::helpers::json_extractor_error::JsonExtractorErrorNamed<'a>> 
-//     + axum::response::IntoResponse,
-//     ConfigGeneric: crate::repositories_types::tufa_server::routes::api::cats::GetConfigGetPostgresPool + Send + Sync
-//     //crate::repositories_types::tufa_server::routes::api::cats::GetConfigGetPostgresPool + Send + Sync//crate::repositories_types::tufa_server::routes::api::cats::GetConfigGetPostgresPool//
-    
-    
-//     // crate::repositories_types::tufa_server::config::config_struct::GetConfig,
-// {
-//     fn try_extract_value(
-//         self, 
-//         app_info: std::sync::Arc<ConfigGeneric>
-//     ) -> Result<OkGeneric, ErrorGeneric> {
-//         match self {
-//             Ok(axum::Json(payload)) => Ok(payload),
-//             Err(err) => {
-//                 let error = crate::server::routes::helpers::json_extractor_error::JsonExtractorErrorNamed::from(err);
-//                 crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-//                     &error,
-//                     app_info.get_config(),
-//                 );
-//                 Err(ErrorGeneric::from(error))
-//             }
-//         }
-//     }
-// }
+impl<
+    'a, 
+    OkGeneric, 
+    ErrorGeneric, 
+> JsonValueResultExtractor<
+    OkGeneric, 
+    ErrorGeneric, 
+> for Result<
+        axum::Json<OkGeneric>,
+        axum::extract::rejection::JsonRejection,
+    >
+where
+    ErrorGeneric: std::convert::From<crate::server::routes::helpers::json_extractor_error::JsonExtractorErrorNamed<'a>> 
+    + axum::response::IntoResponse,
+{
+    fn try_extract_value(
+        self, 
+        app_info: &axum::extract::State<crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync>
+    ) -> Result<OkGeneric, ErrorGeneric> {
+        match self {
+            Ok(axum::Json(payload)) => Ok(payload),
+            Err(err) => {
+                let error = crate::server::routes::helpers::json_extractor_error::JsonExtractorErrorNamed::from(err);
+                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                    &error,
+                    app_info.get_config(),
+                );
+                Err(ErrorGeneric::from(error))
+            }
+        }
+    }
+}
