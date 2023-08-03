@@ -43,3 +43,35 @@ impl<'a> std::convert::From<axum::extract::rejection::QueryRejection>
         }
     }
 }
+
+pub trait QueryValueResultExtractor<OkGeneric, ErrorGeneric> {
+    fn try_extract_value(
+        self,
+        app_info: &axum::extract::State<crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync>,
+    ) -> Result<OkGeneric, ErrorGeneric>;
+}
+
+impl<'a, OkGeneric, ErrorGeneric> QueryValueResultExtractor<OkGeneric, ErrorGeneric>
+    for Result<axum::extract::Query<OkGeneric>, axum::extract::rejection::QueryRejection>
+where
+    ErrorGeneric: std::convert::From<
+            crate::server::routes::helpers::query_extractor_error::QueryExtractorErrorNamed<'a>,
+        > + axum::response::IntoResponse,
+{
+    fn try_extract_value(
+        self,
+        app_info: &axum::extract::State<crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync>,
+    ) -> Result<OkGeneric, ErrorGeneric> {
+        match self {
+            Ok(axum::extract::Query(payload)) => Ok(payload),
+            Err(err) => {
+                let error = crate::server::routes::helpers::query_extractor_error::QueryExtractorErrorNamed::from(err);
+                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                    &error,
+                    app_info.get_config(),
+                );
+                Err(ErrorGeneric::from(error))
+            }
+        }
+    }
+}
