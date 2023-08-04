@@ -158,14 +158,6 @@ pub async fn try_get<'a>(
     Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>,
     TryGetErrorNamed<'a>,
 > {
-    // let f = GetQueryParametersSecond {
-    //     limit: Some(10),
-    //     filter: Some(GetFilter {
-    //         name: Some(std::string::String::from("namefilter")),
-    //         color: Some(std::string::String::from("colorfilter")),
-    //     }),
-    //     select: Some(GetSelect::Id),
-    // };
     match tvfrr_extraction_logic(
         reqwest::Client::new()
             .get(&format!(
