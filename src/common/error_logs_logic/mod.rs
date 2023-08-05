@@ -28,7 +28,6 @@ pub mod source_to_string_without_config;
 #[cfg(test)]
 pub mod test;
 pub mod to_string_with_config;
-pub mod to_string_with_config_second;
 pub mod to_string_without_config;
 pub mod vec_display_foreign_type_into_vec_string;
 pub mod vec_display_foreign_type_to_string;

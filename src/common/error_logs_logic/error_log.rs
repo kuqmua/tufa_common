@@ -11,8 +11,7 @@ pub trait ErrorLog {
 
 impl<'a, SelfGeneric> crate::common::error_logs_logic::error_log::ErrorLog for SelfGeneric
 where
-    SelfGeneric:
-        crate::common::error_logs_logic::to_string_with_config_second::ToStringWithConfigSecond<'a>,
+    SelfGeneric: crate::common::error_logs_logic::to_string_with_config::ToStringWithConfig<'a>,
 {
     fn error_log<
         ConfigGeneric: crate::common::config::config_fields::GetSourcePlaceType
@@ -26,7 +25,7 @@ where
             "{}",
             ansi_term::Colour::RGB(255, 0, 0)
                 .bold()
-                .paint(self.to_string_with_config_second(config))
+                .paint(self.to_string_with_config(config))
         );
     }
 }
