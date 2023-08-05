@@ -5,6 +5,11 @@ pub struct AppInfo<'a> {
     pub repository_git_info: &'a crate::common::git::git_info::GitInfo<'a>,
 }
 
+impl<'a> crate::repositories_types::tufa_server::routes::service_possibilities::ServicePossibilities
+    for AppInfo<'a>
+{
+}
+
 impl<'a> crate::repositories_types::tufa_server::routes::api::cats::GetConfigGetPostgresPool
     for AppInfo<'a>
 {

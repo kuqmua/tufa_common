@@ -1,4 +1,4 @@
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)] //
 pub enum MongoDropDbErrorNamed<'a> {
     MongoDB {
         #[eo_display]
@@ -21,3 +21,5 @@ pub async fn mongo_drop_db<'a>(
     }
     Ok(())
 }
+
+//////////////////
