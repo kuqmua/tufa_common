@@ -202,12 +202,12 @@ pub struct GetQueryParameters {
     pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
     pub name: Option<std::string::String>,
     pub color: Option<std::string::String>,
-    pub select: GetSelect,
+    pub select: GetSelectHandle, // GetSelect
 }
 
 //todo - make a macro for it?
 impl crate::common::url_encode::UrlEncode for GetQueryParameters {
-    fn url_encode(&self) -> String {
+    fn url_encode(&self) -> std::string::String {
         let parameters = match (&self.limit, &self.name, &self.color) {
             (None, None, None) => String::from(""),
             (None, None, Some(color)) => format!("color={}", urlencoding::encode(color)),
@@ -237,16 +237,16 @@ impl crate::common::url_encode::UrlEncode for GetQueryParameters {
                 )
             }
         };
-        let select_value = match self.select {
-            GetSelect::Id => "id",
-            GetSelect::Name => "name",
-            GetSelect::Color => "color",
-            GetSelect::IdName => "idname",
-            GetSelect::IdColor => "idcolor",
-            GetSelect::NameColor => "namecolor",
-            GetSelect::IdNameColor => "idnamecolor",
-        };
-        format!("?{parameters}&select={select_value}")
+        // let select_value = match self.select {
+        //     GetSelect::Id => "id",
+        //     GetSelect::Name => "name",
+        //     GetSelect::Color => "color",
+        //     GetSelect::IdName => "idname",
+        //     GetSelect::IdColor => "idcolor",
+        //     GetSelect::NameColor => "namecolor",
+        //     GetSelect::IdNameColor => "idnamecolor",
+        // };
+        format!("?{parameters}&select={}", self.select.url_encode())
     }
 }
 
@@ -295,8 +295,94 @@ impl std::fmt::Display for GetSelect {
         }
     }
 }
-// pub trait Something {
-//     fn get_static_str(&self) -> &'static str;
-// }
+////////////////////
+#[derive(
+    Debug,
+    serde::Serialize,
+    serde::Deserialize,
+    enum_extension::EnumExtension,
+    strum_macros::EnumIter,
+    PartialEq,
+    Eq,
+)]
+pub enum GetSelectField {
+    #[serde(rename(serialize = "id", deserialize = "id"))]
+    Id,
+    #[serde(rename(serialize = "name", deserialize = "name"))]
+    Name,
+    #[serde(rename(serialize = "color", deserialize = "color"))]
+    Color,
+}
 
-// impl Something for
+impl std::fmt::Display for GetSelectField {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", Self::to_lower_snake_case(self))
+        // match self {
+        //     GetSelectField::Id => write!(f, "id"),
+        //     GetSelectField::Name => write!(f, "name"),
+        //     GetSelectField::Color => write!(f, "color"),
+        // }
+    }
+}
+
+impl crate::common::url_encode::UrlEncode for GetSelectField {
+    fn url_encode(&self) -> std::string::String {
+        //format!("color={}", urlencoding::encode(color))
+        // format!("?{parameters}&select={select_value}")
+        urlencoding::encode(&self.to_string()).to_string()
+        // match &self {
+        //     GetSelectField::Id => urlencoding::encode("id").to_string(),
+        //     GetSelectField::Name => urlencoding::encode("name").to_string(),
+        //     GetSelectField::Color => urlencoding::encode("color").to_string(),
+        // }
+    }
+}
+
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
+pub struct GetSelectHandle {
+    selected: Vec<GetSelectField>,
+}
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum TryInitGetSelect<'a> {
+    RepetitionOfPossibleValues {
+        #[eo_display_with_serialize_deserialize]
+        max_length: usize,
+        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    },
+}
+
+impl GetSelectHandle {
+    pub fn try_init<'a>(
+        possible_selected: Vec<GetSelectField>,
+    ) -> Result<Vec<GetSelectField>, TryInitGetSelect<'a>> {
+        let len = possible_selected.len();
+        if let true = len <= GetSelectField::get_length() {
+            Ok(possible_selected)
+        } else {
+            Err(TryInitGetSelect::RepetitionOfPossibleValues {
+                max_length: len,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            })
+        }
+    }
+}
+
+impl crate::common::url_encode::UrlEncode for GetSelectHandle {
+    fn url_encode(&self) -> std::string::String {
+        let mut folded =
+            self.selected
+                .iter()
+                .fold(std::string::String::from(""), |mut acc, elem| {
+                    acc.push_str(&format!("{},", elem.url_encode()));
+                    acc
+                });
+        match folded.is_empty() {
+            true => folded,
+            false => {
+                folded.pop();
+                folded
+            }
+        }
+    }
+}
