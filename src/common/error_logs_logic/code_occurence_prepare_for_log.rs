@@ -1,35 +1,3 @@
-pub trait CodeOccurencePrepareForLogWithConfig<
-    ConfigGeneric: crate::common::config::config_fields::GetTimezone
-        + crate::common::config::config_fields::GetSourcePlaceType
-        + ?Sized,
->
-{
-    fn code_occurence_prepare_for_log_with_config(&self, config: &ConfigGeneric) -> String;
-}
-
-impl<'a, SelfGeneric, ConfigGeneric> CodeOccurencePrepareForLogWithConfig<ConfigGeneric>
-    for SelfGeneric
-where
-    SelfGeneric: crate::common::error_logs_logic::get_file::GetFile
-        + crate::common::error_logs_logic::get_line::GetLine
-        + crate::common::error_logs_logic::get_column::GetColumn
-        + crate::common::error_logs_logic::get_duration::GetDuration
-        + crate::common::git::get_git_source_file_link::GetGitSourceFileLink<'a>,
-    ConfigGeneric: crate::common::config::config_fields::GetTimezone
-        + crate::common::config::config_fields::GetSourcePlaceType
-        + ?Sized,
-{
-    fn code_occurence_prepare_for_log_with_config(&self, config: &ConfigGeneric) -> String {
-        prepare_for_log(
-            config.get_source_place_type().get_code_path(self),
-            chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
-                .with_timezone(config.get_timezone())
-                .format("%Y-%m-%d %H:%M:%S")
-                .to_string(),
-        )
-    }
-}
-
 pub trait CodeOccurencePrepareForLogWithoutConfig {
     fn code_occurence_prepare_for_log_without_config(&self) -> String;
 }
