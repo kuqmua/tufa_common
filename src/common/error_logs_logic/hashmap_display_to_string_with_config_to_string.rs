@@ -7,10 +7,8 @@ impl<'a, HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric>
     for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
 where
     HashMapKeyGeneric: std::fmt::Display,
-    HashMapValueGeneric: crate::common::error_logs_logic::to_string_with_config::ToStringWithConfig<
-        'a,
-        ConfigGeneric,
-    >,
+    HashMapValueGeneric:
+        crate::common::error_logs_logic::to_string_with_config::ToStringWithConfig<'a>,
     ConfigGeneric: crate::common::config::config_fields::GetSourcePlaceType
         + crate::common::config::config_fields::GetTimezone,
 {

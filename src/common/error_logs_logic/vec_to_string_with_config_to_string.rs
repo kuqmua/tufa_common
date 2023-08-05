@@ -5,10 +5,8 @@ pub trait VecToStringWithConfigToString<'a, ConfigGeneric> {
 impl<'a, VecElementGeneric, ConfigGeneric> VecToStringWithConfigToString<'a, ConfigGeneric>
     for Vec<VecElementGeneric>
 where
-    VecElementGeneric: crate::common::error_logs_logic::to_string_with_config::ToStringWithConfig<
-        'a,
-        ConfigGeneric,
-    >,
+    VecElementGeneric:
+        crate::common::error_logs_logic::to_string_with_config::ToStringWithConfig<'a>,
     ConfigGeneric: crate::common::config::config_fields::GetSourcePlaceType
         + crate::common::config::config_fields::GetTimezone,
 {
