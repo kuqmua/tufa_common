@@ -12,15 +12,16 @@ async fn git_info(
 ) -> impl axum::response::IntoResponse {
     #[derive(serde::Serialize)]
     struct GitInfo {
-        pub project_commit: std::string::String,
-        pub commit: std::string::String,
+        project_commit: std::string::String,
+        commit: std::string::String,
     }
-    let mut res = axum::response::IntoResponse::into_response(axum::Json(GitInfo {
-        project_commit: app_info.get_project_git_commit_link(),
-        commit: app_info.get_git_commit_link(),
-    }));
-    *res.status_mut() = http::StatusCode::OK;
-    res
+    (
+        axum::http::StatusCode::OK,
+        axum::Json(GitInfo {
+            project_commit: app_info.get_project_git_commit_link(),
+            commit: app_info.get_git_commit_link(),
+        }),
+    )
 }
 
 pub(crate) fn git_info_route(app_info: DynArcGitInfoRouteParametersSendSync) -> axum::Router {

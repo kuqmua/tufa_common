@@ -1,4 +1,4 @@
-async fn health_check() -> axum::http::StatusCode {
+async fn health_check() -> impl axum::response::IntoResponse {
     println!("health_check");
     axum::http::StatusCode::OK
 }
