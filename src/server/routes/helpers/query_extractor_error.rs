@@ -66,9 +66,9 @@ where
             Ok(axum::extract::Query(payload)) => Ok(payload),
             Err(err) => {
                 let error = crate::server::routes::helpers::query_extractor_error::QueryExtractorErrorNamed::from(err);
-                crate::common::error_logs_logic::error_log::ErrorLogSecond::error_log_second(
+                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
                     &error,
-                    app_info.get_config(),
+                    app_info.as_ref(),
                 );
                 Err(ErrorGeneric::from(error))
             }
