@@ -200,44 +200,73 @@ pub struct CatToPost {
 #[derive(Debug, serde::Deserialize)]
 pub struct GetQueryParameters {
     pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
+    pub id: Option<i64>, //todo declare a postgres id type as i64 and reuse it later
     pub name: Option<std::string::String>,
     pub color: Option<std::string::String>,
-    pub select: GetSelect,
+    pub select: Option<GetSelect>,
 }
 
 //todo - make a macro for it?
 impl crate::common::url_encode::UrlEncode for GetQueryParameters {
     fn url_encode(&self) -> std::string::String {
-        let parameters = match (&self.limit, &self.name, &self.color) {
-            (None, None, None) => String::from(""),
-            (None, None, Some(color)) => format!("color={}", urlencoding::encode(color)),
-            (None, Some(name), None) => format!("name={}", urlencoding::encode(name)),
-            (None, Some(name), Some(color)) => format!(
-                "name={}&color={}",
-                urlencoding::encode(name),
-                urlencoding::encode(color)
-            ),
-            (Some(limit), None, None) => format!("limit={limit}"),
-            (Some(limit), None, Some(color)) => format!(
-                "limit={}&color={}",
-                urlencoding::encode(&limit.to_string()),
-                urlencoding::encode(color)
-            ),
-            (Some(limit), Some(name), None) => format!(
-                "limit={}&name={}",
-                urlencoding::encode(&limit.to_string()),
-                urlencoding::encode(name)
-            ),
-            (Some(limit), Some(name), Some(color)) => {
-                format!(
-                    "limit={}&name={}&color={}",
-                    urlencoding::encode(&limit.to_string()),
-                    urlencoding::encode(name),
-                    urlencoding::encode(color)
-                )
+        let mut stringified_query_parameters = String::from("?");
+        if let Some(limit) = &self.limit {
+            let query_parameter_handle =
+                format!("limit={}", urlencoding::encode(&limit.to_string())); //todo -maybe write macro for it
+            match stringified_query_parameters.len() > 1 {
+                true => {
+                    stringified_query_parameters.push_str(&query_parameter_handle);
+                }
+                false => {
+                    stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
+                }
             }
-        };
-        format!("?{parameters}&select={}", self.select.url_encode())
+        }
+        if let Some(id) = &self.id {
+            let query_parameter_handle = format!("id={}", urlencoding::encode(&id.to_string()));
+            match stringified_query_parameters.len() > 1 {
+                true => {
+                    stringified_query_parameters.push_str(&query_parameter_handle);
+                }
+                false => {
+                    stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
+                }
+            }
+        }
+        if let Some(name) = &self.name {
+            let query_parameter_handle = format!("name={}", urlencoding::encode(name));
+            match stringified_query_parameters.len() > 1 {
+                true => {
+                    stringified_query_parameters.push_str(&query_parameter_handle);
+                }
+                false => {
+                    stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
+                }
+            }
+        }
+        if let Some(color) = &self.color {
+            let query_parameter_handle = format!("color={}", urlencoding::encode(color));
+            match stringified_query_parameters.len() > 1 {
+                true => {
+                    stringified_query_parameters.push_str(&query_parameter_handle);
+                }
+                false => {
+                    stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
+                }
+            }
+        }
+        if let Some(select) = &self.select {
+            let query_parameter_handle = format!("select={}", select.url_encode()); //urlencoding::encode(select)
+            match stringified_query_parameters.len() > 1 {
+                true => {
+                    stringified_query_parameters.push_str(&query_parameter_handle);
+                }
+                false => {
+                    stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
+                }
+            }
+        }
+        stringified_query_parameters
     }
 }
 
