@@ -1,7 +1,7 @@
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, getset::Getters)]
 pub struct Bigserial {
     #[getset(get = "pub")]
-    bigserial: i64,
+    bigserial: i64, //todo postgres bigserial max = i64::MAX, but invalid in i64 < 0
 }
 
 impl std::fmt::Display for Bigserial {
@@ -35,4 +35,8 @@ impl Bigserial {
             })
         }
     }
+}
+
+pub trait GetPostgresBigserialId {
+    fn get_postgres_bigserial_id(&self) -> &Bigserial;
 }

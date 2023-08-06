@@ -26,7 +26,7 @@ pub type DynArcGetConfigGetPostgresPoolSendSync = std::sync::Arc<
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct Cat {
-    pub id: i64, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
+    pub id: crate::server::postgres::bigserial::Bigserial, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
     pub name: String,
     pub color: String,
 }
@@ -35,7 +35,7 @@ pub struct Cat {
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct CatOptions {
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub id: Option<i64>, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
+    pub id: Option<crate::server::postgres::bigserial::Bigserial>, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
     #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -108,7 +108,7 @@ impl std::convert::From<CatNameColor> for CatOptions {
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct CatId {
-    pub id: i64,
+    pub id: crate::server::postgres::bigserial::Bigserial,
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
@@ -123,13 +123,13 @@ pub struct CatColor {
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct CatIdName {
-    pub id: i64,
+    pub id: crate::server::postgres::bigserial::Bigserial,
     pub name: String,
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct CatIdColor {
-    pub id: i64,
+    pub id: crate::server::postgres::bigserial::Bigserial,
     pub color: String,
 }
 
@@ -143,7 +143,7 @@ pub struct CatNameColor {
 
 #[derive(serde::Deserialize)]
 pub struct DeleteByIdPathParameters {
-    pub id: i64,
+    pub id: crate::server::postgres::bigserial::Bigserial,
 }
 
 #[derive(serde::Deserialize)]
@@ -173,17 +173,23 @@ impl crate::common::url_encode::UrlEncode for DeleteQueryParameters {
 
 #[derive(serde::Deserialize)]
 pub struct GetByIdPathParameters {
-    pub id: i64,
+    pub id: crate::server::postgres::bigserial::Bigserial,
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub enum CatToPatch {
-    IdName { id: i64, name: String },
-    IdColor { id: i64, color: String },
+    IdName {
+        id: crate::server::postgres::bigserial::Bigserial,
+        name: String,
+    },
+    IdColor {
+        id: crate::server::postgres::bigserial::Bigserial,
+        color: String,
+    },
 }
 
-impl crate::server::postgres::get_postgres_bigserial_id::GetPostgresBigserialId for CatToPatch {
-    fn get_postgres_bigserial_id(&self) -> &i64 {
+impl crate::server::postgres::bigserial::GetPostgresBigserialId for CatToPatch {
+    fn get_postgres_bigserial_id(&self) -> &crate::server::postgres::bigserial::Bigserial {
         match self {
             CatToPatch::IdName { id, name: _name } => id,
             CatToPatch::IdColor { id, color: _color } => id,
@@ -200,7 +206,7 @@ pub struct CatToPost {
 #[derive(Debug, serde::Deserialize)]
 pub struct GetQueryParameters {
     pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
-    pub id: Option<i64>, //todo declare a postgres id type as i64 and reuse it later
+    pub id: Option<crate::server::postgres::bigserial::Bigserial>, //todo declare a postgres id type as i64 and reuse it later
     pub name: Option<std::string::String>,
     pub color: Option<std::string::String>,
     pub select: Option<GetSelect>,

@@ -173,11 +173,11 @@ pub enum TryPutErrorNamed<'a> {
         request_error: TryPutRequestError<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    BelowZero {
-        #[eo_display_with_serialize_deserialize]
-        below_zero: i64,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
+    // BelowZero {
+    //     #[eo_display_with_serialize_deserialize]
+    //     below_zero: i64,
+    //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+    // },
     SerdeJsonToString {
         #[eo_display]
         serde_json_to_string: serde_json::Error,
@@ -189,12 +189,12 @@ pub async fn try_put<'a>(
     server_location: &str,
     body: crate::repositories_types::tufa_server::routes::api::cats::Cat,
 ) -> Result<(), TryPutErrorNamed<'a>> {
-    if let true = body.id.is_negative() {
-        return Err(TryPutErrorNamed::BelowZero {
-            below_zero: body.id,
-            code_occurence: crate::code_occurence_tufa_common!(),
-        });
-    }
+    // if let true = body.id.is_negative() {
+    //     return Err(TryPutErrorNamed::BelowZero {
+    //         below_zero: body.id,
+    //         code_occurence: crate::code_occurence_tufa_common!(),
+    //     });
+    // }
     let stringified_json = match serde_json::to_string(&body) {
         Ok(stringified_json) => stringified_json,
         Err(e) => {
