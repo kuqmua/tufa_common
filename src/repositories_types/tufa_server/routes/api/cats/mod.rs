@@ -173,25 +173,25 @@ impl crate::common::url_encode::UrlEncode for DeleteQueryParameters {
 
 #[derive(Debug, serde::Deserialize)]
 pub struct GetByIdPathParameters {
-    #[serde(deserialize_with = "deserialize_bigserialss")]
-    pub id: i64, //crate::server::postgres::bigserial::Bigserial
+    // #[serde(deserialize_with = "deserialize_bigserialss")]
+    pub id: crate::server::postgres::bigserial::Bigserial, //
 }
 
-fn deserialize_bigserialss<'de, D>(deserializer: D) -> Result<i64, D::Error>
-where
-    D: serde::de::Deserializer<'de>,
-{
-    use serde::Deserialize;
-    let possible_bigserial = i64::deserialize(deserializer)?;
-    match possible_bigserial.is_positive() {
-        true => Ok(possible_bigserial),
-        false => Err(
-            serde::de::Error::custom(&format!(
-                "invalid type: Postgresql Bigserial `{possible_bigserial}`, expected Postgresql Bigserial as rust i64, there 1 <= *your value* <= 9223372036854775807(only positive part of rust i64)"
-            )),
-        )
-    }
-}
+// fn deserialize_bigserialss<'de, D>(deserializer: D) -> Result<i64, D::Error>
+// where
+//     D: serde::de::Deserializer<'de>,
+// {
+//     use serde::Deserialize;
+//     let possible_bigserial = i64::deserialize(deserializer)?;
+//     match possible_bigserial.is_positive() {
+//         true => Ok(possible_bigserial),
+//         false => Err(
+//             serde::de::Error::custom(&format!(
+//                 "invalid type: Postgresql Bigserial `{possible_bigserial}`, expected Postgresql Bigserial as rust i64, there 1 <= *your value* <= 9223372036854775807(only positive part of rust i64)"
+//             )),
+//         )
+//     }
+// }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub enum CatToPatch {

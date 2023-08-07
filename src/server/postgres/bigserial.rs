@@ -1,36 +1,28 @@
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize, getset::Getters)]
-pub struct Bigserial {
-    #[getset(get = "pub")]
-    // #[serde(deserialize_with = "deserialize_bigserial")]
-    bigserial: i64, //todo postgres bigserial max = i64::MAX, but invalid in i64 < 0
-}
-
-//
-// use serde::de::{Deserialize, Deserializer};
-
-// #[derive(serde::Deserialize)]
-// #[serde(rename_all = "camelCase")]
-// pub struct Trigger {
-//     #[serde(deserialize_with = "deserialize_bigserial")]
-//     cron: i64,
-// }
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)] //, getset::Getters
+                                                              // #[getset(get = "pub")]
+                                                              // #[serde(deserialize_with = "deserialize_bigserial")]
+pub struct Bigserial(#[serde(deserialize_with = "deserialize_bigserial")] pub i64);
+// , //todo postgres bigserial max = i64::MAX, but invalid in i64 < 0
 
 fn deserialize_bigserial<'de, D>(deserializer: D) -> Result<i64, D::Error>
 where
     D: serde::de::Deserializer<'de>,
 {
     use serde::Deserialize;
-    let buf = i64::deserialize(deserializer)?;
-
-    // use std::str::FromStr;
-    // String::from_str(&buf).map_err(serde::de::Error::custom)
-    Ok(buf)
+    let possible_bigserial = i64::deserialize(deserializer)?;
+    match possible_bigserial.is_positive() {
+        true => Ok(possible_bigserial),
+        false => Err(
+            serde::de::Error::custom(&format!(
+                "invalid type: Postgresql Bigserial `{possible_bigserial}`, expected Postgresql Bigserial as rust i64, there 1 <= *your value* <= 9223372036854775807(only positive part of rust i64)"
+            )),
+        )
+    }
 }
-//
 
 impl std::fmt::Display for Bigserial {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.bigserial)
+        write!(f, "{}", self.0)
     }
 }
 
@@ -49,9 +41,7 @@ impl Bigserial {
         possible_bigserial: i64,
     ) -> Result<Bigserial, BigserialTryFromI64ErrorNamed<'a>> {
         if possible_bigserial.is_positive() {
-            Ok(Bigserial {
-                bigserial: possible_bigserial,
-            })
+            Ok(Bigserial(possible_bigserial))
         } else {
             Err(BigserialTryFromI64ErrorNamed::BelowZero {
                 below_zero: possible_bigserial,
