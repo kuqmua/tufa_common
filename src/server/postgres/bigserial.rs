@@ -1,8 +1,32 @@
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, getset::Getters)]
 pub struct Bigserial {
     #[getset(get = "pub")]
+    // #[serde(deserialize_with = "deserialize_bigserial")]
     bigserial: i64, //todo postgres bigserial max = i64::MAX, but invalid in i64 < 0
 }
+
+//
+// use serde::de::{Deserialize, Deserializer};
+
+// #[derive(serde::Deserialize)]
+// #[serde(rename_all = "camelCase")]
+// pub struct Trigger {
+//     #[serde(deserialize_with = "deserialize_bigserial")]
+//     cron: i64,
+// }
+
+fn deserialize_bigserial<'de, D>(deserializer: D) -> Result<i64, D::Error>
+where
+    D: serde::de::Deserializer<'de>,
+{
+    use serde::Deserialize;
+    let buf = i64::deserialize(deserializer)?;
+
+    // use std::str::FromStr;
+    // String::from_str(&buf).map_err(serde::de::Error::custom)
+    Ok(buf)
+}
+//
 
 impl std::fmt::Display for Bigserial {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -38,5 +62,5 @@ impl Bigserial {
 }
 
 pub trait GetPostgresBigserialId {
-    fn get_postgres_bigserial_id(&self) -> &Bigserial;
+    fn get_postgres_bigserial_id(&self) -> &i64; //Bigserial
 }
