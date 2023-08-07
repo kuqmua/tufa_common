@@ -191,7 +191,8 @@ pub async fn try_patch<'a>(
 ) -> Result<(), TryPatchErrorNamed<'a>> {
     let id = crate::server::postgres::bigserial::GetPostgresBigserialId::get_postgres_bigserial_id(
         &body,
-    ); //.bigserial()
+    )
+    .inner();
     if let true = id.is_negative() {
         return Err(TryPatchErrorNamed::BelowZero {
             below_zero: *id,

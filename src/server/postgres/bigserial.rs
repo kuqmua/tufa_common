@@ -1,8 +1,11 @@
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)] //, getset::Getters
-                                                              // #[getset(get = "pub")]
-                                                              // #[serde(deserialize_with = "deserialize_bigserial")]
-pub struct Bigserial(#[serde(deserialize_with = "deserialize_bigserial")] pub i64);
-// , //todo postgres bigserial max = i64::MAX, but invalid in i64 < 0
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct Bigserial(#[serde(deserialize_with = "deserialize_bigserial")] i64);
+
+impl Bigserial {
+    pub fn inner(&self) -> &i64 {
+        &self.0
+    }
+}
 
 fn deserialize_bigserial<'de, D>(deserializer: D) -> Result<i64, D::Error>
 where
@@ -52,5 +55,5 @@ impl Bigserial {
 }
 
 pub trait GetPostgresBigserialId {
-    fn get_postgres_bigserial_id(&self) -> &i64; //Bigserial
+    fn get_postgres_bigserial_id(&self) -> &Bigserial;
 }
