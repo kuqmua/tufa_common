@@ -297,20 +297,6 @@ impl crate::common::url_encode::UrlEncode for GetQueryParameters {
     }
 }
 
-// #[derive(serde::Deserialize)]
-// pub struct GetQueryParametersSecond {
-//     pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
-//     pub filter: Option<GetFilter>,
-//     pub select: Option<GetSelect>,
-// }
-
-// #[derive(serde::Deserialize)]
-// pub struct GetFilter {
-//     // pub ids: Option<Vec<i64>>,
-//     pub name: Option<std::string::String>,
-//     pub color: Option<std::string::String>,
-// }
-
 ////////////////////
 #[derive(
     Debug,
