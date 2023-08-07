@@ -157,13 +157,6 @@ pub enum TryPut<'a> {
         unexpected_case: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    //
-    #[tvfrr_400_bad_request]
-    Bigserial {
-        #[eo_error_occurence]
-        bigserial: crate::server::postgres::bigserial::BigserialTryFromI64ErrorNamed<'a>,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
