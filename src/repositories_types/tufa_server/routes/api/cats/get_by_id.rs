@@ -155,11 +155,6 @@ pub enum TryGetByIdErrorNamed<'a> {
         request_error: TryGetByIdRequestError<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    // BelowZero {
-    //     #[eo_display_with_serialize_deserialize]
-    //     below_zero: i64,
-    //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    // },
 }
 
 pub async fn try_get_by_id<'a>(
@@ -167,12 +162,6 @@ pub async fn try_get_by_id<'a>(
     path_parameters: crate::repositories_types::tufa_server::routes::api::cats::GetByIdPathParameters,
 ) -> Result<crate::repositories_types::tufa_server::routes::api::cats::Cat, TryGetByIdErrorNamed<'a>>
 {
-    // if let true = path_parameters.id.is_negative() {
-    //     return Err(TryGetByIdErrorNamed::BelowZero {
-    //         below_zero: path_parameters.id,
-    //         code_occurence: crate::code_occurence_tufa_common!(),
-    //     });
-    // }
     let url = format!(
         "{server_location}/api/{}/{}",
         crate::repositories_types::tufa_server::routes::api::cats::CATS,

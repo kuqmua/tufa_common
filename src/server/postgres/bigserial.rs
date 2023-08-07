@@ -31,9 +31,9 @@ impl std::fmt::Display for Bigserial {
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum BigserialTryFromI64ErrorNamed<'a> {
-    BelowZero {
+    NotPositive {
         #[eo_display_with_serialize_deserialize]
-        below_zero: i64,
+        not_positive: i64,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
 }
@@ -46,8 +46,8 @@ impl Bigserial {
         if possible_bigserial.is_positive() {
             Ok(Bigserial(possible_bigserial))
         } else {
-            Err(BigserialTryFromI64ErrorNamed::BelowZero {
-                below_zero: possible_bigserial,
+            Err(BigserialTryFromI64ErrorNamed::NotPositive {
+                not_positive: possible_bigserial,
                 code_occurence: crate::code_occurence_tufa_common!(),
             })
         }

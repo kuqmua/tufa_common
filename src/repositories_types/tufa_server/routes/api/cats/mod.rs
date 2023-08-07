@@ -103,6 +103,15 @@ impl std::convert::From<CatNameColor> for CatOptions {
         }
     }
 }
+impl std::convert::From<CatIdNameColor> for CatOptions {
+    fn from(value: CatIdNameColor) -> Self {
+        CatOptions {
+            id: Some(value.id),
+            name: Some(value.name),
+            color: Some(value.color),
+        }
+    }
+}
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct CatId {
@@ -133,6 +142,13 @@ pub struct CatIdColor {
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct CatNameColor {
+    pub name: String,
+    pub color: String,
+}
+
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+pub struct CatIdNameColor {
+    pub id: i64,
     pub name: String,
     pub color: String,
 }
@@ -197,6 +213,13 @@ impl crate::server::postgres::bigserial::GetPostgresBigserialId for CatToPatch {
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct CatToPost {
+    pub name: String,
+    pub color: String,
+}
+
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+pub struct CatToPut {
+    pub id: crate::server::postgres::bigserial::Bigserial, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
     pub name: String,
     pub color: String,
 }

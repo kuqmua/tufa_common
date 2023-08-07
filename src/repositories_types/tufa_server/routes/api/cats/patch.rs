@@ -166,11 +166,6 @@ pub enum TryPatchErrorNamed<'a> {
         request_error: TryPatchRequestError<'a>,
         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
     },
-    BelowZero {
-        #[eo_display_with_serialize_deserialize]
-        below_zero: i64,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
-    },
     SerdeJsonToString {
         #[eo_display]
         serde_json_to_string: serde_json::Error,
@@ -182,16 +177,6 @@ pub async fn try_patch<'a>(
     server_location: &str,
     body: crate::repositories_types::tufa_server::routes::api::cats::CatToPatch,
 ) -> Result<(), TryPatchErrorNamed<'a>> {
-    let id = crate::server::postgres::bigserial::GetPostgresBigserialId::get_postgres_bigserial_id(
-        &body,
-    )
-    .inner();
-    if let true = id.is_negative() {
-        return Err(TryPatchErrorNamed::BelowZero {
-            below_zero: *id,
-            code_occurence: crate::code_occurence_tufa_common!(),
-        });
-    }
     let stringified_json = match serde_json::to_string(&body) {
         Ok(stringified_json) => stringified_json,
         Err(e) => {
