@@ -30,7 +30,7 @@ pub struct Cat {
 }
 
 //
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
 pub struct CatOptions {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<i64>, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
@@ -113,40 +113,40 @@ impl std::convert::From<CatIdNameColor> for CatOptions {
     }
 }
 
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
 pub struct CatId {
     pub id: i64,
 }
 
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
 pub struct CatName {
     pub name: String,
 }
 
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
 pub struct CatColor {
     pub color: String,
 }
 
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
 pub struct CatIdName {
     pub id: i64,
     pub name: String,
 }
 
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
 pub struct CatIdColor {
     pub id: i64,
     pub color: String,
 }
 
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
 pub struct CatNameColor {
     pub name: String,
     pub color: String,
 }
 
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
 pub struct CatIdNameColor {
     pub id: i64,
     pub name: String,
@@ -328,7 +328,7 @@ impl crate::common::url_encode::UrlEncode for GetSelectField {
     }
 }
 
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, serde::Serialize, serde::Deserialize, Clone)]
 pub enum GetSelect {
     #[serde(rename(serialize = "id", deserialize = "id"))]
     Id,
@@ -358,7 +358,19 @@ impl std::fmt::Display for GetSelect {
         }
     }
 }
-
+impl std::default::Default for GetSelect {
+    fn default() -> Self {
+        Self::IdNameColor
+    }
+}
+impl std::convert::From<Option<Self>> for GetSelect {
+    fn from(option_value: Option<Self>) -> Self {
+        match option_value {
+            Some(value) => value,
+            None => Self::default(),
+        }
+    }
+}
 impl crate::common::url_encode::UrlEncode for GetSelect {
     fn url_encode(&self) -> std::string::String {
         urlencoding::encode(&self.to_string()).to_string()
