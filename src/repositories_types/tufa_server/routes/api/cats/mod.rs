@@ -376,3 +376,20 @@ impl crate::common::url_encode::UrlEncode for GetSelect {
         urlencoding::encode(&self.to_string()).to_string()
     }
 }
+impl GetSelect {
+    pub fn into_get_select_field_vec(&self) -> Vec<GetSelectField> {
+        match self {
+            GetSelect::Id => vec![GetSelectField::Id],
+            GetSelect::Name => vec![GetSelectField::Name],
+            GetSelect::Color => vec![GetSelectField::Color],
+            GetSelect::IdName => vec![GetSelectField::Id, GetSelectField::Name],
+            GetSelect::IdColor => vec![GetSelectField::Id, GetSelectField::Color],
+            GetSelect::NameColor => vec![GetSelectField::Name, GetSelectField::Color],
+            GetSelect::IdNameColor => vec![
+                GetSelectField::Id,
+                GetSelectField::Name,
+                GetSelectField::Color,
+            ],
+        }
+    }
+}

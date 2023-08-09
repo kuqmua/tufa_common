@@ -1,9 +1,12 @@
 #need to enable vscode rest client extension https://marketplace.visualstudio.com/items?itemName=humao.rest-client to send requests
 
-GET http://127.0.0.1:8080/api/cats/?limit=10&id=65&name=murzik&color=blue&select=id,name HTTP/1.1
+# GET http://127.0.0.1:8080/api/cats/?limit=10&id=65&name=murzik&color=blue&select=id,name HTTP/1.1
+# Accept: */*
+# project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
+
+GET http://127.0.0.1:8080/api/cats/?limit=2&id=57&name=test_name&color=test_color&select=id,name,color HTTP/1.1
 Accept: */*
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
-//name=leo&color=red
 ###
 
 GET http://127.0.0.1:8080/api/cats/65 HTTP/1.1
