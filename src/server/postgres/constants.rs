@@ -1,1 +1,1 @@
-pub static DEFAULT_POSTGRES_SELECT_LIMIT: u32 = 10;
+

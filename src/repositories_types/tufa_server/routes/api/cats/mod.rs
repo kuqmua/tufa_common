@@ -226,7 +226,7 @@ pub struct CatToPut {
 
 #[derive(Debug, serde::Deserialize)]
 pub struct GetQueryParameters {
-    pub limit: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
+    pub limit: crate::server::postgres::rows_per_table::RowsPerTable,
     pub id: Option<crate::server::postgres::bigserial::Bigserial>,
     pub name: Option<std::string::String>,
     pub color: Option<std::string::String>,
@@ -237,16 +237,14 @@ pub struct GetQueryParameters {
 impl crate::common::url_encode::UrlEncode for GetQueryParameters {
     fn url_encode(&self) -> std::string::String {
         let mut stringified_query_parameters = String::from("?");
-        if let Some(limit) = &self.limit {
-            let query_parameter_handle =
-                format!("limit={}", urlencoding::encode(&limit.to_string())); //todo -maybe write macro for it
-            match stringified_query_parameters.len() > 1 {
-                true => {
-                    stringified_query_parameters.push_str(&query_parameter_handle);
-                }
-                false => {
-                    stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
-                }
+        let limit_query_parameter_handle =
+            format!("limit={}", urlencoding::encode(&self.limit.to_string())); //todo -maybe write macro for it
+        match stringified_query_parameters.len() > 1 {
+            true => {
+                stringified_query_parameters.push_str(&limit_query_parameter_handle);
+            }
+            false => {
+                stringified_query_parameters.push_str(&format!("&{limit_query_parameter_handle}"));
             }
         }
         if let Some(id) = &self.id {
