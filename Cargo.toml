@@ -16,7 +16,7 @@ convert_case = {version = "=0.6.0"}
 dotenv = {version = "=0.15.0"}
 futures = {version = "=0.3.28"}
 http = {version = "=0.2.9"}
-regex = {version = "=1.5.6"}
+regex = {version = "=1.9.3"}
 config = {version = "=0.13.3"}
 rand = {version = "=0.8", features = ["std_rng"]}
 num_cpus = {version = "=1.15.0"}
@@ -47,6 +47,10 @@ tracing-bunyan-formatter = {version = "=0.3"}
 tracing-log = {version = "=0.1"}
 getset = {version = "=0.1.2"}
 urlencoding = {version = "=2.1.2"}
+utoipa = {version = "=3.4.4", features = ["axum_extras"]}
+utoipa-swagger-ui = {version = "=3.0.2", features=["axum"]}
+utoipa-redoc = {version = "=0.1.0", features=["axum"]}
+utoipa-rapidoc = {version = "=0.1.0"}
 type_variants_from_reqwest_response = {path = "../proc_macros/type_variants_from_reqwest_response"}
 check_specific_dependency_version_usage = {path = "../proc_macros/check_specific_dependency_version_usage"}
 from_sqlx_postgres_error = {path = "../proc_macros/from_sqlx_postgres_error"}

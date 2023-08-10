@@ -6,7 +6,7 @@ pub trait NotFoundRouteParameters:
     + crate::common::git::get_git_commit_link::GetGitCommitLink
 {
 }
-
+//todo maybe use swagger instead
 async fn not_found(
     uri: http::Uri,
     axum::extract::State(app_info): axum::extract::State<DynArcNotFoundRouteParametersSendSync>,

@@ -7,14 +7,22 @@ pub trait GitInfoRouteParameters:
 {
 }
 
-async fn git_info(
+#[derive(serde::Serialize, utoipa::ToSchema, Clone)]
+pub struct GitInfo {
+    project_commit: std::string::String,
+    commit: std::string::String,
+}
+
+#[utoipa::path(
+    get,
+    path = "/git_info",
+    responses(
+        (status = 200, description = "git information", body = [GitInfo])
+    )
+)]
+pub async fn git_info(
     axum::extract::State(app_info): axum::extract::State<DynArcGitInfoRouteParametersSendSync>,
 ) -> impl axum::response::IntoResponse {
-    #[derive(serde::Serialize)]
-    struct GitInfo {
-        project_commit: std::string::String,
-        commit: std::string::String,
-    }
     (
         axum::http::StatusCode::OK,
         axum::Json(GitInfo {
