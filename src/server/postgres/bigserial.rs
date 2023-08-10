@@ -2,8 +2,11 @@
 pub struct Bigserial(#[serde(deserialize_with = "deserialize_bigserial")] i64);
 
 impl Bigserial {
-    pub fn inner(&self) -> &i64 {
+    pub fn to_inner(&self) -> &i64 {
         &self.0
+    }
+    pub fn into_inner(self) -> i64 {
+        self.0
     }
 }
 

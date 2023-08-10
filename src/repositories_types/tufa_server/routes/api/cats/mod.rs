@@ -295,6 +295,30 @@ impl crate::common::url_encode::UrlEncode for GetQueryParameters {
     }
 }
 
+impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for GetQueryParameters {
+    fn bind_sqlx_query<'q, TableScheme: for<'a> serde::Deserialize<'a>>(
+        self,
+        mut query: sqlx::query::QueryAs<
+            'q,
+            sqlx::Postgres,
+            TableScheme,
+            sqlx::postgres::PgArguments,
+        >,
+    ) -> sqlx::query::QueryAs<'q, sqlx::Postgres, TableScheme, sqlx::postgres::PgArguments> {
+        if let Some(id) = self.id {
+            query = query.bind(id.into_inner());
+        }
+        if let Some(name) = self.name {
+            query = query.bind(name);
+        }
+        if let Some(color) = self.color {
+            query = query.bind(color);
+        }
+        query = query.bind(self.limit);
+        query
+    }
+}
+
 ////////////////////
 #[derive(
     Debug,
