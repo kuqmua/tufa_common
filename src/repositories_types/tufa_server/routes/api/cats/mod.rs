@@ -218,88 +218,13 @@ pub struct CatToPut {
     pub color: String,
 }
 
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub struct BigserialIds(
-    #[serde(deserialize_with = "deserialize_bigserial_ids")]
-    pub  Vec<crate::server::postgres::bigserial::Bigserial>,
-);
-
-fn deserialize_bigserial_ids<'de, D>(
-    deserializer: D,
-) -> Result<Vec<crate::server::postgres::bigserial::Bigserial>, D::Error>
-where
-    D: serde::de::Deserializer<'de>,
-{
-    let (vec_values, mut stringified_parse_fails, mut stringified_bigserial_fails) = {
-        use serde::Deserialize;
-        String::deserialize(deserializer)?
-    }
-    .split(',')
-    .fold(
-        (
-            Vec::new(),
-            std::string::String::from(""),
-            std::string::String::from(""),
-        ),
-        |mut acc, element| {
-            match element.parse::<i64>() {
-                Ok(value) => {
-                    match crate::server::postgres::bigserial::Bigserial::try_from_i64(value) {
-                        Ok(bigserial) => {
-                            acc.0.push(bigserial);
-                        }
-                        Err(_) => {
-                            acc.1.push_str(&format!("{element},"));
-                        }
-                    }
-                }
-                Err(_) => {
-                    acc.1.push_str(&format!("{element},"));
-                }
-            }
-            acc
-        },
-    );
-    let default_message = "invalid type (expected array Postgresql Bigserial as rust Vec<i64>):";
-    let stringified_parse_fails_message = "failed to parse each element into rust i64";
-    let stringified_bigserial_fails_message = "failed to convert each element into Postgresql Bigserial - must be in range 1 <= *your value* <= 9223372036854775807(only positive part of rust i64)";
-    match (
-        stringified_parse_fails.is_empty(),
-        stringified_bigserial_fails.is_empty(),
-    ) {
-        (true, true) => Ok(vec_values),
-        (true, false) => {
-            stringified_bigserial_fails.pop();
-            Err(serde::de::Error::custom(
-                &format!(
-                    "{default_message} `{stringified_bigserial_fails}`, {stringified_bigserial_fails_message}")
-                )
-            )
-        }
-        (false, true) => {
-            stringified_parse_fails.pop();
-            Err(serde::de::Error::custom(&format!(
-                "{default_message} `{stringified_parse_fails}`, {stringified_parse_fails_message}"
-            )))
-        }
-        (false, false) => {
-            stringified_parse_fails.pop();
-            stringified_bigserial_fails.pop();
-            Err(serde::de::Error::custom(
-                &format!(
-                    "{default_message} 1) `{stringified_parse_fails}`, {stringified_parse_fails_message}. 2) `{stringified_bigserial_fails}`, {stringified_bigserial_fails_message}")
-                )
-            )
-        }
-    }
-}
 //
 
 //
 #[derive(Debug, serde::Deserialize)]
 pub struct GetQueryParameters {
     pub limit: crate::server::postgres::rows_per_table::RowsPerTable,
-    pub id: Option<BigserialIds>,
+    pub id: Option<crate::server::postgres::bigserial_ids::BigserialIds>,
     pub name: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
     pub color: Option<std::string::String>,
     pub select: Option<GetSelect>,
@@ -313,20 +238,11 @@ impl crate::common::url_encode::UrlEncode for GetQueryParameters {
         let limit_query_parameter_handle =
             format!("limit={}", urlencoding::encode(&self.limit.to_string())); //todo -maybe write macro for it
         stringified_query_parameters.push_str(&format!("&{limit_query_parameter_handle}"));
-        if let Some(id) = &self.id {
-            let ids_stringified = {
-                let mut ids_stringified =
-                    id.0.iter().fold(String::from(""), |mut acc, bigserial| {
-                        acc.push_str(&format!("{bigserial},"));
-                        acc
-                    });
-                if let false = ids_stringified.is_empty() {
-                    ids_stringified.pop();
-                }
-                ids_stringified
-            };
-            let query_parameter_handle = format!("id={}", urlencoding::encode(&ids_stringified));
-            stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
+        if let Some(value) = &self.id {
+            stringified_query_parameters.push_str(&format!(
+                "&id={}",
+                crate::common::url_encode::UrlEncode::url_encode(value)
+            ));
         }
         if let Some(value) = &self.name {
             stringified_query_parameters.push_str(&format!(
