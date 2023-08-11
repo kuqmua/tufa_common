@@ -329,20 +329,10 @@ impl crate::common::url_encode::UrlEncode for GetQueryParameters {
             stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
         }
         if let Some(names) = &self.name {
-            let names_stringified = {
-                let mut names_stringified =
-                    names.0.iter().fold(String::from(""), |mut acc, name| {
-                        acc.push_str(&format!("{name},"));
-                        acc
-                    });
-                if let false = names_stringified.is_empty() {
-                    names_stringified.pop();
-                }
-                names_stringified
-            };
-            let query_parameter_handle =
-                format!("name={}", urlencoding::encode(&names_stringified));
-            stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
+            stringified_query_parameters.push_str(&format!(
+                "&name={}",
+                crate::common::url_encode::UrlEncode::url_encode(names)
+            ));
         }
         if let Some(color) = &self.color {
             let query_parameter_handle = format!("color={}", urlencoding::encode(color));
