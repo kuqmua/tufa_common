@@ -218,7 +218,7 @@ pub struct CatToPut {
     pub color: String,
 }
 
-#[derive(Debug, serde::Serialize, serde::Deserialize, Clone)]
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct BigserialIds(
     #[serde(deserialize_with = "deserialize_bigserial_ids")]
     pub  Vec<crate::server::postgres::bigserial::Bigserial>,
@@ -294,17 +294,33 @@ where
     }
 }
 //
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
+pub struct Names(#[serde(deserialize_with = "deserialize_names")] pub Vec<std::string::String>);
+
+fn deserialize_names<'de, D>(deserializer: D) -> Result<Vec<std::string::String>, D::Error>
+where
+    D: serde::de::Deserializer<'de>,
+{
+    Ok({
+        use serde::Deserialize;
+        String::deserialize(deserializer)?
+    }
+    .split(',')
+    .map(|element| element.to_string())
+    .collect::<Vec<std::string::String>>())
+}
+//
 #[derive(Debug, serde::Deserialize)]
 pub struct GetQueryParameters {
     pub limit: crate::server::postgres::rows_per_table::RowsPerTable,
-    // #[serde(deserialize_with = "deserialize_bigserial_ids")]
-    pub id: Option<BigserialIds>, //BigserialIds, //Option<Vec<crate::server::postgres::bigserial::Bigserial>>
-    pub name: Option<Vec<std::string::String>>,
+    pub id: Option<BigserialIds>,
+    pub name: Option<Names>,
     pub color: Option<std::string::String>,
     pub select: Option<GetSelect>,
 }
 
 //todo - make a macro for it?
+//todo - maybe some serde serialization like this https://docs.rs/url_serde/latest/url_serde/
 impl crate::common::url_encode::UrlEncode for GetQueryParameters {
     fn url_encode(&self) -> std::string::String {
         let mut stringified_query_parameters = String::from("?");
@@ -343,10 +359,11 @@ impl crate::common::url_encode::UrlEncode for GetQueryParameters {
         if let Some(names) = &self.name {
             //
             let names_stringified = {
-                let mut names_stringified = names.iter().fold(String::from(""), |mut acc, name| {
-                    acc.push_str(&format!("{name},"));
-                    acc
-                });
+                let mut names_stringified =
+                    names.0.iter().fold(String::from(""), |mut acc, name| {
+                        acc.push_str(&format!("{name},"));
+                        acc
+                    });
                 if let false = names_stringified.is_empty() {
                     names_stringified.pop();
                 }
@@ -405,8 +422,11 @@ impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for GetQuery
                 query = query.bind(id_handle.into_inner());
             }
         }
-        if let Some(name) = self.name {
-            query = query.bind(name);
+        //
+        if let Some(names) = self.name {
+            for name_handle in names.0 {
+                query = query.bind(name_handle);
+            }
         }
         if let Some(color) = self.color {
             query = query.bind(color);
