@@ -272,10 +272,8 @@ impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for GetQuery
             sqlx::postgres::PgArguments,
         >,
     ) -> sqlx::query::QueryAs<'q, sqlx::Postgres, TableScheme, sqlx::postgres::PgArguments> {
-        if let Some(id) = self.id {
-            for id_handle in id.0 {
-                query = query.bind(id_handle.into_inner());
-            }
+        if let Some(value) = self.id {
+            query = value.bind_sqlx_query(query);
         }
         if let Some(value) = self.name {
             query = value.bind_sqlx_query(query);
