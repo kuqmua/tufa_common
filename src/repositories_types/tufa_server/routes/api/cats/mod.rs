@@ -220,11 +220,11 @@ pub struct CatToPut {
 
 #[derive(Debug, serde::Deserialize)]
 pub struct GetQueryParameters {
+    pub select: Option<GetSelect>,
     pub limit: crate::server::postgres::rows_per_table::RowsPerTable,
     pub id: Option<crate::server::postgres::bigserial_ids::BigserialIds>,
     pub name: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
     pub color: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
-    pub select: Option<GetSelect>,
 }
 
 //todo - make a macro for it?
@@ -232,6 +232,10 @@ pub struct GetQueryParameters {
 impl crate::common::url_encode::UrlEncode for GetQueryParameters {
     fn url_encode(&self) -> std::string::String {
         let mut stringified_query_parameters = String::from("?");
+        if let Some(select) = &self.select {
+            let query_parameter_handle = format!("select={}", select.url_encode()); //urlencoding::encode(select)
+            stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
+        }
         let limit_query_parameter_handle =
             format!("limit={}", urlencoding::encode(&self.limit.to_string())); //todo -maybe write macro for it
         stringified_query_parameters.push_str(&format!("&{limit_query_parameter_handle}"));
@@ -252,10 +256,6 @@ impl crate::common::url_encode::UrlEncode for GetQueryParameters {
                 "&color={}",
                 crate::common::url_encode::UrlEncode::url_encode(value)
             ));
-        }
-        if let Some(select) = &self.select {
-            let query_parameter_handle = format!("select={}", select.url_encode()); //urlencoding::encode(select)
-            stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
         }
         stringified_query_parameters
     }
