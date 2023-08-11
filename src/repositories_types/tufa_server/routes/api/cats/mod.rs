@@ -218,15 +218,12 @@ pub struct CatToPut {
     pub color: String,
 }
 
-//
-
-//
 #[derive(Debug, serde::Deserialize)]
 pub struct GetQueryParameters {
     pub limit: crate::server::postgres::rows_per_table::RowsPerTable,
     pub id: Option<crate::server::postgres::bigserial_ids::BigserialIds>,
     pub name: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
-    pub color: Option<std::string::String>,
+    pub color: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
     pub select: Option<GetSelect>,
 }
 
@@ -250,9 +247,11 @@ impl crate::common::url_encode::UrlEncode for GetQueryParameters {
                 crate::common::url_encode::UrlEncode::url_encode(value)
             ));
         }
-        if let Some(color) = &self.color {
-            let query_parameter_handle = format!("color={}", urlencoding::encode(color));
-            stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
+        if let Some(value) = &self.color {
+            stringified_query_parameters.push_str(&format!(
+                "&color={}",
+                crate::common::url_encode::UrlEncode::url_encode(value)
+            ));
         }
         if let Some(select) = &self.select {
             let query_parameter_handle = format!("select={}", select.url_encode()); //urlencoding::encode(select)
@@ -278,8 +277,8 @@ impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for GetQuery
         if let Some(value) = self.name {
             query = value.bind_sqlx_query(query);
         }
-        if let Some(color) = self.color {
-            query = query.bind(color);
+        if let Some(value) = self.color {
+            query = value.bind_sqlx_query(query);
         }
         query = query.bind(self.limit);
         query
