@@ -328,10 +328,10 @@ impl crate::common::url_encode::UrlEncode for GetQueryParameters {
             let query_parameter_handle = format!("id={}", urlencoding::encode(&ids_stringified));
             stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
         }
-        if let Some(names) = &self.name {
+        if let Some(value) = &self.name {
             stringified_query_parameters.push_str(&format!(
                 "&name={}",
-                crate::common::url_encode::UrlEncode::url_encode(names)
+                crate::common::url_encode::UrlEncode::url_encode(value)
             ));
         }
         if let Some(color) = &self.color {
@@ -361,11 +361,8 @@ impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for GetQuery
                 query = query.bind(id_handle.into_inner());
             }
         }
-        //
-        if let Some(names) = self.name {
-            for name_handle in names.0 {
-                query = query.bind(name_handle);
-            }
+        if let Some(value) = self.name {
+            query = value.bind_sqlx_query(query);
         }
         if let Some(color) = self.color {
             query = query.bind(color);
