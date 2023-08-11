@@ -57,12 +57,10 @@ impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery
     }
 }
 
-impl crate::server::postgres::generate_bind_increments::GenerateBindIncrements
+impl crate::server::routes::helpers::get_inner_length::GetInnerLength
     for StringsDeserializedFromStringSplittedByComma
 {
-    fn generate_bind_increments(&self, increment: &mut u64) -> std::string::String {
-        crate::server::postgres::generate_bind_increments::generate_bind_increments_helper(
-            &self.0, increment,
-        )
+    fn get_inner_length(&self) -> usize {
+        self.0.len()
     }
 }
