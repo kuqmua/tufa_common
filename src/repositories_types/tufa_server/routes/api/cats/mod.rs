@@ -117,35 +117,29 @@ impl std::convert::From<CatIdNameColor> for CatOptions {
 pub struct CatId {
     pub id: i64,
 }
-
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
 pub struct CatName {
     pub name: String,
 }
-
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
 pub struct CatColor {
     pub color: String,
 }
-
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
 pub struct CatIdName {
     pub id: i64,
     pub name: String,
 }
-
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
 pub struct CatIdColor {
     pub id: i64,
     pub color: String,
 }
-
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
 pub struct CatNameColor {
     pub name: String,
     pub color: String,
 }
-
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
 pub struct CatIdNameColor {
     pub id: i64,
@@ -224,10 +218,88 @@ pub struct CatToPut {
     pub color: String,
 }
 
+#[derive(Debug, serde::Serialize, serde::Deserialize, Clone)]
+pub struct BigserialIds (#[serde(deserialize_with = "deserialize_bigserial_ids")] pub Vec<crate::server::postgres::bigserial::Bigserial>);
+
+fn deserialize_bigserial_ids<'de, D>(deserializer: D) -> Result<Vec<crate::server::postgres::bigserial::Bigserial>, D::Error>
+where
+    D: serde::de::Deserializer<'de>,
+{
+    use serde::Deserialize;
+    // #[derive(Debug, PartialEq, Deserialize)]
+    // struct DeserializeBigserialIds(Option<std::string::String>);
+    let str_sequence = String::deserialize(deserializer)?;//Result<i64, std::num::ParseIntError>
+    // let str_sequence = if let Some(str_handle) = str_sequences.0 {
+    //     str_handle
+    // }
+    // else {
+    //     // return Err(serde::de::Error::custom(
+    //     // &format!(
+    //     //         "invalid type: Postgresql Bigserial 000, expected Postgresql Bigserial as rust i64, there 1 <= *your value* <= 9223372036854775807(only positive part of rust i64)")
+    //     //     )
+    //     // );
+    //     return Ok(None);
+    // };
+    println!("str_sequence, {str_sequence}");
+    let f: Vec<std::string::String> = str_sequence
+        .split(',')
+        .map(|item| 
+        //     {
+        //     let f: Result<i64, std::num::ParseIntError> = std::str::FromStr::from_str(item);
+        //     f
+        // }
+        item.to_string()
+        )
+        .collect();
+    let g: Vec<Result<i64, std::num::ParseIntError>> = f.into_iter().map(|h|{
+        let f: Result<i64, std::num::ParseIntError> = std::str::FromStr::from_str(&h);
+        f
+    }).collect();
+    let mut v = Vec::with_capacity(g.len());
+    for i in g {
+        match i {
+            Ok(p) => {
+                match crate::server::postgres::bigserial::Bigserial::try_from_i64(p) {
+                    Ok(o) => {
+                        v.push(o);
+                    },
+                    Err(e) => {
+//
+                        return Err(serde::de::Error::custom(
+                            &format!(
+                                "invalid type: Postgresql Bigserial 111 `{e}`, expected Postgresql Bigserial as rust i64, there 1 <= *your value* <= 9223372036854775807(only positive part of rust i64)")
+                            )
+                        );
+//
+                    },
+                }
+            },
+            Err(e) => {
+                return Err(serde::de::Error::custom(
+                    &format!(
+                        "invalid type: Postgresql Bigserial 222 `{e}`, expected Postgresql Bigserial as rust i64, there 1 <= *your value* <= 9223372036854775807(only positive part of rust i64)")
+                    )
+                );
+            },
+        }
+    }
+
+    Ok(v)
+    // match possible_bigserial.is_positive() {
+    //     true => Ok(possible_bigserial),
+    //     false => Err(
+    //         serde::de::Error::custom(&format!(
+    //             "invalid type: Postgresql Bigserial `{possible_bigserial}`, expected Postgresql Bigserial as rust i64, there 1 <= *your value* <= 9223372036854775807(only positive part of rust i64)"
+    //         )),
+    //     )
+    // }
+}
+//
 #[derive(Debug, serde::Deserialize)]
 pub struct GetQueryParameters {
     pub limit: crate::server::postgres::rows_per_table::RowsPerTable,
-    pub id: Option<crate::server::postgres::bigserial::Bigserial>,
+    // #[serde(deserialize_with = "deserialize_bigserial_ids")]
+    pub id: Option<BigserialIds>,//BigserialIds, //Option<Vec<crate::server::postgres::bigserial::Bigserial>>
     pub name: Option<std::string::String>,
     pub color: Option<std::string::String>,
     pub select: Option<GetSelect>,
@@ -248,15 +320,29 @@ impl crate::common::url_encode::UrlEncode for GetQueryParameters {
             }
         }
         if let Some(id) = &self.id {
-            let query_parameter_handle = format!("id={}", urlencoding::encode(&id.to_string()));
-            match stringified_query_parameters.len() > 1 {
-                true => {
-                    stringified_query_parameters.push_str(&query_parameter_handle);
-                }
-                false => {
-                    stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
-                }
+        //     //
+        let ids_stringified = {
+            let mut ids_stringified =
+                id.0.iter().fold(String::from(""), |mut acc, bigserial| {
+                    acc.push_str(&format!("{bigserial},"));
+                    acc
+                });
+            if let false = ids_stringified.is_empty() {
+                ids_stringified.pop();
             }
+            ids_stringified
+        };
+
+        //
+        let query_parameter_handle = format!("id={}", urlencoding::encode(&ids_stringified));
+        match stringified_query_parameters.len() > 1 {
+            true => {
+                stringified_query_parameters.push_str(&query_parameter_handle);
+            }
+            false => {
+                stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
+            }
+        }
         }
         if let Some(name) = &self.name {
             let query_parameter_handle = format!("name={}", urlencoding::encode(name));
@@ -306,7 +392,9 @@ impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for GetQuery
         >,
     ) -> sqlx::query::QueryAs<'q, sqlx::Postgres, TableScheme, sqlx::postgres::PgArguments> {
         if let Some(id) = self.id {
-            query = query.bind(id.into_inner());
+        for id_handle in id.0 {
+            query = query.bind(id_handle.into_inner());
+        }
         }
         if let Some(name) = self.name {
             query = query.bind(name);
