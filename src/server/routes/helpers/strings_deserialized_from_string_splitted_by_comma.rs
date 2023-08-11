@@ -56,3 +56,23 @@ impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery
         query
     }
 }
+
+impl crate::server::postgres::generate_bind_increments::GenerateBindIncrements
+    for StringsDeserializedFromStringSplittedByComma
+{
+    fn generate_bind_increments(&self, increment: &mut u64) -> std::string::String {
+        let mut increments = self
+            .0
+            .iter()
+            .fold(std::string::String::from(""), |mut acc, _| {
+                *increment += 1;
+                acc.push_str(&format!("${increment}, "));
+                acc
+            });
+        if let false = increments.is_empty() {
+            increments.pop();
+            increments.pop();
+        }
+        increments
+    }
+}
