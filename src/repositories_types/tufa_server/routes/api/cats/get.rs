@@ -158,13 +158,15 @@ pub async fn try_get<'a>(
     Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>,
     TryGetErrorNamed<'a>,
 > {
+    let url = format!(
+        "{server_location}/api/{}/{}",
+        crate::repositories_types::tufa_server::routes::api::cats::CATS,
+        crate::common::url_encode::UrlEncode::url_encode(&query_parameters)
+    );
+    println!("{url}");
     match tvfrr_extraction_logic(
         reqwest::Client::new()
-            .get(&format!(
-                "{server_location}/api/{}/{}",
-                crate::repositories_types::tufa_server::routes::api::cats::CATS,
-                crate::common::url_encode::UrlEncode::url_encode(&query_parameters)
-            ))
+            .get(&url)
             .header(
                 crate::common::git::project_git_info::PROJECT_COMMIT,
                 crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO

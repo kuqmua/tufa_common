@@ -294,27 +294,13 @@ where
     }
 }
 //
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub struct Names(#[serde(deserialize_with = "deserialize_names")] pub Vec<std::string::String>);
 
-fn deserialize_names<'de, D>(deserializer: D) -> Result<Vec<std::string::String>, D::Error>
-where
-    D: serde::de::Deserializer<'de>,
-{
-    Ok({
-        use serde::Deserialize;
-        String::deserialize(deserializer)?
-    }
-    .split(',')
-    .map(|element| element.to_string())
-    .collect::<Vec<std::string::String>>())
-}
 //
 #[derive(Debug, serde::Deserialize)]
 pub struct GetQueryParameters {
     pub limit: crate::server::postgres::rows_per_table::RowsPerTable,
     pub id: Option<BigserialIds>,
-    pub name: Option<Names>,
+    pub name: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
     pub color: Option<std::string::String>,
     pub select: Option<GetSelect>,
 }
@@ -326,14 +312,7 @@ impl crate::common::url_encode::UrlEncode for GetQueryParameters {
         let mut stringified_query_parameters = String::from("?");
         let limit_query_parameter_handle =
             format!("limit={}", urlencoding::encode(&self.limit.to_string())); //todo -maybe write macro for it
-        match stringified_query_parameters.len() > 1 {
-            true => {
-                stringified_query_parameters.push_str(&limit_query_parameter_handle);
-            }
-            false => {
-                stringified_query_parameters.push_str(&format!("&{limit_query_parameter_handle}"));
-            }
-        }
+        stringified_query_parameters.push_str(&format!("&{limit_query_parameter_handle}"));
         if let Some(id) = &self.id {
             let ids_stringified = {
                 let mut ids_stringified =
@@ -347,17 +326,9 @@ impl crate::common::url_encode::UrlEncode for GetQueryParameters {
                 ids_stringified
             };
             let query_parameter_handle = format!("id={}", urlencoding::encode(&ids_stringified));
-            match stringified_query_parameters.len() > 1 {
-                true => {
-                    stringified_query_parameters.push_str(&query_parameter_handle);
-                }
-                false => {
-                    stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
-                }
-            }
+            stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
         }
         if let Some(names) = &self.name {
-            //
             let names_stringified = {
                 let mut names_stringified =
                     names.0.iter().fold(String::from(""), |mut acc, name| {
@@ -369,39 +340,17 @@ impl crate::common::url_encode::UrlEncode for GetQueryParameters {
                 }
                 names_stringified
             };
-            //
             let query_parameter_handle =
                 format!("name={}", urlencoding::encode(&names_stringified));
-            match stringified_query_parameters.len() > 1 {
-                true => {
-                    stringified_query_parameters.push_str(&query_parameter_handle);
-                }
-                false => {
-                    stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
-                }
-            }
+            stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
         }
         if let Some(color) = &self.color {
             let query_parameter_handle = format!("color={}", urlencoding::encode(color));
-            match stringified_query_parameters.len() > 1 {
-                true => {
-                    stringified_query_parameters.push_str(&query_parameter_handle);
-                }
-                false => {
-                    stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
-                }
-            }
+            stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
         }
         if let Some(select) = &self.select {
             let query_parameter_handle = format!("select={}", select.url_encode()); //urlencoding::encode(select)
-            match stringified_query_parameters.len() > 1 {
-                true => {
-                    stringified_query_parameters.push_str(&query_parameter_handle);
-                }
-                false => {
-                    stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
-                }
-            }
+            stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
         }
         stringified_query_parameters
     }
