@@ -58,5 +58,6 @@ compile_time_git_info = {path = "../proc_macros/compile_time_git_info"}
 enum_extension = {path = "../proc_macros/enum_extension"}
 error_occurence = {path = "../proc_macros/error_occurence"}
 generate_getter_traits_for_struct_fields = {path = "../proc_macros/generate_getter_traits_for_struct_fields"}
+generate_postgresql_crud = {path = "../proc_macros/generate_postgresql_crud"}
 init_from_env = {path = "../proc_macros/init_from_env"}
 user_port_try_from_u16 = {path = "../proc_macros/user_port_try_from_u16"}
