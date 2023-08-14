@@ -1,16 +1,16 @@
 #[derive(Debug, serde::Serialize, Clone)]
-pub struct CodeOccurence<'a> {
-    file: &'a str,
+pub struct CodeOccurence {
+    file: std::string::String,
     line: u32,
     column: u32,
-    git_info: &'a crate::common::git::git_info::GitInfo<'a>,
+    git_info: crate::common::git::git_info::GitInfoWithoutLifetime,
     duration: std::time::Duration,
 }
 
-impl<'a> CodeOccurence<'a> {
+impl CodeOccurence {
     pub fn new(
-        git_info: &'a crate::common::git::git_info::GitInfo<'a>,
-        file: &'a str,
+        git_info: crate::common::git::git_info::GitInfoWithoutLifetime,
+        file: std::string::String,
         line: u32,
         column: u32,
     ) -> Self {
@@ -26,31 +26,31 @@ impl<'a> CodeOccurence<'a> {
     }
 }
 
-impl<'a> crate::common::error_logs_logic::get_file::GetFile for CodeOccurence<'a> {
+impl crate::common::error_logs_logic::get_file::GetFile for CodeOccurence {
     fn get_file(&self) -> &str {
-        self.file
+        &self.file
     }
 }
 
-impl<'a> crate::common::error_logs_logic::get_line::GetLine for CodeOccurence<'a> {
+impl crate::common::error_logs_logic::get_line::GetLine for CodeOccurence {
     fn get_line(&self) -> &u32 {
         &self.line
     }
 }
 
-impl<'a> crate::common::error_logs_logic::get_column::GetColumn for CodeOccurence<'a> {
+impl crate::common::error_logs_logic::get_column::GetColumn for CodeOccurence {
     fn get_column(&self) -> &u32 {
         &self.column
     }
 }
 
-impl<'a> crate::common::error_logs_logic::get_duration::GetDuration for CodeOccurence<'a> {
+impl crate::common::error_logs_logic::get_duration::GetDuration for CodeOccurence {
     fn get_duration(&self) -> std::time::Duration {
         self.duration
     }
 }
 
-impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurence<'a> {
+impl std::fmt::Display for crate::common::code_occurence::CodeOccurence {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(
             f,
@@ -61,16 +61,21 @@ impl<'a> std::fmt::Display for crate::common::code_occurence::CodeOccurence<'a> 
 }
 
 impl<'a> crate::common::git::get_git_source_file_link::GetGitSourceFileLink<'a>
-    for crate::common::code_occurence::CodeOccurence<'a>
+    for crate::common::code_occurence::CodeOccurence
 {
     fn get_git_source_file_link(&self, file: &str, line: u32) -> String {
         self.git_info.get_git_source_file_link(file, line)
     }
 }
 
-impl<'a> CodeOccurence<'a> {
+impl CodeOccurence {
     pub fn into_serialize_deserialize_version(self) -> CodeOccurenceWithSerializeDeserialize {
-        CodeOccurenceWithSerializeDeserialize::new(self.git_info, self.file, self.line, self.column)
+        CodeOccurenceWithSerializeDeserialize::new(
+            self.git_info,
+            &self.file,
+            self.line,
+            self.column,
+        )
     }
 }
 
@@ -85,7 +90,7 @@ pub struct CodeOccurenceWithSerializeDeserialize {
 
 impl<'a> CodeOccurenceWithSerializeDeserialize {
     pub fn new(
-        git_info: &'a crate::common::git::git_info::GitInfo<'a>,
+        git_info: crate::common::git::git_info::GitInfoWithoutLifetime,
         file: &'a str,
         line: u32,
         column: u32,
@@ -94,7 +99,7 @@ impl<'a> CodeOccurenceWithSerializeDeserialize {
             file: file.to_string(),
             line,
             column,
-            git_info: git_info.to_git_info_without_lifetime(),
+            git_info,
             duration: std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("cannot convert time to unix_epoch"),

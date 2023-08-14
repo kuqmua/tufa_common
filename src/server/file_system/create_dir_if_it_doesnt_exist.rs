@@ -1,15 +1,15 @@
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum CreateDirIfItDoesntExistErrorNamed<'a> {
+pub enum CreateDirIfItDoesntExistErrorNamed {
     CreateDirAll {
         #[eo_display]
         error: std::io::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
 
 pub fn create_dir_if_it_doesnt_exist<'a>(
     path: &str,
-) -> Result<(), Box<CreateDirIfItDoesntExistErrorNamed<'a>>> {
+) -> Result<(), Box<CreateDirIfItDoesntExistErrorNamed>> {
     if std::path::Path::new(path).exists() {
         return Ok(());
     }

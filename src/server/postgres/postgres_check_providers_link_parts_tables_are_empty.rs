@@ -1,21 +1,21 @@
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-// pub enum PostgresCheckProvidersLinkPartsTablesEmptyErrorNamed<'a> {
+// pub enum PostgresCheckProvidersLinkPartsTablesEmptyErrorNamed {
 //     SelectCountOrigin {
 //         #[eo_hashmap_key_display_with_serialize_deserialize_value_display]
 //         hashmap_provider_kind_sqlx_error: std::collections::HashMap<std::string::String, sqlx::Error>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 //     NotEmptyOrigin {
 //         #[eo_hashmap_key_display_with_serialize_deserialize_value_display_with_serialize_deserialize]
 //         hashmap_provider_kind_len: std::collections::HashMap<std::string::String, i64>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     }
 // }
 
 // pub async fn postgres_check_providers_link_parts_tables_are_empty<'a>(
 //     providers_json_local_data_hashmap: &std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
 //     postgres_pool: &sqlx::Pool<sqlx::Postgres>,
-// ) -> Result<(), Box<crate::server::postgres::postgres_check_providers_link_parts_tables_are_empty::PostgresCheckProvidersLinkPartsTablesEmptyErrorNamed<'a>>> {
+// ) -> Result<(), Box<crate::server::postgres::postgres_check_providers_link_parts_tables_are_empty::PostgresCheckProvidersLinkPartsTablesEmptyErrorNamed>> {
 //     let count_provider_links_tables_tasks_vec =
 //         providers_json_local_data_hashmap.keys().map(|pk| async {
 //             let query_string = format!(

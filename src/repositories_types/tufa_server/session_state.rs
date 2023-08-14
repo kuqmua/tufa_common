@@ -1,11 +1,11 @@
 // pub struct TypedSession(actix_session::Session);
 
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-// pub enum InsertUserIdErrorNamed<'a> {
+// pub enum InsertUserIdErrorNamed {
 //     SessionInsert {
 //         #[eo_display]
 //         session_insert: actix_session::SessionInsertError,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 // }
 
@@ -17,7 +17,7 @@
 //     pub fn insert_user_id<'a>(
 //         &self,
 //         user_id: uuid::Uuid,
-//     ) -> Result<(), InsertUserIdErrorNamed<'a>> {
+//     ) -> Result<(), InsertUserIdErrorNamed> {
 //         match self.0.insert(Self::USER_ID_KEY, user_id) {
 //             Err(e) => Err(InsertUserIdErrorNamed::SessionInsert {
 //                 session_insert: e,

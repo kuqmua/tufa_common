@@ -57,7 +57,7 @@ pub struct Config {
 impl Config {
     pub fn try_from_config_unchecked<'a>(
         config_unchecked: ConfigUnchecked,
-    ) -> Result<Self, ConfigCheckErrorNamed<'a>> {
+    ) -> Result<Self, ConfigCheckErrorNamed> {
         let server_port =
             match crate::common::user_port::UserPort::try_from_u16(config_unchecked.server_port) {
                 Ok(user_port) => user_port,
@@ -208,82 +208,82 @@ impl Config {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum ConfigCheckErrorNamed<'a> {
+pub enum ConfigCheckErrorNamed {
     ServerPort {
         #[eo_error_occurence]
-        server_port: crate::common::user_port::UserPortTryFromU16ErrorNamed<'a>,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        server_port: crate::common::user_port::UserPortTryFromU16ErrorNamed,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     SocketAddr {
         #[eo_display]
         socket_addr: std::net::AddrParseError,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     HmacSecret {
         #[eo_display_with_serialize_deserialize]
         hmac_secret: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     BaseUrl {
         #[eo_display_with_serialize_deserialize]
         base_url: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     //
     RequireSsl {
         #[eo_display_with_serialize_deserialize]
         require_ssl: bool,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     AccessControlAllowOrigin {
         #[eo_display_with_serialize_deserialize]
         access_control_allow_origin: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     GithubName {
         #[eo_display_with_serialize_deserialize]
         github_name: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     GithubToken {
         #[eo_display_with_serialize_deserialize]
         github_token: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     Timezone {
         #[eo_display_with_serialize_deserialize]
         timezone: i32,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     RedisUrl {
         #[eo_display_with_serialize_deserialize]
         redis_url: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     MongoUrl {
         #[eo_display_with_serialize_deserialize]
         mongo_url: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     DatabaseUrl {
         #[eo_display_with_serialize_deserialize]
         database_url: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     StartingCheckLink {
         #[eo_display_with_serialize_deserialize]
         starting_check_link: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     TracingType {
         #[eo_display_with_serialize_deserialize]
         tracing_type: crate::server::tracing_type::TracingType,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     SourcePlaceType {
         #[eo_display_with_serialize_deserialize]
         source_place_type: crate::common::source_place_type::SourcePlaceType,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
 

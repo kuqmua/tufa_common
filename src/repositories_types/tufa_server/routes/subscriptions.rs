@@ -18,40 +18,40 @@
 // }
 
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-// pub enum SubscribeErrorNamed<'a> {
+// pub enum SubscribeErrorNamed {
 //     TryIntoNewSubscriber {
 //         #[eo_display_with_serialize_deserialize]
 //         try_into_new_subscriber: std::string::String,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 //     PostgresPoolBegin {
 //         #[eo_display]
 //         postgres_pool_begin: sqlx::Error,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 //     InsertSubscriber {
 //         #[eo_display]
 //         insert_subscriber: sqlx::Error,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 //     StoreToken {
 //         #[eo_display]
 //         store_token: StoreTokenError,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 //     PostgresTransactionCommit {
 //         #[eo_display]
 //         postgres_transaction_commit: sqlx::Error,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 //     SendConfirmationEmail {
 //         #[eo_display]
 //         send_confirmation_email: reqwest::Error,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 // }
 
-// impl<'a> actix_web::ResponseError for SubscribeErrorNamed<'a> {
+// impl<'a> actix_web::ResponseError for SubscribeErrorNamed {
 //     fn status_code(&self) -> actix_web::http::StatusCode {
 //         match self {
 //             SubscribeErrorNamed::TryIntoNewSubscriber {

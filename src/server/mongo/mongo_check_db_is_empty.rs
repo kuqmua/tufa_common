@@ -1,21 +1,21 @@
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum MongoCheckDbIsEmptyErrorNamed<'a> {
+pub enum MongoCheckDbIsEmptyErrorNamed {
     MongoDB {
         #[eo_display]
         mongodb: mongodb::error::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     ListCollectionNamesIsNotEmpty {
         #[eo_display_with_serialize_deserialize]
         list_collection_names_len: usize,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
 
 pub async fn mongo_check_db_is_empty<'a>(
     mongo_client: &mongodb::Client,
     db_name: &str,
-) -> Result<(), Box<MongoCheckDbIsEmptyErrorNamed<'a>>> {
+) -> Result<(), Box<MongoCheckDbIsEmptyErrorNamed>> {
     match mongo_client
         .database(db_name)
         .list_collection_names(None)

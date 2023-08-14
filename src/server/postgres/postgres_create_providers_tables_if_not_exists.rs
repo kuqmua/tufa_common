@@ -1,16 +1,16 @@
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-// pub enum PostgresCreateProvidersDbsErrorNamed<'a> {
+// pub enum PostgresCreateProvidersDbsErrorNamed {
 //     Postgres {
 //         #[eo_hashmap_key_display_with_serialize_deserialize_value_display]
 //         sqlx_error_hashmap: std::collections::HashMap<std::string::String, sqlx::Error>,//todo key ProviderKind instead of std::string::String
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 // }
 
 // pub async fn postgres_create_providers_tables_if_not_exists<'a>(
 //     providers_json_local_data_hashmap: &std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
 //     postgres_pool: &sqlx::Pool<sqlx::Postgres>,
-// ) -> Result<(), Box<crate::server::postgres::postgres_create_providers_tables_if_not_exists::PostgresCreateProvidersDbsErrorNamed<'a>>> {
+// ) -> Result<(), Box<crate::server::postgres::postgres_create_providers_tables_if_not_exists::PostgresCreateProvidersDbsErrorNamed>> {
 //     let table_creation_error_hashmap = futures::future::join_all(
 //         providers_json_local_data_hashmap.keys().map(|pk| async {
 //             let query_string = format!(

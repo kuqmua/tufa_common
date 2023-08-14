@@ -1,23 +1,23 @@
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-// pub enum MongoInsertManyErrorNamed<'a> {
+// pub enum MongoInsertManyErrorNamed {
 //     InsertMany {
 //         #[eo_hashmap_key_display_with_serialize_deserialize_value_error_occurence]
 //         insert_many: std::collections::HashMap<std::string::String, MongoInsertManyErrorUnnamed<'a>>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 // }
 
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 // pub enum MongoInsertManyErrorUnnamed<'a> {
-//     InsertMany(MongoInsertManyHandleErrorNamed<'a>),
+//     InsertMany(MongoInsertManyHandleErrorNamed),
 // }
 
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-// pub enum MongoInsertManyHandleErrorNamed<'a> {
+// pub enum MongoInsertManyHandleErrorNamed {
 //     InsertMany {
 //         #[eo_display]
 //         insert_many: mongodb::error::Error,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 // }
 
@@ -29,7 +29,7 @@
 // + std::marker::Send
 // + std::marker::Sync
 // )
-// ) -> Result<(), Box<crate::server::mongo::mongo_insert_many::MongoInsertManyErrorNamed<'a>>> {
+// ) -> Result<(), Box<crate::server::mongo::mongo_insert_many::MongoInsertManyErrorNamed>> {
 //     let error_vec_insert_many = futures::future::join_all(
 //         providers_json_local_data_hashmap.iter().map(
 //                 |(pk, data_vec)|

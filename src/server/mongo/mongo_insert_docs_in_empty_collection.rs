@@ -1,14 +1,14 @@
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum MongoInsertDocsInEmptyCollectionErrorNamed<'a> {
+pub enum MongoInsertDocsInEmptyCollectionErrorNamed {
     MongoDB {
         #[eo_display]
         mongodb: mongodb::error::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     CollectionIsNotEmpty {
         #[eo_display_with_serialize_deserialize]
         collection_is_not_empty: u64,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
 
@@ -18,7 +18,7 @@ pub async fn mongo_insert_docs_in_empty_collection<'a>(
     db_collection_handle: String,
     collection_field_name: &'a String,
     vec_of_values: Vec<String>,
-) -> Result<(), Box<MongoInsertDocsInEmptyCollectionErrorNamed<'a>>> {
+) -> Result<(), Box<MongoInsertDocsInEmptyCollectionErrorNamed>> {
     let collection = mongo_client
         .database(db_name_handle)
         .collection(&db_collection_handle);

@@ -1,19 +1,19 @@
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum MongoGetDocumentsAsStringVectorErrorNamed<'a> {
+pub enum MongoGetDocumentsAsStringVectorErrorNamed {
     MongoDB {
         #[eo_display]
         mongodb: mongodb::error::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     WrongBsonType {
         #[eo_display_with_serialize_deserialize]
         bson: mongodb::bson::Bson,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     NoKeyInDocument {
         #[eo_display_with_serialize_deserialize]
-        key: &'a str,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        key: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
 
@@ -49,7 +49,7 @@ pub async fn mongo_get_documents_as_string_vector(
                             match document.get(db_collection_document_field_name_handle) {
                                 None => return Err(Box::new(
                                     crate::server::mongo::mongo_get_documents_as_string_vector::MongoGetDocumentsAsStringVectorErrorNamed::NoKeyInDocument {
-                                        key: db_collection_document_field_name_handle,
+                                        key: db_collection_document_field_name_handle.to_string(),
                                         code_occurence: crate::code_occurence_tufa_common!()
                                     }
                                 )),

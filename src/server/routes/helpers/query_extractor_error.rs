@@ -8,26 +8,24 @@
     crate::repositories_types::tufa_server::routes::api::cats::get::TryGet,
     crate::repositories_types::tufa_server::routes::api::cats::delete::TryDelete
 )]
-pub enum QueryExtractorErrorNamed<'a> {
+pub enum QueryExtractorErrorNamed {
     #[tvfrr_400_bad_request]
     FailedToDeserializeQueryString {
         #[eo_display_with_serialize_deserialize]
         failed_to_deserialize_query_string: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     //#[non_exhaustive] case
     #[tvfrr_500_internal_server_error]
     UnexpectedCase {
         #[eo_display_with_serialize_deserialize]
         unexpected_case: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
 
-impl<'a> std::convert::From<axum::extract::rejection::QueryRejection>
-    for QueryExtractorErrorNamed<'a>
-{
-    fn from(e: axum::extract::rejection::QueryRejection) -> QueryExtractorErrorNamed<'a> {
+impl<'a> std::convert::From<axum::extract::rejection::QueryRejection> for QueryExtractorErrorNamed {
+    fn from(e: axum::extract::rejection::QueryRejection) -> QueryExtractorErrorNamed {
         match e {
             axum::extract::rejection::QueryRejection::FailedToDeserializeQueryString(
                 failed_to_deserialize_query_string,
@@ -55,7 +53,7 @@ impl<'a, OkGeneric, ErrorGeneric> QueryValueResultExtractor<OkGeneric, ErrorGene
     for Result<axum::extract::Query<OkGeneric>, axum::extract::rejection::QueryRejection>
 where
     ErrorGeneric: std::convert::From<
-            crate::server::routes::helpers::query_extractor_error::QueryExtractorErrorNamed<'a>,
+            crate::server::routes::helpers::query_extractor_error::QueryExtractorErrorNamed,
         > + axum::response::IntoResponse,
 {
     fn try_extract_value(

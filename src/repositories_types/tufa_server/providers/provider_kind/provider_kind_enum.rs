@@ -22,29 +22,29 @@
 // }
 
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-// pub enum FetchAndParseProviderDataErrorNamed<'a> {
+// pub enum FetchAndParseProviderDataErrorNamed {
 //     // AsyncFetchLinks {
 //     //     #[eo_hashmap_key_display_with_serialize_deserialize_value_error_occurence]
-//     //     fetch_links: std::collections::HashMap<std::string::String, crate::server::http_request::http_request_error::HttpRequestErrorNamed<'a>>, //link, error
-//     //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//     //     fetch_links: std::collections::HashMap<std::string::String, crate::server::http_request::http_request_error::HttpRequestErrorNamed>, //link, error
+//     //     code_occurence: crate::common::code_occurence::CodeOccurence,
 //     // },
 //     NoItems {
 //         #[eo_hashmap_key_display_with_serialize_deserialize_value_error_occurence]
 //         no_items: std::collections::HashMap<std::string::String, FetchAndParseProviderDataErrorUnnamed<'a>>, //link, error
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 // }
 
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 // pub enum FetchAndParseProviderDataErrorUnnamed<'a> {
-//     NoItems(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed<'a>),
+//     NoItems(crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed),
 // }
 
 // impl ProviderKind {
 //     pub async fn fetch_and_parse_provider_data<'a>(
 //         self,
 //         links: Vec<String>,
-//     ) -> Result<Vec<crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct>, Box<FetchAndParseProviderDataErrorNamed<'a>>> {
+//     ) -> Result<Vec<crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct>, Box<FetchAndParseProviderDataErrorNamed>> {
 //         let time = std::time::Instant::now();
 //         let capacity = links.len();
 //         let vec_to_return = futures::future::join_all(links.iter().map(|url| async move {
@@ -205,21 +205,21 @@
 // }
 
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-// pub enum GetLinkPartsFromLocalJsonFileErrorNamed<'a> {
+// pub enum GetLinkPartsFromLocalJsonFileErrorNamed {
 //     TokioFsFileOpen {
 //         #[eo_display]
 //         tokio_fs_file_open: std::io::Error,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 //     TokioIoAsyncReadExtReadToEnd {
 //         #[eo_display]
 //         tokio_io_async_read_ext_read_to_end: std::io::Error,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 //     SerdeJsonFromSlice {
 //         #[eo_display]
 //         serde_json_from_slice: serde_json::Error,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 // }
 
@@ -239,7 +239,7 @@
 // + std::marker::Send
 // + std::marker::Sync
 //         )
-//     ) -> Result<Vec<String>, Box<GetLinkPartsFromLocalJsonFileErrorNamed<'a>>> {
+//     ) -> Result<Vec<String>, Box<GetLinkPartsFromLocalJsonFileErrorNamed>> {
 //         match tokio::fs::File::open(&{
 //             use crate::repositories_types::tufa_server::traits::provider_kind_methods::ProviderKindMethods;
 //             self.get_init_local_data_file_path(config)
@@ -309,21 +309,21 @@
 // }
 
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-// pub enum MongoGetProviderLinkPartsErrorNamed<'a> {
+// pub enum MongoGetProviderLinkPartsErrorNamed {
 //     ClientOptionsParse {
 //         #[eo_display]
 //         mongo: mongodb::error::Error,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 //     ClientWithOptions {
 //         #[eo_display]
 //         mongo: mongodb::error::Error,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 //     // MongoGetDocumentsAsStringVector {
 //     //    #[eo_error_occurence]
 //     //     source: Box<MongoGetDocumentsAsStringVectorErrorEnum>,
-//     //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//     //     code_occurence: crate::common::code_occurence::CodeOccurence,
 //     // },
 // }
 
@@ -331,7 +331,7 @@
 //     //rust does not support async traits yet (end of 2021). only with third party crate
 //     pub async fn mongo_get_provider_link_parts<'a>(
 //         pk: crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind,
-//     ) -> Result<Vec<String>, MongoGetProviderLinkPartsErrorNamed<'a>> {
+//     ) -> Result<Vec<String>, MongoGetProviderLinkPartsErrorNamed> {
 //         todo!()
 //         // match mongodb::options::ClientOptions::parse(crate::global_variables::runtime::config::CONFIG.get_mongo_url()).await {
 //         //     Err(e) => Err(Box::new(MongoGetProviderLinkPartsErrorNamed::ClientOptionsParse {

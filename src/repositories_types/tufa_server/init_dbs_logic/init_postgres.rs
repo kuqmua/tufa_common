@@ -1,29 +1,29 @@
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-// pub enum PostgresInitErrorNamed<'a> {
+// pub enum PostgresInitErrorNamed {
 //     CreateTableQueries{
 //         #[eo_error_occurence]
-//         create_table_queries: crate::server::postgres::postgres_create_providers_tables_if_not_exists::PostgresCreateProvidersDbsErrorNamed<'a>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         create_table_queries: crate::server::postgres::postgres_create_providers_tables_if_not_exists::PostgresCreateProvidersDbsErrorNamed,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 //     CheckProviderLinksTablesAreEmpty{
 //         #[eo_error_occurence]
-//         check_provider_links_tables_are_empty: crate::server::postgres::postgres_check_providers_link_parts_tables_are_empty::PostgresCheckProvidersLinkPartsTablesEmptyErrorNamed<'a>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         check_provider_links_tables_are_empty: crate::server::postgres::postgres_check_providers_link_parts_tables_are_empty::PostgresCheckProvidersLinkPartsTablesEmptyErrorNamed,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 //     DeleteAllFromProvidersTables{
 //         #[eo_error_occurence]
-//         delete_all_from_providers_tables: crate::server::postgres::postgres_delete_all_from_providers_link_parts_tables::PostgresDeleteAllFromProvidersTablesErrorNamed<'a>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         delete_all_from_providers_tables: crate::server::postgres::postgres_delete_all_from_providers_link_parts_tables::PostgresDeleteAllFromProvidersTablesErrorNamed,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 //     CheckProvidersLinksTablesLengthRowsEqualInitializationDataLength{
 //         #[eo_error_occurence]
-//         check_providers_links_tables_length_rows_equal_initialization_data_length: crate::server::postgres::postgres_check_providers_links_tables_length_rows_equal_initialization_data_length::PostgresCheckProvidersLinksTablesLengthRowsEqualInitializationDataLengthWrapperErrorNamed<'a>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         check_providers_links_tables_length_rows_equal_initialization_data_length: crate::server::postgres::postgres_check_providers_links_tables_length_rows_equal_initialization_data_length::PostgresCheckProvidersLinksTablesLengthRowsEqualInitializationDataLengthWrapperErrorNamed,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 //     InsertLinkPartsIntoProvidersTables{
 //         #[eo_error_occurence]
-//         insert_link_parts_into_providers_tables: crate::server::postgres::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginErrorNamed<'a>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         insert_link_parts_into_providers_tables: crate::server::postgres::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginErrorNamed,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 // }
 
@@ -34,7 +34,7 @@
 //         + std::marker::Send
 //         + std::marker::Sync
 //     )
-// ) -> Result<(), Box<crate::repositories_types::tufa_server::init_dbs_logic::init_postgres::PostgresInitErrorNamed<'a>>> {
+// ) -> Result<(), Box<crate::repositories_types::tufa_server::init_dbs_logic::init_postgres::PostgresInitErrorNamed>> {
 //     if let Err(e) = crate::server::postgres::postgres_create_providers_tables_if_not_exists::postgres_create_providers_tables_if_not_exists(
 //         &providers_json_local_data_hashmap,
 //         config,

@@ -1,25 +1,25 @@
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-// pub enum MongoGetProvidersLinkPartsErrorNamed<'a> {
+// pub enum MongoGetProvidersLinkPartsErrorNamed {
 //     MongoDB {
 //         #[eo_display]
 //         mongodb: mongodb::error::Error,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 //     NoSuchCollections {
 //         #[eo_hashmap_key_display_with_serialize_deserialize_value_display_with_serialize_deserialize]
 //         no_such_collections: std::collections::HashMap<std::string::String, std::string::String>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 //     GetDocuments {
 //         #[eo_hashmap_key_display_with_serialize_deserialize_value_error_occurence]
 //         get_documents: std::collections::HashMap<std::string::String, MongoGetDocumentsAsStringVectorErrorUnnamed<'a>>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 // }
 
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 // pub enum MongoGetDocumentsAsStringVectorErrorUnnamed<'a> {
-//     MongoGetDocumentsAsStringVector(crate::server::mongo::mongo_get_documents_as_string_vector::MongoGetDocumentsAsStringVectorErrorNamed<'a>),
+//     MongoGetDocumentsAsStringVector(crate::server::mongo::mongo_get_documents_as_string_vector::MongoGetDocumentsAsStringVectorErrorNamed),
 // }
 
 // pub async fn mongo_get_providers_link_parts<'a>(
@@ -37,7 +37,7 @@
 //                 crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind,
 //                 Vec<String>
 //         >,
-//         crate::server::mongo::mongo_get_providers_link_parts::MongoGetProvidersLinkPartsErrorNamed<'a>
+//         crate::server::mongo::mongo_get_providers_link_parts::MongoGetProvidersLinkPartsErrorNamed
 //     > {
 //         let db = config.get_mongo_client().database("providers_link_parts");
 //         match db.list_collection_names(None).await {

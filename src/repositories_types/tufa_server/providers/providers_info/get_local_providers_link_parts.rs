@@ -1,15 +1,15 @@
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-// pub enum GetLocalProvidersLinkPartsErrorNamed<'a> {
+// pub enum GetLocalProvidersLinkPartsErrorNamed {
 //     GetLinkPartsFromLocalJsonFile {
 //         #[eo_hashmap_key_display_with_serialize_deserialize_value_error_occurence]
 //         get_link_parts_from_local_json_file: std::collections::HashMap<std::string::String, GetLocalProvidersLinkPartsErrorUnnamed<'a>>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 // }
 
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 // pub enum GetLocalProvidersLinkPartsErrorUnnamed<'a> {
-//     GetLinkPartsFromLocalJsonFile(crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::GetLinkPartsFromLocalJsonFileErrorNamed<'a>),
+//     GetLinkPartsFromLocalJsonFile(crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::GetLinkPartsFromLocalJsonFileErrorNamed),
 // }
 
 // #[derive(Clone, Debug, valuable::Valuable)]
@@ -24,7 +24,7 @@
 // + std::marker::Send
 // + std::marker::Sync
 //     )
-// ) -> Result<std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>, Box<GetLocalProvidersLinkPartsErrorNamed<'a>>> {
+// ) -> Result<std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>, Box<GetLocalProvidersLinkPartsErrorNamed>> {
 //     let result_vec = futures::future::join_all(
 //             {
 //                 use crate::repositories_types::tufa_server::traits::provider_kind_methods::ProviderKindMethods;

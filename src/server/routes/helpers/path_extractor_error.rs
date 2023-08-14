@@ -8,32 +8,30 @@
     crate::repositories_types::tufa_server::routes::api::cats::delete_by_id::TryDeleteById,
     crate::repositories_types::tufa_server::routes::api::cats::get_by_id::TryGetById
 )]
-pub enum PathExtractorErrorNamed<'a> {
+pub enum PathExtractorErrorNamed {
     #[tvfrr_400_bad_request]
     FailedToDeserializePathParams {
         #[eo_display_with_serialize_deserialize]
         failed_to_deserialize_path_params: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_400_bad_request]
     MissingPathParams {
         #[eo_display_with_serialize_deserialize]
         missing_path_params: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     //#[non_exhaustive] case
     #[tvfrr_500_internal_server_error]
     UnexpectedCase {
         #[eo_display_with_serialize_deserialize]
         unexpected_case: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
 
-impl<'a> std::convert::From<axum::extract::rejection::PathRejection>
-    for PathExtractorErrorNamed<'a>
-{
-    fn from(e: axum::extract::rejection::PathRejection) -> PathExtractorErrorNamed<'a> {
+impl<'a> std::convert::From<axum::extract::rejection::PathRejection> for PathExtractorErrorNamed {
+    fn from(e: axum::extract::rejection::PathRejection) -> PathExtractorErrorNamed {
         match e {
             axum::extract::rejection::PathRejection::FailedToDeserializePathParams(
                 failed_to_deserialize_path_params,
@@ -67,7 +65,7 @@ impl<'a, OkGeneric, ErrorGeneric> PathValueResultExtractor<OkGeneric, ErrorGener
     for Result<axum::extract::Path<OkGeneric>, axum::extract::rejection::PathRejection>
 where
     ErrorGeneric: std::convert::From<
-            crate::server::routes::helpers::path_extractor_error::PathExtractorErrorNamed<'a>,
+            crate::server::routes::helpers::path_extractor_error::PathExtractorErrorNamed,
         > + axum::response::IntoResponse,
 {
     fn try_extract_value(

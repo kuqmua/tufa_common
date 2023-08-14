@@ -11,24 +11,22 @@ impl std::fmt::Display for UserPort {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum UserPortTryFromU16ErrorNamed<'a> {
+pub enum UserPortTryFromU16ErrorNamed {
     SystemPort {
         #[eo_display_with_serialize_deserialize]
         port: u16,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     EphemeralPort {
         #[eo_display_with_serialize_deserialize]
         port: u16,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
 
 impl UserPort {
     //its not TryFrom<u16> coz its not supported lifetimes in Error annotation
-    pub fn try_from_u16<'a>(
-        possible_port: u16,
-    ) -> Result<UserPort, UserPortTryFromU16ErrorNamed<'a>> {
+    pub fn try_from_u16(possible_port: u16) -> Result<UserPort, UserPortTryFromU16ErrorNamed> {
         if possible_port < 1024 {
             Err(UserPortTryFromU16ErrorNamed::SystemPort {
                 port: possible_port,

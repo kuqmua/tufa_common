@@ -26,25 +26,25 @@ where
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum BigserialTryFromStrErrorNamed<'a> {
+pub enum BigserialTryFromStrErrorNamed {
     ParseIntError {
         #[eo_display]
         parse_int_error: std::num::ParseIntError,
         #[eo_display_with_serialize_deserialize]
-        str_value: &'a str,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        str_value: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     NotPositive {
         #[eo_error_occurence]
-        not_positive: BigserialTryFromI64ErrorNamed<'a>,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        not_positive: BigserialTryFromI64ErrorNamed,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
 
 impl<'a> crate::common::std_str_from_str_with_lifetime::StdStrFromStrWithLifetime<'a>
     for Bigserial
 {
-    type Err = BigserialTryFromStrErrorNamed<'a>;
+    type Err = BigserialTryFromStrErrorNamed;
 
     fn std_str_from_str_with_lifetime(str_value: &'a str) -> Result<Self, Self::Err> {
         match str_value.parse::<i64>() {
@@ -59,7 +59,7 @@ impl<'a> crate::common::std_str_from_str_with_lifetime::StdStrFromStrWithLifetim
             },
             Err(parse_int_error) => Err(BigserialTryFromStrErrorNamed::ParseIntError {
                 parse_int_error,
-                str_value,
+                str_value: str_value.to_string(),
                 code_occurence: crate::code_occurence_tufa_common!(),
             }),
         }
@@ -98,11 +98,11 @@ impl std::fmt::Display for Bigserial {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum BigserialTryFromI64ErrorNamed<'a> {
+pub enum BigserialTryFromI64ErrorNamed {
     NotPositive {
         #[eo_display_with_serialize_deserialize]
         not_positive: i64,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
 
@@ -110,7 +110,7 @@ impl Bigserial {
     //its not TryFrom<i64> coz its not supported lifetimes in Error annotation
     pub fn try_from_i64<'a>(
         possible_bigserial: i64,
-    ) -> Result<Bigserial, BigserialTryFromI64ErrorNamed<'a>> {
+    ) -> Result<Bigserial, BigserialTryFromI64ErrorNamed> {
         if possible_bigserial.is_positive() {
             Ok(Bigserial(possible_bigserial))
         } else {

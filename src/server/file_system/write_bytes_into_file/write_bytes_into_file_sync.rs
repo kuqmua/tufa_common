@@ -1,9 +1,9 @@
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum WriteBytesIntoFileSyncErrorNamed<'a> {
+pub enum WriteBytesIntoFileSyncErrorNamed {
     StdIo {
         #[eo_display]
         std_io_error: std::io::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
 

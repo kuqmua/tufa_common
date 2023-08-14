@@ -3,16 +3,16 @@ pub trait TryCreateTcpListener<'a> {
         &self,
     ) -> Result<
         std::net::TcpListener,
-        Box<crate::common::config::try_create_tcp_listener::TryCreateTcpListenerErrorNamed<'a>>,
+        Box<crate::common::config::try_create_tcp_listener::TryCreateTcpListenerErrorNamed>,
     >;
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum TryCreateTcpListenerErrorNamed<'a> {
+pub enum TryCreateTcpListenerErrorNamed {
     TcpListenerBind {
         #[eo_display]
         tcp_listener_bind: std::io::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
 
@@ -24,7 +24,7 @@ where
         &self,
     ) -> Result<
         std::net::TcpListener,
-        Box<crate::common::config::try_create_tcp_listener::TryCreateTcpListenerErrorNamed<'a>>,
+        Box<crate::common::config::try_create_tcp_listener::TryCreateTcpListenerErrorNamed>,
     > {
         match std::net::TcpListener::bind(self.get_server_address()) {
             Ok(listener) => Ok(listener),

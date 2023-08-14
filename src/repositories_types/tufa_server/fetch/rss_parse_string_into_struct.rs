@@ -2,7 +2,7 @@
 //     mut fetch_result_string: String,
 //     value: &'a str,
 //     pk: crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind,
-// ) -> Result<crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct, crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed<'a>> {
+// ) -> Result<crate::repositories_types::tufa_server::fetch::info_structures::common_rss_structures::CommonRssPostStruct, crate::repositories_types::tufa_server::fetch::rss_metainfo_fetch_structures::NoItemsErrorNamed> {
 //     match {
 //         use crate::repositories_types::tufa_server::traits::provider_kind_methods::ProviderKindMethods;
 //         pk.get_item_handle()

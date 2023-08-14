@@ -43,27 +43,27 @@
 // //TODO: WRITE CONVERSION FUNCTION INTO COMMON ERROR ENUM AND MOVE IT INTO write_error_posts_wrapper
 
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-// pub enum GetProviderPostsErrorNamed<'a> {
+// pub enum GetProviderPostsErrorNamed {
 //     // GetLocalProvidersLinkParts {
 //     //     #[eo_error_occurence]
-//     //     get_providers_link_parts: crate::repositories_types::tufa_server::providers::providers_info::get_providers_link_parts::GetProvidersLinkPartsErrorNamed<'a>,
-//     //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//     //     get_providers_link_parts: crate::repositories_types::tufa_server::providers::providers_info::get_providers_link_parts::GetProvidersLinkPartsErrorNamed,
+//     //     code_occurence: crate::common::code_occurence::CodeOccurence,
 //     // },
 //     // CheckProvidersLinkPartsEmpty {
 //     //     #[eo_error_occurence]
-//     //     check_providers_link_parts_empty: crate::repositories_types::tufa_server::providers::check_providers_link_parts_on_empty::CheckProvidersLinkPartsEmptyErrorNamed<'a>,
-//     //     code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//     //     check_providers_link_parts_empty: crate::repositories_types::tufa_server::providers::check_providers_link_parts_on_empty::CheckProvidersLinkPartsEmptyErrorNamed,
+//     //     code_occurence: crate::common::code_occurence::CodeOccurence,
 //     // },
 //     GetNewProvidersPosts {
 //         #[eo_hashmap_key_display_with_serialize_deserialize_value_error_occurence]
 //         hashmap_provider_kind_rss_part: std::collections::HashMap<std::string::String, GetProviderPostsErrorUnnamed<'a>>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 // }
 
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 // pub enum GetProviderPostsErrorUnnamed<'a> {
-//     GetNewProvidersPosts(crate::repositories_types::tufa_server::providers::provider_kind::functions::rss_part::RssPartErrorNamed<'a>),
+//     GetNewProvidersPosts(crate::repositories_types::tufa_server::providers::provider_kind::functions::rss_part::RssPartErrorNamed),
 // }
 
 // pub async fn get_providers_posts<'a>(
@@ -80,7 +80,7 @@
 // + std::marker::Send
 // + std::marker::Sync
 //     )
-// ) -> Result<(), Box<GetProviderPostsErrorNamed<'a>>> {
+// ) -> Result<(), Box<GetProviderPostsErrorNamed>> {
 //     todo!()
 //     // match crate::repositories_types::tufa_server::providers::providers_info::get_providers_link_parts::get_providers_link_parts(config).await {
 //     //     Err(e) => Err(Box::new(

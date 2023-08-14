@@ -9,44 +9,44 @@
     crate::repositories_types::tufa_server::routes::api::cats::put::TryPut,
     crate::repositories_types::tufa_server::routes::api::cats::patch::TryPatch
 )]
-pub enum JsonExtractorErrorNamed<'a> {
+pub enum JsonExtractorErrorNamed {
     #[tvfrr_400_bad_request]
     JsonDataError {
         #[eo_display_with_serialize_deserialize]
         json_data_error: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_400_bad_request]
     JsonSyntaxError {
         #[eo_display_with_serialize_deserialize]
         json_syntax_error: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_400_bad_request]
     MissingJsonContentType {
         #[eo_display_with_serialize_deserialize]
         json_syntax_error: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_500_internal_server_error]
     BytesRejection {
         #[eo_display_with_serialize_deserialize]
         bytes_rejection: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     //#[non_exhaustive] case
     #[tvfrr_500_internal_server_error]
     UnexpectedCase {
         #[eo_display_with_serialize_deserialize]
         unexpected_case: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
 
 impl<'a> std::convert::From<axum::extract::rejection::JsonRejection>
-    for JsonExtractorErrorNamed<'a>
+    for JsonExtractorErrorNamed
 {
-    fn from(e: axum::extract::rejection::JsonRejection) -> JsonExtractorErrorNamed<'a> {
+    fn from(e: axum::extract::rejection::JsonRejection) -> JsonExtractorErrorNamed {
         match e {
             axum::extract::rejection::JsonRejection::JsonDataError(json_data_error) => JsonExtractorErrorNamed::serde_json_error_response(json_data_error),
             axum::extract::rejection::JsonRejection::JsonSyntaxError(json_syntax_error) => JsonExtractorErrorNamed::serde_json_error_response(json_syntax_error),
@@ -75,7 +75,7 @@ impl<'a> std::convert::From<axum::extract::rejection::JsonRejection>
 // if that succeeds we can provide a more specific error.
 //
 // `Json` uses `serde_path_to_error` so the error will be wrapped in `serde_path_to_error::Error`.
-impl<'a> JsonExtractorErrorNamed<'a> {
+impl<'a> JsonExtractorErrorNamed {
     fn serde_json_error_response<E>(err: E) -> Self 
     where
         E: std::error::Error + 'static,
@@ -132,7 +132,7 @@ impl<
         axum::extract::rejection::JsonRejection,
     >
 where
-    ErrorGeneric: std::convert::From<crate::server::routes::helpers::json_extractor_error::JsonExtractorErrorNamed<'a>> 
+    ErrorGeneric: std::convert::From<crate::server::routes::helpers::json_extractor_error::JsonExtractorErrorNamed> 
     + axum::response::IntoResponse,
 {
     fn try_extract_value(

@@ -1,18 +1,18 @@
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-// pub enum GetProvidersLinkPartsErrorNamed<'a> {
+// pub enum GetProvidersLinkPartsErrorNamed {
 //     GetLocalProvidersLinkParts {
 //         #[eo_error_occurence]
-//         get_local_providers_link_parts: crate::repositories_types::tufa_server::providers::providers_info::get_local_providers_link_parts::GetLocalProvidersLinkPartsErrorNamed<'a>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         get_local_providers_link_parts: crate::repositories_types::tufa_server::providers::providers_info::get_local_providers_link_parts::GetLocalProvidersLinkPartsErrorNamed,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 //     MongoGetProvidersLinkParts {
 //          #[eo_error_occurence]
-//         mongo_get_providers_link_parts: crate::server::mongo::mongo_get_providers_link_parts::MongoGetProvidersLinkPartsErrorNamed<'a>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         mongo_get_providers_link_parts: crate::server::mongo::mongo_get_providers_link_parts::MongoGetProvidersLinkPartsErrorNamed,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 //     // PostgreSql {
 //     //     // source: PostgresGetProviderLinksError,
-//     //     // code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//     //     // code_occurence: crate::common::code_occurence::CodeOccurence,
 //     // },
 // }
 
@@ -30,7 +30,7 @@
 // + std::marker::Send
 // + std::marker::Sync
 //     )
-// ) -> Result<std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>, Box<GetProvidersLinkPartsErrorNamed<'a>>> {
+// ) -> Result<std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>, Box<GetProvidersLinkPartsErrorNamed>> {
 //     match
 // config.get_providers_link_parts_source() //postgres mongo local
 // {

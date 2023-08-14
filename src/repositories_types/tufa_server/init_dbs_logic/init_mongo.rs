@@ -1,24 +1,24 @@
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-// pub enum InitMongoErrorNamed<'a> {
+// pub enum InitMongoErrorNamed {
 //     ClientOptionsParse {
 //         #[eo_error_occurence]
-//         client_options_parse: crate::server::mongo::mongo_client_options_parse::MongoClientOptionsParseOriginErrorNamed<'a>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         client_options_parse: crate::server::mongo::mongo_client_options_parse::MongoClientOptionsParseOriginErrorNamed,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 //     ClientWithOptions {
 //         #[eo_error_occurence]
-//         client_with_options: crate::server::mongo::mongo_client_with_options::MongoClientWithOptionsOriginErrorNamed<'a>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         client_with_options: crate::server::mongo::mongo_client_with_options::MongoClientWithOptionsOriginErrorNamed,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 //     CollectionIsNotEmpty {
 //         #[eo_error_occurence]
-//         collection_is_not_empty: crate::server::mongo::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorNamed<'a>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         collection_is_not_empty: crate::server::mongo::mongo_check_collection_is_not_empty::MongoCheckCollectionIsNotEmptyErrorNamed,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 //     InsertMany {
 //         #[eo_error_occurence]
-//         insert_many: crate::server::mongo::mongo_insert_many::MongoInsertManyErrorNamed<'a>,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         insert_many: crate::server::mongo::mongo_insert_many::MongoInsertManyErrorNamed,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     }
 // }
 
@@ -31,7 +31,7 @@
 // + std::marker::Send
 // + std::marker::Sync
 //     ),
-// ) -> Result<(), Box<crate::repositories_types::tufa_server::init_dbs_logic::init_mongo::InitMongoErrorNamed<'a>>>{
+// ) -> Result<(), Box<crate::repositories_types::tufa_server::init_dbs_logic::init_mongo::InitMongoErrorNamed>>{
 //     match crate::server::mongo::mongo_client_options_parse::mongo_client_options_parse(config).await {
 //         Err(e) => Err(Box::new(
 //             crate::repositories_types::tufa_server::init_dbs_logic::init_mongo::InitMongoErrorNamed::ClientOptionsParse {

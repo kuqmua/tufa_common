@@ -1,16 +1,16 @@
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum MongoDropEmptyCollectionErrorNamed<'a> {
+pub enum MongoDropEmptyCollectionErrorNamed {
     MongoDB {
         #[eo_display]
         mongodb: mongodb::error::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     CollectionIsNotEmpty {
         #[eo_display_with_serialize_deserialize]
         collection_name: std::string::String,
         #[eo_display_with_serialize_deserialize]
         collection_len: u64,
-        code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
 
@@ -20,7 +20,7 @@ pub async fn mongo_drop_empty_collection<'a>(
     db_collection_name: String,
 ) -> Result<
     (),
-    Box<crate::server::mongo::mongo_drop_empty_collection::MongoDropEmptyCollectionErrorNamed<'a>>,
+    Box<crate::server::mongo::mongo_drop_empty_collection::MongoDropEmptyCollectionErrorNamed>,
 > {
     let collection: mongodb::Collection<mongodb::bson::Document> = mongo_client
         .database(db_name)

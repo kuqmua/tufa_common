@@ -1,33 +1,33 @@
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-// pub enum PostgresInsertLinkPartsIntoProvidersTablesOriginErrorNamed<'a> {
+// pub enum PostgresInsertLinkPartsIntoProvidersTablesOriginErrorNamed {
 //     Postgres {
 //         #[eo_hashmap_key_display_with_serialize_deserialize_value_error_occurence]
 //         inner_errors: std::collections::HashMap<
 //             std::string::String,
 //             PostgresInsertLinkPartsIntoProvidersTablesOriginErrorEnumUnnamed<'a>,
 //         >,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 // }
 
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 // pub enum PostgresInsertLinkPartsIntoProvidersTablesOriginErrorEnumUnnamed<'a> {
-//     PostgresInsertLinkPartsIntoProvidersTablesOriginHandle(PostgresInsertLinkPartsIntoProvidersTablesOriginHandleErrorNamed<'a>),
+//     PostgresInsertLinkPartsIntoProvidersTablesOriginHandle(PostgresInsertLinkPartsIntoProvidersTablesOriginHandleErrorNamed),
 // }
 
 // #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-// pub enum PostgresInsertLinkPartsIntoProvidersTablesOriginHandleErrorNamed<'a> {
+// pub enum PostgresInsertLinkPartsIntoProvidersTablesOriginHandleErrorNamed {
 //     Postgres {
 //         #[eo_display]
 //         error: sqlx::Error,
-//         code_occurence: crate::common::code_occurence::CodeOccurence<'a>,
+//         code_occurence: crate::common::code_occurence::CodeOccurence,
 //     },
 // }
 
 // pub async fn postgres_insert_link_parts_into_providers_tables<'a>(
 //     providers_json_local_data_hashmap: &std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>>,
 //     postgres_pool: &sqlx::Pool<sqlx::Postgres>,
-// ) -> Result<(), Box<crate::server::postgres::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginErrorNamed<'a>>>{
+// ) -> Result<(), Box<crate::server::postgres::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginErrorNamed>>{
 //     let insertion_error_hashmap = futures::future::join_all(providers_json_local_data_hashmap.iter().map(
 //         |(pk, string_vec)| async {
 //             let mut values_string = String::from("");
