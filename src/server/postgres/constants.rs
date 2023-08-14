@@ -5,3 +5,4 @@ pub static AND_NAME: &str = "AND";
 pub static LIMIT_NAME: &str = "LIMIT";
 pub static ANY_NAME: &str = "ANY";
 pub static ARRAY_NAME: &str = "ARRAY";
+pub static LIKE_NAME: &str = "LIKE";
