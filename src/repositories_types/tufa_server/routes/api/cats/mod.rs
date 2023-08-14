@@ -26,13 +26,29 @@ pub type DynArcGetConfigGetPostgresPoolSendSync = std::sync::Arc<
     Debug,
     serde_derive::Serialize,
     serde_derive::Deserialize,
-    generate_postgresql_crud::GeneratePostgresqlCrud,
+    // generate_postgresql_crud::GeneratePostgresqlCrud,
 )]
 pub struct Cat {
     pub id: i64, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
     pub name: String,
     pub color: String,
 }
+
+// #[derive(
+//     Debug,
+//     serde_derive::Serialize,
+//     serde_derive::Deserialize,
+//     generate_postgresql_crud::GeneratePostgresqlCrud,
+// )]
+// pub struct CatTest {
+//     pub one: i64, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
+//     pub two: String,
+//     pub three: String,
+//     pub four: String,
+//     pub five: String,
+//     pub six: String,
+//     // pub seven: String,
+// }
 
 // #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 // pub struct CatOptions {
