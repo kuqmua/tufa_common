@@ -55,11 +55,11 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn try_from_config_unchecked<'a>(
+    pub fn try_from_config_unchecked(
         config_unchecked: ConfigUnchecked,
     ) -> Result<Self, ConfigCheckErrorNamed> {
         let server_port =
-            match crate::common::user_port::UserPort::try_from_u16(config_unchecked.server_port) {
+            match crate::common::user_port::UserPort::try_from(config_unchecked.server_port) {
                 Ok(user_port) => user_port,
                 Err(e) => {
                     return Err(ConfigCheckErrorNamed::ServerPort {

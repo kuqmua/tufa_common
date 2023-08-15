@@ -24,21 +24,19 @@ pub enum UserPortTryFromU16ErrorNamed {
     },
 }
 
-impl UserPort {
-    //its not TryFrom<u16> coz its not supported lifetimes in Error annotation
-    pub fn try_from_u16(possible_port: u16) -> Result<UserPort, UserPortTryFromU16ErrorNamed> {
-        if possible_port < 1024 {
+impl std::convert::TryFrom<u16> for UserPort {
+    type Error = UserPortTryFromU16ErrorNamed;
+    fn try_from(value: u16) -> Result<Self, Self::Error> {
+        if value < 1024 {
             Err(UserPortTryFromU16ErrorNamed::SystemPort {
-                port: possible_port,
+                port: value,
                 code_occurence: crate::code_occurence_tufa_common!(),
             })
-        } else if possible_port < 49152 {
-            Ok(Self {
-                port: possible_port,
-            })
+        } else if value < 49152 {
+            Ok(Self { port: value })
         } else {
             Err(UserPortTryFromU16ErrorNamed::EphemeralPort {
-                port: possible_port,
+                port: value,
                 code_occurence: crate::code_occurence_tufa_common!(),
             })
         }
