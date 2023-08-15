@@ -20,49 +20,8 @@ where
 
         let str_value = <&str as sqlx::Decode<DB>>::decode(value)?;
         let i64_value = str_value.parse::<i64>()?;
-        let bigserial_value = Self::try_from_i64(i64_value)?;
+        let bigserial_value = Self::try_from(i64_value)?;
         Ok(bigserial_value)
-    }
-}
-
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum BigserialTryFromStrErrorNamed {
-    ParseIntError {
-        #[eo_display]
-        parse_int_error: std::num::ParseIntError,
-        #[eo_display_with_serialize_deserialize]
-        str_value: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    NotPositive {
-        #[eo_error_occurence]
-        not_positive: BigserialTryFromI64ErrorNamed,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-}
-
-impl<'a> crate::common::std_str_from_str_with_lifetime::StdStrFromStrWithLifetime<'a>
-    for Bigserial
-{
-    type Err = BigserialTryFromStrErrorNamed;
-
-    fn std_str_from_str_with_lifetime(str_value: &'a str) -> Result<Self, Self::Err> {
-        match str_value.parse::<i64>() {
-            Ok(i64_value) => match Self::try_from_i64(i64_value) {
-                Ok(_) => todo!(),
-                Err(bigserial_try_from_i64_error) => {
-                    Err(BigserialTryFromStrErrorNamed::NotPositive {
-                        not_positive: bigserial_try_from_i64_error,
-                        code_occurence: crate::code_occurence_tufa_common!(),
-                    })
-                }
-            },
-            Err(parse_int_error) => Err(BigserialTryFromStrErrorNamed::ParseIntError {
-                parse_int_error,
-                str_value: str_value.to_string(),
-                code_occurence: crate::code_occurence_tufa_common!(),
-            }),
-        }
     }
 }
 
@@ -106,18 +65,53 @@ pub enum BigserialTryFromI64ErrorNamed {
     },
 }
 
-impl Bigserial {
-    //its not TryFrom<i64> coz its not supported lifetimes in Error annotation
-    pub fn try_from_i64<'a>(
-        possible_bigserial: i64,
-    ) -> Result<Bigserial, BigserialTryFromI64ErrorNamed> {
-        if possible_bigserial.is_positive() {
-            Ok(Bigserial(possible_bigserial))
-        } else {
-            Err(BigserialTryFromI64ErrorNamed::NotPositive {
-                not_positive: possible_bigserial,
+impl std::convert::TryFrom<i64> for Bigserial {
+    type Error = BigserialTryFromI64ErrorNamed;
+    fn try_from(value: i64) -> Result<Self, Self::Error> {
+        match value.is_positive() {
+            true => Ok(Bigserial(value)),
+            false => Err(BigserialTryFromI64ErrorNamed::NotPositive {
+                not_positive: value,
                 code_occurence: crate::code_occurence_tufa_common!(),
-            })
+            }),
+        }
+    }
+}
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum BigserialTryFromStrErrorNamed {
+    ParseIntError {
+        #[eo_display]
+        parse_int_error: std::num::ParseIntError,
+        #[eo_display_with_serialize_deserialize]
+        str_value: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    NotPositive {
+        #[eo_error_occurence]
+        not_positive: BigserialTryFromI64ErrorNamed,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+}
+
+impl std::convert::TryFrom<&str> for Bigserial {
+    type Error = BigserialTryFromStrErrorNamed;
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+        match value.parse::<i64>() {
+            Ok(i64_value) => match Self::try_from(i64_value) {
+                Ok(bigserial) => Ok(bigserial),
+                Err(bigserial_try_from_i64_error) => {
+                    Err(BigserialTryFromStrErrorNamed::NotPositive {
+                        not_positive: bigserial_try_from_i64_error,
+                        code_occurence: crate::code_occurence_tufa_common!(),
+                    })
+                }
+            },
+            Err(parse_int_error) => Err(BigserialTryFromStrErrorNamed::ParseIntError {
+                parse_int_error,
+                str_value: value.to_string(),
+                code_occurence: crate::code_occurence_tufa_common!(),
+            }),
         }
     }
 }

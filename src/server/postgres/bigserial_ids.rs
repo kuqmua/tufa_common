@@ -23,16 +23,14 @@ where
         ),
         |mut acc, element| {
             match element.parse::<i64>() {
-                Ok(value) => {
-                    match crate::server::postgres::bigserial::Bigserial::try_from_i64(value) {
-                        Ok(bigserial) => {
-                            acc.0.push(bigserial);
-                        }
-                        Err(_) => {
-                            acc.1.push_str(&format!("{element},"));
-                        }
+                Ok(value) => match crate::server::postgres::bigserial::Bigserial::try_from(value) {
+                    Ok(bigserial) => {
+                        acc.0.push(bigserial);
                     }
-                }
+                    Err(_) => {
+                        acc.1.push_str(&format!("{element},"));
+                    }
+                },
                 Err(_) => {
                     acc.1.push_str(&format!("{element},"));
                 }
