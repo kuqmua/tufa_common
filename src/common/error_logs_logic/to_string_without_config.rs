@@ -24,7 +24,7 @@ impl<'a, SelfGeneric> ToStringWithoutConfigWithSerializeDeserialize<'a> for Self
 where
     SelfGeneric:
         crate::common::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<'a>
-            + crate::common::error_logs_logic::get_code_occurence::GetCodeOccurenceWithSerializeDeserialize<'a>,
+            + crate::common::error_logs_logic::get_code_occurence::GetCodeOccurenceWithSerializeDeserialize,
 {
     fn to_string_without_config_with_serialize_deserialize(&self) -> String {
         crate::common::error_logs_logic::helpers::source_and_code_occurence_formatter(

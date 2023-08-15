@@ -113,7 +113,7 @@ pub enum SqlxPostgresErrorErrorNamed {
     },
 }
 
-impl<'a> std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
+impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
     fn from(e: sqlx::Error) -> SqlxPostgresErrorErrorNamed {
         // todo https://github.com/cschaible/actix-web-security-samples/blob/46bb7aa62ada7cb176d8765e2f60b497392b1840/oauth-resource-server/backend/src/error/mod.rs#L46
         // todo https://www.postgresql.org/docs/current/errcodes-appendix.html

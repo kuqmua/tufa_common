@@ -1,4 +1,4 @@
-#[derive(Debug, serde::Serialize, Clone)]
+#[derive(Debug, serde::Serialize, serde::Deserialize, Clone)]
 pub struct CodeOccurence {
     file: std::string::String,
     line: u32,
@@ -67,6 +67,8 @@ impl<'a> crate::common::git::get_git_source_file_link::GetGitSourceFileLink<'a>
         self.git_info.get_git_source_file_link(file, line)
     }
 }
+
+////////////////////////
 
 impl CodeOccurence {
     pub fn into_serialize_deserialize_version(self) -> CodeOccurenceWithSerializeDeserialize {
