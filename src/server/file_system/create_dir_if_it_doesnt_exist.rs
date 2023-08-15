@@ -7,7 +7,7 @@ pub enum CreateDirIfItDoesntExistErrorNamed {
     },
 }
 
-pub fn create_dir_if_it_doesnt_exist<'a>(
+pub fn create_dir_if_it_doesnt_exist(
     path: &str,
 ) -> Result<(), Box<CreateDirIfItDoesntExistErrorNamed>> {
     if std::path::Path::new(path).exists() {
