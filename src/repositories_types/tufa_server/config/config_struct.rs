@@ -54,20 +54,18 @@ pub struct Config {
     enable_api_git_commit_check: bool,
 }
 
-impl Config {
-    pub fn try_from_config_unchecked(
-        config_unchecked: ConfigUnchecked,
-    ) -> Result<Self, ConfigCheckErrorNamed> {
-        let server_port =
-            match crate::common::user_port::UserPort::try_from(config_unchecked.server_port) {
-                Ok(user_port) => user_port,
-                Err(e) => {
-                    return Err(ConfigCheckErrorNamed::ServerPort {
-                        server_port: e,
-                        code_occurence: crate::code_occurence_tufa_common!(),
-                    });
-                }
-            };
+impl std::convert::TryFrom<ConfigUnchecked> for Config {
+    type Error = ConfigCheckErrorNamed;
+    fn try_from(value: ConfigUnchecked) -> Result<Self, Self::Error> {
+        let server_port = match crate::common::user_port::UserPort::try_from(value.server_port) {
+            Ok(user_port) => user_port,
+            Err(e) => {
+                return Err(ConfigCheckErrorNamed::ServerPort {
+                    server_port: e,
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                });
+            }
+        };
         let socket_addr: std::net::SocketAddr = match format!("127.0.0.1:{server_port}").parse() {
             Ok(socket_addr) => socket_addr,
             Err(e) => {
@@ -77,108 +75,107 @@ impl Config {
                 });
             }
         };
-        let hmac_secret = match config_unchecked.hmac_secret.is_empty() {
+        let hmac_secret = match value.hmac_secret.is_empty() {
             true => {
                 return Err(ConfigCheckErrorNamed::HmacSecret {
-                    hmac_secret: config_unchecked.hmac_secret,
+                    hmac_secret: value.hmac_secret,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
             }
-            false => secrecy::Secret::new(config_unchecked.hmac_secret),
+            false => secrecy::Secret::new(value.hmac_secret),
         };
-        let base_url = match config_unchecked.base_url.is_empty() {
+        let base_url = match value.base_url.is_empty() {
             true => {
                 return Err(ConfigCheckErrorNamed::BaseUrl {
-                    base_url: config_unchecked.base_url,
+                    base_url: value.base_url,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
             }
-            false => config_unchecked.base_url,
+            false => value.base_url,
         };
-        let access_control_max_age = config_unchecked.access_control_max_age;
-        let access_control_allow_origin =
-            match config_unchecked.access_control_allow_origin.is_empty() {
-                true => {
-                    return Err(ConfigCheckErrorNamed::AccessControlAllowOrigin {
-                        access_control_allow_origin: config_unchecked.access_control_allow_origin,
-                        code_occurence: crate::code_occurence_tufa_common!(),
-                    }); //todo - maybe add check if its uri\url
-                }
-                false => config_unchecked.access_control_allow_origin,
-            };
+        let access_control_max_age = value.access_control_max_age;
+        let access_control_allow_origin = match value.access_control_allow_origin.is_empty() {
+            true => {
+                return Err(ConfigCheckErrorNamed::AccessControlAllowOrigin {
+                    access_control_allow_origin: value.access_control_allow_origin,
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                }); //todo - maybe add check if its uri\url
+            }
+            false => value.access_control_allow_origin,
+        };
 
-        let github_name = match config_unchecked.github_name.is_empty() {
+        let github_name = match value.github_name.is_empty() {
             true => {
                 return Err(ConfigCheckErrorNamed::GithubName {
-                    github_name: config_unchecked.github_name,
+                    github_name: value.github_name,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
             }
-            false => config_unchecked.github_name,
+            false => value.github_name,
         };
-        let github_token = match config_unchecked.github_token.is_empty() {
+        let github_token = match value.github_token.is_empty() {
             true => {
                 return Err(ConfigCheckErrorNamed::GithubToken {
-                    github_token: config_unchecked.github_token,
+                    github_token: value.github_token,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
             }
-            false => config_unchecked.github_token,
+            false => value.github_token,
         };
 
-        let timezone = match chrono::FixedOffset::east_opt(config_unchecked.timezone) {
+        let timezone = match chrono::FixedOffset::east_opt(value.timezone) {
             Some(fixed_offset) => fixed_offset,
             None => {
                 return Err(ConfigCheckErrorNamed::Timezone {
-                    timezone: config_unchecked.timezone,
+                    timezone: value.timezone,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
             }
         };
 
-        let redis_url = match config_unchecked.redis_url.is_empty() {
+        let redis_url = match value.redis_url.is_empty() {
             true => {
                 return Err(ConfigCheckErrorNamed::RedisUrl {
-                    redis_url: config_unchecked.redis_url,
+                    redis_url: value.redis_url,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
             }
-            false => secrecy::Secret::new(config_unchecked.redis_url),
+            false => secrecy::Secret::new(value.redis_url),
         };
 
-        let mongo_url = match config_unchecked.mongo_url.is_empty() {
+        let mongo_url = match value.mongo_url.is_empty() {
             true => {
                 return Err(ConfigCheckErrorNamed::MongoUrl {
-                    mongo_url: config_unchecked.mongo_url,
+                    mongo_url: value.mongo_url,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
             }
-            false => secrecy::Secret::new(config_unchecked.mongo_url),
+            false => secrecy::Secret::new(value.mongo_url),
         };
 
-        let database_url = match config_unchecked.database_url.is_empty() {
+        let database_url = match value.database_url.is_empty() {
             true => {
                 return Err(ConfigCheckErrorNamed::DatabaseUrl {
-                    database_url: config_unchecked.database_url,
+                    database_url: value.database_url,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
             }
-            false => secrecy::Secret::new(config_unchecked.database_url),
-        }; //postgres_url = config_unchecked.; naming required by sqlx::query::query!
+            false => secrecy::Secret::new(value.database_url),
+        }; //postgres_url = value.; naming required by sqlx::query::query!
 
-        let starting_check_link = match config_unchecked.starting_check_link.is_empty() {
+        let starting_check_link = match value.starting_check_link.is_empty() {
             true => {
                 return Err(ConfigCheckErrorNamed::StartingCheckLink {
-                    starting_check_link: config_unchecked.starting_check_link,
+                    starting_check_link: value.starting_check_link,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
             }
-            false => config_unchecked.starting_check_link,
+            false => value.starting_check_link,
         }; //todo add browser url limit check
 
-        let tracing_type = config_unchecked.tracing_type;
-        let source_place_type = config_unchecked.source_place_type;
-        let enable_api_git_commit_check = config_unchecked.enable_api_git_commit_check;
+        let tracing_type = value.tracing_type;
+        let source_place_type = value.source_place_type;
+        let enable_api_git_commit_check = value.enable_api_git_commit_check;
         Ok(Self {
             server_port,
             socket_addr,
