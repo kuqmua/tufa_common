@@ -34,21 +34,21 @@ pub struct Cat {
     pub color: String,
 }
 
-// #[derive(
-//     Debug,
-//     serde_derive::Serialize,
-//     serde_derive::Deserialize,
-//     generate_postgresql_crud::GeneratePostgresqlCrud,
-// )]
-// pub struct CatTest {
-//     pub one: i64, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
-//     pub two: String,
-//     pub three: String,
-//     pub four: String,
-//     pub five: String,
-//     pub six: String,
-//     // pub seven: String,
-// }
+#[derive(
+    Debug,
+    serde_derive::Serialize,
+    serde_derive::Deserialize,
+    generate_postgresql_crud::GeneratePostgresqlCrud,
+)]
+pub struct CatTest {
+    pub one: i64, //1//todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
+    pub two: String, //3
+    pub three: String, //7
+                  // pub four: String, //15
+                  // pub five: String, //31
+                  // pub six: String, //63
+                  // pub seven: String, //127
+}
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct CatOptions {
@@ -58,6 +58,55 @@ pub struct CatOptions {
     pub name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub color: Option<String>,
+}
+
+trait FromRow<'r, R: sqlx::Row>: Sized {
+    fn sqlx_from_row(row: &'r R, select: &GetSelect) -> Result<Self, sqlx::Error>;
+}
+impl<'a, R: ::sqlx::Row> FromRow<'a, R> for CatOptions
+where
+    &'a ::std::primitive::str: ::sqlx::ColumnIndex<R>,
+    Option<i64>: ::sqlx::decode::Decode<'a, R::Database>,
+    Option<i64>: ::sqlx::types::Type<R::Database>,
+    Option<String>: ::sqlx::decode::Decode<'a, R::Database>,
+    Option<String>: ::sqlx::types::Type<R::Database>,
+    Option<String>: ::sqlx::decode::Decode<'a, R::Database>,
+    Option<String>: ::sqlx::types::Type<R::Database>,
+{
+    fn sqlx_from_row(row: &'a R, select: &GetSelect) -> ::sqlx::Result<Self> {
+        let mut id: Option<i64> = None;
+        let mut name: Option<String> = None;
+        let mut color: Option<String> = None;
+        match select {
+            GetSelect::Id => {
+                id = row.try_get("id")?;
+            }
+            GetSelect::Name => {
+                name = row.try_get("name")?;
+            }
+            GetSelect::Color => {
+                color = row.try_get("color")?;
+            }
+            GetSelect::IdName => {
+                id = row.try_get("id")?;
+                name = row.try_get("name")?;
+            }
+            GetSelect::IdColor => {
+                id = row.try_get("id")?;
+                color = row.try_get("color")?;
+            }
+            GetSelect::NameColor => {
+                name = row.try_get("name")?;
+                color = row.try_get("color")?;
+            }
+            GetSelect::IdNameColor => {
+                id = row.try_get("id")?;
+                name = row.try_get("name")?;
+                color = row.try_get("color")?;
+            }
+        }
+        Ok(CatOptions { id, name, color })
+    }
 }
 
 impl std::convert::From<Cat> for CatOptions {
@@ -477,6 +526,20 @@ impl GetSelect {
         app_info_state: &axum::extract::State<crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync>,
     ) -> crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants
     {
+        use futures::TryStreamExt;
+        let get_select = GetSelect::Id;
+        let query = format!("SELECT {get_select} FROM cats");
+        let mut rows = sqlx::query(&query).fetch(pool);
+
+        while let Some(row) = {
+            match rows.try_next().await {
+                Ok(i) => i,
+                Err(e) => todo!("try next error"),
+            }
+        } {
+            let f = CatOptions::sqlx_from_row(&row, self);
+            println!("{f:#?}");
+        }
         let query_result = match self {
             crate::repositories_types::tufa_server::routes::api::cats::GetSelect::Id => {
                 match crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery::bind_sqlx_query(query_parameters, sqlx::query_as::<
