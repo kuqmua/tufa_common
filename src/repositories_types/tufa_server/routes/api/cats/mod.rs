@@ -34,21 +34,21 @@ pub struct Cat {
     pub color: String,
 }
 
-#[derive(
-    Debug,
-    serde_derive::Serialize,
-    serde_derive::Deserialize,
-    generate_postgresql_crud::GeneratePostgresqlCrud,
-)]
-pub struct CatTest {
-    pub one: i64, //1//todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
-    pub two: String, //3
-    pub three: String, //7
-                  // pub four: String, //15
-                  // pub five: String, //31
-                  // pub six: String, //63
-                  // pub seven: String, //127
-}
+// #[derive(
+//     Debug,
+//     serde_derive::Serialize,
+//     serde_derive::Deserialize,
+//     // generate_postgresql_crud::GeneratePostgresqlCrud,
+// )]
+// pub struct CatTest {
+//     pub one: i64, //1//todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
+//     pub two: String, //3
+//     pub three: String, //7
+//                   // pub four: String, //15
+//                   // pub five: String, //31
+//                   // pub six: String, //63
+//                   // pub seven: String, //127
+// }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct CatOptions {
