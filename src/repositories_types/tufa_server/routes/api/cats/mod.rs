@@ -34,21 +34,21 @@ pub struct Cat {
     pub color: String,
 }
 
-// #[derive(
-//     Debug,
-//     serde_derive::Serialize,
-//     serde_derive::Deserialize,
-//     // generate_postgresql_crud::GeneratePostgresqlCrud,
-// )]
-// pub struct CatTest {
-//     pub one: i64, //1//todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
-//     pub two: String, //3
-//     pub three: String, //7
-//                   // pub four: String, //15
-//                   // pub five: String, //31
-//                   // pub six: String, //63
-//                   // pub seven: String, //127
-// }
+#[derive(
+    Debug,
+    serde_derive::Serialize,
+    serde_derive::Deserialize,
+    generate_postgresql_crud::GeneratePostgresqlCrud,
+)]
+pub struct CatTest {
+    pub one: i64, //1//todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
+    pub two: String, //3
+    pub three: String, //7
+                  // pub four: String, //15
+                  // pub five: String, //31
+                  // pub six: String, //63
+                  // pub seven: String, //127
+}
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct CatOptions {
@@ -182,34 +182,33 @@ impl std::convert::From<CatIdNameColor> for CatOptions {
     }
 }
 
-#[derive(serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
 pub struct CatId {
     pub id: i64,
 }
-#[derive(serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
+
 pub struct CatName {
     pub name: String,
 }
-#[derive(serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
+
 pub struct CatColor {
     pub color: String,
 }
-#[derive(serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
+
 pub struct CatIdName {
     pub id: i64,
     pub name: String,
 }
-#[derive(serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
+
 pub struct CatIdColor {
     pub id: i64,
     pub color: String,
 }
-#[derive(serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
+
 pub struct CatNameColor {
     pub name: String,
     pub color: String,
 }
-#[derive(serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
+
 pub struct CatIdNameColor {
     pub id: i64,
     pub name: String,
