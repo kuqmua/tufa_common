@@ -1,4 +1,4 @@
-pub fn init_subscriber<'a>(
+pub fn init_subscriber(
     subscriber: impl tracing::Subscriber + Send + Sync,
 ) -> Result<(), crate::repositories_types::tufa_server::telemetry::init_subcriber_error_enum::InitSubcriberErrorEnum>{
     if let Err(e) = tracing_log::LogTracer::init() {
