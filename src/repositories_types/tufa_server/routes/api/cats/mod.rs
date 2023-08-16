@@ -218,9 +218,10 @@ pub struct CatIdNameColor {
 
 //
 
-#[derive(serde::Deserialize)]
+#[derive(Debug, serde::Deserialize)]
 pub struct DeleteByIdPathParameters {
     pub id: crate::server::postgres::bigserial::Bigserial,
+    pub select: Option<GetSelect>,
 }
 
 #[derive(serde::Deserialize)]
@@ -251,6 +252,7 @@ impl crate::common::url_encode::UrlEncode for DeleteQueryParameters {
 #[derive(Debug, serde::Deserialize)]
 pub struct GetByIdPathParameters {
     pub id: crate::server::postgres::bigserial::Bigserial,
+    pub select: Option<GetSelect>,
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
@@ -285,6 +287,11 @@ pub struct CatToPut {
     pub id: crate::server::postgres::bigserial::Bigserial, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
     pub name: String,
     pub color: String,
+}
+
+#[derive(serde::Deserialize)]
+pub struct GetdPathParameters {
+    pub select: Option<GetSelect>,
 }
 
 #[derive(Debug, serde::Deserialize)]
@@ -349,8 +356,12 @@ impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for GetQuery
     }
 }
 
-impl crate::server::postgres::generate_additional_get_parameters::GenerateAdditionalGetParametersBindPlaces for GetQueryParameters {
-    fn generate_additional_get_parameters_bind_places(&self) -> std::string::String {
+impl crate::server::postgres::generate_where_get_parameters::GenerateWhereGetParametersBindPlaces
+    for GetQueryParameters
+{
+    fn generate_where_get_parameters_bind_places(&self) -> std::string::String {
+        // SELECT id,name,color FROM cats WHERE id = ANY(ARRAY[$1, $2, $3, $4]) AND name = ANY(ARRAY[$5, $6]) AND color = ANY(ARRAY[$7]) LIMIT $8
+        // SELECT id,name,color FROM public.cats WHERE name LIKE 'test%' OR name LIKE '%patch%' ;
         let mut additional_parameters = std::string::String::from("");
         let mut increment: u64 = 0;
         if let Some(value) = &self.id {
@@ -403,7 +414,7 @@ impl crate::server::postgres::generate_additional_get_parameters::GenerateAdditi
 
 impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryParameters {
     fn generate_get_query(&self) -> std::string::String {
-        let additional_get_parameters_bind_places = crate::server::postgres::generate_additional_get_parameters::GenerateAdditionalGetParametersBindPlaces::generate_additional_get_parameters_bind_places(self);
+        let additional_get_parameters_bind_places = crate::server::postgres::generate_where_get_parameters::GenerateWhereGetParametersBindPlaces::generate_where_get_parameters_bind_places(self);
         let select = crate::repositories_types::tufa_server::routes::api::cats::GetSelect::from(
             self.select.clone(),
         );

@@ -7,6 +7,13 @@
 GET http://127.0.0.1:8080/api/cats/?limit=5&select=id HTTP/1.1
 Accept: */*
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
+
+###
+
+GET http://127.0.0.1:8080/api/cats/65/id,name,color HTTP/1.1
+Accept: */*
+project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
+
 ###
 
 GET http://127.0.0.1:8080/api/cats/?limit=5&id=57,54,51,65&name=test_name,test_nameee&color=test_color&select=id,name,color HTTP/1.1
