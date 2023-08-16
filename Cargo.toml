@@ -21,7 +21,7 @@ config = {version = "=0.13.3"}
 rand = {version = "=0.8", features = ["std_rng"]}
 num_cpus = {version = "=1.15.0"}
 argon2 = {version = "=0.4.0", features = ["std"]}
-mongodb = {version = "=2.0.1"}
+# mongodb = {version = "=2.0.1"}
 reqwest = {version = "=0.11.17", default-features = false, features = ["json", "blocking", "rustls-tls", "cookies", "gzip", "brotli", "deflate", "trust-dns", "native-tls", "multipart", "stream", "cookies"]}
 secrecy = {version = "=0.8", features = ["serde"]}
 serde = {version = "=1.0", features = ["derive"]}
