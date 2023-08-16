@@ -9,7 +9,7 @@
     (),
     tvfrr_200_ok
 )]
-pub enum TryPatch {
+pub enum TryPatchById {
     #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
@@ -160,10 +160,10 @@ pub enum TryPatch {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum TryPatchErrorNamed {
+pub enum TryPatchByIdErrorNamed {
     RequestError {
         #[eo_error_occurence]
-        request_error: TryPatchRequestError,
+        request_error: TryPatchByIdRequestError,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     SerdeJsonToString {
@@ -176,11 +176,11 @@ pub enum TryPatchErrorNamed {
 pub async fn try_patch<'a>(
     server_location: &str,
     body: crate::repositories_types::tufa_server::routes::api::cats::CatToPatch,
-) -> Result<(), TryPatchErrorNamed> {
+) -> Result<(), TryPatchByIdErrorNamed> {
     let stringified_json = match serde_json::to_string(&body) {
         Ok(stringified_json) => stringified_json,
         Err(e) => {
-            return Err(TryPatchErrorNamed::SerdeJsonToString {
+            return Err(TryPatchByIdErrorNamed::SerdeJsonToString {
                 serde_json_to_string: e,
                 code_occurence: crate::code_occurence_tufa_common!(),
             });
@@ -204,7 +204,7 @@ pub async fn try_patch<'a>(
     .await
     {
         Ok(_) => Ok(()),
-        Err(e) => Err(TryPatchErrorNamed::RequestError {
+        Err(e) => Err(TryPatchByIdErrorNamed::RequestError {
             request_error: e,
             code_occurence: crate::code_occurence_tufa_common!(),
         }),

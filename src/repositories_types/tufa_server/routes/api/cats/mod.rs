@@ -2,7 +2,7 @@ pub mod delete;
 pub mod delete_by_id;
 pub mod get;
 pub mod get_by_id;
-pub mod patch;
+pub mod patch_by_id;
 pub mod post;
 pub mod put;
 
@@ -254,6 +254,11 @@ pub struct GetByIdPathParameters {
 #[derive(Debug, serde::Deserialize)]
 pub struct GetByIdQueryParameters {
     pub select: Option<GetSelect>,
+}
+
+#[derive(Debug, serde::Deserialize)]
+pub struct PatchByIdPathParameters {
+    pub id: crate::server::postgres::bigserial::Bigserial,
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
