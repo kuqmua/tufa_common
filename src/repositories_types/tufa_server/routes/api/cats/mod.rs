@@ -251,6 +251,11 @@ pub struct GetByIdPathParameters {
     pub id: crate::server::postgres::bigserial::Bigserial,
 }
 
+#[derive(Debug, serde::Deserialize)]
+pub struct GetByIdQueryParameters {
+    pub select: Option<GetSelect>,
+}
+
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub enum CatToPatch {
     IdName {

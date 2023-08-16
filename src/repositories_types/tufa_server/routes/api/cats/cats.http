@@ -21,7 +21,7 @@ Accept: */*
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 ###
 
-GET http://127.0.0.1:8080/api/cats/65 HTTP/1.1
+GET http://127.0.0.1:8080/api/cats/65/?&select=id HTTP/1.1
 Accept: */*
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 

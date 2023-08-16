@@ -6,6 +6,7 @@
 )]
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_from_checker_paths(
     crate::repositories_types::tufa_server::routes::api::cats::get::TryGet,
+    crate::repositories_types::tufa_server::routes::api::cats::get_by_id::TryGetById,
     crate::repositories_types::tufa_server::routes::api::cats::delete::TryDelete
 )]
 pub enum QueryExtractorErrorNamed {
@@ -24,7 +25,7 @@ pub enum QueryExtractorErrorNamed {
     },
 }
 
-impl<'a> std::convert::From<axum::extract::rejection::QueryRejection> for QueryExtractorErrorNamed {
+impl std::convert::From<axum::extract::rejection::QueryRejection> for QueryExtractorErrorNamed {
     fn from(e: axum::extract::rejection::QueryRejection) -> QueryExtractorErrorNamed {
         match e {
             axum::extract::rejection::QueryRejection::FailedToDeserializeQueryString(
@@ -49,7 +50,7 @@ pub trait QueryValueResultExtractor<OkGeneric, ErrorGeneric> {
     ) -> Result<OkGeneric, ErrorGeneric>;
 }
 
-impl<'a, OkGeneric, ErrorGeneric> QueryValueResultExtractor<OkGeneric, ErrorGeneric>
+impl<OkGeneric, ErrorGeneric> QueryValueResultExtractor<OkGeneric, ErrorGeneric>
     for Result<axum::extract::Query<OkGeneric>, axum::extract::rejection::QueryRejection>
 where
     ErrorGeneric: std::convert::From<

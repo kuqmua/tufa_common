@@ -30,7 +30,7 @@ pub enum PathExtractorErrorNamed {
     },
 }
 
-impl<'a> std::convert::From<axum::extract::rejection::PathRejection> for PathExtractorErrorNamed {
+impl std::convert::From<axum::extract::rejection::PathRejection> for PathExtractorErrorNamed {
     fn from(e: axum::extract::rejection::PathRejection) -> PathExtractorErrorNamed {
         match e {
             axum::extract::rejection::PathRejection::FailedToDeserializePathParams(
@@ -61,7 +61,7 @@ pub trait PathValueResultExtractor<OkGeneric, ErrorGeneric> {
     ) -> Result<OkGeneric, ErrorGeneric>;
 }
 
-impl<'a, OkGeneric, ErrorGeneric> PathValueResultExtractor<OkGeneric, ErrorGeneric>
+impl<OkGeneric, ErrorGeneric> PathValueResultExtractor<OkGeneric, ErrorGeneric>
     for Result<axum::extract::Path<OkGeneric>, axum::extract::rejection::PathRejection>
 where
     ErrorGeneric: std::convert::From<
