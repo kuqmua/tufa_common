@@ -216,12 +216,9 @@ pub struct CatIdNameColor {
     pub color: String,
 }
 
-//
-
 #[derive(Debug, serde::Deserialize)]
 pub struct DeleteByIdPathParameters {
     pub id: crate::server::postgres::bigserial::Bigserial,
-    pub select: Option<GetSelect>,
 }
 
 #[derive(serde::Deserialize)]
@@ -252,7 +249,6 @@ impl crate::common::url_encode::UrlEncode for DeleteQueryParameters {
 #[derive(Debug, serde::Deserialize)]
 pub struct GetByIdPathParameters {
     pub id: crate::server::postgres::bigserial::Bigserial,
-    pub select: Option<GetSelect>,
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
@@ -287,11 +283,6 @@ pub struct CatToPut {
     pub id: crate::server::postgres::bigserial::Bigserial, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
     pub name: String,
     pub color: String,
-}
-
-#[derive(serde::Deserialize)]
-pub struct GetdPathParameters {
-    pub select: Option<GetSelect>,
 }
 
 #[derive(Debug, serde::Deserialize)]
