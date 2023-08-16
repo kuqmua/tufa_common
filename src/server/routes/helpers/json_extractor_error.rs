@@ -43,7 +43,7 @@ pub enum JsonExtractorErrorNamed {
     },
 }
 
-impl<'a> std::convert::From<axum::extract::rejection::JsonRejection>
+impl std::convert::From<axum::extract::rejection::JsonRejection>
     for JsonExtractorErrorNamed
 {
     fn from(e: axum::extract::rejection::JsonRejection) -> JsonExtractorErrorNamed {
@@ -75,7 +75,7 @@ impl<'a> std::convert::From<axum::extract::rejection::JsonRejection>
 // if that succeeds we can provide a more specific error.
 //
 // `Json` uses `serde_path_to_error` so the error will be wrapped in `serde_path_to_error::Error`.
-impl<'a> JsonExtractorErrorNamed {
+impl JsonExtractorErrorNamed {
     fn serde_json_error_response<E>(err: E) -> Self 
     where
         E: std::error::Error + 'static,
@@ -121,7 +121,6 @@ pub trait JsonValueResultExtractor<
 }
 
 impl<
-    'a, 
     OkGeneric, 
     ErrorGeneric, 
 > JsonValueResultExtractor<
