@@ -563,38 +563,40 @@ impl GetSelect {
         // crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants::Desirable(
         //     rows.into_iter().map(crate::repositories_types::tufa_server::routes::api::cats::CatOptions::from).collect()
         // )
-        let mut rows = sqlx::query(&query).fetch(pool);
-        let mut vec_values = Vec::new();
-        while let Some(row) = {
-            match rows.try_next().await {
-                Ok(option_pg_row) => option_pg_row,
-                Err(e) => {
-                    let error = crate::repositories_types::tufa_server::routes::api::cats::get::TryGet::from(e);
-                    crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                        &error,
-                        app_info_state.as_ref(),
-                    );
-                    return crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants::from(error);
+
+        let vec_values = {
+            let mut rows = sqlx::query(&query).fetch(pool);
+            let mut vec_values = Vec::new();
+            while let Some(row) = {
+                match rows.try_next().await {
+                    Ok(option_pg_row) => option_pg_row,
+                    Err(e) => {
+                        let error = crate::repositories_types::tufa_server::routes::api::cats::get::TryGet::from(e);
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants::from(error);
+                    }
+                }
+            } {
+                match CatOptions::sqlx_from_row(&row, self) {
+                    Ok(value) => {
+                        vec_values.push(value);
+                    }
+                    Err(e) => {
+                        let error = crate::repositories_types::tufa_server::routes::api::cats::get::TryGet::from(e);
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants::from(error);
+                    }
                 }
             }
-        } {
-            match CatOptions::sqlx_from_row(&row, self) {
-                Ok(value) => {
-                    vec_values.push(value);
-                }
-                Err(e) => {
-                    let error = crate::repositories_types::tufa_server::routes::api::cats::get::TryGet::from(e);
-                    crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                        &error,
-                        app_info_state.as_ref(),
-                    );
-                    return crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants::from(error);
-                }
-            }
-        }
-        crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants::Desirable(
-            vec_values.into_iter().map(crate::repositories_types::tufa_server::routes::api::cats::CatOptions::from).collect()
-        )
+            vec_values
+        };
+        crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants::Desirable(vec_values)
 
         // let query_result = match self {
         //     crate::repositories_types::tufa_server::routes::api::cats::GetSelect::Id => {
