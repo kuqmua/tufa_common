@@ -529,129 +529,186 @@ impl GetSelect {
         use futures::TryStreamExt;
         let get_select = GetSelect::Id;
         let query = format!("SELECT {get_select} FROM cats");
-        let mut rows = sqlx::query(&query).fetch(pool);
 
+        // let rows = match sqlx::query(&query).fetch_all(pool).await {
+        //     Ok(vec_pg_row) => {
+        //         let mut vec_values = Vec::with_capacity(vec_pg_row.len());
+        //         for pg_row in vec_pg_row {
+        //             match CatOptions::sqlx_from_row(&pg_row, self) {
+        //                 Ok(value) => {
+        //                     vec_values.push(value);
+        //                 }
+        //                 Err(e) => {
+        //                     let error = crate::repositories_types::tufa_server::routes::api::cats::get::TryGet::from(e);
+        //                     crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+        //                         &error,
+        //                         app_info_state.as_ref(),
+        //                     );
+        //                     return crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants::from(error);
+        //                 }
+        //             }
+        //         }
+        //         vec_values
+        //     }
+        //     Err(e) => {
+        //         let error =
+        //             crate::repositories_types::tufa_server::routes::api::cats::get::TryGet::from(e);
+        //         crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+        //             &error,
+        //             app_info_state.as_ref(),
+        //         );
+        //         return crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants::from(error);
+        //     }
+        // };
+        // crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants::Desirable(
+        //     rows.into_iter().map(crate::repositories_types::tufa_server::routes::api::cats::CatOptions::from).collect()
+        // )
+        let mut rows = sqlx::query(&query).fetch(pool);
+        let mut vec_values = Vec::new();
         while let Some(row) = {
             match rows.try_next().await {
-                Ok(i) => i,
-                Err(e) => todo!("try next error"),
+                Ok(option_pg_row) => option_pg_row,
+                Err(e) => {
+                    let error = crate::repositories_types::tufa_server::routes::api::cats::get::TryGet::from(e);
+                    crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                        &error,
+                        app_info_state.as_ref(),
+                    );
+                    return crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants::from(error);
+                }
             }
         } {
-            let f = CatOptions::sqlx_from_row(&row, self);
-            println!("{f:#?}");
-        }
-        let query_result = match self {
-            crate::repositories_types::tufa_server::routes::api::cats::GetSelect::Id => {
-                match crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery::bind_sqlx_query(query_parameters, sqlx::query_as::<
-                    sqlx::Postgres,
-                    crate::repositories_types::tufa_server::routes::api::cats::CatId,
-                >(&query_string))
-                .fetch_all(pool)
-                .await
-                {
-                    Ok(value) => Ok(value.into_iter()
-                        .map(crate::repositories_types::tufa_server::routes::api::cats::CatOptions::from)
-                        .collect::<Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>>()),
-                    Err(e) => Err(e),
+            match CatOptions::sqlx_from_row(&row, self) {
+                Ok(value) => {
+                    vec_values.push(value);
                 }
-            }
-            crate::repositories_types::tufa_server::routes::api::cats::GetSelect::Name => {
-                match crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery::bind_sqlx_query(query_parameters, sqlx::query_as::<
-                    sqlx::Postgres,
-                    crate::repositories_types::tufa_server::routes::api::cats::CatIdName,
-                >(&query_string))
-                .fetch_all(pool)
-                .await
-                {
-                    Ok(value) => Ok(value.into_iter()
-                        .map(crate::repositories_types::tufa_server::routes::api::cats::CatOptions::from)
-                        .collect::<Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>>()),
-                    Err(e) => Err(e),
+                Err(e) => {
+                    let error = crate::repositories_types::tufa_server::routes::api::cats::get::TryGet::from(e);
+                    crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                        &error,
+                        app_info_state.as_ref(),
+                    );
+                    return crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants::from(error);
                 }
-            }
-            crate::repositories_types::tufa_server::routes::api::cats::GetSelect::Color => {
-                match crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery::bind_sqlx_query(query_parameters, sqlx::query_as::<
-                    sqlx::Postgres,
-                    crate::repositories_types::tufa_server::routes::api::cats::CatIdColor,
-                >(&query_string))
-                .fetch_all(pool)
-                .await
-                {
-                    Ok(value) => Ok(value.into_iter()
-                        .map(crate::repositories_types::tufa_server::routes::api::cats::CatOptions::from)
-                        .collect::<Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>>()),
-                    Err(e) => Err(e),
-                }
-            }
-            crate::repositories_types::tufa_server::routes::api::cats::GetSelect::IdName => {
-                match crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery::bind_sqlx_query(query_parameters, sqlx::query_as::<
-                    sqlx::Postgres,
-                    crate::repositories_types::tufa_server::routes::api::cats::CatIdName,
-                >(&query_string))
-                .fetch_all(pool)
-                .await
-                {
-                    Ok(value) => Ok(value.into_iter()
-                        .map(crate::repositories_types::tufa_server::routes::api::cats::CatOptions::from)
-                        .collect::<Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>>()),
-                    Err(e) => Err(e),
-                }
-            }
-            crate::repositories_types::tufa_server::routes::api::cats::GetSelect::IdColor => {
-                match crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery::bind_sqlx_query(query_parameters, sqlx::query_as::<
-                    sqlx::Postgres,
-                    crate::repositories_types::tufa_server::routes::api::cats::CatIdColor,
-                >(&query_string))
-                .fetch_all(pool)
-                .await
-                {
-                    Ok(value) => Ok(value.into_iter()
-                        .map(crate::repositories_types::tufa_server::routes::api::cats::CatOptions::from)
-                        .collect::<Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>>()),
-                    Err(e) => Err(e),
-                }
-            }
-            crate::repositories_types::tufa_server::routes::api::cats::GetSelect::NameColor => {
-                match crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery::bind_sqlx_query(query_parameters, sqlx::query_as::<
-                    sqlx::Postgres,
-                    crate::repositories_types::tufa_server::routes::api::cats::CatNameColor,
-                >(&query_string))
-                .fetch_all(pool)
-                .await
-                {
-                    Ok(value) => Ok(value.into_iter()
-                        .map(crate::repositories_types::tufa_server::routes::api::cats::CatOptions::from)
-                        .collect::<Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>>()),
-                    Err(e) => Err(e),
-                }
-            }
-            crate::repositories_types::tufa_server::routes::api::cats::GetSelect::IdNameColor => {
-                match crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery::bind_sqlx_query(query_parameters, sqlx::query_as::<
-                    sqlx::Postgres,
-                    crate::repositories_types::tufa_server::routes::api::cats::CatIdNameColor,
-                >(&query_string))
-                .fetch_all(pool)
-                .await
-                {
-                    Ok(value) => Ok(value.into_iter()
-                        .map(crate::repositories_types::tufa_server::routes::api::cats::CatOptions::from)
-                        .collect::<Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>>()),
-                    Err(e) => Err(e),
-                }
-            }
-        };
-        match query_result {
-            Ok(value) => crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants::Desirable(
-                value.into_iter().map(crate::repositories_types::tufa_server::routes::api::cats::CatOptions::from).collect()
-            ),
-            Err(e) => {
-                let error = crate::repositories_types::tufa_server::routes::api::cats::get::TryGet::from(e);
-                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                    &error,
-                    app_info_state.as_ref(),
-                );
-                crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants::from(error)
             }
         }
+        crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants::Desirable(
+            vec_values.into_iter().map(crate::repositories_types::tufa_server::routes::api::cats::CatOptions::from).collect()
+        )
+
+        // let query_result = match self {
+        //     crate::repositories_types::tufa_server::routes::api::cats::GetSelect::Id => {
+        //         match crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery::bind_sqlx_query(query_parameters, sqlx::query_as::<
+        //             sqlx::Postgres,
+        //             crate::repositories_types::tufa_server::routes::api::cats::CatId,
+        //         >(&query_string))
+        //         .fetch_all(pool)
+        //         .await
+        //         {
+        //             Ok(value) => Ok(value.into_iter()
+        //                 .map(crate::repositories_types::tufa_server::routes::api::cats::CatOptions::from)
+        //                 .collect::<Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>>()),
+        //             Err(e) => Err(e),
+        //         }
+        //     }
+        //     crate::repositories_types::tufa_server::routes::api::cats::GetSelect::Name => {
+        //         match crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery::bind_sqlx_query(query_parameters, sqlx::query_as::<
+        //             sqlx::Postgres,
+        //             crate::repositories_types::tufa_server::routes::api::cats::CatIdName,
+        //         >(&query_string))
+        //         .fetch_all(pool)
+        //         .await
+        //         {
+        //             Ok(value) => Ok(value.into_iter()
+        //                 .map(crate::repositories_types::tufa_server::routes::api::cats::CatOptions::from)
+        //                 .collect::<Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>>()),
+        //             Err(e) => Err(e),
+        //         }
+        //     }
+        //     crate::repositories_types::tufa_server::routes::api::cats::GetSelect::Color => {
+        //         match crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery::bind_sqlx_query(query_parameters, sqlx::query_as::<
+        //             sqlx::Postgres,
+        //             crate::repositories_types::tufa_server::routes::api::cats::CatIdColor,
+        //         >(&query_string))
+        //         .fetch_all(pool)
+        //         .await
+        //         {
+        //             Ok(value) => Ok(value.into_iter()
+        //                 .map(crate::repositories_types::tufa_server::routes::api::cats::CatOptions::from)
+        //                 .collect::<Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>>()),
+        //             Err(e) => Err(e),
+        //         }
+        //     }
+        //     crate::repositories_types::tufa_server::routes::api::cats::GetSelect::IdName => {
+        //         match crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery::bind_sqlx_query(query_parameters, sqlx::query_as::<
+        //             sqlx::Postgres,
+        //             crate::repositories_types::tufa_server::routes::api::cats::CatIdName,
+        //         >(&query_string))
+        //         .fetch_all(pool)
+        //         .await
+        //         {
+        //             Ok(value) => Ok(value.into_iter()
+        //                 .map(crate::repositories_types::tufa_server::routes::api::cats::CatOptions::from)
+        //                 .collect::<Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>>()),
+        //             Err(e) => Err(e),
+        //         }
+        //     }
+        //     crate::repositories_types::tufa_server::routes::api::cats::GetSelect::IdColor => {
+        //         match crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery::bind_sqlx_query(query_parameters, sqlx::query_as::<
+        //             sqlx::Postgres,
+        //             crate::repositories_types::tufa_server::routes::api::cats::CatIdColor,
+        //         >(&query_string))
+        //         .fetch_all(pool)
+        //         .await
+        //         {
+        //             Ok(value) => Ok(value.into_iter()
+        //                 .map(crate::repositories_types::tufa_server::routes::api::cats::CatOptions::from)
+        //                 .collect::<Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>>()),
+        //             Err(e) => Err(e),
+        //         }
+        //     }
+        //     crate::repositories_types::tufa_server::routes::api::cats::GetSelect::NameColor => {
+        //         match crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery::bind_sqlx_query(query_parameters, sqlx::query_as::<
+        //             sqlx::Postgres,
+        //             crate::repositories_types::tufa_server::routes::api::cats::CatNameColor,
+        //         >(&query_string))
+        //         .fetch_all(pool)
+        //         .await
+        //         {
+        //             Ok(value) => Ok(value.into_iter()
+        //                 .map(crate::repositories_types::tufa_server::routes::api::cats::CatOptions::from)
+        //                 .collect::<Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>>()),
+        //             Err(e) => Err(e),
+        //         }
+        //     }
+        //     crate::repositories_types::tufa_server::routes::api::cats::GetSelect::IdNameColor => {
+        //         match crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery::bind_sqlx_query(query_parameters, sqlx::query_as::<
+        //             sqlx::Postgres,
+        //             crate::repositories_types::tufa_server::routes::api::cats::CatIdNameColor,
+        //         >(&query_string))
+        //         .fetch_all(pool)
+        //         .await
+        //         {
+        //             Ok(value) => Ok(value.into_iter()
+        //                 .map(crate::repositories_types::tufa_server::routes::api::cats::CatOptions::from)
+        //                 .collect::<Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>>()),
+        //             Err(e) => Err(e),
+        //         }
+        //     }
+        // };
+        // match query_result {
+        //     Ok(value) => crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants::Desirable(
+        //         value.into_iter().map(crate::repositories_types::tufa_server::routes::api::cats::CatOptions::from).collect()
+        //     ),
+        //     Err(e) => {
+        //         let error = crate::repositories_types::tufa_server::routes::api::cats::get::TryGet::from(e);
+        //         crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+        //             &error,
+        //             app_info_state.as_ref(),
+        //         );
+        //         crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants::from(error)
+        //     }
+        // }
+        // todo!()
     }
 }
