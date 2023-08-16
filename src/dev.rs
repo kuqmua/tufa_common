@@ -1,4 +1,4 @@
-// #[derive(Clone, Debug, valuable::Valuable)]
+// #[derive(Clone, valuable::Valuable)]
 // struct User {
 //     name: String,
 //     age: u32,
@@ -6,7 +6,7 @@
 //     address: Address,
 // }
 
-// #[derive(Clone, Debug, valuable::Valuable)]
+// #[derive(Clone, valuable::Valuable)]
 // struct Address {
 //     country: String,
 //     city: String,
@@ -28,7 +28,6 @@ pub fn dev() {
 }
 
 //builder pattern example
-// #[derive(Debug)]
 // pub struct PortHandle {
 // 	port: u16,
 // }
@@ -168,7 +167,7 @@ pub fn dev() {
 // use std::num::ParseIntError;
 
 // // This is a custom error type that we will be using in `parse_pos_nonzero()`.
-// #[derive(PartialEq, Debug)]
+// #[derive(PartialEq)]
 // enum ParsePosNonzeroError {
 //     Creation(CreationError),
 //     ParseInt(ParseIntError),
