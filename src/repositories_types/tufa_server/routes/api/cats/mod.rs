@@ -263,23 +263,16 @@ pub struct PatchByIdPathParameters {
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub enum CatToPatch {
-    IdName {
-        id: crate::server::postgres::bigserial::Bigserial,
+    Name {
         name: std::string::String,
     },
-    IdColor {
-        id: crate::server::postgres::bigserial::Bigserial,
+    Color {
         color: std::string::String,
     },
-}
-
-impl crate::server::postgres::bigserial::GetPostgresBigserialId for CatToPatch {
-    fn get_postgres_bigserial_id(&self) -> &crate::server::postgres::bigserial::Bigserial {
-        match self {
-            CatToPatch::IdName { id, name: _name } => id,
-            CatToPatch::IdColor { id, color: _color } => id,
-        }
-    }
+    NameColor {
+        name: std::string::String,
+        color: std::string::String,
+    },
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]

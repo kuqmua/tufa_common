@@ -115,7 +115,3 @@ impl std::convert::TryFrom<&str> for Bigserial {
         }
     }
 }
-
-pub trait GetPostgresBigserialId {
-    fn get_postgres_bigserial_id(&self) -> &Bigserial;
-}
