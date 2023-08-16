@@ -182,41 +182,41 @@ impl std::convert::From<CatIdNameColor> for CatOptions {
     }
 }
 
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
+#[derive(serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
 pub struct CatId {
     pub id: i64,
 }
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
+#[derive(serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
 pub struct CatName {
     pub name: String,
 }
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
+#[derive(serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
 pub struct CatColor {
     pub color: String,
 }
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
+#[derive(serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
 pub struct CatIdName {
     pub id: i64,
     pub name: String,
 }
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
+#[derive(serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
 pub struct CatIdColor {
     pub id: i64,
     pub color: String,
 }
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
+#[derive(serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
 pub struct CatNameColor {
     pub name: String,
     pub color: String,
 }
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
+#[derive(serde_derive::Serialize, serde_derive::Deserialize, sqlx::FromRow)]
 pub struct CatIdNameColor {
     pub id: i64,
     pub name: String,
     pub color: String,
 }
 
-#[derive(Debug, serde::Deserialize)]
+#[derive(serde::Deserialize)]
 pub struct DeleteByIdPathParameters {
     pub id: crate::server::postgres::bigserial::Bigserial,
 }

@@ -192,10 +192,10 @@ pub fn dev() {
 
 // // Don't change anything below this line.
 
-// #[derive(PartialEq, Debug)]
+// #[derive(PartialEq)]
 // struct PositiveNonzeroInteger(u64);
 
-// #[derive(PartialEq, Debug)]
+// #[derive(PartialEq)]
 // enum CreationError {
 //     Negative,
 //     Zero,

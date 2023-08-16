@@ -297,7 +297,6 @@
 //     println!("{e_deserialized}");
 // }
 
-// #[derive(Debug)]
 // pub struct DisplayStruct {
 //     display_struct: String,
 // }
@@ -307,7 +306,6 @@
 //     }
 // }
 
-// #[derive(Debug)]
 // pub struct DisplayStructLifetime {
 //     display_struct_lifetime: std::string::String,
 // }
@@ -317,7 +315,7 @@
 //     }
 // }
 
-// #[derive(Debug, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
+// #[derive(PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
 // pub struct DisplayWithSerializeDeserializeStruct {}
 // impl std::fmt::Display for DisplayWithSerializeDeserializeStruct {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
@@ -325,7 +323,7 @@
 //     }
 // }
 
-// #[derive(Debug, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
+// #[derive(PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
 // pub struct DisplayWithSerializeDeserializeStructLifetime {
 //     display_with_serialize_deserialize_struct_lifetime: String,
 // }
@@ -335,7 +333,7 @@
 //     }
 // }
 
-// #[derive(Debug, serde::Serialize, serde::Deserialize)]
+// #[derive(serde::Serialize, serde::Deserialize)]
 // pub struct DisplayForeignTypeSerializeDeserializeStruct {
 //     display_foreign_type_serialize_deserialize_struct: String,
 // }
@@ -346,7 +344,7 @@
 //         std::string::String::from("DisplayForeignTypeSerializeDeserializeStruct")
 //     }
 // }
-// #[derive(Debug, serde::Serialize, serde::Deserialize)]
+// #[derive(serde::Serialize, serde::Deserialize)]
 // pub struct DisplayForeignTypeSerializeDeserializeStructLifetime {
 //     display_foreign_type_serialize_deserialize_struct: std::string::String,
 // }
@@ -358,7 +356,7 @@
 //     }
 // }
 
-// #[derive(Debug, Hash, Eq, PartialEq)]
+// #[derive(Hash, Eq, PartialEq)]
 // pub struct DisplayForeignTypeStruct {
 //     display_foreign_type_struct: String,
 // }
@@ -367,7 +365,7 @@
 //         std::string::String::from("DisplayForeignTypeStruct")
 //     }
 // }
-// #[derive(Debug, Hash, Eq, PartialEq)]
+// #[derive(Hash, Eq, PartialEq)]
 // pub struct DisplayForeignTypeStructLifetime {
 //     display_foreign_type_struct: std::string::String,
 // }
@@ -377,7 +375,7 @@
 //     }
 // }
 
-// #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+// #[derive(thiserror::Error, error_occurence::ErrorOccurence)]
 // pub enum InnerErrorNamed {
 //     Something {
 //         #[eo_display_with_serialize_deserialize]
@@ -389,13 +387,13 @@
 //     },
 // }
 
-// #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+// #[derive(thiserror::Error, error_occurence::ErrorOccurence)]
 // pub enum ErrorUnnamed {
 //     #[eo_error_occurence]
 //     Something(crate::common::error_logs_logic::test::InnerErrorNamed),
 // }
 
-// #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+// #[derive(thiserror::Error, error_occurence::ErrorOccurence)]
 // pub enum ErrorNamed {
 //     Something {
 //         #[eo_display]
