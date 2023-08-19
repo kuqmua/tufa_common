@@ -26,38 +26,12 @@ pub type DynArcGetConfigGetPostgresPoolSendSync = std::sync::Arc<
     Debug,
     serde_derive::Serialize,
     serde_derive::Deserialize,
-    // generate_postgresql_crud::GeneratePostgresqlCrud,
+    generate_postgresql_crud::GeneratePostgresqlCrud,
 )]
 pub struct Cat {
     pub id: i64, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
     pub name: String,
     pub color: String,
-}
-
-#[derive(
-    Debug,
-    serde_derive::Serialize,
-    serde_derive::Deserialize,
-    generate_postgresql_crud::GeneratePostgresqlCrud,
-)]
-pub struct CatTest {
-    pub one: i64, //1//todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
-    pub two: String, //3
-    pub three: String, //7
-                  // pub four: String, //15
-                  // pub five: String, //31
-                  // pub six: String, //63
-                  // pub seven: String, //127
-}
-
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct CatOptions {
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub id: Option<i64>, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub color: Option<String>,
 }
 
 trait FromRow<'r, R: sqlx::Row>: Sized {
@@ -117,102 +91,6 @@ impl std::convert::From<Cat> for CatOptions {
             color: Some(value.color),
         }
     }
-}
-impl std::convert::From<CatId> for CatOptions {
-    fn from(value: CatId) -> Self {
-        CatOptions {
-            id: Some(value.id),
-            name: None,
-            color: None,
-        }
-    }
-}
-impl std::convert::From<CatName> for CatOptions {
-    fn from(value: CatName) -> Self {
-        CatOptions {
-            id: None,
-            name: Some(value.name),
-            color: None,
-        }
-    }
-}
-impl std::convert::From<CatColor> for CatOptions {
-    fn from(value: CatColor) -> Self {
-        CatOptions {
-            id: None,
-            name: None,
-            color: Some(value.color),
-        }
-    }
-}
-impl std::convert::From<CatIdName> for CatOptions {
-    fn from(value: CatIdName) -> Self {
-        CatOptions {
-            id: Some(value.id),
-            name: Some(value.name),
-            color: None,
-        }
-    }
-}
-impl std::convert::From<CatIdColor> for CatOptions {
-    fn from(value: CatIdColor) -> Self {
-        CatOptions {
-            id: Some(value.id),
-            name: None,
-            color: Some(value.color),
-        }
-    }
-}
-impl std::convert::From<CatNameColor> for CatOptions {
-    fn from(value: CatNameColor) -> Self {
-        CatOptions {
-            id: None,
-            name: Some(value.name),
-            color: Some(value.color),
-        }
-    }
-}
-impl std::convert::From<CatIdNameColor> for CatOptions {
-    fn from(value: CatIdNameColor) -> Self {
-        CatOptions {
-            id: Some(value.id),
-            name: Some(value.name),
-            color: Some(value.color),
-        }
-    }
-}
-
-pub struct CatId {
-    pub id: i64,
-}
-
-pub struct CatName {
-    pub name: String,
-}
-
-pub struct CatColor {
-    pub color: String,
-}
-
-pub struct CatIdName {
-    pub id: i64,
-    pub name: String,
-}
-
-pub struct CatIdColor {
-    pub id: i64,
-    pub color: String,
-}
-
-pub struct CatNameColor {
-    pub name: String,
-    pub color: String,
-}
-
-pub struct CatIdNameColor {
-    pub id: i64,
-    pub name: String,
-    pub color: String,
 }
 
 #[derive(serde::Deserialize)]
