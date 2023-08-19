@@ -35,7 +35,7 @@ pub struct Cat {
 }
 
 trait FromRow<'r, R: sqlx::Row>: Sized {
-    fn sqlx_from_row(row: &'r R, select: &GetSelect) -> Result<Self, sqlx::Error>;
+    fn sqlx_from_row(row: &'r R, select: &CatSelect) -> Result<Self, sqlx::Error>;
 }
 impl<'a, R: ::sqlx::Row> FromRow<'a, R> for CatOptions
 where
@@ -47,33 +47,33 @@ where
     Option<String>: ::sqlx::decode::Decode<'a, R::Database>,
     Option<String>: ::sqlx::types::Type<R::Database>,
 {
-    fn sqlx_from_row(row: &'a R, select: &GetSelect) -> ::sqlx::Result<Self> {
+    fn sqlx_from_row(row: &'a R, select: &CatSelect) -> ::sqlx::Result<Self> {
         let mut id: Option<i64> = None;
         let mut name: Option<String> = None;
         let mut color: Option<String> = None;
         match select {
-            GetSelect::Id => {
+            CatSelect::Id => {
                 id = row.try_get("id")?;
             }
-            GetSelect::Name => {
+            CatSelect::Name => {
                 name = row.try_get("name")?;
             }
-            GetSelect::Color => {
+            CatSelect::Color => {
                 color = row.try_get("color")?;
             }
-            GetSelect::IdName => {
+            CatSelect::IdName => {
                 id = row.try_get("id")?;
                 name = row.try_get("name")?;
             }
-            GetSelect::IdColor => {
+            CatSelect::IdColor => {
                 id = row.try_get("id")?;
                 color = row.try_get("color")?;
             }
-            GetSelect::NameColor => {
+            CatSelect::NameColor => {
                 name = row.try_get("name")?;
                 color = row.try_get("color")?;
             }
-            GetSelect::IdNameColor => {
+            CatSelect::IdNameColor => {
                 id = row.try_get("id")?;
                 name = row.try_get("name")?;
                 color = row.try_get("color")?;
@@ -130,7 +130,7 @@ pub struct GetByIdPathParameters {
 
 #[derive(Debug, serde::Deserialize)]
 pub struct GetByIdQueryParameters {
-    pub select: Option<GetSelect>,
+    pub select: Option<CatSelect>,
 }
 
 #[derive(Debug, serde::Deserialize)]
@@ -167,7 +167,7 @@ pub struct CatToPut {
 
 #[derive(Debug, serde::Deserialize)]
 pub struct GetQueryParameters {
-    pub select: Option<GetSelect>,
+    pub select: Option<CatSelect>,
     pub limit: crate::server::postgres::rows_per_table::RowsPerTable,
     pub id: Option<crate::server::postgres::bigserial_ids::BigserialIds>,
     pub name: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
@@ -286,7 +286,7 @@ impl crate::server::postgres::generate_where_get_parameters::GenerateWhereGetPar
 impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryParameters {
     fn generate_get_query(&self) -> std::string::String {
         let additional_get_parameters_bind_places = crate::server::postgres::generate_where_get_parameters::GenerateWhereGetParametersBindPlaces::generate_where_get_parameters_bind_places(self);
-        let select = crate::repositories_types::tufa_server::routes::api::cats::GetSelect::from(
+        let select = crate::repositories_types::tufa_server::routes::api::cats::CatSelect::from(
             self.select.clone(),
         );
         let query_string = format!(
@@ -332,7 +332,7 @@ impl crate::common::url_encode::UrlEncode for GetSelectField {
 }
 
 #[derive(Debug, serde::Serialize, serde::Deserialize, Clone)]
-pub enum GetSelect {
+pub enum CatSelect {
     #[serde(rename(serialize = "id", deserialize = "id"))]
     Id,
     #[serde(rename(serialize = "name", deserialize = "name"))]
@@ -348,25 +348,25 @@ pub enum GetSelect {
     #[serde(rename(serialize = "id,name,color", deserialize = "id,name,color"))]
     IdNameColor,
 }
-impl std::fmt::Display for GetSelect {
+impl std::fmt::Display for CatSelect {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            GetSelect::Id => write!(f, "id"),
-            GetSelect::Name => write!(f, "name"),
-            GetSelect::Color => write!(f, "color"),
-            GetSelect::IdName => write!(f, "id,name"),
-            GetSelect::IdColor => write!(f, "id,color"),
-            GetSelect::NameColor => write!(f, "name,color"),
-            GetSelect::IdNameColor => write!(f, "id,name,color"),
+            CatSelect::Id => write!(f, "id"),
+            CatSelect::Name => write!(f, "name"),
+            CatSelect::Color => write!(f, "color"),
+            CatSelect::IdName => write!(f, "id,name"),
+            CatSelect::IdColor => write!(f, "id,color"),
+            CatSelect::NameColor => write!(f, "name,color"),
+            CatSelect::IdNameColor => write!(f, "id,name,color"),
         }
     }
 }
-impl std::default::Default for GetSelect {
+impl std::default::Default for CatSelect {
     fn default() -> Self {
         Self::IdNameColor
     }
 }
-impl std::convert::From<Option<Self>> for GetSelect {
+impl std::convert::From<Option<Self>> for CatSelect {
     fn from(option_value: Option<Self>) -> Self {
         match option_value {
             Some(value) => value,
@@ -374,21 +374,21 @@ impl std::convert::From<Option<Self>> for GetSelect {
         }
     }
 }
-impl crate::common::url_encode::UrlEncode for GetSelect {
+impl crate::common::url_encode::UrlEncode for CatSelect {
     fn url_encode(&self) -> std::string::String {
         urlencoding::encode(&self.to_string()).to_string()
     }
 }
-impl GetSelect {
+impl CatSelect {
     pub fn into_get_select_field_vec(&self) -> Vec<GetSelectField> {
         match self {
-            GetSelect::Id => vec![GetSelectField::Id],
-            GetSelect::Name => vec![GetSelectField::Name],
-            GetSelect::Color => vec![GetSelectField::Color],
-            GetSelect::IdName => vec![GetSelectField::Id, GetSelectField::Name],
-            GetSelect::IdColor => vec![GetSelectField::Id, GetSelectField::Color],
-            GetSelect::NameColor => vec![GetSelectField::Name, GetSelectField::Color],
-            GetSelect::IdNameColor => vec![
+            CatSelect::Id => vec![GetSelectField::Id],
+            CatSelect::Name => vec![GetSelectField::Name],
+            CatSelect::Color => vec![GetSelectField::Color],
+            CatSelect::IdName => vec![GetSelectField::Id, GetSelectField::Name],
+            CatSelect::IdColor => vec![GetSelectField::Id, GetSelectField::Color],
+            CatSelect::NameColor => vec![GetSelectField::Name, GetSelectField::Color],
+            CatSelect::IdNameColor => vec![
                 GetSelectField::Id,
                 GetSelectField::Name,
                 GetSelectField::Color,
