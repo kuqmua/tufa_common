@@ -83,16 +83,6 @@ where
     }
 }
 
-impl std::convert::From<Cat> for CatOptions {
-    fn from(value: Cat) -> Self {
-        CatOptions {
-            id: Some(value.id),
-            name: Some(value.name),
-            color: Some(value.color),
-        }
-    }
-}
-
 #[derive(serde::Deserialize)]
 pub struct DeleteByIdPathParameters {
     pub id: crate::server::postgres::bigserial::Bigserial,
@@ -300,40 +290,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryP
     }
 }
 
-impl std::default::Default for CatSelect {
-    fn default() -> Self {
-        Self::IdNameColor
-    }
-}
-impl std::convert::From<Option<Self>> for CatSelect {
-    fn from(option_value: Option<Self>) -> Self {
-        match option_value {
-            Some(value) => value,
-            None => Self::default(),
-        }
-    }
-}
-impl crate::common::url_encode::UrlEncode for CatSelect {
-    fn url_encode(&self) -> std::string::String {
-        urlencoding::encode(&self.to_string()).to_string()
-    }
-}
 impl CatSelect {
-    pub fn into_get_select_field_vec(&self) -> Vec<CatSelectField> {
-        match self {
-            CatSelect::Id => vec![CatSelectField::Id],
-            CatSelect::Name => vec![CatSelectField::Name],
-            CatSelect::Color => vec![CatSelectField::Color],
-            CatSelect::IdName => vec![CatSelectField::Id, CatSelectField::Name],
-            CatSelect::IdColor => vec![CatSelectField::Id, CatSelectField::Color],
-            CatSelect::NameColor => vec![CatSelectField::Name, CatSelectField::Color],
-            CatSelect::IdNameColor => vec![
-                CatSelectField::Id,
-                CatSelectField::Name,
-                CatSelectField::Color,
-            ],
-        }
-    }
     pub async fn execute_query(
         &self,
         query_string: std::string::String,
