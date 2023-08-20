@@ -300,19 +300,6 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryP
     }
 }
 
-impl std::fmt::Display for CatSelect {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            CatSelect::Id => write!(f, "id"),
-            CatSelect::Name => write!(f, "name"),
-            CatSelect::Color => write!(f, "color"),
-            CatSelect::IdName => write!(f, "id,name"),
-            CatSelect::IdColor => write!(f, "id,color"),
-            CatSelect::NameColor => write!(f, "name,color"),
-            CatSelect::IdNameColor => write!(f, "id,name,color"),
-        }
-    }
-}
 impl std::default::Default for CatSelect {
     fn default() -> Self {
         Self::IdNameColor
