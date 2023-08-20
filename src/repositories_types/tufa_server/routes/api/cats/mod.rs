@@ -300,54 +300,6 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryP
     }
 }
 
-////////////////////
-#[derive(
-    Debug,
-    serde::Serialize,
-    serde::Deserialize,
-    enum_extension::EnumExtension,
-    strum_macros::EnumIter,
-    PartialEq,
-    Eq,
-)]
-pub enum GetSelectField {
-    #[serde(rename(serialize = "id", deserialize = "id"))]
-    Id,
-    #[serde(rename(serialize = "name", deserialize = "name"))]
-    Name,
-    #[serde(rename(serialize = "color", deserialize = "color"))]
-    Color,
-}
-
-impl std::fmt::Display for GetSelectField {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", Self::to_lower_snake_case(self))
-    }
-}
-
-impl crate::common::url_encode::UrlEncode for GetSelectField {
-    fn url_encode(&self) -> std::string::String {
-        urlencoding::encode(&self.to_string()).to_string()
-    }
-}
-
-#[derive(Debug, serde::Serialize, serde::Deserialize, Clone)]
-pub enum CatSelect {
-    #[serde(rename(serialize = "id", deserialize = "id"))]
-    Id,
-    #[serde(rename(serialize = "name", deserialize = "name"))]
-    Name,
-    #[serde(rename(serialize = "color", deserialize = "color"))]
-    Color,
-    #[serde(rename(serialize = "id,name", deserialize = "id,name"))]
-    IdName,
-    #[serde(rename(serialize = "id,color", deserialize = "id,color"))]
-    IdColor,
-    #[serde(rename(serialize = "name,color", deserialize = "name,color"))]
-    NameColor,
-    #[serde(rename(serialize = "id,name,color", deserialize = "id,name,color"))]
-    IdNameColor,
-}
 impl std::fmt::Display for CatSelect {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
@@ -380,18 +332,18 @@ impl crate::common::url_encode::UrlEncode for CatSelect {
     }
 }
 impl CatSelect {
-    pub fn into_get_select_field_vec(&self) -> Vec<GetSelectField> {
+    pub fn into_get_select_field_vec(&self) -> Vec<CatSelectField> {
         match self {
-            CatSelect::Id => vec![GetSelectField::Id],
-            CatSelect::Name => vec![GetSelectField::Name],
-            CatSelect::Color => vec![GetSelectField::Color],
-            CatSelect::IdName => vec![GetSelectField::Id, GetSelectField::Name],
-            CatSelect::IdColor => vec![GetSelectField::Id, GetSelectField::Color],
-            CatSelect::NameColor => vec![GetSelectField::Name, GetSelectField::Color],
+            CatSelect::Id => vec![CatSelectField::Id],
+            CatSelect::Name => vec![CatSelectField::Name],
+            CatSelect::Color => vec![CatSelectField::Color],
+            CatSelect::IdName => vec![CatSelectField::Id, CatSelectField::Name],
+            CatSelect::IdColor => vec![CatSelectField::Id, CatSelectField::Color],
+            CatSelect::NameColor => vec![CatSelectField::Name, CatSelectField::Color],
             CatSelect::IdNameColor => vec![
-                GetSelectField::Id,
-                GetSelectField::Name,
-                GetSelectField::Color,
+                CatSelectField::Id,
+                CatSelectField::Name,
+                CatSelectField::Color,
             ],
         }
     }
