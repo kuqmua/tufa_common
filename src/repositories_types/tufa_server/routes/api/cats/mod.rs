@@ -34,55 +34,6 @@ pub struct Cat {
     pub color: String,
 }
 
-impl CatSelect {
-    fn options_try_from_sqlx_row<'a, R: ::sqlx::Row>(
-        &self,
-        row: &'a R,
-    ) -> ::sqlx::Result<CatOptions>
-    where
-        &'a ::std::primitive::str: ::sqlx::ColumnIndex<R>,
-        Option<i64>: ::sqlx::decode::Decode<'a, R::Database>,
-        Option<i64>: ::sqlx::types::Type<R::Database>,
-        Option<String>: ::sqlx::decode::Decode<'a, R::Database>,
-        Option<String>: ::sqlx::types::Type<R::Database>,
-        Option<String>: ::sqlx::decode::Decode<'a, R::Database>,
-        Option<String>: ::sqlx::types::Type<R::Database>,
-    {
-        let mut id: Option<i64> = None;
-        let mut name: Option<String> = None;
-        let mut color: Option<String> = None;
-        match self {
-            CatSelect::Id => {
-                id = row.try_get("id")?;
-            }
-            CatSelect::Name => {
-                name = row.try_get("name")?;
-            }
-            CatSelect::Color => {
-                color = row.try_get("color")?;
-            }
-            CatSelect::IdName => {
-                id = row.try_get("id")?;
-                name = row.try_get("name")?;
-            }
-            CatSelect::IdColor => {
-                id = row.try_get("id")?;
-                color = row.try_get("color")?;
-            }
-            CatSelect::NameColor => {
-                name = row.try_get("name")?;
-                color = row.try_get("color")?;
-            }
-            CatSelect::IdNameColor => {
-                id = row.try_get("id")?;
-                name = row.try_get("name")?;
-                color = row.try_get("color")?;
-            }
-        }
-        Ok(CatOptions { id, name, color })
-    }
-}
-
 #[derive(serde::Deserialize)]
 pub struct DeleteByIdPathParameters {
     pub id: crate::server::postgres::bigserial::Bigserial,
