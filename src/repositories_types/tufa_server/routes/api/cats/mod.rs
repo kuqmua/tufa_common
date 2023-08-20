@@ -34,24 +34,24 @@ pub struct Cat {
     pub color: String,
 }
 
-trait FromRow<'r, R: sqlx::Row>: Sized {
-    fn sqlx_from_row(row: &'r R, select: &CatSelect) -> Result<Self, sqlx::Error>;
-}
-impl<'a, R: ::sqlx::Row> FromRow<'a, R> for CatOptions
-where
-    &'a ::std::primitive::str: ::sqlx::ColumnIndex<R>,
-    Option<i64>: ::sqlx::decode::Decode<'a, R::Database>,
-    Option<i64>: ::sqlx::types::Type<R::Database>,
-    Option<String>: ::sqlx::decode::Decode<'a, R::Database>,
-    Option<String>: ::sqlx::types::Type<R::Database>,
-    Option<String>: ::sqlx::decode::Decode<'a, R::Database>,
-    Option<String>: ::sqlx::types::Type<R::Database>,
-{
-    fn sqlx_from_row(row: &'a R, select: &CatSelect) -> ::sqlx::Result<Self> {
+impl CatSelect {
+    fn options_try_from_sqlx_row<'a, R: ::sqlx::Row>(
+        &self,
+        row: &'a R,
+    ) -> ::sqlx::Result<CatOptions>
+    where
+        &'a ::std::primitive::str: ::sqlx::ColumnIndex<R>,
+        Option<i64>: ::sqlx::decode::Decode<'a, R::Database>,
+        Option<i64>: ::sqlx::types::Type<R::Database>,
+        Option<String>: ::sqlx::decode::Decode<'a, R::Database>,
+        Option<String>: ::sqlx::types::Type<R::Database>,
+        Option<String>: ::sqlx::decode::Decode<'a, R::Database>,
+        Option<String>: ::sqlx::types::Type<R::Database>,
+    {
         let mut id: Option<i64> = None;
         let mut name: Option<String> = None;
         let mut color: Option<String> = None;
-        match select {
+        match self {
             CatSelect::Id => {
                 id = row.try_get("id")?;
             }
@@ -325,7 +325,7 @@ impl CatSelect {
                     }
                 }
             } {
-                match CatOptions::sqlx_from_row(&row, self) {
+                match self.options_try_from_sqlx_row(&row) {
                     Ok(value) => {
                         vec_values.push(value);
                     }
