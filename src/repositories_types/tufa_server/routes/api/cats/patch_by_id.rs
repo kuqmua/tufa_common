@@ -188,7 +188,7 @@ pub enum TryPatchByIdErrorNamed {
 
 pub async fn try_patch<'a>(
     server_location: &str,
-    body: crate::repositories_types::tufa_server::routes::api::cats::CatToPatch,
+    body: crate::repositories_types::tufa_server::routes::api::cats::CatToPatchById,
 ) -> Result<(), TryPatchByIdErrorNamed> {
     let stringified_json = match serde_json::to_string(&body) {
         Ok(stringified_json) => stringified_json,

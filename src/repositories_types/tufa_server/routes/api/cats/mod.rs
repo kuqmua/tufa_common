@@ -34,36 +34,6 @@ pub struct Cat {
     pub color: String,
 }
 
-#[derive(serde::Deserialize)]
-pub struct DeleteByIdPathParameters {
-    pub id: crate::server::postgres::bigserial::Bigserial,
-}
-
-#[derive(serde::Deserialize)]
-pub struct DeleteQueryParameters {
-    pub name: Option<String>,
-    pub color: Option<String>,
-}
-
-impl crate::common::url_encode::UrlEncode for DeleteQueryParameters {
-    fn url_encode(&self) -> String {
-        let parameters = match (&self.name, &self.color) {
-            (None, None) => String::from(""),
-            (None, Some(color)) => format!("color={}", urlencoding::encode(color)),
-            (Some(name), None) => format!("name={}", urlencoding::encode(name)),
-            (Some(name), Some(color)) => format!(
-                "name={}&color={}",
-                urlencoding::encode(name),
-                urlencoding::encode(color)
-            ),
-        };
-        match parameters.is_empty() {
-            true => String::from(""),
-            false => format!("?{parameters}"),
-        }
-    }
-}
-
 #[derive(Debug, serde::Deserialize)]
 pub struct GetByIdPathParameters {
     pub id: crate::server::postgres::bigserial::Bigserial,
@@ -72,38 +42,6 @@ pub struct GetByIdPathParameters {
 #[derive(Debug, serde::Deserialize)]
 pub struct GetByIdQueryParameters {
     pub select: Option<CatSelect>,
-}
-
-#[derive(Debug, serde::Deserialize)]
-pub struct PatchByIdPathParameters {
-    pub id: crate::server::postgres::bigserial::Bigserial,
-}
-
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub enum CatToPatch {
-    Name {
-        name: std::string::String,
-    },
-    Color {
-        color: std::string::String,
-    },
-    NameColor {
-        name: std::string::String,
-        color: std::string::String,
-    },
-}
-
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct CatToPost {
-    pub name: String,
-    pub color: String,
-}
-
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct CatToPut {
-    pub id: crate::server::postgres::bigserial::Bigserial, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
-    pub name: String,
-    pub color: String,
 }
 
 #[derive(Debug, serde::Deserialize)]
@@ -238,6 +176,68 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryP
         );
         println!("{query_string}");
         query_string
+    }
+}
+
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+pub struct CatToPost {
+    pub name: String,
+    pub color: String,
+}
+
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+pub struct CatToPut {
+    pub id: crate::server::postgres::bigserial::Bigserial, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
+    pub name: String,
+    pub color: String,
+}
+
+#[derive(Debug, serde::Deserialize)]
+pub struct PatchByIdPathParameters {
+    pub id: crate::server::postgres::bigserial::Bigserial,
+}
+
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+pub enum CatToPatchById {
+    Name {
+        name: std::string::String,
+    },
+    Color {
+        color: std::string::String,
+    },
+    NameColor {
+        name: std::string::String,
+        color: std::string::String,
+    },
+}
+
+#[derive(serde::Deserialize)]
+pub struct DeleteByIdPathParameters {
+    pub id: crate::server::postgres::bigserial::Bigserial,
+}
+
+#[derive(serde::Deserialize)]
+pub struct DeleteQueryParameters {
+    pub name: Option<String>,
+    pub color: Option<String>,
+}
+
+impl crate::common::url_encode::UrlEncode for DeleteQueryParameters {
+    fn url_encode(&self) -> String {
+        let parameters = match (&self.name, &self.color) {
+            (None, None) => String::from(""),
+            (None, Some(color)) => format!("color={}", urlencoding::encode(color)),
+            (Some(name), None) => format!("name={}", urlencoding::encode(name)),
+            (Some(name), Some(color)) => format!(
+                "name={}&color={}",
+                urlencoding::encode(name),
+                urlencoding::encode(color)
+            ),
+        };
+        match parameters.is_empty() {
+            true => String::from(""),
+            false => format!("?{parameters}"),
+        }
     }
 }
 
