@@ -245,7 +245,6 @@ impl CatSelect {
     pub async fn execute_query(
         &self,
         query_string: std::string::String,
-        pool: &sqlx::PgPool,
         query_parameters: impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery,
         app_info_state: &axum::extract::State<crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync>,
     ) -> crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants
@@ -256,7 +255,7 @@ impl CatSelect {
                     query_parameters,
                     sqlx::query::<sqlx::Postgres>(&query_string),
                 )
-                .fetch(pool);
+                .fetch(app_info_state.get_postgres_pool());
             let mut vec_values = Vec::new();
             while let Some(row) = {
                 match {
