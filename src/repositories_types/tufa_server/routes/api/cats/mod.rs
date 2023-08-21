@@ -246,7 +246,7 @@ impl CatSelect {
         &self,
         query_string: std::string::String,
         query_parameters: impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery,
-        app_info_state: &axum::extract::State<crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync>,
+        app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
     ) -> crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants
     {
         let vec_values = {
