@@ -34,6 +34,40 @@ pub struct Cat {
     pub color: String,
 }
 
+#[derive(
+    Debug,
+    serde::Serialize,
+    serde::Deserialize,
+    enum_extension::EnumExtension,
+    strum_macros::EnumIter,
+    PartialEq,
+    Eq,
+)]
+pub enum CatOrderByField {
+    #[serde(rename(serialize = "id", deserialize = "id"))]
+    Id,
+    #[serde(rename(serialize = "name", deserialize = "name"))]
+    Name,
+    #[serde(rename(serialize = "color", deserialize = "color"))]
+    Color,
+}
+
+impl std::fmt::Display for CatOrderByField {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            CatOrderByField::Id => write!(f, "id"),
+            CatOrderByField::Name => write!(f, "name"),
+            CatOrderByField::Color => write!(f, "color"),
+        }
+    }
+}
+
+impl crate::common::url_encode::UrlEncode for CatOrderByField {
+    fn url_encode(&self) -> std::string::String {
+        urlencoding::encode(&self.to_string()).to_string()
+    }
+}
+
 #[derive(Debug, serde::Deserialize)]
 pub struct GetByIdPathParameters {
     pub id: crate::server::postgres::bigserial::Bigserial,
@@ -46,12 +80,12 @@ pub struct GetByIdQueryParameters {
 
 #[derive(Debug, serde::Deserialize)]
 pub struct GetQueryParameters {
-    //todo add order_by
-    pub select: Option<CatSelect>,
-    pub limit: crate::server::postgres::rows_per_table::RowsPerTable,
     pub id: Option<crate::server::postgres::bigserial_ids::BigserialIds>,
     pub name: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
     pub color: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
+    pub limit: crate::server::postgres::rows_per_table::RowsPerTable,
+    pub select: Option<CatSelect>,
+    pub order_by: Option<CatOrderByField>,
 }
 
 //todo - make a macro for it?
@@ -59,13 +93,6 @@ pub struct GetQueryParameters {
 impl crate::common::url_encode::UrlEncode for GetQueryParameters {
     fn url_encode(&self) -> std::string::String {
         let mut stringified_query_parameters = String::from("?");
-        if let Some(select) = &self.select {
-            let query_parameter_handle = format!("select={}", select.url_encode()); //urlencoding::encode(select)
-            stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
-        }
-        let limit_query_parameter_handle =
-            format!("limit={}", urlencoding::encode(&self.limit.to_string())); //todo -maybe write macro for it
-        stringified_query_parameters.push_str(&format!("&{limit_query_parameter_handle}"));
         if let Some(value) = &self.id {
             stringified_query_parameters.push_str(&format!(
                 "&id={}",
@@ -83,6 +110,18 @@ impl crate::common::url_encode::UrlEncode for GetQueryParameters {
                 "&color={}",
                 crate::common::url_encode::UrlEncode::url_encode(value)
             ));
+        }
+        stringified_query_parameters.push_str(&format!(
+            "&{}",
+            format!("limit={}", urlencoding::encode(&self.limit.to_string()))
+        ));
+        if let Some(select) = &self.select {
+            let query_parameter_handle = format!("select={}", select.url_encode()); //urlencoding::encode(select)
+            stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
+        }
+        if let Some(order_by) = &self.order_by {
+            let query_parameter_handle = format!("order_by={}", order_by.url_encode()); //urlencoding::encode(select)
+            stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
         }
         stringified_query_parameters
     }
@@ -145,11 +184,11 @@ impl crate::server::postgres::generate_where_get_parameters::GenerateWhereGetPar
                 false => format!(" {}", crate::server::postgres::constants::AND_NAME),
             };
             additional_parameters.push_str(&format!(
-            "{prefix} color = {}({}[{}])",
-            crate::server::postgres::constants::ANY_NAME,
-            crate::server::postgres::constants::ARRAY_NAME,
-            crate::server::postgres::generate_bind_increments::GenerateBindIncrements::generate_bind_increments(value, &mut increment)
-        ));
+                "{prefix} color = {}({}[{}])",
+                crate::server::postgres::constants::ANY_NAME,
+                crate::server::postgres::constants::ARRAY_NAME,
+                crate::server::postgres::generate_bind_increments::GenerateBindIncrements::generate_bind_increments(value, &mut increment)
+            ));
         }
         {
             increment += 1;
