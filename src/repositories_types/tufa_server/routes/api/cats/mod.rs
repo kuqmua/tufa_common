@@ -46,6 +46,7 @@ pub struct GetByIdQueryParameters {
 
 #[derive(Debug, serde::Deserialize)]
 pub struct GetQueryParameters {
+    //todo add order_by
     pub select: Option<CatSelect>,
     pub limit: crate::server::postgres::rows_per_table::RowsPerTable,
     pub id: Option<crate::server::postgres::bigserial_ids::BigserialIds>,
