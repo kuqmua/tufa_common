@@ -84,8 +84,8 @@ pub struct GetQueryParameters {
     pub id: Option<crate::server::postgres::bigserial_ids::BigserialIds>,
     pub name: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
     pub color: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
-    pub limit: crate::server::postgres::rows_per_table::RowsPerTable,
     pub order_by: Option<CatOrderByField>,
+    pub limit: crate::server::postgres::rows_per_table::RowsPerTable,
 }
 
 //todo - make a macro for it?
