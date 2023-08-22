@@ -68,22 +68,6 @@ impl crate::common::url_encode::UrlEncode for CatOrderByField {
     }
 }
 
-impl crate::server::routes::helpers::get_inner_length::GetInnerLength for CatOrderByField {
-    fn get_inner_length(&self) -> usize {
-        1
-    }
-}
-
-impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for CatOrderByField {
-    fn bind_sqlx_query(
-        self,
-        mut query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
-    ) -> sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments> {
-        query = query.bind(self.to_string());
-        query
-    }
-}
-
 #[derive(Debug, serde::Deserialize)]
 pub struct GetByIdPathParameters {
     pub id: crate::server::postgres::bigserial::Bigserial,
@@ -157,9 +141,6 @@ impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for GetQuery
         if let Some(value) = self.color {
             query = value.bind_sqlx_query(query);
         }
-        if let Some(value) = self.order_by {
-            query = value.bind_sqlx_query(query);
-        }
         query = query.bind(self.limit);
         query
     }
@@ -217,9 +198,8 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryP
                     false => " ",
                 };
                 additional_parameters.push_str(&format!(
-                    "{prefix}{} {} DESC",
+                    "{prefix}{} {value}",
                     crate::server::postgres::constants::ORDER_BY_NAME,
-                    crate::server::postgres::generate_bind_increments::GenerateBindIncrements::generate_bind_increments(value, &mut increment)
                 ));
             }
             {
