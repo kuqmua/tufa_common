@@ -68,6 +68,22 @@ impl crate::common::url_encode::UrlEncode for CatOrderByField {
     }
 }
 
+impl crate::server::routes::helpers::get_inner_length::GetInnerLength for CatOrderByField {
+    fn get_inner_length(&self) -> usize {
+        1
+    }
+}
+
+impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for CatOrderByField {
+    fn bind_sqlx_query(
+        self,
+        mut query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
+    ) -> sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments> {
+        query = query.bind(self.to_string());
+        query
+    }
+}
+
 #[derive(Debug, serde::Deserialize)]
 pub struct GetByIdPathParameters {
     pub id: crate::server::postgres::bigserial::Bigserial,
@@ -80,11 +96,11 @@ pub struct GetByIdQueryParameters {
 
 #[derive(Debug, serde::Deserialize)]
 pub struct GetQueryParameters {
+    pub select: Option<CatSelect>,
     pub id: Option<crate::server::postgres::bigserial_ids::BigserialIds>,
     pub name: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
     pub color: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
     pub limit: crate::server::postgres::rows_per_table::RowsPerTable,
-    pub select: Option<CatSelect>,
     pub order_by: Option<CatOrderByField>,
 }
 
@@ -93,6 +109,10 @@ pub struct GetQueryParameters {
 impl crate::common::url_encode::UrlEncode for GetQueryParameters {
     fn url_encode(&self) -> std::string::String {
         let mut stringified_query_parameters = String::from("?");
+        if let Some(select) = &self.select {
+            let query_parameter_handle = format!("select={}", select.url_encode()); //urlencoding::encode(select)
+            stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
+        }
         if let Some(value) = &self.id {
             stringified_query_parameters.push_str(&format!(
                 "&id={}",
@@ -111,18 +131,14 @@ impl crate::common::url_encode::UrlEncode for GetQueryParameters {
                 crate::common::url_encode::UrlEncode::url_encode(value)
             ));
         }
-        stringified_query_parameters.push_str(&format!(
-            "&{}",
-            format!("limit={}", urlencoding::encode(&self.limit.to_string()))
-        ));
-        if let Some(select) = &self.select {
-            let query_parameter_handle = format!("select={}", select.url_encode()); //urlencoding::encode(select)
-            stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
-        }
         if let Some(order_by) = &self.order_by {
             let query_parameter_handle = format!("order_by={}", order_by.url_encode()); //urlencoding::encode(select)
             stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
         }
+        stringified_query_parameters.push_str(&format!(
+            "&{}",
+            format!("limit={}", urlencoding::encode(&self.limit.to_string()))
+        ));
         stringified_query_parameters
     }
 }
@@ -141,73 +157,81 @@ impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for GetQuery
         if let Some(value) = self.color {
             query = value.bind_sqlx_query(query);
         }
+        if let Some(value) = self.order_by {
+            query = value.bind_sqlx_query(query);
+        }
         query = query.bind(self.limit);
         query
     }
 }
 
-impl crate::server::postgres::generate_where_get_parameters::GenerateWhereGetParametersBindPlaces
-    for GetQueryParameters
-{
-    fn generate_where_get_parameters_bind_places(&self) -> std::string::String {
-        // SELECT id,name,color FROM cats WHERE id = ANY(ARRAY[$1, $2, $3, $4]) AND name = ANY(ARRAY[$5, $6]) AND color = ANY(ARRAY[$7]) LIMIT $8
-        // SELECT id,name,color FROM public.cats WHERE name LIKE 'test%' OR name LIKE '%patch%' ;
-        let mut additional_parameters = std::string::String::from("");
-        let mut increment: u64 = 0;
-        if let Some(value) = &self.id {
-            let prefix = match additional_parameters.is_empty() {
-                true => format!("{}", crate::server::postgres::constants::WHERE_NAME),
-                false => format!(" {}", crate::server::postgres::constants::AND_NAME),
-            };
-            additional_parameters.push_str(&format!(
-            "{prefix} id = {}({}[{}])", 
-            crate::server::postgres::constants::ANY_NAME,
-            crate::server::postgres::constants::ARRAY_NAME,
-            crate::server::postgres::generate_bind_increments::GenerateBindIncrements::generate_bind_increments(value, &mut increment)
-        ));
-        }
-        if let Some(value) = &self.name {
-            let prefix = match additional_parameters.is_empty() {
-                true => format!("{}", crate::server::postgres::constants::WHERE_NAME),
-                false => format!(" {}", crate::server::postgres::constants::AND_NAME),
-            };
-            additional_parameters.push_str(&format!(
-            "{prefix} name = {}({}[{}])",
-            crate::server::postgres::constants::ANY_NAME,
-            crate::server::postgres::constants::ARRAY_NAME,
-            crate::server::postgres::generate_bind_increments::GenerateBindIncrements::generate_bind_increments(value, &mut increment)
-        ));
-        }
-        if let Some(value) = &self.color {
-            let prefix = match additional_parameters.is_empty() {
-                true => format!("{}", crate::server::postgres::constants::WHERE_NAME),
-                false => format!(" {}", crate::server::postgres::constants::AND_NAME),
-            };
-            additional_parameters.push_str(&format!(
-                "{prefix} color = {}({}[{}])",
-                crate::server::postgres::constants::ANY_NAME,
-                crate::server::postgres::constants::ARRAY_NAME,
-                crate::server::postgres::generate_bind_increments::GenerateBindIncrements::generate_bind_increments(value, &mut increment)
-            ));
-        }
-        {
-            increment += 1;
-            let limit_prefix = match additional_parameters.is_empty() {
-                true => format!("{}", crate::server::postgres::constants::LIMIT_NAME),
-                false => format!(" {}", crate::server::postgres::constants::LIMIT_NAME),
-            };
-            additional_parameters.push_str(&format!("{limit_prefix} ${increment}"));
-        }
-        additional_parameters
-    }
-}
-
 impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryParameters {
     fn generate_get_query(&self) -> std::string::String {
-        let additional_get_parameters_bind_places = crate::server::postgres::generate_where_get_parameters::GenerateWhereGetParametersBindPlaces::generate_where_get_parameters_bind_places(self);
+        // SELECT id,name,color FROM cats WHERE id = ANY(ARRAY[$1, $2, $3, $4]) AND name = ANY(ARRAY[$5, $6]) AND color = ANY(ARRAY[$7]) LIMIT $8
+        // SELECT id,name,color FROM public.cats WHERE name LIKE 'test%' OR name LIKE '%patch%' ;
         let select = crate::repositories_types::tufa_server::routes::api::cats::CatSelect::from(
             self.select.clone(),
         );
+        let additional_get_parameters_bind_places = {
+            let mut additional_parameters = std::string::String::from("");
+            let mut increment: u64 = 0;
+            if let Some(value) = &self.id {
+                let prefix = match additional_parameters.is_empty() {
+                    true => format!("{}", crate::server::postgres::constants::WHERE_NAME),
+                    false => format!(" {}", crate::server::postgres::constants::AND_NAME),
+                };
+                additional_parameters.push_str(&format!(
+                    "{prefix} id = {}({}[{}])", 
+                    crate::server::postgres::constants::ANY_NAME,
+                    crate::server::postgres::constants::ARRAY_NAME,
+                    crate::server::postgres::generate_bind_increments::GenerateBindIncrements::generate_bind_increments(value, &mut increment)
+                ));
+            }
+            if let Some(value) = &self.name {
+                let prefix = match additional_parameters.is_empty() {
+                    true => format!("{}", crate::server::postgres::constants::WHERE_NAME),
+                    false => format!(" {}", crate::server::postgres::constants::AND_NAME),
+                };
+                additional_parameters.push_str(&format!(
+                    "{prefix} name = {}({}[{}])",
+                    crate::server::postgres::constants::ANY_NAME,
+                    crate::server::postgres::constants::ARRAY_NAME,
+                    crate::server::postgres::generate_bind_increments::GenerateBindIncrements::generate_bind_increments(value, &mut increment)
+                ));
+            }
+            if let Some(value) = &self.color {
+                let prefix = match additional_parameters.is_empty() {
+                    true => format!("{}", crate::server::postgres::constants::WHERE_NAME),
+                    false => format!(" {}", crate::server::postgres::constants::AND_NAME),
+                };
+                additional_parameters.push_str(&format!(
+                    "{prefix} color = {}({}[{}])",
+                    crate::server::postgres::constants::ANY_NAME,
+                    crate::server::postgres::constants::ARRAY_NAME,
+                    crate::server::postgres::generate_bind_increments::GenerateBindIncrements::generate_bind_increments(value, &mut increment)
+                ));
+            }
+            if let Some(value) = &self.order_by {
+                let prefix = match additional_parameters.is_empty() {
+                    true => "",
+                    false => " ",
+                };
+                additional_parameters.push_str(&format!(
+                    "{prefix}{} {} DESC",
+                    crate::server::postgres::constants::ORDER_BY_NAME,
+                    crate::server::postgres::generate_bind_increments::GenerateBindIncrements::generate_bind_increments(value, &mut increment)
+                ));
+            }
+            {
+                increment += 1;
+                let limit_prefix = match additional_parameters.is_empty() {
+                    true => format!("{}", crate::server::postgres::constants::LIMIT_NAME),
+                    false => format!(" {}", crate::server::postgres::constants::LIMIT_NAME),
+                };
+                additional_parameters.push_str(&format!("{limit_prefix} ${increment}"));
+            }
+            additional_parameters
+        };
         let query_string = format!(
             "{} {select} {} {} {additional_get_parameters_bind_places}",
             crate::server::postgres::constants::SELECT_NAME,
