@@ -85,8 +85,8 @@ pub struct GetQueryParameters {
     pub name: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
     pub color: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
     pub order_by: Option<CatOrderByField>,
-    pub limit: crate::server::postgres::rows_per_table::RowsPerTable,
-    pub offset: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
+    pub limit: crate::server::postgres::postgres_number::PostgresNumber,
+    pub offset: Option<crate::server::postgres::postgres_number::PostgresNumber>,
 }
 
 //todo - make a macro for it?
@@ -117,8 +117,10 @@ impl crate::common::url_encode::UrlEncode for GetQueryParameters {
             ));
         }
         if let Some(value) = &self.order_by {
-            let query_parameter_handle = format!("order_by={}", value.url_encode()); //urlencoding::encode(select)
-            stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
+            stringified_query_parameters.push_str(&format!(
+                "&order_by={}",
+                crate::common::url_encode::UrlEncode::url_encode(value)
+            ));
         }
         stringified_query_parameters.push_str(&format!(
             "&{}",
@@ -147,9 +149,9 @@ impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for GetQuery
         if let Some(value) = self.color {
             query = value.bind_sqlx_query(query);
         }
-        query = query.bind(self.limit);
+        query = self.limit.bind_sqlx_query(query);
         if let Some(value) = self.offset {
-            query = query.bind(value);
+            query = value.bind_sqlx_query(query);
         }
         query
     }
@@ -159,9 +161,10 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryP
     fn generate_get_query(&self) -> std::string::String {
         // SELECT id,name,color FROM cats WHERE id = ANY(ARRAY[$1, $2, $3, $4]) AND name = ANY(ARRAY[$5, $6]) AND color = ANY(ARRAY[$7]) LIMIT $8
         // SELECT id,name,color FROM public.cats WHERE name LIKE 'test%' OR name LIKE '%patch%' ;
-        let select = crate::repositories_types::tufa_server::routes::api::cats::CatSelect::from(
-            self.select.clone(),
-        );
+        let select_stringified = match &self.select {
+            Some(select) => select.to_string(),
+            None => CatSelect::default().to_string(),
+        };
         let additional_get_parameters_bind_places = {
             let mut additional_parameters = std::string::String::from("");
             let mut increment: u64 = 0;
@@ -212,14 +215,14 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryP
                 ));
             }
             {
-                increment += 1;
                 let prefix = match additional_parameters.is_empty() {
                     true => "",
                     false => " ",
                 };
                 additional_parameters.push_str(&format!(
-                    "{prefix}{} ${increment}",
-                    crate::server::postgres::constants::LIMIT_NAME
+                    "{prefix}{} {}",
+                    crate::server::postgres::constants::LIMIT_NAME,
+                    crate::server::postgres::generate_bind_increments::GenerateBindIncrements::generate_bind_increments(&self.limit, &mut increment)
                 ));
             }
             if let Some(value) = &self.offset {
@@ -228,14 +231,15 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryP
                     false => " ",
                 };
                 additional_parameters.push_str(&format!(
-                    "{prefix}{} {value}",
+                    "{prefix}{} {}",
                     crate::server::postgres::constants::OFFSET_NAME,
+                    crate::server::postgres::generate_bind_increments::GenerateBindIncrements::generate_bind_increments(value, &mut increment)
                 ));
             }
             additional_parameters
         };
         let query_string = format!(
-            "{} {select} {} {} {additional_get_parameters_bind_places}",
+            "{} {select_stringified} {} {} {additional_get_parameters_bind_places}",
             crate::server::postgres::constants::SELECT_NAME,
             crate::server::postgres::constants::FROM_NAME,
             crate::repositories_types::tufa_server::routes::api::cats::CATS
@@ -310,12 +314,16 @@ impl crate::common::url_encode::UrlEncode for DeleteQueryParameters {
 impl CatSelect {
     pub async fn execute_query(
         &self,
-        query_string: std::string::String,
-        query_parameters: impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery,
+        query_parameters: impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery
+            + crate::server::postgres::generate_get_query::GenerateGetQuery,
         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
     ) -> crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants
     {
         let vec_values = {
+            let query_string =
+                crate::server::postgres::generate_get_query::GenerateGetQuery::generate_get_query(
+                    &query_parameters,
+                );
             let mut rows =
                 crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery::bind_sqlx_query(
                     query_parameters,

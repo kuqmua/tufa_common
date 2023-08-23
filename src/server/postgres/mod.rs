@@ -8,5 +8,5 @@ pub mod postgres_check_providers_links_tables_length_rows_equal_initialization_d
 pub mod postgres_create_providers_tables_if_not_exists;
 pub mod postgres_delete_all_from_providers_link_parts_tables;
 pub mod postgres_insert_link_parts_into_providers_tables;
-pub mod rows_per_table;
+pub mod postgres_number;
 pub mod sqlx_postgres_error;
