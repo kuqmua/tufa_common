@@ -7,24 +7,23 @@ impl std::fmt::Display for PostgresNumber {
     }
 }
 
-impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for PostgresNumber {
-    fn bind_sqlx_query(
-        self,
-        mut query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
-    ) -> sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments> {
-        query = query.bind(self.0);
-        query
-    }
-}
-
 impl crate::common::url_encode::UrlEncode for PostgresNumber {
     fn url_encode(&self) -> std::string::String {
         urlencoding::encode(&self.0.to_string()).to_string()
     }
 }
 
-impl crate::server::routes::helpers::get_inner_length::GetInnerLength for PostgresNumber {
-    fn get_inner_length(&self) -> usize {
-        1
+impl crate::server::postgres::generate_bind_increments::GenerateBindIncrements for PostgresNumber {
+    fn generate_bind_increments(&self, increment: &mut u64) -> std::string::String {
+        *increment += 1;
+        let mut increments = format!("${increment}");
+        increments
+    }
+    fn bind_sqlx_query_x(
+        self,
+        mut query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
+    ) -> sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments> {
+        query = query.bind(self.0);
+        query
     }
 }

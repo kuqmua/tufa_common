@@ -140,18 +140,19 @@ impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for GetQuery
         self,
         mut query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
     ) -> sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments> {
+        use crate::server::postgres::generate_bind_increments::GenerateBindIncrements;
         if let Some(value) = self.id {
-            query = value.bind_sqlx_query(query);
+            query = value.bind_sqlx_query_x(query);
         }
         if let Some(value) = self.name {
-            query = value.bind_sqlx_query(query);
+            query = value.bind_sqlx_query_x(query);
         }
         if let Some(value) = self.color {
-            query = value.bind_sqlx_query(query);
+            query = value.bind_sqlx_query_x(query);
         }
-        query = self.limit.bind_sqlx_query(query);
+        query = self.limit.bind_sqlx_query_x(query);
         if let Some(value) = self.offset {
-            query = value.bind_sqlx_query(query);
+            query = value.bind_sqlx_query_x(query);
         }
         query
     }
@@ -162,22 +163,16 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryP
         // SELECT id,name,color FROM cats WHERE id = ANY(ARRAY[$1, $2, $3, $4]) AND name = ANY(ARRAY[$5, $6]) AND color = ANY(ARRAY[$7]) LIMIT $8
         // SELECT id,name,color FROM public.cats WHERE name LIKE 'test%' OR name LIKE '%patch%' ;
         let mut query = std::string::String::from("");
-        match &self.select {
-            Some(select) => {
-                query.push_str(&format!(
-                    "{} {}",
-                    crate::server::postgres::constants::SELECT_NAME,
-                    select
-                ));
-            }
-            None => {
-                query.push_str(&format!(
-                    "{} {}",
-                    crate::server::postgres::constants::SELECT_NAME,
-                    CatSelect::default()
-                ));
-            }
-        };
+        {
+            let select_stringified = match &self.select {
+                Some(select) => select.to_string(),
+                None => CatSelect::default().to_string(),
+            };
+            query.push_str(&format!(
+                "{} {select_stringified}",
+                crate::server::postgres::constants::SELECT_NAME,
+            ));
+        }
         query.push_str(&format!(
             " {} {}",
             crate::server::postgres::constants::FROM_NAME,

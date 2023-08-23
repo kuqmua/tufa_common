@@ -89,8 +89,20 @@ impl crate::common::url_encode::UrlEncode for BigserialIds {
     }
 }
 
-impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for BigserialIds {
-    fn bind_sqlx_query(
+impl crate::server::postgres::generate_bind_increments::GenerateBindIncrements for BigserialIds {
+    fn generate_bind_increments(&self, increment: &mut u64) -> std::string::String {
+        let mut increments = std::string::String::from("");
+        for _ in 0..self.0.len() {
+            *increment += 1;
+            increments.push_str(&format!("${increment}, "));
+        }
+        if let false = increments.is_empty() {
+            increments.pop();
+            increments.pop();
+        }
+        increments
+    }
+    fn bind_sqlx_query_x(
         self,
         mut query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
     ) -> sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments> {
@@ -98,11 +110,5 @@ impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for Bigseria
             query = query.bind(element.into_inner());
         }
         query
-    }
-}
-
-impl crate::server::routes::helpers::get_inner_length::GetInnerLength for BigserialIds {
-    fn get_inner_length(&self) -> usize {
-        self.0.len()
     }
 }
