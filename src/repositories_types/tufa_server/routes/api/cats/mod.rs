@@ -86,6 +86,7 @@ pub struct GetQueryParameters {
     pub color: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
     pub order_by: Option<CatOrderByField>,
     pub limit: crate::server::postgres::rows_per_table::RowsPerTable,
+    pub offset: Option<crate::server::postgres::rows_per_table::RowsPerTable>,
 }
 
 //todo - make a macro for it?
@@ -115,14 +116,19 @@ impl crate::common::url_encode::UrlEncode for GetQueryParameters {
                 crate::common::url_encode::UrlEncode::url_encode(value)
             ));
         }
-        if let Some(order_by) = &self.order_by {
-            let query_parameter_handle = format!("order_by={}", order_by.url_encode()); //urlencoding::encode(select)
+        if let Some(value) = &self.order_by {
+            let query_parameter_handle = format!("order_by={}", value.url_encode()); //urlencoding::encode(select)
             stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
         }
         stringified_query_parameters.push_str(&format!(
             "&{}",
             format!("limit={}", urlencoding::encode(&self.limit.to_string()))
         ));
+        if let Some(value) = &self.offset {
+            let query_parameter_handle =
+                format!("order_by={}", urlencoding::encode(&value.to_string()));
+            stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
+        }
         stringified_query_parameters
     }
 }
@@ -142,6 +148,9 @@ impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for GetQuery
             query = value.bind_sqlx_query(query);
         }
         query = query.bind(self.limit);
+        if let Some(value) = self.offset {
+            query = query.bind(value);
+        }
         query
     }
 }
@@ -204,11 +213,24 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryP
             }
             {
                 increment += 1;
-                let limit_prefix = match additional_parameters.is_empty() {
-                    true => format!("{}", crate::server::postgres::constants::LIMIT_NAME),
-                    false => format!(" {}", crate::server::postgres::constants::LIMIT_NAME),
+                let prefix = match additional_parameters.is_empty() {
+                    true => "",
+                    false => " ",
                 };
-                additional_parameters.push_str(&format!("{limit_prefix} ${increment}"));
+                additional_parameters.push_str(&format!(
+                    "{prefix}{} ${increment}",
+                    crate::server::postgres::constants::LIMIT_NAME
+                ));
+            }
+            if let Some(value) = &self.offset {
+                let prefix = match additional_parameters.is_empty() {
+                    true => "",
+                    false => " ",
+                };
+                additional_parameters.push_str(&format!(
+                    "{prefix}{} {value}",
+                    crate::server::postgres::constants::OFFSET_NAME,
+                ));
             }
             additional_parameters
         };

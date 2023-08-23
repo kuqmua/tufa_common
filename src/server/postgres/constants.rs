@@ -7,3 +7,4 @@ pub static ANY_NAME: &str = "ANY";
 pub static ARRAY_NAME: &str = "ARRAY";
 pub static LIKE_NAME: &str = "LIKE";
 pub static ORDER_BY_NAME: &str = "ORDER BY";
+pub static OFFSET_NAME: &str = "OFFSET";
