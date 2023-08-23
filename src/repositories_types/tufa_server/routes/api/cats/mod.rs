@@ -161,11 +161,29 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryP
     fn generate_get_query(&self) -> std::string::String {
         // SELECT id,name,color FROM cats WHERE id = ANY(ARRAY[$1, $2, $3, $4]) AND name = ANY(ARRAY[$5, $6]) AND color = ANY(ARRAY[$7]) LIMIT $8
         // SELECT id,name,color FROM public.cats WHERE name LIKE 'test%' OR name LIKE '%patch%' ;
-        let select_stringified = match &self.select {
-            Some(select) => select.to_string(),
-            None => CatSelect::default().to_string(),
+        let mut query = std::string::String::from("");
+        match &self.select {
+            Some(select) => {
+                query.push_str(&format!(
+                    "{} {}",
+                    crate::server::postgres::constants::SELECT_NAME,
+                    select
+                ));
+            }
+            None => {
+                query.push_str(&format!(
+                    "{} {}",
+                    crate::server::postgres::constants::SELECT_NAME,
+                    CatSelect::default()
+                ));
+            }
         };
-        let additional_get_parameters_bind_places = {
+        query.push_str(&format!(
+            " {} {}",
+            crate::server::postgres::constants::FROM_NAME,
+            crate::repositories_types::tufa_server::routes::api::cats::CATS
+        ));
+        let additional_parameters = {
             let mut additional_parameters = std::string::String::from("");
             let mut increment: u64 = 0;
             if let Some(value) = &self.id {
@@ -238,14 +256,9 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryP
             }
             additional_parameters
         };
-        let query_string = format!(
-            "{} {select_stringified} {} {} {additional_get_parameters_bind_places}",
-            crate::server::postgres::constants::SELECT_NAME,
-            crate::server::postgres::constants::FROM_NAME,
-            crate::repositories_types::tufa_server::routes::api::cats::CATS
-        );
-        println!("{query_string}");
-        query_string
+        query.push_str(&format!(" {additional_parameters}"));
+        println!("{query}");
+        query
     }
 }
 
