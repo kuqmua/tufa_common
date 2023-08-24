@@ -89,7 +89,7 @@ impl crate::common::url_encode::UrlEncode for BigserialIds {
     }
 }
 
-impl crate::server::postgres::generate_bind_increments::GenerateBindIncrements for BigserialIds {
+impl crate::server::postgres::bind_query::BindQuery for BigserialIds {
     fn generate_bind_increments(&self, increment: &mut u64) -> std::string::String {
         let mut increments = std::string::String::from("");
         for _ in 0..self.0.len() {
@@ -102,7 +102,7 @@ impl crate::server::postgres::generate_bind_increments::GenerateBindIncrements f
         }
         increments
     }
-    fn bind_sqlx_query_x(
+    fn bind_value_to_query(
         self,
         mut query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
     ) -> sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments> {

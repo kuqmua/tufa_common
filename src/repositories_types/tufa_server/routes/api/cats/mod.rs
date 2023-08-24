@@ -140,19 +140,19 @@ impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for GetQuery
         self,
         mut query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
     ) -> sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments> {
-        use crate::server::postgres::generate_bind_increments::GenerateBindIncrements;
+        use crate::server::postgres::bind_query::BindQuery;
         if let Some(value) = self.id {
-            query = value.bind_sqlx_query_x(query);
+            query = value.bind_value_to_query(query);
         }
         if let Some(value) = self.name {
-            query = value.bind_sqlx_query_x(query);
+            query = value.bind_value_to_query(query);
         }
         if let Some(value) = self.color {
-            query = value.bind_sqlx_query_x(query);
+            query = value.bind_value_to_query(query);
         }
-        query = self.limit.bind_sqlx_query_x(query);
+        query = self.limit.bind_value_to_query(query);
         if let Some(value) = self.offset {
-            query = value.bind_sqlx_query_x(query);
+            query = value.bind_value_to_query(query);
         }
         query
     }
@@ -187,10 +187,13 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryP
                     false => format!(" {}", crate::server::postgres::constants::AND_NAME),
                 };
                 additional_parameters.push_str(&format!(
-                    "{prefix} id = {}({}[{}])", 
+                    "{prefix} id = {}({}[{}])",
                     crate::server::postgres::constants::ANY_NAME,
                     crate::server::postgres::constants::ARRAY_NAME,
-                    crate::server::postgres::generate_bind_increments::GenerateBindIncrements::generate_bind_increments(value, &mut increment)
+                    crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
+                        value,
+                        &mut increment
+                    )
                 ));
             }
             if let Some(value) = &self.name {
@@ -202,7 +205,10 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryP
                     "{prefix} name = {}({}[{}])",
                     crate::server::postgres::constants::ANY_NAME,
                     crate::server::postgres::constants::ARRAY_NAME,
-                    crate::server::postgres::generate_bind_increments::GenerateBindIncrements::generate_bind_increments(value, &mut increment)
+                    crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
+                        value,
+                        &mut increment
+                    )
                 ));
             }
             if let Some(value) = &self.color {
@@ -214,7 +220,10 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryP
                     "{prefix} color = {}({}[{}])",
                     crate::server::postgres::constants::ANY_NAME,
                     crate::server::postgres::constants::ARRAY_NAME,
-                    crate::server::postgres::generate_bind_increments::GenerateBindIncrements::generate_bind_increments(value, &mut increment)
+                    crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
+                        value,
+                        &mut increment
+                    )
                 ));
             }
             if let Some(value) = &self.order_by {
@@ -235,7 +244,10 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryP
                 additional_parameters.push_str(&format!(
                     "{prefix}{} {}",
                     crate::server::postgres::constants::LIMIT_NAME,
-                    crate::server::postgres::generate_bind_increments::GenerateBindIncrements::generate_bind_increments(&self.limit, &mut increment)
+                    crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
+                        &self.limit,
+                        &mut increment
+                    )
                 ));
             }
             if let Some(value) = &self.offset {
@@ -246,7 +258,10 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryP
                 additional_parameters.push_str(&format!(
                     "{prefix}{} {}",
                     crate::server::postgres::constants::OFFSET_NAME,
-                    crate::server::postgres::generate_bind_increments::GenerateBindIncrements::generate_bind_increments(value, &mut increment)
+                    crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
+                        value,
+                        &mut increment
+                    )
                 ));
             }
             additional_parameters
