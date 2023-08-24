@@ -16,8 +16,7 @@ impl crate::common::url_encode::UrlEncode for PostgresNumber {
 impl crate::server::postgres::generate_bind_increments::GenerateBindIncrements for PostgresNumber {
     fn generate_bind_increments(&self, increment: &mut u64) -> std::string::String {
         *increment += 1;
-        let mut increments = format!("${increment}");
-        increments
+        format!("${increment}")
     }
     fn bind_sqlx_query_x(
         self,

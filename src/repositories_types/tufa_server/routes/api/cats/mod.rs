@@ -5,7 +5,7 @@ pub mod get_by_id;
 pub mod patch_by_id;
 pub mod post;
 pub mod put;
-//open api specs
+
 pub static CATS: &str = "cats";
 
 pub trait GetConfigGetPostgresPool:
@@ -319,22 +319,21 @@ impl crate::common::url_encode::UrlEncode for DeleteQueryParameters {
     }
 }
 
-impl CatSelect {
+impl GetQueryParameters {
     pub async fn execute_query(
-        &self,
-        query_parameters: impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery
-            + crate::server::postgres::generate_get_query::GenerateGetQuery,
+        self, //impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuer + crate::server::postgres::generate_get_query::GenerateGetQuery
         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
     ) -> crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants
     {
         let vec_values = {
+            let select = CatSelect::from(self.select.clone());
             let query_string =
                 crate::server::postgres::generate_get_query::GenerateGetQuery::generate_get_query(
-                    &query_parameters,
+                    &self,
                 );
             let mut rows =
                 crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery::bind_sqlx_query(
-                    query_parameters,
+                    self,
                     sqlx::query::<sqlx::Postgres>(&query_string),
                 )
                 .fetch(app_info_state.get_postgres_pool());
@@ -357,7 +356,7 @@ impl CatSelect {
                     }
                 }
             } {
-                match self.options_try_from_sqlx_row(&row) {
+                match select.options_try_from_sqlx_row(&row) {
                     Ok(value) => {
                         vec_values.push(value);
                     }
