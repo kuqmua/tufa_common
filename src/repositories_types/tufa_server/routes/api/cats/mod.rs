@@ -5,7 +5,7 @@ pub mod get_by_id;
 pub mod patch_by_id;
 pub mod post;
 pub mod put;
-
+//open api specs
 pub static CATS: &str = "cats";
 
 pub trait GetConfigGetPostgresPool:
