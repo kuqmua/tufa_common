@@ -85,6 +85,7 @@ pub struct GetQueryParameters {
     pub name: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
     pub color: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
     pub order_by: Option<CatOrderByField>,
+    // pub order_by: Option<crate::server::postgres::order_by::Order>,
     pub limit: crate::server::postgres::postgres_number::PostgresNumber,
     pub offset: Option<crate::server::postgres::postgres_number::PostgresNumber>,
 }
@@ -128,7 +129,7 @@ impl crate::common::url_encode::UrlEncode for GetQueryParameters {
         ));
         if let Some(value) = &self.offset {
             let query_parameter_handle =
-                format!("order_by={}", urlencoding::encode(&value.to_string()));
+                format!("offset={}", urlencoding::encode(&value.to_string()));
             stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
         }
         stringified_query_parameters
