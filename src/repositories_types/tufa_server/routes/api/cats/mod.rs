@@ -136,6 +136,7 @@ impl crate::common::url_encode::UrlEncode for CatOrderBy {
     strum_macros::EnumIter,
     PartialEq,
     Eq,
+    from_str::FromStr,
 )]
 pub enum CatOrderByColumn {
     #[serde(rename(serialize = "id", deserialize = "id"))]
@@ -144,18 +145,6 @@ pub enum CatOrderByColumn {
     Name,
     #[serde(rename(serialize = "color", deserialize = "color"))]
     Color,
-}
-
-impl std::str::FromStr for CatOrderByColumn {
-    type Err = std::string::String;
-    fn from_str(value: &str) -> Result<Self, Self::Err> {
-        match value {
-            "id" => Ok(Self::Id),
-            "name" => Ok(Self::Name),
-            "color" => Ok(Self::Color),
-            _ => Err(format!("Invalid CatOrderByColumn, expected one of \'id\', \'name\', \'color\', found {value}")),
-        }
-    }
 }
 
 impl std::fmt::Display for CatOrderByColumn {
