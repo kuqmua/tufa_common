@@ -68,7 +68,7 @@ where
         Some(possible_order) => {
             let column = match {
                 use std::str::FromStr;
-                CatOrderByField::from_str(possible_column)
+                CatOrderByColumn::from_str(possible_column)
             } {
                 Ok(column) => column,
                 Err(e) => {
@@ -92,7 +92,7 @@ where
         None => {
             let column = match {
                 use std::str::FromStr;
-                CatOrderByField::from_str(possible_column)
+                CatOrderByColumn::from_str(possible_column)
             } {
                 Ok(column) => column,
                 Err(e) => {
@@ -109,7 +109,7 @@ where
 
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct CatOrderBy {
-    pub column: CatOrderByField,
+    pub column: CatOrderByColumn,
     pub order: Option<crate::server::postgres::order::Order>,
 }
 
@@ -137,7 +137,7 @@ impl crate::common::url_encode::UrlEncode for CatOrderBy {
     PartialEq,
     Eq,
 )]
-pub enum CatOrderByField {
+pub enum CatOrderByColumn {
     #[serde(rename(serialize = "id", deserialize = "id"))]
     Id,
     #[serde(rename(serialize = "name", deserialize = "name"))]
@@ -146,29 +146,29 @@ pub enum CatOrderByField {
     Color,
 }
 
-impl std::str::FromStr for CatOrderByField {
+impl std::str::FromStr for CatOrderByColumn {
     type Err = std::string::String;
     fn from_str(value: &str) -> Result<Self, Self::Err> {
         match value {
             "id" => Ok(Self::Id),
             "name" => Ok(Self::Name),
             "color" => Ok(Self::Color),
-            _ => Err(format!("Invalid CatOrderByField, expected one of \'id\', \'name\', \'color\', found {value}")),
+            _ => Err(format!("Invalid CatOrderByColumn, expected one of \'id\', \'name\', \'color\', found {value}")),
         }
     }
 }
 
-impl std::fmt::Display for CatOrderByField {
+impl std::fmt::Display for CatOrderByColumn {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            CatOrderByField::Id => write!(f, "id"),
-            CatOrderByField::Name => write!(f, "name"),
-            CatOrderByField::Color => write!(f, "color"),
+            CatOrderByColumn::Id => write!(f, "id"),
+            CatOrderByColumn::Name => write!(f, "name"),
+            CatOrderByColumn::Color => write!(f, "color"),
         }
     }
 }
 
-impl crate::common::url_encode::UrlEncode for CatOrderByField {
+impl crate::common::url_encode::UrlEncode for CatOrderByColumn {
     fn url_encode(&self) -> std::string::String {
         urlencoding::encode(&self.to_string()).to_string()
     }
