@@ -6,11 +6,24 @@ pub enum Order {
     Desc,
 }
 
+impl std::str::FromStr for Order {
+    type Err = std::string::String;
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
+        match value {
+            "asc" => Ok(Self::Asc),
+            "desc" => Ok(Self::Desc),
+            _ => Err(format!(
+                "Invalid Order, expected one of \'asc\', \'desc\' found {value}"
+            )),
+        }
+    }
+}
+
 impl std::fmt::Display for Order {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
-            Order::Asc => write!(f, "asc"),
-            Order::Desc => write!(f, "desc"),
+            Order::Asc => write!(f, "{}", crate::server::postgres::constants::ASC_NAME),
+            Order::Desc => write!(f, "{}", crate::server::postgres::constants::DESC_NAME),
         }
     }
 }

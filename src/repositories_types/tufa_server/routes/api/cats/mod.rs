@@ -34,6 +34,100 @@ pub struct Cat {
     pub color: String,
 }
 
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
+pub struct CatOrderByWrapper(
+    #[serde(deserialize_with = "deserialize_cat_order_by")] pub CatOrderBy,
+);
+
+impl crate::common::url_encode::UrlEncode for CatOrderByWrapper {
+    fn url_encode(&self) -> std::string::String {
+        crate::common::url_encode::UrlEncode::url_encode(&self.0)
+    }
+}
+
+fn deserialize_cat_order_by<'de, D>(deserializer: D) -> Result<CatOrderBy, D::Error>
+where
+    D: serde::de::Deserializer<'de>,
+{
+    let string_deserialized = {
+        use serde::Deserialize;
+        String::deserialize(deserializer)?
+    };
+    let splitted_string: Vec<&str> = string_deserialized.split('.').collect();
+    let default_message = "Invalid CatOrderBy:";
+    let mut splitted_string_into_iter = splitted_string.into_iter();
+    let possible_column = match splitted_string_into_iter.next() {
+        Some(possible_column) => possible_column,
+        None => {
+            return Err(serde::de::Error::custom(&format!(
+                "{default_message} no first element after split"
+            )));
+        }
+    };
+    match splitted_string_into_iter.next() {
+        Some(possible_order) => {
+            let column = match {
+                use std::str::FromStr;
+                CatOrderByField::from_str(possible_column)
+            } {
+                Ok(column) => column,
+                Err(e) => {
+                    return Err(serde::de::Error::custom(&format!("{default_message} {e}")));
+                }
+            };
+            let order = match {
+                use std::str::FromStr;
+                crate::server::postgres::order::Order::from_str(possible_order)
+            } {
+                Ok(order) => order,
+                Err(e) => {
+                    return Err(serde::de::Error::custom(&format!("{default_message} {e}")));
+                }
+            };
+            Ok(CatOrderBy {
+                column,
+                order: Some(order),
+            })
+        }
+        None => {
+            let column = match {
+                use std::str::FromStr;
+                CatOrderByField::from_str(possible_column)
+            } {
+                Ok(column) => column,
+                Err(e) => {
+                    return Err(serde::de::Error::custom(&format!("{default_message} {e}")));
+                }
+            };
+            Ok(CatOrderBy {
+                column,
+                order: None,
+            })
+        }
+    }
+}
+
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
+pub struct CatOrderBy {
+    pub column: CatOrderByField,
+    pub order: Option<crate::server::postgres::order::Order>,
+}
+
+impl crate::common::url_encode::UrlEncode for CatOrderBy {
+    fn url_encode(&self) -> std::string::String {
+        let order_stringified = match &self.order {
+            Some(order) => order.to_string(),
+            None => crate::server::postgres::order::Order::default().to_string(),
+        };
+        urlencoding::encode(&format!(
+            "{}.{}",
+            crate::common::url_encode::UrlEncode::url_encode(&self.column),
+            urlencoding::encode(&order_stringified)
+        ))
+        .to_string()
+    }
+}
+
 #[derive(
     Debug,
     serde::Serialize,
@@ -50,6 +144,18 @@ pub enum CatOrderByField {
     Name,
     #[serde(rename(serialize = "color", deserialize = "color"))]
     Color,
+}
+
+impl std::str::FromStr for CatOrderByField {
+    type Err = std::string::String;
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
+        match value {
+            "id" => Ok(Self::Id),
+            "name" => Ok(Self::Name),
+            "color" => Ok(Self::Color),
+            _ => Err(format!("Invalid CatOrderByField, expected one of \'id\', \'name\', \'color\', found {value}")),
+        }
+    }
 }
 
 impl std::fmt::Display for CatOrderByField {
@@ -84,8 +190,7 @@ pub struct GetQueryParameters {
     pub id: Option<crate::server::postgres::bigserial_ids::BigserialIds>,
     pub name: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
     pub color: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
-    pub order_by: Option<CatOrderByField>,
-    // pub order_by: Option<crate::server::postgres::order_by::Order>,
+    pub order_by: Option<CatOrderByWrapper>,
     pub limit: crate::server::postgres::postgres_number::PostgresNumber,
     pub offset: Option<crate::server::postgres::postgres_number::PostgresNumber>,
 }
@@ -124,8 +229,8 @@ impl crate::common::url_encode::UrlEncode for GetQueryParameters {
             ));
         }
         stringified_query_parameters.push_str(&format!(
-            "&{}",
-            format!("limit={}", urlencoding::encode(&self.limit.to_string()))
+            "&limit={}",
+            urlencoding::encode(&self.limit.to_string())
         ));
         if let Some(value) = &self.offset {
             let query_parameter_handle =
@@ -184,7 +289,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryP
             let mut increment: u64 = 0;
             if let Some(value) = &self.id {
                 let prefix = match additional_parameters.is_empty() {
-                    true => format!("{}", crate::server::postgres::constants::WHERE_NAME),
+                    true => crate::server::postgres::constants::WHERE_NAME.to_string(),
                     false => format!(" {}", crate::server::postgres::constants::AND_NAME),
                 };
                 additional_parameters.push_str(&format!(
@@ -199,7 +304,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryP
             }
             if let Some(value) = &self.name {
                 let prefix = match additional_parameters.is_empty() {
-                    true => format!("{}", crate::server::postgres::constants::WHERE_NAME),
+                    true => crate::server::postgres::constants::WHERE_NAME.to_string(),
                     false => format!(" {}", crate::server::postgres::constants::AND_NAME),
                 };
                 additional_parameters.push_str(&format!(
@@ -214,7 +319,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryP
             }
             if let Some(value) = &self.color {
                 let prefix = match additional_parameters.is_empty() {
-                    true => format!("{}", crate::server::postgres::constants::WHERE_NAME),
+                    true => crate::server::postgres::constants::WHERE_NAME.to_string(),
                     false => format!(" {}", crate::server::postgres::constants::AND_NAME),
                 };
                 additional_parameters.push_str(&format!(
@@ -232,9 +337,14 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryP
                     true => "",
                     false => " ",
                 };
+                let order_stringified = match &value.0.order {
+                    Some(order) => order.to_string(),
+                    None => crate::server::postgres::order::Order::default().to_string(),
+                };
                 additional_parameters.push_str(&format!(
-                    "{prefix}{} {value}",
+                    "{prefix}{} {} {order_stringified}",
                     crate::server::postgres::constants::ORDER_BY_NAME,
+                    value.0.column
                 ));
             }
             {
