@@ -7,6 +7,7 @@
     serde::Deserialize,
     PartialEq,
     Eq,
+    from_str::FromStr,
 )]
 pub enum TracingType {
     Trace,
@@ -19,23 +20,6 @@ pub enum TracingType {
 impl Default for TracingType {
     fn default() -> Self {
         Self::Error
-    }
-}
-
-//todo make a proc macro for it
-impl std::str::FromStr for TracingType {
-    type Err = std::string::String;
-    fn from_str(value: &str) -> Result<Self, Self::Err> {
-        match value {
-            "trace" => Ok(Self::Trace),
-            "debug" => Ok(Self::Debug),
-            "info" => Ok(Self::Info),
-            "warn" => Ok(Self::Warn),
-            "error" => Ok(Self::Error),
-            _ => Err(format!(
-                "Invalid TracingType, expected one of \'trace\', \'debug\', \'info\', \'warn\', \'error\' found {value}"
-            )),
-        }
     }
 }
 

@@ -1,22 +1,9 @@
-#[derive(Debug, serde::Serialize, serde::Deserialize, PartialEq, Eq)]
+#[derive(Debug, serde::Serialize, serde::Deserialize, PartialEq, Eq, from_str::FromStr)]
 pub enum Order {
     #[serde(rename(serialize = "asc", deserialize = "asc"))]
     Asc,
     #[serde(rename(serialize = "desc", deserialize = "desc"))]
     Desc,
-}
-
-impl std::str::FromStr for Order {
-    type Err = std::string::String;
-    fn from_str(value: &str) -> Result<Self, Self::Err> {
-        match value {
-            "asc" => Ok(Self::Asc),
-            "desc" => Ok(Self::Desc),
-            _ => Err(format!(
-                "Invalid Order, expected one of \'asc\', \'desc\' found {value}"
-            )),
-        }
-    }
 }
 
 impl std::fmt::Display for Order {

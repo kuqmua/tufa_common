@@ -1,5 +1,12 @@
 #[derive(
-    Debug, Clone, PartialEq, Eq, strum_macros::Display, serde::Serialize, serde::Deserialize,
+    Debug,
+    Clone,
+    PartialEq,
+    Eq,
+    strum_macros::Display,
+    serde::Serialize,
+    serde::Deserialize,
+    from_str::FromStr,
 )]
 pub enum SourcePlaceType {
     Source,
@@ -24,22 +31,5 @@ impl<'a> SourcePlaceType {
 impl Default for SourcePlaceType {
     fn default() -> Self {
         Self::Source
-    }
-}
-
-pub struct ParseSourcePlaceTypeError {
-    _incorrect_str: String,
-}
-
-impl std::str::FromStr for SourcePlaceType {
-    type Err = ParseSourcePlaceTypeError;
-    fn from_str(e: &str) -> Result<Self, ParseSourcePlaceTypeError> {
-        match e {
-            "source" => Ok(SourcePlaceType::Source),
-            "github" => Ok(SourcePlaceType::Github),
-            _ => Err(ParseSourcePlaceTypeError {
-                _incorrect_str: e.to_string(),
-            }),
-        }
     }
 }
