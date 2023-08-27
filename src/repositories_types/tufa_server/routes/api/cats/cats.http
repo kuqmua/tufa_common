@@ -4,7 +4,7 @@
 # Accept: */*
 # project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
-GET http://127.0.0.1:8080/api/cats/?limit=10&id=57,54,51,65&name=test_name,test_nameee&color=test_color&select=id,name,color&order_by=column=id,order=asc HTTP/1.1
+GET http://127.0.0.1:8080/api/cats/?limit=10&id=57,54,51,65&name=test_name,test_nameee&color=test_color&select=id,name,color&order_by=order=desc,column=name HTTP/1.1
 Accept: */*
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 

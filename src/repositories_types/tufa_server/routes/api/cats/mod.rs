@@ -53,31 +53,15 @@ where
         use serde::Deserialize;
         String::deserialize(deserializer)?
     };
-    // pub column: CatOrderByColumn,
-    // pub order: Option<crate::server::postgres::order::Order>,
-
-    // [column]=id,[order]=asc
-    println!("{string_deserialized}");
-    let splitted_string: Vec<&str> = string_deserialized.split(',').collect();
     let default_message = "Invalid CatOrderBy:";
-    let mut splitted_string_into_iter = splitted_string.into_iter();
-    let possible_column_key_value = match splitted_string_into_iter.next() {
-        Some(possible_column) => possible_column,
-        None => {
-            return Err(serde::de::Error::custom(&format!(
-                "{default_message} no first element after split"
-            )));
-        }
-    };
     let column_equal_str = "column=";
     let order_equal_str = "order=";
-    match splitted_string_into_iter.next() {
-        Some(possible_order_key_value) => {
-            // column=id,order=asc
-            let column = match possible_column_key_value.find(column_equal_str) {
-                Some(index) => match index == 0 {
-                    true => match index.checked_add(column_equal_str.len()) {
-                        Some(offset) => match possible_column_key_value.get(offset..) {
+    let column = match string_deserialized.find(column_equal_str) {
+        Some(index) => match index.checked_add(column_equal_str.len()) {
+            Some(offset) => match string_deserialized.get(offset..) {
+                Some(offset_slice) => match offset_slice.find(',') {
+                    Some(offset_slice_next_comma_index) => {
+                        match offset_slice.get(0..offset_slice_next_comma_index) {
                             Some(possible_column) => match {
                                 use std::str::FromStr;
                                 CatOrderByColumn::from_str(possible_column)
@@ -85,94 +69,112 @@ where
                                 Ok(column) => column,
                                 Err(e) => {
                                     return Err(serde::de::Error::custom(&format!(
-                                        "{default_message} {e}"
+                                        "{default_message} {column_equal_str} {e}"
                                     )));
                                 }
                             },
                             None => {
                                 return Err(serde::de::Error::custom(&format!(
-                                    "{default_message} {column_equal_str} not found"
+                                    "{default_message} {column_equal_str} failed to offset_slice.get(0..offset_slice_next_comma_index)"
+                                )));
+                            }
+                        }
+                    }
+                    None => match offset_slice.get(0..) {
+                        Some(possible_column) => match {
+                            use std::str::FromStr;
+                            CatOrderByColumn::from_str(possible_column)
+                        } {
+                            Ok(column) => column,
+                            Err(e) => {
+                                return Err(serde::de::Error::custom(&format!(
+                                    "{default_message} {column_equal_str} {e}"
                                 )));
                             }
                         },
                         None => {
                             return Err(serde::de::Error::custom(&format!(
-                                "{default_message} {column_equal_str} index overflow"
+                                "{default_message} {column_equal_str} failed to offset_slice.get(0..)"
                             )));
                         }
                     },
-                    false => {
-                        return Err(serde::de::Error::custom(&format!(
-                            "{default_message} {column_equal_str} found not on the first position"
-                        )));
-                    }
                 },
                 None => {
                     return Err(serde::de::Error::custom(&format!(
-                        "{default_message} {column_equal_str} not found"
+                        "{default_message} {column_equal_str} failed to string_deserialized.get(offset..)"
                     )));
                 }
-            };
-            let order = match possible_order_key_value.find(order_equal_str) {
-                Some(index) => match index == 0 {
-                    true => match index.checked_add(order_equal_str.len()) {
-                        Some(offset) => match possible_order_key_value.get(offset..) {
+            },
+            None => {
+                return Err(serde::de::Error::custom(&format!(
+                    "{default_message} {column_equal_str} index overflow"
+                )));
+            }
+        },
+        None => {
+            return Err(serde::de::Error::custom(&format!(
+                "{default_message} {column_equal_str} not found"
+            )));
+        }
+    };
+    let order = match string_deserialized.find(order_equal_str) {
+        Some(index) => match index.checked_add(order_equal_str.len()) {
+            Some(offset) => match string_deserialized.get(offset..) {
+                Some(offset_slice) => match offset_slice.find(',') {
+                    Some(offset_slice_next_comma_index) => {
+                        match offset_slice.get(0..offset_slice_next_comma_index) {
                             Some(possible_order) => match {
                                 use std::str::FromStr;
                                 crate::server::postgres::order::Order::from_str(possible_order)
                             } {
-                                Ok(order) => order,
+                                Ok(order) => Some(order),
                                 Err(e) => {
                                     return Err(serde::de::Error::custom(&format!(
-                                        "{default_message} {e}"
+                                        "{default_message} {order_equal_str} {e}"
                                     )));
                                 }
                             },
                             None => {
                                 return Err(serde::de::Error::custom(&format!(
-                                    "{default_message} {order_equal_str} not found"
+                                    "{default_message} {order_equal_str} failed to offset_slice.get(0..offset_slice_next_comma_index)"
+                                )));
+                            }
+                        }
+                    }
+                    None => match offset_slice.get(0..) {
+                        Some(possible_order) => match {
+                            use std::str::FromStr;
+                            crate::server::postgres::order::Order::from_str(possible_order)
+                        } {
+                            Ok(order) => Some(order),
+                            Err(e) => {
+                                return Err(serde::de::Error::custom(&format!(
+                                    "{default_message} {order_equal_str} {e}"
                                 )));
                             }
                         },
                         None => {
                             return Err(serde::de::Error::custom(&format!(
-                                "{default_message} {order_equal_str} index overflow"
+                                "{default_message} {order_equal_str} failed to offset_slice.get(0..)"
                             )));
                         }
                     },
-                    false => {
-                        return Err(serde::de::Error::custom(&format!(
-                            "{default_message} {order_equal_str} found not on the first position"
-                        )));
-                    }
                 },
                 None => {
                     return Err(serde::de::Error::custom(&format!(
-                        "{default_message} {order_equal_str} not found"
+                        "{default_message} {order_equal_str} failed to string_deserialized.get(offset..)"
                     )));
                 }
-            };
-            Ok(CatOrderBy {
-                column,
-                order: Some(order),
-            })
-        }
-        None => {
-            let column = match {
-                use std::str::FromStr;
-                CatOrderByColumn::from_str(possible_column_key_value)
-            } {
-                Ok(column) => column,
-                Err(e) => {
-                    return Err(serde::de::Error::custom(&format!("{default_message} {e}")));
-                }
-            };
-            Ok(CatOrderBy {
-                column,
-                order: None,
-            })
-        }
-    }
+            },
+            None => {
+                return Err(serde::de::Error::custom(&format!(
+                    "{default_message} {order_equal_str} index overflow"
+                )));
+            }
+        },
+        None => None,
+    };
+    Ok(CatOrderBy { column, order })
 }
 
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
