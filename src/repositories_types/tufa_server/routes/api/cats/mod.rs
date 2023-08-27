@@ -45,6 +45,8 @@ impl crate::common::url_encode::UrlEncode for CatOrderByWrapper {
     }
 }
 
+const SPLIT_INNER_URL_PARAMETERS_SYMBOL: char = ',';
+
 fn deserialize_cat_order_by<'de, D>(deserializer: D) -> Result<CatOrderBy, D::Error>
 where
     D: serde::de::Deserializer<'de>,
@@ -59,7 +61,7 @@ where
     let column = match string_deserialized.find(column_equal_str) {
         Some(index) => match index.checked_add(column_equal_str.len()) {
             Some(offset) => match string_deserialized.get(offset..) {
-                Some(offset_slice) => match offset_slice.find(',') {
+                Some(offset_slice) => match offset_slice.find(SPLIT_INNER_URL_PARAMETERS_SYMBOL) {
                     Some(offset_slice_next_comma_index) => {
                         match offset_slice.get(0..offset_slice_next_comma_index) {
                             Some(possible_column) => match {
@@ -120,7 +122,7 @@ where
     let order = match string_deserialized.find(order_equal_str) {
         Some(index) => match index.checked_add(order_equal_str.len()) {
             Some(offset) => match string_deserialized.get(offset..) {
-                Some(offset_slice) => match offset_slice.find(',') {
+                Some(offset_slice) => match offset_slice.find(SPLIT_INNER_URL_PARAMETERS_SYMBOL) {
                     Some(offset_slice_next_comma_index) => {
                         match offset_slice.get(0..offset_slice_next_comma_index) {
                             Some(possible_order) => match {
@@ -190,8 +192,9 @@ impl crate::common::url_encode::UrlEncode for CatOrderBy {
             None => crate::server::postgres::order::Order::default().to_string(),
         };
         urlencoding::encode(&format!(
-            "column={},order={}",
+            "column={}{}order={}",
             crate::common::url_encode::UrlEncode::url_encode(&self.column),
+            SPLIT_INNER_URL_PARAMETERS_SYMBOL,
             urlencoding::encode(&order_stringified)
         ))
         .to_string()
