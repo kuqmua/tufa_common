@@ -4,6 +4,7 @@ pub mod get;
 pub mod get_by_id;
 pub mod patch_by_id;
 pub mod post;
+pub mod post_search;
 pub mod put;
 //todo openapi
 pub static CATS: &str = "cats";
