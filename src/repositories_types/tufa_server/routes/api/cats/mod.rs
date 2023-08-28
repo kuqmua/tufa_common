@@ -35,6 +35,10 @@ pub struct Cat {
     pub color: String,
 }
 
+/////
+
+/////
+
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct CatOrderByWrapper(
     #[serde(deserialize_with = "deserialize_cat_order_by")] pub CatOrderBy,
@@ -67,7 +71,7 @@ where
                         match offset_slice.get(0..offset_slice_next_comma_index) {
                             Some(possible_column) => match {
                                 use std::str::FromStr;
-                                CatOrderByColumn::from_str(possible_column)
+                                CatColumn::from_str(possible_column)
                             } {
                                 Ok(column) => column,
                                 Err(e) => {
@@ -86,7 +90,7 @@ where
                     None => match offset_slice.get(0..) {
                         Some(possible_column) => match {
                             use std::str::FromStr;
-                            CatOrderByColumn::from_str(possible_column)
+                            CatColumn::from_str(possible_column)
                         } {
                             Ok(column) => column,
                             Err(e) => {
@@ -182,7 +186,7 @@ where
 
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct CatOrderBy {
-    pub column: CatOrderByColumn,
+    pub column: CatColumn,
     pub order: Option<crate::server::postgres::order::Order>,
 }
 
@@ -202,40 +206,40 @@ impl crate::common::url_encode::UrlEncode for CatOrderBy {
     }
 }
 
-#[derive(
-    Debug,
-    serde::Serialize,
-    serde::Deserialize,
-    enum_extension::EnumExtension,
-    strum_macros::EnumIter,
-    PartialEq,
-    Eq,
-    from_str::FromStr,
-)]
-pub enum CatOrderByColumn {
-    #[serde(rename(serialize = "id", deserialize = "id"))]
-    Id,
-    #[serde(rename(serialize = "name", deserialize = "name"))]
-    Name,
-    #[serde(rename(serialize = "color", deserialize = "color"))]
-    Color,
-}
+// #[derive(
+//     Debug,
+//     serde::Serialize,
+//     serde::Deserialize,
+//     enum_extension::EnumExtension,
+//     strum_macros::EnumIter,
+//     PartialEq,
+//     Eq,
+//     from_str::FromStr,
+// )]
+// pub enum CatOrderByColumn {
+//     #[serde(rename(serialize = "id", deserialize = "id"))]
+//     Id,
+//     #[serde(rename(serialize = "name", deserialize = "name"))]
+//     Name,
+//     #[serde(rename(serialize = "color", deserialize = "color"))]
+//     Color,
+// }
 
-impl std::fmt::Display for CatOrderByColumn {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            CatOrderByColumn::Id => write!(f, "id"),
-            CatOrderByColumn::Name => write!(f, "name"),
-            CatOrderByColumn::Color => write!(f, "color"),
-        }
-    }
-}
+// impl std::fmt::Display for CatOrderByColumn {
+//     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+//         match self {
+//             CatOrderByColumn::Id => write!(f, "id"),
+//             CatOrderByColumn::Name => write!(f, "name"),
+//             CatOrderByColumn::Color => write!(f, "color"),
+//         }
+//     }
+// }
 
-impl crate::common::url_encode::UrlEncode for CatOrderByColumn {
-    fn url_encode(&self) -> std::string::String {
-        urlencoding::encode(&self.to_string()).to_string()
-    }
-}
+// impl crate::common::url_encode::UrlEncode for CatOrderByColumn {
+//     fn url_encode(&self) -> std::string::String {
+//         urlencoding::encode(&self.to_string()).to_string()
+//     }
+// }
 
 #[derive(Debug, serde::Deserialize)]
 pub struct GetByIdPathParameters {
@@ -569,13 +573,154 @@ impl GetQueryParameters {
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct CatToPostSearch {
-    pub select: CatSelect,
+    pub select: CatSelectF,
     pub id: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
     pub name: Option<Vec<std::string::String>>,
     pub color: Option<Vec<std::string::String>>,
     // pub order_by: Option<CatOrderByWrapper>,
-    pub column: CatOrderByColumn,
+    pub column: CatColumn,
     pub order: Option<crate::server::postgres::order::Order>,
     pub limit: crate::server::postgres::postgres_number::PostgresNumber,
     pub offset: crate::server::postgres::postgres_number::PostgresNumber,
+}
+
+#[derive(
+    Debug,
+    serde :: Serialize,
+    Clone,
+    enum_extension::EnumExtension,
+    strum_macros::EnumIter,
+    PartialEq,
+    Eq,
+    serde :: Deserialize,
+)]
+pub enum CatSelectF {
+    // #[serde(rename(serialize = "id", deserialize = "id"))]
+    Id,
+    // #[serde(rename(serialize = "name", deserialize = "name"))]
+    Name,
+    // #[serde(rename(serialize = "color", deserialize = "color"))]
+    Color,
+    // #[serde(rename(serialize = "id,name", deserialize = "id,name"))]
+    IdName,
+    // #[serde(rename(serialize = "id,color", deserialize = "id,color"))]
+    IdColor,
+    // #[serde(rename(serialize = "name,color", deserialize = "name,color"))]
+    NameColor,
+    // #[serde(rename(serialize = "id,name,color", deserialize = "id,name,color"))]
+    IdNameColor,
+}
+//
+// impl<'de> serde::Deserialize<'de> for CatSelectF {
+//     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+//     where
+//         D: serde::Deserializer<'de>,
+//     {
+//         let default_error_message = "invalid type CatSelectF:";
+//         let possible_variants: Vec<String> = serde::Deserialize::deserialize(deserializer)?;
+//         let possible_variants_len = possible_variants.len();
+//         match possible_variants_len <= Self::get_length() {
+//             true => {
+
+//                 for possible_variant in possible_variants {
+
+//                     match possible_variant {
+
+//                     }
+//                 }
+//             },
+//             false => Err(D::Error::custom(&format!(
+//                 "{default_error_message} array's length more than possible maximum({possible_variants_len})"
+//             ))),
+//         }
+//         println!("{species_names:#?}");
+//         // for sn in species_names {
+//         //     if let Ok(species) = serde_plain::from_str(&sn) {
+//         //         return Ok(species);
+//         //     }
+//         // }
+
+//         // Err(D::Error::custom("Could not deserialize species"))
+//         todo!()
+//     }
+// }
+
+impl std::fmt::Display for CatSelectF {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Id => write!(f, "id"),
+            Self::Name => write!(f, "name"),
+            Self::Color => write!(f, "color"),
+            Self::IdName => write!(f, "id,name"),
+            Self::IdColor => write!(f, "id,color"),
+            Self::NameColor => write!(f, "name,color"),
+            Self::IdNameColor => write!(f, "id,name,color"),
+        }
+    }
+}
+impl std::default::Default for CatSelectF {
+    fn default() -> Self {
+        Self::IdNameColor
+    }
+}
+impl std::convert::From<Option<Self>> for CatSelectF {
+    fn from(option_value: Option<Self>) -> Self {
+        match option_value {
+            Some(value) => value,
+            None => Self::default(),
+        }
+    }
+}
+impl crate::common::url_encode::UrlEncode for CatSelectF {
+    fn url_encode(&self) -> std::string::String {
+        urlencoding::encode(&self.to_string()).to_string()
+    }
+}
+impl CatSelectF {
+    fn options_try_from_sqlx_row<'a, R: ::sqlx::Row>(
+        &self,
+        row: &'a R,
+    ) -> ::sqlx::Result<CatOptions>
+    where
+        &'a ::std::primitive::str: ::sqlx::ColumnIndex<R>,
+        Option<i64>: ::sqlx::decode::Decode<'a, R::Database>,
+        Option<i64>: ::sqlx::types::Type<R::Database>,
+        Option<String>: ::sqlx::decode::Decode<'a, R::Database>,
+        Option<String>: ::sqlx::types::Type<R::Database>,
+        Option<String>: ::sqlx::decode::Decode<'a, R::Database>,
+        Option<String>: ::sqlx::types::Type<R::Database>,
+    {
+        let mut id: Option<i64> = None;
+        let mut name: Option<String> = None;
+        let mut color: Option<String> = None;
+        match self {
+            Self::Id => {
+                id = row.try_get("id")?;
+            }
+            Self::Name => {
+                name = row.try_get("name")?;
+            }
+            Self::Color => {
+                color = row.try_get("color")?;
+            }
+            Self::IdName => {
+                id = row.try_get("id")?;
+                name = row.try_get("name")?;
+            }
+            Self::IdColor => {
+                id = row.try_get("id")?;
+                color = row.try_get("color")?;
+            }
+            Self::NameColor => {
+                name = row.try_get("name")?;
+                color = row.try_get("color")?;
+            }
+            Self::IdNameColor => {
+                id = row.try_get("id")?;
+                name = row.try_get("name")?;
+                color = row.try_get("color")?;
+            }
+        }
+        Ok(CatOptions { id, name, color })
+    }
 }
