@@ -573,7 +573,7 @@ impl GetQueryParameters {
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct CatToPostSearch {
-    pub select: CatSelectF,
+    pub select: CatColumnSelectVariants,
     pub id: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
     pub name: Option<Vec<std::string::String>>,
     pub color: Option<Vec<std::string::String>>,
@@ -586,66 +586,177 @@ pub struct CatToPostSearch {
 
 #[derive(
     Debug,
-    serde :: Serialize,
+    serde::Serialize,
     Clone,
     enum_extension::EnumExtension,
     strum_macros::EnumIter,
     PartialEq,
     Eq,
-    serde :: Deserialize,
 )]
-pub enum CatSelectF {
-    // #[serde(rename(serialize = "id", deserialize = "id"))]
+pub enum CatColumnSelectVariants {
     Id,
-    // #[serde(rename(serialize = "name", deserialize = "name"))]
     Name,
-    // #[serde(rename(serialize = "color", deserialize = "color"))]
     Color,
-    // #[serde(rename(serialize = "id,name", deserialize = "id,name"))]
     IdName,
-    // #[serde(rename(serialize = "id,color", deserialize = "id,color"))]
     IdColor,
-    // #[serde(rename(serialize = "name,color", deserialize = "name,color"))]
     NameColor,
-    // #[serde(rename(serialize = "id,name,color", deserialize = "id,name,color"))]
     IdNameColor,
 }
-//
-// impl<'de> serde::Deserialize<'de> for CatSelectF {
-//     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-//     where
-//         D: serde::Deserializer<'de>,
-//     {
-//         let default_error_message = "invalid type CatSelectF:";
-//         let possible_variants: Vec<String> = serde::Deserialize::deserialize(deserializer)?;
-//         let possible_variants_len = possible_variants.len();
-//         match possible_variants_len <= Self::get_length() {
-//             true => {
 
-//                 for possible_variant in possible_variants {
+impl<'de> serde::Deserialize<'de> for CatColumnSelectVariants {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        let default_error_message = "invalid type ColumnSelectVariants:";
+        let possible_variants: Vec<std::string::String> =
+            serde::Deserialize::deserialize(deserializer)?;
+        let possible_variants_len = possible_variants.len();
+        match possible_variants_len == 0 {
+            true => Err(serde::de::Error::custom(&format!(
+                "{default_error_message} array's length == 0"
+            ))),
+            false => match possible_variants_len <= CatColumn::get_length() {
+                true => {
+                    let mut self_value_option: Option<CatColumnSelectVariants> = None;
+                    for possible_variant in possible_variants {
+                        match {
+                            use std::str::FromStr;
+                            CatColumn::from_str(&possible_variant)
+                        } {
+                            Ok(value) => match &value {
+                                CatColumn::Id => match self_value_option {
+                                    Some(self_value) => match self_value {
+                                        CatColumnSelectVariants::Id => {
+                                            return Err(serde::de::Error::custom(&format!(
+                                                "{default_error_message} duplicate of {self_value} column detected"
+                                            )));
+                                        },
+                                        CatColumnSelectVariants::Name => {
+                                            self_value_option = Some(CatColumnSelectVariants::IdName);
+                                        },
+                                        CatColumnSelectVariants::Color => {
+                                            self_value_option = Some(CatColumnSelectVariants::IdColor);
+                                        },
+                                        CatColumnSelectVariants::IdName => {
+                                            return Err(serde::de::Error::custom(&format!(
+                                                "{default_error_message} duplicate of {self_value} column detected"
+                                            )));
+                                        },
+                                        CatColumnSelectVariants::IdColor => {
+                                            return Err(serde::de::Error::custom(&format!(
+                                                "{default_error_message} duplicate of {self_value} column detected"
+                                            )));
+                                        },
+                                        CatColumnSelectVariants::NameColor => {
+                                            self_value_option = Some(CatColumnSelectVariants::IdNameColor);
+                                        },
+                                        CatColumnSelectVariants::IdNameColor => {
+                                            return Err(serde::de::Error::custom(&format!(
+                                                "{default_error_message} duplicate of {self_value} column detected"
+                                            )));
+                                        },
+                                    },
+                                    None => {
+                                        self_value_option = Some(CatColumnSelectVariants::Id);
+                                    },
+                                },
+                                CatColumn::Name => match self_value_option {
+                                    Some(self_value) => match self_value {
+                                        CatColumnSelectVariants::Id => {
+                                            self_value_option = Some(CatColumnSelectVariants::IdName);
+                                        },
+                                        CatColumnSelectVariants::Name => {
+                                            return Err(serde::de::Error::custom(&format!(
+                                                "{default_error_message} duplicate of {self_value} column detected"
+                                            )));
+                                        },
+                                        CatColumnSelectVariants::Color => {
+                                            self_value_option = Some(CatColumnSelectVariants::NameColor);
+                                        },
+                                        CatColumnSelectVariants::IdName => {
+                                            return Err(serde::de::Error::custom(&format!(
+                                                "{default_error_message} duplicate of {self_value} column detected"
+                                            )));
+                                        },
+                                        CatColumnSelectVariants::IdColor => {
+                                            self_value_option = Some(CatColumnSelectVariants::IdNameColor);
+                                        },
+                                        CatColumnSelectVariants::NameColor => {
+                                            return Err(serde::de::Error::custom(&format!(
+                                                "{default_error_message} duplicate of {self_value} column detected"
+                                            )));
+                                        },
+                                        CatColumnSelectVariants::IdNameColor => {
+                                            return Err(serde::de::Error::custom(&format!(
+                                                "{default_error_message} duplicate of {self_value} column detected"
+                                            )));
+                                        },
+                                    },
+                                    None => {
+                                        self_value_option = Some(CatColumnSelectVariants::Name);
+                                    },
+                                },
+                                CatColumn::Color => match self_value_option {
+                                    Some(self_value) => match self_value {
+                                        CatColumnSelectVariants::Id => {
+                                            self_value_option = Some(CatColumnSelectVariants::IdColor);
+                                        },
+                                        CatColumnSelectVariants::Name => {
+                                            self_value_option = Some(CatColumnSelectVariants::NameColor);
+                                        },
+                                        CatColumnSelectVariants::Color => {
+                                            return Err(serde::de::Error::custom(&format!(
+                                                "{default_error_message} duplicate of {self_value} column detected"
+                                            )));
+                                        },
+                                        CatColumnSelectVariants::IdName => {
+                                            self_value_option = Some(CatColumnSelectVariants::IdNameColor);
+                                        },
+                                        CatColumnSelectVariants::IdColor => {
+                                            return Err(serde::de::Error::custom(&format!(
+                                                "{default_error_message} duplicate of {self_value} column detected"
+                                            )));
+                                        },
+                                        CatColumnSelectVariants::NameColor => {
+                                            return Err(serde::de::Error::custom(&format!(
+                                                "{default_error_message} duplicate of {self_value} column detected"
+                                            )));
+                                        },
+                                        CatColumnSelectVariants::IdNameColor => {
+                                            return Err(serde::de::Error::custom(&format!(
+                                                "{default_error_message} duplicate of {self_value} column detected"
+                                            )));
+                                        },
+                                    },
+                                    None => {
+                                        self_value_option = Some(CatColumnSelectVariants::Color);
+                                    },
+                                },
+                            },
+                            Err(e) => {
+                                return Err(serde::de::Error::custom(&format!(
+                                    "{default_error_message} failed to convert {possible_variant}, reason: {e}"
+                                )));
+                            } 
+                        }
+                    }
+                    match self_value_option {
+                        Some(self_value) => Ok(self_value),
+                        None => Err(serde::de::Error::custom(&format!(
+                            "{default_error_message} cannot construct value"
+                        ))),
+                    }
+                },
+                false => Err(serde::de::Error::custom(&format!(
+                    "{default_error_message} array's length more than possible maximum({possible_variants_len})"
+                ))),
+            },
+        }
+    }
+}
 
-//                     match possible_variant {
-
-//                     }
-//                 }
-//             },
-//             false => Err(D::Error::custom(&format!(
-//                 "{default_error_message} array's length more than possible maximum({possible_variants_len})"
-//             ))),
-//         }
-//         println!("{species_names:#?}");
-//         // for sn in species_names {
-//         //     if let Ok(species) = serde_plain::from_str(&sn) {
-//         //         return Ok(species);
-//         //     }
-//         // }
-
-//         // Err(D::Error::custom("Could not deserialize species"))
-//         todo!()
-//     }
-// }
-
-impl std::fmt::Display for CatSelectF {
+impl std::fmt::Display for CatColumnSelectVariants {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Id => write!(f, "id"),
@@ -658,12 +769,12 @@ impl std::fmt::Display for CatSelectF {
         }
     }
 }
-impl std::default::Default for CatSelectF {
+impl std::default::Default for CatColumnSelectVariants {
     fn default() -> Self {
         Self::IdNameColor
     }
 }
-impl std::convert::From<Option<Self>> for CatSelectF {
+impl std::convert::From<Option<Self>> for CatColumnSelectVariants {
     fn from(option_value: Option<Self>) -> Self {
         match option_value {
             Some(value) => value,
@@ -671,12 +782,12 @@ impl std::convert::From<Option<Self>> for CatSelectF {
         }
     }
 }
-impl crate::common::url_encode::UrlEncode for CatSelectF {
+impl crate::common::url_encode::UrlEncode for CatColumnSelectVariants {
     fn url_encode(&self) -> std::string::String {
         urlencoding::encode(&self.to_string()).to_string()
     }
 }
-impl CatSelectF {
+impl CatColumnSelectVariants {
     fn options_try_from_sqlx_row<'a, R: ::sqlx::Row>(
         &self,
         row: &'a R,
