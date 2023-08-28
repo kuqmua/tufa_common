@@ -35,10 +35,6 @@ pub struct Cat {
     pub color: String,
 }
 
-/////
-
-/////
-
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct CatOrderByWrapper(
     #[serde(deserialize_with = "deserialize_cat_order_by")] pub CatOrderBy,
@@ -205,41 +201,6 @@ impl crate::common::url_encode::UrlEncode for CatOrderBy {
         .to_string()
     }
 }
-
-// #[derive(
-//     Debug,
-//     serde::Serialize,
-//     serde::Deserialize,
-//     enum_extension::EnumExtension,
-//     strum_macros::EnumIter,
-//     PartialEq,
-//     Eq,
-//     from_str::FromStr,
-// )]
-// pub enum CatOrderByColumn {
-//     #[serde(rename(serialize = "id", deserialize = "id"))]
-//     Id,
-//     #[serde(rename(serialize = "name", deserialize = "name"))]
-//     Name,
-//     #[serde(rename(serialize = "color", deserialize = "color"))]
-//     Color,
-// }
-
-// impl std::fmt::Display for CatOrderByColumn {
-//     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-//         match self {
-//             CatOrderByColumn::Id => write!(f, "id"),
-//             CatOrderByColumn::Name => write!(f, "name"),
-//             CatOrderByColumn::Color => write!(f, "color"),
-//         }
-//     }
-// }
-
-// impl crate::common::url_encode::UrlEncode for CatOrderByColumn {
-//     fn url_encode(&self) -> std::string::String {
-//         urlencoding::encode(&self.to_string()).to_string()
-//     }
-// }
 
 #[derive(Debug, serde::Deserialize)]
 pub struct GetByIdPathParameters {
@@ -577,9 +538,7 @@ pub struct CatToPostSearch {
     pub id: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
     pub name: Option<Vec<std::string::String>>,
     pub color: Option<Vec<std::string::String>>,
-    // pub order_by: Option<CatOrderByWrapper>,
-    pub column: CatColumn,
-    pub order: Option<crate::server::postgres::order::Order>,
+    pub order_by: CatOrderBy,
     pub limit: crate::server::postgres::postgres_number::PostgresNumber,
     pub offset: crate::server::postgres::postgres_number::PostgresNumber,
 }

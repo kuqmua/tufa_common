@@ -10,9 +10,13 @@ content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 {
-    "limit": 3,
-    "column": "id",
     "select": ["id", "name", "color"],
+    "column": "id",
+    "order_by": {
+        "column": "id",
+        "order": "desc"
+    },
+    "limit": 3,
     "offset": 0
 }
 
