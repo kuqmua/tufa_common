@@ -7,7 +7,8 @@
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_from_checker_paths(
     crate::repositories_types::tufa_server::routes::api::cats::get::TryGet,
     crate::repositories_types::tufa_server::routes::api::cats::get_by_id::TryGetById,
-    crate::repositories_types::tufa_server::routes::api::cats::post::TryPost
+    crate::repositories_types::tufa_server::routes::api::cats::post::TryPost,
+    crate::repositories_types::tufa_server::routes::api::cats::post_search::TryPostSearch
 )]
 pub enum SqlxPostgresErrorErrorNamed {
     #[tvfrr_500_internal_server_error]

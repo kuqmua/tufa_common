@@ -564,3 +564,18 @@ impl GetQueryParameters {
         crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants::Desirable(vec_values)
     }
 }
+
+/////////////////////
+
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+pub struct CatToPostSearch {
+    pub select: CatSelect,
+    pub id: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
+    pub name: Option<Vec<std::string::String>>,
+    pub color: Option<Vec<std::string::String>>,
+    // pub order_by: Option<CatOrderByWrapper>,
+    pub column: CatOrderByColumn,
+    pub order: Option<crate::server::postgres::order::Order>,
+    pub limit: crate::server::postgres::postgres_number::PostgresNumber,
+    pub offset: crate::server::postgres::postgres_number::PostgresNumber,
+}

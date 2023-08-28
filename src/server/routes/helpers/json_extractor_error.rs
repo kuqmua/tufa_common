@@ -7,7 +7,8 @@
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_from_checker_paths(
     crate::repositories_types::tufa_server::routes::api::cats::post::TryPost,
     crate::repositories_types::tufa_server::routes::api::cats::put::TryPut,
-    crate::repositories_types::tufa_server::routes::api::cats::patch_by_id::TryPatchById
+    crate::repositories_types::tufa_server::routes::api::cats::patch_by_id::TryPatchById,
+    crate::repositories_types::tufa_server::routes::api::cats::post_search::TryPostSearch
 )]
 pub enum JsonExtractorErrorNamed {
     #[tvfrr_400_bad_request]
@@ -43,16 +44,14 @@ pub enum JsonExtractorErrorNamed {
     },
 }
 
-impl std::convert::From<axum::extract::rejection::JsonRejection>
-    for JsonExtractorErrorNamed
-{
+impl std::convert::From<axum::extract::rejection::JsonRejection> for JsonExtractorErrorNamed {
     fn from(e: axum::extract::rejection::JsonRejection) -> JsonExtractorErrorNamed {
         match e {
             axum::extract::rejection::JsonRejection::JsonDataError(json_data_error) => JsonExtractorErrorNamed::serde_json_error_response(json_data_error),
             axum::extract::rejection::JsonRejection::JsonSyntaxError(json_syntax_error) => JsonExtractorErrorNamed::serde_json_error_response(json_syntax_error),
-            axum::extract::rejection::JsonRejection::MissingJsonContentType(_) => Self::MissingJsonContentType { 
-                json_syntax_error: crate::server::routes::helpers::hardcode::MISSING_CONTENT_TYPE_APPLICATION_JSON_HEADER.to_string(), 
-                code_occurence: crate::code_occurence_tufa_common!(), 
+            axum::extract::rejection::JsonRejection::MissingJsonContentType(_) => Self::MissingJsonContentType {
+                json_syntax_error: crate::server::routes::helpers::hardcode::MISSING_CONTENT_TYPE_APPLICATION_JSON_HEADER.to_string(),
+                code_occurence: crate::code_occurence_tufa_common!(),
             },
             axum::extract::rejection::JsonRejection::BytesRejection(_) => {
                 Self::BytesRejection {
@@ -76,18 +75,21 @@ impl std::convert::From<axum::extract::rejection::JsonRejection>
 //
 // `Json` uses `serde_path_to_error` so the error will be wrapped in `serde_path_to_error::Error`.
 impl JsonExtractorErrorNamed {
-    fn serde_json_error_response<E>(err: E) -> Self 
+    fn serde_json_error_response<E>(err: E) -> Self
     where
         E: std::error::Error + 'static,
     {
-        if let Some(find_error_source_err) = find_error_source::<serde_path_to_error::Error<serde_json::Error>>(&err) {
-            JsonExtractorErrorNamed::JsonDataError { 
-                json_data_error: format!("{err}: {}", find_error_source_err.inner()), 
+        if let Some(find_error_source_err) =
+            find_error_source::<serde_path_to_error::Error<serde_json::Error>>(&err)
+        {
+            JsonExtractorErrorNamed::JsonDataError {
+                json_data_error: format!("{err}: {}", find_error_source_err.inner()),
                 code_occurence: crate::code_occurence_tufa_common!(),
             }
         } else {
             JsonExtractorErrorNamed::UnexpectedCase {
-                unexpected_case: crate::server::routes::helpers::hardcode::UNKNOWN_ERROR.to_string(),
+                unexpected_case: crate::server::routes::helpers::hardcode::UNKNOWN_ERROR
+                    .to_string(),
                 code_occurence: crate::code_occurence_tufa_common!(),
             }
         }
@@ -109,34 +111,23 @@ where
     }
 }
 
-pub trait JsonValueResultExtractor<
-    OkGeneric, 
-    ErrorGeneric, 
-> 
-{
+pub trait JsonValueResultExtractor<OkGeneric, ErrorGeneric> {
     fn try_extract_value(
-        self, 
-        app_info: &axum::extract::State<crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync>
+        self,
+        app_info: &axum::extract::State<crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync>,
     ) -> Result<OkGeneric, ErrorGeneric>;
 }
 
-impl<
-    OkGeneric, 
-    ErrorGeneric, 
-> JsonValueResultExtractor<
-    OkGeneric, 
-    ErrorGeneric, 
-> for Result<
-        axum::Json<OkGeneric>,
-        axum::extract::rejection::JsonRejection,
-    >
+impl<OkGeneric, ErrorGeneric> JsonValueResultExtractor<OkGeneric, ErrorGeneric>
+    for Result<axum::Json<OkGeneric>, axum::extract::rejection::JsonRejection>
 where
-    ErrorGeneric: std::convert::From<crate::server::routes::helpers::json_extractor_error::JsonExtractorErrorNamed> 
-    + axum::response::IntoResponse,
+    ErrorGeneric: std::convert::From<
+            crate::server::routes::helpers::json_extractor_error::JsonExtractorErrorNamed,
+        > + axum::response::IntoResponse,
 {
     fn try_extract_value(
-        self, 
-        app_info: &axum::extract::State<crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync>
+        self,
+        app_info: &axum::extract::State<crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync>,
     ) -> Result<OkGeneric, ErrorGeneric> {
         match self {
             Ok(axum::Json(payload)) => Ok(payload),
