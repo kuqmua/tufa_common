@@ -12,8 +12,8 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 {
     "select": ["id", "name", "color"],
     # "ids": [9223372036854775807],
-    "name_regex": ["ft_n"],
-    "color_regex": ["colort"],
+    "name_regex": ["ft_n", "a"],
+    # "color_regex": ["colort"],
     "order_by": {
         "column": "id",
         "order": "desc"

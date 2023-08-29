@@ -626,7 +626,7 @@ impl CatToPostSearch {
         crate::repositories_types::tufa_server::routes::api::cats::post_search::TryPostSearchResponseVariants::Desirable(vec_values)
     }
 }
-//
+
 impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatToPostSearch {
     fn generate_get_query(&self) -> std::string::String {
         // SELECT id,name,color FROM cats WHERE id = ANY(ARRAY[$1, $2, $3, $4]) AND name = ANY(ARRAY[$5, $6]) AND color = ANY(ARRAY[$7]) LIMIT $8
@@ -680,23 +680,28 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatToPost
                     false => format!(" {}", crate::server::postgres::constants::AND_NAME),
                 };
                 let bind_increments = {
-                    let mut bind_increments = value.iter().fold(std::string::String::from(""), |mut acc, element| {
+                    let mut bind_increments = value.iter().enumerate().fold(std::string::String::from(""), |mut acc, (index, element)| {
                         let bind_increments = crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
                             element,
                             &mut increment
                         );
-                       acc.push_str(&format!("{bind_increments}, "));
+                         match index == 0 {
+                            true => {
+                                acc.push_str(&format!("name ~ {bind_increments} "));
+                            },
+                            false => {
+                                acc.push_str(&format!("OR name ~ {bind_increments} "));
+                            },
+                        }
                         acc
                     });
                     if let false = bind_increments.is_empty() {
-                        bind_increments.pop();
                         bind_increments.pop();
                     }
                     bind_increments
                 };
                 additional_parameters.push_str(&format!(
-                    "{prefix} name ~ {}",
-                    bind_increments
+                    "{prefix} {bind_increments}"
                 ));
             }
             if let Some(value) = &self.color_regex {
@@ -705,23 +710,28 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatToPost
                     false => format!(" {}", crate::server::postgres::constants::AND_NAME),
                 };
                 let bind_increments = {
-                    let mut bind_increments = value.iter().fold(std::string::String::from(""), |mut acc, element| {
+                    let mut bind_increments = value.iter().enumerate().fold(std::string::String::from(""), |mut acc, (index, element)| {
                         let bind_increments = crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
                             element,
                             &mut increment
                         );
-                       acc.push_str(&format!("{bind_increments}, "));
+                        match index == 0 {
+                            true => {
+                                acc.push_str(&format!("color ~ {bind_increments} "));
+                            },
+                            false => {
+                                acc.push_str(&format!("OR color ~ {bind_increments} "));
+                            },
+                        }
                         acc
                     });
                     if let false = bind_increments.is_empty() {
-                        bind_increments.pop();
                         bind_increments.pop();
                     }
                     bind_increments
                 };
                 additional_parameters.push_str(&format!(
-                    "{prefix} color ~ {}",
-                    bind_increments
+                    "{prefix} {bind_increments}"
                 ));
             }
             {
@@ -775,7 +785,6 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatToPost
         query
     }
 }
-//
 
 #[derive(
     Debug,
