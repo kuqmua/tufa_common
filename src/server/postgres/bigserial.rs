@@ -115,3 +115,17 @@ impl std::convert::TryFrom<&str> for Bigserial {
         }
     }
 }
+
+impl crate::server::postgres::bind_query::BindQuery for Bigserial {
+    fn generate_bind_increments(&self, increment: &mut u64) -> std::string::String {
+        *increment += 1;
+        format!("${increment}")
+    }
+    fn bind_value_to_query(
+        self,
+        mut query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
+    ) -> sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments> {
+        query = query.bind(self.into_inner());
+        query
+    }
+}
