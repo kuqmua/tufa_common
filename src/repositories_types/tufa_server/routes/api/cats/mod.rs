@@ -679,6 +679,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatToPost
                     true => crate::server::postgres::constants::WHERE_NAME.to_string(),
                     false => format!(" {}", crate::server::postgres::constants::AND_NAME),
                 };
+                let column_name = "name";
                 let bind_increments = {
                     let mut bind_increments = value.iter().enumerate().fold(std::string::String::from(""), |mut acc, (index, element)| {
                         let conjuctive_operator = &element.conjuctive_operator;
@@ -688,10 +689,10 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatToPost
                         );
                          match index == 0 {
                             true => {
-                                acc.push_str(&format!("name ~ {bind_increments} "));
+                                acc.push_str(&format!("{column_name} ~ {bind_increments} "));
                             },
                             false => {
-                                acc.push_str(&format!("{conjuctive_operator} name ~ {bind_increments} "));
+                                acc.push_str(&format!("{conjuctive_operator} {column_name} ~ {bind_increments} "));
                             },
                         }
                         acc
@@ -708,6 +709,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatToPost
                     true => crate::server::postgres::constants::WHERE_NAME.to_string(),
                     false => format!(" {}", crate::server::postgres::constants::AND_NAME),
                 };
+                let column_name = "color";
                 let bind_increments = {
                     let mut bind_increments = value.iter().enumerate().fold(std::string::String::from(""), |mut acc, (index, element)| {
                         let conjuctive_operator = &element.conjuctive_operator;
@@ -717,10 +719,10 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatToPost
                         );
                         match index == 0 {
                             true => {
-                                acc.push_str(&format!("color ~ {bind_increments} "));
+                                acc.push_str(&format!("{column_name} ~ {bind_increments} "));
                             },
                             false => {
-                                acc.push_str(&format!("{conjuctive_operator} color ~ {bind_increments} "));
+                                acc.push_str(&format!("{conjuctive_operator} {column_name} ~ {bind_increments} "));
                             },
                         }
                         acc
