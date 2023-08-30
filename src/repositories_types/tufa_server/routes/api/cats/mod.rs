@@ -681,6 +681,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatToPost
                 };
                 let bind_increments = {
                     let mut bind_increments = value.iter().enumerate().fold(std::string::String::from(""), |mut acc, (index, element)| {
+                        let conjuctive_operator = &element.conjuctive_operator;
                         let bind_increments = crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
                             element,
                             &mut increment
@@ -690,7 +691,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatToPost
                                 acc.push_str(&format!("name ~ {bind_increments} "));
                             },
                             false => {
-                                acc.push_str(&format!("OR name ~ {bind_increments} "));
+                                acc.push_str(&format!("{conjuctive_operator} name ~ {bind_increments} "));
                             },
                         }
                         acc
@@ -711,6 +712,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatToPost
                 };
                 let bind_increments = {
                     let mut bind_increments = value.iter().enumerate().fold(std::string::String::from(""), |mut acc, (index, element)| {
+                        let conjuctive_operator = &element.conjuctive_operator;
                         let bind_increments = crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
                             element,
                             &mut increment
@@ -720,7 +722,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatToPost
                                 acc.push_str(&format!("color ~ {bind_increments} "));
                             },
                             false => {
-                                acc.push_str(&format!("OR color ~ {bind_increments} "));
+                                acc.push_str(&format!("{conjuctive_operator} color ~ {bind_increments} "));
                             },
                         }
                         acc

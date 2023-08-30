@@ -2,6 +2,7 @@ pub static SELECT_NAME: &str = "select";
 pub static FROM_NAME: &str = "from";
 pub static WHERE_NAME: &str = "where";
 pub static AND_NAME: &str = "and";
+pub static OR_NAME: &str = "or";
 pub static LIMIT_NAME: &str = "limit";
 pub static ANY_NAME: &str = "any";
 pub static ARRAY_NAME: &str = "array";

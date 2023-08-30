@@ -175,8 +175,11 @@ pub enum TryPostSearchErrorNamed {
 
 pub async fn try_post_search<'a>(
     server_location: &str,
-    body: crate::repositories_types::tufa_server::routes::api::cats::CatToPost,
-) -> Result<(), TryPostSearchErrorNamed> {
+    body: crate::repositories_types::tufa_server::routes::api::cats::CatToPostSearch,
+) -> Result<
+    Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>,
+    TryPostSearchErrorNamed,
+> {
     let stringified_json = match serde_json::to_string(&body) {
         Ok(stringified_json) => stringified_json,
         Err(e) => {
@@ -186,10 +189,11 @@ pub async fn try_post_search<'a>(
             });
         }
     };
+    println!("{stringified_json}");
     match tvfrr_extraction_logic(
         reqwest::Client::new()
             .post(&format!(
-                "{server_location}/api/{}/",
+                "{server_location}/api/{}/search",
                 crate::repositories_types::tufa_server::routes::api::cats::CATS
             ))
             .header(
@@ -203,7 +207,7 @@ pub async fn try_post_search<'a>(
     )
     .await
     {
-        Ok(_) => Ok(()),
+        Ok(value) => Ok(value),
         Err(e) => Err(TryPostSearchErrorNamed::RequestError {
             request_error: e,
             code_occurence: crate::code_occurence_tufa_common!(),
