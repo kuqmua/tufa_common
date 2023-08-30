@@ -10,10 +10,20 @@ content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 {
-    "select": ["id", "name", "color"],
+    "select": "Id",
     # "ids": [9223372036854775807],
-    "name_regex": ["ft_n", "a"],
-    # "color_regex": ["colort"],
+    "name_regex":[
+        {
+            "regex":"tesf",
+            "conjuctive_operator":"Or"
+        }
+    ],
+    # "color_regex":[
+    #     {
+    #         "regex":"test",
+    #         "conjuctive_operator":"Or"
+    #     }
+    # ],
     "order_by": {
         "column": "id",
         "order": "desc"
@@ -21,29 +31,6 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
     "limit": 10,
     "offset": 0
 }
-
-# {
-#     "select":"Id",
-#     "ids":[9],
-#     "name_regex":[
-#         {
-#             "regex":"test",
-#             "conjuctive_operator":"Or"
-#         }
-#     ],
-#     "color_regex":[
-#         {
-#             "regex":"test",
-#             "conjuctive_operator":"Or"
-#         }
-#     ],
-#     "order_by":{
-#         "column":"name",
-#         "order":"desc"
-#     },
-#     "limit":10,
-#     "offset":1
-# }
 
 ###
 
