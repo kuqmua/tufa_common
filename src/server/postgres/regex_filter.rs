@@ -1,10 +1,10 @@
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub struct Regex {
+pub struct RegexFilter {
     pub regex: std::string::String,
     pub conjuctive_operator: crate::server::postgres::conjuctive_operator::ConjunctiveOperator,
 }
 
-impl crate::server::postgres::bind_query::BindQuery for Regex {
+impl crate::server::postgres::bind_query::BindQuery for RegexFilter {
     fn generate_bind_increments(&self, increment: &mut u64) -> std::string::String {
         *increment += 1;
         format!("${increment}")

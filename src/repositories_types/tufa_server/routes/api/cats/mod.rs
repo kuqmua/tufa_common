@@ -536,8 +536,8 @@ impl GetQueryParameters {
 pub struct CatToPostSearch {
     pub select: CatColumnSelectVariants,
     pub ids: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
-    pub name_regex: Option<Vec<crate::server::postgres::regex::Regex>>,
-    pub color_regex: Option<Vec<crate::server::postgres::regex::Regex>>,
+    pub name_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
+    pub color_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
     pub order_by: CatOrderBy,
     pub limit: crate::server::postgres::postgres_number::PostgresNumber,
     pub offset: crate::server::postgres::postgres_number::PostgresNumber,
