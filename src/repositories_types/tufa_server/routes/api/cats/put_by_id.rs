@@ -9,7 +9,7 @@
     (),
     tvfrr_200_ok
 )]
-pub enum TryPut {
+pub enum TryPutById {
     #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
@@ -127,6 +127,19 @@ pub enum TryPut {
     },
     //
     #[tvfrr_400_bad_request]
+    FailedToDeserializePathParams {
+        #[eo_display_with_serialize_deserialize]
+        failed_to_deserialize_path_params: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_400_bad_request]
+    MissingPathParams {
+        #[eo_display_with_serialize_deserialize]
+        missing_path_params: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    //
+    #[tvfrr_400_bad_request]
     JsonDataError {
         #[eo_display_with_serialize_deserialize]
         json_data_error: std::string::String,
@@ -150,6 +163,7 @@ pub enum TryPut {
         bytes_rejection: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
+    //
     //#[non_exhaustive] case
     #[tvfrr_500_internal_server_error]
     UnexpectedCase {
@@ -160,10 +174,10 @@ pub enum TryPut {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum TryPutErrorNamed {
+pub enum TryPutByIdErrorNamed {
     RequestError {
         #[eo_error_occurence]
-        request_error: TryPutRequestError,
+        request_error: TryPutByIdRequestError,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     SerdeJsonToString {
@@ -173,14 +187,14 @@ pub enum TryPutErrorNamed {
     },
 }
 
-pub async fn try_put<'a>(
+pub async fn try_put_by_id<'a>(
     server_location: &str,
-    body: crate::repositories_types::tufa_server::routes::api::cats::CatToPut,
-) -> Result<(), TryPutErrorNamed> {
+    body: crate::repositories_types::tufa_server::routes::api::cats::CatToPutById,
+) -> Result<(), TryPutByIdErrorNamed> {
     let stringified_json = match serde_json::to_string(&body) {
         Ok(stringified_json) => stringified_json,
         Err(e) => {
-            return Err(TryPutErrorNamed::SerdeJsonToString {
+            return Err(TryPutByIdErrorNamed::SerdeJsonToString {
                 serde_json_to_string: e,
                 code_occurence: crate::code_occurence_tufa_common!(),
             });
@@ -204,7 +218,7 @@ pub async fn try_put<'a>(
     .await
     {
         Ok(_) => Ok(()),
-        Err(e) => Err(TryPutErrorNamed::RequestError {
+        Err(e) => Err(TryPutByIdErrorNamed::RequestError {
             request_error: e,
             code_occurence: crate::code_occurence_tufa_common!(),
         }),

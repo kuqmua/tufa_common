@@ -5,7 +5,7 @@ pub mod get_by_id;
 pub mod patch_by_id;
 pub mod post;
 pub mod post_search;
-pub mod put;
+pub mod put_by_id;
 //todo openapi
 pub static CATS: &str = "cats";
 
@@ -417,6 +417,20 @@ pub struct CatToPost {
     pub color: String,
 }
 
+#[derive(Debug, serde::Deserialize)]
+pub struct PutByIdPathParameters {
+    pub id: crate::server::postgres::bigserial::Bigserial,
+}
+
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+pub struct CatToPutById {
+    pub name: String,
+    pub color: String,
+}
+//
+// todo
+// The PUT method updates a resource on a server. A PUT request to the /users/20 can be used to update the profile of the user with an ID 20.
+//
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct CatToPut {
     pub id: crate::server::postgres::bigserial::Bigserial, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
@@ -428,6 +442,12 @@ pub struct CatToPut {
 pub struct PatchByIdPathParameters {
     pub id: crate::server::postgres::bigserial::Bigserial,
 }
+
+// #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+// pub struct CatToPatchById {
+//     pub name: Option<std::string::String>,
+//     pub color: Option<std::string::String>,
+// }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub enum CatToPatchById {
