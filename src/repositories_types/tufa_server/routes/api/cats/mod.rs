@@ -589,7 +589,7 @@ impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for CatToPos
         query
     }
 }
-//
+
 impl CatToPostSearch {
     pub async fn execute_query(
         self,
@@ -649,14 +649,14 @@ impl CatToPostSearch {
 
 impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatToPostSearch {
     fn generate_get_query(&self) -> std::string::String {
-        // SELECT id,name,color FROM cats WHERE id = ANY(ARRAY[$1, $2, $3, $4]) AND name = ANY(ARRAY[$5, $6]) AND color = ANY(ARRAY[$7]) LIMIT $8
-        // SELECT id,name,color FROM public.cats WHERE name LIKE 'test%' OR name LIKE '%patch%' ;
         let mut query = std::string::String::from("");
         {
             query.push_str(&format!(
                 "{} {}",
                 crate::server::postgres::constants::SELECT_NAME,
-                &self.select,
+                crate::server::postgres::generate_get_query::GenerateGetQuery::generate_get_query(
+                    &self.select
+                )
             ));
         }
         query.push_str(&format!(
@@ -815,6 +815,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatToPost
     strum_macros::EnumIter,
     PartialEq,
     Eq,
+    strum_macros::Display,
 )]
 pub enum CatColumnSelectVariants {
     Id,
@@ -826,19 +827,20 @@ pub enum CatColumnSelectVariants {
     IdNameColor,
 }
 
-impl std::fmt::Display for CatColumnSelectVariants {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatColumnSelectVariants {
+    fn generate_get_query(&self) -> std::string::String {
         match self {
-            Self::Id => write!(f, "id"),
-            Self::Name => write!(f, "name"),
-            Self::Color => write!(f, "color"),
-            Self::IdName => write!(f, "id,name"),
-            Self::IdColor => write!(f, "id,color"),
-            Self::NameColor => write!(f, "name,color"),
-            Self::IdNameColor => write!(f, "id,name,color"),
+            Self::Id => std::string::String::from("id"),
+            Self::Name => std::string::String::from("name"),
+            Self::Color => std::string::String::from("color"),
+            Self::IdName => std::string::String::from("id,name"),
+            Self::IdColor => std::string::String::from("id,color"),
+            Self::NameColor => std::string::String::from("name,color"),
+            Self::IdNameColor => std::string::String::from("id,name,color"),
         }
     }
 }
+
 impl std::default::Default for CatColumnSelectVariants {
     fn default() -> Self {
         Self::IdNameColor
@@ -852,11 +854,7 @@ impl std::convert::From<Option<Self>> for CatColumnSelectVariants {
         }
     }
 }
-impl crate::common::url_encode::UrlEncode for CatColumnSelectVariants {
-    fn url_encode(&self) -> std::string::String {
-        urlencoding::encode(&self.to_string()).to_string()
-    }
-}
+
 impl CatColumnSelectVariants {
     fn options_try_from_sqlx_row<'a, R: ::sqlx::Row>(
         &self,
