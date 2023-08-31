@@ -209,12 +209,12 @@ pub struct GetByIdPathParameters {
 
 #[derive(Debug, serde::Deserialize)]
 pub struct GetByIdQueryParameters {
-    pub select: Option<CatSelect>,
+    pub select: Option<CatSelectUrl>,
 }
 
 #[derive(Debug, serde::Deserialize)]
 pub struct GetQueryParameters {
-    pub select: Option<CatSelect>,
+    pub select: Option<CatSelectUrl>,
     pub id: Option<crate::server::postgres::bigserial_ids::BigserialIds>,
     pub name: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
     pub color: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
@@ -300,7 +300,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryP
         {
             let select_stringified = match &self.select {
                 Some(select) => select.to_string(),
-                None => CatSelect::default().to_string(),
+                None => CatSelectUrl::default().to_string(),
             };
             query.push_str(&format!(
                 "{} {select_stringified}",
@@ -500,7 +500,7 @@ impl GetQueryParameters {
     ) -> crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants
     {
         let vec_values = {
-            let select = CatSelect::from(self.select.clone());
+            let select = CatSelectUrl::from(self.select.clone());
             let query_string =
                 crate::server::postgres::generate_get_query::GenerateGetQuery::generate_get_query(
                     &self,
@@ -554,7 +554,7 @@ impl GetQueryParameters {
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct CatToPostSearch {
-    pub select: CatColumnSelectVariants,
+    pub select: CatColumnSelectJson,
     pub ids: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
     pub name_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
     pub color_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
@@ -817,7 +817,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatToPost
     Eq,
     strum_macros::Display,
 )]
-pub enum CatColumnSelectVariants {
+pub enum CatColumnSelectJson {
     Id,
     Name,
     Color,
@@ -827,7 +827,7 @@ pub enum CatColumnSelectVariants {
     IdNameColor,
 }
 
-impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatColumnSelectVariants {
+impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatColumnSelectJson {
     fn generate_get_query(&self) -> std::string::String {
         match self {
             Self::Id => std::string::String::from("id"),
@@ -841,12 +841,12 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatColumn
     }
 }
 
-impl std::default::Default for CatColumnSelectVariants {
+impl std::default::Default for CatColumnSelectJson {
     fn default() -> Self {
         Self::IdNameColor
     }
 }
-impl std::convert::From<Option<Self>> for CatColumnSelectVariants {
+impl std::convert::From<Option<Self>> for CatColumnSelectJson {
     fn from(option_value: Option<Self>) -> Self {
         match option_value {
             Some(value) => value,
@@ -855,7 +855,7 @@ impl std::convert::From<Option<Self>> for CatColumnSelectVariants {
     }
 }
 
-impl CatColumnSelectVariants {
+impl CatColumnSelectJson {
     fn options_try_from_sqlx_row<'a, R: ::sqlx::Row>(
         &self,
         row: &'a R,
