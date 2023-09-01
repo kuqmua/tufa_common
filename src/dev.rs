@@ -47,6 +47,7 @@ pub fn dev() {
 // 	marker_seal: core::marker::PhantomData<SealGeneric>,
 // }
 // impl PortHandleBuilder<NoPort, NotSealed> {
+//  #[must_use]
 // 	pub fn new() -> Self {
 // 		PortHandleBuilder::default()
 // 	}
@@ -202,6 +203,7 @@ pub fn dev() {
 // }
 
 // impl PositiveNonzeroInteger {
+//     #[must_use]
 //     fn new(value: i64) -> Result<PositiveNonzeroInteger, CreationError> {
 //         match value {
 //             x if x.is_negative() => Err(CreationError::Negative),

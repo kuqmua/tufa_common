@@ -8,6 +8,7 @@ pub struct CodeOccurence {
 }
 
 impl CodeOccurence {
+    #[must_use]
     pub fn new(
         git_info: crate::common::git::git_info::GitInfoWithoutLifetime,
         file: std::string::String,
@@ -91,6 +92,7 @@ pub struct CodeOccurenceWithSerializeDeserialize {
 }
 
 impl<'a> CodeOccurenceWithSerializeDeserialize {
+    #[must_use]
     pub fn new(
         git_info: crate::common::git::git_info::GitInfoWithoutLifetime,
         file: &'a str,

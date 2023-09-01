@@ -295,7 +295,6 @@ impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for GetQuery
 impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryParameters {
     fn generate_get_query(&self) -> std::string::String {
         // SELECT id,name,color FROM cats WHERE id = ANY(ARRAY[$1, $2, $3, $4]) AND name = ANY(ARRAY[$5, $6]) AND color = ANY(ARRAY[$7]) LIMIT $8
-        // SELECT id,name,color FROM public.cats WHERE name LIKE 'test%' OR name LIKE '%patch%' ;
         let mut query = std::string::String::from("");
         {
             let select_stringified = match &self.select {

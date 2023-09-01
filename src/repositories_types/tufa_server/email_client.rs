@@ -6,6 +6,7 @@ pub struct EmailClient {
 }
 
 impl EmailClient {
+    #[must_use]
     pub fn new(
         base_url: String,
         sender: crate::repositories_types::tufa_server::domain::SubscriberEmail,
