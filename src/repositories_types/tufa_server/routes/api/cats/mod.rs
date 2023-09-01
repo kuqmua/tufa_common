@@ -209,12 +209,12 @@ pub struct GetByIdPathParameters {
 
 #[derive(Debug, serde::Deserialize)]
 pub struct GetByIdQueryParameters {
-    pub select: Option<CatSelectUrl>,
+    pub select: Option<CatColumnSelectUrl>,
 }
 
 #[derive(Debug, serde::Deserialize)]
 pub struct GetQueryParameters {
-    pub select: Option<CatSelectUrl>,
+    pub select: Option<CatColumnSelectUrl>,
     pub id: Option<crate::server::postgres::bigserial_ids::BigserialIds>,
     pub name: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
     pub color: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
@@ -300,7 +300,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryP
         {
             let select_stringified = match &self.select {
                 Some(select) => select.to_string(),
-                None => CatSelectUrl::default().to_string(),
+                None => CatColumnSelectUrl::default().to_string(),
             };
             query.push_str(&format!(
                 "{} {select_stringified}",
@@ -500,7 +500,7 @@ impl GetQueryParameters {
     ) -> crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants
     {
         let vec_values = {
-            let select = CatSelectUrl::from(self.select.clone());
+            let select = CatColumnSelectUrl::from(self.select.clone());
             let query_string =
                 crate::server::postgres::generate_get_query::GenerateGetQuery::generate_get_query(
                     &self,
@@ -803,103 +803,5 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatToPost
         query.push_str(&format!(" {additional_parameters}"));
         println!("{query}");
         query
-    }
-}
-
-#[derive(
-    Debug,
-    serde::Serialize,
-    serde::Deserialize,
-    Clone,
-    enum_extension::EnumExtension,
-    strum_macros::EnumIter,
-    PartialEq,
-    Eq,
-    strum_macros::Display,
-)]
-pub enum CatColumnSelectJson {
-    Id,
-    Name,
-    Color,
-    IdName,
-    IdColor,
-    NameColor,
-    IdNameColor,
-}
-
-impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatColumnSelectJson {
-    fn generate_get_query(&self) -> std::string::String {
-        match self {
-            Self::Id => std::string::String::from("id"),
-            Self::Name => std::string::String::from("name"),
-            Self::Color => std::string::String::from("color"),
-            Self::IdName => std::string::String::from("id,name"),
-            Self::IdColor => std::string::String::from("id,color"),
-            Self::NameColor => std::string::String::from("name,color"),
-            Self::IdNameColor => std::string::String::from("id,name,color"),
-        }
-    }
-}
-
-impl std::default::Default for CatColumnSelectJson {
-    fn default() -> Self {
-        Self::IdNameColor
-    }
-}
-impl std::convert::From<Option<Self>> for CatColumnSelectJson {
-    fn from(option_value: Option<Self>) -> Self {
-        match option_value {
-            Some(value) => value,
-            None => Self::default(),
-        }
-    }
-}
-
-impl CatColumnSelectJson {
-    fn options_try_from_sqlx_row<'a, R: ::sqlx::Row>(
-        &self,
-        row: &'a R,
-    ) -> ::sqlx::Result<CatOptions>
-    where
-        &'a ::std::primitive::str: ::sqlx::ColumnIndex<R>,
-        Option<i64>: ::sqlx::decode::Decode<'a, R::Database>,
-        Option<i64>: ::sqlx::types::Type<R::Database>,
-        Option<String>: ::sqlx::decode::Decode<'a, R::Database>,
-        Option<String>: ::sqlx::types::Type<R::Database>,
-        Option<String>: ::sqlx::decode::Decode<'a, R::Database>,
-        Option<String>: ::sqlx::types::Type<R::Database>,
-    {
-        let mut id: Option<i64> = None;
-        let mut name: Option<String> = None;
-        let mut color: Option<String> = None;
-        match self {
-            Self::Id => {
-                id = row.try_get("id")?;
-            }
-            Self::Name => {
-                name = row.try_get("name")?;
-            }
-            Self::Color => {
-                color = row.try_get("color")?;
-            }
-            Self::IdName => {
-                id = row.try_get("id")?;
-                name = row.try_get("name")?;
-            }
-            Self::IdColor => {
-                id = row.try_get("id")?;
-                color = row.try_get("color")?;
-            }
-            Self::NameColor => {
-                name = row.try_get("name")?;
-                color = row.try_get("color")?;
-            }
-            Self::IdNameColor => {
-                id = row.try_get("id")?;
-                name = row.try_get("name")?;
-                color = row.try_get("color")?;
-            }
-        }
-        Ok(CatOptions { id, name, color })
     }
 }
