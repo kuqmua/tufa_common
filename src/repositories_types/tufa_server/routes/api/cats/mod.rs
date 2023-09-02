@@ -1,11 +1,11 @@
 pub mod delete;
 pub mod delete_by_id;
 pub mod get;
-pub mod get_by_id;
 pub mod patch_by_id;
 pub mod post;
 pub mod post_search;
 pub mod put_by_id;
+pub mod read_by_id;
 //todo openapi
 pub static CATS: &str = "cats";
 
@@ -204,12 +204,12 @@ impl crate::common::url_encode::UrlEncode for CatOrderBy {
 }
 
 #[derive(Debug, serde::Deserialize)]
-pub struct GetByIdPathParameters {
+pub struct ReadByIdPathParameters {
     pub id: crate::server::postgres::bigserial::Bigserial,
 }
 
 #[derive(Debug, serde::Deserialize)]
-pub struct GetByIdQueryParameters {
+pub struct ReadByIdQueryParameters {
     pub select: Option<CatColumnSelectUrl>,
 }
 

@@ -9,7 +9,7 @@
     crate::repositories_types::tufa_server::routes::api::cats::Cat,
     tvfrr_200_ok
 )]
-pub enum TryGetById {
+pub enum TryReadById {
     #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
@@ -155,18 +155,18 @@ pub enum TryGetById {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum TryGetByIdErrorNamed {
+pub enum TryReadByIdErrorNamed {
     RequestError {
         #[eo_error_occurence]
-        request_error: TryGetByIdRequestError,
+        request_error: TryReadByIdRequestError,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
 
-pub async fn try_get_by_id<'a>(
+pub async fn try_read_by_id<'a>(
     server_location: &str,
-    path_parameters: crate::repositories_types::tufa_server::routes::api::cats::GetByIdPathParameters,
-) -> Result<crate::repositories_types::tufa_server::routes::api::cats::Cat, TryGetByIdErrorNamed> {
+    path_parameters: crate::repositories_types::tufa_server::routes::api::cats::ReadByIdPathParameters,
+) -> Result<crate::repositories_types::tufa_server::routes::api::cats::Cat, TryReadByIdErrorNamed> {
     let url = format!(
         "{server_location}/api/{}/{}",
         crate::repositories_types::tufa_server::routes::api::cats::CATS,
@@ -185,7 +185,7 @@ pub async fn try_get_by_id<'a>(
     .await
     {
         Ok(value) => Ok(value),
-        Err(e) => Err(TryGetByIdErrorNamed::RequestError {
+        Err(e) => Err(TryReadByIdErrorNamed::RequestError {
             request_error: e,
             code_occurence: crate::code_occurence_tufa_common!(),
         }),
