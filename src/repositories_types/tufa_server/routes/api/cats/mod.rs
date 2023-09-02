@@ -435,11 +435,11 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadQuery
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct CreateParameters {
-    pub payload: CatToCreate,
+    pub payload: CreatePayload,
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct CatToCreate {
+pub struct CreatePayload {
     pub name: String,
     pub color: String,
 }
@@ -447,7 +447,7 @@ pub struct CatToCreate {
 #[derive(Debug, serde::Deserialize)]
 pub struct CreateOrUpdateByIdParameters {
     pub path: CreateOrUpdateByIdPathParameters,
-    pub payload: CatToCreateOrUpdateById,
+    pub payload: CreateOrUpdateByIdPayload,
 }
 
 #[derive(Debug, serde::Deserialize)]
@@ -456,7 +456,7 @@ pub struct CreateOrUpdateByIdPathParameters {
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct CatToCreateOrUpdateById {
+pub struct CreateOrUpdateByIdPayload {
     pub name: String,
     pub color: String,
 }
@@ -465,7 +465,7 @@ pub struct CatToCreateOrUpdateById {
 // The PUT method updates a resource on a server. A PUT request to the /users/20 can be used to update the profile of the user with an ID 20.
 //
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct CatToPut {
+pub struct PutPayload {
     pub id: crate::server::postgres::bigserial::Bigserial, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
     pub name: String,
     pub color: String,
@@ -474,7 +474,7 @@ pub struct CatToPut {
 #[derive(Debug, serde::Deserialize)]
 pub struct UpdateByIdParameters {
     pub path: crate::server::postgres::bigserial::Bigserial,
-    pub payload: CatToUpdateById,
+    pub payload: UpdateByIdPayload,
 }
 
 #[derive(Debug, serde::Deserialize)]
@@ -483,13 +483,13 @@ pub struct UpdateByIdPathParameters {
 }
 
 // #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-// pub struct CatToUpdateById {
+// pub struct UpdateByIdPayload {
 //     pub name: Option<std::string::String>,
 //     pub color: Option<std::string::String>,
 // }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub enum CatToUpdateById {
+pub enum UpdateByIdPayload {
     Name {
         name: std::string::String,
     },
@@ -603,11 +603,11 @@ impl ReadQueryParameters {
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct ReadPostParameters {
-    pub payload: CatToReadPost,
+    pub payload: ReadPostPayload,
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct CatToReadPost {
+pub struct ReadPostPayload {
     pub select: CatColumnSelectJson,
     pub ids: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
     pub name_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
@@ -617,7 +617,7 @@ pub struct CatToReadPost {
     pub offset: crate::server::postgres::postgres_number::PostgresNumber,
 }
 
-impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for CatToReadPost {
+impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for ReadPostPayload {
     fn bind_sqlx_query(
         self,
         mut query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
@@ -644,7 +644,7 @@ impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for CatToRea
     }
 }
 
-impl CatToReadPost {
+impl ReadPostPayload {
     pub async fn execute_query(
         self,
         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
@@ -701,7 +701,7 @@ impl CatToReadPost {
     }
 }
 
-impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatToReadPost {
+impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadPostPayload {
     fn generate_get_query(&self) -> std::string::String {
         let mut query = std::string::String::from("");
         {
