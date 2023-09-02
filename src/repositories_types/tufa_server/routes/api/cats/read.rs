@@ -9,7 +9,7 @@
     Vec::<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>,
     tvfrr_200_ok
 )]
-pub enum TryGet {
+pub enum TryRead {
     #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
@@ -143,20 +143,20 @@ pub enum TryGet {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum TryGetErrorNamed {
+pub enum TryReadErrorNamed {
     RequestError {
         #[eo_error_occurence]
-        request_error: TryGetRequestError,
+        request_error: TryReadRequestError,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
 
-pub async fn try_get<'a>(
+pub async fn try_read<'a>(
     server_location: &str,
-    query_parameters: crate::repositories_types::tufa_server::routes::api::cats::GetQueryParameters,
+    query_parameters: crate::repositories_types::tufa_server::routes::api::cats::ReadQueryParameters,
 ) -> Result<
     Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>,
-    TryGetErrorNamed,
+    TryReadErrorNamed,
 > {
     let url = format!(
         "{server_location}/api/{}/{}",
@@ -177,7 +177,7 @@ pub async fn try_get<'a>(
     .await
     {
         Ok(value) => Ok(value),
-        Err(e) => Err(TryGetErrorNamed::RequestError {
+        Err(e) => Err(TryReadErrorNamed::RequestError {
             request_error: e,
             code_occurence: crate::code_occurence_tufa_common!(),
         }),

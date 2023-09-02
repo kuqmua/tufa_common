@@ -1,10 +1,10 @@
 pub mod delete;
 pub mod delete_by_id;
-pub mod get;
 pub mod patch_by_id;
 pub mod post;
 pub mod post_search;
 pub mod put_by_id;
+pub mod read;
 pub mod read_by_id;
 //todo openapi
 pub static CATS: &str = "cats";
@@ -214,7 +214,7 @@ pub struct ReadByIdQueryParameters {
 }
 
 #[derive(Debug, serde::Deserialize)]
-pub struct GetQueryParameters {
+pub struct ReadQueryParameters {
     pub select: Option<CatColumnSelectUrl>,
     pub id: Option<crate::server::postgres::bigserial_ids::BigserialIds>,
     pub name: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
@@ -226,7 +226,7 @@ pub struct GetQueryParameters {
 
 //todo - make a macro for it?
 //todo - maybe some serde serialization like this https://docs.rs/url_serde/latest/url_serde/
-impl crate::common::url_encode::UrlEncode for GetQueryParameters {
+impl crate::common::url_encode::UrlEncode for ReadQueryParameters {
     fn url_encode(&self) -> std::string::String {
         let mut stringified_query_parameters = String::from("?");
         if let Some(select) = &self.select {
@@ -270,7 +270,7 @@ impl crate::common::url_encode::UrlEncode for GetQueryParameters {
     }
 }
 
-impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for GetQueryParameters {
+impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for ReadQueryParameters {
     fn bind_sqlx_query(
         self,
         mut query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
@@ -293,7 +293,7 @@ impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for GetQuery
     }
 }
 
-impl crate::server::postgres::generate_get_query::GenerateGetQuery for GetQueryParameters {
+impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadQueryParameters {
     fn generate_get_query(&self) -> std::string::String {
         // SELECT id,name,color FROM cats WHERE id = ANY(ARRAY[$1, $2, $3, $4]) AND name = ANY(ARRAY[$5, $6]) AND color = ANY(ARRAY[$7]) LIMIT $8
         let mut query = std::string::String::from("");
@@ -493,11 +493,11 @@ impl crate::common::url_encode::UrlEncode for DeleteQueryParameters {
     }
 }
 
-impl GetQueryParameters {
+impl ReadQueryParameters {
     pub async fn execute_query(
         self, //impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuer + crate::server::postgres::generate_get_query::GenerateGetQuery
         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
-    ) -> crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants
+    ) -> crate::repositories_types::tufa_server::routes::api::cats::read::TryReadResponseVariants
     {
         let vec_values = {
             let select = CatColumnSelectUrl::from(self.select.clone());
@@ -521,12 +521,12 @@ impl GetQueryParameters {
                 {
                     Ok(option_pg_row) => option_pg_row,
                     Err(e) => {
-                        let error = crate::repositories_types::tufa_server::routes::api::cats::get::TryGet::from(e);
+                        let error = crate::repositories_types::tufa_server::routes::api::cats::read::TryRead::from(e);
                         crate::common::error_logs_logic::error_log::ErrorLog::error_log(
                             &error,
                             app_info_state.as_ref(),
                         );
-                        return crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants::from(error);
+                        return crate::repositories_types::tufa_server::routes::api::cats::read::TryReadResponseVariants::from(error);
                     }
                 }
             } {
@@ -535,18 +535,18 @@ impl GetQueryParameters {
                         vec_values.push(value);
                     }
                     Err(e) => {
-                        let error = crate::repositories_types::tufa_server::routes::api::cats::get::TryGet::from(e);
+                        let error = crate::repositories_types::tufa_server::routes::api::cats::read::TryRead::from(e);
                         crate::common::error_logs_logic::error_log::ErrorLog::error_log(
                             &error,
                             app_info_state.as_ref(),
                         );
-                        return crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants::from(error);
+                        return crate::repositories_types::tufa_server::routes::api::cats::read::TryReadResponseVariants::from(error);
                     }
                 }
             }
             vec_values
         };
-        crate::repositories_types::tufa_server::routes::api::cats::get::TryGetResponseVariants::Desirable(vec_values)
+        crate::repositories_types::tufa_server::routes::api::cats::read::TryReadResponseVariants::Desirable(vec_values)
     }
 }
 
