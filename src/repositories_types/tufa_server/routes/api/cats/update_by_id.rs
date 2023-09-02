@@ -204,7 +204,7 @@ pub async fn try_update_by_id<'a>(
             .patch(&format!(
                 "{server_location}/api/{}/id/{}",
                 crate::repositories_types::tufa_server::routes::api::cats::CATS,
-                parameters.path.to_inner()
+                parameters.path.id.to_inner()
             ))
             .header(
                 crate::common::git::project_git_info::PROJECT_COMMIT,

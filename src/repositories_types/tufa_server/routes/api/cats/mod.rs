@@ -473,7 +473,7 @@ pub struct PutPayload {
 
 #[derive(Debug, serde::Deserialize)]
 pub struct UpdateByIdParameters {
-    pub path: crate::server::postgres::bigserial::Bigserial,
+    pub path: UpdateByIdPathParameters,
     pub payload: UpdateByIdPayload,
 }
 
@@ -502,22 +502,22 @@ pub enum UpdateByIdPayload {
     },
 }
 
-#[derive(serde::Deserialize)]
+#[derive(Debug, serde::Deserialize)]
 pub struct DeleteByIdParameters {
     pub path: DeleteByIdPathParameters,
 }
 
-#[derive(serde::Deserialize)]
+#[derive(Debug, serde::Deserialize)]
 pub struct DeleteByIdPathParameters {
     pub id: crate::server::postgres::bigserial::Bigserial,
 }
 
-#[derive(serde::Deserialize)]
+#[derive(Debug, serde::Deserialize)]
 pub struct DeleteParameters {
     pub query: DeleteQueryParameters,
 }
 
-#[derive(serde::Deserialize)]
+#[derive(Debug, serde::Deserialize)]
 pub struct DeleteQueryParameters {
     pub name: Option<String>,
     pub color: Option<String>,
