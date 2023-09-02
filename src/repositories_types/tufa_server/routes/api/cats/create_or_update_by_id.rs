@@ -9,7 +9,7 @@
     (),
     tvfrr_200_ok
 )]
-pub enum TryPutById {
+pub enum TryCreateOrUpdateById {
     #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
@@ -177,7 +177,7 @@ pub enum TryPutById {
 pub enum TryPutByIdErrorNamed {
     RequestError {
         #[eo_error_occurence]
-        request_error: TryPutByIdRequestError,
+        request_error: TryCreateOrUpdateByIdRequestError,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     SerdeJsonToString {
@@ -189,7 +189,7 @@ pub enum TryPutByIdErrorNamed {
 
 pub async fn try_put_by_id<'a>(
     server_location: &str,
-    body: crate::repositories_types::tufa_server::routes::api::cats::CatToPutById,
+    body: crate::repositories_types::tufa_server::routes::api::cats::CatToCreateOrUpdateById,
 ) -> Result<(), TryPutByIdErrorNamed> {
     let stringified_json = match serde_json::to_string(&body) {
         Ok(stringified_json) => stringified_json,

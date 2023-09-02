@@ -1,9 +1,9 @@
 pub mod create;
+pub mod create_or_update_by_id;
 pub mod delete;
 pub mod delete_by_id;
 pub mod patch_by_id;
 pub mod post_search;
-pub mod put_by_id;
 pub mod read;
 pub mod read_by_id;
 //todo openapi
@@ -418,12 +418,12 @@ pub struct CatToCreate {
 }
 
 #[derive(Debug, serde::Deserialize)]
-pub struct PutByIdPathParameters {
+pub struct CreateOrUpdateByIdPathParameters {
     pub id: crate::server::postgres::bigserial::Bigserial,
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct CatToPutById {
+pub struct CatToCreateOrUpdateById {
     pub name: String,
     pub color: String,
 }
