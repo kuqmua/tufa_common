@@ -204,6 +204,12 @@ impl crate::common::url_encode::UrlEncode for CatOrderBy {
 }
 
 #[derive(Debug, serde::Deserialize)]
+pub struct ReadByIdParameters {
+    pub path: ReadByIdPathParameters,
+    pub query: ReadByIdQueryParameters,
+}
+
+#[derive(Debug, serde::Deserialize)]
 pub struct ReadByIdPathParameters {
     pub id: crate::server::postgres::bigserial::Bigserial,
 }
@@ -222,6 +228,11 @@ impl crate::common::url_encode::UrlEncode for ReadByIdQueryParameters {
         }
         stringified_query_parameters
     }
+}
+
+#[derive(Debug, serde::Deserialize)]
+pub struct ReadParameters {
+    pub query: ReadQueryParameters,
 }
 
 #[derive(Debug, serde::Deserialize)]
@@ -423,9 +434,20 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadQuery
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+pub struct CreateParameters {
+    pub payload: CatToCreate,
+}
+
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct CatToCreate {
     pub name: String,
     pub color: String,
+}
+
+#[derive(Debug, serde::Deserialize)]
+pub struct CreateOrUpdateByIdParameters {
+    pub path: CreateOrUpdateByIdPathParameters,
+    pub payload: CatToCreateOrUpdateById,
 }
 
 #[derive(Debug, serde::Deserialize)]
@@ -447,6 +469,12 @@ pub struct CatToPut {
     pub id: crate::server::postgres::bigserial::Bigserial, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
     pub name: String,
     pub color: String,
+}
+
+#[derive(Debug, serde::Deserialize)]
+pub struct UpdateByIdParameters {
+    pub path: crate::server::postgres::bigserial::Bigserial,
+    pub payload: CatToUpdateById,
 }
 
 #[derive(Debug, serde::Deserialize)]
@@ -475,8 +503,18 @@ pub enum CatToUpdateById {
 }
 
 #[derive(serde::Deserialize)]
+pub struct DeleteByIdParameters {
+    pub path: DeleteByIdPathParameters,
+}
+
+#[derive(serde::Deserialize)]
 pub struct DeleteByIdPathParameters {
     pub id: crate::server::postgres::bigserial::Bigserial,
+}
+
+#[derive(serde::Deserialize)]
+pub struct DeleteParameters {
+    pub query: DeleteQueryParameters,
 }
 
 #[derive(serde::Deserialize)]
@@ -562,6 +600,11 @@ impl ReadQueryParameters {
 }
 
 /////////////////////
+
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+pub struct ReadPostParameters {
+    pub payload: CatToReadPost,
+}
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct CatToReadPost {

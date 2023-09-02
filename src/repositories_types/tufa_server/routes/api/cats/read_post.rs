@@ -175,12 +175,12 @@ pub enum TryReadPostErrorNamed {
 
 pub async fn try_read_post<'a>(
     server_location: &str,
-    payload: crate::repositories_types::tufa_server::routes::api::cats::CatToReadPost,
+    parameters: crate::repositories_types::tufa_server::routes::api::cats::ReadPostParameters,
 ) -> Result<
     Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>,
     TryReadPostErrorNamed,
 > {
-    let payload_json = match serde_json::to_string(&payload) {
+    let payload_json = match serde_json::to_string(&parameters.payload) {
         Ok(payload_json) => payload_json,
         Err(e) => {
             return Err(TryReadPostErrorNamed::SerdeJsonToString {

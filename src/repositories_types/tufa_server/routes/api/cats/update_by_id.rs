@@ -188,10 +188,9 @@ pub enum TryUpdateByIdErrorNamed {
 
 pub async fn try_update_by_id<'a>(
     server_location: &str,
-    path_parameters: crate::repositories_types::tufa_server::routes::api::cats::UpdateByIdPathParameters,
-    payload: crate::repositories_types::tufa_server::routes::api::cats::CatToUpdateById,
+    parameters: crate::repositories_types::tufa_server::routes::api::cats::UpdateByIdParameters,
 ) -> Result<(), TryUpdateByIdErrorNamed> {
-    let payload_json = match serde_json::to_string(&payload) {
+    let payload_json = match serde_json::to_string(&parameters.payload) {
         Ok(payload_json) => payload_json,
         Err(e) => {
             return Err(TryUpdateByIdErrorNamed::SerdeJsonToString {
@@ -205,7 +204,7 @@ pub async fn try_update_by_id<'a>(
             .patch(&format!(
                 "{server_location}/api/{}/id/{}",
                 crate::repositories_types::tufa_server::routes::api::cats::CATS,
-                path_parameters.id
+                parameters.path.to_inner()
             ))
             .header(
                 crate::common::git::project_git_info::PROJECT_COMMIT,

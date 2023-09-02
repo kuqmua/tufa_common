@@ -153,7 +153,7 @@ pub enum TryReadErrorNamed {
 
 pub async fn try_read<'a>(
     server_location: &str,
-    query_parameters: crate::repositories_types::tufa_server::routes::api::cats::ReadQueryParameters,
+    parameters: crate::repositories_types::tufa_server::routes::api::cats::ReadParameters,
 ) -> Result<
     Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>,
     TryReadErrorNamed,
@@ -161,7 +161,7 @@ pub async fn try_read<'a>(
     let url = format!(
         "{server_location}/api/{}{}",
         crate::repositories_types::tufa_server::routes::api::cats::CATS,
-        crate::common::url_encode::UrlEncode::url_encode(&query_parameters)
+        crate::common::url_encode::UrlEncode::url_encode(&parameters.query)
     );
     println!("{url}");
     match tvfrr_extraction_logic(

@@ -159,14 +159,14 @@ pub enum TryDeleteErrorNamed {
 
 pub async fn try_delete<'a>(
     server_location: &str,
-    query_parameters: crate::repositories_types::tufa_server::routes::api::cats::DeleteQueryParameters,
+    parameters: crate::repositories_types::tufa_server::routes::api::cats::DeleteParameters,
 ) -> Result<(), TryDeleteErrorNamed> {
     match tvfrr_extraction_logic(
         reqwest::Client::new()
             .delete(&format!(
                 "{server_location}/api/{}{}",
                 crate::repositories_types::tufa_server::routes::api::cats::CATS,
-                crate::common::url_encode::UrlEncode::url_encode(&query_parameters)
+                crate::common::url_encode::UrlEncode::url_encode(&parameters.query)
             ))
             .header(
                 crate::common::git::project_git_info::PROJECT_COMMIT,

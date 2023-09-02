@@ -159,14 +159,14 @@ pub enum TryDeleteByIdErrorNamed {
 
 pub async fn try_delete_by_id<'a>(
     server_location: &str,
-    path_parameters: crate::repositories_types::tufa_server::routes::api::cats::DeleteByIdPathParameters,
+    parameters: crate::repositories_types::tufa_server::routes::api::cats::DeleteByIdParameters,
 ) -> Result<(), TryDeleteByIdErrorNamed> {
     match tvfrr_extraction_logic(
         reqwest::Client::new()
             .get(&format!(
                 "{server_location}/api/{}/id/{}",
                 crate::repositories_types::tufa_server::routes::api::cats::CATS,
-                path_parameters.id
+                parameters.path.id
             ))
             .header(
                 crate::common::git::project_git_info::PROJECT_COMMIT,

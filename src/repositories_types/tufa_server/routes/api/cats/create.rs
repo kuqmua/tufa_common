@@ -175,9 +175,9 @@ pub enum TryCreateErrorNamed {
 
 pub async fn try_create<'a>(
     server_location: &str,
-    body: crate::repositories_types::tufa_server::routes::api::cats::CatToCreate,
+    parameters: crate::repositories_types::tufa_server::routes::api::cats::CreateParameters,
 ) -> Result<(), TryCreateErrorNamed> {
-    let stringified_json = match serde_json::to_string(&body) {
+    let stringified_json = match serde_json::to_string(&parameters.payload) {
         Ok(stringified_json) => stringified_json,
         Err(e) => {
             return Err(TryCreateErrorNamed::SerdeJsonToString {
