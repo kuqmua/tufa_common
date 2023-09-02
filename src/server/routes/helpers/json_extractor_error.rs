@@ -7,7 +7,7 @@
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_from_checker_paths(
     crate::repositories_types::tufa_server::routes::api::cats::create::TryCreate,
     crate::repositories_types::tufa_server::routes::api::cats::create_or_update_by_id::TryCreateOrUpdateById,
-    crate::repositories_types::tufa_server::routes::api::cats::patch_by_id::TryPatchById,
+    crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateById,
     crate::repositories_types::tufa_server::routes::api::cats::post_search::TryPostSearch
 )]
 pub enum JsonExtractorErrorNamed {

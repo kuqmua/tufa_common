@@ -2,10 +2,10 @@ pub mod create;
 pub mod create_or_update_by_id;
 pub mod delete;
 pub mod delete_by_id;
-pub mod patch_by_id;
 pub mod post_search;
 pub mod read;
 pub mod read_by_id;
+pub mod update_by_id;
 //todo openapi
 pub static CATS: &str = "cats";
 
@@ -439,18 +439,18 @@ pub struct CatToPut {
 }
 
 #[derive(Debug, serde::Deserialize)]
-pub struct PatchByIdPathParameters {
+pub struct UpdateByIdPathParameters {
     pub id: crate::server::postgres::bigserial::Bigserial,
 }
 
 // #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-// pub struct CatToPatchById {
+// pub struct CatToUpdateById {
 //     pub name: Option<std::string::String>,
 //     pub color: Option<std::string::String>,
 // }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub enum CatToPatchById {
+pub enum CatToUpdateById {
     Name {
         name: std::string::String,
     },
