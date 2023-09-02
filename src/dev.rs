@@ -203,7 +203,7 @@ pub fn dev() {
 // }
 
 // impl PositiveNonzeroInteger {
-//     #[must_use]
+//     #[must_use]//todo impl try_from instead
 //     fn new(value: i64) -> Result<PositiveNonzeroInteger, CreationError> {
 //         match value {
 //             x if x.is_negative() => Err(CreationError::Negative),

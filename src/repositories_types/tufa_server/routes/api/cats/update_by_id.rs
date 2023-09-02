@@ -186,7 +186,7 @@ pub enum TryUpdateByIdErrorNamed {
     },
 }
 
-pub async fn try_update<'a>(
+pub async fn try_update_by_id<'a>(
     server_location: &str,
     body: crate::repositories_types::tufa_server::routes::api::cats::CatToUpdateById,
 ) -> Result<(), TryUpdateByIdErrorNamed> {

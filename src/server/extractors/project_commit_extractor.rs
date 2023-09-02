@@ -11,7 +11,7 @@ pub struct ProjectCommitExtractor {}
     crate::repositories_types::tufa_server::routes::api::cats::read::TryRead,
     crate::repositories_types::tufa_server::routes::api::cats::read_by_id::TryReadById,
     crate::repositories_types::tufa_server::routes::api::cats::create::TryCreate,
-    crate::repositories_types::tufa_server::routes::api::cats::post_search::TryPostSearch
+    crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPost
 )]
 pub enum ProjectCommitExtractorCheckErrorNamed {
     #[tvfrr_400_bad_request]

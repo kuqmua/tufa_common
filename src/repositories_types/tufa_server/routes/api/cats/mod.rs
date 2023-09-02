@@ -2,9 +2,9 @@ pub mod create;
 pub mod create_or_update_by_id;
 pub mod delete;
 pub mod delete_by_id;
-pub mod post_search;
 pub mod read;
 pub mod read_by_id;
+pub mod read_post;
 pub mod update_by_id;
 //todo openapi
 pub static CATS: &str = "cats";
@@ -553,7 +553,7 @@ impl ReadQueryParameters {
 /////////////////////
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct CatToPostSearch {
+pub struct CatToReadPost {
     pub select: CatColumnSelectJson,
     pub ids: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
     pub name_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
@@ -563,7 +563,7 @@ pub struct CatToPostSearch {
     pub offset: crate::server::postgres::postgres_number::PostgresNumber,
 }
 
-impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for CatToPostSearch {
+impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for CatToReadPost {
     fn bind_sqlx_query(
         self,
         mut query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
@@ -590,11 +590,11 @@ impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for CatToPos
     }
 }
 
-impl CatToPostSearch {
+impl CatToReadPost {
     pub async fn execute_query(
         self,
         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
-    ) -> crate::repositories_types::tufa_server::routes::api::cats::post_search::TryPostSearchResponseVariants
+    ) -> crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants
     {
         let vec_values = {
             let select = self.select.clone();
@@ -618,12 +618,12 @@ impl CatToPostSearch {
                 {
                     Ok(option_pg_row) => option_pg_row,
                     Err(e) => {
-                        let error = crate::repositories_types::tufa_server::routes::api::cats::post_search::TryPostSearch::from(e);
+                        let error = crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPost::from(e);
                         crate::common::error_logs_logic::error_log::ErrorLog::error_log(
                             &error,
                             app_info_state.as_ref(),
                         );
-                        return crate::repositories_types::tufa_server::routes::api::cats::post_search::TryPostSearchResponseVariants::from(error);
+                        return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::from(error);
                     }
                 }
             } {
@@ -632,22 +632,22 @@ impl CatToPostSearch {
                         vec_values.push(value);
                     }
                     Err(e) => {
-                        let error = crate::repositories_types::tufa_server::routes::api::cats::post_search::TryPostSearch::from(e);
+                        let error = crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPost::from(e);
                         crate::common::error_logs_logic::error_log::ErrorLog::error_log(
                             &error,
                             app_info_state.as_ref(),
                         );
-                        return crate::repositories_types::tufa_server::routes::api::cats::post_search::TryPostSearchResponseVariants::from(error);
+                        return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::from(error);
                     }
                 }
             }
             vec_values
         };
-        crate::repositories_types::tufa_server::routes::api::cats::post_search::TryPostSearchResponseVariants::Desirable(vec_values)
+        crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::Desirable(vec_values)
     }
 }
 
-impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatToPostSearch {
+impl crate::server::postgres::generate_get_query::GenerateGetQuery for CatToReadPost {
     fn generate_get_query(&self) -> std::string::String {
         let mut query = std::string::String::from("");
         {

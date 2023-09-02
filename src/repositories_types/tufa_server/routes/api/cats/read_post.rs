@@ -9,7 +9,7 @@
     Vec::<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>,
     tvfrr_200_ok
 )]
-pub enum TryPostSearch {
+pub enum TryReadPost {
     #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
@@ -160,10 +160,10 @@ pub enum TryPostSearch {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum TryPostSearchErrorNamed {
+pub enum TryReadPostErrorNamed {
     RequestError {
         #[eo_error_occurence]
-        request_error: TryPostSearchRequestError,
+        request_error: TryReadPostRequestError,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     SerdeJsonToString {
@@ -173,17 +173,17 @@ pub enum TryPostSearchErrorNamed {
     },
 }
 
-pub async fn try_post_search<'a>(
+pub async fn try_read_post<'a>(
     server_location: &str,
-    body: crate::repositories_types::tufa_server::routes::api::cats::CatToPostSearch,
+    body: crate::repositories_types::tufa_server::routes::api::cats::CatToReadPost,
 ) -> Result<
     Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>,
-    TryPostSearchErrorNamed,
+    TryReadPostErrorNamed,
 > {
     let stringified_json = match serde_json::to_string(&body) {
         Ok(stringified_json) => stringified_json,
         Err(e) => {
-            return Err(TryPostSearchErrorNamed::SerdeJsonToString {
+            return Err(TryReadPostErrorNamed::SerdeJsonToString {
                 serde_json_to_string: e,
                 code_occurence: crate::code_occurence_tufa_common!(),
             });
@@ -208,7 +208,7 @@ pub async fn try_post_search<'a>(
     .await
     {
         Ok(value) => Ok(value),
-        Err(e) => Err(TryPostSearchErrorNamed::RequestError {
+        Err(e) => Err(TryReadPostErrorNamed::RequestError {
             request_error: e,
             code_occurence: crate::code_occurence_tufa_common!(),
         }),
