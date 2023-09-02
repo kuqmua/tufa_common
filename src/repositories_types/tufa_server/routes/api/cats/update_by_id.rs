@@ -189,10 +189,10 @@ pub enum TryUpdateByIdErrorNamed {
 pub async fn try_update_by_id<'a>(
     server_location: &str,
     path_parameters: crate::repositories_types::tufa_server::routes::api::cats::UpdateByIdPathParameters,
-    body: crate::repositories_types::tufa_server::routes::api::cats::CatToUpdateById,
+    payload: crate::repositories_types::tufa_server::routes::api::cats::CatToUpdateById,
 ) -> Result<(), TryUpdateByIdErrorNamed> {
-    let stringified_json = match serde_json::to_string(&body) {
-        Ok(stringified_json) => stringified_json,
+    let payload_json = match serde_json::to_string(&payload) {
+        Ok(payload_json) => payload_json,
         Err(e) => {
             return Err(TryUpdateByIdErrorNamed::SerdeJsonToString {
                 serde_json_to_string: e,
@@ -203,7 +203,7 @@ pub async fn try_update_by_id<'a>(
     match tvfrr_extraction_logic(
         reqwest::Client::new()
             .patch(&format!(
-                "{server_location}/api/{}/{}",
+                "{server_location}/api/{}/id/{}",
                 crate::repositories_types::tufa_server::routes::api::cats::CATS,
                 path_parameters.id
             ))
@@ -213,7 +213,7 @@ pub async fn try_update_by_id<'a>(
                     .project_commit,
             )
             .header(reqwest::header::CONTENT_TYPE, "application/json")
-            .body(stringified_json)
+            .body(payload_json)
             .send(),
     )
     .await

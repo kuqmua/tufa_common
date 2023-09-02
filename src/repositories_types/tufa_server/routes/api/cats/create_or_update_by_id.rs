@@ -189,10 +189,11 @@ pub enum TryPutByIdErrorNamed {
 
 pub async fn try_create_or_update_by_id<'a>(
     server_location: &str,
-    body: crate::repositories_types::tufa_server::routes::api::cats::CatToCreateOrUpdateById,
+    path_parameters: crate::repositories_types::tufa_server::routes::api::cats::CreateOrUpdateByIdPathParameters,
+    payload: crate::repositories_types::tufa_server::routes::api::cats::CatToCreateOrUpdateById,
 ) -> Result<(), TryPutByIdErrorNamed> {
-    let stringified_json = match serde_json::to_string(&body) {
-        Ok(stringified_json) => stringified_json,
+    let payload_json = match serde_json::to_string(&payload) {
+        Ok(payload_json) => payload_json,
         Err(e) => {
             return Err(TryPutByIdErrorNamed::SerdeJsonToString {
                 serde_json_to_string: e,
@@ -203,8 +204,9 @@ pub async fn try_create_or_update_by_id<'a>(
     match tvfrr_extraction_logic(
         reqwest::Client::new()
             .put(&format!(
-                "{server_location}/api/{}/",
-                crate::repositories_types::tufa_server::routes::api::cats::CATS
+                "{server_location}/api/{}/id/{}",
+                crate::repositories_types::tufa_server::routes::api::cats::CATS,
+                path_parameters.id
             ))
             .header(
                 crate::common::git::project_git_info::PROJECT_COMMIT,
@@ -212,7 +214,7 @@ pub async fn try_create_or_update_by_id<'a>(
                     .project_commit,
             )
             .header(reqwest::header::CONTENT_TYPE, "application/json")
-            .body(stringified_json)
+            .body(payload_json)
             .send(),
     )
     .await

@@ -213,6 +213,17 @@ pub struct ReadByIdQueryParameters {
     pub select: Option<CatColumnSelectUrl>,
 }
 
+impl crate::common::url_encode::UrlEncode for ReadByIdQueryParameters {
+    fn url_encode(&self) -> std::string::String {
+        let mut stringified_query_parameters = String::from("?");
+        if let Some(select) = &self.select {
+            let query_parameter_handle = format!("select={}", select.url_encode()); //urlencoding::encode(select)
+            stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
+        }
+        stringified_query_parameters
+    }
+}
+
 #[derive(Debug, serde::Deserialize)]
 pub struct ReadQueryParameters {
     pub select: Option<CatColumnSelectUrl>,

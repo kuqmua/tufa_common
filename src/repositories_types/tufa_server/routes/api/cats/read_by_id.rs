@@ -163,14 +163,16 @@ pub enum TryReadByIdErrorNamed {
     },
 }
 
-pub async fn try_read_by_id<'a>(
+pub async fn try_read_by_id(
     server_location: &str,
     path_parameters: crate::repositories_types::tufa_server::routes::api::cats::ReadByIdPathParameters,
+    query_parameters: crate::repositories_types::tufa_server::routes::api::cats::ReadByIdQueryParameters,
 ) -> Result<crate::repositories_types::tufa_server::routes::api::cats::Cat, TryReadByIdErrorNamed> {
     let url = format!(
-        "{server_location}/api/{}/{}",
+        "{server_location}/api/{}/id/{}{}",
         crate::repositories_types::tufa_server::routes::api::cats::CATS,
-        path_parameters.id
+        path_parameters.id,
+        crate::common::url_encode::UrlEncode::url_encode(&query_parameters)
     );
     match tvfrr_extraction_logic(
         reqwest::Client::new()

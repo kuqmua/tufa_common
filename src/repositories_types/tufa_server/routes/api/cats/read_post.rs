@@ -175,13 +175,13 @@ pub enum TryReadPostErrorNamed {
 
 pub async fn try_read_post<'a>(
     server_location: &str,
-    body: crate::repositories_types::tufa_server::routes::api::cats::CatToReadPost,
+    payload: crate::repositories_types::tufa_server::routes::api::cats::CatToReadPost,
 ) -> Result<
     Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>,
     TryReadPostErrorNamed,
 > {
-    let stringified_json = match serde_json::to_string(&body) {
-        Ok(stringified_json) => stringified_json,
+    let payload_json = match serde_json::to_string(&payload) {
+        Ok(payload_json) => payload_json,
         Err(e) => {
             return Err(TryReadPostErrorNamed::SerdeJsonToString {
                 serde_json_to_string: e,
@@ -189,7 +189,7 @@ pub async fn try_read_post<'a>(
             });
         }
     };
-    println!("{stringified_json}");
+    // println!("{stringified_json}");
     match tvfrr_extraction_logic(
         reqwest::Client::new()
             .post(&format!(
@@ -202,7 +202,7 @@ pub async fn try_read_post<'a>(
                     .project_commit,
             )
             .header(reqwest::header::CONTENT_TYPE, "application/json")
-            .body(stringified_json)
+            .body(payload_json)
             .send(),
     )
     .await
