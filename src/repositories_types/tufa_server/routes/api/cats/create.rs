@@ -9,7 +9,7 @@
     (),
     tvfrr_201_created
 )]
-pub enum TryPost {
+pub enum TryCreate {
     #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
@@ -160,10 +160,10 @@ pub enum TryPost {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum TryPostErrorNamed {
+pub enum TryCreateErrorNamed {
     RequestError {
         #[eo_error_occurence]
-        request_error: TryPostRequestError,
+        request_error: TryCreateRequestError,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     SerdeJsonToString {
@@ -173,14 +173,14 @@ pub enum TryPostErrorNamed {
     },
 }
 
-pub async fn try_post<'a>(
+pub async fn try_create<'a>(
     server_location: &str,
-    body: crate::repositories_types::tufa_server::routes::api::cats::CatToPost,
-) -> Result<(), TryPostErrorNamed> {
+    body: crate::repositories_types::tufa_server::routes::api::cats::CatToCreate,
+) -> Result<(), TryCreateErrorNamed> {
     let stringified_json = match serde_json::to_string(&body) {
         Ok(stringified_json) => stringified_json,
         Err(e) => {
-            return Err(TryPostErrorNamed::SerdeJsonToString {
+            return Err(TryCreateErrorNamed::SerdeJsonToString {
                 serde_json_to_string: e,
                 code_occurence: crate::code_occurence_tufa_common!(),
             });
@@ -204,7 +204,7 @@ pub async fn try_post<'a>(
     .await
     {
         Ok(_) => Ok(()),
-        Err(e) => Err(TryPostErrorNamed::RequestError {
+        Err(e) => Err(TryCreateErrorNamed::RequestError {
             request_error: e,
             code_occurence: crate::code_occurence_tufa_common!(),
         }),

@@ -1,7 +1,7 @@
+pub mod create;
 pub mod delete;
 pub mod delete_by_id;
 pub mod patch_by_id;
-pub mod post;
 pub mod post_search;
 pub mod put_by_id;
 pub mod read;
@@ -412,7 +412,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadQuery
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct CatToPost {
+pub struct CatToCreate {
     pub name: String,
     pub color: String,
 }
