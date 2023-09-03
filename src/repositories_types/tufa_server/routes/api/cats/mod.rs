@@ -215,15 +215,26 @@ pub struct ReadQuery {
 
 //todo - make a macro for it?
 //todo - maybe some serde serialization like this https://docs.rs/url_serde/latest/url_serde/
-impl crate::common::serde_urlencoded_wrapper::SerdeUrlencodedWrapper for ReadQuery {
-    fn serde_urlencoded_wrapper(&self) -> std::string::String {
+impl crate::common::serde_urlencoded::SerdeUrlencodedParameters for ReadQuery {
+    fn serde_urlencoded_parameters(
+        &self,
+    ) -> Result<
+        std::string::String,
+        crate::common::serde_urlencoded::SerdeUrlencodedParametersErrorNamed,
+    > {
         let mut stringified_query_parameters = String::from("?");
         if let Some(select) = &self.select {
-            let query_parameter_handle = format!(
-                "select={}",
-                select.serde_urlencoded_wrapper() // serde_urlencoded::to_string(&self.select).unwrap()
-            ); //urlencoding::encode(select)
-            stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
+            match crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(select) {
+                Ok(value_encoded) => {
+                    stringified_query_parameters.push_str(&format!("&select={value_encoded}"));
+                },
+                Err(e) => {
+                    return Err(crate::common::serde_urlencoded::SerdeUrlencodedParametersErrorNamed::UrlEncode { 
+                        url_encode: e, 
+                        code_occurence: crate::code_occurence_tufa_common!(),
+                    });
+                },
+            }
         }
         if let Some(value) = &self.id {
             stringified_query_parameters.push_str(&format!(
@@ -259,7 +270,7 @@ impl crate::common::serde_urlencoded_wrapper::SerdeUrlencodedWrapper for ReadQue
                 urlencoding::encode(&value.to_string())
             ));
         }
-        stringified_query_parameters
+        Ok(stringified_query_parameters)
     }
 }
 

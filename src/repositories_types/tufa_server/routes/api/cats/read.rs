@@ -161,9 +161,10 @@ pub async fn try_read<'a>(
     let url = format!(
         "{server_location}/api/{}{}",
         crate::repositories_types::tufa_server::routes::api::cats::CATS,
-        crate::common::serde_urlencoded_wrapper::SerdeUrlencodedWrapper::serde_urlencoded_wrapper(
+        crate::common::serde_urlencoded::SerdeUrlencodedParameters::serde_urlencoded_parameters(
             &parameters.query
         )
+        .unwrap() //todo
     );
     println!("{url}");
     match tvfrr_extraction_logic(
