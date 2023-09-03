@@ -31,6 +31,7 @@ serde_derive = {version = "=1.0"}
 serde_json = {version = "=1.0"}
 serde_path_to_error = {version = "=0.1.12"}
 serde_with = {version = "=3.1.0"}
+serde_urlencoded = {version = "=0.7.1"}
 strum = {version = "=0.24.1"}
 strum_macros = {version = "=0.24.3"}
 thiserror = {version = "=1.0.30"}

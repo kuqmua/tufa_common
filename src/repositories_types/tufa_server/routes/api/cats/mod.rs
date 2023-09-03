@@ -216,7 +216,7 @@ pub struct ReadByIdPath {
 
 #[derive(Debug, serde::Deserialize)]
 pub struct ReadByIdQuery {
-    pub select: Option<CatColumnSelectUrl>,
+    pub select: Option<CatColumnSelect>,
 }
 
 impl crate::common::url_encode::UrlEncode for ReadByIdQuery {
@@ -237,7 +237,7 @@ pub struct ReadParameters {
 
 #[derive(Debug, serde::Deserialize)]
 pub struct ReadQuery {
-    pub select: Option<CatColumnSelectUrl>,
+    pub select: Option<CatColumnSelect>,
     pub id: Option<crate::server::postgres::bigserial_ids::BigserialIds>,
     pub name: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
     pub color: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
@@ -320,13 +320,12 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadQuery
         // SELECT id,name,color FROM cats WHERE id = ANY(ARRAY[$1, $2, $3, $4]) AND name = ANY(ARRAY[$5, $6]) AND color = ANY(ARRAY[$7]) LIMIT $8
         let mut query = std::string::String::from("");
         {
-            let select_stringified = match &self.select {
-                Some(select) => select.to_string(),
-                None => CatColumnSelectUrl::default().to_string(),
-            };
             query.push_str(&format!(
-                "{} {select_stringified}",
+                "{} {}",
                 crate::server::postgres::constants::SELECT_NAME,
+                crate::server::postgres::generate_get_query::GenerateGetQuery::generate_get_query(
+                    &CatColumnSelect::from(self.select.clone())
+                )
             ));
         }
         query.push_str(&format!(
@@ -549,7 +548,7 @@ impl ReadQuery {
     ) -> crate::repositories_types::tufa_server::routes::api::cats::read::TryReadResponseVariants
     {
         let vec_values = {
-            let select = CatColumnSelectUrl::from(self.select.clone());
+            let select = CatColumnSelect::from(self.select.clone());
             let query_string =
                 crate::server::postgres::generate_get_query::GenerateGetQuery::generate_get_query(
                     &self,
@@ -608,7 +607,7 @@ pub struct ReadPostParameters {
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct ReadPostPayload {
-    pub select: CatColumnSelectJson,
+    pub select: CatColumnSelect,
     pub ids: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
     pub name_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
     pub color_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
@@ -700,6 +699,54 @@ impl ReadPostPayload {
         crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::Desirable(vec_values)
     }
 }
+
+// pub async fn request_options(
+//     query_string: &std::string::String,
+//     rows: std::pin::Pin<
+//         Box<dyn futures::Stream<Item = Result<sqlx::postgres::PgRow, sqlx::Error>> + Send>,
+//     >,
+//     app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
+// ) {
+//     // let mut rows = crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery::bind_sqlx_query(
+//     //     self,
+//     //     sqlx::query::<sqlx::Postgres>(query_string),
+//     // )
+//     // .fetch(app_info_state.get_postgres_pool());
+//     let mut vec_values = Vec::new();
+//     while let Some(row) = {
+//         match {
+//             use futures::TryStreamExt;
+//             rows.try_next()
+//         }
+//         .await
+//         {
+//             Ok(option_pg_row) => option_pg_row,
+//             Err(e) => {
+//                 let error = crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPost::from(e);
+//                 crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                     &error,
+//                     app_info_state.as_ref(),
+//                 );
+//                 return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::from(error);
+//             }
+//         }
+//     } {
+//         match select.options_try_from_sqlx_row(&row) {
+//             Ok(value) => {
+//                 vec_values.push(value);
+//             }
+//             Err(e) => {
+//                 let error = crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPost::from(e);
+//                 crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                     &error,
+//                     app_info_state.as_ref(),
+//                 );
+//                 return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::from(error);
+//             }
+//         }
+//     }
+//     vec_values
+// }
 
 impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadPostPayload {
     fn generate_get_query(&self) -> std::string::String {
