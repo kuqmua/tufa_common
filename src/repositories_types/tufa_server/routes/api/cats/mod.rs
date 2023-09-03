@@ -205,21 +205,21 @@ impl crate::common::url_encode::UrlEncode for CatOrderBy {
 
 #[derive(Debug, serde::Deserialize)]
 pub struct ReadByIdParameters {
-    pub path: ReadByIdPathParameters,
-    pub query: ReadByIdQueryParameters,
+    pub path: ReadByIdPath,
+    pub query: ReadByIdQuery,
 }
 
 #[derive(Debug, serde::Deserialize)]
-pub struct ReadByIdPathParameters {
+pub struct ReadByIdPath {
     pub id: crate::server::postgres::bigserial::Bigserial,
 }
 
 #[derive(Debug, serde::Deserialize)]
-pub struct ReadByIdQueryParameters {
+pub struct ReadByIdQuery {
     pub select: Option<CatColumnSelectUrl>,
 }
 
-impl crate::common::url_encode::UrlEncode for ReadByIdQueryParameters {
+impl crate::common::url_encode::UrlEncode for ReadByIdQuery {
     fn url_encode(&self) -> std::string::String {
         let mut stringified_query_parameters = String::from("?");
         if let Some(select) = &self.select {
@@ -232,11 +232,11 @@ impl crate::common::url_encode::UrlEncode for ReadByIdQueryParameters {
 
 #[derive(Debug, serde::Deserialize)]
 pub struct ReadParameters {
-    pub query: ReadQueryParameters,
+    pub query: ReadQuery,
 }
 
 #[derive(Debug, serde::Deserialize)]
-pub struct ReadQueryParameters {
+pub struct ReadQuery {
     pub select: Option<CatColumnSelectUrl>,
     pub id: Option<crate::server::postgres::bigserial_ids::BigserialIds>,
     pub name: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
@@ -248,7 +248,7 @@ pub struct ReadQueryParameters {
 
 //todo - make a macro for it?
 //todo - maybe some serde serialization like this https://docs.rs/url_serde/latest/url_serde/
-impl crate::common::url_encode::UrlEncode for ReadQueryParameters {
+impl crate::common::url_encode::UrlEncode for ReadQuery {
     fn url_encode(&self) -> std::string::String {
         let mut stringified_query_parameters = String::from("?");
         if let Some(select) = &self.select {
@@ -292,7 +292,7 @@ impl crate::common::url_encode::UrlEncode for ReadQueryParameters {
     }
 }
 
-impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for ReadQueryParameters {
+impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for ReadQuery {
     fn bind_sqlx_query(
         self,
         mut query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
@@ -315,7 +315,7 @@ impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for ReadQuer
     }
 }
 
-impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadQueryParameters {
+impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadQuery {
     fn generate_get_query(&self) -> std::string::String {
         // SELECT id,name,color FROM cats WHERE id = ANY(ARRAY[$1, $2, $3, $4]) AND name = ANY(ARRAY[$5, $6]) AND color = ANY(ARRAY[$7]) LIMIT $8
         let mut query = std::string::String::from("");
@@ -446,12 +446,12 @@ pub struct CreatePayload {
 
 #[derive(Debug, serde::Deserialize)]
 pub struct CreateOrUpdateByIdParameters {
-    pub path: CreateOrUpdateByIdPathParameters,
+    pub path: CreateOrUpdateByIdPath,
     pub payload: CreateOrUpdateByIdPayload,
 }
 
 #[derive(Debug, serde::Deserialize)]
-pub struct CreateOrUpdateByIdPathParameters {
+pub struct CreateOrUpdateByIdPath {
     pub id: crate::server::postgres::bigserial::Bigserial,
 }
 
@@ -473,12 +473,12 @@ pub struct PutPayload {
 
 #[derive(Debug, serde::Deserialize)]
 pub struct UpdateByIdParameters {
-    pub path: UpdateByIdPathParameters,
+    pub path: UpdateByIdPath,
     pub payload: UpdateByIdPayload,
 }
 
 #[derive(Debug, serde::Deserialize)]
-pub struct UpdateByIdPathParameters {
+pub struct UpdateByIdPath {
     pub id: crate::server::postgres::bigserial::Bigserial,
 }
 
@@ -504,26 +504,26 @@ pub enum UpdateByIdPayload {
 
 #[derive(Debug, serde::Deserialize)]
 pub struct DeleteByIdParameters {
-    pub path: DeleteByIdPathParameters,
+    pub path: DeleteByIdPath,
 }
 
 #[derive(Debug, serde::Deserialize)]
-pub struct DeleteByIdPathParameters {
+pub struct DeleteByIdPath {
     pub id: crate::server::postgres::bigserial::Bigserial,
 }
 
 #[derive(Debug, serde::Deserialize)]
 pub struct DeleteParameters {
-    pub query: DeleteQueryParameters,
+    pub query: DeleteQuery,
 }
 
 #[derive(Debug, serde::Deserialize)]
-pub struct DeleteQueryParameters {
+pub struct DeleteQuery {
     pub name: Option<String>,
     pub color: Option<String>,
 }
 
-impl crate::common::url_encode::UrlEncode for DeleteQueryParameters {
+impl crate::common::url_encode::UrlEncode for DeleteQuery {
     fn url_encode(&self) -> String {
         let parameters = match (&self.name, &self.color) {
             (None, None) => String::from(""),
@@ -542,7 +542,7 @@ impl crate::common::url_encode::UrlEncode for DeleteQueryParameters {
     }
 }
 
-impl ReadQueryParameters {
+impl ReadQuery {
     pub async fn execute_query(
         self, //impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuer + crate::server::postgres::generate_get_query::GenerateGetQuery
         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
