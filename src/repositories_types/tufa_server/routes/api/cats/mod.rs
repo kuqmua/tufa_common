@@ -41,12 +41,6 @@ pub struct CatOrderByWrapper(
     #[serde(deserialize_with = "deserialize_cat_order_by")] pub CatOrderBy,
 );
 
-impl crate::common::url_encode::UrlEncode for CatOrderByWrapper {
-    fn url_encode(&self) -> std::string::String {
-        crate::common::url_encode::UrlEncode::url_encode(&self.0)
-    }
-}
-
 const SPLIT_INNER_URL_PARAMETERS_SYMBOL: char = ',';
 
 fn deserialize_cat_order_by<'de, D>(deserializer: D) -> Result<CatOrderBy, D::Error>
@@ -187,22 +181,6 @@ pub struct CatOrderBy {
     pub order: Option<crate::server::postgres::order::Order>,
 }
 
-impl crate::common::url_encode::UrlEncode for CatOrderBy {
-    fn url_encode(&self) -> std::string::String {
-        let order_stringified = match &self.order {
-            Some(order) => order.to_string(),
-            None => crate::server::postgres::order::Order::default().to_string(),
-        };
-        urlencoding::encode(&format!(
-            "column={}{}order={}",
-            crate::common::url_encode::UrlEncode::url_encode(&self.column),
-            SPLIT_INNER_URL_PARAMETERS_SYMBOL,
-            urlencoding::encode(&order_stringified)
-        ))
-        .to_string()
-    }
-}
-
 #[derive(Debug, serde::Deserialize)]
 pub struct ReadByIdParameters {
     pub path: ReadByIdPath,
@@ -214,20 +192,9 @@ pub struct ReadByIdPath {
     pub id: crate::server::postgres::bigserial::Bigserial,
 }
 
-#[derive(Debug, serde::Deserialize)]
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct ReadByIdQuery {
     pub select: Option<CatColumnSelect>,
-}
-
-impl crate::common::url_encode::UrlEncode for ReadByIdQuery {
-    fn url_encode(&self) -> std::string::String {
-        let mut stringified_query_parameters = String::from("?");
-        if let Some(select) = &self.select {
-            let query_parameter_handle = format!("select={}", select.url_encode()); //urlencoding::encode(select)
-            stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
-        }
-        stringified_query_parameters
-    }
 }
 
 #[derive(Debug, serde::Deserialize)]
@@ -235,7 +202,7 @@ pub struct ReadParameters {
     pub query: ReadQuery,
 }
 
-#[derive(Debug, serde::Deserialize)]
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct ReadQuery {
     pub select: Option<CatColumnSelect>,
     pub id: Option<crate::server::postgres::bigserial_ids::BigserialIds>,
@@ -252,31 +219,34 @@ impl crate::common::url_encode::UrlEncode for ReadQuery {
     fn url_encode(&self) -> std::string::String {
         let mut stringified_query_parameters = String::from("?");
         if let Some(select) = &self.select {
-            let query_parameter_handle = format!("select={}", select.url_encode()); //urlencoding::encode(select)
+            let query_parameter_handle = format!(
+                "select={}",
+                select.url_encode() // serde_urlencoded::to_string(&self.select).unwrap()
+            ); //urlencoding::encode(select)
             stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
         }
         if let Some(value) = &self.id {
             stringified_query_parameters.push_str(&format!(
                 "&id={}",
-                crate::common::url_encode::UrlEncode::url_encode(value)
+                serde_urlencoded::to_string(value).unwrap()
             ));
         }
         if let Some(value) = &self.name {
             stringified_query_parameters.push_str(&format!(
                 "&name={}",
-                crate::common::url_encode::UrlEncode::url_encode(value)
+                serde_urlencoded::to_string(value).unwrap()
             ));
         }
         if let Some(value) = &self.color {
             stringified_query_parameters.push_str(&format!(
                 "&color={}",
-                crate::common::url_encode::UrlEncode::url_encode(value)
+                serde_urlencoded::to_string(value).unwrap()
             ));
         }
         if let Some(value) = &self.order_by {
             stringified_query_parameters.push_str(&format!(
                 "&order_by={}",
-                crate::common::url_encode::UrlEncode::url_encode(value)
+                serde_urlencoded::to_string(value).unwrap()
             ));
         }
         stringified_query_parameters.push_str(&format!(
@@ -284,9 +254,10 @@ impl crate::common::url_encode::UrlEncode for ReadQuery {
             urlencoding::encode(&self.limit.to_string())
         ));
         if let Some(value) = &self.offset {
-            let query_parameter_handle =
-                format!("offset={}", urlencoding::encode(&value.to_string()));
-            stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
+            stringified_query_parameters.push_str(&format!(
+                "&offset={}",
+                urlencoding::encode(&value.to_string())
+            ));
         }
         stringified_query_parameters
     }
@@ -516,29 +487,10 @@ pub struct DeleteParameters {
     pub query: DeleteQuery,
 }
 
-#[derive(Debug, serde::Deserialize)]
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct DeleteQuery {
     pub name: Option<String>,
     pub color: Option<String>,
-}
-
-impl crate::common::url_encode::UrlEncode for DeleteQuery {
-    fn url_encode(&self) -> String {
-        let parameters = match (&self.name, &self.color) {
-            (None, None) => String::from(""),
-            (None, Some(color)) => format!("color={}", urlencoding::encode(color)),
-            (Some(name), None) => format!("name={}", urlencoding::encode(name)),
-            (Some(name), Some(color)) => format!(
-                "name={}&color={}",
-                urlencoding::encode(name),
-                urlencoding::encode(color)
-            ),
-        };
-        match parameters.is_empty() {
-            true => String::from(""),
-            false => format!("?{parameters}"),
-        }
-    }
 }
 
 impl ReadQuery {

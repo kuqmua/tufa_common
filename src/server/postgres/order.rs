@@ -20,9 +20,3 @@ impl Default for Order {
         Self::Asc
     }
 }
-
-impl crate::common::url_encode::UrlEncode for Order {
-    fn url_encode(&self) -> std::string::String {
-        urlencoding::encode(&self.to_string()).to_string()
-    }
-}

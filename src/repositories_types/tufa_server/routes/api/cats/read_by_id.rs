@@ -168,10 +168,10 @@ pub async fn try_read_by_id(
     parameters: crate::repositories_types::tufa_server::routes::api::cats::ReadByIdParameters,
 ) -> Result<crate::repositories_types::tufa_server::routes::api::cats::Cat, TryReadByIdErrorNamed> {
     let url = format!(
-        "{server_location}/api/{}/id/{}{}",
+        "{server_location}/api/{}/id/{}?{}",
         crate::repositories_types::tufa_server::routes::api::cats::CATS,
         parameters.path.id,
-        crate::common::url_encode::UrlEncode::url_encode(&parameters.query)
+        serde_urlencoded::to_string(&parameters.query).unwrap()
     );
     match tvfrr_extraction_logic(
         reqwest::Client::new()

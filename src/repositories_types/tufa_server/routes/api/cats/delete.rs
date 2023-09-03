@@ -164,9 +164,9 @@ pub async fn try_delete<'a>(
     match tvfrr_extraction_logic(
         reqwest::Client::new()
             .delete(&format!(
-                "{server_location}/api/{}{}",
+                "{server_location}/api/{}?{}",
                 crate::repositories_types::tufa_server::routes::api::cats::CATS,
-                crate::common::url_encode::UrlEncode::url_encode(&parameters.query)
+                serde_urlencoded::to_string(&parameters.query).unwrap()
             ))
             .header(
                 crate::common::git::project_git_info::PROJECT_COMMIT,

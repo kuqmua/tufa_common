@@ -72,23 +72,6 @@ where
     }
 }
 
-impl crate::common::url_encode::UrlEncode for BigserialIds {
-    fn url_encode(&self) -> std::string::String {
-        urlencoding::encode(&{
-            let mut elements_stringified =
-                self.0.iter().fold(String::from(""), |mut acc, element| {
-                    acc.push_str(&format!("{element},"));
-                    acc
-                });
-            if let false = elements_stringified.is_empty() {
-                elements_stringified.pop();
-            }
-            elements_stringified
-        })
-        .to_string()
-    }
-}
-
 impl crate::server::postgres::bind_query::BindQuery for BigserialIds {
     fn generate_bind_increments(&self, increment: &mut u64) -> std::string::String {
         let mut increments = std::string::String::from("");

@@ -7,12 +7,6 @@ impl std::fmt::Display for PostgresNumber {
     }
 }
 
-impl crate::common::url_encode::UrlEncode for PostgresNumber {
-    fn url_encode(&self) -> std::string::String {
-        urlencoding::encode(&self.0.to_string()).to_string()
-    }
-}
-
 impl crate::server::postgres::bind_query::BindQuery for PostgresNumber {
     fn generate_bind_increments(&self, increment: &mut u64) -> std::string::String {
         *increment += 1;
