@@ -215,13 +215,13 @@ pub struct ReadQuery {
 
 //todo - make a macro for it?
 //todo - maybe some serde serialization like this https://docs.rs/url_serde/latest/url_serde/
-impl crate::common::url_encode::UrlEncode for ReadQuery {
-    fn url_encode(&self) -> std::string::String {
+impl crate::common::serde_urlencoded_wrapper::SerdeUrlencodedWrapper for ReadQuery {
+    fn serde_urlencoded_wrapper(&self) -> std::string::String {
         let mut stringified_query_parameters = String::from("?");
         if let Some(select) = &self.select {
             let query_parameter_handle = format!(
                 "select={}",
-                select.url_encode() // serde_urlencoded::to_string(&self.select).unwrap()
+                select.serde_urlencoded_wrapper() // serde_urlencoded::to_string(&self.select).unwrap()
             ); //urlencoding::encode(select)
             stringified_query_parameters.push_str(&format!("&{query_parameter_handle}"));
         }
