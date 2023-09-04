@@ -1,4 +1,4 @@
-#[derive(Debug, serde::Serialize, serde::Deserialize, PartialEq, Eq, from_str::FromStr)]
+#[derive(Debug, serde::Serialize, serde::Deserialize, PartialEq, Eq, Clone, from_str::FromStr)]
 pub enum Order {
     #[serde(rename(serialize = "asc", deserialize = "asc"))]
     Asc,

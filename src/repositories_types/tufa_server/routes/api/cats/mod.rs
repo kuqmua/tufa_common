@@ -36,169 +36,158 @@ pub struct Cat {
     pub color: String,
 }
 
-// #[derive(Debug, serde::Serialize, serde::Deserialize)]
-// pub struct CatOrderByWrapper(
-//     #[serde(deserialize_with = "deserialize_cat_order_by")] pub CatOrderBy,
-// );
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
+pub struct CatOrderByWrapper(
+    #[serde(deserialize_with = "deserialize_cat_order_by")] pub CatOrderBy,
+);
 
-// impl crate::common::serde_urlencoded::SerdeUrlencodedParameter for CatOrderByWrapper {
-//     fn serde_urlencoded_parameter(
-//         &self,
-//     ) -> Result<
-//         std::string::String,
-//         crate::common::serde_urlencoded::SerdeUrlencodedParameterErrorNamed,
-//     > {
-//         match serde_urlencoded::to_string(&self.0) {
-//             Ok(value) => Ok(value),
-//             Err(e) => Err(
-//                 crate::common::serde_urlencoded::SerdeUrlencodedParameterErrorNamed::UrlEncode {
-//                     url_encode: e,
-//                     code_occurence: crate::code_occurence_tufa_common!(),
-//                 },
-//             ),
-//         }
-//     }
-// }
+impl crate::common::serde_urlencoded::SerdeUrlencodedParameter for CatOrderByWrapper {
+    fn serde_urlencoded_parameter(&self) -> std::string::String {
+        let column = &self.0.column;
+        let order = self.0.order.clone().unwrap_or_default();
+        format!("column={column},order={order}")
+    }
+}
 
 const SPLIT_INNER_URL_PARAMETERS_SYMBOL: char = ',';
 
-// fn deserialize_cat_order_by<'de, D>(deserializer: D) -> Result<CatOrderBy, D::Error>
-// where
-//     D: serde::de::Deserializer<'de>,
-// {
-//     let string_deserialized = {
-//         use serde::Deserialize;
-//         String::deserialize(deserializer)?
-//     };
-//     let default_message = "Invalid CatOrderBy:";
-//     let column_equal_str = "column=";
-//     let order_equal_str = "order=";
-//     let column = match string_deserialized.find(column_equal_str) {
-//         Some(index) => match index.checked_add(column_equal_str.len()) {
-//             Some(offset) => match string_deserialized.get(offset..) {
-//                 Some(offset_slice) => match offset_slice.find(SPLIT_INNER_URL_PARAMETERS_SYMBOL) {
-//                     Some(offset_slice_next_comma_index) => {
-//                         match offset_slice.get(0..offset_slice_next_comma_index) {
-//                             Some(possible_column) => match {
-//                                 use std::str::FromStr;
-//                                 CatColumn::from_str(possible_column)
-//                             } {
-//                                 Ok(column) => column,
-//                                 Err(e) => {
-//                                     return Err(serde::de::Error::custom(&format!(
-//                                         "{default_message} {column_equal_str} {e}"
-//                                     )));
-//                                 }
-//                             },
-//                             None => {
-//                                 return Err(serde::de::Error::custom(&format!(
-//                                     "{default_message} {column_equal_str} failed to offset_slice.get(0..offset_slice_next_comma_index)"
-//                                 )));
-//                             }
-//                         }
-//                     }
-//                     None => match offset_slice.get(0..) {
-//                         Some(possible_column) => match {
-//                             use std::str::FromStr;
-//                             CatColumn::from_str(possible_column)
-//                         } {
-//                             Ok(column) => column,
-//                             Err(e) => {
-//                                 return Err(serde::de::Error::custom(&format!(
-//                                     "{default_message} {column_equal_str} {e}"
-//                                 )));
-//                             }
-//                         },
-//                         None => {
-//                             return Err(serde::de::Error::custom(&format!(
-//                                 "{default_message} {column_equal_str} failed to offset_slice.get(0..)"
-//                             )));
-//                         }
-//                     },
-//                 },
-//                 None => {
-//                     return Err(serde::de::Error::custom(&format!(
-//                         "{default_message} {column_equal_str} failed to string_deserialized.get(offset..)"
-//                     )));
-//                 }
-//             },
-//             None => {
-//                 return Err(serde::de::Error::custom(&format!(
-//                     "{default_message} {column_equal_str} index overflow"
-//                 )));
-//             }
-//         },
-//         None => {
-//             return Err(serde::de::Error::custom(&format!(
-//                 "{default_message} {column_equal_str} not found"
-//             )));
-//         }
-//     };
-//     let order = match string_deserialized.find(order_equal_str) {
-//         Some(index) => match index.checked_add(order_equal_str.len()) {
-//             Some(offset) => match string_deserialized.get(offset..) {
-//                 Some(offset_slice) => match offset_slice.find(SPLIT_INNER_URL_PARAMETERS_SYMBOL) {
-//                     Some(offset_slice_next_comma_index) => {
-//                         match offset_slice.get(0..offset_slice_next_comma_index) {
-//                             Some(possible_order) => match {
-//                                 use std::str::FromStr;
-//                                 crate::server::postgres::order::Order::from_str(possible_order)
-//                             } {
-//                                 Ok(order) => Some(order),
-//                                 Err(e) => {
-//                                     return Err(serde::de::Error::custom(&format!(
-//                                         "{default_message} {order_equal_str} {e}"
-//                                     )));
-//                                 }
-//                             },
-//                             None => {
-//                                 return Err(serde::de::Error::custom(&format!(
-//                                     "{default_message} {order_equal_str} failed to offset_slice.get(0..offset_slice_next_comma_index)"
-//                                 )));
-//                             }
-//                         }
-//                     }
-//                     None => match offset_slice.get(0..) {
-//                         Some(possible_order) => match {
-//                             use std::str::FromStr;
-//                             crate::server::postgres::order::Order::from_str(possible_order)
-//                         } {
-//                             Ok(order) => Some(order),
-//                             Err(e) => {
-//                                 return Err(serde::de::Error::custom(&format!(
-//                                     "{default_message} {order_equal_str} {e}"
-//                                 )));
-//                             }
-//                         },
-//                         None => {
-//                             return Err(serde::de::Error::custom(&format!(
-//                                 "{default_message} {order_equal_str} failed to offset_slice.get(0..)"
-//                             )));
-//                         }
-//                     },
-//                 },
-//                 None => {
-//                     return Err(serde::de::Error::custom(&format!(
-//                         "{default_message} {order_equal_str} failed to string_deserialized.get(offset..)"
-//                     )));
-//                 }
-//             },
-//             None => {
-//                 return Err(serde::de::Error::custom(&format!(
-//                     "{default_message} {order_equal_str} index overflow"
-//                 )));
-//             }
-//         },
-//         None => None,
-//     };
-//     Ok(CatOrderBy { column, order })
-// }
+fn deserialize_cat_order_by<'de, D>(deserializer: D) -> Result<CatOrderBy, D::Error>
+where
+    D: serde::de::Deserializer<'de>,
+{
+    let string_deserialized = {
+        use serde::Deserialize;
+        String::deserialize(deserializer)?
+    };
+    let default_message = "Invalid CatOrderBy:";
+    let column_equal_str = "column=";
+    let order_equal_str = "order=";
+    let column = match string_deserialized.find(column_equal_str) {
+        Some(index) => match index.checked_add(column_equal_str.len()) {
+            Some(offset) => match string_deserialized.get(offset..) {
+                Some(offset_slice) => match offset_slice.find(SPLIT_INNER_URL_PARAMETERS_SYMBOL) {
+                    Some(offset_slice_next_comma_index) => {
+                        match offset_slice.get(0..offset_slice_next_comma_index) {
+                            Some(possible_column) => match {
+                                use std::str::FromStr;
+                                CatColumn::from_str(possible_column)
+                            } {
+                                Ok(column) => column,
+                                Err(e) => {
+                                    return Err(serde::de::Error::custom(&format!(
+                                        "{default_message} {column_equal_str} {e}"
+                                    )));
+                                }
+                            },
+                            None => {
+                                return Err(serde::de::Error::custom(&format!(
+                                    "{default_message} {column_equal_str} failed to offset_slice.get(0..offset_slice_next_comma_index)"
+                                )));
+                            }
+                        }
+                    }
+                    None => match offset_slice.get(0..) {
+                        Some(possible_column) => match {
+                            use std::str::FromStr;
+                            CatColumn::from_str(possible_column)
+                        } {
+                            Ok(column) => column,
+                            Err(e) => {
+                                return Err(serde::de::Error::custom(&format!(
+                                    "{default_message} {column_equal_str} {e}"
+                                )));
+                            }
+                        },
+                        None => {
+                            return Err(serde::de::Error::custom(&format!(
+                                "{default_message} {column_equal_str} failed to offset_slice.get(0..)"
+                            )));
+                        }
+                    },
+                },
+                None => {
+                    return Err(serde::de::Error::custom(&format!(
+                        "{default_message} {column_equal_str} failed to string_deserialized.get(offset..)"
+                    )));
+                }
+            },
+            None => {
+                return Err(serde::de::Error::custom(&format!(
+                    "{default_message} {column_equal_str} index overflow"
+                )));
+            }
+        },
+        None => {
+            return Err(serde::de::Error::custom(&format!(
+                "{default_message} {column_equal_str} not found"
+            )));
+        }
+    };
+    let order = match string_deserialized.find(order_equal_str) {
+        Some(index) => match index.checked_add(order_equal_str.len()) {
+            Some(offset) => match string_deserialized.get(offset..) {
+                Some(offset_slice) => match offset_slice.find(SPLIT_INNER_URL_PARAMETERS_SYMBOL) {
+                    Some(offset_slice_next_comma_index) => {
+                        match offset_slice.get(0..offset_slice_next_comma_index) {
+                            Some(possible_order) => match {
+                                use std::str::FromStr;
+                                crate::server::postgres::order::Order::from_str(possible_order)
+                            } {
+                                Ok(order) => Some(order),
+                                Err(e) => {
+                                    return Err(serde::de::Error::custom(&format!(
+                                        "{default_message} {order_equal_str} {e}"
+                                    )));
+                                }
+                            },
+                            None => {
+                                return Err(serde::de::Error::custom(&format!(
+                                    "{default_message} {order_equal_str} failed to offset_slice.get(0..offset_slice_next_comma_index)"
+                                )));
+                            }
+                        }
+                    }
+                    None => match offset_slice.get(0..) {
+                        Some(possible_order) => match {
+                            use std::str::FromStr;
+                            crate::server::postgres::order::Order::from_str(possible_order)
+                        } {
+                            Ok(order) => Some(order),
+                            Err(e) => {
+                                return Err(serde::de::Error::custom(&format!(
+                                    "{default_message} {order_equal_str} {e}"
+                                )));
+                            }
+                        },
+                        None => {
+                            return Err(serde::de::Error::custom(&format!(
+                                "{default_message} {order_equal_str} failed to offset_slice.get(0..)"
+                            )));
+                        }
+                    },
+                },
+                None => {
+                    return Err(serde::de::Error::custom(&format!(
+                        "{default_message} {order_equal_str} failed to string_deserialized.get(offset..)"
+                    )));
+                }
+            },
+            None => {
+                return Err(serde::de::Error::custom(&format!(
+                    "{default_message} {order_equal_str} index overflow"
+                )));
+            }
+        },
+        None => None,
+    };
+    Ok(CatOrderBy { column, order })
+}
 
-// #[derive(Debug, serde::Serialize, serde::Deserialize)]
-// pub struct CatOrderBy {
-//     pub column: CatColumn,
-//     pub order: Option<crate::server::postgres::order::Order>,
-// }
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
+pub struct CatOrderBy {
+    pub column: CatColumn,
+    pub order: Option<crate::server::postgres::order::Order>,
+}
 
 #[derive(Debug, serde::Deserialize)]
 pub struct ReadByIdParameters {
@@ -227,7 +216,7 @@ pub struct ReadQuery {
     pub id: Option<crate::server::postgres::bigserial_ids::BigserialIds>,
     pub name: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
     pub color: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
-    // pub order_by: Option<CatOrderByWrapper>,
+    pub order_by: Option<CatOrderByWrapper>,
     pub limit: crate::server::postgres::postgres_number::PostgresNumber,
     pub offset: Option<crate::server::postgres::postgres_number::PostgresNumber>,
 }
@@ -254,6 +243,11 @@ impl ReadQuery {
                 value,
             )
         });
+        let order_by = self.order_by.as_ref().map(|value| {
+            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                value,
+            )
+        });
         let limit =
             crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
                 &self.limit,
@@ -268,7 +262,7 @@ impl ReadQuery {
             id,
             name,
             color,
-            // order_by: Option<CatOrderByWrapper>,
+            order_by,
             limit,
             offset,
         }
@@ -281,7 +275,7 @@ pub struct ReadQueryForUrlEncoding {
     pub id: Option<std::string::String>,
     pub name: Option<std::string::String>,
     pub color: Option<std::string::String>,
-    // pub order_by: Option<CatOrderByWrapper>,
+    pub order_by: Option<std::string::String>,
     pub limit: std::string::String,
     pub offset: Option<std::string::String>,
 }
@@ -378,21 +372,21 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadQuery
                     )
                 ));
             }
-            // if let Some(value) = &self.order_by {
-            //     let prefix = match additional_parameters.is_empty() {
-            //         true => "",
-            //         false => " ",
-            //     };
-            //     let order_stringified = match &value.0.order {
-            //         Some(order) => order.to_string(),
-            //         None => crate::server::postgres::order::Order::default().to_string(),
-            //     };
-            //     additional_parameters.push_str(&format!(
-            //         "{prefix}{} {} {order_stringified}",
-            //         crate::server::postgres::constants::ORDER_BY_NAME,
-            //         value.0.column
-            //     ));
-            // }
+            if let Some(value) = &self.order_by {
+                let prefix = match additional_parameters.is_empty() {
+                    true => "",
+                    false => " ",
+                };
+                let order_stringified = match &value.0.order {
+                    Some(order) => order.to_string(),
+                    None => crate::server::postgres::order::Order::default().to_string(),
+                };
+                additional_parameters.push_str(&format!(
+                    "{prefix}{} {} {order_stringified}",
+                    crate::server::postgres::constants::ORDER_BY_NAME,
+                    value.0.column
+                ));
+            }
             {
                 let prefix = match additional_parameters.is_empty() {
                     true => "",
@@ -589,7 +583,7 @@ pub struct ReadPostPayload {
     pub ids: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
     pub name_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
     pub color_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
-    // pub order_by: CatOrderBy,
+    pub order_by: CatOrderBy,
     pub limit: crate::server::postgres::postgres_number::PostgresNumber,
     pub offset: crate::server::postgres::postgres_number::PostgresNumber,
 }
@@ -833,22 +827,22 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadPostP
                 };
                 additional_parameters.push_str(&format!("{prefix} {bind_increments}"));
             }
-            // {
-            //     let prefix = match additional_parameters.is_empty() {
-            //         true => "",
-            //         false => " ",
-            //     };
-            //     let value = &self.order_by;
-            //     let order_stringified = match &value.order {
-            //         Some(order) => order.to_string(),
-            //         None => crate::server::postgres::order::Order::default().to_string(),
-            //     };
-            //     additional_parameters.push_str(&format!(
-            //         "{prefix}{} {} {order_stringified}",
-            //         crate::server::postgres::constants::ORDER_BY_NAME,
-            //         value.column
-            //     ));
-            // }
+            {
+                let prefix = match additional_parameters.is_empty() {
+                    true => "",
+                    false => " ",
+                };
+                let value = &self.order_by;
+                let order_stringified = match &value.order {
+                    Some(order) => order.to_string(),
+                    None => crate::server::postgres::order::Order::default().to_string(),
+                };
+                additional_parameters.push_str(&format!(
+                    "{prefix}{} {} {order_stringified}",
+                    crate::server::postgres::constants::ORDER_BY_NAME,
+                    value.column
+                ));
+            }
             {
                 let prefix = match additional_parameters.is_empty() {
                     true => "",
