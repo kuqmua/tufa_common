@@ -38,7 +38,8 @@ pub struct Cat {
 
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct CatOrderByWrapper(
-    #[serde(deserialize_with = "deserialize_cat_order_by")] pub CatOrderBy,
+    #[serde(deserialize_with = "deserialize_cat_order_by")]
+    pub  crate::server::postgres::order_by::OrderBy<CatColumn>,
 );
 
 impl crate::common::serde_urlencoded::SerdeUrlencodedParameter for CatOrderByWrapper {
@@ -51,7 +52,9 @@ impl crate::common::serde_urlencoded::SerdeUrlencodedParameter for CatOrderByWra
 
 const SPLIT_INNER_URL_PARAMETERS_SYMBOL: char = ',';
 
-fn deserialize_cat_order_by<'de, D>(deserializer: D) -> Result<CatOrderBy, D::Error>
+fn deserialize_cat_order_by<'de, D>(
+    deserializer: D,
+) -> Result<crate::server::postgres::order_by::OrderBy<CatColumn>, D::Error>
 where
     D: serde::de::Deserializer<'de>,
 {
@@ -180,13 +183,7 @@ where
         },
         None => None,
     };
-    Ok(CatOrderBy { column, order })
-}
-
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub struct CatOrderBy {
-    pub column: CatColumn,
-    pub order: Option<crate::server::postgres::order::Order>,
+    Ok(crate::server::postgres::order_by::OrderBy { column, order })
 }
 
 #[derive(Debug, serde::Deserialize)]
@@ -583,7 +580,7 @@ pub struct ReadPostPayload {
     pub ids: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
     pub name_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
     pub color_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
-    pub order_by: CatOrderBy,
+    pub order_by: crate::server::postgres::order_by::OrderBy<CatColumn>,
     pub limit: crate::server::postgres::postgres_number::PostgresNumber,
     pub offset: crate::server::postgres::postgres_number::PostgresNumber,
 }
