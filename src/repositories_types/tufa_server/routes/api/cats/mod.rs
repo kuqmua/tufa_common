@@ -234,42 +234,35 @@ pub struct ReadQuery {
 
 impl ReadQuery {
     pub fn into_url_encoding_version(self) -> ReadQueryForUrlEncoding {
-        let select = self.select.as_ref().map(|value| value.to_string());
-        let id = match &self.id {
-            Some(value) => {
-                let mut handle = value.0.iter().fold(String::from(""), |mut acc, elem| {
-                    acc.push_str(&format!("{elem},"));
-                    acc
-                });
-                handle.pop();
-                Some(handle)
-            }
-            None => None,
-        };
-        let name = match &self.name {
-            Some(value) => {
-                let mut handle = value.0.iter().fold(String::from(""), |mut acc, elem| {
-                    acc.push_str(&format!("{elem},"));
-                    acc
-                });
-                handle.pop();
-                Some(handle)
-            }
-            None => None,
-        };
-        let color = match &self.color {
-            Some(value) => {
-                let mut handle = value.0.iter().fold(String::from(""), |mut acc, elem| {
-                    acc.push_str(&format!("{elem},"));
-                    acc
-                });
-                handle.pop();
-                Some(handle)
-            }
-            None => None,
-        };
-        let limit = self.limit.0;
-        let offset = self.offset.as_ref().map(|value| value.0);
+        let select = self.select.as_ref().map(|value| {
+            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                value,
+            )
+        });
+        let id = self.id.as_ref().map(|value| {
+            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                value,
+            )
+        });
+        let name = self.name.as_ref().map(|value| {
+            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                value,
+            )
+        });
+        let color = self.color.as_ref().map(|value| {
+            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                value,
+            )
+        });
+        let limit =
+            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                &self.limit,
+            );
+        let offset = self.offset.as_ref().map(|value| {
+            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                value,
+            )
+        });
         ReadQueryForUrlEncoding {
             select,
             id,
@@ -289,33 +282,9 @@ pub struct ReadQueryForUrlEncoding {
     pub name: Option<std::string::String>,
     pub color: Option<std::string::String>,
     // pub order_by: Option<CatOrderByWrapper>,
-    pub limit: u32,
-    pub offset: Option<u32>,
+    pub limit: std::string::String,
+    pub offset: Option<std::string::String>,
 }
-
-// impl crate :: common :: serde_urlencoded :: SerdeUrlencodedParameter for
-// CatColumnSelect
-// {
-//     fn serde_urlencoded_parameter(& self) -> Result < std :: string :: String,
-//     crate :: common :: serde_urlencoded :: SerdeUrlencodedParameterErrorNamed
-//     >
-//     {
-//         match serde_urlencoded :: to_string()
-//         {
-//             Ok(ok_value) => Ok(ok_value),
-//             Err(e) =>
-//             {
-//                 println!("{e:#?}");
-//                 Err(crate :: common :: serde_urlencoded ::
-//             SerdeUrlencodedParameterErrorNamed :: UrlEncode
-//             {
-//                 url_encode : e, code_occurence : crate ::
-//                 code_occurence_tufa_common! (),
-//             })
-//             }
-//         }
-//     }
-// }
 
 //todo - make a macro for it?
 //todo - maybe some serde serialization like this https://docs.rs/url_serde/latest/url_serde/

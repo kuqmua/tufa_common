@@ -131,20 +131,7 @@ impl crate::server::postgres::bind_query::BindQuery for Bigserial {
 }
 
 impl crate::common::serde_urlencoded::SerdeUrlencodedParameter for Bigserial {
-    fn serde_urlencoded_parameter(
-        &self,
-    ) -> Result<
-        std::string::String,
-        crate::common::serde_urlencoded::SerdeUrlencodedParameterErrorNamed,
-    > {
-        match serde_urlencoded::to_string(self) {
-            Ok(value) => Ok(value),
-            Err(e) => Err(
-                crate::common::serde_urlencoded::SerdeUrlencodedParameterErrorNamed::UrlEncode {
-                    url_encode: e,
-                    code_occurence: crate::code_occurence_tufa_common!(),
-                },
-            ),
-        }
+    fn serde_urlencoded_parameter(&self) -> std::string::String {
+        self.to_string()
     }
 }
