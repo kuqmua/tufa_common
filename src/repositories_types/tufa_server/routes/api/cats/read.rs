@@ -158,13 +158,15 @@ pub async fn try_read<'a>(
     Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>,
     TryReadErrorNamed,
 > {
+    let f = serde_urlencoded::to_string(parameters.query.into_url_encoding_version()).unwrap();
+    println!("{f}");
     let url = format!(
-        "{server_location}/api/{}{}",
+        "{server_location}/api/{}?{}",
         crate::repositories_types::tufa_server::routes::api::cats::CATS,
-        crate::common::serde_urlencoded::SerdeUrlencodedParameters::serde_urlencoded_parameters(
-            &parameters.query
-        )
-        .unwrap() //todo
+        // crate::common::serde_urlencoded::SerdeUrlencodedParameters::serde_urlencoded_parameters(
+        //     &parameters.query
+        // )
+        f //todo
     );
     println!("{url}");
     match tvfrr_extraction_logic(

@@ -1,6 +1,8 @@
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum SerdeUrlencodedParametersErrorNamed {
     UrlEncode {
+        #[eo_display_with_serialize_deserialize]
+        field: std::string::String,
         #[eo_error_occurence]
         url_encode: SerdeUrlencodedParameterErrorNamed,
         code_occurence: crate::common::code_occurence::CodeOccurence,
