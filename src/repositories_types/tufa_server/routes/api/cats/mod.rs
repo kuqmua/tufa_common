@@ -469,24 +469,10 @@ pub struct UpdateByIdPath {
     pub id: crate::server::postgres::bigserial::Bigserial,
 }
 
-// #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-// pub struct UpdateByIdPayload {
-//     pub name: Option<std::string::String>,
-//     pub color: Option<std::string::String>,
-// }
-
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub enum UpdateByIdPayload {
-    Name {
-        name: std::string::String,
-    },
-    Color {
-        color: std::string::String,
-    },
-    NameColor {
-        name: std::string::String,
-        color: std::string::String,
-    },
+pub struct UpdateByIdPayload {
+    pub name: Option<std::string::String>,
+    pub color: Option<std::string::String>,
 }
 
 #[derive(Debug, serde::Deserialize)]
