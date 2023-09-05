@@ -402,16 +402,6 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadQuery
 }
 
 #[derive(Debug, serde::Deserialize)]
-pub struct DeleteByIdParameters {
-    pub path: DeleteByIdPath,
-}
-
-#[derive(Debug, serde::Deserialize)]
-pub struct DeleteByIdPath {
-    pub id: crate::server::postgres::bigserial::Bigserial,
-}
-
-#[derive(Debug, serde::Deserialize)]
 pub struct DeleteParameters {
     pub query: DeleteQuery,
 }
