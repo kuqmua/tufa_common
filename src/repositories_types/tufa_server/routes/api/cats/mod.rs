@@ -401,17 +401,6 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadQuery
     }
 }
 
-#[derive(Debug, serde::Deserialize)]
-pub struct DeleteParameters {
-    pub query: DeleteQuery,
-}
-
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub struct DeleteQuery {
-    pub name: Option<String>,
-    pub color: Option<String>,
-}
-
 impl ReadQuery {
     pub async fn execute_query(
         self, //impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuer + crate::server::postgres::generate_get_query::GenerateGetQuery
