@@ -401,17 +401,6 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadQuery
     }
 }
 
-//
-// todo
-// The PUT method updates a resource on a server. A PUT request to the /users/20 can be used to update the profile of the user with an ID 20.
-//
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct PutPayload {
-    pub id: crate::server::postgres::bigserial::Bigserial, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
-    pub name: String,
-    pub color: String,
-}
-
 #[derive(Debug, serde::Deserialize)]
 pub struct UpdateByIdParameters {
     pub path: UpdateByIdPath,
