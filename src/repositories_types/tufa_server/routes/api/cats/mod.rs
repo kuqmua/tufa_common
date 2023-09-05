@@ -218,6 +218,17 @@ pub struct ReadQuery {
     pub offset: Option<crate::server::postgres::postgres_number::PostgresNumber>,
 }
 
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
+pub struct ReadQueryForUrlEncoding {
+    select: Option<std::string::String>,
+    id: Option<std::string::String>,
+    name: Option<std::string::String>,
+    color: Option<std::string::String>,
+    order_by: Option<std::string::String>,
+    limit: std::string::String,
+    offset: Option<std::string::String>,
+}
+
 impl ReadQuery {
     pub fn into_url_encoding_version(self) -> ReadQueryForUrlEncoding {
         let select = self.select.as_ref().map(|value| {
@@ -264,17 +275,6 @@ impl ReadQuery {
             offset,
         }
     }
-}
-
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub struct ReadQueryForUrlEncoding {
-    pub select: Option<std::string::String>,
-    pub id: Option<std::string::String>,
-    pub name: Option<std::string::String>,
-    pub color: Option<std::string::String>,
-    pub order_by: Option<std::string::String>,
-    pub limit: std::string::String,
-    pub offset: Option<std::string::String>,
 }
 
 //todo - make a macro for it?

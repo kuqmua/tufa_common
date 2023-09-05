@@ -144,6 +144,11 @@ pub enum TryRead {
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TryReadErrorNamed {
+    QueryEncode {
+        #[eo_display]
+        url_encoding: serde_urlencoded::ser::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
     RequestError {
         #[eo_error_occurence]
         request_error: TryReadRequestError,
@@ -158,15 +163,20 @@ pub async fn try_read<'a>(
     Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>,
     TryReadErrorNamed,
 > {
-    let f = serde_urlencoded::to_string(parameters.query.into_url_encoding_version()).unwrap();
-    println!("{f}");
+    let encoded_query =
+        match serde_urlencoded::to_string(parameters.query.into_url_encoding_version()) {
+            Ok(encoded_query) => encoded_query,
+            Err(e) => {
+                return Err(TryReadErrorNamed::QueryEncode {
+                    url_encoding: e,
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                });
+            }
+        };
+    println!("{encoded_query}");
     let url = format!(
-        "{server_location}/api/{}?{}",
+        "{server_location}/api/{}?{encoded_query}",
         crate::repositories_types::tufa_server::routes::api::cats::CATS,
-        // crate::common::serde_urlencoded::SerdeUrlencodedParameters::serde_urlencoded_parameters(
-        //     &parameters.query
-        // )
-        f //todo
     );
     println!("{url}");
     match tvfrr_extraction_logic(
