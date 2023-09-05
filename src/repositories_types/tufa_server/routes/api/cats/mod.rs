@@ -402,23 +402,6 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadQuery
 }
 
 #[derive(Debug, serde::Deserialize)]
-pub struct UpdateByIdParameters {
-    pub path: UpdateByIdPath,
-    pub payload: UpdateByIdPayload,
-}
-
-#[derive(Debug, serde::Deserialize)]
-pub struct UpdateByIdPath {
-    pub id: crate::server::postgres::bigserial::Bigserial,
-}
-
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct UpdateByIdPayload {
-    pub name: Option<std::string::String>,
-    pub color: Option<std::string::String>,
-}
-
-#[derive(Debug, serde::Deserialize)]
 pub struct DeleteByIdParameters {
     pub path: DeleteByIdPath,
 }
