@@ -201,68 +201,65 @@ pub struct ReadQuery {
     pub limit: crate::server::postgres::postgres_number::PostgresNumber,
     pub offset: Option<crate::server::postgres::postgres_number::PostgresNumber>,
 }
-
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub struct ReadQueryForUrlEncoding {
-    select: Option<std::string::String>,
-    id: Option<std::string::String>,
-    name: Option<std::string::String>,
-    color: Option<std::string::String>,
-    order_by: Option<std::string::String>,
-    limit: std::string::String,
-    offset: Option<std::string::String>,
-}
-
-impl ReadQuery {
-    pub fn into_url_encoding_version(self) -> ReadQueryForUrlEncoding {
-        let select = self.select.as_ref().map(|value| {
+mod read_query {
+    #[derive(Debug, serde::Serialize, serde::Deserialize)]
+    pub struct ReadQueryForUrlEncoding {
+        select: Option<std::string::String>,
+        id: Option<std::string::String>,
+        name: Option<std::string::String>,
+        color: Option<std::string::String>,
+        order_by: Option<std::string::String>,
+        limit: std::string::String,
+        offset: Option<std::string::String>,
+    }
+    impl super::ReadQuery {
+        pub fn into_url_encoding_version(self) -> ReadQueryForUrlEncoding {
+            let select = self.select.as_ref().map(|value| {
             crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
                 value,
             )
         });
-        let id = self.id.as_ref().map(|value| {
+            let id = self.id.as_ref().map(|value| {
             crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
                 value,
             )
         });
-        let name = self.name.as_ref().map(|value| {
+            let name = self.name.as_ref().map(|value| {
             crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
                 value,
             )
         });
-        let color = self.color.as_ref().map(|value| {
+            let color = self.color.as_ref().map(|value| {
             crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
                 value,
             )
         });
-        let order_by = self.order_by.as_ref().map(|value| {
+            let order_by = self.order_by.as_ref().map(|value| {
             crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
                 value,
             )
         });
-        let limit =
+            let limit =
             crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
                 &self.limit,
             );
-        let offset = self.offset.as_ref().map(|value| {
+            let offset = self.offset.as_ref().map(|value| {
             crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
                 value,
             )
         });
-        ReadQueryForUrlEncoding {
-            select,
-            id,
-            name,
-            color,
-            order_by,
-            limit,
-            offset,
+            ReadQueryForUrlEncoding {
+                select,
+                id,
+                name,
+                color,
+                order_by,
+                limit,
+                offset,
+            }
         }
     }
 }
-
-//todo - make a macro for it?
-//todo - maybe some serde serialization like this https://docs.rs/url_serde/latest/url_serde/
 
 impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for ReadQuery {
     fn bind_sqlx_query(
@@ -402,17 +399,6 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadQuery
         println!("{query}");
         query
     }
-}
-
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct CreateParameters {
-    pub payload: CreatePayload,
-}
-
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct CreatePayload {
-    pub name: String,
-    pub color: String,
 }
 
 #[derive(Debug, serde::Deserialize)]
