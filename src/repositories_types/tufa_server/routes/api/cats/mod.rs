@@ -187,22 +187,6 @@ where
 }
 
 #[derive(Debug, serde::Deserialize)]
-pub struct ReadByIdParameters {
-    pub path: ReadByIdPath,
-    pub query: ReadByIdQuery,
-}
-
-#[derive(Debug, serde::Deserialize)]
-pub struct ReadByIdPath {
-    pub id: crate::server::postgres::bigserial::Bigserial,
-}
-
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub struct ReadByIdQuery {
-    pub select: Option<CatColumnSelect>,
-}
-
-#[derive(Debug, serde::Deserialize)]
 pub struct ReadParameters {
     pub query: ReadQuery,
 }
@@ -654,54 +638,6 @@ impl ReadPostPayload {
         crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::Desirable(vec_values)
     }
 }
-
-// pub async fn request_options(
-//     query_string: &std::string::String,
-//     rows: std::pin::Pin<
-//         Box<dyn futures::Stream<Item = Result<sqlx::postgres::PgRow, sqlx::Error>> + Send>,
-//     >,
-//     app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
-// ) {
-//     // let mut rows = crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery::bind_sqlx_query(
-//     //     self,
-//     //     sqlx::query::<sqlx::Postgres>(query_string),
-//     // )
-//     // .fetch(app_info_state.get_postgres_pool());
-//     let mut vec_values = Vec::new();
-//     while let Some(row) = {
-//         match {
-//             use futures::TryStreamExt;
-//             rows.try_next()
-//         }
-//         .await
-//         {
-//             Ok(option_pg_row) => option_pg_row,
-//             Err(e) => {
-//                 let error = crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPost::from(e);
-//                 crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-//                     &error,
-//                     app_info_state.as_ref(),
-//                 );
-//                 return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::from(error);
-//             }
-//         }
-//     } {
-//         match select.options_try_from_sqlx_row(&row) {
-//             Ok(value) => {
-//                 vec_values.push(value);
-//             }
-//             Err(e) => {
-//                 let error = crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPost::from(e);
-//                 crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-//                     &error,
-//                     app_info_state.as_ref(),
-//                 );
-//                 return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::from(error);
-//             }
-//         }
-//     }
-//     vec_values
-// }
 
 impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadPostPayload {
     fn generate_get_query(&self) -> std::string::String {
