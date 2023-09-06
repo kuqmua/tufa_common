@@ -475,143 +475,66 @@ pub struct ReadPostPayload {
     pub offset: crate::server::postgres::postgres_number::PostgresNumber,
 }
 
-impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for ReadPostParameters {
-    fn bind_sqlx_query(
-        self,
-        mut query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
-    ) -> sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments> {
-        use crate::server::postgres::bind_query::BindQuery;
-        if let Some(values) = self.payload.ids {
-            for value in values {
-                query = value.bind_value_to_query(query);
-            }
-        }
-        if let Some(values) = self.payload.name_regex {
-            for value in values {
-                query = value.bind_value_to_query(query);
-            }
-        }
-        if let Some(values) = self.payload.color_regex {
-            for value in values {
-                query = value.bind_value_to_query(query);
-            }
-        }
-        query = self.payload.limit.bind_value_to_query(query);
-        query = self.payload.offset.bind_value_to_query(query);
-        query
-    }
-}
-
 impl ReadPostParameters {
-    pub async fn execute_query(
+    pub async fn prepare_and_execute_query(
         self,
         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
     ) -> crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants
     {
-        let vec_values = {
-            let select = self.payload.select.clone();
-            let query_string =
-                crate::server::postgres::generate_query::GenerateQuery::generate_query(&self);
-            let mut rows =
-                crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery::bind_sqlx_query(
-                    self,
-                    sqlx::query::<sqlx::Postgres>(&query_string),
-                )
-                .fetch(app_info_state.get_postgres_pool());
-            let mut vec_values = Vec::new();
-            while let Some(row) = {
-                match {
-                    use futures::TryStreamExt;
-                    rows.try_next()
-                }
-                .await
-                {
-                    Ok(option_pg_row) => option_pg_row,
-                    Err(e) => {
-                        let error = crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPost::from(e);
-                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                            &error,
-                            app_info_state.as_ref(),
-                        );
-                        return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::from(error);
-                    }
-                }
-            } {
-                match select.options_try_from_sqlx_row(&row) {
-                    Ok(value) => {
-                        vec_values.push(value);
-                    }
-                    Err(e) => {
-                        let error = crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPost::from(e);
-                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                            &error,
-                            app_info_state.as_ref(),
-                        );
-                        return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::from(error);
-                    }
-                }
+        let query_string = {
+            let mut query = std::string::String::from("");
+            {
+                query.push_str(&format!(
+                    "{} {}",
+                    crate::server::postgres::constants::SELECT_NAME,
+                    crate::server::postgres::generate_query::GenerateQuery::generate_query(
+                        &self.payload.select
+                    )
+                ));
             }
-            vec_values
-        };
-        crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::Desirable(vec_values)
-    }
-}
-
-impl crate::server::postgres::generate_query::GenerateQuery for ReadPostParameters {
-    fn generate_query(&self) -> std::string::String {
-        let mut query = std::string::String::from("");
-        {
             query.push_str(&format!(
-                "{} {}",
-                crate::server::postgres::constants::SELECT_NAME,
-                crate::server::postgres::generate_query::GenerateQuery::generate_query(
-                    &self.payload.select
-                )
+                " {} {}",
+                crate::server::postgres::constants::FROM_NAME,
+                crate::repositories_types::tufa_server::routes::api::cats::CATS
             ));
-        }
-        query.push_str(&format!(
-            " {} {}",
-            crate::server::postgres::constants::FROM_NAME,
-            crate::repositories_types::tufa_server::routes::api::cats::CATS
-        ));
-        let additional_parameters = {
-            let mut additional_parameters = std::string::String::from("");
-            let mut increment: u64 = 0;
-            if let Some(value) = &self.payload.ids {
-                let prefix = match additional_parameters.is_empty() {
-                    true => crate::server::postgres::constants::WHERE_NAME.to_string(),
-                    false => format!(" {}", crate::server::postgres::constants::AND_NAME),
-                };
-                let bind_increments = {
-                    let mut bind_increments = value.iter().fold(std::string::String::from(""), |mut acc, element| {
+            let additional_parameters = {
+                let mut additional_parameters = std::string::String::from("");
+                let mut increment: u64 = 0;
+                if let Some(value) = &self.payload.ids {
+                    let prefix = match additional_parameters.is_empty() {
+                        true => crate::server::postgres::constants::WHERE_NAME.to_string(),
+                        false => format!(" {}", crate::server::postgres::constants::AND_NAME),
+                    };
+                    let bind_increments = {
+                        let mut bind_increments = value.iter().fold(std::string::String::from(""), |mut acc, element| {
                         let bind_increments = crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
                             element,
                             &mut increment
                         );
-                       acc.push_str(&format!("{bind_increments}, "));
-                        acc
-                    });
-                    if let false = bind_increments.is_empty() {
-                        bind_increments.pop();
-                        bind_increments.pop();
-                    }
-                    bind_increments
-                };
-                additional_parameters.push_str(&format!(
-                    "{prefix} id = {}({}[{}])",
-                    crate::server::postgres::constants::ANY_NAME,
-                    crate::server::postgres::constants::ARRAY_NAME,
-                    bind_increments
-                ));
-            }
-            if let Some(value) = &self.payload.name_regex {
-                let prefix = match additional_parameters.is_empty() {
-                    true => crate::server::postgres::constants::WHERE_NAME.to_string(),
-                    false => format!(" {}", crate::server::postgres::constants::AND_NAME),
-                };
-                let column_name = "name";
-                let bind_increments = {
-                    let mut bind_increments = value.iter().enumerate().fold(std::string::String::from(""), |mut acc, (index, element)| {
+                        acc.push_str(&format!("{bind_increments}, "));
+                            acc
+                        });
+                        if let false = bind_increments.is_empty() {
+                            bind_increments.pop();
+                            bind_increments.pop();
+                        }
+                        bind_increments
+                    };
+                    additional_parameters.push_str(&format!(
+                        "{prefix} id = {}({}[{}])",
+                        crate::server::postgres::constants::ANY_NAME,
+                        crate::server::postgres::constants::ARRAY_NAME,
+                        bind_increments
+                    ));
+                }
+                if let Some(value) = &self.payload.name_regex {
+                    let prefix = match additional_parameters.is_empty() {
+                        true => crate::server::postgres::constants::WHERE_NAME.to_string(),
+                        false => format!(" {}", crate::server::postgres::constants::AND_NAME),
+                    };
+                    let column_name = "name";
+                    let bind_increments = {
+                        let mut bind_increments = value.iter().enumerate().fold(std::string::String::from(""), |mut acc, (index, element)| {
                         let conjuctive_operator = &element.conjuctive_operator;
                         let bind_increments = crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
                             element,
@@ -627,21 +550,21 @@ impl crate::server::postgres::generate_query::GenerateQuery for ReadPostParamete
                         }
                         acc
                     });
-                    if let false = bind_increments.is_empty() {
-                        bind_increments.pop();
-                    }
-                    bind_increments
-                };
-                additional_parameters.push_str(&format!("{prefix} {bind_increments}"));
-            }
-            if let Some(value) = &self.payload.color_regex {
-                let prefix = match additional_parameters.is_empty() {
-                    true => crate::server::postgres::constants::WHERE_NAME.to_string(),
-                    false => format!(" {}", crate::server::postgres::constants::AND_NAME),
-                };
-                let column_name = "color";
-                let bind_increments = {
-                    let mut bind_increments = value.iter().enumerate().fold(std::string::String::from(""), |mut acc, (index, element)| {
+                        if let false = bind_increments.is_empty() {
+                            bind_increments.pop();
+                        }
+                        bind_increments
+                    };
+                    additional_parameters.push_str(&format!("{prefix} {bind_increments}"));
+                }
+                if let Some(value) = &self.payload.color_regex {
+                    let prefix = match additional_parameters.is_empty() {
+                        true => crate::server::postgres::constants::WHERE_NAME.to_string(),
+                        false => format!(" {}", crate::server::postgres::constants::AND_NAME),
+                    };
+                    let column_name = "color";
+                    let bind_increments = {
+                        let mut bind_increments = value.iter().enumerate().fold(std::string::String::from(""), |mut acc, (index, element)| {
                         let conjuctive_operator = &element.conjuctive_operator;
                         let bind_increments = crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
                             element,
@@ -657,61 +580,141 @@ impl crate::server::postgres::generate_query::GenerateQuery for ReadPostParamete
                         }
                         acc
                     });
-                    if let false = bind_increments.is_empty() {
-                        bind_increments.pop();
-                    }
-                    bind_increments
-                };
-                additional_parameters.push_str(&format!("{prefix} {bind_increments}"));
-            }
-            {
-                let prefix = match additional_parameters.is_empty() {
-                    true => "",
-                    false => " ",
-                };
-                let value = &self.payload.order_by;
-                let order_stringified = match &value.order {
-                    Some(order) => order.to_string(),
-                    None => crate::server::postgres::order::Order::default().to_string(),
-                };
-                additional_parameters.push_str(&format!(
-                    "{prefix}{} {} {order_stringified}",
-                    crate::server::postgres::constants::ORDER_BY_NAME,
-                    value.column
-                ));
-            }
-            {
-                let prefix = match additional_parameters.is_empty() {
-                    true => "",
-                    false => " ",
-                };
-                additional_parameters.push_str(&format!(
-                    "{prefix}{} {}",
-                    crate::server::postgres::constants::LIMIT_NAME,
-                    crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
-                        &self.payload.limit,
-                        &mut increment
-                    )
-                ));
-            }
-            {
-                let prefix = match additional_parameters.is_empty() {
-                    true => "",
-                    false => " ",
-                };
-                additional_parameters.push_str(&format!(
-                    "{prefix}{} {}",
-                    crate::server::postgres::constants::OFFSET_NAME,
-                    crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
-                        &self.payload.offset,
-                        &mut increment
-                    )
-                ));
-            }
-            additional_parameters
+                        if let false = bind_increments.is_empty() {
+                            bind_increments.pop();
+                        }
+                        bind_increments
+                    };
+                    additional_parameters.push_str(&format!("{prefix} {bind_increments}"));
+                }
+                {
+                    let prefix = match additional_parameters.is_empty() {
+                        true => "",
+                        false => " ",
+                    };
+                    let value = &self.payload.order_by;
+                    let order_stringified = match &value.order {
+                        Some(order) => order.to_string(),
+                        None => crate::server::postgres::order::Order::default().to_string(),
+                    };
+                    additional_parameters.push_str(&format!(
+                        "{prefix}{} {} {order_stringified}",
+                        crate::server::postgres::constants::ORDER_BY_NAME,
+                        value.column
+                    ));
+                }
+                {
+                    let prefix = match additional_parameters.is_empty() {
+                        true => "",
+                        false => " ",
+                    };
+                    additional_parameters.push_str(&format!(
+                        "{prefix}{} {}",
+                        crate::server::postgres::constants::LIMIT_NAME,
+                        crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
+                            &self.payload.limit,
+                            &mut increment
+                        )
+                    ));
+                }
+                {
+                    let prefix = match additional_parameters.is_empty() {
+                        true => "",
+                        false => " ",
+                    };
+                    additional_parameters.push_str(&format!(
+                        "{prefix}{} {}",
+                        crate::server::postgres::constants::OFFSET_NAME,
+                        crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
+                            &self.payload.offset,
+                            &mut increment
+                        )
+                    ));
+                }
+                additional_parameters
+            };
+            query.push_str(&format!(" {additional_parameters}"));
+            println!("{query}");
+            query
         };
-        query.push_str(&format!(" {additional_parameters}"));
-        println!("{query}");
-        query
+        let binded_query = {
+            let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
+            if let Some(values) = self.payload.ids {
+                for value in values {
+                    query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                        value, query,
+                    );
+                }
+            }
+            if let Some(values) = self.payload.name_regex {
+                for value in values {
+                    query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                        value, query,
+                    );
+                }
+            }
+            if let Some(values) = self.payload.color_regex {
+                for value in values {
+                    query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                        value, query,
+                    );
+                }
+            }
+            query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                self.payload.limit,
+                query,
+            );
+            query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                self.payload.offset,
+                query,
+            );
+            query
+        };
+        let vec_values = match try_execute_query(binded_query, self.payload.select, app_info_state)
+            .await
+        {
+            Ok(vec_values) => vec_values,
+            Err(e) => {
+                let error = crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPost::from(e);
+                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                    &error,
+                    app_info_state.as_ref(),
+                );
+                return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::from(error);
+            }
+        };
+        crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::Desirable(vec_values)
     }
+}
+
+async fn try_execute_query(
+    binded_query: sqlx::query::Query<'_, sqlx::Postgres, sqlx::postgres::PgArguments>,
+    select: CatColumnSelect,
+    app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
+) -> Result<Vec<CatOptions>, sqlx::Error> {
+    let mut rows = binded_query.fetch(app_info_state.get_postgres_pool());
+    let mut vec_values = Vec::new();
+    while let Some(row) = {
+        match {
+            use futures::TryStreamExt;
+            rows.try_next()
+        }
+        .await
+        {
+            Ok(option_pg_row) => option_pg_row,
+            Err(e) => {
+                return Err(e);
+            }
+        }
+    } {
+        match select.options_try_from_sqlx_row(&row) {
+            Ok(value) => {
+                vec_values.push(value);
+            }
+            Err(e) => {
+                return Err(e);
+            }
+        }
+    }
+    Ok(vec_values)
 }
