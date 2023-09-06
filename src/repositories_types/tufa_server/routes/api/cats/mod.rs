@@ -262,145 +262,20 @@ mod read_query {
     }
 }
 
-impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for ReadParameters {
-    fn bind_sqlx_query(
-        self,
-        mut query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
-    ) -> sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments> {
-        use crate::server::postgres::bind_query::BindQuery;
-        if let Some(value) = self.query.id {
-            query = value.bind_value_to_query(query);
-        }
-        if let Some(value) = self.query.name {
-            query = value.bind_value_to_query(query);
-        }
-        if let Some(value) = self.query.color {
-            query = value.bind_value_to_query(query);
-        }
-        query = self.query.limit.bind_value_to_query(query);
-        if let Some(value) = self.query.offset {
-            query = value.bind_value_to_query(query);
-        }
-        query
-    }
-}
+// impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for ReadParameters {
+//     fn bind_sqlx_query(
+//         self,
+//         mut query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
+//     ) -> sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments> {
 
-impl crate::server::postgres::generate_query::GenerateQuery for ReadParameters {
-    fn generate_query(&self) -> std::string::String {
-        // SELECT id,name,color FROM cats WHERE id = ANY(ARRAY[$1, $2, $3, $4]) AND name = ANY(ARRAY[$5, $6]) AND color = ANY(ARRAY[$7]) LIMIT $8
-        let mut query = std::string::String::from("");
-        {
-            query.push_str(&format!(
-                "{} {}",
-                crate::server::postgres::constants::SELECT_NAME,
-                crate::server::postgres::generate_query::GenerateQuery::generate_query(
-                    &CatColumnSelect::from(self.query.select.clone())
-                )
-            ));
-        }
-        query.push_str(&format!(
-            " {} {}",
-            crate::server::postgres::constants::FROM_NAME,
-            crate::repositories_types::tufa_server::routes::api::cats::CATS
-        ));
-        let additional_parameters = {
-            let mut additional_parameters = std::string::String::from("");
-            let mut increment: u64 = 0;
-            if let Some(value) = &self.query.id {
-                let prefix = match additional_parameters.is_empty() {
-                    true => crate::server::postgres::constants::WHERE_NAME.to_string(),
-                    false => format!(" {}", crate::server::postgres::constants::AND_NAME),
-                };
-                additional_parameters.push_str(&format!(
-                    "{prefix} id = {}({}[{}])",
-                    crate::server::postgres::constants::ANY_NAME,
-                    crate::server::postgres::constants::ARRAY_NAME,
-                    crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
-                        value,
-                        &mut increment
-                    )
-                ));
-            }
-            if let Some(value) = &self.query.name {
-                let prefix = match additional_parameters.is_empty() {
-                    true => crate::server::postgres::constants::WHERE_NAME.to_string(),
-                    false => format!(" {}", crate::server::postgres::constants::AND_NAME),
-                };
-                additional_parameters.push_str(&format!(
-                    "{prefix} name = {}({}[{}])",
-                    crate::server::postgres::constants::ANY_NAME,
-                    crate::server::postgres::constants::ARRAY_NAME,
-                    crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
-                        value,
-                        &mut increment
-                    )
-                ));
-            }
-            if let Some(value) = &self.query.color {
-                let prefix = match additional_parameters.is_empty() {
-                    true => crate::server::postgres::constants::WHERE_NAME.to_string(),
-                    false => format!(" {}", crate::server::postgres::constants::AND_NAME),
-                };
-                additional_parameters.push_str(&format!(
-                    "{prefix} color = {}({}[{}])",
-                    crate::server::postgres::constants::ANY_NAME,
-                    crate::server::postgres::constants::ARRAY_NAME,
-                    crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
-                        value,
-                        &mut increment
-                    )
-                ));
-            }
-            if let Some(value) = &self.query.order_by {
-                let prefix = match additional_parameters.is_empty() {
-                    true => "",
-                    false => " ",
-                };
-                let order_stringified = match &value.0.order {
-                    Some(order) => order.to_string(),
-                    None => crate::server::postgres::order::Order::default().to_string(),
-                };
-                additional_parameters.push_str(&format!(
-                    "{prefix}{} {} {order_stringified}",
-                    crate::server::postgres::constants::ORDER_BY_NAME,
-                    value.0.column
-                ));
-            }
-            {
-                let prefix = match additional_parameters.is_empty() {
-                    true => "",
-                    false => " ",
-                };
-                additional_parameters.push_str(&format!(
-                    "{prefix}{} {}",
-                    crate::server::postgres::constants::LIMIT_NAME,
-                    crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
-                        &self.query.limit,
-                        &mut increment
-                    )
-                ));
-            }
-            if let Some(value) = &self.query.offset {
-                let prefix = match additional_parameters.is_empty() {
-                    true => "",
-                    false => " ",
-                };
-                additional_parameters.push_str(&format!(
-                    "{prefix}{} {}",
-                    crate::server::postgres::constants::OFFSET_NAME,
-                    crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
-                        value,
-                        &mut increment
-                    )
-                ));
-            }
-            additional_parameters
-        };
-        query.push_str(&format!(" {additional_parameters}"));
-        println!("{query}");
-        query
-    }
-}
+//     }
+// }
+
+// impl crate::server::postgres::generate_query::GenerateQuery for ReadParameters {
+//     fn generate_query(&self) -> std::string::String {
+
+//     }
+// }
 
 impl ReadParameters {
     pub async fn execute_query(
@@ -408,16 +283,148 @@ impl ReadParameters {
         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
     ) -> crate::repositories_types::tufa_server::routes::api::cats::read::TryReadResponseVariants
     {
+        let select = CatColumnSelect::from(self.query.select.clone());
+        let query_string = {
+            let mut query = std::string::String::from("");
+            {
+                query.push_str(&format!(
+                    "{} {}",
+                    crate::server::postgres::constants::SELECT_NAME,
+                    crate::server::postgres::generate_query::GenerateQuery::generate_query(&select)
+                ));
+            }
+            query.push_str(&format!(
+                " {} {}",
+                crate::server::postgres::constants::FROM_NAME,
+                crate::repositories_types::tufa_server::routes::api::cats::CATS
+            ));
+            let additional_parameters = {
+                let mut additional_parameters = std::string::String::from("");
+                let mut increment: u64 = 0;
+                if let Some(value) = &self.query.id {
+                    let prefix = match additional_parameters.is_empty() {
+                        true => crate::server::postgres::constants::WHERE_NAME.to_string(),
+                        false => format!(" {}", crate::server::postgres::constants::AND_NAME),
+                    };
+                    additional_parameters.push_str(&format!(
+                        "{prefix} id = {}({}[{}])",
+                        crate::server::postgres::constants::ANY_NAME,
+                        crate::server::postgres::constants::ARRAY_NAME,
+                        crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
+                            value,
+                            &mut increment
+                        )
+                    ));
+                }
+                if let Some(value) = &self.query.name {
+                    let prefix = match additional_parameters.is_empty() {
+                        true => crate::server::postgres::constants::WHERE_NAME.to_string(),
+                        false => format!(" {}", crate::server::postgres::constants::AND_NAME),
+                    };
+                    additional_parameters.push_str(&format!(
+                        "{prefix} name = {}({}[{}])",
+                        crate::server::postgres::constants::ANY_NAME,
+                        crate::server::postgres::constants::ARRAY_NAME,
+                        crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
+                            value,
+                            &mut increment
+                        )
+                    ));
+                }
+                if let Some(value) = &self.query.color {
+                    let prefix = match additional_parameters.is_empty() {
+                        true => crate::server::postgres::constants::WHERE_NAME.to_string(),
+                        false => format!(" {}", crate::server::postgres::constants::AND_NAME),
+                    };
+                    additional_parameters.push_str(&format!(
+                        "{prefix} color = {}({}[{}])",
+                        crate::server::postgres::constants::ANY_NAME,
+                        crate::server::postgres::constants::ARRAY_NAME,
+                        crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
+                            value,
+                            &mut increment
+                        )
+                    ));
+                }
+                if let Some(value) = &self.query.order_by {
+                    let prefix = match additional_parameters.is_empty() {
+                        true => "",
+                        false => " ",
+                    };
+                    let order_stringified = match &value.0.order {
+                        Some(order) => order.to_string(),
+                        None => crate::server::postgres::order::Order::default().to_string(),
+                    };
+                    additional_parameters.push_str(&format!(
+                        "{prefix}{} {} {order_stringified}",
+                        crate::server::postgres::constants::ORDER_BY_NAME,
+                        value.0.column
+                    ));
+                }
+                {
+                    let prefix = match additional_parameters.is_empty() {
+                        true => "",
+                        false => " ",
+                    };
+                    additional_parameters.push_str(&format!(
+                        "{prefix}{} {}",
+                        crate::server::postgres::constants::LIMIT_NAME,
+                        crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
+                            &self.query.limit,
+                            &mut increment
+                        )
+                    ));
+                }
+                if let Some(value) = &self.query.offset {
+                    let prefix = match additional_parameters.is_empty() {
+                        true => "",
+                        false => " ",
+                    };
+                    additional_parameters.push_str(&format!(
+                        "{prefix}{} {}",
+                        crate::server::postgres::constants::OFFSET_NAME,
+                        crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
+                            value,
+                            &mut increment
+                        )
+                    ));
+                }
+                additional_parameters
+            };
+            query.push_str(&format!(" {additional_parameters}"));
+            println!("{query}");
+            query
+        };
+        let binded_query = {
+            let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
+            if let Some(value) = self.query.id {
+                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                    value, query,
+                );
+            }
+            if let Some(value) = self.query.name {
+                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                    value, query,
+                );
+            }
+            if let Some(value) = self.query.color {
+                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                    value, query,
+                );
+            }
+            query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                self.query.limit,
+                query,
+            );
+            if let Some(value) = self.query.offset {
+                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                    value, query,
+                );
+            }
+            query
+        };
         let vec_values = {
-            let select = CatColumnSelect::from(self.query.select.clone());
-            let query_string =
-                crate::server::postgres::generate_query::GenerateQuery::generate_query(&self);
-            let mut rows =
-                crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery::bind_sqlx_query(
-                    self,
-                    sqlx::query::<sqlx::Postgres>(&query_string),
-                )
-                .fetch(app_info_state.get_postgres_pool());
+            let mut rows = binded_query.fetch(app_info_state.get_postgres_pool());
             let mut vec_values = Vec::new();
             while let Some(row) = {
                 match {

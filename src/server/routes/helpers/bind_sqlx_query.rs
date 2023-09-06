@@ -23,9 +23,9 @@
 //     }
 // }
 
-pub trait BindSqlxQuery {
-    fn bind_sqlx_query(
-        self,
-        query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
-    ) -> sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>;
-}
+// pub trait BindSqlxQuery {
+//     fn bind_sqlx_query(
+//         self,
+//         query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
+//     ) -> sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>;
+// }
