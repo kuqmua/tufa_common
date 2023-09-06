@@ -670,51 +670,43 @@ impl ReadPostParameters {
             );
             query
         };
-        let vec_values = match try_execute_query(binded_query, self.payload.select, app_info_state)
-            .await
-        {
-            Ok(vec_values) => vec_values,
-            Err(e) => {
-                let error = crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPost::from(e);
-                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                    &error,
-                    app_info_state.as_ref(),
-                );
-                return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::from(error);
+        let vec_values = {
+            let mut rows = binded_query.fetch(app_info_state.get_postgres_pool());
+            let mut vec_values = Vec::new();
+            while let Some(row) = {
+                match {
+                    use futures::TryStreamExt;
+                    rows.try_next()
+                }
+                .await
+                {
+                    Ok(option_pg_row) => option_pg_row,
+                    Err(e) => {
+                        let error = crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPost::from(e);
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::from(error);
+                    }
+                }
+            } {
+                match self.payload.select.options_try_from_sqlx_row(&row) {
+                    Ok(value) => {
+                        vec_values.push(value);
+                    }
+                    Err(e) => {
+                        let error = crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPost::from(e);
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::from(error);
+                    }
+                }
             }
+            vec_values
         };
         crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::Desirable(vec_values)
     }
-}
-
-async fn try_execute_query(
-    binded_query: sqlx::query::Query<'_, sqlx::Postgres, sqlx::postgres::PgArguments>,
-    select: CatColumnSelect,
-    app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
-) -> Result<Vec<CatOptions>, sqlx::Error> {
-    let mut rows = binded_query.fetch(app_info_state.get_postgres_pool());
-    let mut vec_values = Vec::new();
-    while let Some(row) = {
-        match {
-            use futures::TryStreamExt;
-            rows.try_next()
-        }
-        .await
-        {
-            Ok(option_pg_row) => option_pg_row,
-            Err(e) => {
-                return Err(e);
-            }
-        }
-    } {
-        match select.options_try_from_sqlx_row(&row) {
-            Ok(value) => {
-                vec_values.push(value);
-            }
-            Err(e) => {
-                return Err(e);
-            }
-        }
-    }
-    Ok(vec_values)
 }
