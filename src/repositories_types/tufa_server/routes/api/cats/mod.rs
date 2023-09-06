@@ -477,41 +477,41 @@ pub struct ReadPostPayload {
     pub offset: crate::server::postgres::postgres_number::PostgresNumber,
 }
 
-impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for ReadPostPayload {
+impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for ReadPostParameters {
     fn bind_sqlx_query(
         self,
         mut query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
     ) -> sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments> {
         use crate::server::postgres::bind_query::BindQuery;
-        if let Some(values) = self.ids {
+        if let Some(values) = self.payload.ids {
             for value in values {
                 query = value.bind_value_to_query(query);
             }
         }
-        if let Some(values) = self.name_regex {
+        if let Some(values) = self.payload.name_regex {
             for value in values {
                 query = value.bind_value_to_query(query);
             }
         }
-        if let Some(values) = self.color_regex {
+        if let Some(values) = self.payload.color_regex {
             for value in values {
                 query = value.bind_value_to_query(query);
             }
         }
-        query = self.limit.bind_value_to_query(query);
-        query = self.offset.bind_value_to_query(query);
+        query = self.payload.limit.bind_value_to_query(query);
+        query = self.payload.offset.bind_value_to_query(query);
         query
     }
 }
 
-impl ReadPostPayload {
+impl ReadPostParameters {
     pub async fn execute_query(
         self,
         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
     ) -> crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants
     {
         let vec_values = {
-            let select = self.select.clone();
+            let select = self.payload.select.clone();
             let query_string =
                 crate::server::postgres::generate_get_query::GenerateGetQuery::generate_get_query(
                     &self,
@@ -561,7 +561,7 @@ impl ReadPostPayload {
     }
 }
 
-impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadPostPayload {
+impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadPostParameters {
     fn generate_get_query(&self) -> std::string::String {
         let mut query = std::string::String::from("");
         {
@@ -569,7 +569,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadPostP
                 "{} {}",
                 crate::server::postgres::constants::SELECT_NAME,
                 crate::server::postgres::generate_get_query::GenerateGetQuery::generate_get_query(
-                    &self.select
+                    &self.payload.select
                 )
             ));
         }
@@ -581,7 +581,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadPostP
         let additional_parameters = {
             let mut additional_parameters = std::string::String::from("");
             let mut increment: u64 = 0;
-            if let Some(value) = &self.ids {
+            if let Some(value) = &self.payload.ids {
                 let prefix = match additional_parameters.is_empty() {
                     true => crate::server::postgres::constants::WHERE_NAME.to_string(),
                     false => format!(" {}", crate::server::postgres::constants::AND_NAME),
@@ -608,7 +608,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadPostP
                     bind_increments
                 ));
             }
-            if let Some(value) = &self.name_regex {
+            if let Some(value) = &self.payload.name_regex {
                 let prefix = match additional_parameters.is_empty() {
                     true => crate::server::postgres::constants::WHERE_NAME.to_string(),
                     false => format!(" {}", crate::server::postgres::constants::AND_NAME),
@@ -638,7 +638,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadPostP
                 };
                 additional_parameters.push_str(&format!("{prefix} {bind_increments}"));
             }
-            if let Some(value) = &self.color_regex {
+            if let Some(value) = &self.payload.color_regex {
                 let prefix = match additional_parameters.is_empty() {
                     true => crate::server::postgres::constants::WHERE_NAME.to_string(),
                     false => format!(" {}", crate::server::postgres::constants::AND_NAME),
@@ -673,7 +673,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadPostP
                     true => "",
                     false => " ",
                 };
-                let value = &self.order_by;
+                let value = &self.payload.order_by;
                 let order_stringified = match &value.order {
                     Some(order) => order.to_string(),
                     None => crate::server::postgres::order::Order::default().to_string(),
@@ -693,7 +693,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadPostP
                     "{prefix}{} {}",
                     crate::server::postgres::constants::LIMIT_NAME,
                     crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
-                        &self.limit,
+                        &self.payload.limit,
                         &mut increment
                     )
                 ));
@@ -707,7 +707,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadPostP
                     "{prefix}{} {}",
                     crate::server::postgres::constants::OFFSET_NAME,
                     crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
-                        &self.offset,
+                        &self.payload.offset,
                         &mut increment
                     )
                 ));
