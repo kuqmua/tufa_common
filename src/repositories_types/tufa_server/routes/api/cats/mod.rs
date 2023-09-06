@@ -285,15 +285,15 @@ impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for ReadPara
     }
 }
 
-impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadParameters {
-    fn generate_get_query(&self) -> std::string::String {
+impl crate::server::postgres::generate_query::GenerateQuery for ReadParameters {
+    fn generate_query(&self) -> std::string::String {
         // SELECT id,name,color FROM cats WHERE id = ANY(ARRAY[$1, $2, $3, $4]) AND name = ANY(ARRAY[$5, $6]) AND color = ANY(ARRAY[$7]) LIMIT $8
         let mut query = std::string::String::from("");
         {
             query.push_str(&format!(
                 "{} {}",
                 crate::server::postgres::constants::SELECT_NAME,
-                crate::server::postgres::generate_get_query::GenerateGetQuery::generate_get_query(
+                crate::server::postgres::generate_query::GenerateQuery::generate_query(
                     &CatColumnSelect::from(self.query.select.clone())
                 )
             ));
@@ -404,16 +404,14 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadParam
 
 impl ReadParameters {
     pub async fn execute_query(
-        self, //impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuer + crate::server::postgres::generate_get_query::GenerateGetQuery
+        self, //impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuer + crate::server::postgres::generate_query::GenerateQuery
         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
     ) -> crate::repositories_types::tufa_server::routes::api::cats::read::TryReadResponseVariants
     {
         let vec_values = {
             let select = CatColumnSelect::from(self.query.select.clone());
             let query_string =
-                crate::server::postgres::generate_get_query::GenerateGetQuery::generate_get_query(
-                    &self,
-                );
+                crate::server::postgres::generate_query::GenerateQuery::generate_query(&self);
             let mut rows =
                 crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery::bind_sqlx_query(
                     self,
@@ -513,9 +511,7 @@ impl ReadPostParameters {
         let vec_values = {
             let select = self.payload.select.clone();
             let query_string =
-                crate::server::postgres::generate_get_query::GenerateGetQuery::generate_get_query(
-                    &self,
-                );
+                crate::server::postgres::generate_query::GenerateQuery::generate_query(&self);
             let mut rows =
                 crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery::bind_sqlx_query(
                     self,
@@ -561,14 +557,14 @@ impl ReadPostParameters {
     }
 }
 
-impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadPostParameters {
-    fn generate_get_query(&self) -> std::string::String {
+impl crate::server::postgres::generate_query::GenerateQuery for ReadPostParameters {
+    fn generate_query(&self) -> std::string::String {
         let mut query = std::string::String::from("");
         {
             query.push_str(&format!(
                 "{} {}",
                 crate::server::postgres::constants::SELECT_NAME,
-                crate::server::postgres::generate_get_query::GenerateGetQuery::generate_get_query(
+                crate::server::postgres::generate_query::GenerateQuery::generate_query(
                     &self.payload.select
                 )
             ));
