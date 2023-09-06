@@ -1,10 +1,12 @@
 pub mod create;
+pub mod create_or_update;
 pub mod create_or_update_by_id;
 pub mod delete;
 pub mod delete_by_id;
 pub mod read;
 pub mod read_by_id;
 pub mod read_post;
+pub mod update;
 pub mod update_by_id;
 //todo openapi
 pub static CATS: &str = "cats";
