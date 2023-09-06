@@ -1,4 +1,3 @@
-pub mod bind_sqlx_query;
 pub mod get_postgres_pool;
 pub mod hardcode;
 pub mod json_extractor_error;

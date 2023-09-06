@@ -216,39 +216,39 @@ mod read_query {
     impl super::ReadQuery {
         pub fn into_url_encoding_version(self) -> ReadQueryForUrlEncoding {
             let select = self.select.as_ref().map(|value| {
-            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                value,
-            )
-        });
+                crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                    value,
+                )
+            });
             let id = self.id.as_ref().map(|value| {
-            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                value,
-            )
-        });
+                crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                    value,
+                )
+            });
             let name = self.name.as_ref().map(|value| {
-            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                value,
-            )
-        });
+                crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                    value,
+                )
+            });
             let color = self.color.as_ref().map(|value| {
-            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                value,
-            )
-        });
+                crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                    value,
+                )
+            });
             let order_by = self.order_by.as_ref().map(|value| {
-            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                value,
-            )
-        });
+                crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                    value,
+                )
+            });
             let limit =
-            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                &self.limit,
-            );
+                crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                    &self.limit,
+                );
             let offset = self.offset.as_ref().map(|value| {
-            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                value,
-            )
-        });
+                crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                    value,
+                )
+            });
             ReadQueryForUrlEncoding {
                 select,
                 id,
@@ -261,21 +261,6 @@ mod read_query {
         }
     }
 }
-
-// impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for ReadParameters {
-//     fn bind_sqlx_query(
-//         self,
-//         mut query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
-//     ) -> sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments> {
-
-//     }
-// }
-
-// impl crate::server::postgres::generate_query::GenerateQuery for ReadParameters {
-//     fn generate_query(&self) -> std::string::String {
-
-//     }
-// }
 
 impl ReadParameters {
     pub async fn execute_query(
