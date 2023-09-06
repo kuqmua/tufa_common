@@ -52,8 +52,6 @@ impl crate::common::serde_urlencoded::SerdeUrlencodedParameter for CatOrderByWra
     }
 }
 
-const SPLIT_INNER_URL_PARAMETERS_SYMBOL: char = ',';
-
 fn deserialize_cat_order_by<'de, D>(
     deserializer: D,
 ) -> Result<crate::server::postgres::order_by::OrderBy<CatColumn>, D::Error>
@@ -64,13 +62,14 @@ where
         use serde::Deserialize;
         String::deserialize(deserializer)?
     };
+    let split_inner_url_parameters_symbol = ',';
     let default_message = "Invalid CatOrderBy:";
     let column_equal_str = "column=";
     let order_equal_str = "order=";
     let column = match string_deserialized.find(column_equal_str) {
         Some(index) => match index.checked_add(column_equal_str.len()) {
             Some(offset) => match string_deserialized.get(offset..) {
-                Some(offset_slice) => match offset_slice.find(SPLIT_INNER_URL_PARAMETERS_SYMBOL) {
+                Some(offset_slice) => match offset_slice.find(split_inner_url_parameters_symbol) {
                     Some(offset_slice_next_comma_index) => {
                         match offset_slice.get(0..offset_slice_next_comma_index) {
                             Some(possible_column) => match {
@@ -131,7 +130,7 @@ where
     let order = match string_deserialized.find(order_equal_str) {
         Some(index) => match index.checked_add(order_equal_str.len()) {
             Some(offset) => match string_deserialized.get(offset..) {
-                Some(offset_slice) => match offset_slice.find(SPLIT_INNER_URL_PARAMETERS_SYMBOL) {
+                Some(offset_slice) => match offset_slice.find(split_inner_url_parameters_symbol) {
                     Some(offset_slice_next_comma_index) => {
                         match offset_slice.get(0..offset_slice_next_comma_index) {
                             Some(possible_order) => match {
@@ -263,30 +262,30 @@ mod read_query {
     }
 }
 
-impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for ReadQuery {
+impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuery for ReadParameters {
     fn bind_sqlx_query(
         self,
         mut query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
     ) -> sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments> {
         use crate::server::postgres::bind_query::BindQuery;
-        if let Some(value) = self.id {
+        if let Some(value) = self.query.id {
             query = value.bind_value_to_query(query);
         }
-        if let Some(value) = self.name {
+        if let Some(value) = self.query.name {
             query = value.bind_value_to_query(query);
         }
-        if let Some(value) = self.color {
+        if let Some(value) = self.query.color {
             query = value.bind_value_to_query(query);
         }
-        query = self.limit.bind_value_to_query(query);
-        if let Some(value) = self.offset {
+        query = self.query.limit.bind_value_to_query(query);
+        if let Some(value) = self.query.offset {
             query = value.bind_value_to_query(query);
         }
         query
     }
 }
 
-impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadQuery {
+impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadParameters {
     fn generate_get_query(&self) -> std::string::String {
         // SELECT id,name,color FROM cats WHERE id = ANY(ARRAY[$1, $2, $3, $4]) AND name = ANY(ARRAY[$5, $6]) AND color = ANY(ARRAY[$7]) LIMIT $8
         let mut query = std::string::String::from("");
@@ -295,7 +294,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadQuery
                 "{} {}",
                 crate::server::postgres::constants::SELECT_NAME,
                 crate::server::postgres::generate_get_query::GenerateGetQuery::generate_get_query(
-                    &CatColumnSelect::from(self.select.clone())
+                    &CatColumnSelect::from(self.query.select.clone())
                 )
             ));
         }
@@ -307,7 +306,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadQuery
         let additional_parameters = {
             let mut additional_parameters = std::string::String::from("");
             let mut increment: u64 = 0;
-            if let Some(value) = &self.id {
+            if let Some(value) = &self.query.id {
                 let prefix = match additional_parameters.is_empty() {
                     true => crate::server::postgres::constants::WHERE_NAME.to_string(),
                     false => format!(" {}", crate::server::postgres::constants::AND_NAME),
@@ -322,7 +321,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadQuery
                     )
                 ));
             }
-            if let Some(value) = &self.name {
+            if let Some(value) = &self.query.name {
                 let prefix = match additional_parameters.is_empty() {
                     true => crate::server::postgres::constants::WHERE_NAME.to_string(),
                     false => format!(" {}", crate::server::postgres::constants::AND_NAME),
@@ -337,7 +336,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadQuery
                     )
                 ));
             }
-            if let Some(value) = &self.color {
+            if let Some(value) = &self.query.color {
                 let prefix = match additional_parameters.is_empty() {
                     true => crate::server::postgres::constants::WHERE_NAME.to_string(),
                     false => format!(" {}", crate::server::postgres::constants::AND_NAME),
@@ -352,7 +351,7 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadQuery
                     )
                 ));
             }
-            if let Some(value) = &self.order_by {
+            if let Some(value) = &self.query.order_by {
                 let prefix = match additional_parameters.is_empty() {
                     true => "",
                     false => " ",
@@ -376,12 +375,12 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadQuery
                     "{prefix}{} {}",
                     crate::server::postgres::constants::LIMIT_NAME,
                     crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
-                        &self.limit,
+                        &self.query.limit,
                         &mut increment
                     )
                 ));
             }
-            if let Some(value) = &self.offset {
+            if let Some(value) = &self.query.offset {
                 let prefix = match additional_parameters.is_empty() {
                     true => "",
                     false => " ",
@@ -403,14 +402,14 @@ impl crate::server::postgres::generate_get_query::GenerateGetQuery for ReadQuery
     }
 }
 
-impl ReadQuery {
+impl ReadParameters {
     pub async fn execute_query(
         self, //impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuer + crate::server::postgres::generate_get_query::GenerateGetQuery
         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
     ) -> crate::repositories_types::tufa_server::routes::api::cats::read::TryReadResponseVariants
     {
         let vec_values = {
-            let select = CatColumnSelect::from(self.select.clone());
+            let select = CatColumnSelect::from(self.query.select.clone());
             let query_string =
                 crate::server::postgres::generate_get_query::GenerateGetQuery::generate_get_query(
                     &self,
