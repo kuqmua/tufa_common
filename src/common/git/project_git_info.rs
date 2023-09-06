@@ -1,4 +1,4 @@
-pub static PROJECT_COMMIT: &str = "project_commit";
+pub const PROJECT_COMMIT: &str = "project_commit";
 
 #[derive(
     Debug, serde_derive::Serialize, serde_derive::Deserialize, Clone, Eq, Hash, PartialEq, Default,

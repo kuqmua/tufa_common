@@ -9,7 +9,7 @@ pub mod read_post;
 pub mod update;
 pub mod update_by_id;
 //todo openapi
-pub static CATS: &str = "cats";
+pub const CATS: &str = "cats";
 
 pub trait GetConfigGetPostgresPool:
     crate::repositories_types::tufa_server::config::config_struct::GetConfig
