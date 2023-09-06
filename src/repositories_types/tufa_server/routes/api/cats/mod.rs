@@ -263,7 +263,7 @@ mod read_query {
 }
 
 impl ReadParameters {
-    pub async fn execute_query(
+    pub async fn prepare_and_execute_query(
         self, //impl crate::server::routes::helpers::bind_sqlx_query::BindSqlxQuer + crate::server::postgres::generate_query::GenerateQuery
         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
     ) -> crate::repositories_types::tufa_server::routes::api::cats::read::TryReadResponseVariants
