@@ -267,7 +267,40 @@ impl CreateParameters {
         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
     ) -> crate::repositories_types::tufa_server::routes::api::cats::create::TryCreateResponseVariants
     {
-        todo!()
+        let query_string = format!(
+            //"INSERT INTO cats(name, color) VALUES ($1, $2)",
+            "{} {} {}(name, color) {} ($1, $2)",
+            crate::server::postgres::constants::INSERT_NAME,
+            crate::server::postgres::constants::INTO_NAME,
+            crate::repositories_types::tufa_server::routes::api::cats::CATS,
+            crate::server::postgres::constants::VALUES_NAME
+        );
+        println!("{query_string}");
+        let binded_query = {
+            let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
+            query = query.bind(self.payload.name).bind(self.payload.color);
+            query
+        };
+        match binded_query
+            .execute(app_info_state.get_postgres_pool())
+            .await
+        {
+            Ok(_) => {
+                //todo - is need to return rows affected?
+                crate::repositories_types::tufa_server::routes::api::cats::create::TryCreateResponseVariants::Desirable(())
+            }
+            Err(e) => {
+                let error =
+                    crate::repositories_types::tufa_server::routes::api::cats::create::TryCreate::from(
+                        e,
+                    );
+                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                    &error,
+                    app_info_state.as_ref(),
+                );
+                crate::repositories_types::tufa_server::routes::api::cats::create::TryCreateResponseVariants::from(error)
+            }
+        }
     }
 }
 
