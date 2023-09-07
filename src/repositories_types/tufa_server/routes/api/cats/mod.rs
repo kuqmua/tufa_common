@@ -268,7 +268,6 @@ impl CreateParameters {
     ) -> crate::repositories_types::tufa_server::routes::api::cats::create::TryCreateResponseVariants
     {
         let query_string = format!(
-            //"INSERT INTO cats(name, color) VALUES ($1, $2)",
             "{} {} {}(name, color) {} ($1, $2)",
             crate::server::postgres::constants::INSERT_NAME,
             crate::server::postgres::constants::INTO_NAME,
