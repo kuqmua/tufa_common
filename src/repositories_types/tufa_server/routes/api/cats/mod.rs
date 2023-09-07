@@ -207,7 +207,47 @@ impl CreateOrUpdateByIdParameters {
         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
     ) -> crate::repositories_types::tufa_server::routes::api::cats::create_or_update_by_id::TryCreateOrUpdateByIdResponseVariants
     {
-        todo!()
+        let query_string = format!(
+            "{} {} {} (id, name, color) {} ($1, $2, $3) {} {} (id) {} {} {} name = EXCLUDED.name, color = EXCLUDED.color",
+            crate::server::postgres::constants::INSERT_NAME,
+            crate::server::postgres::constants::INTO_NAME,
+            crate::repositories_types::tufa_server::routes::api::cats::CATS,
+            crate::server::postgres::constants::VALUES_NAME,
+            crate::server::postgres::constants::ON_NAME,
+            crate::server::postgres::constants::CONFLICT_NAME,
+            crate::server::postgres::constants::DO_NAME,
+            crate::server::postgres::constants::UPDATE_NAME,
+            crate::server::postgres::constants::SET_NAME,
+        );
+        println!("{query_string}");
+        let binded_query = {
+            let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
+            query = query
+                .bind(self.path.id.into_inner())
+                .bind(self.payload.name)
+                .bind(self.payload.color);
+            query
+        };
+        match binded_query
+            .execute(app_info_state.get_postgres_pool())
+            .await
+        {
+            Ok(_) => {
+                //todo - is need to return rows affected?
+                crate::repositories_types::tufa_server::routes::api::cats::create_or_update_by_id::TryCreateOrUpdateByIdResponseVariants::Desirable(())
+            }
+            Err(e) => {
+                let error =
+                    crate::repositories_types::tufa_server::routes::api::cats::create_or_update_by_id::TryCreateOrUpdateById::from(
+                        e,
+                    );
+                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                    &error,
+                    app_info_state.as_ref(),
+                );
+                crate::repositories_types::tufa_server::routes::api::cats::create_or_update_by_id::TryCreateOrUpdateByIdResponseVariants::from(error)
+            }
+        }
     }
 }
 

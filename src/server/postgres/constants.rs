@@ -1,4 +1,13 @@
 pub const SELECT_NAME: &str = "select";
+pub const INSERT_NAME: &str = "insert";
+pub const INTO_NAME: &str = "into";
+pub const VALUES_NAME: &str = "values";
+pub const ON_NAME: &str = "on";
+pub const CONFLICT_NAME: &str = "conflict";
+pub const DO_NAME: &str = "do";
+pub const UPDATE_NAME: &str = "update";
+pub const SET_NAME: &str = "set";
+pub const EXCLUDED_NAME: &str = "excluded";
 pub const FROM_NAME: &str = "from";
 pub const WHERE_NAME: &str = "where";
 pub const AND_NAME: &str = "and";
