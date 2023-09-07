@@ -1,4 +1,5 @@
 pub mod create;
+pub mod create_batch;
 pub mod create_or_update;
 pub mod create_or_update_by_id;
 pub mod delete;
