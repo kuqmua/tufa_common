@@ -1,5 +1,6 @@
 pub const SELECT_NAME: &str = "select";
 pub const INSERT_NAME: &str = "insert";
+pub const DELETE_NAME: &str = "delete";
 pub const INTO_NAME: &str = "into";
 pub const VALUES_NAME: &str = "values";
 pub const ON_NAME: &str = "on";
