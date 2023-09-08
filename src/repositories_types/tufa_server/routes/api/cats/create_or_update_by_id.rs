@@ -174,7 +174,7 @@ pub enum TryCreateOrUpdateById {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum TryPutByIdErrorNamed {
+pub enum TryCreateOrUpdateByIdErrorNamed {
     RequestError {
         #[eo_error_occurence]
         request_error: TryCreateOrUpdateByIdRequestError,
@@ -190,11 +190,11 @@ pub enum TryPutByIdErrorNamed {
 pub async fn try_create_or_update_by_id<'a>(
     server_location: &str,
     parameters: crate::repositories_types::tufa_server::routes::api::cats::CreateOrUpdateByIdParameters,
-) -> Result<(), TryPutByIdErrorNamed> {
+) -> Result<(), TryCreateOrUpdateByIdErrorNamed> {
     let payload_json = match serde_json::to_string(&parameters.payload) {
         Ok(payload_json) => payload_json,
         Err(e) => {
-            return Err(TryPutByIdErrorNamed::SerdeJsonToString {
+            return Err(TryCreateOrUpdateByIdErrorNamed::SerdeJsonToString {
                 serde_json_to_string: e,
                 code_occurence: crate::code_occurence_tufa_common!(),
             });
@@ -219,7 +219,7 @@ pub async fn try_create_or_update_by_id<'a>(
     .await
     {
         Ok(_) => Ok(()),
-        Err(e) => Err(TryPutByIdErrorNamed::RequestError {
+        Err(e) => Err(TryCreateOrUpdateByIdErrorNamed::RequestError {
             request_error: e,
             code_occurence: crate::code_occurence_tufa_common!(),
         }),
