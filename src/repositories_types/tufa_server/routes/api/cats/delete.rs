@@ -133,17 +133,17 @@ pub enum TryDelete {
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     //
+    #[tvfrr_400_bad_request]
+    NoParameters {
+        #[eo_display_with_serialize_deserialize]
+        no_parameters: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
     //#[non_exhaustive] case
     #[tvfrr_500_internal_server_error]
     UnexpectedCase {
         #[eo_display_with_serialize_deserialize]
         unexpected_case: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    #[tvfrr_400_bad_request]
-    NoParameters {
-        #[eo_display_with_serialize_deserialize]
-        no_parameters: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
@@ -161,6 +161,16 @@ pub async fn try_delete<'a>(
     server_location: &str,
     parameters: crate::repositories_types::tufa_server::routes::api::cats::DeleteParameters,
 ) -> Result<(), TryDeleteErrorNamed> {
+    // let encoded_query =
+    //     match serde_urlencoded::to_string(parameters.query.into_url_encoding_version()) {
+    //         Ok(encoded_query) => encoded_query,
+    //         Err(e) => {
+    //             return Err(TryDeleteErrorNamed::QueryEncode {
+    //                 url_encoding: e,
+    //                 code_occurence: crate::code_occurence_tufa_common!(),
+    //             });
+    //         }
+    //     };
     match tvfrr_extraction_logic(
         reqwest::Client::new()
             .delete(&format!(
