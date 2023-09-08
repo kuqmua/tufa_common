@@ -6,7 +6,7 @@
     type_variants_from_reqwest_response::TypeVariantsFromReqwestResponse,
 )]
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_attribute(
-    crate::repositories_types::tufa_server::routes::api::cats::Cat,
+    crate::repositories_types::tufa_server::routes::api::cats::CatOptions,
     tvfrr_200_ok
 )]
 pub enum TryReadById {
@@ -166,7 +166,10 @@ pub enum TryReadByIdErrorNamed {
 pub async fn try_read_by_id(
     server_location: &str,
     parameters: crate::repositories_types::tufa_server::routes::api::cats::ReadByIdParameters,
-) -> Result<crate::repositories_types::tufa_server::routes::api::cats::Cat, TryReadByIdErrorNamed> {
+) -> Result<
+    crate::repositories_types::tufa_server::routes::api::cats::CatOptions,
+    TryReadByIdErrorNamed,
+> {
     let url = format!(
         "{server_location}/api/{}/id/{}?{}",
         crate::repositories_types::tufa_server::routes::api::cats::CATS,
