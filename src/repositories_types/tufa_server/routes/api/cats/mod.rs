@@ -989,7 +989,87 @@ impl UpdateByIdParameters {
         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
     ) -> crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants
     {
-        todo!()
+        let query_string = {
+            let mut query = format!(
+                "{} {} {} ",
+                crate::server::postgres::constants::UPDATE_NAME,
+                crate::repositories_types::tufa_server::routes::api::cats::CATS,
+                crate::server::postgres::constants::SET_NAME,
+            );
+            let mut increment: u64 = 0;
+            match (&self.payload.name, &self.payload.color) {
+                (None, None) => {
+                    return crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants::NoParameters { 
+                        no_parameters: std::string::String::from("no parameters"), 
+                        code_occurence: crate::code_occurence_tufa_common!(),
+                    };
+                },
+                (None, Some(_)) => {
+                    increment += 1;
+                    query.push_str(&format!("color = ${increment}"));
+                },
+                (Some(_), None) => {
+                    increment += 1;
+                    query.push_str(&format!("name = ${increment}"));
+                },
+                (Some(_), Some(_)) => {
+                    increment += 1;
+                    query.push_str(&format!("name = ${increment}, "));
+                    increment += 1;
+                    query.push_str(&format!("color = ${increment}"));
+                },
+            }
+            increment += 1;
+            query.push_str(&format!(
+                " {} id = ${increment}",
+                crate::server::postgres::constants::WHERE_NAME,
+            ));
+            query
+        };
+        println!("{query_string}");
+        let binded_query = {
+            let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
+            match (self.payload.name, self.payload.color) {
+                (None, None) => {
+                    return crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants::NoParameters { 
+                        no_parameters: std::string::String::from("no parameters"), 
+                        code_occurence: crate::code_occurence_tufa_common!(),
+                    };
+                },
+                (None, Some(color)) => {
+                    query = query.bind(color);
+                },
+                (Some(name), None) => {
+                    query = query.bind(name);
+                },
+                (Some(name), Some(color)) => {
+                    query = query.bind(name);
+                    query = query.bind(color);
+                },
+            }
+            query = query.bind(self.path.id.into_inner());
+            query
+        };
+        match binded_query
+            .execute(app_info_state.get_postgres_pool())
+            .await
+        {
+            Ok(_) => {
+                //todo - is need to return rows affected?
+                crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants::Desirable(())
+            }
+            Err(e) => {
+                let error =
+                    crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateById::from(
+                        e,
+                    );
+                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                    &error,
+                    app_info_state.as_ref(),
+                );
+                crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants::from(error)
+            }
+        }
     }
 }
 
