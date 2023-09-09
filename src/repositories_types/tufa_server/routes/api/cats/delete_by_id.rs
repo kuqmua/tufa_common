@@ -163,7 +163,7 @@ pub async fn try_delete_by_id<'a>(
 ) -> Result<(), TryDeleteByIdErrorNamed> {
     match tvfrr_extraction_logic(
         reqwest::Client::new()
-            .get(&format!(
+            .delete(&format!(
                 "{server_location}/api/{}/{}",
                 crate::repositories_types::tufa_server::routes::api::cats::CATS,
                 parameters.path.id

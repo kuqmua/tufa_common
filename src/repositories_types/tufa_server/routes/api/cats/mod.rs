@@ -3,6 +3,7 @@ pub mod create_batch;
 pub mod create_or_update;
 pub mod create_or_update_by_id;
 pub mod delete;
+pub mod delete_post;
 pub mod delete_by_id;
 pub mod read;
 pub mod read_by_id;

@@ -188,7 +188,7 @@ pub async fn try_create_update<'a>(
     };
     match tvfrr_extraction_logic(
         reqwest::Client::new()
-            .post(&format!(
+            .put(&format!(
                 "{server_location}/api/{}",
                 crate::repositories_types::tufa_server::routes::api::cats::CATS
             ))
