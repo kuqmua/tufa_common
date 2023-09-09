@@ -11,7 +11,8 @@
     crate::repositories_types::tufa_server::routes::api::cats::create_or_update::TryCreateOrUpdate,
     crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateById,
     crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdate,
-    crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPost
+    crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPost,
+    crate::repositories_types::tufa_server::routes::api::cats::delete_post::TryDeletePost
 )]
 pub enum JsonExtractorErrorNamed {
     #[tvfrr_400_bad_request]

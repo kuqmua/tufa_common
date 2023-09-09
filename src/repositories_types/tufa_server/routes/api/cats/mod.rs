@@ -467,6 +467,30 @@ impl DeleteQuery {
     }
 }
 
+#[derive(Debug, serde :: Deserialize)]
+pub struct DeletePostParameters {
+    pub payload: DeletePostPayload,
+}
+#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
+pub struct DeletePostPayload {
+    pub select: CatColumnSelect,
+    pub ids: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
+    pub name_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
+    pub color_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
+    pub order_by: crate::server::postgres::order_by::OrderBy<CatColumn>,
+    pub limit: crate::server::postgres::postgres_number::PostgresNumber,
+    pub offset: crate::server::postgres::postgres_number::PostgresNumber,
+}
+impl DeletePostParameters {
+    pub async fn prepare_and_execute_query(
+        self,
+        app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
+    ) -> crate::repositories_types::tufa_server::routes::api::cats::delete_post::TryDeletePostResponseVariants
+    {
+        todo!()
+    }
+}
+
 impl ReadByIdParameters {
     pub async fn prepare_and_execute_query(
         self,
