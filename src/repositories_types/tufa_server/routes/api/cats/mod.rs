@@ -558,14 +558,23 @@ impl ReadPostParameters {
                         false => format!(" {}", crate::server::postgres::constants::AND_NAME),
                     };
                     let bind_increments = {
-                        let mut bind_increments = value.iter().fold(std::string::String::from(""), |mut acc, element| {
-                        let bind_increments = crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
-                            element,
-                            &mut increment
-                        );
-                        acc.push_str(&format!("{bind_increments}, "));
-                            acc
-                        });
+                        let mut bind_increments = std::string::String::from("");
+                        for element in value {
+                            match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
+                                element,
+                                &mut increment
+                            ) {
+                                Ok(bind_increments_handle) => {
+                                    bind_increments.push_str(&format!("{bind_increments_handle}, "));
+                                },
+                                Err(e) => {
+                                    return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::BindQuery { 
+                                        checked_add: e.into_serialize_deserialize_version(), 
+                                        code_occurence: crate::code_occurence_tufa_common!(),
+                                    };
+                                },
+                            }
+                        }
                         if let false = bind_increments.is_empty() {
                             bind_increments.pop();
                             bind_increments.pop();
@@ -586,22 +595,29 @@ impl ReadPostParameters {
                     };
                     let column_name = "name";
                     let bind_increments = {
-                        let mut bind_increments = value.iter().enumerate().fold(std::string::String::from(""), |mut acc, (index, element)| {
-                        let conjuctive_operator = &element.conjuctive_operator;
-                        let bind_increments = crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
-                            element,
-                            &mut increment
-                        );
-                         match index == 0 {
-                            true => {
-                                acc.push_str(&format!("{column_name} ~ {bind_increments} "));
-                            },
-                            false => {
-                                acc.push_str(&format!("{conjuctive_operator} {column_name} ~ {bind_increments} "));
-                            },
+                        let mut bind_increments = std::string::String::from("");
+                        for (index, element) in value.iter().enumerate() {
+                            let conjuctive_operator = &element.conjuctive_operator;
+                            match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
+                                element,
+                                &mut increment
+                            ) {
+                                Ok(bind_increments_handle) => match index == 0 {
+                                    true => {
+                                        bind_increments.push_str(&format!("{column_name} ~ {bind_increments_handle} "));
+                                    },
+                                    false => {
+                                        bind_increments.push_str(&format!("{conjuctive_operator} {column_name} ~ {bind_increments_handle} "));
+                                    },
+                                },
+                                Err(e) => {
+                                    return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::BindQuery { 
+                                        checked_add: e.into_serialize_deserialize_version(), 
+                                        code_occurence: crate::code_occurence_tufa_common!(),
+                                    };
+                                },
+                            }
                         }
-                        acc
-                    });
                         if let false = bind_increments.is_empty() {
                             bind_increments.pop();
                         }
@@ -616,22 +632,29 @@ impl ReadPostParameters {
                     };
                     let column_name = "color";
                     let bind_increments = {
-                        let mut bind_increments = value.iter().enumerate().fold(std::string::String::from(""), |mut acc, (index, element)| {
-                        let conjuctive_operator = &element.conjuctive_operator;
-                        let bind_increments = crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
-                            element,
-                            &mut increment
-                        );
-                        match index == 0 {
-                            true => {
-                                acc.push_str(&format!("{column_name} ~ {bind_increments} "));
-                            },
-                            false => {
-                                acc.push_str(&format!("{conjuctive_operator} {column_name} ~ {bind_increments} "));
-                            },
+                        let mut bind_increments = std::string::String::from("");
+                        for (index, element) in value.iter().enumerate() {
+                            let conjuctive_operator = &element.conjuctive_operator;
+                            match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
+                                element,
+                                &mut increment
+                            ) {
+                                Ok(bind_increments_handle) => match index == 0 {
+                                    true => {
+                                        bind_increments.push_str(&format!("{column_name} ~ {bind_increments_handle} "));
+                                    },
+                                    false => {
+                                        bind_increments.push_str(&format!("{conjuctive_operator} {column_name} ~ {bind_increments_handle} "));
+                                    },
+                                },
+                                Err(e) => {
+                                    return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::BindQuery { 
+                                        checked_add: e.into_serialize_deserialize_version(), 
+                                        code_occurence: crate::code_occurence_tufa_common!(),
+                                    };
+                                },
+                            }
                         }
-                        acc
-                    });
                         if let false = bind_increments.is_empty() {
                             bind_increments.pop();
                         }
@@ -660,13 +683,21 @@ impl ReadPostParameters {
                         true => "",
                         false => " ",
                     };
+                    let value = match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
+                        &self.payload.limit,
+                        &mut increment
+                    ) {
+                        Ok(value) => value,
+                        Err(e) => {
+                            return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::BindQuery { 
+                                checked_add: e.into_serialize_deserialize_version(), 
+                                code_occurence: crate::code_occurence_tufa_common!(),
+                            };
+                        },
+                    };
                     additional_parameters.push_str(&format!(
-                        "{prefix}{} {}",
+                        "{prefix}{} {value}",
                         crate::server::postgres::constants::LIMIT_NAME,
-                        crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
-                            &self.payload.limit,
-                            &mut increment
-                        )
                     ));
                 }
                 {
@@ -674,13 +705,21 @@ impl ReadPostParameters {
                         true => "",
                         false => " ",
                     };
+                    let value = match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
+                        &self.payload.offset,
+                        &mut increment
+                    ) {
+                        Ok(value) => value,
+                        Err(e) => {
+                            return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::BindQuery { 
+                                checked_add: e.into_serialize_deserialize_version(), 
+                                code_occurence: crate::code_occurence_tufa_common!(),
+                            };
+                        },
+                    };
                     additional_parameters.push_str(&format!(
-                        "{prefix}{} {}",
+                        "{prefix}{} {value}",
                         crate::server::postgres::constants::OFFSET_NAME,
-                        crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
-                            &self.payload.offset,
-                            &mut increment
-                        )
                     ));
                 }
                 additional_parameters
@@ -866,14 +905,22 @@ impl ReadParameters {
                         true => crate::server::postgres::constants::WHERE_NAME.to_string(),
                         false => format!(" {}", crate::server::postgres::constants::AND_NAME),
                     };
+                    let value = match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
+                        value,
+                        &mut increment
+                    ) {
+                        Ok(value) => value,
+                        Err(e) => {
+                            return crate::repositories_types::tufa_server::routes::api::cats::read::TryReadResponseVariants::BindQuery { 
+                                checked_add: e.into_serialize_deserialize_version(), 
+                                code_occurence: crate::code_occurence_tufa_common!(),
+                            };
+                        },
+                    };
                     additional_parameters.push_str(&format!(
-                        "{prefix} id = {}({}[{}])",
+                        "{prefix} id = {}({}[{value}])",
                         crate::server::postgres::constants::ANY_NAME,
                         crate::server::postgres::constants::ARRAY_NAME,
-                        crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
-                            value,
-                            &mut increment
-                        )
                     ));
                 }
                 if let Some(value) = &self.query.name {
@@ -881,14 +928,22 @@ impl ReadParameters {
                         true => crate::server::postgres::constants::WHERE_NAME.to_string(),
                         false => format!(" {}", crate::server::postgres::constants::AND_NAME),
                     };
+                    let value = match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
+                        value,
+                        &mut increment
+                    ) {
+                        Ok(value) => value,
+                        Err(e) => {
+                            return crate::repositories_types::tufa_server::routes::api::cats::read::TryReadResponseVariants::BindQuery { 
+                                checked_add: e.into_serialize_deserialize_version(), 
+                                code_occurence: crate::code_occurence_tufa_common!(),
+                            };
+                        },
+                    };
                     additional_parameters.push_str(&format!(
-                        "{prefix} name = {}({}[{}])",
+                        "{prefix} name = {}({}[{value}])",
                         crate::server::postgres::constants::ANY_NAME,
                         crate::server::postgres::constants::ARRAY_NAME,
-                        crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
-                            value,
-                            &mut increment
-                        )
                     ));
                 }
                 if let Some(value) = &self.query.color {
@@ -896,14 +951,22 @@ impl ReadParameters {
                         true => crate::server::postgres::constants::WHERE_NAME.to_string(),
                         false => format!(" {}", crate::server::postgres::constants::AND_NAME),
                     };
+                    let value = match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
+                        value,
+                        &mut increment
+                    ) {
+                        Ok(value) => value,
+                        Err(e) => {
+                            return crate::repositories_types::tufa_server::routes::api::cats::read::TryReadResponseVariants::BindQuery { 
+                                checked_add: e.into_serialize_deserialize_version(), 
+                                code_occurence: crate::code_occurence_tufa_common!(),
+                            };
+                        },
+                    };
                     additional_parameters.push_str(&format!(
-                        "{prefix} color = {}({}[{}])",
+                        "{prefix} color = {}({}[{value}])",
                         crate::server::postgres::constants::ANY_NAME,
                         crate::server::postgres::constants::ARRAY_NAME,
-                        crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
-                            value,
-                            &mut increment
-                        )
                     ));
                 }
                 if let Some(value) = &self.query.order_by {
@@ -926,13 +989,21 @@ impl ReadParameters {
                         true => "",
                         false => " ",
                     };
+                    let value = match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
+                        &self.query.limit,
+                        &mut increment
+                    ) {
+                        Ok(value) => value,
+                        Err(e) => {
+                            return crate::repositories_types::tufa_server::routes::api::cats::read::TryReadResponseVariants::BindQuery { 
+                                checked_add: e.into_serialize_deserialize_version(), 
+                                code_occurence: crate::code_occurence_tufa_common!(),
+                            };
+                        },
+                    };
                     additional_parameters.push_str(&format!(
-                        "{prefix}{} {}",
+                        "{prefix}{} {value}",
                         crate::server::postgres::constants::LIMIT_NAME,
-                        crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
-                            &self.query.limit,
-                            &mut increment
-                        )
                     ));
                 }
                 if let Some(value) = &self.query.offset {
@@ -940,13 +1011,21 @@ impl ReadParameters {
                         true => "",
                         false => " ",
                     };
+                    let value = match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
+                        value,
+                        &mut increment
+                    ) {
+                        Ok(value) => value,
+                        Err(e) => {
+                            return crate::repositories_types::tufa_server::routes::api::cats::read::TryReadResponseVariants::BindQuery { 
+                                checked_add: e.into_serialize_deserialize_version(), 
+                                code_occurence: crate::code_occurence_tufa_common!(),
+                            };
+                        },
+                    };
                     additional_parameters.push_str(&format!(
-                        "{prefix}{} {}",
+                        "{prefix}{} {value}",
                         crate::server::postgres::constants::OFFSET_NAME,
-                        crate::server::postgres::bind_query::BindQuery::generate_bind_increments(
-                            value,
-                            &mut increment
-                        )
                     ));
                 }
                 additional_parameters
@@ -1046,21 +1125,71 @@ impl UpdateByIdParameters {
                     };
                 },
                 (None, Some(_)) => {
-                    increment += 1;
+                    match increment.checked_add(1) {
+                        Some(incr) => {
+                            increment = incr;
+                        },
+                        None => {
+                            return crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants::CheckedAdd { 
+                                checked_add: std::string::String::from("checked_add is None"), 
+                                code_occurence: crate::code_occurence_tufa_common!(), 
+                            }
+                        },
+                    }
                     query.push_str(&format!("color = ${increment}"));
                 },
                 (Some(_), None) => {
-                    increment += 1;
+                    match increment.checked_add(1) {
+                        Some(incr) => {
+                            increment = incr;
+                        },
+                        None => {
+                            return crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants::CheckedAdd { 
+                                checked_add: std::string::String::from("checked_add is None"), 
+                                code_occurence: crate::code_occurence_tufa_common!(), 
+                            }
+                        },
+                    }
                     query.push_str(&format!("name = ${increment}"));
                 },
                 (Some(_), Some(_)) => {
-                    increment += 1;
+                    match increment.checked_add(1) {
+                        Some(incr) => {
+                            increment = incr;
+                        },
+                        None => {
+                            return crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants::CheckedAdd { 
+                                checked_add: std::string::String::from("checked_add is None"), 
+                                code_occurence: crate::code_occurence_tufa_common!(), 
+                            }
+                        },
+                    }
                     query.push_str(&format!("name = ${increment}, "));
-                    increment += 1;
+                    match increment.checked_add(1) {
+                        Some(incr) => {
+                            increment = incr;
+                        },
+                        None => {
+                            return crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants::CheckedAdd { 
+                                checked_add: std::string::String::from("checked_add is None"), 
+                                code_occurence: crate::code_occurence_tufa_common!(), 
+                            }
+                        },
+                    }
                     query.push_str(&format!("color = ${increment}"));
                 },
             }
-            increment += 1;
+            match increment.checked_add(1) {
+                Some(incr) => {
+                    increment = incr;
+                },
+                None => {
+                    return crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants::CheckedAdd { 
+                        checked_add: std::string::String::from("checked_add is None"), 
+                        code_occurence: crate::code_occurence_tufa_common!(), 
+                    }
+                },
+            }
             query.push_str(&format!(
                 " {} id = ${increment}",
                 crate::server::postgres::constants::WHERE_NAME,

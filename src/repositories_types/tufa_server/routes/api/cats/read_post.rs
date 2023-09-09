@@ -150,6 +150,13 @@ pub enum TryReadPost {
         bytes_rejection: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
+    //
+    #[tvfrr_500_internal_server_error]
+    BindQuery {
+        #[eo_error_occurence]
+        checked_add: crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
     //#[non_exhaustive] case
     #[tvfrr_500_internal_server_error]
     UnexpectedCase {

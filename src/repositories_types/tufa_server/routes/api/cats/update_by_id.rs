@@ -177,6 +177,12 @@ pub enum TryUpdateById {
         no_parameters: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
+    #[tvfrr_500_internal_server_error]
+    CheckedAdd {
+        #[eo_display_with_serialize_deserialize]
+        checked_add: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
     //#[non_exhaustive] case
     #[tvfrr_500_internal_server_error]
     UnexpectedCase {

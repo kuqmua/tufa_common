@@ -73,17 +73,33 @@ where
 }
 
 impl crate::server::postgres::bind_query::BindQuery for BigserialIds {
-    fn generate_bind_increments(&self, increment: &mut u64) -> std::string::String {
+    fn try_generate_bind_increments(
+        &self,
+        increment: &mut u64,
+    ) -> Result<
+        std::string::String,
+        crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed,
+    > {
         let mut increments = std::string::String::from("");
         for _ in 0..self.0.len() {
-            *increment += 1;
+            match increment.checked_add(1) {
+                Some(incr) => {
+                    *increment = incr;
+                },
+                None => {
+                    return Err(crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed::CheckedAdd { 
+                        checked_add: std::string::String::from("checked_add is None"), 
+                        code_occurence: crate::code_occurence_tufa_common!(), 
+                    });
+                },
+            }
             increments.push_str(&format!("${increment}, "));
         }
         if let false = increments.is_empty() {
             increments.pop();
             increments.pop();
         }
-        increments
+        Ok(increments)
     }
     fn bind_value_to_query(
         self,
