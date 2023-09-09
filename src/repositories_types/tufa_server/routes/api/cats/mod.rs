@@ -1259,13 +1259,23 @@ impl UpdateByIdParameters {
     }
 }
 
-// impl UpdateParameters {
-//     pub async fn prepare_and_execute_query(
-//         self,
-//         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
-//     ) -> crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdateResponseVariants
-//     {
-//         todo!()
-//     }
-// }
+#[derive(Debug, serde :: Deserialize)]
+pub struct UpdateParameters {
+    pub payload: Vec<UpdatePayloadElement>,
+}
+#[derive(Debug, serde_derive :: Serialize, serde_derive :: Deserialize)]
+pub struct UpdatePayloadElement {
+    pub id: crate::server::postgres::bigserial::Bigserial,
+    pub name: Option<String>,
+    pub color: Option<String>,
+}
+impl UpdateParameters {
+    pub async fn prepare_and_execute_query(
+        self,
+        app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
+    ) -> crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdateResponseVariants
+    {
+        todo!()
+    }
+}
 //
