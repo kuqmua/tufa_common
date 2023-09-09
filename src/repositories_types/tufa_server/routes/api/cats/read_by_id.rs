@@ -156,6 +156,11 @@ pub enum TryReadById {
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TryReadByIdErrorNamed {
+    QueryEncode {
+        #[eo_display]
+        url_encoding: serde_urlencoded::ser::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
     RequestError {
         #[eo_error_occurence]
         request_error: TryReadByIdRequestError,
@@ -170,11 +175,20 @@ pub async fn try_read_by_id(
     crate::repositories_types::tufa_server::routes::api::cats::CatOptions,
     TryReadByIdErrorNamed,
 > {
+    let encoded_query =
+        match serde_urlencoded::to_string(parameters.query.into_url_encoding_version()) {
+            Ok(encoded_query) => encoded_query,
+            Err(e) => {
+                return Err(TryReadByIdErrorNamed::QueryEncode {
+                    url_encoding: e,
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                });
+            }
+        };
     let url = format!(
-        "{server_location}/api/{}/id/{}?{}",
+        "{server_location}/api/{}/id/{}?{encoded_query}",
         crate::repositories_types::tufa_server::routes::api::cats::CATS,
         parameters.path.id,
-        serde_urlencoded::to_string(&parameters.query).unwrap()
     );
     match tvfrr_extraction_logic(
         reqwest::Client::new()

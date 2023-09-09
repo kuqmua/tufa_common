@@ -150,6 +150,11 @@ pub enum TryDelete {
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum TryDeleteErrorNamed {
+    QueryEncode {
+        #[eo_display]
+        url_encoding: serde_urlencoded::ser::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
     RequestError {
         #[eo_error_occurence]
         request_error: TryDeleteRequestError,
@@ -161,22 +166,21 @@ pub async fn try_delete<'a>(
     server_location: &str,
     parameters: crate::repositories_types::tufa_server::routes::api::cats::DeleteParameters,
 ) -> Result<(), TryDeleteErrorNamed> {
-    // let encoded_query =
-    //     match serde_urlencoded::to_string(parameters.query.into_url_encoding_version()) {
-    //         Ok(encoded_query) => encoded_query,
-    //         Err(e) => {
-    //             return Err(TryDeleteErrorNamed::QueryEncode {
-    //                 url_encoding: e,
-    //                 code_occurence: crate::code_occurence_tufa_common!(),
-    //             });
-    //         }
-    //     };
+    let encoded_query =
+        match serde_urlencoded::to_string(parameters.query.into_url_encoding_version()) {
+            Ok(encoded_query) => encoded_query,
+            Err(e) => {
+                return Err(TryDeleteErrorNamed::QueryEncode {
+                    url_encoding: e,
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                });
+            }
+        };
     match tvfrr_extraction_logic(
         reqwest::Client::new()
             .delete(&format!(
-                "{server_location}/api/{}?{}",
+                "{server_location}/api/{}?{encoded_query}",
                 crate::repositories_types::tufa_server::routes::api::cats::CATS,
-                serde_urlencoded::to_string(&parameters.query).unwrap()
             ))
             .header(
                 crate::common::git::project_git_info::PROJECT_COMMIT,

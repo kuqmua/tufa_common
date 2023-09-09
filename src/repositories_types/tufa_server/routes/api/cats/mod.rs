@@ -449,8 +449,6 @@ impl DeleteQuery {
         }
     }
 }
-//
-//
 
 impl ReadByIdParameters {
     pub async fn prepare_and_execute_query(
@@ -493,6 +491,22 @@ impl ReadByIdParameters {
                 );
                 crate::repositories_types::tufa_server::routes::api::cats::read_by_id::TryReadByIdResponseVariants::from(error)
             },
+        }
+    }
+}
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
+struct ReadByIdQueryForUrlEncoding {
+    select: Option<std::string::String>,
+}
+impl ReadByIdQuery {
+    fn into_url_encoding_version(self) -> ReadByIdQueryForUrlEncoding {
+        let select = self.select.map(|value| {
+            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                value,
+            )
+        });
+        ReadByIdQueryForUrlEncoding {
+            select
         }
     }
 }
