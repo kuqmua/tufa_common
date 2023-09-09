@@ -1,3 +1,9 @@
 pub trait SerdeUrlencodedParameter {
-    fn serde_urlencoded_parameter(&self) -> std::string::String;
+    fn serde_urlencoded_parameter(self) -> std::string::String;
+}
+
+impl SerdeUrlencodedParameter for std::string::String {
+    fn serde_urlencoded_parameter(self) -> std::string::String {
+        self
+    }
 }

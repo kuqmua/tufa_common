@@ -22,7 +22,7 @@ impl crate::server::postgres::bind_query::BindQuery for PostgresNumber {
 }
 
 impl crate::common::serde_urlencoded::SerdeUrlencodedParameter for PostgresNumber {
-    fn serde_urlencoded_parameter(&self) -> std::string::String {
+    fn serde_urlencoded_parameter(self) -> std::string::String {
         self.to_string()
     }
 }

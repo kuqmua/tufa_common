@@ -48,8 +48,8 @@ impl crate::server::postgres::bind_query::BindQuery
 impl crate::common::serde_urlencoded::SerdeUrlencodedParameter
     for StringsDeserializedFromStringSplittedByComma
 {
-    fn serde_urlencoded_parameter(&self) -> std::string::String {
-        let mut value = self.0.iter().fold(String::from(""), |mut acc, elem| {
+    fn serde_urlencoded_parameter(self) -> std::string::String {
+        let mut value = self.0.into_iter().fold(String::from(""), |mut acc, elem| {
             acc.push_str(&format!("{elem},"));
             acc
         });

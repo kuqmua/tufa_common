@@ -46,9 +46,9 @@ pub struct CatOrderByWrapper(
 );
 
 impl crate::common::serde_urlencoded::SerdeUrlencodedParameter for CatOrderByWrapper {
-    fn serde_urlencoded_parameter(&self) -> std::string::String {
+    fn serde_urlencoded_parameter(self) -> std::string::String {
         let column = &self.0.column;
-        let order = self.0.order.clone().unwrap_or_default();
+        let order = self.0.order.unwrap_or_default();
         format!("column={column},order={order}")
     }
 }
@@ -423,6 +423,34 @@ impl DeleteParameters {
         }
     }
 }
+//
+// DeleteQuery { pub name : Option < String >, pub color : Option < String >, }
+//
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
+struct DeleteQueryForUrlEncoding {
+    name: Option<std::string::String>,
+    color: Option<std::string::String>,
+}
+impl DeleteQuery {
+    fn into_url_encoding_version(self) -> DeleteQueryForUrlEncoding {
+        let name = self.name.map(|value| {
+            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                value,
+            )
+        });
+        let color = self.color.map(|value| {
+            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                value,
+            )
+        });
+        DeleteQueryForUrlEncoding {
+            name,
+            color,
+        }
+    }
+}
+//
+//
 
 impl ReadByIdParameters {
     pub async fn prepare_and_execute_query(
@@ -749,36 +777,36 @@ struct ReadQueryForUrlEncoding {
 }
 impl ReadQuery {
     fn into_url_encoding_version(self) -> ReadQueryForUrlEncoding {
-        let select = self.select.as_ref().map(|value| {
+        let select = self.select.map(|value| {
             crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
                 value,
             )
         });
-        let id = self.id.as_ref().map(|value| {
+        let id = self.id.map(|value| {
             crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
                 value,
             )
         });
-        let name = self.name.as_ref().map(|value| {
+        let name = self.name.map(|value| {
             crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
                 value,
             )
         });
-        let color = self.color.as_ref().map(|value| {
+        let color = self.color.map(|value| {
             crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
                 value,
             )
         });
-        let order_by = self.order_by.as_ref().map(|value| {
+        let order_by = self.order_by.map(|value| {
             crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
                 value,
             )
         });
         let limit =
             crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                &self.limit,
+                self.limit,
             );
-        let offset = self.offset.as_ref().map(|value| {
+        let offset = self.offset.map(|value| {
             crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
                 value,
             )

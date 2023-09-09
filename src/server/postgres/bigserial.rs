@@ -131,7 +131,7 @@ impl crate::server::postgres::bind_query::BindQuery for Bigserial {
 }
 
 impl crate::common::serde_urlencoded::SerdeUrlencodedParameter for Bigserial {
-    fn serde_urlencoded_parameter(&self) -> std::string::String {
+    fn serde_urlencoded_parameter(self) -> std::string::String {
         self.to_string()
     }
 }
