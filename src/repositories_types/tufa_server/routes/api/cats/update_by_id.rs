@@ -216,7 +216,7 @@ pub async fn try_update_by_id<'a>(
     match tvfrr_extraction_logic(
         reqwest::Client::new()
             .patch(&format!(
-                "{server_location}/api/{}/id/{}",
+                "{server_location}/api/{}/{}",
                 crate::repositories_types::tufa_server::routes::api::cats::CATS,
                 parameters.path.id.to_inner()
             ))

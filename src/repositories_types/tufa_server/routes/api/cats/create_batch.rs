@@ -203,7 +203,7 @@
 //     match tvfrr_extraction_logic(
 //         reqwest::Client::new()
 //             .put(&format!(
-//                 "{server_location}/api/{}/id/{}",
+//                 "{server_location}/api/{}/{}",
 //                 crate::repositories_types::tufa_server::routes::api::cats::CATS,
 //                 parameters.path.id
 //             ))

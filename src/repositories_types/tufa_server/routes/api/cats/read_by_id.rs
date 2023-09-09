@@ -186,7 +186,7 @@ pub async fn try_read_by_id(
             }
         };
     let url = format!(
-        "{server_location}/api/{}/id/{}?{encoded_query}",
+        "{server_location}/api/{}/{}?{encoded_query}",
         crate::repositories_types::tufa_server::routes::api::cats::CATS,
         parameters.path.id,
     );
