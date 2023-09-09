@@ -190,16 +190,24 @@ where
 
 ///////////////////////
 
-//
-// impl CreateBatchParameters {
-//     pub async fn prepare_and_execute_query(
-//         self,
-//         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
-//     ) -> crate::repositories_types::tufa_server::routes::api::cats::read_post::TryCreateBatchResponseVariants
-//     {
-//         todo!()
-//     }
-// }
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+pub struct CreateBatchParameters {
+    pub payload: Vec<CreateBatchPayloadElement>,
+}
+#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
+pub struct CreateBatchPayloadElement {
+    pub name: String,
+    pub color: String,
+}
+impl CreateBatchParameters {
+    pub async fn prepare_and_execute_query(
+        self,
+        app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
+    ) -> crate::repositories_types::tufa_server::routes::api::cats::create_batch::TryCreateBatchResponseVariants
+    {
+        todo!()
+    }
+}
 
 impl CreateOrUpdateByIdParameters {
     pub async fn prepare_and_execute_query(
@@ -251,15 +259,25 @@ impl CreateOrUpdateByIdParameters {
     }
 }
 
-// impl CreateOrUpdateParameters {
-//     pub async fn prepare_and_execute_query(
-//         self,
-//         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
-//     ) -> crate::repositories_types::tufa_server::routes::api::cats::create_or_update::TryCreateOrUpdateResponseVariants
-//     {
-//         todo!()
-//     }
-// }
+#[derive(Debug, serde :: Deserialize)]
+pub struct CreateOrUpdateParameters {
+    pub payload: Vec<CreateOrUpdatePayloadElement>,
+}
+#[derive(Debug, serde_derive :: Serialize, serde_derive :: Deserialize)]
+pub struct CreateOrUpdatePayloadElement {
+    pub id: crate::server::postgres::bigserial::Bigserial,
+    pub name: String,
+    pub color: String,
+}
+impl CreateOrUpdateParameters {
+    pub async fn prepare_and_execute_query(
+        self,
+        app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
+    ) -> crate::repositories_types::tufa_server::routes::api::cats::create_or_update::TryCreateOrUpdateResponseVariants
+    {
+        todo!()
+    }
+}
 
 impl CreateParameters {
     pub async fn prepare_and_execute_query(
@@ -423,9 +441,7 @@ impl DeleteParameters {
         }
     }
 }
-//
-// DeleteQuery { pub name : Option < String >, pub color : Option < String >, }
-//
+
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 struct DeleteQueryForUrlEncoding {
     name: Option<std::string::String>,
