@@ -3,7 +3,7 @@ pub mod create_batch;
 pub mod create_or_update;
 pub mod create_or_update_by_id;
 pub mod delete;
-pub mod delete_post;
+pub mod delete_with_body;
 pub mod delete_by_id;
 pub mod read;
 pub mod read_by_id;
@@ -618,11 +618,11 @@ impl DeleteQuery {
 }
 
 #[derive(Debug, serde :: Deserialize)]
-pub struct DeletePostParameters {
-    pub payload: DeletePostPayload,
+pub struct DeleteWithBodyParameters {
+    pub payload: DeleteWithBodyPayload,
 }
 #[derive(Debug, serde :: Serialize, serde :: Deserialize)]
-pub struct DeletePostPayload {
+pub struct DeleteWithBodyPayload {
     pub select: CatColumnSelect,
     pub ids: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
     pub name_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
@@ -631,11 +631,11 @@ pub struct DeletePostPayload {
     pub limit: crate::server::postgres::postgres_number::PostgresNumber,
     pub offset: crate::server::postgres::postgres_number::PostgresNumber,
 }
-impl DeletePostParameters {
+impl DeleteWithBodyParameters {
     pub async fn prepare_and_execute_query(
         self,
         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
-    ) -> crate::repositories_types::tufa_server::routes::api::cats::delete_post::TryDeletePostResponseVariants
+    ) -> crate::repositories_types::tufa_server::routes::api::cats::delete_with_body::TryDeleteWithBodyResponseVariants
     {
         // let query_string = {
         //     let mut query = format!(

@@ -9,7 +9,7 @@
     (),
     tvfrr_200_ok
 )]
-pub enum TryDeletePost {
+pub enum TryDeleteWithBody {
     #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
@@ -167,10 +167,10 @@ pub enum TryDeletePost {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum TryDeletePostErrorNamed {
+pub enum TryDeleteWithBodyErrorNamed {
     RequestError {
         #[eo_error_occurence]
-        request_error: TryDeletePostRequestError,
+        request_error: TryDeleteWithBodyRequestError,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     SerdeJsonToString {
@@ -180,14 +180,14 @@ pub enum TryDeletePostErrorNamed {
     },
 }
 
-pub async fn try_delete_post<'a>(
+pub async fn try_delete_with_body<'a>(
     server_location: &str,
-    parameters: crate::repositories_types::tufa_server::routes::api::cats::DeletePostParameters,
-) -> Result<(), TryDeletePostErrorNamed> {
+    parameters: crate::repositories_types::tufa_server::routes::api::cats::DeleteWithBodyParameters,
+) -> Result<(), TryDeleteWithBodyErrorNamed> {
     let payload_json = match serde_json::to_string(&parameters.payload) {
         Ok(payload_json) => payload_json,
         Err(e) => {
-            return Err(TryDeletePostErrorNamed::SerdeJsonToString {
+            return Err(TryDeleteWithBodyErrorNamed::SerdeJsonToString {
                 serde_json_to_string: e,
                 code_occurence: crate::code_occurence_tufa_common!(),
             });
@@ -212,7 +212,7 @@ pub async fn try_delete_post<'a>(
     .await
     {
         Ok(value) => Ok(value),
-        Err(e) => Err(TryDeletePostErrorNamed::RequestError {
+        Err(e) => Err(TryDeleteWithBodyErrorNamed::RequestError {
             request_error: e,
             code_occurence: crate::code_occurence_tufa_common!(),
         }),
