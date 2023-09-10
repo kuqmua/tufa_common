@@ -38,10 +38,8 @@ impl crate::server::postgres::bind_query::BindQuery
             }
             increments.push_str(&format!("${increment}, "));
         }
-        if let false = increments.is_empty() {
-            increments.pop();
-            increments.pop();
-        }
+        increments.pop();
+        increments.pop();
         Ok(increments)
     }
     fn bind_value_to_query(
