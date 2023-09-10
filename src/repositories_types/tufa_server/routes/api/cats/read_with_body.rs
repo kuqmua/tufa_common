@@ -9,7 +9,7 @@
     Vec::<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>,
     tvfrr_200_ok
 )]
-pub enum TryReadPost {
+pub enum TryReadWithBody {
     #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
@@ -167,10 +167,10 @@ pub enum TryReadPost {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum TryReadPostErrorNamed {
+pub enum TryReadWithBodyErrorNamed {
     RequestError {
         #[eo_error_occurence]
-        request_error: TryReadPostRequestError,
+        request_error: TryReadWithBodyRequestError,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     SerdeJsonToString {
@@ -180,17 +180,17 @@ pub enum TryReadPostErrorNamed {
     },
 }
 
-pub async fn try_read_post<'a>(
+pub async fn try_read_with_body<'a>(
     server_location: &str,
-    parameters: crate::repositories_types::tufa_server::routes::api::cats::ReadPostParameters,
+    parameters: crate::repositories_types::tufa_server::routes::api::cats::ReadWithBodyParameters,
 ) -> Result<
     Vec<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>,
-    TryReadPostErrorNamed,
+    TryReadWithBodyErrorNamed,
 > {
     let payload_json = match serde_json::to_string(&parameters.payload) {
         Ok(payload_json) => payload_json,
         Err(e) => {
-            return Err(TryReadPostErrorNamed::SerdeJsonToString {
+            return Err(TryReadWithBodyErrorNamed::SerdeJsonToString {
                 serde_json_to_string: e,
                 code_occurence: crate::code_occurence_tufa_common!(),
             });
@@ -215,7 +215,7 @@ pub async fn try_read_post<'a>(
     .await
     {
         Ok(value) => Ok(value),
-        Err(e) => Err(TryReadPostErrorNamed::RequestError {
+        Err(e) => Err(TryReadWithBodyErrorNamed::RequestError {
             request_error: e,
             code_occurence: crate::code_occurence_tufa_common!(),
         }),

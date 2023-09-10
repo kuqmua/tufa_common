@@ -7,7 +7,7 @@ pub mod delete_post;
 pub mod delete_by_id;
 pub mod read;
 pub mod read_by_id;
-pub mod read_post;
+pub mod read_with_body;
 pub mod update;
 pub mod update_by_id;
 //todo openapi
@@ -637,6 +637,76 @@ impl DeletePostParameters {
         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
     ) -> crate::repositories_types::tufa_server::routes::api::cats::delete_post::TryDeletePostResponseVariants
     {
+        // let query_string = {
+        //     let mut query = format!(
+        //         "{} {} {} {} ",
+        //         crate::server::postgres::constants::DELETE_NAME,
+        //         crate::server::postgres::constants::FROM_NAME,
+        //         crate::repositories_types::tufa_server::routes::api::cats::CATS,
+        //         crate::server::postgres::constants::WHERE_NAME
+        //     );
+        //     match (&self.query.name, &self.query.color) {
+        //         (None, None) => {
+        //             return crate::repositories_types::tufa_server::routes::api::cats::delete::TryDeleteResponseVariants::NoParameters { 
+        //                 no_parameters: std::string::String::from("no parameters"), 
+        //                 code_occurence: crate::code_occurence_tufa_common!(),
+        //             };
+        //         },
+        //         (None, Some(_)) => {
+        //             query.push_str("color = $1");
+        //         },
+        //         (Some(_), None) => {
+        //             query.push_str("name = $1");
+        //         },
+        //         (Some(_), Some(_)) => {
+        //             query.push_str("name = $1 AND color = $2");
+        //         },
+        //     }
+        //     query
+        // };
+        // println!("{query_string}");
+        // let binded_query = {
+        //     let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
+        //     match (self.query.name, self.query.color) {
+        //         (None, None) => {
+        //             return crate::repositories_types::tufa_server::routes::api::cats::delete::TryDeleteResponseVariants::NoParameters { 
+        //                 no_parameters: std::string::String::from("no parameters"), 
+        //                 code_occurence: crate::code_occurence_tufa_common!(),
+        //             };
+        //         },
+        //         (None, Some(color)) => {
+        //             query = query.bind(color);
+        //         },
+        //         (Some(name), None) => {
+        //             query = query.bind(name);
+        //         },
+        //         (Some(name), Some(color)) => {
+        //             query = query.bind(name);
+        //             query = query.bind(color);
+        //         },
+        //     }
+        //     query
+        // };
+        // match binded_query
+        //     .execute(app_info_state.get_postgres_pool())
+        //     .await
+        // {
+        //     Ok(_) => {
+        //         //todo - is need to return rows affected?
+        //         crate::repositories_types::tufa_server::routes::api::cats::delete::TryDeleteResponseVariants::Desirable(())
+        //     }
+        //     Err(e) => {
+        //         let error =
+        //             crate::repositories_types::tufa_server::routes::api::cats::delete::TryDelete::from(
+        //                 e,
+        //             );
+        //         crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+        //             &error,
+        //             app_info_state.as_ref(),
+        //         );
+        //         crate::repositories_types::tufa_server::routes::api::cats::delete::TryDeleteResponseVariants::from(error)
+        //     }
+        // }
         todo!()
     }
 }
@@ -703,12 +773,12 @@ impl ReadByIdQuery {
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct ReadPostParameters {
-    pub payload: ReadPostPayload,
+pub struct ReadWithBodyParameters {
+    pub payload: ReadWithBodyPayload,
 }
 
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct ReadPostPayload {
+pub struct ReadWithBodyPayload {
     pub select: CatColumnSelect,
     pub ids: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
     pub name_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
@@ -718,11 +788,11 @@ pub struct ReadPostPayload {
     pub offset: crate::server::postgres::postgres_number::PostgresNumber,
 }
 
-impl ReadPostParameters {
+impl ReadWithBodyParameters {
     pub async fn prepare_and_execute_query(
         self,
         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
-    ) -> crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants
+    ) -> crate::repositories_types::tufa_server::routes::api::cats::read_with_body::TryReadWithBodyResponseVariants
     {
         let query_string = {
             let mut query = std::string::String::from("");
@@ -759,7 +829,7 @@ impl ReadPostParameters {
                                     bind_increments.push_str(&format!("{bind_increments_handle}, "));
                                 },
                                 Err(e) => {
-                                    return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::BindQuery { 
+                                    return crate::repositories_types::tufa_server::routes::api::cats::read_with_body::TryReadWithBodyResponseVariants::BindQuery { 
                                         checked_add: e.into_serialize_deserialize_version(), 
                                         code_occurence: crate::code_occurence_tufa_common!(),
                                     };
@@ -802,7 +872,7 @@ impl ReadPostParameters {
                                     },
                                 },
                                 Err(e) => {
-                                    return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::BindQuery { 
+                                    return crate::repositories_types::tufa_server::routes::api::cats::read_with_body::TryReadWithBodyResponseVariants::BindQuery { 
                                         checked_add: e.into_serialize_deserialize_version(), 
                                         code_occurence: crate::code_occurence_tufa_common!(),
                                     };
@@ -839,7 +909,7 @@ impl ReadPostParameters {
                                     },
                                 },
                                 Err(e) => {
-                                    return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::BindQuery { 
+                                    return crate::repositories_types::tufa_server::routes::api::cats::read_with_body::TryReadWithBodyResponseVariants::BindQuery { 
                                         checked_add: e.into_serialize_deserialize_version(), 
                                         code_occurence: crate::code_occurence_tufa_common!(),
                                     };
@@ -880,7 +950,7 @@ impl ReadPostParameters {
                     ) {
                         Ok(value) => value,
                         Err(e) => {
-                            return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::BindQuery { 
+                            return crate::repositories_types::tufa_server::routes::api::cats::read_with_body::TryReadWithBodyResponseVariants::BindQuery { 
                                 checked_add: e.into_serialize_deserialize_version(), 
                                 code_occurence: crate::code_occurence_tufa_common!(),
                             };
@@ -902,7 +972,7 @@ impl ReadPostParameters {
                     ) {
                         Ok(value) => value,
                         Err(e) => {
-                            return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::BindQuery { 
+                            return crate::repositories_types::tufa_server::routes::api::cats::read_with_body::TryReadWithBodyResponseVariants::BindQuery { 
                                 checked_add: e.into_serialize_deserialize_version(), 
                                 code_occurence: crate::code_occurence_tufa_common!(),
                             };
@@ -964,12 +1034,12 @@ impl ReadPostParameters {
                 {
                     Ok(option_pg_row) => option_pg_row,
                     Err(e) => {
-                        let error = crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPost::from(e);
+                        let error = crate::repositories_types::tufa_server::routes::api::cats::read_with_body::TryReadWithBody::from(e);
                         crate::common::error_logs_logic::error_log::ErrorLog::error_log(
                             &error,
                             app_info_state.as_ref(),
                         );
-                        return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::from(error);
+                        return crate::repositories_types::tufa_server::routes::api::cats::read_with_body::TryReadWithBodyResponseVariants::from(error);
                     }
                 }
             } {
@@ -978,18 +1048,18 @@ impl ReadPostParameters {
                         vec_values.push(value);
                     }
                     Err(e) => {
-                        let error = crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPost::from(e);
+                        let error = crate::repositories_types::tufa_server::routes::api::cats::read_with_body::TryReadWithBody::from(e);
                         crate::common::error_logs_logic::error_log::ErrorLog::error_log(
                             &error,
                             app_info_state.as_ref(),
                         );
-                        return crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::from(error);
+                        return crate::repositories_types::tufa_server::routes::api::cats::read_with_body::TryReadWithBodyResponseVariants::from(error);
                     }
                 }
             }
             vec_values
         };
-        crate::repositories_types::tufa_server::routes::api::cats::read_post::TryReadPostResponseVariants::Desirable(vec_values)
+        crate::repositories_types::tufa_server::routes::api::cats::read_with_body::TryReadWithBodyResponseVariants::Desirable(vec_values)
     }
 }
 
