@@ -11,6 +11,7 @@ pub mod read_post;
 pub mod update;
 pub mod update_by_id;
 //todo openapi
+//todo test if create\update\delete empty array 
 pub const CATS: &str = "cats";
 
 pub trait GetConfigGetPostgresPool:
@@ -383,6 +384,48 @@ impl CreateOrUpdateParameters {
         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
     ) -> crate::repositories_types::tufa_server::routes::api::cats::create_or_update::TryCreateOrUpdateResponseVariants
     {
+        // let query_string = format!(
+        //     // insert into cats (id, name, color) values ($1, $2, $3) on conflict (id) do update set name = EXCLUDED.name, color = EXCLUDED.color
+        //     "{} {} {} (id, name, color) {} ($1, $2, $3) {} {} (id) {} {} {} name = EXCLUDED.name, color = EXCLUDED.color",
+        //     crate::server::postgres::constants::INSERT_NAME,
+        //     crate::server::postgres::constants::INTO_NAME,
+        //     crate::repositories_types::tufa_server::routes::api::cats::CATS,
+        //     crate::server::postgres::constants::VALUES_NAME,
+        //     crate::server::postgres::constants::ON_NAME,
+        //     crate::server::postgres::constants::CONFLICT_NAME,
+        //     crate::server::postgres::constants::DO_NAME,
+        //     crate::server::postgres::constants::UPDATE_NAME,
+        //     crate::server::postgres::constants::SET_NAME,
+        // );
+        // println!("{query_string}");
+        // let binded_query = {
+        //     let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
+        //     query = query
+        //         .bind(self.path.id.into_inner())
+        //         .bind(self.payload.name)
+        //         .bind(self.payload.color);
+        //     query
+        // };
+        // match binded_query
+        //     .execute(app_info_state.get_postgres_pool())
+        //     .await
+        // {
+        //     Ok(_) => {
+        //         //todo - is need to return rows affected?
+        //         crate::repositories_types::tufa_server::routes::api::cats::create_or_update_by_id::TryCreateOrUpdateByIdResponseVariants::Desirable(())
+        //     }
+        //     Err(e) => {
+        //         let error =
+        //             crate::repositories_types::tufa_server::routes::api::cats::create_or_update_by_id::TryCreateOrUpdateById::from(
+        //                 e,
+        //             );
+        //         crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+        //             &error,
+        //             app_info_state.as_ref(),
+        //         );
+        //         crate::repositories_types::tufa_server::routes::api::cats::create_or_update_by_id::TryCreateOrUpdateByIdResponseVariants::from(error)
+        //     }
+        // }
         todo!()
     }
 }
@@ -1267,9 +1310,9 @@ impl UpdateByIdParameters {
             let mut increment: u64 = 0;
             match (&self.payload.name, &self.payload.color) {
                 (None, None) => {
-                    return crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants::NoParameters { 
-                        no_parameters: std::string::String::from("no parameters"), 
-                        code_occurence: crate::code_occurence_tufa_common!(),
+                    return crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants::NoPayloadFields { 
+                        no_payload_fields: std::string::String::from("no payload fields"), 
+                        code_occurence: crate::code_occurence_tufa_common!()
                     };
                 },
                 (None, Some(_)) => {
@@ -1349,8 +1392,8 @@ impl UpdateByIdParameters {
             let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
             match (self.payload.name, self.payload.color) {
                 (None, None) => {
-                    return crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants::NoParameters { 
-                        no_parameters: std::string::String::from("no parameters"), 
+                    return crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants::NoPayloadFields { 
+                        no_payload_fields: std::string::String::from("no payload fields"),
                         code_occurence: crate::code_occurence_tufa_common!(),
                     };
                 },
@@ -1398,8 +1441,8 @@ pub struct UpdateParameters {
 #[derive(Debug, serde_derive :: Serialize, serde_derive :: Deserialize)]
 pub struct UpdatePayloadElement {
     pub id: crate::server::postgres::bigserial::Bigserial,
-    pub name: Option<String>,
-    pub color: Option<String>,
+    pub name: std::string::String,
+    pub color: std::string::String,
 }
 impl UpdateParameters {
     pub async fn prepare_and_execute_query(
@@ -1407,7 +1450,92 @@ impl UpdateParameters {
         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
     ) -> crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdateResponseVariants
     {
-        todo!()
+        let query_string = {
+            let mut values = std::string::String::from("");
+            let mut increment: u64 = 0;
+            for _ in &self.payload {
+                let mut element_value = std::string::String::default();
+                match increment.checked_add(1) {
+                    Some(incr) => {
+                        increment = incr;
+                        element_value.push_str(&format!("${increment}, "));
+                    },
+                    None => {
+                        return crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdateResponseVariants::CheckedAdd { 
+                            checked_add: std::string::String::from("checked_add is None"), 
+                            code_occurence: crate::code_occurence_tufa_common!(), 
+                        }
+                    },
+                }
+                match increment.checked_add(1) {
+                    Some(incr) => {
+                        increment = incr;
+                        element_value.push_str(&format!("${increment}, "));
+                    },
+                    None => {
+                        return crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdateResponseVariants::CheckedAdd { 
+                            checked_add: std::string::String::from("checked_add is None"), 
+                            code_occurence: crate::code_occurence_tufa_common!(), 
+                        }
+                    },
+                }
+                match increment.checked_add(1) {
+                    Some(incr) => {
+                        increment = incr;
+                        element_value.push_str(&format!("${increment}, "));
+                    },
+                    None => {
+                        return crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdateResponseVariants::CheckedAdd { 
+                            checked_add: std::string::String::from("checked_add is None"), 
+                            code_occurence: crate::code_occurence_tufa_common!(), 
+                        }
+                    },
+                }
+                element_value.pop();
+                element_value.pop();
+                values.push_str(&format!("({element_value}), "));
+            }
+            values.pop();
+            values.pop();
+            format!(
+                "{} {} {} t {} name = data.name, color = data.color {} (values {values}) as data(id, name, color) where t.id = data.id",
+                crate::server::postgres::constants::UPDATE_NAME,
+                crate::repositories_types::tufa_server::routes::api::cats::CATS,
+                crate::server::postgres::constants::AS_NAME,
+                crate::server::postgres::constants::SET_NAME,
+                crate::server::postgres::constants::FROM_NAME,
+            )
+        };
+        println!("{query_string}");
+        let binded_query = {
+            let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
+            for element in self.payload {
+                query = query.bind(element.id.into_inner());
+                query = query.bind(element.name);
+                query = query.bind(element.color);
+            }
+            query
+        };
+        match binded_query
+            .execute(app_info_state.get_postgres_pool())
+            .await
+        {
+            Ok(_) => {
+                //todo - is need to return rows affected?
+                crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdateResponseVariants::Desirable(())
+            }
+            Err(e) => {
+                let error =
+                    crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdate::from(
+                        e,
+                    );
+                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                    &error,
+                    app_info_state.as_ref(),
+                );
+                crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdateResponseVariants::from(error)
+            }
+        }
     }
 }
 //

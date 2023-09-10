@@ -11,13 +11,6 @@
 )]
 pub enum TryUpdate {
     #[tvfrr_400_bad_request]
-    NoPayloadFields {
-        #[eo_display_with_serialize_deserialize]
-        no_payload_fields: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    //
-    #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
         project_commit_not_equal: std::string::String,
@@ -158,10 +151,16 @@ pub enum TryUpdate {
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     //
-    #[tvfrr_400_bad_request]
-    NoParameters {
+    #[tvfrr_500_internal_server_error]
+    CheckedAdd {
         #[eo_display_with_serialize_deserialize]
-        no_parameters: std::string::String,
+        checked_add: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_400_bad_request]
+    NoPayloadFields {
+        #[eo_display_with_serialize_deserialize]
+        no_payload_fields: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     //#[non_exhaustive] case

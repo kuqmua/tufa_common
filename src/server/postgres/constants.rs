@@ -21,3 +21,4 @@ pub const ORDER_BY_NAME: &str = "order by";
 pub const OFFSET_NAME: &str = "offset";
 pub const ASC_NAME: &str = "asc";
 pub const DESC_NAME: &str = "desc";
+pub const AS_NAME: &str = "as";
