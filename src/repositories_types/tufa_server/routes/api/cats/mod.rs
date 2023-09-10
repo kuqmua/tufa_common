@@ -623,13 +623,9 @@ pub struct DeleteWithBodyParameters {
 }
 #[derive(Debug, serde :: Serialize, serde :: Deserialize)]
 pub struct DeleteWithBodyPayload {
-    pub select: CatColumnSelect,
     pub ids: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
     pub name_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
     pub color_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
-    pub order_by: crate::server::postgres::order_by::OrderBy<CatColumn>,
-    pub limit: crate::server::postgres::postgres_number::PostgresNumber,
-    pub offset: crate::server::postgres::postgres_number::PostgresNumber,
 }
 impl DeleteWithBodyParameters {
     pub async fn prepare_and_execute_query(
@@ -637,77 +633,180 @@ impl DeleteWithBodyParameters {
         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
     ) -> crate::repositories_types::tufa_server::routes::api::cats::delete_with_body::TryDeleteWithBodyResponseVariants
     {
-        // let query_string = {
-        //     let mut query = format!(
-        //         "{} {} {} {} ",
-        //         crate::server::postgres::constants::DELETE_NAME,
-        //         crate::server::postgres::constants::FROM_NAME,
-        //         crate::repositories_types::tufa_server::routes::api::cats::CATS,
-        //         crate::server::postgres::constants::WHERE_NAME
-        //     );
-        //     match (&self.query.name, &self.query.color) {
-        //         (None, None) => {
-        //             return crate::repositories_types::tufa_server::routes::api::cats::delete::TryDeleteResponseVariants::NoParameters { 
-        //                 no_parameters: std::string::String::from("no parameters"), 
-        //                 code_occurence: crate::code_occurence_tufa_common!(),
-        //             };
-        //         },
-        //         (None, Some(_)) => {
-        //             query.push_str("color = $1");
-        //         },
-        //         (Some(_), None) => {
-        //             query.push_str("name = $1");
-        //         },
-        //         (Some(_), Some(_)) => {
-        //             query.push_str("name = $1 AND color = $2");
-        //         },
-        //     }
-        //     query
-        // };
-        // println!("{query_string}");
-        // let binded_query = {
-        //     let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
-        //     match (self.query.name, self.query.color) {
-        //         (None, None) => {
-        //             return crate::repositories_types::tufa_server::routes::api::cats::delete::TryDeleteResponseVariants::NoParameters { 
-        //                 no_parameters: std::string::String::from("no parameters"), 
-        //                 code_occurence: crate::code_occurence_tufa_common!(),
-        //             };
-        //         },
-        //         (None, Some(color)) => {
-        //             query = query.bind(color);
-        //         },
-        //         (Some(name), None) => {
-        //             query = query.bind(name);
-        //         },
-        //         (Some(name), Some(color)) => {
-        //             query = query.bind(name);
-        //             query = query.bind(color);
-        //         },
-        //     }
-        //     query
-        // };
-        // match binded_query
-        //     .execute(app_info_state.get_postgres_pool())
-        //     .await
-        // {
-        //     Ok(_) => {
-        //         //todo - is need to return rows affected?
-        //         crate::repositories_types::tufa_server::routes::api::cats::delete::TryDeleteResponseVariants::Desirable(())
-        //     }
-        //     Err(e) => {
-        //         let error =
-        //             crate::repositories_types::tufa_server::routes::api::cats::delete::TryDelete::from(
-        //                 e,
-        //             );
-        //         crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-        //             &error,
-        //             app_info_state.as_ref(),
-        //         );
-        //         crate::repositories_types::tufa_server::routes::api::cats::delete::TryDeleteResponseVariants::from(error)
-        //     }
-        // }
-        todo!()
+        let query_string = {
+            let mut query = std::string::String::from("");
+            {
+                query.push_str(&format!(
+                    "{} {} {}",
+                    crate::server::postgres::constants::DELETE_NAME,
+                    crate::server::postgres::constants::FROM_NAME,
+                    crate::repositories_types::tufa_server::routes::api::cats::CATS
+                ));
+            }
+            let additional_parameters = {
+                let mut additional_parameters = std::string::String::from("");
+                let mut increment: u64 = 0;
+                if let Some(value) = &self.payload.ids {
+                    let prefix = match additional_parameters.is_empty() {
+                        true => crate::server::postgres::constants::WHERE_NAME.to_string(),
+                        false => format!(" {}", crate::server::postgres::constants::AND_NAME),
+                    };
+                    let bind_increments = {
+                        let mut bind_increments = std::string::String::from("");
+                        for element in value {
+                            match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
+                                element,
+                                &mut increment
+                            ) {
+                                Ok(bind_increments_handle) => {
+                                    bind_increments.push_str(&format!("{bind_increments_handle}, "));
+                                },
+                                Err(e) => {
+                                    return crate::repositories_types::tufa_server::routes::api::cats::delete_with_body::TryDeleteWithBodyResponseVariants::BindQuery { 
+                                        checked_add: e.into_serialize_deserialize_version(), 
+                                        code_occurence: crate::code_occurence_tufa_common!(),
+                                    };
+                                },
+                            }
+                        }
+                        if let false = bind_increments.is_empty() {
+                            bind_increments.pop();
+                            bind_increments.pop();
+                        }
+                        bind_increments
+                    };
+                    additional_parameters.push_str(&format!(
+                        "{prefix} id = {}({}[{}])",
+                        crate::server::postgres::constants::ANY_NAME,
+                        crate::server::postgres::constants::ARRAY_NAME,
+                        bind_increments
+                    ));
+                }
+                if let Some(value) = &self.payload.name_regex {
+                    let prefix = match additional_parameters.is_empty() {
+                        true => crate::server::postgres::constants::WHERE_NAME.to_string(),
+                        false => format!(" {}", crate::server::postgres::constants::AND_NAME),
+                    };
+                    let column_name = "name";
+                    let bind_increments = {
+                        let mut bind_increments = std::string::String::from("");
+                        for (index, element) in value.iter().enumerate() {
+                            let conjuctive_operator = &element.conjuctive_operator;
+                            match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
+                                element,
+                                &mut increment
+                            ) {
+                                Ok(bind_increments_handle) => match index == 0 {
+                                    true => {
+                                        bind_increments.push_str(&format!("{column_name} ~ {bind_increments_handle} "));
+                                    },
+                                    false => {
+                                        bind_increments.push_str(&format!("{conjuctive_operator} {column_name} ~ {bind_increments_handle} "));
+                                    },
+                                },
+                                Err(e) => {
+                                    return crate::repositories_types::tufa_server::routes::api::cats::delete_with_body::TryDeleteWithBodyResponseVariants::BindQuery { 
+                                        checked_add: e.into_serialize_deserialize_version(), 
+                                        code_occurence: crate::code_occurence_tufa_common!(),
+                                    };
+                                },
+                            }
+                        }
+                        if let false = bind_increments.is_empty() {
+                            bind_increments.pop();
+                        }
+                        bind_increments
+                    };
+                    additional_parameters.push_str(&format!("{prefix} {bind_increments}"));
+                }
+                if let Some(value) = &self.payload.color_regex {
+                    let prefix = match additional_parameters.is_empty() {
+                        true => crate::server::postgres::constants::WHERE_NAME.to_string(),
+                        false => format!(" {}", crate::server::postgres::constants::AND_NAME),
+                    };
+                    let column_name = "color";
+                    let bind_increments = {
+                        let mut bind_increments = std::string::String::from("");
+                        for (index, element) in value.iter().enumerate() {
+                            let conjuctive_operator = &element.conjuctive_operator;
+                            match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
+                                element,
+                                &mut increment
+                            ) {
+                                Ok(bind_increments_handle) => match index == 0 {
+                                    true => {
+                                        bind_increments.push_str(&format!("{column_name} ~ {bind_increments_handle} "));
+                                    },
+                                    false => {
+                                        bind_increments.push_str(&format!("{conjuctive_operator} {column_name} ~ {bind_increments_handle} "));
+                                    },
+                                },
+                                Err(e) => {
+                                    return crate::repositories_types::tufa_server::routes::api::cats::delete_with_body::TryDeleteWithBodyResponseVariants::BindQuery { 
+                                        checked_add: e.into_serialize_deserialize_version(), 
+                                        code_occurence: crate::code_occurence_tufa_common!(),
+                                    };
+                                },
+                            }
+                        }
+                        if let false = bind_increments.is_empty() {
+                            bind_increments.pop();
+                        }
+                        bind_increments
+                    };
+                    additional_parameters.push_str(&format!("{prefix} {bind_increments}"));
+                }
+                additional_parameters
+            };
+            query.push_str(&format!(" {additional_parameters}"));
+            println!("{query}");
+            query
+        };
+        let binded_query = {
+            let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
+            if let Some(values) = self.payload.ids {
+                for value in values {
+                    query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                        value, query,
+                    );
+                }
+            }
+            if let Some(values) = self.payload.name_regex {
+                for value in values {
+                    query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                        value, query,
+                    );
+                }
+            }
+            if let Some(values) = self.payload.color_regex {
+                for value in values {
+                    query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                        value, query,
+                    );
+                }
+            }
+            query
+        };
+        match binded_query
+            .execute(app_info_state.get_postgres_pool())
+            .await
+        {
+            Ok(_) => {
+                //todo - is need to return rows affected?
+                crate::repositories_types::tufa_server::routes::api::cats::delete_with_body::TryDeleteWithBodyResponseVariants::Desirable(())
+            }
+            Err(e) => {
+                let error =
+                    crate::repositories_types::tufa_server::routes::api::cats::delete_with_body::TryDeleteWithBody::from(
+                        e,
+                    );
+                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                    &error,
+                    app_info_state.as_ref(),
+                );
+                crate::repositories_types::tufa_server::routes::api::cats::delete_with_body::TryDeleteWithBodyResponseVariants::from(error)
+            }
+        }
     }
 }
 

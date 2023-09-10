@@ -54,6 +54,29 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
 
+DELETE http://127.0.0.1:8080/api/cats/search HTTP/1.1
+Accept: */*
+content-type: application/json
+project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
+
+{
+    "ids": [9223372036854775807],
+    "name_regex":[
+        {
+            "regex":"^tesft_namfe$",
+            "conjuctive_operator":"Or"
+        }
+    ],
+    "color_regex":[
+        {
+            "regex":"test",
+            "conjuctive_operator":"Or"
+        }
+    ]
+}
+
+###
+
 DELETE http://127.0.0.1:8080/api/cats?name=kek&color=white HTTP/1.1
 Accept: */*
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
