@@ -681,16 +681,6 @@ impl DeleteQuery {
     }
 }
 
-#[derive(Debug, serde :: Deserialize)]
-pub struct DeleteWithBodyParameters {
-    pub payload: DeleteWithBodyPayload,
-}
-#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
-pub struct DeleteWithBodyPayload {
-    pub id: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
-    pub name_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
-    pub color_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
-}
 impl DeleteWithBodyParameters {
     pub async fn prepare_and_execute_query(
         self,
@@ -746,7 +736,7 @@ impl DeleteWithBodyParameters {
                         bind_increments
                     ));
                 }
-                if let Some(value) = &self.payload.name_regex {
+                if let Some(value) = &self.payload.name {
                     let prefix = match additional_parameters.is_empty() {
                         true => crate::server::postgres::constants::WHERE_NAME.to_string(),
                         false => format!(" {}", crate::server::postgres::constants::AND_NAME),
@@ -783,7 +773,7 @@ impl DeleteWithBodyParameters {
                     };
                     additional_parameters.push_str(&format!("{prefix} {bind_increments}"));
                 }
-                if let Some(value) = &self.payload.color_regex {
+                if let Some(value) = &self.payload.color {
                     let prefix = match additional_parameters.is_empty() {
                         true => crate::server::postgres::constants::WHERE_NAME.to_string(),
                         false => format!(" {}", crate::server::postgres::constants::AND_NAME),
@@ -835,14 +825,14 @@ impl DeleteWithBodyParameters {
                     );
                 }
             }
-            if let Some(values) = self.payload.name_regex {
+            if let Some(values) = self.payload.name {
                 for value in values {
                     query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
                         value, query,
                     );
                 }
             }
-            if let Some(values) = self.payload.color_regex {
+            if let Some(values) = self.payload.color {
                 for value in values {
                     query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
                         value, query,
@@ -944,8 +934,8 @@ pub struct ReadWithBodyParameters {
 pub struct ReadWithBodyPayload {
     pub select: CatColumnSelect,
     pub id: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
-    pub name_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
-    pub color_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
+    pub name: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
+    pub color: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
     pub order_by: crate::server::postgres::order_by::OrderBy<CatColumn>,
     pub limit: crate::server::postgres::postgres_number::PostgresNumber,
     pub offset: crate::server::postgres::postgres_number::PostgresNumber,
@@ -1012,7 +1002,7 @@ impl ReadWithBodyParameters {
                         bind_increments
                     ));
                 }
-                if let Some(value) = &self.payload.name_regex {
+                if let Some(value) = &self.payload.name {
                     let prefix = match additional_parameters.is_empty() {
                         true => crate::server::postgres::constants::WHERE_NAME.to_string(),
                         false => format!(" {}", crate::server::postgres::constants::AND_NAME),
@@ -1049,7 +1039,7 @@ impl ReadWithBodyParameters {
                     };
                     additional_parameters.push_str(&format!("{prefix} {bind_increments}"));
                 }
-                if let Some(value) = &self.payload.color_regex {
+                if let Some(value) = &self.payload.color {
                     let prefix = match additional_parameters.is_empty() {
                         true => crate::server::postgres::constants::WHERE_NAME.to_string(),
                         false => format!(" {}", crate::server::postgres::constants::AND_NAME),
@@ -1161,14 +1151,14 @@ impl ReadWithBodyParameters {
                     );
                 }
             }
-            if let Some(values) = self.payload.name_regex {
+            if let Some(values) = self.payload.name {
                 for value in values {
                     query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
                         value, query,
                     );
                 }
             }
-            if let Some(values) = self.payload.color_regex {
+            if let Some(values) = self.payload.color {
                 for value in values {
                     query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
                         value, query,
