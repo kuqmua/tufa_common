@@ -925,22 +925,6 @@ impl ReadByIdQuery {
     }
 }
 
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct ReadWithBodyParameters {
-    pub payload: ReadWithBodyPayload,
-}
-
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct ReadWithBodyPayload {
-    pub select: CatColumnSelect,
-    pub id: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
-    pub name: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
-    pub color: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
-    pub order_by: crate::server::postgres::order_by::OrderBy<CatColumn>,
-    pub limit: crate::server::postgres::postgres_number::PostgresNumber,
-    pub offset: crate::server::postgres::postgres_number::PostgresNumber,
-}
-
 impl ReadWithBodyParameters {
     pub async fn prepare_and_execute_query(
         self,
