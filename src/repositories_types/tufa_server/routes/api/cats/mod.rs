@@ -1200,22 +1200,6 @@ impl ReadWithBodyParameters {
     }
 }
 
-#[derive(Debug, serde::Deserialize)]
-pub struct ReadParameters {
-    pub query: ReadQuery,
-}
-
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub struct ReadQuery {
-    pub select: Option<CatColumnSelect>,
-    pub id: Option<crate::server::postgres::bigserial_ids::BigserialIds>,
-    pub name: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
-    pub color: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
-    pub order_by: Option<CatOrderByWrapper>,
-    pub limit: crate::server::postgres::postgres_number::PostgresNumber,
-    pub offset: Option<crate::server::postgres::postgres_number::PostgresNumber>,
-}
-
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 struct ReadQueryForUrlEncoding {
     select: Option<std::string::String>,
