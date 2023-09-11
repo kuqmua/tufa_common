@@ -1625,16 +1625,6 @@ impl UpdateByIdParameters {
     }
 }
 
-#[derive(Debug, serde :: Deserialize)]
-pub struct UpdateParameters {
-    pub payload: Vec<UpdatePayloadElement>,
-}
-#[derive(Debug, serde_derive :: Serialize, serde_derive :: Deserialize)]
-pub struct UpdatePayloadElement {
-    pub id: crate::server::postgres::bigserial::Bigserial,
-    pub name: std::string::String,
-    pub color: std::string::String,
-}
 impl UpdateParameters {
     pub async fn prepare_and_execute_query(
         self,
@@ -1729,4 +1719,3 @@ impl UpdateParameters {
         }
     }
 }
-//
