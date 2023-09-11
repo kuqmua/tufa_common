@@ -192,15 +192,6 @@ where
 
 ///////////////////////
 
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct CreateBatchParameters {
-    pub payload: Vec<CreateBatchPayloadElement>,
-}
-#[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-pub struct CreateBatchPayloadElement {
-    pub name: String,
-    pub color: String,
-}
 impl crate::server::postgres::bind_query::BindQuery for CreateBatchPayloadElement {
     fn try_generate_bind_increments(
         &self,
