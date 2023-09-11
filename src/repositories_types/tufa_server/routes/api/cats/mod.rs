@@ -359,16 +359,6 @@ impl CreateOrUpdateByIdParameters {
     }
 }
 
-#[derive(Debug, serde :: Deserialize)]
-pub struct CreateOrUpdateParameters {
-    pub payload: Vec<CreateOrUpdatePayloadElement>,
-}
-#[derive(Debug, serde_derive :: Serialize, serde_derive :: Deserialize)]
-pub struct CreateOrUpdatePayloadElement {
-    pub id: crate::server::postgres::bigserial::Bigserial,
-    pub name: String,
-    pub color: String,
-}
 impl crate::server::postgres::bind_query::BindQuery for CreateOrUpdatePayloadElement {
     fn try_generate_bind_increments(
         &self,
