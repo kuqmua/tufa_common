@@ -80,7 +80,7 @@ content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 {
-    "ids": [9223372036854775807],
+    "id": [9223372036854775807],
     "name_regex":[
         {
             "regex":"^tesft_namfe$",
@@ -116,7 +116,7 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 {
     "select": "Id",
-    # "ids": [9223372036854775807],
+    # "id": [9223372036854775807],
     "name_regex":[
         {
             "regex":"^tesft_namfe$",

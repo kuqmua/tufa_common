@@ -687,7 +687,7 @@ pub struct DeleteWithBodyParameters {
 }
 #[derive(Debug, serde :: Serialize, serde :: Deserialize)]
 pub struct DeleteWithBodyPayload {
-    pub ids: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
+    pub id: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
     pub name_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
     pub color_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
 }
@@ -710,7 +710,7 @@ impl DeleteWithBodyParameters {
             let additional_parameters = {
                 let mut additional_parameters = std::string::String::from("");
                 let mut increment: u64 = 0;
-                if let Some(value) = &self.payload.ids {
+                if let Some(value) = &self.payload.id {
                     let prefix = match additional_parameters.is_empty() {
                         true => crate::server::postgres::constants::WHERE_NAME.to_string(),
                         false => format!(" {}", crate::server::postgres::constants::AND_NAME),
@@ -828,7 +828,7 @@ impl DeleteWithBodyParameters {
         };
         let binded_query = {
             let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
-            if let Some(values) = self.payload.ids {
+            if let Some(values) = self.payload.id {
                 for value in values {
                     query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
                         value, query,
@@ -943,7 +943,7 @@ pub struct ReadWithBodyParameters {
 #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct ReadWithBodyPayload {
     pub select: CatColumnSelect,
-    pub ids: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
+    pub id: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
     pub name_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
     pub color_regex: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
     pub order_by: crate::server::postgres::order_by::OrderBy<CatColumn>,
@@ -976,7 +976,7 @@ impl ReadWithBodyParameters {
             let additional_parameters = {
                 let mut additional_parameters = std::string::String::from("");
                 let mut increment: u64 = 0;
-                if let Some(value) = &self.payload.ids {
+                if let Some(value) = &self.payload.id {
                     let prefix = match additional_parameters.is_empty() {
                         true => crate::server::postgres::constants::WHERE_NAME.to_string(),
                         false => format!(" {}", crate::server::postgres::constants::AND_NAME),
@@ -1154,7 +1154,7 @@ impl ReadWithBodyParameters {
         };
         let binded_query = {
             let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
-            if let Some(values) = self.payload.ids {
+            if let Some(values) = self.payload.id {
                 for value in values {
                     query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
                         value, query,
