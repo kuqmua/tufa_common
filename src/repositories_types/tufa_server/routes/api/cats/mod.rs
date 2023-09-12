@@ -903,10 +903,6 @@ impl ReadByIdParameters {
         }
     }
 }
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
-struct ReadByIdQueryForUrlEncoding {
-    select: Option<std::string::String>,
-}
 impl ReadByIdQuery {
     fn into_url_encoding_version(self) -> ReadByIdQueryForUrlEncoding {
         let select = self.select.map(|value| {
