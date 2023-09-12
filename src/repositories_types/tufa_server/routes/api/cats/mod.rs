@@ -884,18 +884,6 @@ impl ReadByIdParameters {
         }
     }
 }
-impl ReadByIdQuery {
-    fn into_url_encoding_version(self) -> ReadByIdQueryForUrlEncoding {
-        let select = self.select.map(|value| {
-            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                value,
-            )
-        });
-        ReadByIdQueryForUrlEncoding {
-            select
-        }
-    }
-}
 
 impl ReadWithBodyParameters {
     pub async fn prepare_and_execute_query(
@@ -1169,54 +1157,6 @@ impl ReadWithBodyParameters {
             vec_values
         };
         crate::repositories_types::tufa_server::routes::api::cats::read_with_body::TryReadWithBodyResponseVariants::Desirable(vec_values)
-    }
-}
-
-impl ReadQuery {
-    fn into_url_encoding_version(self) -> ReadQueryForUrlEncoding {
-        let select = self.select.map(|value| {
-            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                value,
-            )
-        });
-        let id = self.id.map(|value| {
-            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                value,
-            )
-        });
-        let name = self.name.map(|value| {
-            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                value,
-            )
-        });
-        let color = self.color.map(|value| {
-            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                value,
-            )
-        });
-        let order_by = self.order_by.map(|value| {
-            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                value,
-            )
-        });
-        let limit =
-            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                self.limit,
-            );
-        let offset = self.offset.map(|value| {
-            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                value,
-            )
-        });
-        ReadQueryForUrlEncoding {
-            select,
-            id,
-            name,
-            color,
-            order_by,
-            limit,
-            offset,
-        }
     }
 }
 
