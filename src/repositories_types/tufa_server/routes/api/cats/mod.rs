@@ -1191,16 +1191,6 @@ impl ReadWithBodyParameters {
     }
 }
 
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
-struct ReadQueryForUrlEncoding {
-    select: Option<std::string::String>,
-    id: Option<std::string::String>,
-    name: Option<std::string::String>,
-    color: Option<std::string::String>,
-    order_by: Option<std::string::String>,
-    limit: std::string::String,
-    offset: Option<std::string::String>,
-}
 impl ReadQuery {
     fn into_url_encoding_version(self) -> ReadQueryForUrlEncoding {
         let select = self.select.map(|value| {
