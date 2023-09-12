@@ -657,11 +657,6 @@ impl DeleteParameters {
     }
 }
 
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
-struct DeleteQueryForUrlEncoding {
-    name: Option<std::string::String>,
-    color: Option<std::string::String>,
-}
 impl DeleteQuery {
     fn into_url_encoding_version(self) -> DeleteQueryForUrlEncoding {
         let name = self.name.map(|value| {
