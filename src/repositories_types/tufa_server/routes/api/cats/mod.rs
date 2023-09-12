@@ -657,25 +657,6 @@ impl DeleteParameters {
     }
 }
 
-impl DeleteQuery {
-    fn into_url_encoding_version(self) -> DeleteQueryForUrlEncoding {
-        let name = self.name.map(|value| {
-            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                value,
-            )
-        });
-        let color = self.color.map(|value| {
-            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                value,
-            )
-        });
-        DeleteQueryForUrlEncoding {
-            name,
-            color,
-        }
-    }
-}
-
 impl DeleteWithBodyParameters {
     pub async fn prepare_and_execute_query(
         self,
