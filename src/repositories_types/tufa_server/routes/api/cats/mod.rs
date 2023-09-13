@@ -633,10 +633,8 @@ impl DeleteWithBodyParameters {
                                 },
                             }
                         }
-                        if let false = bind_increments.is_empty() {
-                            bind_increments.pop();
-                            bind_increments.pop();
-                        }
+                        bind_increments.pop();
+                        bind_increments.pop();
                         bind_increments
                     };
                     additional_parameters.push_str(&format!(
