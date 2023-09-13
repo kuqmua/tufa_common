@@ -201,40 +201,23 @@ impl crate::server::postgres::bind_query::BindQuery for CreateBatchPayloadElemen
         crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed,
     > {
         let mut increments = std::string::String::from("");
-        match increment.checked_add(1) {
-            Some(incr) => {
-                *increment = incr;
-                increments.push_str(&format!("${increment}, "));
-            },
-            None => {
-                return Err(crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed::CheckedAdd { 
-                    checked_add: std::string::String::from("checked_add is None"), 
-                    code_occurence: crate::code_occurence_tufa_common!(), 
-                });
-            },
-        }
-        match increment.checked_add(1) {
-            Some(incr) => {
-                *increment = incr;
-                increments.push_str(&format!("${increment}, "));
-            },
-            None => {
-                return Err(crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed::CheckedAdd { 
-                    checked_add: std::string::String::from("checked_add is None"), 
-                    code_occurence: crate::code_occurence_tufa_common!(), 
-                });
-            },
-        }
-        increments.pop();
-        increments.pop();
+        increments.push_str(&format!(
+            "{}, ",
+            self.name.try_generate_bind_increments(
+                increment,
+            )?
+        ));
+        increments.push_str(&self.color.try_generate_bind_increments(
+            increment,
+        )?);
         Ok(increments)
     }
     fn bind_value_to_query(
         self,
         mut query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
     ) -> sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments> {
-        query = query.bind(self.name);
-        query = query.bind(self.color);
+        query = self.name.bind_value_to_query(query);
+        query = self.color.bind_value_to_query(query);
         query
     }
 }
