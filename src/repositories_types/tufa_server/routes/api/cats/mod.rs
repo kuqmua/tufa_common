@@ -443,7 +443,8 @@ impl CreateParameters {
         println!("{query_string}");
         let binded_query = {
             let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
-            query = query.bind(self.payload.name).bind(self.payload.color);
+            query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(self.payload.name, query);
+            query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(self.payload.color, query);
             query
         };
         match binded_query
@@ -485,7 +486,7 @@ impl DeleteByIdParameters {
         println!("{query_string}");
         let binded_query = {
             let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
-            query = query.bind(self.path.id.to_inner());
+            query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(self.path.id, query);
             query
         };
         match binded_query
@@ -538,7 +539,7 @@ impl DeleteParameters {
                 (Some(_), None) => {
                     query.push_str("name = $1");
                 },
-                (Some(_), Some(_)) => {
+                (Some(_), Some(_)) => {//todo AND or OR ? how to support both
                     query.push_str("name = $1 AND color = $2");
                 },
             }
@@ -555,14 +556,14 @@ impl DeleteParameters {
                     };
                 },
                 (None, Some(color)) => {
-                    query = query.bind(color);
+                    query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(color, query);
                 },
                 (Some(name), None) => {
-                    query = query.bind(name);
+                    query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(name, query);
                 },
                 (Some(name), Some(color)) => {
-                    query = query.bind(name);
-                    query = query.bind(color);
+                    query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(name, query);
+                    query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(color, query);
                 },
             }
             query
