@@ -1470,46 +1470,50 @@ impl UpdateParameters {
         let query_string = {
             let mut values = std::string::String::default();
             let mut increment: u64 = 0;
-            for _ in &self.payload {
+            for element in &self.payload {
                 let mut element_value = std::string::String::default();
-                match increment.checked_add(1) {
-                    Some(incr) => {
-                        increment = incr;
-                        element_value.push_str(&format!("${increment}, "));
+                match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
+                    &element.id,
+                    &mut increment
+                ) {
+                    Ok(value) => {
+                        element_value.push_str(&format!("{value}, "));
                     },
-                    None => {
-                        return crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdateResponseVariants::CheckedAdd { 
-                            checked_add: std::string::String::from("checked_add is None"), 
-                            code_occurence: crate::code_occurence_tufa_common!(), 
-                        }
+                    Err(e) => {
+                        return crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdateResponseVariants::BindQuery { 
+                            checked_add: e.into_serialize_deserialize_version(), 
+                            code_occurence: crate::code_occurence_tufa_common!(),
+                        };
                     },
-                }
-                match increment.checked_add(1) {
-                    Some(incr) => {
-                        increment = incr;
-                        element_value.push_str(&format!("${increment}, "));
+                };
+                match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
+                    &element.name,
+                    &mut increment
+                ) {
+                    Ok(value) => {
+                        element_value.push_str(&format!("{value}, "));
                     },
-                    None => {
-                        return crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdateResponseVariants::CheckedAdd { 
-                            checked_add: std::string::String::from("checked_add is None"), 
-                            code_occurence: crate::code_occurence_tufa_common!(), 
-                        }
+                    Err(e) => {
+                        return crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdateResponseVariants::BindQuery { 
+                            checked_add: e.into_serialize_deserialize_version(), 
+                            code_occurence: crate::code_occurence_tufa_common!(),
+                        };
                     },
-                }
-                match increment.checked_add(1) {
-                    Some(incr) => {
-                        increment = incr;
-                        element_value.push_str(&format!("${increment}, "));
+                };
+                match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
+                    &element.color,
+                    &mut increment
+                ) {
+                    Ok(value) => {
+                        element_value.push_str(&value);
                     },
-                    None => {
-                        return crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdateResponseVariants::CheckedAdd { 
-                            checked_add: std::string::String::from("checked_add is None"), 
-                            code_occurence: crate::code_occurence_tufa_common!(), 
-                        }
+                    Err(e) => {
+                        return crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdateResponseVariants::BindQuery { 
+                            checked_add: e.into_serialize_deserialize_version(), 
+                            code_occurence: crate::code_occurence_tufa_common!(),
+                        };
                     },
-                }
-                element_value.pop();
-                element_value.pop();
+                };
                 values.push_str(&format!("({element_value}), "));
             }
             values.pop();
