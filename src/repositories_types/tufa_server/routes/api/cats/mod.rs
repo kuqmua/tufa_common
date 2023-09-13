@@ -324,65 +324,6 @@ impl CreateOrUpdateByIdParameters {
     }
 }
 
-impl crate::server::postgres::bind_query::BindQuery for CreateOrUpdatePayloadElement {
-    fn try_generate_bind_increments(
-        &self,
-        increment: &mut u64,
-    ) -> Result<
-        std::string::String,
-        crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed,
-    > {
-        let mut increments = std::string::String::from("");
-        match increment.checked_add(1) {
-            Some(incr) => {
-                *increment = incr;
-                increments.push_str(&format!("${increment}, "));
-            },
-            None => {
-                return Err(crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed::CheckedAdd { 
-                    checked_add: std::string::String::from("checked_add is None"), 
-                    code_occurence: crate::code_occurence_tufa_common!(), 
-                });
-            },
-        }
-        match increment.checked_add(1) {
-            Some(incr) => {
-                *increment = incr;
-                increments.push_str(&format!("${increment}, "));
-            },
-            None => {
-                return Err(crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed::CheckedAdd { 
-                    checked_add: std::string::String::from("checked_add is None"), 
-                    code_occurence: crate::code_occurence_tufa_common!(), 
-                });
-            },
-        }
-        match increment.checked_add(1) {
-            Some(incr) => {
-                *increment = incr;
-                increments.push_str(&format!("${increment}, "));
-            },
-            None => {
-                return Err(crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed::CheckedAdd { 
-                    checked_add: std::string::String::from("checked_add is None"), 
-                    code_occurence: crate::code_occurence_tufa_common!(), 
-                });
-            },
-        }
-        increments.pop();
-        increments.pop();
-        Ok(increments)
-    }
-    fn bind_value_to_query(
-        self,
-        mut query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
-    ) -> sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments> {
-        query = query.bind(self.id.into_inner());
-        query = query.bind(self.name);
-        query = query.bind(self.color);
-        query
-    }
-}
 impl CreateOrUpdateParameters {
     pub async fn prepare_and_execute_query(
         self,
@@ -393,29 +334,54 @@ impl CreateOrUpdateParameters {
             let mut bind_increments = std::string::String::from("");
             let mut increment = 0;
             for element in &self.payload {
-                let mut element_bind_increments = std::string::String::from("");
-                match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
-                    element,
-                    &mut increment
-                ) {
-                    Ok(bind_increments_handle) => {
-                        element_bind_increments.push_str(&format!("{bind_increments_handle}, "));
-                    },
-                    Err(e) => {
-                        return crate::repositories_types::tufa_server::routes::api::cats::create_or_update::TryCreateOrUpdateResponseVariants::BindQuery { 
-                            checked_add: e.into_serialize_deserialize_version(), 
-                            code_occurence: crate::code_occurence_tufa_common!(),
-                        };
-                    },
-                }
-                element_bind_increments.pop();
-                element_bind_increments.pop();
+                let element_bind_increments = {
+                    let mut element_bind_increments = std::string::String::from("");
+                    match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(&element.id, &mut increment) {
+                        Ok(value) => {
+                            element_bind_increments.push_str(&format!(
+                                "{value}, ",
+                            ));
+                        },
+                        Err(e) => {
+                            return crate::repositories_types::tufa_server::routes::api::cats::create_or_update::TryCreateOrUpdateResponseVariants::BindQuery { 
+                                checked_add: e.into_serialize_deserialize_version(), 
+                                code_occurence: crate::code_occurence_tufa_common!(),
+                            };
+                        },
+                    }
+                    match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(&element.name, &mut increment) {
+                        Ok(value) => {
+                            element_bind_increments.push_str(&format!(
+                                "{value}, ",
+                            ));
+                        },
+                        Err(e) => {
+                            return crate::repositories_types::tufa_server::routes::api::cats::create_or_update::TryCreateOrUpdateResponseVariants::BindQuery { 
+                                checked_add: e.into_serialize_deserialize_version(), 
+                                code_occurence: crate::code_occurence_tufa_common!(),
+                            };
+                        },
+                    }
+                    match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(&element.color, &mut increment) {
+                        Ok(value) => {
+                            element_bind_increments.push_str(&format!(
+                                "{value}",
+                            ));
+                        },
+                        Err(e) => {
+                            return crate::repositories_types::tufa_server::routes::api::cats::create_or_update::TryCreateOrUpdateResponseVariants::BindQuery { 
+                                checked_add: e.into_serialize_deserialize_version(), 
+                                code_occurence: crate::code_occurence_tufa_common!(),
+                            };
+                        },
+                    }
+                    element_bind_increments
+                };
                 bind_increments.push_str(&format!("({element_bind_increments}), "));
             }
             bind_increments.pop();
             bind_increments.pop();
             format!(
-                // insert into cats (id, name, color) values ($1, $2, $3) on conflict (id) do update set name = EXCLUDED.name, color = EXCLUDED.color
                 "{} {} {} (id, name, color) {} {bind_increments} {} {} (id) {} {} {} name = EXCLUDED.name, color = EXCLUDED.color",
                 crate::server::postgres::constants::INSERT_NAME,
                 crate::server::postgres::constants::INTO_NAME,
@@ -432,7 +398,9 @@ impl CreateOrUpdateParameters {
         let binded_query = {
             let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
             for element in self.payload {
-                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(element, query);
+                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(element.id, query);
+                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(element.name, query);
+                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(element.color, query);
             }
             query
         };
