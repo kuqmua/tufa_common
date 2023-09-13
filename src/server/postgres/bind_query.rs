@@ -26,7 +26,7 @@ impl crate::server::postgres::bind_query::BindQuery for std::string::String {
         std::string::String,
         crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed,
     > {
-        let mut increments = std::string::String::from("");
+        let mut increments = std::string::String::default();
         match increment.checked_add(1) {
             Some(incr) => {
                 *increment = incr;

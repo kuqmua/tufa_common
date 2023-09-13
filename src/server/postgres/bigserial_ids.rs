@@ -18,8 +18,8 @@ where
     .fold(
         (
             Vec::new(),
-            std::string::String::from(""),
-            std::string::String::from(""),
+            std::string::String::default(),
+            std::string::String::default(),
         ),
         |mut acc, element| {
             match element.parse::<i64>() {
@@ -80,7 +80,7 @@ impl crate::server::postgres::bind_query::BindQuery for BigserialIds {
         std::string::String,
         crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed,
     > {
-        let mut increments = std::string::String::from("");
+        let mut increments = std::string::String::default();
         for _ in 0..self.0.len() {
             match increment.checked_add(1) {
                 Some(incr) => {

@@ -23,7 +23,7 @@ impl crate::server::postgres::bind_query::BindQuery
     for StringsDeserializedFromStringSplittedByComma
 {
     fn try_generate_bind_increments(&self, increment: &mut u64) -> Result<std::string::String, crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed> {
-        let mut increments = std::string::String::from("");
+        let mut increments = std::string::String::default();
         for _ in 0..self.0.len() {
             match increment.checked_add(1) {
                 Some(incr) => {

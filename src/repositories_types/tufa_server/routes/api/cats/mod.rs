@@ -200,10 +200,10 @@ impl CreateBatchParameters {
     {
         let bind_increments = {
             let mut increment: u64 = 0;
-            let mut bind_increments = std::string::String::from("");
+            let mut bind_increments = std::string::String::default();
             for element in &self.payload {
                 let element_bind_increments = {
-                    let mut element_bind_increments = std::string::String::from("");
+                    let mut element_bind_increments = std::string::String::default();
                     match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(&element.name, &mut increment) {
                         Ok(value) => {
                             element_bind_increments.push_str(&format!(
@@ -331,11 +331,11 @@ impl CreateOrUpdateParameters {
     ) -> crate::repositories_types::tufa_server::routes::api::cats::create_or_update::TryCreateOrUpdateResponseVariants
     {
         let query_string = {
-            let mut bind_increments = std::string::String::from("");
+            let mut bind_increments = std::string::String::default();
             let mut increment = 0;
             for element in &self.payload {
                 let element_bind_increments = {
-                    let mut element_bind_increments = std::string::String::from("");
+                    let mut element_bind_increments = std::string::String::default();
                     match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(&element.id, &mut increment) {
                         Ok(value) => {
                             element_bind_increments.push_str(&format!(
@@ -598,7 +598,7 @@ impl DeleteWithBodyParameters {
     ) -> crate::repositories_types::tufa_server::routes::api::cats::delete_with_body::TryDeleteWithBodyResponseVariants
     {
         let query_string = {
-            let mut query = std::string::String::from("");
+            let mut query = std::string::String::default();
             {
                 query.push_str(&format!(
                     "{} {} {}",
@@ -608,7 +608,7 @@ impl DeleteWithBodyParameters {
                 ));
             }
             let additional_parameters = {
-                let mut additional_parameters = std::string::String::from("");
+                let mut additional_parameters = std::string::String::default();
                 let mut increment: u64 = 0;
                 if let Some(value) = &self.payload.id {
                     let prefix = match additional_parameters.is_empty() {
@@ -616,7 +616,7 @@ impl DeleteWithBodyParameters {
                         false => format!(" {}", crate::server::postgres::constants::AND_NAME),
                     };
                     let bind_increments = {
-                        let mut bind_increments = std::string::String::from("");
+                        let mut bind_increments = std::string::String::default();
                         for element in value {
                             match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
                                 element,
@@ -651,7 +651,7 @@ impl DeleteWithBodyParameters {
                     };
                     let column_name = "name";
                     let bind_increments = {
-                        let mut bind_increments = std::string::String::from("");
+                        let mut bind_increments = std::string::String::default();
                         for (index, element) in value.iter().enumerate() {
                             let conjuctive_operator = &element.conjuctive_operator;
                             match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
@@ -688,7 +688,7 @@ impl DeleteWithBodyParameters {
                     };
                     let column_name = "color";
                     let bind_increments = {
-                        let mut bind_increments = std::string::String::from("");
+                        let mut bind_increments = std::string::String::default();
                         for (index, element) in value.iter().enumerate() {
                             let conjuctive_operator = &element.conjuctive_operator;
                             match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
@@ -826,7 +826,7 @@ impl ReadWithBodyParameters {
     ) -> crate::repositories_types::tufa_server::routes::api::cats::read_with_body::TryReadWithBodyResponseVariants
     {
         let query_string = {
-            let mut query = std::string::String::from("");
+            let mut query = std::string::String::default();
             {
                 query.push_str(&format!(
                     "{} {}",
@@ -842,7 +842,7 @@ impl ReadWithBodyParameters {
                 crate::repositories_types::tufa_server::routes::api::cats::CATS
             ));
             let additional_parameters = {
-                let mut additional_parameters = std::string::String::from("");
+                let mut additional_parameters = std::string::String::default();
                 let mut increment: u64 = 0;
                 if let Some(value) = &self.payload.id {
                     let prefix = match additional_parameters.is_empty() {
@@ -850,7 +850,7 @@ impl ReadWithBodyParameters {
                         false => format!(" {}", crate::server::postgres::constants::AND_NAME),
                     };
                     let bind_increments = {
-                        let mut bind_increments = std::string::String::from("");
+                        let mut bind_increments = std::string::String::default();
                         for element in value {
                             match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
                                 element,
@@ -887,7 +887,7 @@ impl ReadWithBodyParameters {
                     };
                     let column_name = "name";
                     let bind_increments = {
-                        let mut bind_increments = std::string::String::from("");
+                        let mut bind_increments = std::string::String::default();
                         for (index, element) in value.iter().enumerate() {
                             let conjuctive_operator = &element.conjuctive_operator;
                             match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
@@ -924,7 +924,7 @@ impl ReadWithBodyParameters {
                     };
                     let column_name = "color";
                     let bind_increments = {
-                        let mut bind_increments = std::string::String::from("");
+                        let mut bind_increments = std::string::String::default();
                         for (index, element) in value.iter().enumerate() {
                             let conjuctive_operator = &element.conjuctive_operator;
                             match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
@@ -1102,7 +1102,7 @@ impl ReadParameters {
     {
         let select = CatColumnSelect::from(self.query.select.clone());
         let query_string = {
-            let mut query = std::string::String::from("");
+            let mut query = std::string::String::default();
             {
                 query.push_str(&format!(
                     "{} {}",
@@ -1116,7 +1116,7 @@ impl ReadParameters {
                 crate::repositories_types::tufa_server::routes::api::cats::CATS
             ));
             let additional_parameters = {
-                let mut additional_parameters = std::string::String::from("");
+                let mut additional_parameters = std::string::String::default();
                 let mut increment: u64 = 0;
                 if let Some(value) = &self.query.id {
                     let prefix = match additional_parameters.is_empty() {
@@ -1468,7 +1468,7 @@ impl UpdateParameters {
     ) -> crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdateResponseVariants
     {
         let query_string = {
-            let mut values = std::string::String::from("");
+            let mut values = std::string::String::default();
             let mut increment: u64 = 0;
             for _ in &self.payload {
                 let mut element_value = std::string::String::default();
