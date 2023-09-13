@@ -296,10 +296,9 @@ impl CreateOrUpdateByIdParameters {
         println!("{query_string}");
         let binded_query = {
             let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
-            query = query
-                .bind(self.path.id.into_inner())
-                .bind(self.payload.name)
-                .bind(self.payload.color);
+            query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(self.path.id, query);
+            query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(self.payload.name, query);
+            query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(self.payload.color, query);
             query
         };
         match binded_query
