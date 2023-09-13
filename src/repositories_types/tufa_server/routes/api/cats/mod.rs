@@ -1527,9 +1527,18 @@ impl UpdateParameters {
         let binded_query = {
             let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
             for element in self.payload {
-                query = query.bind(element.id.into_inner());
-                query = query.bind(element.name);
-                query = query.bind(element.color);
+                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                    element.id,
+                    query,
+                );
+                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                    element.name,
+                    query,
+                );
+                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                    element.color,
+                    query,
+                );
             }
             query
         };
