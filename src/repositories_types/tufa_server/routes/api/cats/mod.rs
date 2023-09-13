@@ -790,7 +790,9 @@ impl ReadByIdParameters {
         println!("{query_string}");
         let binded_query = {
             let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
-            query = query.bind(self.path.id.into_inner());
+            query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                self.path.id, query,
+            );
             query
         };
         match binded_query.fetch_one(app_info_state.get_postgres_pool()).await {
