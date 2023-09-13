@@ -231,23 +231,26 @@ impl CreateBatchParameters {
             let mut increment: u64 = 0;
             let mut bind_increments = std::string::String::from("");
             for element in &self.payload {
-                let mut element_bind_increments = std::string::String::from("");
-                match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
-                    element,
-                    &mut increment
-                ) {
-                    Ok(bind_increments_handle) => {
-                        element_bind_increments.push_str(&format!("{bind_increments_handle}, "));
-                    },
-                    Err(e) => {
-                        return crate::repositories_types::tufa_server::routes::api::cats::create_batch::TryCreateBatchResponseVariants::BindQuery { 
-                            checked_add: e.into_serialize_deserialize_version(), 
-                            code_occurence: crate::code_occurence_tufa_common!(),
-                        };
-                    },
-                }
-                element_bind_increments.pop();
-                element_bind_increments.pop();
+                let element_bind_increments = {
+                    let mut element_bind_increments = std::string::String::from("");
+                    match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
+                        element,
+                        &mut increment
+                    ) {
+                        Ok(bind_increments_handle) => {
+                            element_bind_increments.push_str(&format!("{bind_increments_handle}, "));
+                        },
+                        Err(e) => {
+                            return crate::repositories_types::tufa_server::routes::api::cats::create_batch::TryCreateBatchResponseVariants::BindQuery { 
+                                checked_add: e.into_serialize_deserialize_version(), 
+                                code_occurence: crate::code_occurence_tufa_common!(),
+                            };
+                        },
+                    }
+                    element_bind_increments.pop();
+                    element_bind_increments.pop();
+                    element_bind_increments
+                };
                 bind_increments.push_str(&format!("({element_bind_increments}), "));
             }
             bind_increments.pop();
