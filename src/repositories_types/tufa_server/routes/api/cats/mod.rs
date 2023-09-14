@@ -192,88 +192,88 @@ where
 
 ///////////////////////
 
-impl CreateBatchParameters {
-    pub async fn prepare_and_execute_query(
-        self,
-        app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
-    ) -> crate::repositories_types::tufa_server::routes::api::cats::create_batch::TryCreateBatchResponseVariants
-    {
-        let bind_increments = {
-            let mut increment: u64 = 0;
-            let mut bind_increments = std::string::String::default();
-            for element in &self.payload {
-                let element_bind_increments = {
-                    let mut element_bind_increments = std::string::String::default();
-                    match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(&element.name, &mut increment) {
-                        Ok(value) => {
-                            element_bind_increments.push_str(&format!(
-                                "{value}, ",
-                            ));
-                        },
-                        Err(e) => {
-                            return crate::repositories_types::tufa_server::routes::api::cats::create_batch::TryCreateBatchResponseVariants::BindQuery { 
-                                checked_add: e.into_serialize_deserialize_version(), 
-                                code_occurence: crate::code_occurence_tufa_common!(),
-                            };
-                        },
-                    }
-                    match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(&element.color, &mut increment) {
-                        Ok(value) => {
-                            element_bind_increments.push_str(&value);
-                        },
-                        Err(e) => {
-                            return crate::repositories_types::tufa_server::routes::api::cats::create_batch::TryCreateBatchResponseVariants::BindQuery { 
-                                checked_add: e.into_serialize_deserialize_version(), 
-                                code_occurence: crate::code_occurence_tufa_common!(),
-                            };
-                        },
-                    }
-                    element_bind_increments
-                };
-                bind_increments.push_str(&format!("({element_bind_increments}), "));
-            }
-            bind_increments.pop();
-            bind_increments.pop();
-            bind_increments
-        };
-        let query_string = format!(
-            "{} {} {}(name, color) {} {bind_increments}",
-            crate::server::postgres::constants::INSERT_NAME,
-            crate::server::postgres::constants::INTO_NAME,
-            crate::repositories_types::tufa_server::routes::api::cats::CATS,
-            crate::server::postgres::constants::VALUES_NAME
-        );
-        println!("{query_string}");
-        let binded_query = {
-            let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
-            for element in self.payload {
-                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(element.name, query);
-                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(element.color, query);
-            }
-            query
-        };
-        match binded_query
-            .execute(app_info_state.get_postgres_pool())
-            .await
-        {
-            Ok(_) => {
-                //todo - is need to return rows affected?
-                crate::repositories_types::tufa_server::routes::api::cats::create_batch::TryCreateBatchResponseVariants::Desirable(())
-            }
-            Err(e) => {
-                let error =
-                    crate::repositories_types::tufa_server::routes::api::cats::create_batch::TryCreateBatch::from(
-                        e,
-                    );
-                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                    &error,
-                    app_info_state.as_ref(),
-                );
-                crate::repositories_types::tufa_server::routes::api::cats::create_batch::TryCreateBatchResponseVariants::from(error)
-            }
-        }
-    }
-}
+// impl CreateBatchParameters {
+//     pub async fn prepare_and_execute_query(
+//         self,
+//         app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
+//     ) -> crate::repositories_types::tufa_server::routes::api::cats::create_batch::TryCreateBatchResponseVariants
+//     {
+//         let bind_increments = {
+//             let mut increment: u64 = 0;
+//             let mut bind_increments = std::string::String::default();
+//             for element in &self.payload {
+//                 let element_bind_increments = {
+//                     let mut element_bind_increments = std::string::String::default();
+//                     match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(&element.name, &mut increment) {
+//                         Ok(value) => {
+//                             element_bind_increments.push_str(&format!(
+//                                 "{value}, ",
+//                             ));
+//                         },
+//                         Err(e) => {
+//                             return crate::repositories_types::tufa_server::routes::api::cats::create_batch::TryCreateBatchResponseVariants::BindQuery { 
+//                                 checked_add: e.into_serialize_deserialize_version(), 
+//                                 code_occurence: crate::code_occurence_tufa_common!(),
+//                             };
+//                         },
+//                     }
+//                     match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(&element.color, &mut increment) {
+//                         Ok(value) => {
+//                             element_bind_increments.push_str(&value);
+//                         },
+//                         Err(e) => {
+//                             return crate::repositories_types::tufa_server::routes::api::cats::create_batch::TryCreateBatchResponseVariants::BindQuery { 
+//                                 checked_add: e.into_serialize_deserialize_version(), 
+//                                 code_occurence: crate::code_occurence_tufa_common!(),
+//                             };
+//                         },
+//                     }
+//                     element_bind_increments
+//                 };
+//                 bind_increments.push_str(&format!("({element_bind_increments}), "));
+//             }
+//             bind_increments.pop();
+//             bind_increments.pop();
+//             bind_increments
+//         };
+//         let query_string = format!(
+//             "{} {} {}(name, color) {} {bind_increments}",
+//             crate::server::postgres::constants::INSERT_NAME,
+//             crate::server::postgres::constants::INTO_NAME,
+//             crate::repositories_types::tufa_server::routes::api::cats::CATS,
+//             crate::server::postgres::constants::VALUES_NAME
+//         );
+//         println!("{query_string}");
+//         let binded_query = {
+//             let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
+//             for element in self.payload {
+//                 query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(element.name, query);
+//                 query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(element.color, query);
+//             }
+//             query
+//         };
+//         match binded_query
+//             .execute(app_info_state.get_postgres_pool())
+//             .await
+//         {
+//             Ok(_) => {
+//                 //todo - is need to return rows affected?
+//                 crate::repositories_types::tufa_server::routes::api::cats::create_batch::TryCreateBatchResponseVariants::Desirable(())
+//             }
+//             Err(e) => {
+//                 let error =
+//                     crate::repositories_types::tufa_server::routes::api::cats::create_batch::TryCreateBatch::from(
+//                         e,
+//                     );
+//                 crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                     &error,
+//                     app_info_state.as_ref(),
+//                 );
+//                 crate::repositories_types::tufa_server::routes::api::cats::create_batch::TryCreateBatchResponseVariants::from(error)
+//             }
+//         }
+//     }
+// }
 
 impl CreateOrUpdateByIdParameters {
     pub async fn prepare_and_execute_query(
