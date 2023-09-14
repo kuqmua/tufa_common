@@ -117,6 +117,23 @@ impl std::convert::TryFrom<&str> for Bigserial {
 }
 
 impl crate::server::postgres::bind_query::BindQuery for Bigserial {
+    fn try_increment(
+        &self,
+        increment: &mut u64,
+    ) -> Result<(), crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed> {
+        match increment.checked_add(1) {
+            Some(incr) => {
+                *increment = incr;
+                Ok(())
+            }
+            None => {
+                return Err(crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed::CheckedAdd {
+                    checked_add: std::string::String::from("checked_add is None"),
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                });
+            }
+        }
+    }
     fn try_generate_bind_increments(&self, increment: &mut u64) -> Result<std::string::String, crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed> {
         match increment.checked_add(1) {
             Some(incr) => {
