@@ -1342,70 +1342,60 @@ impl UpdateByIdParameters {
                         code_occurence: crate::code_occurence_tufa_common!()
                     };
                 },
-                (None, Some(_)) => {
-                    match increment.checked_add(1) {
-                        Some(incr) => {
-                            increment = incr;
-                        },
-                        None => {
-                            return crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants::CheckedAdd { 
-                                checked_add: std::string::String::from("checked_add is None"), 
-                                code_occurence: crate::code_occurence_tufa_common!(), 
-                            }
+                (None, Some(color)) => {
+                    match crate::server::postgres::bind_query::BindQuery::try_increment(color, &mut increment) {
+                        Ok(_) => (),
+                        Err(e) => {
+                            return crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants::BindQuery { 
+                                checked_add: e.into_serialize_deserialize_version(), 
+                                code_occurence: crate::code_occurence_tufa_common!() 
+                            };
                         },
                     }
                     query.push_str(&format!("color = ${increment}"));
                 },
-                (Some(_), None) => {
-                    match increment.checked_add(1) {
-                        Some(incr) => {
-                            increment = incr;
-                        },
-                        None => {
-                            return crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants::CheckedAdd { 
-                                checked_add: std::string::String::from("checked_add is None"), 
-                                code_occurence: crate::code_occurence_tufa_common!(), 
-                            }
+                (Some(name), None) => {
+                    match crate::server::postgres::bind_query::BindQuery::try_increment(name, &mut increment) {
+                        Ok(_) => (),
+                        Err(e) => {
+                            return crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants::BindQuery { 
+                                checked_add: e.into_serialize_deserialize_version(), 
+                                code_occurence: crate::code_occurence_tufa_common!(),
+                            };
                         },
                     }
                     query.push_str(&format!("name = ${increment}"));
                 },
-                (Some(_), Some(_)) => {
-                    match increment.checked_add(1) {
-                        Some(incr) => {
-                            increment = incr;
-                        },
-                        None => {
-                            return crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants::CheckedAdd { 
-                                checked_add: std::string::String::from("checked_add is None"), 
-                                code_occurence: crate::code_occurence_tufa_common!(), 
-                            }
+                (Some(name), Some(color)) => {
+                    match crate::server::postgres::bind_query::BindQuery::try_increment(name, &mut increment) {
+                        Ok(_) => (),
+                        Err(e) => {
+                            return crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants::BindQuery { 
+                                checked_add: e.into_serialize_deserialize_version(), 
+                                code_occurence: crate::code_occurence_tufa_common!(),
+                            };
                         },
                     }
                     query.push_str(&format!("name = ${increment}, "));
-                    match increment.checked_add(1) {
-                        Some(incr) => {
-                            increment = incr;
-                        },
-                        None => {
-                            return crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants::CheckedAdd { 
-                                checked_add: std::string::String::from("checked_add is None"), 
-                                code_occurence: crate::code_occurence_tufa_common!(), 
-                            }
+                    match crate::server::postgres::bind_query::BindQuery::try_increment(color, &mut increment) {
+                        Ok(_) => (),
+                        Err(e) => {
+                            return crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants::BindQuery { 
+                                checked_add: e.into_serialize_deserialize_version(), 
+                                code_occurence: crate::code_occurence_tufa_common!(),
+                            };
                         },
                     }
                     query.push_str(&format!("color = ${increment}"));
                 },
             }
-            match increment.checked_add(1) {
-                Some(incr) => {
-                    increment = incr;
-                },
-                None => {
-                    return crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants::CheckedAdd { 
-                        checked_add: std::string::String::from("checked_add is None"), 
-                        code_occurence: crate::code_occurence_tufa_common!(), 
-                    }
+            match crate::server::postgres::bind_query::BindQuery::try_increment(&self.path.id, &mut increment) {
+                Ok(_) => (),
+                Err(e) => {
+                    return crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateByIdResponseVariants::BindQuery { 
+                        checked_add: e.into_serialize_deserialize_version(), 
+                        code_occurence: crate::code_occurence_tufa_common!(),
+                    };
                 },
             }
             query.push_str(&format!(
@@ -1425,17 +1415,32 @@ impl UpdateByIdParameters {
                     };
                 },
                 (None, Some(color)) => {
-                    query = query.bind(color);
+                    query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                        color,
+                        query,
+                    );
                 },
                 (Some(name), None) => {
-                    query = query.bind(name);
+                    query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                        name,
+                        query,
+                    );
                 },
                 (Some(name), Some(color)) => {
-                    query = query.bind(name);
-                    query = query.bind(color);
+                    query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                        name,
+                        query,
+                    );
+                    query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                        color,
+                        query,
+                    );
                 },
             }
-            query = query.bind(self.path.id.into_inner());
+            query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                self.path.id,
+                query,
+            );
             query
         };
         match binded_query

@@ -165,9 +165,9 @@ pub enum TryUpdateById {
     },
     //
     #[tvfrr_500_internal_server_error]
-    CheckedAdd {
-        #[eo_display_with_serialize_deserialize]
-        checked_add: std::string::String,
+    BindQuery {
+        #[eo_error_occurence]
+        checked_add: crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_400_bad_request]
