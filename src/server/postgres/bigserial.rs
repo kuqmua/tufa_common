@@ -126,12 +126,10 @@ impl crate::server::postgres::bind_query::BindQuery for Bigserial {
                 *increment = incr;
                 Ok(())
             }
-            None => {
-                return Err(crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed::CheckedAdd {
-                    checked_add: std::string::String::from("checked_add is None"),
-                    code_occurence: crate::code_occurence_tufa_common!(),
-                });
-            }
+            None => Err(crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed::CheckedAdd {
+                checked_add: std::string::String::from("checked_add is None"),
+                code_occurence: crate::code_occurence_tufa_common!(),
+            })
         }
     }
     fn try_generate_bind_increments(&self, increment: &mut u64) -> Result<std::string::String, crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed> {

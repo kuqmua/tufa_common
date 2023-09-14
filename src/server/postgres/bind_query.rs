@@ -30,12 +30,10 @@ impl crate::server::postgres::bind_query::BindQuery for std::string::String {
                 *increment = incr;
                 Ok(())
             }
-            None => {
-                return Err(crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed::CheckedAdd {
-                    checked_add: std::string::String::from("checked_add is None"),
-                    code_occurence: crate::code_occurence_tufa_common!(),
-                });
-            }
+            None => Err(crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed::CheckedAdd {
+                checked_add: std::string::String::from("checked_add is None"),
+                code_occurence: crate::code_occurence_tufa_common!(),
+            })
         }
     }
     fn try_generate_bind_increments(
