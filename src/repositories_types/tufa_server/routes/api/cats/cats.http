@@ -24,38 +24,6 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
 
-PUT http://127.0.0.1:8080/api/cats/4 HTTP/1.1
-Accept: */*
-content-type: application/json
-project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
-
-{
-    "name": "test_put_by_id_name",
-    "color": "test_put_by_id_color"
-}
-
-###
-
-PUT http://127.0.0.1:8080/api/cats/batch HTTP/1.1
-Accept: */*
-content-type: application/json
-project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
-
-[
-    {
-        "id": 14,
-        "name": "test_put_batch_by_id_name",
-        "color": "test_put_batch_by_id_color"
-    },
-    {
-        "id": 15,
-        "name": "test_put_batch_by_id_name",
-        "color": "test_put_batch_by_id_color"
-    }
-]
-
-###
-
 POST http://127.0.0.1:8080/api/cats HTTP/1.1
 Accept: */*
 content-type: application/json
@@ -103,7 +71,7 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
 
-GET http://127.0.0.1:8080/api/cats/14?&select=IdName HTTP/1.1
+GET http://127.0.0.1:8080/api/cats/2?&select=IdName HTTP/1.1
 Accept: */*
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 

@@ -7,8 +7,6 @@
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_from_checker_paths(
     crate::repositories_types::tufa_server::routes::api::cats::create::TryCreate,
     crate::repositories_types::tufa_server::routes::api::cats::create_batch::TryCreateBatch,
-    crate::repositories_types::tufa_server::routes::api::cats::create_or_update_by_id::TryCreateOrUpdateById,
-    crate::repositories_types::tufa_server::routes::api::cats::create_or_update::TryCreateOrUpdate,
     crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateById,
     crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdate,
     crate::repositories_types::tufa_server::routes::api::cats::read_with_body::TryReadWithBody,
