@@ -133,6 +133,12 @@ pub enum TryDelete {
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     //
+    #[tvfrr_500_internal_server_error]
+    BindQuery {
+        #[eo_error_occurence]
+        checked_add: crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
     #[tvfrr_400_bad_request]
     NoParameters {
         #[eo_display_with_serialize_deserialize]

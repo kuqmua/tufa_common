@@ -197,31 +197,66 @@ impl DeleteParameters {
     ) -> crate::repositories_types::tufa_server::routes::api::cats::delete::TryDeleteResponseVariants
     {
         let query_string = {
-            let mut query = format!(
-                "{} {} {} {} ",
+            let additional_parameters = {
+                let mut additional_parameters = std::string::String::default();
+                let mut increment: u64 = 0;
+                if let Some(value) = &self.query.name {
+                    match crate::server::postgres::bind_query::BindQuery::try_increment(
+                        value,
+                        &mut increment
+                    ) {
+                        Ok(_) => {
+                            let handle = format!("name = ${increment}");
+                            match additional_parameters.is_empty() {
+                                true => {
+                                    additional_parameters.push_str(&handle);
+                                },
+                                false => {
+                                    additional_parameters.push_str(" AND {handle}");
+                                },
+                            }
+                        },
+                        Err(e) => {
+                            return crate::repositories_types::tufa_server::routes::api::cats::delete::TryDeleteResponseVariants::BindQuery { 
+                                checked_add: e.into_serialize_deserialize_version(), 
+                                code_occurence: crate::code_occurence_tufa_common!() 
+                            };
+                        },
+                    }
+                }
+                if let Some(value) = &self.query.color {
+                    match crate::server::postgres::bind_query::BindQuery::try_increment(
+                        value,
+                        &mut increment
+                    ) {
+                        Ok(_) => {
+                            let handle = format!("color = ${increment}");
+                            match additional_parameters.is_empty() {
+                                true => {
+                                    additional_parameters.push_str(&handle);
+                                },
+                                false => {
+                                    additional_parameters.push_str(" AND {handle}");
+                                },
+                            }
+                        },
+                        Err(e) => {
+                            return crate::repositories_types::tufa_server::routes::api::cats::delete::TryDeleteResponseVariants::BindQuery { 
+                                checked_add: e.into_serialize_deserialize_version(), 
+                                code_occurence: crate::code_occurence_tufa_common!() 
+                            };
+                        },
+                    }
+                }
+                additional_parameters
+            };
+            format!(
+                "{} {} {} {} {additional_parameters}",
                 crate::server::postgres::constants::DELETE_NAME,
                 crate::server::postgres::constants::FROM_NAME,
                 crate::repositories_types::tufa_server::routes::api::cats::CATS,
                 crate::server::postgres::constants::WHERE_NAME
-            );
-            match (&self.query.name, &self.query.color) {
-                (None, None) => {
-                    return crate::repositories_types::tufa_server::routes::api::cats::delete::TryDeleteResponseVariants::NoParameters { 
-                        no_parameters: std::string::String::from("no parameters"), 
-                        code_occurence: crate::code_occurence_tufa_common!(),
-                    };
-                },
-                (None, Some(_)) => {
-                    query.push_str("color = $1");
-                },
-                (Some(_), None) => {
-                    query.push_str("name = $1");
-                },
-                (Some(_), Some(_)) => {//todo AND or OR ? how to support both
-                    query.push_str("name = $1 AND color = $2");
-                },
-            }
-            query
+            )
         };
         println!("{query_string}");
         let binded_query = {
