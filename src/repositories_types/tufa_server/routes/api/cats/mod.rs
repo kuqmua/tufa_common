@@ -190,48 +190,6 @@ where
 
 ///////////////////////
 
-impl DeleteByIdParameters {
-    pub async fn prepare_and_execute_query(
-        self,
-        app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
-    ) -> crate::repositories_types::tufa_server::routes::api::cats::delete_by_id::TryDeleteByIdResponseVariants
-    {
-        let query_string = format!(
-            "{} {} {} {} id = $1",
-            crate::server::postgres::constants::DELETE_NAME,
-            crate::server::postgres::constants::FROM_NAME,
-            crate::repositories_types::tufa_server::routes::api::cats::CATS,
-            crate::server::postgres::constants::WHERE_NAME
-        );
-        println!("{query_string}");
-        let binded_query = {
-            let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
-            query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(self.path.id, query);
-            query
-        };
-        match binded_query
-            .execute(app_info_state.get_postgres_pool())
-            .await
-        {
-            Ok(_) => {
-                //todo - is need to return rows affected?
-                crate::repositories_types::tufa_server::routes::api::cats::delete_by_id::TryDeleteByIdResponseVariants::Desirable(())
-            }
-            Err(e) => {
-                let error =
-                    crate::repositories_types::tufa_server::routes::api::cats::delete_by_id::TryDeleteById::from(
-                        e,
-                    );
-                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                    &error,
-                    app_info_state.as_ref(),
-                );
-                crate::repositories_types::tufa_server::routes::api::cats::delete_by_id::TryDeleteByIdResponseVariants::from(error)
-            }
-        }
-    }
-}
-
 impl DeleteParameters {
     pub async fn prepare_and_execute_query(
         self,
