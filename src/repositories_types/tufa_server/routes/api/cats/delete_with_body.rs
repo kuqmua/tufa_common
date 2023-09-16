@@ -157,6 +157,12 @@ pub enum TryDeleteWithBody {
         checked_add: crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
+    #[tvfrr_400_bad_request]
+    NoParameters {
+        #[eo_display_with_serialize_deserialize]
+        no_parameters: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
     //#[non_exhaustive] case
     #[tvfrr_500_internal_server_error]
     UnexpectedCase {

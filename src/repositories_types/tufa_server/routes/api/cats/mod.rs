@@ -190,53 +190,6 @@ where
 
 ///////////////////////
 
-impl ReadByIdParameters {
-    pub async fn prepare_and_execute_query(
-        self,
-        app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
-    ) -> crate::repositories_types::tufa_server::routes::api::cats::read_by_id::TryReadByIdResponseVariants
-    {
-        let select = self.query.select.unwrap_or_default();
-        let query_string = format!(
-            "{} {} {} {} {} id = $1",
-            crate::server::postgres::constants::SELECT_NAME,
-            crate::server::postgres::generate_query::GenerateQuery::generate_query(&select),
-             crate::server::postgres::constants::FROM_NAME,
-            crate::repositories_types::tufa_server::routes::api::cats::CATS,
-            crate::server::postgres::constants::WHERE_NAME,
-        );
-        println!("{query_string}");
-        let binded_query = {
-            let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
-            query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
-                self.path.id, query,
-            );
-            query
-        };
-        match binded_query.fetch_one(app_info_state.get_postgres_pool()).await {
-            Ok(row) => match select.options_try_from_sqlx_row(&row) {
-                Ok(value) => crate::repositories_types::tufa_server::routes::api::cats::read_by_id::TryReadByIdResponseVariants::Desirable(value),
-                Err(e) => {
-                    let error = crate::repositories_types::tufa_server::routes::api::cats::read_by_id::TryReadById::from(e);
-                    crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                        &error,
-                        app_info_state.as_ref(),
-                    );
-                    crate::repositories_types::tufa_server::routes::api::cats::read_by_id::TryReadByIdResponseVariants::from(error)
-                },
-            },
-            Err(e) => {
-                let error = crate::repositories_types::tufa_server::routes::api::cats::read_by_id::TryReadById::from(e);
-                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                    &error,
-                    app_info_state.as_ref(),
-                );
-                crate::repositories_types::tufa_server::routes::api::cats::read_by_id::TryReadByIdResponseVariants::from(error)
-            },
-        }
-    }
-}
-
 impl ReadWithBodyParameters {
     pub async fn prepare_and_execute_query(
         self,
