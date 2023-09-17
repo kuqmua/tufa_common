@@ -1,15 +1,15 @@
 pub mod create;
 pub mod create_batch;
 pub mod delete;
-pub mod delete_with_body;
 pub mod delete_by_id;
+pub mod delete_with_body;
 pub mod read;
 pub mod read_by_id;
 pub mod read_with_body;
 pub mod update;
 pub mod update_by_id;
 //todo openapi
-//todo test if create\update\delete empty array 
+//todo test if create\update\delete empty array
 pub const CATS: &str = "cats";
 
 pub trait GetConfigGetPostgresPool:
@@ -186,114 +186,4 @@ where
         None => None,
     };
     Ok(crate::server::postgres::order_by::OrderBy { column, order })
-}
-
-///////////////////////
-
-impl UpdateParameters {
-    pub async fn prepare_and_execute_query(
-        self,
-        app_info_state: &crate::repositories_types::tufa_server::routes::api::cats::DynArcGetConfigGetPostgresPoolSendSync,
-    ) -> crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdateResponseVariants
-    {
-        let query_string = {
-            let mut values = std::string::String::default();
-            let mut increment: u64 = 0;
-            for element in &self.payload {
-                let mut element_value = std::string::String::default();
-                match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
-                    &element.id,
-                    &mut increment
-                ) {
-                    Ok(value) => {
-                        element_value.push_str(&format!("{value}, "));
-                    },
-                    Err(e) => {
-                        return crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdateResponseVariants::BindQuery { 
-                            checked_add: e.into_serialize_deserialize_version(), 
-                            code_occurence: crate::code_occurence_tufa_common!(),
-                        };
-                    },
-                };
-                match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
-                    &element.name,
-                    &mut increment
-                ) {
-                    Ok(value) => {
-                        element_value.push_str(&format!("{value}, "));
-                    },
-                    Err(e) => {
-                        return crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdateResponseVariants::BindQuery { 
-                            checked_add: e.into_serialize_deserialize_version(), 
-                            code_occurence: crate::code_occurence_tufa_common!(),
-                        };
-                    },
-                };
-                match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(
-                    &element.color,
-                    &mut increment
-                ) {
-                    Ok(value) => {
-                        element_value.push_str(&value);
-                    },
-                    Err(e) => {
-                        return crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdateResponseVariants::BindQuery { 
-                            checked_add: e.into_serialize_deserialize_version(), 
-                            code_occurence: crate::code_occurence_tufa_common!(),
-                        };
-                    },
-                };
-                values.push_str(&format!("({element_value}), "));
-            }
-            values.pop();
-            values.pop();
-            format!(
-                "{} {} {} t {} name = data.name, color = data.color {} (values {values}) as data(id, name, color) where t.id = data.id",
-                crate::server::postgres::constants::UPDATE_NAME,
-                crate::repositories_types::tufa_server::routes::api::cats::CATS,
-                crate::server::postgres::constants::AS_NAME,
-                crate::server::postgres::constants::SET_NAME,
-                crate::server::postgres::constants::FROM_NAME,
-            )
-        };
-        println!("{query_string}");
-        let binded_query = {
-            let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
-            for element in self.payload {
-                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
-                    element.id,
-                    query,
-                );
-                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
-                    element.name,
-                    query,
-                );
-                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
-                    element.color,
-                    query,
-                );
-            }
-            query
-        };
-        match binded_query
-            .execute(app_info_state.get_postgres_pool())
-            .await
-        {
-            Ok(_) => {
-                //todo - is need to return rows affected?
-                crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdateResponseVariants::Desirable(())
-            }
-            Err(e) => {
-                let error =
-                    crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdate::from(
-                        e,
-                    );
-                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                    &error,
-                    app_info_state.as_ref(),
-                );
-                crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdateResponseVariants::from(error)
-            }
-        }
-    }
 }
