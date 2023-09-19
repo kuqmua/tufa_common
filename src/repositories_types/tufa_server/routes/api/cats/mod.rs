@@ -187,3 +187,4 @@ where
     };
     Ok(crate::server::postgres::order_by::OrderBy { column, order })
 }
+`DO` blocks cannot use bound parameters.  If you need to pass in values then you can create a temporary function and call that instead, though it's a bit more of a hassle.
