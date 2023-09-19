@@ -187,4 +187,183 @@ where
     };
     Ok(crate::server::postgres::order_by::OrderBy { column, order })
 }
-`DO` blocks cannot use bound parameters.  If you need to pass in values then you can create a temporary function and call that instead, though it's a bit more of a hassle.
+// `DO` blocks cannot use bound parameters.  If you need to pass in values then you can create a temporary function and call that instead, though it's a bit more of a hassle.
+
+////////////
+
+impl UpdateByIdParameters {
+    pub async fn
+    prepare_and_execute_query(self, app_info_state : & crate ::
+    repositories_types :: tufa_server :: routes :: api :: cats ::
+    DynArcGetConfigGetPostgresPoolSendSync,) -> crate :: repositories_types ::
+    tufa_server :: routes :: api :: cats :: update_by_id ::
+    TryUpdateByIdResponseVariants
+    {
+        if let Err(e) = sqlx::query::<sqlx::Postgres>(
+            r#"
+create or replace function cats_update_by_id_name_color(cat_name varchar, cat_color varchar, cat_id bigint)
+returns void language plpgsql
+as $$
+begin
+    update cats set name = cat_name, color = cat_color where id = cat_id;
+    if not found then raise exception 'cat id % not found', cat_id;
+    end if;
+end $$;
+            "#,
+        )
+        .execute(app_info_state.get_postgres_pool())
+        .await
+        {
+            let error = crate :: repositories_types :: tufa_server ::
+                routes :: api :: cats :: update_by_id :: TryUpdateById ::
+                from(e) ;
+            crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                &error,
+                app_info_state.as_ref(),
+            );
+            return crate :: repositories_types :: tufa_server :: routes :: api ::
+                cats :: update_by_id :: TryUpdateByIdResponseVariants ::
+                from(error);
+        }
+        // let mut query = sqlx::query::<sqlx::Postgres>(
+        //     r#"
+        // SELECT cats_update_by_id_name_color(cat_name => $1, cat_color => $2, cat_id => $3);
+        //         "#,
+        // );
+        // query = query.bind("347573498958t4erger");
+        // query = query.bind("gdjfghsdggidfygvyg");
+        // query = query.bind(17);
+        // query
+        //     .execute(app_info_state.get_postgres_pool())
+        //     .await
+        //     .unwrap();
+        let query_string = {
+            let mut query = format!(
+                "SELECT cats_update_by_id_name_color(cat_name => $1, cat_color => $2, cat_id => $3)"//;
+                // "{} {} {} ",
+                // crate::server::postgres::constants::UPDATE_NAME,
+                // crate::repositories_types::tufa_server::routes::api::cats::CATS,
+                // crate::server::postgres::constants::SET_NAME,
+            );
+            let mut increment: u64 = 0;
+            if let (None, None) = (&self.payload.name, &self.payload.color) {
+                return crate :: repositories_types :: tufa_server :: routes ::
+                api :: cats :: update_by_id :: TryUpdateByIdResponseVariants
+                :: NoPayloadFields
+                {
+                    no_payload_fields : std :: string :: String ::
+                    from("no payload fields"), code_occurence : crate ::
+                    code_occurence_tufa_common! ()
+                } ;
+            }
+            if let Some(value) = &self.payload.name {
+                match crate::server::postgres::bind_query::BindQuery::try_increment(
+                    value,
+                    &mut increment,
+                ) {
+                    Ok(_) => {
+                        query.push_str(&format!("name = ${increment}, "));
+                    }
+                    Err(e) => {
+                        return crate :: repositories_types :: tufa_server :: routes
+                        :: api :: cats :: update_by_id ::
+                        TryUpdateByIdResponseVariants :: BindQuery
+                        {
+                            checked_add : e.into_serialize_deserialize_version(),
+                            code_occurence : crate :: code_occurence_tufa_common! ()
+                        } ;
+                    }
+                }
+            }
+            if let Some(value) = &self.payload.color {
+                match crate::server::postgres::bind_query::BindQuery::try_increment(
+                    value,
+                    &mut increment,
+                ) {
+                    Ok(_) => {
+                        query.push_str(&format!("color = ${increment}"));
+                    }
+                    Err(e) => {
+                        return crate :: repositories_types :: tufa_server :: routes
+                        :: api :: cats :: update_by_id ::
+                        TryUpdateByIdResponseVariants :: BindQuery
+                        {
+                            checked_add : e.into_serialize_deserialize_version(),
+                            code_occurence : crate :: code_occurence_tufa_common! ()
+                        } ;
+                    }
+                }
+            }
+            match crate::server::postgres::bind_query::BindQuery::try_increment(
+                &self.path.id,
+                &mut increment,
+            ) {
+                Ok(_) => {
+                    query.push_str(&format!(
+                        " {} id = ${increment}",
+                        crate::server::postgres::constants::WHERE_NAME,
+                    ));
+                }
+                Err(e) => {
+                    return crate :: repositories_types :: tufa_server :: routes
+                    :: api :: cats :: update_by_id ::
+                    TryUpdateByIdResponseVariants :: BindQuery
+                    {
+                        checked_add : e.into_serialize_deserialize_version(),
+                        code_occurence : crate :: code_occurence_tufa_common! (),
+                    } ;
+                }
+            }
+            query
+        };
+        // println!("{query_string}");
+        // let binded_query = {
+        //     let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
+        //     if let (None, None) = (&self.payload.name, &self.payload.color) {
+        //         return crate :: repositories_types :: tufa_server :: routes ::
+        //         api :: cats :: update_by_id :: TryUpdateByIdResponseVariants
+        //         :: NoPayloadFields
+        //         {
+        //             no_payload_fields : std :: string :: String ::
+        //             from("no payload fields"), code_occurence : crate ::
+        //             code_occurence_tufa_common! ()
+        //         } ;
+        //     }
+        //     if let Some(value) = self.payload.name {
+        //         query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+        //             value, query,
+        //         );
+        //     }
+        //     if let Some(value) = self.payload.color {
+        //         query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+        //             value, query,
+        //         );
+        //     }
+        //     query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+        //         self.path.id,
+        //         query,
+        //     );
+        //     query
+        // };
+        // match
+        // binded_query.execute(app_info_state.get_postgres_pool()).await
+        // {
+        //     Ok(_) =>
+        //     {
+        //         crate :: repositories_types :: tufa_server :: routes :: api ::
+        //         cats :: update_by_id :: TryUpdateByIdResponseVariants ::
+        //         Desirable(())
+        //     } Err(e) =>
+        //     {
+        //         let error = crate :: repositories_types :: tufa_server ::
+        //         routes :: api :: cats :: update_by_id :: TryUpdateById ::
+        //         from(e) ; crate :: common :: error_logs_logic :: error_log ::
+        //         ErrorLog :: error_log(& error, app_info_state.as_ref(),) ;
+        //         crate :: repositories_types :: tufa_server :: routes :: api ::
+        //         cats :: update_by_id :: TryUpdateByIdResponseVariants ::
+        //         from(error)
+        //     }
+        // }
+        todo!()
+    }
+}
