@@ -199,14 +199,25 @@ impl UpdateByIdParameters {
     tufa_server :: routes :: api :: cats :: update_by_id ::
     TryUpdateByIdResponseVariants
     {
+        if let (None, None) = (&self.payload.name, &self.payload.color) {
+            return crate :: repositories_types :: tufa_server :: routes ::
+                api :: cats :: update_by_id :: TryUpdateByIdResponseVariants
+                :: NoPayloadFields
+                {
+                    no_payload_fields : std :: string :: String ::
+                    from("no payload fields"), code_occurence : crate ::
+                    code_occurence_tufa_common! ()
+                } ;
+        }
+
         if let Err(e) = sqlx::query::<sqlx::Postgres>(
             r#"
-create or replace function cats_update_by_id_name_color(cat_name varchar, cat_color varchar, cat_id bigint)
+create or replace function cats_update_by_id_name_color(cats_name varchar, cats_color varchar, cats_id bigint)
 returns void language plpgsql
 as $$
 begin
-    update cats set name = cat_name, color = cat_color where id = cat_id;
-    if not found then raise exception 'cat id % not found', cat_id;
+    update cats set name = cats_name, color = cats_color where id = cats_id;
+    if not found then raise exception 'cats id % not found', cats_id;
     end if;
 end $$;
             "#,
@@ -246,16 +257,7 @@ end $$;
                 // crate::server::postgres::constants::SET_NAME,
             );
             let mut increment: u64 = 0;
-            if let (None, None) = (&self.payload.name, &self.payload.color) {
-                return crate :: repositories_types :: tufa_server :: routes ::
-                api :: cats :: update_by_id :: TryUpdateByIdResponseVariants
-                :: NoPayloadFields
-                {
-                    no_payload_fields : std :: string :: String ::
-                    from("no payload fields"), code_occurence : crate ::
-                    code_occurence_tufa_common! ()
-                } ;
-            }
+
             if let Some(value) = &self.payload.name {
                 match crate::server::postgres::bind_query::BindQuery::try_increment(
                     value,
@@ -319,16 +321,6 @@ end $$;
         // println!("{query_string}");
         // let binded_query = {
         //     let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
-        //     if let (None, None) = (&self.payload.name, &self.payload.color) {
-        //         return crate :: repositories_types :: tufa_server :: routes ::
-        //         api :: cats :: update_by_id :: TryUpdateByIdResponseVariants
-        //         :: NoPayloadFields
-        //         {
-        //             no_payload_fields : std :: string :: String ::
-        //             from("no payload fields"), code_occurence : crate ::
-        //             code_occurence_tufa_common! ()
-        //         } ;
-        //     }
         //     if let Some(value) = self.payload.name {
         //         query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
         //             value, query,
