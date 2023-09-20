@@ -359,3 +359,31 @@ end $$;
         todo!()
     }
 }
+
+// let pool = sqlx::postgres::PgPoolOptions::new()
+//     .connect("postgres://postgreslocalusername:postgreslocalpassword@127.0.0.1:5432/newsletter?connect_timeout=10")
+//     .await.unwrap();
+// //acquire or try_acquire
+// let mut pool_connection = pool.acquire().await.unwrap();
+// let pg_connection = sqlx::Acquire::acquire(&mut pool_connection).await.unwrap();
+// let function_creation_query = sqlx::query::<sqlx::Postgres>(
+//     r#"
+// create or replace function pg_temp.cats_update_by_id(cats_id bigint, cats_name varchar, cats_color varchar) returns void language plpgsql as $$ begin
+// update cats set name = cats_name, color = cats_color where id = cats_id;if not found then raise exception 'cats id % not found', cats_id;end if;
+// end $$;
+//         "#,
+// );
+// function_creation_query
+//     .execute(pg_connection.as_mut())
+//     .await
+//     .unwrap();
+// println!("123");
+// let mut query = sqlx::query::<sqlx::Postgres>(
+//     r#"
+// SELECT pg_temp.cats_update_by_id(cats_id => $1, cats_name => $2, cats_color => $3);
+//         "#,
+// );
+// query = query.bind(17);
+// query = query.bind("name4");
+// query = query.bind("color4");
+// query.execute(pg_connection).await.unwrap();
