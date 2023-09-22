@@ -1,13 +1,13 @@
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub struct PostgresNumber(pub i64);
+pub struct PostgresBigint(pub i64);
 
-impl std::fmt::Display for PostgresNumber {
+impl std::fmt::Display for PostgresBigint {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.0)
     }
 }
 
-impl crate::server::postgres::bind_query::BindQuery for PostgresNumber {
+impl crate::server::postgres::bind_query::BindQuery for PostgresBigint {
     fn try_increment(
         &self,
         increment: &mut u64,
@@ -44,7 +44,7 @@ impl crate::server::postgres::bind_query::BindQuery for PostgresNumber {
     }
 }
 
-impl crate::common::serde_urlencoded::SerdeUrlencodedParameter for PostgresNumber {
+impl crate::common::serde_urlencoded::SerdeUrlencodedParameter for PostgresBigint {
     fn serde_urlencoded_parameter(self) -> std::string::String {
         self.to_string()
     }
