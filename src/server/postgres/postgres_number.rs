@@ -1,5 +1,5 @@
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub struct PostgresNumber(pub u32); //u32::Max == postgres limited by the number of tuples that can fit onto 4,294,967,295 pages (rows per table)
+pub struct PostgresNumber(pub i64);
 
 impl std::fmt::Display for PostgresNumber {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
