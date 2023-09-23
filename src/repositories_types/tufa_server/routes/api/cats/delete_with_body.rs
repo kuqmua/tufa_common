@@ -158,9 +158,9 @@ pub enum TryDeleteWithBody {
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_400_bad_request]
-    NoParameters {
+    NoPayloadFields {
         #[eo_display_with_serialize_deserialize]
-        no_parameters: std::string::String,
+        no_payload_fields: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     //#[non_exhaustive] case
