@@ -8,7 +8,7 @@
     crate::repositories_types::tufa_server::routes::api::cats::read::TryRead,
     crate::repositories_types::tufa_server::routes::api::cats::read_by_id::TryReadById,
     crate::repositories_types::tufa_server::routes::api::cats::create::TryCreate,
-    crate::repositories_types::tufa_server::routes::api::cats::create_batch::TryCreateBatch,
+    crate::repositories_types::tufa_server::routes::api::cats::TryCreateBatch,
     crate::repositories_types::tufa_server::routes::api::cats::read_with_body::TryReadWithBody
 )]
 pub enum SqlxPostgresErrorErrorNamed {
