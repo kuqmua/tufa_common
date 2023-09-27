@@ -190,7 +190,7 @@ pub async fn try_read_by_id(
         crate::repositories_types::tufa_server::routes::api::cats::CATS,
         parameters.path.id,
     );
-    match tvfrr_extraction_logic(
+    match tvfrr_extraction_logic_try_read_by_id(
         reqwest::Client::new()
             .get(&url)
             .header(

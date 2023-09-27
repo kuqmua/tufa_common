@@ -200,7 +200,7 @@ pub async fn try_delete_with_body<'a>(
         }
     };
     // println!("{stringified_json}");
-    match tvfrr_extraction_logic(
+    match tvfrr_extraction_logic_try_delete_with_body(
         reqwest::Client::new()
             .delete(&format!(
                 "{server_location}/api/{}/search",

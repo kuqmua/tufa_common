@@ -185,7 +185,7 @@ pub async fn try_read<'a>(
         crate::repositories_types::tufa_server::routes::api::cats::CATS,
     );
     println!("{url}");
-    match tvfrr_extraction_logic(
+    match tvfrr_extraction_logic_try_read(
         reqwest::Client::new()
             .get(&url)
             .header(

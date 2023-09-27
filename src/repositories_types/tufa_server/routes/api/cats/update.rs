@@ -205,7 +205,7 @@ pub async fn try_update<'a>(
             });
         }
     };
-    match tvfrr_extraction_logic(
+    match tvfrr_extraction_logic_try_update(
         reqwest::Client::new()
             .patch(&format!(
                 "{server_location}/api/{}/",

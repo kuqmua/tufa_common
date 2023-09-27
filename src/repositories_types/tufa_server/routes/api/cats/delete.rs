@@ -182,7 +182,7 @@ pub async fn try_delete<'a>(
                 });
             }
         };
-    match tvfrr_extraction_logic(
+    match tvfrr_extraction_logic_try_delete(
         reqwest::Client::new()
             .delete(&format!(
                 "{server_location}/api/{}?{encoded_query}",

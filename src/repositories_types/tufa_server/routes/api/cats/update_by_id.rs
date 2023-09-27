@@ -213,7 +213,7 @@ pub async fn try_update_by_id<'a>(
             });
         }
     };
-    match tvfrr_extraction_logic(
+    match tvfrr_extraction_logic_try_update_by_id(
         reqwest::Client::new()
             .patch(&format!(
                 "{server_location}/api/{}/{}",
