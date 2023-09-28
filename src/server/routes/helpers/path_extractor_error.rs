@@ -6,7 +6,7 @@
 )]
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_from_checker_paths(
     crate::repositories_types::tufa_server::routes::api::cats::TryReadById,
-    crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateById,
+    crate::repositories_types::tufa_server::routes::api::cats::TryUpdateById,
     crate::repositories_types::tufa_server::routes::api::cats::TryDeleteById
 )]
 pub enum PathExtractorErrorNamed {
