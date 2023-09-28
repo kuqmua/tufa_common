@@ -9,7 +9,7 @@
     crate::repositories_types::tufa_server::routes::api::cats::TryReadById,
     crate::repositories_types::tufa_server::routes::api::cats::TryCreate,
     crate::repositories_types::tufa_server::routes::api::cats::TryCreateBatch,
-    crate::repositories_types::tufa_server::routes::api::cats::read_with_body::TryReadWithBody
+    crate::repositories_types::tufa_server::routes::api::cats::TryReadWithBody
 )]
 pub enum SqlxPostgresErrorErrorNamed {
     #[tvfrr_500_internal_server_error]

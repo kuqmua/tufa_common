@@ -9,7 +9,7 @@
     crate::repositories_types::tufa_server::routes::api::cats::TryCreateBatch,
     crate::repositories_types::tufa_server::routes::api::cats::update_by_id::TryUpdateById,
     crate::repositories_types::tufa_server::routes::api::cats::update::TryUpdate,
-    crate::repositories_types::tufa_server::routes::api::cats::read_with_body::TryReadWithBody,
+    crate::repositories_types::tufa_server::routes::api::cats::TryReadWithBody,
     crate::repositories_types::tufa_server::routes::api::cats::TryDeleteWithBody
 )]
 pub enum JsonExtractorErrorNamed {
