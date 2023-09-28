@@ -1,8 +1,6 @@
-pub mod update;
 //todo openapi
 //todo test if create\update\delete empty array
 pub const CATS: &str = "cats";
-
 pub trait GetConfigGetPostgresPool:
     crate::repositories_types::tufa_server::config::config_struct::GetConfig
     + crate::server::routes::helpers::get_postgres_pool::GetPostgresPool
@@ -1766,6 +1764,200 @@ pub enum TryUpdateByIdErrorNamed {
     RequestError {
         #[eo_error_occurence]
         request_error: TryUpdateByIdRequestError,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    SerdeJsonToString {
+        #[eo_display]
+        serde_json_to_string: serde_json::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+}
+/////////
+#[derive(
+    Debug,
+    thiserror::Error,
+    error_occurence::ErrorOccurence,
+    from_sqlx_postgres_error::FromSqlxPostgresError,
+    type_variants_from_reqwest_response::TypeVariantsFromReqwestResponse,
+)]
+#[type_variants_from_reqwest_response::type_variants_from_reqwest_response_attribute(
+    (),
+    tvfrr_200_ok
+)]
+pub enum TryUpdate {
+    #[tvfrr_400_bad_request]
+    ProjectCommitExtractorNotEqual {
+        #[eo_display_with_serialize_deserialize]
+        project_commit_not_equal: std::string::String,
+        #[eo_display_with_serialize_deserialize]
+        project_commit_to_use: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_400_bad_request]
+    ProjectCommitExtractorToStrConversion {
+        #[eo_display]
+        project_commit_to_str_conversion: http::header::ToStrError,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_400_bad_request]
+    NoProjectCommitExtractorHeader {
+        #[eo_display_with_serialize_deserialize]
+        no_project_commit_header: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    //
+    #[tvfrr_500_internal_server_error]
+    Configuration {
+        #[eo_display_with_serialize_deserialize]
+        configuration_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_500_internal_server_error]
+    Database {
+        #[eo_display_with_serialize_deserialize]
+        box_dyn_database_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_500_internal_server_error]
+    Io {
+        #[eo_display]
+        io_error: std::io::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_500_internal_server_error]
+    Tls {
+        #[eo_display_with_serialize_deserialize]
+        box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_500_internal_server_error]
+    Protocol {
+        #[eo_display_with_serialize_deserialize]
+        protocol: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_404_not_found]
+    RowNotFound {
+        #[eo_display_with_serialize_deserialize]
+        row_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_400_bad_request]
+    TypeNotFound {
+        #[eo_display_with_serialize_deserialize]
+        type_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_500_internal_server_error]
+    ColumnIndexOutOfBounds {
+        #[eo_display_with_serialize_deserialize]
+        column_index_out_of_bounds: usize,
+        #[eo_display_with_serialize_deserialize]
+        len: usize,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_400_bad_request]
+    ColumnNotFound {
+        #[eo_display_with_serialize_deserialize]
+        column_not_found: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_500_internal_server_error]
+    ColumnDecode {
+        #[eo_display_with_serialize_deserialize]
+        column_decode_index: std::string::String,
+        #[eo_display_with_serialize_deserialize]
+        source_handle: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_500_internal_server_error]
+    Decode {
+        #[eo_display_with_serialize_deserialize]
+        decode_box_dyn_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_408_request_timeout]
+    PoolTimedOut {
+        #[eo_display_with_serialize_deserialize]
+        pool_timed_out: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_500_internal_server_error]
+    PoolClosed {
+        #[eo_display_with_serialize_deserialize]
+        pool_closed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_500_internal_server_error]
+    WorkerCrashed {
+        #[eo_display_with_serialize_deserialize]
+        worker_crashed: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_500_internal_server_error]
+    Migrate {
+        #[eo_display]
+        migrate: sqlx::migrate::MigrateError,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    //
+    #[tvfrr_400_bad_request]
+    JsonDataError {
+        #[eo_display_with_serialize_deserialize]
+        json_data_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_400_bad_request]
+    JsonSyntaxError {
+        #[eo_display_with_serialize_deserialize]
+        json_syntax_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_400_bad_request]
+    MissingJsonContentType {
+        #[eo_display_with_serialize_deserialize]
+        json_syntax_error: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_500_internal_server_error]
+    BytesRejection {
+        #[eo_display_with_serialize_deserialize]
+        bytes_rejection: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    //
+    #[tvfrr_500_internal_server_error]
+    BindQuery {
+        #[eo_error_occurence]
+        checked_add: crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_500_internal_server_error]
+    CheckedAdd {
+        #[eo_display_with_serialize_deserialize]
+        checked_add: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_400_bad_request]
+    NoPayloadFields {
+        #[eo_display_with_serialize_deserialize]
+        no_payload_fields: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    //#[non_exhaustive] case
+    #[tvfrr_500_internal_server_error]
+    UnexpectedCase {
+        #[eo_display_with_serialize_deserialize]
+        unexpected_case: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+}
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum TryUpdateErrorNamed {
+    RequestError {
+        #[eo_error_occurence]
+        request_error: TryUpdateRequestError,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     SerdeJsonToString {
