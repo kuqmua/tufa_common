@@ -1,6 +1,6 @@
 //todo openapi
 //todo test if create\update\delete empty array
-pub const CATS: &str = "cats";
+pub const ROUTE_NAME: &str = "cats";
 pub trait GetConfigGetPostgresPool:
     crate::repositories_types::tufa_server::config::config_struct::GetConfig
     + crate::server::routes::helpers::get_postgres_pool::GetPostgresPool
