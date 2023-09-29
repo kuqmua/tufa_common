@@ -347,20 +347,6 @@ pub enum TryCreateBatch {
     },
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum TryCreateBatchErrorNamed {
-    RequestError {
-        #[eo_error_occurence]
-        request_error: TryCreateBatchRequestError,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    SerdeJsonToString {
-        #[eo_display]
-        serde_json_to_string: serde_json::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-}
-
 ////////////
 #[derive(
     Debug,
@@ -523,20 +509,6 @@ pub enum TryCreate {
     },
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum TryCreateErrorNamed {
-    RequestError {
-        #[eo_error_occurence]
-        request_error: TryCreateRequestError,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    SerdeJsonToString {
-        #[eo_display]
-        serde_json_to_string: serde_json::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-}
-
 ////////
 #[derive(
     Debug,
@@ -684,15 +656,6 @@ pub enum TryDeleteById {
     UnexpectedCase {
         #[eo_display_with_serialize_deserialize]
         unexpected_case: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-}
-
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum TryDeleteByIdErrorNamed {
-    RequestError {
-        #[eo_error_occurence]
-        request_error: TryDeleteByIdRequestError,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
@@ -871,19 +834,6 @@ pub enum TryDeleteWithBody {
     },
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum TryDeleteWithBodyErrorNamed {
-    RequestError {
-        #[eo_error_occurence]
-        request_error: TryDeleteWithBodyRequestError,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    SerdeJsonToString {
-        #[eo_display]
-        serde_json_to_string: serde_json::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-}
 /////////////
 #[derive(
     Debug,
@@ -1041,19 +991,6 @@ pub enum TryDelete {
     },
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum TryDeleteErrorNamed {
-    QueryEncode {
-        #[eo_display]
-        url_encoding: serde_urlencoded::ser::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    RequestError {
-        #[eo_error_occurence]
-        request_error: TryDeleteRequestError,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-}
 /////////////
 #[derive(
     Debug,
@@ -1211,19 +1148,6 @@ pub enum TryReadById {
     },
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum TryReadByIdErrorNamed {
-    QueryEncode {
-        #[eo_display]
-        url_encoding: serde_urlencoded::ser::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    RequestError {
-        #[eo_error_occurence]
-        request_error: TryReadByIdRequestError,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-}
 ////////
 #[derive(
     Debug,
@@ -1393,19 +1317,6 @@ pub enum TryReadWithBody {
     },
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum TryReadWithBodyErrorNamed {
-    RequestError {
-        #[eo_error_occurence]
-        request_error: TryReadWithBodyRequestError,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    SerdeJsonToString {
-        #[eo_display]
-        serde_json_to_string: serde_json::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-}
 ////////
 #[derive(
     Debug,
@@ -1557,19 +1468,6 @@ pub enum TryRead {
     //todo - no parameters case?
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum TryReadErrorNamed {
-    QueryEncode {
-        #[eo_display]
-        url_encoding: serde_urlencoded::ser::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    RequestError {
-        #[eo_error_occurence]
-        request_error: TryReadRequestError,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-}
 /////////////
 #[derive(
     Debug,
@@ -1759,19 +1657,6 @@ pub enum TryUpdateById {
     },
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum TryUpdateByIdErrorNamed {
-    RequestError {
-        #[eo_error_occurence]
-        request_error: TryUpdateByIdRequestError,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    SerdeJsonToString {
-        #[eo_display]
-        serde_json_to_string: serde_json::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-}
 /////////
 #[derive(
     Debug,
@@ -1949,20 +1834,6 @@ pub enum TryUpdate {
     UnexpectedCase {
         #[eo_display_with_serialize_deserialize]
         unexpected_case: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-}
-
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum TryUpdateErrorNamed {
-    RequestError {
-        #[eo_error_occurence]
-        request_error: TryUpdateRequestError,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    SerdeJsonToString {
-        #[eo_display]
-        serde_json_to_string: serde_json::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
