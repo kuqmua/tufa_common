@@ -1837,3 +1837,27 @@ pub enum TryUpdate {
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
 }
+///////////
+pub async fn create_batch(
+    app_info_state: axum::extract::State<DynArcGetConfigGetPostgresPoolSendSync>,
+    payload_extraction_result: Result<
+        axum::Json<Vec<CreateBatchPayloadElement>>,
+        axum::extract::rejection::JsonRejection,
+    >,
+) -> impl axum::response::IntoResponse {
+    let parameters = CreateBatchParameters {
+        payload:
+            match crate::server::routes::helpers::json_extractor_error::JsonValueResultExtractor::<
+                Vec<CreateBatchPayloadElement>,
+                TryCreateBatchResponseVariants,
+            >::try_extract_value(payload_extraction_result, &app_info_state)
+            {
+                Ok(payload) => payload,
+                Err(err) => {
+                    return err;
+                }
+            },
+    };
+    println!("{parameters:#?}");
+    parameters.prepare_and_execute_query(&app_info_state).await
+}
