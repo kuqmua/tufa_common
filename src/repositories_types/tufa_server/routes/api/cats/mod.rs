@@ -1829,6 +1829,35 @@ pub enum TryUpdate {
         no_payload_fields: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
+    #[tvfrr_500_internal_server_error]
+    CommitFailed {
+        #[eo_display]
+        commit_error: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_400_bad_request]
+    NonExistingPrimaryKeys {
+        #[eo_vec_display]
+        non_existing_primary_keys: Vec<i64>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_400_bad_request]
+    //todo what status code should return if non_existing_primary_keys = 400, but transaction rollback failed = 500
+    NonExistingPrimaryKeysAndFailedRollback {
+        #[eo_vec_display]
+        non_existing_primary_keys: Vec<i64>,
+        #[eo_display]
+        sqlx_error: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_500_internal_server_error]
+    UpdateAndRollbackFailed {
+        #[eo_display]
+        update_error: sqlx::Error,
+        #[eo_display]
+        rollback_error: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
     //#[non_exhaustive] case
     #[tvfrr_500_internal_server_error]
     UnexpectedCase {
@@ -2020,24 +2049,27 @@ impl UpdateParameters {
                     if let false = non_existing_primary_keys.is_empty() {
                         match postgres_transaction.rollback().await {
                             Ok(_) => {
-                                // let error = TryUpdate::from(e);
-                                // crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                                //     &error,
-                                //     app_info_state.as_ref(),
-                                // );
-                                // return TryUpdateResponseVariants::from(error);
-                                todo!() //new variant of response variants
+                                let error = TryUpdate::NonExistingPrimaryKeys {
+                                    non_existing_primary_keys,
+                                    code_occurence: crate::code_occurence_tufa_common!(), //todo how to show log from proc_macro
+                                };
+                                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                                    &error,
+                                    app_info_state.as_ref(),
+                                );
+                                return TryUpdateResponseVariants::from(error);
                             }
                             Err(e) => {
-                                //todo  BIG QUESTION - WHAT TO DO IF ROLLBACK FAILED? INFINITE LOOP TRYING TO ROLLBACK?
-                                //todo and variant - rollback failed and non_existing_primary_keys
-                                // let error = TryUpdate::from(e);
-                                // crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                                //     &error,
-                                //     app_info_state.as_ref(),
-                                // );
-                                // return TryUpdateResponseVariants::from(error);
-                                todo!()
+                                let error = TryUpdate::NonExistingPrimaryKeysAndFailedRollback {
+                                    non_existing_primary_keys,
+                                    sqlx_error: e,
+                                    code_occurence: crate::code_occurence_tufa_common!(), //todo how to show log from proc_macro
+                                };
+                                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                                    &error,
+                                    app_info_state.as_ref(),
+                                );
+                                return TryUpdateResponseVariants::from(error);
                             }
                         }
                     }
@@ -2048,34 +2080,39 @@ impl UpdateParameters {
                     Err(e) => {
                         //todo  BIG QUESTION - WHAT TO DO IF COMMIT FAILED? INFINITE LOOP TRYING TO COMMIT?
                         //todo and variant - rollback failed and non_existing_primary_keys
-                        // let error = TryUpdate::from(e);
-                        // crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                        //     &error,
-                        //     app_info_state.as_ref(),
-                        // );
-                        // return TryUpdateResponseVariants::from(error);
-                        todo!()
+                        let error = TryUpdate::CommitFailed {
+                            commit_error: e,
+                            code_occurence: crate::code_occurence_tufa_common!(),
+                        };
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return TryUpdateResponseVariants::from(error); //todo - few variants or return ResponseVariants::from - with return ; and not
                     }
                 }
             }
-            Err(e) => match postgres_transaction.rollback().await {
+            Err(update_error) => match postgres_transaction.rollback().await {
                 Ok(_) => {
-                    let error = TryUpdate::from(e);
+                    let error = TryUpdate::from(update_error);
                     crate::common::error_logs_logic::error_log::ErrorLog::error_log(
                         &error,
                         app_info_state.as_ref(),
                     );
                     return TryUpdateResponseVariants::from(error);
                 }
-                Err(e) => {
+                Err(rollback_error) => {
                     //todo  BIG QUESTION - WHAT TO DO IF ROLLBACK FAILED? INFINITE LOOP TRYING TO ROLLBACK?
-                    // let error = TryUpdate::from(e);
-                    // crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                    //     &error,
-                    //     app_info_state.as_ref(),
-                    // );
-                    // return TryUpdateResponseVariants::from(error);
-                    todo!()
+                    let error = TryUpdate::UpdateAndRollbackFailed {
+                        update_error,
+                        rollback_error,
+                        code_occurence: crate::code_occurence_tufa_common!(),
+                    };
+                    crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                        &error,
+                        app_info_state.as_ref(),
+                    );
+                    return TryUpdateResponseVariants::from(error);
                 }
             },
         }
