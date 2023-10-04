@@ -2118,13 +2118,3 @@ impl UpdateParameters {
         }
     }
 }
-
-fn primary_key_try_from_sqlx_row<'a, R: sqlx::Row>(row: &'a R) -> sqlx::Result<i64>
-where
-    &'a std::primitive::str: sqlx::ColumnIndex<R>,
-    i64: sqlx::decode::Decode<'a, R::Database>,
-    i64: sqlx::types::Type<R::Database>,
-{
-    let primary_key: i64 = row.try_get("id")?;
-    Ok(primary_key)
-}
