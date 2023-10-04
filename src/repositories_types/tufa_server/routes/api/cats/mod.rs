@@ -1841,13 +1841,21 @@ pub enum TryUpdate {
         non_existing_primary_keys: Vec<i64>,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
+    #[tvfrr_500_internal_server_error]
+    PrimaryKeyFromRowAndFailedRollback {
+        #[eo_display]
+        primary_key_from_row: sqlx::Error,
+        #[eo_display]
+        rollback_error: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
     #[tvfrr_400_bad_request]
     //todo what status code should return if non_existing_primary_keys = 400, but transaction rollback failed = 500
     NonExistingPrimaryKeysAndFailedRollback {
         #[eo_vec_display]
         non_existing_primary_keys: Vec<i64>,
         #[eo_display]
-        sqlx_error: sqlx::Error,
+        rollback_error: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_500_internal_server_error]
@@ -2019,9 +2027,13 @@ pub enum TryUpdate {
 //                                     );
 //                                     return TryUpdateResponseVariants::from(error);
 //                                 }
-//                                 Err(e) => {
+//                                 Err(rollback_error) => {
 //                                     //todo  BIG QUESTION - WHAT TO DO IF ROLLBACK FAILED? INFINITE LOOP TRYING TO ROLLBACK?
-//                                     let error = TryUpdate::from(e);
+//                                     let error = TryUpdate::PrimaryKeyFromRowAndFailedRollback {
+//                                         primary_key_from_row: e,
+//                                         rollback_error,
+//                                         code_occurence: crate::code_occurence_tufa_common!(),
+//                                     };
 //                                     crate::common::error_logs_logic::error_log::ErrorLog::error_log(
 //                                         &error,
 //                                         app_info_state.as_ref(),
@@ -2062,7 +2074,7 @@ pub enum TryUpdate {
 //                             Err(e) => {
 //                                 let error = TryUpdate::NonExistingPrimaryKeysAndFailedRollback {
 //                                     non_existing_primary_keys,
-//                                     sqlx_error: e,
+//                                     rollback_error: e,
 //                                     code_occurence: crate::code_occurence_tufa_common!(), //todo how to show log from proc_macro
 //                                 };
 //                                 crate::common::error_logs_logic::error_log::ErrorLog::error_log(
