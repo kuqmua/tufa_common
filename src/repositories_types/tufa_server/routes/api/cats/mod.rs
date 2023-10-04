@@ -2104,9 +2104,9 @@ pub enum TryUpdate {
 //                     }
 //                 }
 //             }
-//             Err(update_error) => match postgres_transaction.rollback().await {
+//             Err(e) => match postgres_transaction.rollback().await {
 //                 Ok(_) => {
-//                     let error = TryUpdate::from(update_error);
+//                     let error = TryUpdate::from(e);
 //                     crate::common::error_logs_logic::error_log::ErrorLog::error_log(
 //                         &error,
 //                         app_info_state.as_ref(),
@@ -2116,7 +2116,7 @@ pub enum TryUpdate {
 //                 Err(rollback_error) => {
 //                     //todo  BIG QUESTION - WHAT TO DO IF ROLLBACK FAILED? INFINITE LOOP TRYING TO ROLLBACK?
 //                     let error = TryUpdate::UpdateAndRollbackFailed {
-//                         update_error,
+//                         update_error: e,
 //                         rollback_error,
 //                         code_occurence: crate::code_occurence_tufa_common!(),
 //                     };
