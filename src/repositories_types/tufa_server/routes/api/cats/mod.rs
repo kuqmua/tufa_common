@@ -1867,254 +1867,254 @@ pub enum TryUpdate {
     },
 }
 ////////////
-impl UpdateParameters {
-    pub async fn prepare_and_execute_query(
-        self,
-        app_info_state : & crate ::
-    repositories_types :: tufa_server :: routes :: api :: cats ::
-    DynArcGetConfigGetPostgresPoolSendSync,
-    ) -> TryUpdateResponseVariants {
-        let query_string = {
-            let mut increment: u64 = 0;
-            let mut values = std::string::String::default();
-            for element in &self.payload {
-                values.push_str(&format!("({}), ", {
-                    let mut element_value = std::string::String::default();
-                    match crate :: server :: postgres :: bind_query ::
-                    BindQuery ::
-                    try_generate_bind_increments(& element.id, & mut increment)
-                    {
-                        Ok(value) =>
-                        { element_value.push_str(& format! ("{value}, ")) ; },
-                        Err(e) =>
-                        {
-                            return TryUpdateResponseVariants :: BindQuery
-                            {
-                                checked_add : e.into_serialize_deserialize_version(),
-                                code_occurence : crate :: code_occurence_tufa_common! ()
-                            } ;
-                        },
-                    } ;
-                    match crate :: server :: postgres :: bind_query ::
-                    BindQuery ::
-                    try_generate_bind_increments(& element.name, & mut
-                    increment)
-                    {
-                        Ok(value) =>
-                        { element_value.push_str(& format! ("{value}, ")) ; },
-                        Err(e) =>
-                        {
-                            return TryUpdateResponseVariants :: BindQuery
-                            {
-                                checked_add : e.into_serialize_deserialize_version(),
-                                code_occurence : crate :: code_occurence_tufa_common! ()
-                            } ;
-                        },
-                    } ;
-                    match crate :: server :: postgres :: bind_query ::
-                    BindQuery ::
-                    try_generate_bind_increments(& element.color, & mut
-                    increment)
-                    {
-                        Ok(value) =>
-                        { element_value.push_str(& format! ("{value}, ")) ; },
-                        Err(e) =>
-                        {
-                            return TryUpdateResponseVariants :: BindQuery
-                            {
-                                checked_add : e.into_serialize_deserialize_version(),
-                                code_occurence : crate :: code_occurence_tufa_common! ()
-                            } ;
-                        },
-                    } ;
-                    element_value.pop();
-                    element_value.pop();
-                    element_value
-                }));
-            }
-            values.pop();
-            values.pop();
-            format!
-            ("{} {} {} t {} name = data.name, color = data.color {} (values {values}) as data(id, name, color) where t.id = data.id returning data.id",
-            crate :: server :: postgres :: constants :: UPDATE_NAME,
-            ROUTE_NAME, crate :: server :: postgres :: constants :: AS_NAME,
-            crate :: server :: postgres :: constants :: SET_NAME, crate ::
-            server :: postgres :: constants :: FROM_NAME,)
-        };
-        let expected_updated_primary_keys = self
-            .payload
-            .iter()
-            .map(|element| element.id.to_inner().clone()) //todo - maybe its not a good idea to remove .clone here coz in macro dont know what type
-            .collect::<Vec<i64>>();
-        let binded_query = {
-            let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
-            for element in self.payload {
-                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
-                    element.id, query,
-                );
-                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
-                    element.name,
-                    query,
-                );
-                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
-                    element.color,
-                    query,
-                );
-            }
-            query
-        };
-        let mut pool_connection = match app_info_state.get_postgres_pool().acquire().await {
-            Ok(value) => value,
-            Err(e) => {
-                let error = TryUpdate::from(e);
-                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                    &error,
-                    app_info_state.as_ref(),
-                );
-                return TryUpdateResponseVariants::from(error);
-            }
-        };
-        let pg_connection = match sqlx::Acquire::acquire(&mut pool_connection).await {
-            Ok(value) => value,
-            Err(e) => {
-                let error = TryUpdate::from(e);
-                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                    &error,
-                    app_info_state.as_ref(),
-                );
-                return TryUpdateResponseVariants::from(error);
-            }
-        };
-        let mut postgres_transaction = match {
-            use sqlx::Acquire;
-            pg_connection.begin()
-        }
-        .await
-        {
-            Ok(value) => value,
-            Err(e) => {
-                let error = TryUpdate::from(e);
-                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                    &error,
-                    app_info_state.as_ref(),
-                );
-                return TryUpdateResponseVariants::from(error);
-            }
-        };
-        match binded_query.fetch_all(postgres_transaction.as_mut()).await {
-            Ok(updated_rows) => {
-                let typed_updated_rows = {
-                    let mut typed_updated_rows = Vec::with_capacity(updated_rows.len());
-                    for updated_row in updated_rows {
-                        match primary_key_try_from_sqlx_row(&updated_row) {
-                            Ok(updated_row_primary_key) => {
-                                typed_updated_rows.push(updated_row_primary_key);
-                            }
-                            Err(e) => match postgres_transaction.rollback().await {
-                                Ok(_) => {
-                                    let error = TryUpdate::from(e);
-                                    crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                                        &error,
-                                        app_info_state.as_ref(),
-                                    );
-                                    return TryUpdateResponseVariants::from(error);
-                                }
-                                Err(e) => {
-                                    //todo  BIG QUESTION - WHAT TO DO IF ROLLBACK FAILED? INFINITE LOOP TRYING TO ROLLBACK?
-                                    let error = TryUpdate::from(e);
-                                    crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                                        &error,
-                                        app_info_state.as_ref(),
-                                    );
-                                    return TryUpdateResponseVariants::from(error);
-                                }
-                            },
-                        }
-                    }
-                    typed_updated_rows
-                };
-                {
-                    let non_existing_primary_keys = {
-                        let mut non_existing_primary_keys =
-                            Vec::with_capacity(expected_updated_primary_keys.len());
-                        for expected_updated_primary_key in expected_updated_primary_keys {
-                            if let false =
-                                typed_updated_rows.contains(&expected_updated_primary_key)
-                            {
-                                non_existing_primary_keys.push(expected_updated_primary_key);
-                            }
-                        }
-                        non_existing_primary_keys
-                    };
-                    if let false = non_existing_primary_keys.is_empty() {
-                        match postgres_transaction.rollback().await {
-                            Ok(_) => {
-                                let error = TryUpdate::NonExistingPrimaryKeys {
-                                    non_existing_primary_keys,
-                                    code_occurence: crate::code_occurence_tufa_common!(), //todo how to show log from proc_macro
-                                };
-                                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                                    &error,
-                                    app_info_state.as_ref(),
-                                );
-                                return TryUpdateResponseVariants::from(error);
-                            }
-                            Err(e) => {
-                                let error = TryUpdate::NonExistingPrimaryKeysAndFailedRollback {
-                                    non_existing_primary_keys,
-                                    sqlx_error: e,
-                                    code_occurence: crate::code_occurence_tufa_common!(), //todo how to show log from proc_macro
-                                };
-                                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                                    &error,
-                                    app_info_state.as_ref(),
-                                );
-                                return TryUpdateResponseVariants::from(error);
-                            }
-                        }
-                    }
-                }
-                // println!("{:#?}", expected_updated_primary_keys);
-                match postgres_transaction.commit().await {
-                    Ok(_) => TryUpdateResponseVariants::Desirable(()),
-                    Err(e) => {
-                        //todo  BIG QUESTION - WHAT TO DO IF COMMIT FAILED? INFINITE LOOP TRYING TO COMMIT?
-                        //todo and variant - rollback failed and non_existing_primary_keys
-                        let error = TryUpdate::CommitFailed {
-                            commit_error: e,
-                            code_occurence: crate::code_occurence_tufa_common!(),
-                        };
-                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                            &error,
-                            app_info_state.as_ref(),
-                        );
-                        return TryUpdateResponseVariants::from(error); //todo - few variants or return ResponseVariants::from - with return ; and not
-                    }
-                }
-            }
-            Err(update_error) => match postgres_transaction.rollback().await {
-                Ok(_) => {
-                    let error = TryUpdate::from(update_error);
-                    crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                        &error,
-                        app_info_state.as_ref(),
-                    );
-                    return TryUpdateResponseVariants::from(error);
-                }
-                Err(rollback_error) => {
-                    //todo  BIG QUESTION - WHAT TO DO IF ROLLBACK FAILED? INFINITE LOOP TRYING TO ROLLBACK?
-                    let error = TryUpdate::UpdateAndRollbackFailed {
-                        update_error,
-                        rollback_error,
-                        code_occurence: crate::code_occurence_tufa_common!(),
-                    };
-                    crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                        &error,
-                        app_info_state.as_ref(),
-                    );
-                    return TryUpdateResponseVariants::from(error);
-                }
-            },
-        }
-    }
-}
+// impl UpdateParameters {
+//     pub async fn prepare_and_execute_query(
+//         self,
+//         app_info_state : & crate ::
+//     repositories_types :: tufa_server :: routes :: api :: cats ::
+//     DynArcGetConfigGetPostgresPoolSendSync,
+//     ) -> TryUpdateResponseVariants {
+//         let query_string = {
+//             let mut increment: u64 = 0;
+//             let mut values = std::string::String::default();
+//             for element in &self.payload {
+//                 values.push_str(&format!("({}), ", {
+//                     let mut element_value = std::string::String::default();
+//                     match crate :: server :: postgres :: bind_query ::
+//                     BindQuery ::
+//                     try_generate_bind_increments(& element.id, & mut increment)
+//                     {
+//                         Ok(value) =>
+//                         { element_value.push_str(& format! ("{value}, ")) ; },
+//                         Err(e) =>
+//                         {
+//                             return TryUpdateResponseVariants :: BindQuery
+//                             {
+//                                 checked_add : e.into_serialize_deserialize_version(),
+//                                 code_occurence : crate :: code_occurence_tufa_common! ()
+//                             } ;
+//                         },
+//                     } ;
+//                     match crate :: server :: postgres :: bind_query ::
+//                     BindQuery ::
+//                     try_generate_bind_increments(& element.name, & mut
+//                     increment)
+//                     {
+//                         Ok(value) =>
+//                         { element_value.push_str(& format! ("{value}, ")) ; },
+//                         Err(e) =>
+//                         {
+//                             return TryUpdateResponseVariants :: BindQuery
+//                             {
+//                                 checked_add : e.into_serialize_deserialize_version(),
+//                                 code_occurence : crate :: code_occurence_tufa_common! ()
+//                             } ;
+//                         },
+//                     } ;
+//                     match crate :: server :: postgres :: bind_query ::
+//                     BindQuery ::
+//                     try_generate_bind_increments(& element.color, & mut
+//                     increment)
+//                     {
+//                         Ok(value) =>
+//                         { element_value.push_str(& format! ("{value}, ")) ; },
+//                         Err(e) =>
+//                         {
+//                             return TryUpdateResponseVariants :: BindQuery
+//                             {
+//                                 checked_add : e.into_serialize_deserialize_version(),
+//                                 code_occurence : crate :: code_occurence_tufa_common! ()
+//                             } ;
+//                         },
+//                     } ;
+//                     element_value.pop();
+//                     element_value.pop();
+//                     element_value
+//                 }));
+//             }
+//             values.pop();
+//             values.pop();
+//             format!
+//             ("{} {} {} t {} name = data.name, color = data.color {} (values {values}) as data(id, name, color) where t.id = data.id returning data.id",
+//             crate :: server :: postgres :: constants :: UPDATE_NAME,
+//             ROUTE_NAME, crate :: server :: postgres :: constants :: AS_NAME,
+//             crate :: server :: postgres :: constants :: SET_NAME, crate ::
+//             server :: postgres :: constants :: FROM_NAME,)
+//         };
+//         let expected_updated_primary_keys = self
+//             .payload
+//             .iter()
+//             .map(|element| element.id.to_inner().clone()) //todo - maybe its not a good idea to remove .clone here coz in macro dont know what type
+//             .collect::<Vec<i64>>();
+//         let binded_query = {
+//             let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
+//             for element in self.payload {
+//                 query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+//                     element.id, query,
+//                 );
+//                 query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+//                     element.name,
+//                     query,
+//                 );
+//                 query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+//                     element.color,
+//                     query,
+//                 );
+//             }
+//             query
+//         };
+//         let mut pool_connection = match app_info_state.get_postgres_pool().acquire().await {
+//             Ok(value) => value,
+//             Err(e) => {
+//                 let error = TryUpdate::from(e);
+//                 crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                     &error,
+//                     app_info_state.as_ref(),
+//                 );
+//                 return TryUpdateResponseVariants::from(error);
+//             }
+//         };
+//         let pg_connection = match sqlx::Acquire::acquire(&mut pool_connection).await {
+//             Ok(value) => value,
+//             Err(e) => {
+//                 let error = TryUpdate::from(e);
+//                 crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                     &error,
+//                     app_info_state.as_ref(),
+//                 );
+//                 return TryUpdateResponseVariants::from(error);
+//             }
+//         };
+//         let mut postgres_transaction = match {
+//             use sqlx::Acquire;
+//             pg_connection.begin()
+//         }
+//         .await
+//         {
+//             Ok(value) => value,
+//             Err(e) => {
+//                 let error = TryUpdate::from(e);
+//                 crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                     &error,
+//                     app_info_state.as_ref(),
+//                 );
+//                 return TryUpdateResponseVariants::from(error);
+//             }
+//         };
+//         match binded_query.fetch_all(postgres_transaction.as_mut()).await {
+//             Ok(updated_rows) => {
+//                 let typed_updated_rows = {
+//                     let mut typed_updated_rows = Vec::with_capacity(updated_rows.len());
+//                     for updated_row in updated_rows {
+//                         match primary_key_try_from_sqlx_row(&updated_row) {
+//                             Ok(updated_row_primary_key) => {
+//                                 typed_updated_rows.push(updated_row_primary_key);
+//                             }
+//                             Err(e) => match postgres_transaction.rollback().await {
+//                                 Ok(_) => {
+//                                     let error = TryUpdate::from(e);
+//                                     crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                                         &error,
+//                                         app_info_state.as_ref(),
+//                                     );
+//                                     return TryUpdateResponseVariants::from(error);
+//                                 }
+//                                 Err(e) => {
+//                                     //todo  BIG QUESTION - WHAT TO DO IF ROLLBACK FAILED? INFINITE LOOP TRYING TO ROLLBACK?
+//                                     let error = TryUpdate::from(e);
+//                                     crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                                         &error,
+//                                         app_info_state.as_ref(),
+//                                     );
+//                                     return TryUpdateResponseVariants::from(error);
+//                                 }
+//                             },
+//                         }
+//                     }
+//                     typed_updated_rows
+//                 };
+//                 {
+//                     let non_existing_primary_keys = {
+//                         let mut non_existing_primary_keys =
+//                             Vec::with_capacity(expected_updated_primary_keys.len());
+//                         for expected_updated_primary_key in expected_updated_primary_keys {
+//                             if let false =
+//                                 typed_updated_rows.contains(&expected_updated_primary_key)
+//                             {
+//                                 non_existing_primary_keys.push(expected_updated_primary_key);
+//                             }
+//                         }
+//                         non_existing_primary_keys
+//                     };
+//                     if let false = non_existing_primary_keys.is_empty() {
+//                         match postgres_transaction.rollback().await {
+//                             Ok(_) => {
+//                                 let error = TryUpdate::NonExistingPrimaryKeys {
+//                                     non_existing_primary_keys,
+//                                     code_occurence: crate::code_occurence_tufa_common!(), //todo how to show log from proc_macro
+//                                 };
+//                                 crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                                     &error,
+//                                     app_info_state.as_ref(),
+//                                 );
+//                                 return TryUpdateResponseVariants::from(error);
+//                             }
+//                             Err(e) => {
+//                                 let error = TryUpdate::NonExistingPrimaryKeysAndFailedRollback {
+//                                     non_existing_primary_keys,
+//                                     sqlx_error: e,
+//                                     code_occurence: crate::code_occurence_tufa_common!(), //todo how to show log from proc_macro
+//                                 };
+//                                 crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                                     &error,
+//                                     app_info_state.as_ref(),
+//                                 );
+//                                 return TryUpdateResponseVariants::from(error);
+//                             }
+//                         }
+//                     }
+//                 }
+//                 // println!("{:#?}", expected_updated_primary_keys);
+//                 match postgres_transaction.commit().await {
+//                     Ok(_) => TryUpdateResponseVariants::Desirable(()),
+//                     Err(e) => {
+//                         //todo  BIG QUESTION - WHAT TO DO IF COMMIT FAILED? INFINITE LOOP TRYING TO COMMIT?
+//                         //todo and variant - rollback failed and non_existing_primary_keys
+//                         let error = TryUpdate::CommitFailed {
+//                             commit_error: e,
+//                             code_occurence: crate::code_occurence_tufa_common!(),
+//                         };
+//                         crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                             &error,
+//                             app_info_state.as_ref(),
+//                         );
+//                         return TryUpdateResponseVariants::from(error); //todo - few variants or return ResponseVariants::from - with return ; and not
+//                     }
+//                 }
+//             }
+//             Err(update_error) => match postgres_transaction.rollback().await {
+//                 Ok(_) => {
+//                     let error = TryUpdate::from(update_error);
+//                     crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                         &error,
+//                         app_info_state.as_ref(),
+//                     );
+//                     return TryUpdateResponseVariants::from(error);
+//                 }
+//                 Err(rollback_error) => {
+//                     //todo  BIG QUESTION - WHAT TO DO IF ROLLBACK FAILED? INFINITE LOOP TRYING TO ROLLBACK?
+//                     let error = TryUpdate::UpdateAndRollbackFailed {
+//                         update_error,
+//                         rollback_error,
+//                         code_occurence: crate::code_occurence_tufa_common!(),
+//                     };
+//                     crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                         &error,
+//                         app_info_state.as_ref(),
+//                     );
+//                     return TryUpdateResponseVariants::from(error);
+//                 }
+//             },
+//         }
+//     }
+// }
