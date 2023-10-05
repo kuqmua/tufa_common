@@ -1891,30 +1891,34 @@ where
     use serde::Deserialize;
     match Option::<std::string::String>::deserialize(deserializer)? {
         Some(string_handle) => {
-            let splitted = string_handle.split(",").collect::<Vec<&str>>();
+            let splitted = string_handle.split(',').collect::<Vec<&str>>();
             let mut bigserial_vec = Vec::with_capacity(splitted.len());
             for splitted_element in splitted {
                 match crate::server::postgres::bigserial::Bigserial::try_from(splitted_element) {
                     Ok(bigserial) => {
                         bigserial_vec.push(bigserial);
                     }
-                    Err(e) => {
-                        todo!()
-                    }
+                    Err(e) => match e {
+                        crate::server::postgres::bigserial::BigserialTryFromStrErrorNamed::ParseIntError { 
+                            parse_int_error, 
+                            str_value, 
+                            code_occurence } => {
+                                return Err(serde::de::Error::custom(&format!(
+                                    "parse_int_error: {parse_int_error}, str_value: {str_value}, code_occurence: {code_occurence}"
+                                )));
+                            },
+                        crate::server::postgres::bigserial::BigserialTryFromStrErrorNamed::NotPositive { not_positive, code_occurence } => {
+                            return Err(serde::de::Error::custom(&format!(
+                                "not_positive: {not_positive}, code_occurence: {code_occurence}"
+                            )));
+                        },
+                    },
                 }
             }
             Ok(Some(bigserial_vec))
         }
         None => Ok(None),
     }
-    // match possible_bigserial.is_positive() {
-    //     true => Ok(possible_bigserial),
-    //     false => Err(
-    //         serde::de::Error::custom(&format!(
-    //             "invalid type: Postgresql Bigserial `{possible_bigserial}`, expected Postgresql Bigserial as rust i64, there 1 <= *your value* <= 9223372036854775807(only positive part of rust i64)"
-    //         )),
-    //     )
-    // }
 }
 #[derive(Debug, serde :: Serialize, serde :: Deserialize)]
 struct DeleteQueryForUrlEncoding {
@@ -1949,11 +1953,16 @@ impl DeleteParameters {
     repositories_types :: tufa_server :: routes :: api :: cats ::
     DynArcGetConfigGetPostgresPoolSendSync,
     ) -> TryDeleteResponseVariants {
-        if let (None, None) = (&self.query.name, &self.query.color) {
+        println!("{:?}", &self.query.ids);
+        if let (None, None, None) = (&self.query.ids, &self.query.name, &self.query.color) {
             return TryDeleteResponseVariants::NoQueryParameters {
                 no_query_parameters: std::string::String::from("no query parameters"),
                 code_occurence: crate::code_occurence_tufa_common!(),
             };
+        }
+        if let (Some(ids), None, None) = (&self.query.ids, &self.query.name, &self.query.color) {
+            println!("{ids:#?}");
+            todo!();
         }
         let query_string = format!(
             "{} {} {} {} {}",
