@@ -22,3 +22,4 @@ pub const OFFSET_NAME: &str = "offset";
 pub const ASC_NAME: &str = "asc";
 pub const DESC_NAME: &str = "desc";
 pub const AS_NAME: &str = "as";
+pub const IN_NAME: &str = "in";

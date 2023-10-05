@@ -1915,7 +1915,10 @@ where
                     },
                 }
             }
-            Ok(Some(bigserial_vec))
+            match bigserial_vec.is_empty() {
+                true => Err(serde::de::Error::custom("ids is empty")),
+                false => Ok(Some(bigserial_vec)),
+            }
         }
         None => Ok(None),
     }
@@ -1960,115 +1963,238 @@ impl DeleteParameters {
                 code_occurence: crate::code_occurence_tufa_common!(),
             };
         }
-        if let (Some(ids), None, None) = (&self.query.ids, &self.query.name, &self.query.color) {
-            println!("{ids:#?}");
-            todo!();
-        }
-        let query_string = format!(
-            "{} {} {} {} {}",
-            crate::server::postgres::constants::DELETE_NAME,
-            crate::server::postgres::constants::FROM_NAME,
-            ROUTE_NAME,
-            crate::server::postgres::constants::WHERE_NAME,
-            {
-                let mut increment: u64 = 0;
-                let mut additional_parameters = std::string::String::default();
-                if let Some(value) = &self.query.name {
-                    match crate::server::postgres::bind_query::BindQuery::try_increment(
-                        value,
-                        &mut increment,
-                    ) {
-                        Ok(_) => {
-                            let handle = format!("name = ${increment}");
-                            match additional_parameters.is_empty() {
-                                true => {
-                                    additional_parameters.push_str(&handle);
+        match (self.query.ids, &self.query.name, &self.query.color) {
+            (None, None, None) => {
+                TryDeleteResponseVariants::NoQueryParameters {
+                    no_query_parameters: std::string::String::from("no query parameters"),
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                }
+            },
+            (Some(ids), None, None) => {
+                println!("{ids:#?}");
+                // delete from cats where id in (32, 33, 37) returning id
+                let query_string = format!(
+                    "{} {} {} {} id {} ({}) returning id",
+                    crate::server::postgres::constants::DELETE_NAME,
+                    crate::server::postgres::constants::FROM_NAME,
+                    ROUTE_NAME,
+                    crate::server::postgres::constants::WHERE_NAME,
+                    crate::server::postgres::constants::IN_NAME,
+                    {
+                        let mut increment: u64 = 0;
+                        let mut additional_parameters = std::string::String::default();
+                        for _ in &ids {
+                            increment += 1;
+                            additional_parameters.push_str(&format!("${increment},"));
+                        }
+                        additional_parameters.pop();
+                        additional_parameters
+                    }
+                );
+                let binded_query = {
+                    let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
+                    for element in ids {
+                        query = query.bind(element.into_inner());
+                    }
+                    query
+                };
+                let mut pool_connection = match app_info_state.get_postgres_pool().acquire().await {
+                    Ok(value) => value,
+                    Err(e) => {
+                        let error = TryDelete::from(e);
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return TryDeleteResponseVariants::from(error);
+                    }
+                };
+                let pg_connection = match sqlx::Acquire::acquire(&mut pool_connection).await {
+                    Ok(value) => value,
+                    Err(e) => {
+                        let error = TryDelete::from(e);
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return TryDeleteResponseVariants::from(error);
+                    }
+                };
+                let mut postgres_transaction = match {
+                    use sqlx::Acquire;
+                    pg_connection.begin()
+                }
+                .await
+                {
+                    Ok(value) => value,
+                    Err(e) => {
+                        let error = TryDelete::from(e);
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return TryDeleteResponseVariants::from(error);
+                    }
+                };
+                match binded_query.fetch_all(pg_connection.as_mut()).await {
+                    Ok(updated_rows) => {
+                        //
+                        let typed_updated_rows = {
+                            let mut typed_updated_rows = Vec::with_capacity(updated_rows.len());
+                            for updated_row in updated_rows {
+                                match primary_key_try_from_sqlx_row(&updated_row) {
+                                    Ok(updated_row_primary_key) => {
+                                        typed_updated_rows.push(updated_row_primary_key);
+                                    }
+                                    Err(e) => match postgres_transaction.rollback().await {
+                                        Ok(_) => {
+                                            let error = TryDelete::from(e);
+                                            crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                                                &error,
+                                                app_info_state.as_ref(),
+                                            );
+                                            return TryDeleteResponseVariants::from(error);
+                                        }
+                                        Err(rollback_error) => {
+                                            //todo  BIG QUESTION - WHAT TO DO IF ROLLBACK FAILED? INFINITE LOOP TRYING TO ROLLBACK?
+                                            let error = TryDelete::PrimaryKeyFromRowAndFailedRollback {
+                                                primary_key_from_row: e,
+                                                rollback_error,
+                                                code_occurence_lower_case: crate_code_occurence_tufa_common_macro_call,
+                                            };
+                                            crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                                            &error,
+                                                app_info_state.as_ref(),
+                                            );
+                                            return TryDeleteResponseVariants::from(error);
+                                        }
+                                    },
                                 }
-                                false => {
-                                    additional_parameters.push_str(&format!(" AND {handle}"));
+                            }
+                            typed_updated_rows
+                        };
+                        //
+                        TryDeleteResponseVariants::Desirable(())
+                    },
+                    Err(e) => {
+                        let error = TryDelete::from(e);
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return TryDeleteResponseVariants::from(error);
+                    }
+                }
+                todo!();
+            }
+            _ => {
+                let query_string = format!(
+                    "{} {} {} {} {}",
+                    crate::server::postgres::constants::DELETE_NAME,
+                    crate::server::postgres::constants::FROM_NAME,
+                    ROUTE_NAME,
+                    crate::server::postgres::constants::WHERE_NAME,
+                    {
+                        let mut increment: u64 = 0;
+                        let mut additional_parameters = std::string::String::default();
+                        if let Some(value) = &self.query.name {
+                            match crate::server::postgres::bind_query::BindQuery::try_increment(
+                                value,
+                                &mut increment,
+                            ) {
+                                Ok(_) => {
+                                    let handle = format!("name = ${increment}");
+                                    match additional_parameters.is_empty() {
+                                        true => {
+                                            additional_parameters.push_str(&handle);
+                                        }
+                                        false => {
+                                            additional_parameters.push_str(&format!(" AND {handle}"));
+                                        }
+                                    }
+                                }
+                                Err(e) => {
+                                    return TryDeleteResponseVariants::BindQuery {
+                                        checked_add: e.into_serialize_deserialize_version(),
+                                        code_occurence: crate::code_occurence_tufa_common!(),
+                                    };
                                 }
                             }
                         }
-                        Err(e) => {
-                            return TryDeleteResponseVariants::BindQuery {
-                                checked_add: e.into_serialize_deserialize_version(),
-                                code_occurence: crate::code_occurence_tufa_common!(),
-                            };
-                        }
-                    }
-                }
-                if let Some(value) = &self.query.color {
-                    match crate::server::postgres::bind_query::BindQuery::try_increment(
-                        value,
-                        &mut increment,
-                    ) {
-                        Ok(_) => {
-                            let handle = format!("color = ${increment}");
-                            match additional_parameters.is_empty() {
-                                true => {
-                                    additional_parameters.push_str(&handle);
+                        if let Some(value) = &self.query.color {
+                            match crate::server::postgres::bind_query::BindQuery::try_increment(
+                                value,
+                                &mut increment,
+                            ) {
+                                Ok(_) => {
+                                    let handle = format!("color = ${increment}");
+                                    match additional_parameters.is_empty() {
+                                        true => {
+                                            additional_parameters.push_str(&handle);
+                                        }
+                                        false => {
+                                            additional_parameters.push_str(&format!(" AND {handle}"));
+                                        }
+                                    }
                                 }
-                                false => {
-                                    additional_parameters.push_str(&format!(" AND {handle}"));
+                                Err(e) => {
+                                    return TryDeleteResponseVariants::BindQuery {
+                                        checked_add: e.into_serialize_deserialize_version(),
+                                        code_occurence: crate::code_occurence_tufa_common!(),
+                                    };
                                 }
                             }
                         }
-                        Err(e) => {
-                            return TryDeleteResponseVariants::BindQuery {
-                                checked_add: e.into_serialize_deserialize_version(),
-                                code_occurence: crate::code_occurence_tufa_common!(),
-                            };
-                        }
+                        additional_parameters
+                    }
+                );
+                let binded_query = {
+                    let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
+                    if let Some(value) = self.query.name {
+                        query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                            value, query,
+                        );
+                    }
+                    if let Some(value) = self.query.color {
+                        query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                            value, query,
+                        );
+                    }
+                    query
+                };
+                let mut pool_connection = match app_info_state.get_postgres_pool().acquire().await {
+                    Ok(value) => value,
+                    Err(e) => {
+                        let error = TryDelete::from(e);
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return TryDeleteResponseVariants::from(error);
+                    }
+                };
+                let pg_connection = match sqlx::Acquire::acquire(&mut pool_connection).await {
+                    Ok(value) => value,
+                    Err(e) => {
+                        let error = TryDelete::from(e);
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return TryDeleteResponseVariants::from(error);
+                    }
+                };
+                match binded_query.execute(pg_connection.as_mut()).await {
+                    Ok(_) => TryDeleteResponseVariants::Desirable(()),
+                    Err(e) => {
+                        let error = TryDelete::from(e);
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return TryDeleteResponseVariants::from(error);
                     }
                 }
-                additional_parameters
-            }
-        );
-        let binded_query = {
-            let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
-            if let Some(value) = self.query.name {
-                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
-                    value, query,
-                );
-            }
-            if let Some(value) = self.query.color {
-                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
-                    value, query,
-                );
-            }
-            query
-        };
-        let mut pool_connection = match app_info_state.get_postgres_pool().acquire().await {
-            Ok(value) => value,
-            Err(e) => {
-                let error = TryDelete::from(e);
-                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                    &error,
-                    app_info_state.as_ref(),
-                );
-                return TryDeleteResponseVariants::from(error);
-            }
-        };
-        let pg_connection = match sqlx::Acquire::acquire(&mut pool_connection).await {
-            Ok(value) => value,
-            Err(e) => {
-                let error = TryDelete::from(e);
-                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                    &error,
-                    app_info_state.as_ref(),
-                );
-                return TryDeleteResponseVariants::from(error);
-            }
-        };
-        match binded_query.execute(pg_connection.as_mut()).await {
-            Ok(_) => TryDeleteResponseVariants::Desirable(()),
-            Err(e) => {
-                let error = TryDelete::from(e);
-                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                    &error,
-                    app_info_state.as_ref(),
-                );
-                return TryDeleteResponseVariants::from(error);
             }
         }
     }
