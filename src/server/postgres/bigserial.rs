@@ -158,3 +158,13 @@ impl crate::common::serde_urlencoded::SerdeUrlencodedParameter for Bigserial {
         self.to_string()
     }
 }
+
+impl crate::common::serde_urlencoded::SerdeUrlencodedParameter for Vec<Bigserial> {
+    fn serde_urlencoded_parameter(self) -> std::string::String {
+        let mut value = std::string::String::from("");
+        for element in self {
+            value.push_str(&element.to_string());
+        }
+        value
+    }
+}
