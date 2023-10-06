@@ -1993,7 +1993,6 @@ impl DeleteParameters {
     repositories_types :: tufa_server :: routes :: api :: cats ::
     DynArcGetConfigGetPostgresPoolSendSync,
     ) -> TryDeleteResponseVariants {
-        println!("{:?}", &self.query.ids);
         if let (None, None, None) = (&self.query.ids, &self.query.name, &self.query.color) {
             return TryDeleteResponseVariants::NoQueryParameters {
                 no_query_parameters: std::string::String::from("no query parameters"),
@@ -2164,7 +2163,7 @@ impl DeleteParameters {
                                     &error,
                                     app_info_state.as_ref(),
                                 );
-                                return TryDeleteResponseVariants::from(error); //todo - few variants or return ResponseVariants::from - with return ; and not
+                                TryDeleteResponseVariants::from(error) //todo - few variants or return ResponseVariants::from - with return ; and not
                             }
                         }
                     },
@@ -2175,7 +2174,7 @@ impl DeleteParameters {
                                 &error,
                                 app_info_state.as_ref(),
                             );
-                            return TryDeleteResponseVariants::from(error);
+                            TryDeleteResponseVariants::from(error)
                         }
                         Err(rollback_error) => {
                             //todo  BIG QUESTION - WHAT TO DO IF ROLLBACK FAILED? INFINITE LOOP TRYING TO ROLLBACK?
@@ -2188,7 +2187,7 @@ impl DeleteParameters {
                                 &error,
                                 app_info_state.as_ref(),
                             );
-                            return TryDeleteResponseVariants::from(error);
+                            TryDeleteResponseVariants::from(error)
                         }
                     }
                 }
@@ -2298,7 +2297,7 @@ impl DeleteParameters {
                             &error,
                             app_info_state.as_ref(),
                         );
-                        return TryDeleteResponseVariants::from(error);
+                        TryDeleteResponseVariants::from(error)
                     }
                 }
             }
