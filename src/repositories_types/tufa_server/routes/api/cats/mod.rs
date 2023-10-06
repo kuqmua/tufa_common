@@ -1914,61 +1914,102 @@ pub enum TryUpdate {
 //////
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct DeleteQuery {
-    #[serde(deserialize_with = "deserialize_option_vec_bigserial")]
-    pub ids: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
+    // #[serde(deserialize_with = "deserialize_option_vec_bigserial")]
+    pub id: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
     pub name: Option<String>,
     pub color: Option<String>,
 }
-fn deserialize_option_vec_bigserial<'de, D>(
-    deserializer: D,
-) -> Result<Option<Vec<crate::server::postgres::bigserial::Bigserial>>, D::Error>
-where
-    D: serde::de::Deserializer<'de>,
-{
-    use serde::Deserialize;
-    match Option::<std::string::String>::deserialize(deserializer)? {
-        Some(string_handle) => {
-            let splitted = string_handle.split(',').collect::<Vec<&str>>();
-            let mut bigserial_vec = Vec::with_capacity(splitted.len());
-            for splitted_element in splitted {
-                match crate::server::postgres::bigserial::Bigserial::try_from(splitted_element) {
-                    Ok(bigserial) => {
-                        bigserial_vec.push(bigserial);
-                    }
-                    Err(e) => match e {
-                        crate::server::postgres::bigserial::BigserialTryFromStrErrorNamed::ParseIntError { 
-                            parse_int_error, 
-                            str_value, 
-                            code_occurence } => {
-                                return Err(serde::de::Error::custom(&format!(
-                                    "parse_int_error: {parse_int_error}, str_value: {str_value}, code_occurence: {code_occurence}"
-                                )));
-                            },
-                        crate::server::postgres::bigserial::BigserialTryFromStrErrorNamed::NotPositive { not_positive, code_occurence } => {
-                            return Err(serde::de::Error::custom(&format!(
-                                "not_positive: {not_positive}, code_occurence: {code_occurence}"
-                            )));
-                        },
-                    },
-                }
-            }
-            match bigserial_vec.is_empty() {
-                true => Err(serde::de::Error::custom("ids is empty")),
-                false => Ok(Some(bigserial_vec)),
-            }
-        }
-        None => Ok(None),
+impl std::convert::TryFrom<DeleteQueryForUrlEncoding> for DeleteQuery {
+    type Error = String;
+    fn try_from(value: DeleteQueryForUrlEncoding) -> Result<Self, Self::Error> {
+        // let splitted = string_handle.split(',').collect::<Vec<&str>>();
+        // let mut bigserial_vec = Vec::with_capacity(splitted.len());
+        // for splitted_element in splitted {
+        //     match crate::server::postgres::bigserial::Bigserial::try_from(splitted_element) {
+        //         Ok(bigserial) => {
+        //             bigserial_vec.push(bigserial);
+        //         }
+        //         Err(e) => match e {
+        //             crate::server::postgres::bigserial::BigserialTryFromStrErrorNamed::ParseIntError {
+        //                 parse_int_error,
+        //                 str_value,
+        //                 code_occurence } => {
+        //                     return Err(serde::de::Error::custom(&format!(
+        //                         "parse_int_error: {parse_int_error}, str_value: {str_value}, code_occurence: {code_occurence}"
+        //                     )));
+        //                 },
+        //             crate::server::postgres::bigserial::BigserialTryFromStrErrorNamed::NotPositive { not_positive, code_occurence } => {
+        //                 return Err(serde::de::Error::custom(&format!(
+        //                     "not_positive: {not_positive}, code_occurence: {code_occurence}"
+        //                 )));
+        //             },
+        //         },
+        //     }
+        // }
+        // match bigserial_vec.is_empty() {
+        //     true => Err(serde::de::Error::custom("id is empty")),
+        //     false => Ok(Some(bigserial_vec)),
+        // }
+        todo!()
     }
 }
-#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
-struct DeleteQueryForUrlEncoding {
-    pub ids: Option<std::string::String>,
-    pub name: Option<std::string::String>,
-    pub color: Option<std::string::String>,
-}
+// fn deserialize_option_vec_bigserial<'de, D>(
+//     deserializer: D,
+// ) -> Result<Option<Vec<crate::server::postgres::bigserial::Bigserial>>, D::Error>
+// where
+//     D: serde::de::Deserializer<'de>,
+// {
+//     use serde::Deserialize;
+//     println!("123");
+//     match Option::<std::string::String>::deserialize(deserializer) {
+//         Ok(optional) => match optional {
+//             Some(string_handle) => {
+//                 println!("1");
+//                 let splitted = string_handle.split(',').collect::<Vec<&str>>();
+//                 let mut bigserial_vec = Vec::with_capacity(splitted.len());
+//                 for splitted_element in splitted {
+//                     match crate::server::postgres::bigserial::Bigserial::try_from(splitted_element) {
+//                         Ok(bigserial) => {
+//                             bigserial_vec.push(bigserial);
+//                         }
+//                         Err(e) => match e {
+//                             crate::server::postgres::bigserial::BigserialTryFromStrErrorNamed::ParseIntError {
+//                                 parse_int_error,
+//                                 str_value,
+//                                 code_occurence } => {
+//                                     return Err(serde::de::Error::custom(&format!(
+//                                         "parse_int_error: {parse_int_error}, str_value: {str_value}, code_occurence: {code_occurence}"
+//                                     )));
+//                                 },
+//                             crate::server::postgres::bigserial::BigserialTryFromStrErrorNamed::NotPositive { not_positive, code_occurence } => {
+//                                 return Err(serde::de::Error::custom(&format!(
+//                                     "not_positive: {not_positive}, code_occurence: {code_occurence}"
+//                                 )));
+//                             },
+//                         },
+//                     }
+//                 }
+//                 match bigserial_vec.is_empty() {
+//                     true => Err(serde::de::Error::custom("id is empty")),
+//                     false => Ok(Some(bigserial_vec)),
+//                 }
+//             }
+//             None => {
+//                 println!("2");
+//                 Ok(None)
+//             },
+//         },
+//         Err(e) => {
+//             println!("{e}");
+//             todo!()
+//         },
+//     }
+
+// }
+
 impl DeleteQuery {
     fn into_url_encoding_version(self) -> DeleteQueryForUrlEncoding {
-        let ids = self.ids.map(|value| {
+        let id = self.id.map(|value| {
             crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
                 value,
             )
@@ -1983,7 +2024,33 @@ impl DeleteQuery {
                 value,
             )
         });
-        DeleteQueryForUrlEncoding { ids, name, color }
+        DeleteQueryForUrlEncoding { id, name, color }
+    }
+}
+#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
+struct DeleteQueryForUrlEncoding {
+    pub id: Option<std::string::String>,
+    pub name: Option<std::string::String>,
+    pub color: Option<std::string::String>,
+}
+impl std::convert::From<DeleteQuery> for DeleteQueryForUrlEncoding {
+    fn from(value: DeleteQuery) -> Self {
+        let id = value.id.map(|value| {
+            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                value,
+            )
+        });
+        let name = value.name.map(|value| {
+            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                value,
+            )
+        });
+        let color = value.color.map(|value| {
+            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                value,
+            )
+        });
+        Self { id, name, color }
     }
 }
 impl DeleteParameters {
@@ -1993,21 +2060,19 @@ impl DeleteParameters {
     repositories_types :: tufa_server :: routes :: api :: cats ::
     DynArcGetConfigGetPostgresPoolSendSync,
     ) -> TryDeleteResponseVariants {
-        if let (None, None, None) = (&self.query.ids, &self.query.name, &self.query.color) {
+        if let (None, None, None) = (&self.query.id, &self.query.name, &self.query.color) {
             return TryDeleteResponseVariants::NoQueryParameters {
                 no_query_parameters: std::string::String::from("no query parameters"),
                 code_occurence: crate::code_occurence_tufa_common!(),
             };
         }
-        match (self.query.ids, &self.query.name, &self.query.color) {
-            (None, None, None) => {
-                TryDeleteResponseVariants::NoQueryParameters {
-                    no_query_parameters: std::string::String::from("no query parameters"),
-                    code_occurence: crate::code_occurence_tufa_common!(),
-                }
+        match (self.query.id, &self.query.name, &self.query.color) {
+            (None, None, None) => TryDeleteResponseVariants::NoQueryParameters {
+                no_query_parameters: std::string::String::from("no query parameters"),
+                code_occurence: crate::code_occurence_tufa_common!(),
             },
-            (Some(ids), None, None) => {
-                println!("{ids:#?}");
+            (Some(id), None, None) => {
+                println!("{id:#?}");
                 let query_string = format!(
                     "{} {} {} {} id {} ({}) returning id",
                     crate::server::postgres::constants::DELETE_NAME,
@@ -2018,7 +2083,7 @@ impl DeleteParameters {
                     {
                         let mut increment: u64 = 0;
                         let mut additional_parameters = std::string::String::default();
-                        for _ in &ids {
+                        for _ in &id {
                             increment += 1;
                             additional_parameters.push_str(&format!("${increment},"));
                         }
@@ -2026,13 +2091,13 @@ impl DeleteParameters {
                         additional_parameters
                     }
                 );
-                let expected_updated_primary_keys = ids
+                let expected_updated_primary_keys = id
                     .iter()
                     .map(|element| element.to_inner().clone()) //todo - maybe its not a good idea to remove .clone here coz in macro dont know what type
                     .collect::<Vec<i64>>();
                 let binded_query = {
                     let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
-                    for element in ids {
+                    for element in id {
                         query = query.bind(element.into_inner());
                     }
                     query
@@ -2095,11 +2160,12 @@ impl DeleteParameters {
                                         }
                                         Err(rollback_error) => {
                                             //todo  BIG QUESTION - WHAT TO DO IF ROLLBACK FAILED? INFINITE LOOP TRYING TO ROLLBACK?
-                                            let error = TryDelete::PrimaryKeyFromRowAndFailedRollback {
-                                                primary_key_from_row: e,
-                                                rollback_error,
-                                                code_occurence: crate::code_occurence_tufa_common!(),
-                                            };
+                                            let error =
+                                                TryDelete::PrimaryKeyFromRowAndFailedRollback {
+                                                    primary_key_from_row: e,
+                                                    rollback_error,
+                                                    code_occurence: crate::code_occurence_tufa_common!(),
+                                                };
                                             crate::common::error_logs_logic::error_log::ErrorLog::error_log(
                                             &error,
                                                 app_info_state.as_ref(),
@@ -2116,8 +2182,11 @@ impl DeleteParameters {
                                 let mut non_existing_primary_keys =
                                     Vec::with_capacity(expected_updated_primary_keys.len());
                                 for expected_updated_primary_key in expected_updated_primary_keys {
-                                    if let false = typed_updated_rows.contains(&expected_updated_primary_key) {
-                                        non_existing_primary_keys.push(expected_updated_primary_key);
+                                    if let false =
+                                        typed_updated_rows.contains(&expected_updated_primary_key)
+                                    {
+                                        non_existing_primary_keys
+                                            .push(expected_updated_primary_key);
                                     }
                                 }
                                 non_existing_primary_keys
@@ -2136,11 +2205,12 @@ impl DeleteParameters {
                                         return TryDeleteResponseVariants::from(error);
                                     }
                                     Err(e) => {
-                                        let error = TryDelete::NonExistingPrimaryKeysAndFailedRollback {
-                                            non_existing_primary_keys,
-                                            rollback_error: e,
-                                            code_occurence: crate::code_occurence_tufa_common!(), //todo how to show log from proc_macro
-                                        };
+                                        let error =
+                                            TryDelete::NonExistingPrimaryKeysAndFailedRollback {
+                                                non_existing_primary_keys,
+                                                rollback_error: e,
+                                                code_occurence: crate::code_occurence_tufa_common!(), //todo how to show log from proc_macro
+                                            };
                                         crate::common::error_logs_logic::error_log::ErrorLog::error_log(
                                             &error,
                                             app_info_state.as_ref(),
@@ -2166,7 +2236,7 @@ impl DeleteParameters {
                                 TryDeleteResponseVariants::from(error) //todo - few variants or return ResponseVariants::from - with return ; and not
                             }
                         }
-                    },
+                    }
                     Err(e) => match postgres_transaction.rollback().await {
                         Ok(_) => {
                             let error = TryDelete::from(e);
@@ -2189,7 +2259,7 @@ impl DeleteParameters {
                             );
                             TryDeleteResponseVariants::from(error)
                         }
-                    }
+                    },
                 }
             }
             _ => {
@@ -2214,7 +2284,8 @@ impl DeleteParameters {
                                             additional_parameters.push_str(&handle);
                                         }
                                         false => {
-                                            additional_parameters.push_str(&format!(" AND {handle}"));
+                                            additional_parameters
+                                                .push_str(&format!(" AND {handle}"));
                                         }
                                     }
                                 }
@@ -2238,7 +2309,8 @@ impl DeleteParameters {
                                             additional_parameters.push_str(&handle);
                                         }
                                         false => {
-                                            additional_parameters.push_str(&format!(" AND {handle}"));
+                                            additional_parameters
+                                                .push_str(&format!(" AND {handle}"));
                                         }
                                     }
                                 }
@@ -2303,4 +2375,30 @@ impl DeleteParameters {
             }
         }
     }
+}
+pub async fn delete<'a>(
+    query_extraction_result: Result<
+        axum::extract::Query<DeleteQuery>,
+        axum::extract::rejection::QueryRejection,
+    >,
+    app_info_state : axum ::
+extract :: State < crate :: repositories_types :: tufa_server :: routes :: api
+:: cats :: DynArcGetConfigGetPostgresPoolSendSync >,
+) -> impl axum::response::IntoResponse {
+    println!("{query_extraction_result:#?}");
+    let parameters = DeleteParameters {
+        query:
+            match crate::server::routes::helpers::query_extractor_error::QueryValueResultExtractor::<
+                DeleteQuery,
+                TryDeleteResponseVariants,
+            >::try_extract_value(query_extraction_result, &app_info_state)
+            {
+                Ok(value) => value,
+                Err(err) => {
+                    return err;
+                }
+            },
+    };
+    println!("{:#?}", parameters);
+    parameters.prepare_and_execute_query(&app_info_state).await
 }
