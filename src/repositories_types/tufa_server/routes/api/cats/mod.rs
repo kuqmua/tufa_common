@@ -982,6 +982,43 @@ pub enum TryDelete {
         no_query_parameters: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
+    #[tvfrr_500_internal_server_error]
+    CommitFailed {
+        #[eo_display]
+        commit_error: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_400_bad_request]
+    NonExistingPrimaryKeys {
+        #[eo_vec_display]
+        non_existing_primary_keys: Vec<i64>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_500_internal_server_error]
+    PrimaryKeyFromRowAndFailedRollback {
+        #[eo_display]
+        primary_key_from_row: sqlx::Error,
+        #[eo_display]
+        rollback_error: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_400_bad_request]
+    //todo what status code should return if non_existing_primary_keys = 400, but transaction rollback failed = 500
+    NonExistingPrimaryKeysAndFailedRollback {
+        #[eo_vec_display]
+        non_existing_primary_keys: Vec<i64>,
+        #[eo_display]
+        rollback_error: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_500_internal_server_error]
+    DeleteAndRollbackFailed {
+        #[eo_display]
+        delete_error: sqlx::Error,
+        #[eo_display]
+        rollback_error: sqlx::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
     //#[non_exhaustive] case
     #[tvfrr_500_internal_server_error]
     UnexpectedCase {
@@ -1972,7 +2009,6 @@ impl DeleteParameters {
             },
             (Some(ids), None, None) => {
                 println!("{ids:#?}");
-                // delete from cats where id in (32, 33, 37) returning id
                 let query_string = format!(
                     "{} {} {} {} id {} ({}) returning id",
                     crate::server::postgres::constants::DELETE_NAME,
@@ -1991,6 +2027,10 @@ impl DeleteParameters {
                         additional_parameters
                     }
                 );
+                let expected_updated_primary_keys = ids
+                    .iter()
+                    .map(|element| element.to_inner().clone()) //todo - maybe its not a good idea to remove .clone here coz in macro dont know what type
+                    .collect::<Vec<i64>>();
                 let binded_query = {
                     let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
                     for element in ids {
@@ -2036,9 +2076,8 @@ impl DeleteParameters {
                         return TryDeleteResponseVariants::from(error);
                     }
                 };
-                match binded_query.fetch_all(pg_connection.as_mut()).await {
+                match binded_query.fetch_all(postgres_transaction.as_mut()).await {
                     Ok(updated_rows) => {
-                        //
                         let typed_updated_rows = {
                             let mut typed_updated_rows = Vec::with_capacity(updated_rows.len());
                             for updated_row in updated_rows {
@@ -2060,7 +2099,7 @@ impl DeleteParameters {
                                             let error = TryDelete::PrimaryKeyFromRowAndFailedRollback {
                                                 primary_key_from_row: e,
                                                 rollback_error,
-                                                code_occurence_lower_case: crate_code_occurence_tufa_common_macro_call,
+                                                code_occurence: crate::code_occurence_tufa_common!(),
                                             };
                                             crate::common::error_logs_logic::error_log::ErrorLog::error_log(
                                             &error,
@@ -2073,19 +2112,86 @@ impl DeleteParameters {
                             }
                             typed_updated_rows
                         };
-                        //
-                        TryDeleteResponseVariants::Desirable(())
+                        {
+                            let non_existing_primary_keys = {
+                                let mut non_existing_primary_keys =
+                                    Vec::with_capacity(expected_updated_primary_keys.len());
+                                for expected_updated_primary_key in expected_updated_primary_keys {
+                                    if let false = typed_updated_rows.contains(&expected_updated_primary_key) {
+                                        non_existing_primary_keys.push(expected_updated_primary_key);
+                                    }
+                                }
+                                non_existing_primary_keys
+                            };
+                            if let false = non_existing_primary_keys.is_empty() {
+                                match postgres_transaction.rollback().await {
+                                    Ok(_) => {
+                                        let error = TryDelete::NonExistingPrimaryKeys {
+                                            non_existing_primary_keys,
+                                            code_occurence: crate::code_occurence_tufa_common!(), //todo how to show log from proc_macro
+                                        };
+                                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                                            &error,
+                                            app_info_state.as_ref(),
+                                        );
+                                        return TryDeleteResponseVariants::from(error);
+                                    }
+                                    Err(e) => {
+                                        let error = TryDelete::NonExistingPrimaryKeysAndFailedRollback {
+                                            non_existing_primary_keys,
+                                            rollback_error: e,
+                                            code_occurence: crate::code_occurence_tufa_common!(), //todo how to show log from proc_macro
+                                        };
+                                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                                            &error,
+                                            app_info_state.as_ref(),
+                                        );
+                                        return TryDeleteResponseVariants::from(error);
+                                    }
+                                }
+                            }
+                            //
+                        }
+                        match postgres_transaction.commit().await {
+                            Ok(_) => TryDeleteResponseVariants::Desirable(()),
+                            Err(e) => {
+                                //todo  BIG QUESTION - WHAT TO DO IF COMMIT FAILED? INFINITE LOOP TRYING TO COMMIT?
+                                let error = TryDelete::CommitFailed {
+                                    commit_error: e,
+                                    code_occurence: crate::code_occurence_tufa_common!(),
+                                };
+                                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                                    &error,
+                                    app_info_state.as_ref(),
+                                );
+                                return TryDeleteResponseVariants::from(error); //todo - few variants or return ResponseVariants::from - with return ; and not
+                            }
+                        }
                     },
-                    Err(e) => {
-                        let error = TryDelete::from(e);
-                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                            &error,
-                            app_info_state.as_ref(),
-                        );
-                        return TryDeleteResponseVariants::from(error);
+                    Err(e) => match postgres_transaction.rollback().await {
+                        Ok(_) => {
+                            let error = TryDelete::from(e);
+                            crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                                &error,
+                                app_info_state.as_ref(),
+                            );
+                            return TryDeleteResponseVariants::from(error);
+                        }
+                        Err(rollback_error) => {
+                            //todo  BIG QUESTION - WHAT TO DO IF ROLLBACK FAILED? INFINITE LOOP TRYING TO ROLLBACK?
+                            let error = TryDelete::DeleteAndRollbackFailed {
+                                delete_error: e,
+                                rollback_error,
+                                code_occurence: crate::code_occurence_tufa_common!(),
+                            };
+                            crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                                &error,
+                                app_info_state.as_ref(),
+                            );
+                            return TryDeleteResponseVariants::from(error);
+                        }
                     }
                 }
-                todo!();
             }
             _ => {
                 let query_string = format!(
