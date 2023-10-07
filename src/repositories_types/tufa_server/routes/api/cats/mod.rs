@@ -1920,7 +1920,7 @@ pub enum TryUpdate {
 //////
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct DeleteQuery {
-    pub id: Option<Vec<crate::server::postgres::bigserial::Bigserial>>,
+    pub id: Option<Vec<crate::server::postgres::bigserial::Bigserial>>, //there is an alternative BigserialIds but its not worth to migrate to it coz planing to migrate to uuid v7
     pub name: Option<String>,
     pub color: Option<String>,
 }
@@ -2036,9 +2036,21 @@ impl DeleteParameters {
                     {
                         let mut increment: u64 = 0;
                         let mut additional_parameters = std::string::String::default();
-                        for _ in &id {
-                            increment += 1;
-                            additional_parameters.push_str(&format!("${increment},"));
+                        for element in &id {
+                            match crate::server::postgres::bind_query::BindQuery::try_increment(
+                                element,
+                                &mut increment,
+                            ) {
+                                Ok(_) => {
+                                    additional_parameters.push_str(&format!("${increment},"));
+                                }
+                                Err(e) => {
+                                    return TryDeleteResponseVariants::BindQuery {
+                                        checked_add: e.into_serialize_deserialize_version(),
+                                        code_occurence: crate::code_occurence_tufa_common!(),
+                                    };
+                                }
+                            }
                         }
                         additional_parameters.pop();
                         additional_parameters
