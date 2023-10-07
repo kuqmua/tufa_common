@@ -2019,13 +2019,39 @@ impl DeleteParameters {
                 code_occurence: crate::code_occurence_tufa_common!(),
             };
         }
-        match (self.query.id, &self.query.name, &self.query.color) {
-            (None, None, None) => TryDeleteResponseVariants::NoQueryParameters {
-                no_query_parameters: std::string::String::from("no query parameters"),
-                code_occurence: crate::code_occurence_tufa_common!(),
-            },
+        // let id_bindings = match &self.query.id {
+        //     Some(id_vec) => format!(" {} ({})", crate::server::postgres::constants::IN_NAME, {
+        //         let mut increment: u64 = 0;
+        //         let mut additional_parameters = std::string::String::default();
+        //         for element in id_vec {
+        //             match crate::server::postgres::bind_query::BindQuery::try_increment(
+        //                 element,
+        //                 &mut increment,
+        //             ) {
+        //                 Ok(_) => {
+        //                     additional_parameters.push_str(&format!("${increment},"));
+        //                 }
+        //                 Err(e) => {
+        //                     return TryDeleteResponseVariants::BindQuery {
+        //                         checked_add: e.into_serialize_deserialize_version(),
+        //                         code_occurence: crate::code_occurence_tufa_common!(),
+        //                     };
+        //                 }
+        //             }
+        //         }
+        //         additional_parameters.pop();
+        //         additional_parameters
+        //     }),
+        //     None => std::string::String::default(),
+        // };
+        // delete from cats where name = 'namef' and color = 'colorf' and id in(1, 2);
+        match (&self.query.id, &self.query.name, &self.query.color) {
             (Some(id), None, None) => {
                 println!("{id:#?}");
+                let expected_updated_primary_keys = id
+                    .iter()
+                    .map(|element| element.to_inner().clone()) //todo - maybe its not a good idea to remove .clone here coz in macro dont know what type
+                    .collect::<Vec<i64>>();
                 let query_string = format!(
                     "{} {} {} {} id {} ({}) returning id",
                     crate::server::postgres::constants::DELETE_NAME,
@@ -2036,7 +2062,7 @@ impl DeleteParameters {
                     {
                         let mut increment: u64 = 0;
                         let mut additional_parameters = std::string::String::default();
-                        for element in &id {
+                        for element in id {
                             match crate::server::postgres::bind_query::BindQuery::try_increment(
                                 element,
                                 &mut increment,
@@ -2056,14 +2082,11 @@ impl DeleteParameters {
                         additional_parameters
                     }
                 );
-                let expected_updated_primary_keys = id
-                    .iter()
-                    .map(|element| element.to_inner().clone()) //todo - maybe its not a good idea to remove .clone here coz in macro dont know what type
-                    .collect::<Vec<i64>>();
+                println!("{query_string}");
                 let binded_query = {
                     let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
                     for element in id {
-                        query = query.bind(element.into_inner());
+                        query = query.bind(element.clone().into_inner());
                     }
                     query
                 };
@@ -2235,61 +2258,106 @@ impl DeleteParameters {
                     ROUTE_NAME,
                     crate::server::postgres::constants::WHERE_NAME,
                     {
-                        let mut increment: u64 = 0;
-                        let mut additional_parameters = std::string::String::default();
-                        if let Some(value) = &self.query.name {
-                            match crate::server::postgres::bind_query::BindQuery::try_increment(
-                                value,
-                                &mut increment,
-                            ) {
-                                Ok(_) => {
-                                    let handle = format!("name = ${increment}");
-                                    match additional_parameters.is_empty() {
-                                        true => {
-                                            additional_parameters.push_str(&handle);
-                                        }
-                                        false => {
-                                            additional_parameters
-                                                .push_str(&format!(" AND {handle}"));
-                                        }
-                                    }
-                                }
-                                Err(e) => {
-                                    return TryDeleteResponseVariants::BindQuery {
-                                        checked_add: e.into_serialize_deserialize_version(),
-                                        code_occurence: crate::code_occurence_tufa_common!(),
-                                    };
-                                }
-                            }
-                        }
-                        if let Some(value) = &self.query.color {
-                            match crate::server::postgres::bind_query::BindQuery::try_increment(
-                                value,
-                                &mut increment,
-                            ) {
-                                Ok(_) => {
-                                    let handle = format!("color = ${increment}");
-                                    match additional_parameters.is_empty() {
-                                        true => {
-                                            additional_parameters.push_str(&handle);
-                                        }
-                                        false => {
-                                            additional_parameters
-                                                .push_str(&format!(" AND {handle}"));
+                        format!(
+                            "{}",
+                            //
+                            {
+                                let mut increment: u64 = 0;
+                                let mut additional_parameters = std::string::String::default();
+                                if let Some(value) = &self.query.name {
+                                    match crate::server::postgres::bind_query::BindQuery::try_increment(
+                                    value,
+                                    &mut increment,
+                                ) {
+                                    Ok(_) => {
+                                        let handle = format!("name = ${increment}");
+                                        match additional_parameters.is_empty() {
+                                            true => {
+                                                additional_parameters.push_str(&handle);
+                                            }
+                                            false => {
+                                                additional_parameters.push_str(&format!(
+                                                    " {} {handle}",
+                                                    crate::server::postgres::constants::AND_NAME,
+                                                ));
+                                            }
                                         }
                                     }
+                                    Err(e) => {
+                                        return TryDeleteResponseVariants::BindQuery {
+                                            checked_add: e.into_serialize_deserialize_version(),
+                                            code_occurence: crate::code_occurence_tufa_common!(),
+                                        };
+                                    }
                                 }
-                                Err(e) => {
-                                    return TryDeleteResponseVariants::BindQuery {
-                                        checked_add: e.into_serialize_deserialize_version(),
-                                        code_occurence: crate::code_occurence_tufa_common!(),
-                                    };
                                 }
-                            }
-                        }
-                        additional_parameters
+                                if let Some(value) = &self.query.color {
+                                    match crate::server::postgres::bind_query::BindQuery::try_increment(
+                                    value,
+                                    &mut increment,
+                                ) {
+                                    Ok(_) => {
+                                        let handle = format!("color = ${increment}");
+                                        match additional_parameters.is_empty() {
+                                            true => {
+                                                additional_parameters.push_str(&handle);
+                                            }
+                                            false => {
+                                                additional_parameters.push_str(&format!(
+                                                    " {} {handle}",
+                                                    crate::server::postgres::constants::AND_NAME,
+                                                ));
+                                            }
+                                        }
+                                    }
+                                    Err(e) => {
+                                        return TryDeleteResponseVariants::BindQuery {
+                                            checked_add: e.into_serialize_deserialize_version(),
+                                            code_occurence: crate::code_occurence_tufa_common!(),
+                                        };
+                                    }
+                                }
+                                }
+                                if let Some(id_vec) = &self.query.id {
+                                    if let false = additional_parameters.is_empty() {
+                                        additional_parameters.push_str(&format!(
+                                            " {}",
+                                            crate::server::postgres::constants::AND_NAME,
+                                        ));
+                                    }
+                                    additional_parameters.push_str(&format!(
+                                        " id {} ({})",
+                                        crate::server::postgres::constants::IN_NAME,
+                                        {
+                                            let mut additional_parameters = std::string::String::default();
+                                            for element in id_vec {
+                                                match crate::server::postgres::bind_query::BindQuery::try_increment(
+                                                    element,
+                                                    &mut increment,
+                                                ) {
+                                                    Ok(_) => {
+                                                        additional_parameters.push_str(&format!("${increment},"));
+                                                    }
+                                                    Err(e) => {
+                                                        return TryDeleteResponseVariants::BindQuery {
+                                                            checked_add: e.into_serialize_deserialize_version(),
+                                                            code_occurence: crate::code_occurence_tufa_common!(),
+                                                        };
+                                                    }
+                                                }
+                                            }
+                                            additional_parameters.pop();
+                                            additional_parameters
+                                        }
+                                    ));
+                                }
+                                additional_parameters
+                            },
+                        )
                     }
                 );
+                //delete from cats where name = $1 AND color = $2
+                println!("{query_string}"); //delete from cats where id in ($1,$2) returning id
                 let binded_query = {
                     let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
                     if let Some(value) = self.query.name {
@@ -2301,6 +2369,14 @@ impl DeleteParameters {
                         query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
                             value, query,
                         );
+                    }
+                    if let Some(id_vec) = self.query.id {
+                        for element in id_vec {
+                            query =
+                                crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                                    element, query,
+                                );
+                        }
                     }
                     query
                 };
@@ -2379,17 +2455,4 @@ extract :: State < crate :: repositories_types :: tufa_server :: routes :: api
     };
     println!("{:#?}", parameters);
     parameters.prepare_and_execute_query(&app_info_state).await
-}
-#[derive(Debug, thiserror :: Error, error_occurence :: ErrorOccurence)]
-pub enum TryDeleteErrorNamed {
-    QueryEncode {
-        #[eo_display]
-        url_encoding: serde_urlencoded::ser::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    RequestError {
-        #[eo_error_occurence]
-        request_error: TryDeleteRequestError,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
 }
