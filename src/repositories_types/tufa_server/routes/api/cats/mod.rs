@@ -970,6 +970,12 @@ pub enum TryDelete {
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     //
+    #[tvfrr_400_bad_request]
+    DeleteQueryTryFromUrlEncoding {
+        #[eo_error_occurence]
+        checked_add: DeleteQueryTryFromUrlEncodingError,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
     #[tvfrr_500_internal_server_error]
     BindQuery {
         #[eo_error_occurence]
@@ -1974,29 +1980,8 @@ impl std::convert::TryFrom<DeleteQueryForUrlEncoding> for DeleteQuery {
         Ok(DeleteQuery { id, name, color })
     }
 }
-
-impl DeleteQuery {
-    fn into_url_encoding_version(self) -> DeleteQueryForUrlEncoding {
-        let id = self.id.map(|value| {
-            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                value,
-            )
-        });
-        let name = self.name.map(|value| {
-            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                value,
-            )
-        });
-        let color = self.color.map(|value| {
-            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                value,
-            )
-        });
-        DeleteQueryForUrlEncoding { id, name, color }
-    }
-}
 #[derive(Debug, serde :: Serialize, serde :: Deserialize)]
-struct DeleteQueryForUrlEncoding {
+pub struct DeleteQueryForUrlEncoding {
     pub id: Option<std::string::String>,
     pub name: Option<std::string::String>,
     pub color: Option<std::string::String>,
@@ -2346,7 +2331,7 @@ impl DeleteParameters {
 }
 pub async fn delete<'a>(
     query_extraction_result: Result<
-        axum::extract::Query<DeleteQuery>,
+        axum::extract::Query<DeleteQueryForUrlEncoding>,
         axum::extract::rejection::QueryRejection,
     >,
     app_info_state : axum ::
@@ -2357,11 +2342,24 @@ extract :: State < crate :: repositories_types :: tufa_server :: routes :: api
     let parameters = DeleteParameters {
         query:
             match crate::server::routes::helpers::query_extractor_error::QueryValueResultExtractor::<
-                DeleteQuery,
+                DeleteQueryForUrlEncoding,
                 TryDeleteResponseVariants,
             >::try_extract_value(query_extraction_result, &app_info_state)
             {
-                Ok(value) => value,
+                Ok(value) => match DeleteQuery::try_from(value) {
+                    Ok(value) => value,
+                    Err(e) => {
+                        let error = TryDelete::DeleteQueryTryFromUrlEncoding {
+                            checked_add: e,
+                            code_occurence: crate::code_occurence_tufa_common!(),
+                        };
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return TryDeleteResponseVariants::from(error);
+                    }
+                },
                 Err(err) => {
                     return err;
                 }
@@ -2388,7 +2386,7 @@ pub async fn try_delete<'a>(
     parameters: DeleteParameters,
 ) -> Result<(), TryDeleteErrorNamed> {
     let encoded_query =
-        match serde_urlencoded::to_string(parameters.query.into_url_encoding_version()) {
+        match serde_urlencoded::to_string(DeleteQueryForUrlEncoding::from(parameters.query)) {
             Ok(value) => value,
             Err(e) => {
                 return Err(TryDeleteErrorNamed::QueryEncode {
