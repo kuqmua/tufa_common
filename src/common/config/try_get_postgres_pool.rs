@@ -11,6 +11,8 @@ impl std::fmt::Display for TryGetPostgresPoolError {
     }
 }
 
+#[allow(async_fn_in_trait)] //todo wait for async trait stabilization
+
 pub trait TryGetPostgresPool {
     async fn try_get_postgres_pool(
         &self,
