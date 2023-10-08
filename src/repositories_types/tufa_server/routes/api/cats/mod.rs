@@ -1980,12 +1980,7 @@ impl std::convert::TryFrom<DeleteQueryForUrlEncoding> for DeleteQuery {
         Ok(DeleteQuery { id, name, color })
     }
 }
-#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
-pub struct DeleteQueryForUrlEncoding {
-    pub id: Option<std::string::String>,
-    pub name: Option<std::string::String>,
-    pub color: Option<std::string::String>,
-}
+
 impl std::convert::From<DeleteQuery> for DeleteQueryForUrlEncoding {
     fn from(value: DeleteQuery) -> Self {
         let id = value.id.map(|value| {
