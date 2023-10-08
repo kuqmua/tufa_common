@@ -1918,22 +1918,3 @@ pub enum TryUpdate {
     },
 }
 //////
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub struct DeleteQuery {
-    pub id: Option<Vec<crate::server::postgres::bigserial::Bigserial>>, //there is an alternative BigserialIds but its not worth to migrate to it coz planing to migrate to uuid v7
-    pub name: Option<String>,
-    pub color: Option<String>,
-}
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum DeleteQueryTryFromUrlEncodingErrorNamed {
-    IdIsEmpty {
-        #[eo_display_with_serialize_deserialize]
-        id_is_empty: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    BigserialTryFromStr {
-        #[eo_error_occurence]
-        bigserial_try_from_str: crate::server::postgres::bigserial::BigserialTryFromStrErrorNamed,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-}
