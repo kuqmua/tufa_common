@@ -2019,32 +2019,6 @@ impl DeleteParameters {
                 code_occurence: crate::code_occurence_tufa_common!(),
             };
         }
-        // let id_bindings = match &self.query.id {
-        //     Some(id_vec) => format!(" {} ({})", crate::server::postgres::constants::IN_NAME, {
-        //         let mut increment: u64 = 0;
-        //         let mut additional_parameters = std::string::String::default();
-        //         for element in id_vec {
-        //             match crate::server::postgres::bind_query::BindQuery::try_increment(
-        //                 element,
-        //                 &mut increment,
-        //             ) {
-        //                 Ok(_) => {
-        //                     additional_parameters.push_str(&format!("${increment},"));
-        //                 }
-        //                 Err(e) => {
-        //                     return TryDeleteResponseVariants::BindQuery {
-        //                         checked_add: e.into_serialize_deserialize_version(),
-        //                         code_occurence: crate::code_occurence_tufa_common!(),
-        //                     };
-        //                 }
-        //             }
-        //         }
-        //         additional_parameters.pop();
-        //         additional_parameters
-        //     }),
-        //     None => std::string::String::default(),
-        // };
-        // delete from cats where name = 'namef' and color = 'colorf' and id in(1, 2);
         match (&self.query.id, &self.query.name, &self.query.color) {
             (Some(id), None, None) => {
                 println!("{id:#?}");
@@ -2416,43 +2390,4 @@ impl DeleteParameters {
             }
         }
     }
-}
-pub async fn delete<'a>(
-    query_extraction_result: Result<
-        axum::extract::Query<DeleteQueryForUrlEncoding>,
-        axum::extract::rejection::QueryRejection,
-    >,
-    app_info_state : axum ::
-extract :: State < crate :: repositories_types :: tufa_server :: routes :: api
-:: cats :: DynArcGetConfigGetPostgresPoolSendSync >,
-) -> impl axum::response::IntoResponse {
-    println!("{query_extraction_result:#?}");
-    let parameters = DeleteParameters {
-        query:
-            match crate::server::routes::helpers::query_extractor_error::QueryValueResultExtractor::<
-                DeleteQueryForUrlEncoding,
-                TryDeleteResponseVariants,
-            >::try_extract_value(query_extraction_result, &app_info_state)
-            {
-                Ok(value) => match DeleteQuery::try_from(value) {
-                    Ok(value) => value,
-                    Err(e) => {
-                        let error = TryDelete::DeleteQueryTryFromUrlEncoding {
-                            checked_add: e,
-                            code_occurence: crate::code_occurence_tufa_common!(),
-                        };
-                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                            &error,
-                            app_info_state.as_ref(),
-                        );
-                        return TryDeleteResponseVariants::from(error);
-                    }
-                },
-                Err(err) => {
-                    return err;
-                }
-            },
-    };
-    println!("{:#?}", parameters);
-    parameters.prepare_and_execute_query(&app_info_state).await
 }
