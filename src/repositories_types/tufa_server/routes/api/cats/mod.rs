@@ -973,7 +973,7 @@ pub enum TryDelete {
     #[tvfrr_400_bad_request]
     DeleteQueryTryFromUrlEncoding {
         #[eo_error_occurence]
-        checked_add: DeleteQueryTryFromUrlEncodingError,
+        checked_add: DeleteQueryTryFromUrlEncodingErrorNamed,//todo renaming?
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_500_internal_server_error]
@@ -1925,7 +1925,7 @@ pub struct DeleteQuery {
     pub color: Option<String>,
 }
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum DeleteQueryTryFromUrlEncodingError {
+pub enum DeleteQueryTryFromUrlEncodingErrorNamed {
     IdIsEmpty {
         #[eo_display_with_serialize_deserialize]
         id_is_empty: std::string::String,
@@ -1938,7 +1938,7 @@ pub enum DeleteQueryTryFromUrlEncodingError {
     },
 }
 impl std::convert::TryFrom<DeleteQueryForUrlEncoding> for DeleteQuery {
-    type Error = DeleteQueryTryFromUrlEncodingError;
+    type Error = DeleteQueryTryFromUrlEncodingErrorNamed;
     fn try_from(value: DeleteQueryForUrlEncoding) -> Result<Self, Self::Error> {
         let id = {
             match value.id {
@@ -1954,7 +1954,7 @@ impl std::convert::TryFrom<DeleteQueryForUrlEncoding> for DeleteQuery {
                             }
                             Err(e) => {
                                 return Err(
-                                    DeleteQueryTryFromUrlEncodingError::BigserialTryFromStr {
+                                    DeleteQueryTryFromUrlEncodingErrorNamed::BigserialTryFromStr {
                                         bigserial_try_from_str: e,
                                         code_occurence: crate::code_occurence_tufa_common!(),
                                     },
@@ -1964,7 +1964,7 @@ impl std::convert::TryFrom<DeleteQueryForUrlEncoding> for DeleteQuery {
                     }
                     match bigserial_vec.is_empty() {
                         true => {
-                            return Err(DeleteQueryTryFromUrlEncodingError::IdIsEmpty {
+                            return Err(DeleteQueryTryFromUrlEncodingErrorNamed::IdIsEmpty {
                                 id_is_empty: std::string::String::from("id is empty"),
                                 code_occurence: crate::code_occurence_tufa_common!(),
                             });
