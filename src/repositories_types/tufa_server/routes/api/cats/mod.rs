@@ -1980,24 +1980,3 @@ impl std::convert::TryFrom<DeleteQueryForUrlEncoding> for DeleteQuery {
         Ok(DeleteQuery { id, name, color })
     }
 }
-
-impl std::convert::From<DeleteQuery> for DeleteQueryForUrlEncoding {
-    fn from(value: DeleteQuery) -> Self {
-        let id = value.id.map(|value| {
-            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                value,
-            )
-        });
-        let name = value.name.map(|value| {
-            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                value,
-            )
-        });
-        let color = value.color.map(|value| {
-            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
-                value,
-            )
-        });
-        Self { id, name, color }
-    }
-}
