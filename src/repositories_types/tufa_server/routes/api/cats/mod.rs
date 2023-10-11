@@ -1961,3 +1961,294 @@ pub enum TryUpdate {
     },
 }
 //////
+impl UpdateParameters {
+    pub async fn prepare_and_execute_query(
+        self,
+        app_info_state : & crate ::
+    repositories_types :: tufa_server :: routes :: api :: cats ::
+    DynArcGetConfigGetPostgresPoolSendSync,
+    ) -> TryUpdateResponseVariants {
+        let query_string = {
+            let mut increment: u64 = 0;
+            let mut values = std::string::String::default();
+            for element in &self.payload {
+                values.push_str(&format!("({}), ", {
+                    let mut element_value = std::string::String::default();
+                    match crate :: server :: postgres :: bind_query ::
+                    BindQuery ::
+                    try_generate_bind_increments(& element.id, & mut increment)
+                    {
+                        Ok(value) =>
+                        { element_value.push_str(& format! ("{value}, ")) ; },
+                        Err(e) =>
+                        {
+                            return TryUpdateResponseVariants :: BindQuery
+                            {
+                                checked_add : e.into_serialize_deserialize_version(),
+                                code_occurence : crate :: code_occurence_tufa_common! ()
+                            } ;
+                        },
+                    } ;
+                    match crate :: server :: postgres :: bind_query ::
+                    BindQuery ::
+                    try_generate_bind_increments(& element.name, & mut
+                    increment)
+                    {
+                        Ok(value) =>
+                        { element_value.push_str(& format! ("{value}, ")) ; },
+                        Err(e) =>
+                        {
+                            return TryUpdateResponseVariants :: BindQuery
+                            {
+                                checked_add : e.into_serialize_deserialize_version(),
+                                code_occurence : crate :: code_occurence_tufa_common! ()
+                            } ;
+                        },
+                    } ;
+                    match crate :: server :: postgres :: bind_query ::
+                    BindQuery ::
+                    try_generate_bind_increments(& element.color, & mut
+                    increment)
+                    {
+                        Ok(value) =>
+                        { element_value.push_str(& format! ("{value}, ")) ; },
+                        Err(e) =>
+                        {
+                            return TryUpdateResponseVariants :: BindQuery
+                            {
+                                checked_add : e.into_serialize_deserialize_version(),
+                                code_occurence : crate :: code_occurence_tufa_common! ()
+                            } ;
+                        },
+                    } ;
+                    element_value.pop();
+                    element_value.pop();
+                    element_value
+                }));
+            }
+            values.pop();
+            values.pop();
+            format!
+            ("update {} as t set name = data.name, color = data.color from (values {values}) as data(id, name, color) where t.id = data.id returning data.id",
+            ROUTE_NAME,)
+        };
+        let expected_updated_primary_keys = self
+            .payload
+            .iter()
+            .map(|element| element.id.to_inner().clone())
+            .collect::<Vec<i64>>();
+        let binded_query = {
+            let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
+            for element in self.payload {
+                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                    element.id, query,
+                );
+                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                    element.name,
+                    query,
+                );
+                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                    element.color,
+                    query,
+                );
+            }
+            query
+        };
+        let mut pool_connection = match app_info_state.get_postgres_pool().acquire().await {
+            Ok(value) => value,
+            Err(e) => {
+                let error = TryUpdate::from(e);
+                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                    &error,
+                    app_info_state.as_ref(),
+                );
+                return TryUpdateResponseVariants::from(error);
+            }
+        };
+        let pg_connection = match sqlx::Acquire::acquire(&mut pool_connection).await {
+            Ok(value) => value,
+            Err(e) => {
+                let error = TryUpdate::from(e);
+                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                    &error,
+                    app_info_state.as_ref(),
+                );
+                return TryUpdateResponseVariants::from(error);
+            }
+        };
+        let mut postgres_transaction = match {
+            use sqlx::Acquire;
+            pg_connection.begin()
+        }
+        .await
+        {
+            Ok(value) => value,
+            Err(e) => {
+                let error = TryUpdate::from(e);
+                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                    &error,
+                    app_info_state.as_ref(),
+                );
+                return TryUpdateResponseVariants::from(error);
+            }
+        };
+        let mut results_vec: Vec<sqlx::postgres::PgRow> = Vec::new();
+        let mut option_error: Option<sqlx::Error> = None;
+        {
+            let mut rows = binded_query.fetch(postgres_transaction.as_mut());
+            while let (Some(Some(row)), None) = (
+                match {
+                    use futures::TryStreamExt;
+                    rows.try_next()
+                }
+                .await
+                {
+                    Ok(value) => {
+                        option_error = Some(sqlx::Error::Protocol(String::from("protocol")));
+                        Some(value)
+                    }
+                    Err(e) => {
+                        // let error = TryUpdate::from(e);
+                        // crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                        //     &error,
+                        //     app_info_state.as_ref(),
+                        // );
+                        // return TryUpdateResponseVariants::from(error);
+                        option_error = Some(e);
+                        None
+                    }
+                },
+                &option_error,
+            ) {
+                results_vec.push(row);
+                println!("wft");
+            }
+        }
+        if let Some(e) = option_error {
+            panic!("kekw");
+        }
+        println!("{}", results_vec.len());
+        //
+        // match primary_key_try_from_sqlx_row(&row) {
+        //                 Ok(primary_key) => {
+        //                     typed_updated_rows.push(primary_key);
+        //                 }
+        //                 Err(e) => match postgres_transaction.rollback().await {
+        //                     Ok(_) => {
+        //                         let error = TryUpdate::from(e);
+        //                         crate :: common ::
+        //                     error_logs_logic :: error_log :: ErrorLog ::
+        //                     error_log(& error, app_info_state.as_ref(),) ;
+        //                         return TryUpdateResponseVariants::from(error);
+        //                     }
+        //                     Err(rollback_error) => {
+        //                         let error = TryUpdate::PrimaryKeyFromRowAndFailedRollback {
+        //                             primary_key_from_row: e,
+        //                             rollback_error,
+        //                             code_occurence: crate::code_occurence_tufa_common!(),
+        //                         };
+        //                         crate :: common :: error_logs_logic :: error_log ::
+        //                     ErrorLog :: error_log(& error, app_info_state.as_ref(),) ;
+        //                         return TryUpdateResponseVariants::from(error);
+        //                     }
+        //                 },
+        //             }
+        //
+        postgres_transaction.rollback().await.unwrap();
+        // println!("{typed_updated_rows:#?}");
+        // match binded_query.fetch_all(postgres_transaction.as_mut()).await {
+        //     Ok(updated_rows) => {
+        //         // let typed_updated_rows =
+        //         //     {
+        //         //         let mut typed_updated_rows = Vec::with_capacity(updated_rows.len());
+        //         //         for updated_row in updated_rows {
+        //         //             match primary_key_try_from_sqlx_row(&updated_row) {
+        //         //                 Ok(updated_row_primary_key) => {
+        //         //                     typed_updated_rows.push(updated_row_primary_key);
+        //         //                 }
+        //         //                 Err(e) => match postgres_transaction.rollback().await {
+        //         //                     Ok(_) => {
+        //         //                         let error = TryUpdate::from(e);
+        //         //                         crate :: common ::
+        //         //                     error_logs_logic :: error_log :: ErrorLog ::
+        //         //                     error_log(& error, app_info_state.as_ref(),) ;
+        //         //                         return TryUpdateResponseVariants::from(error);
+        //         //                     }
+        //         //                     Err(rollback_error) => {
+        //         //                         let error = TryUpdate::PrimaryKeyFromRowAndFailedRollback {
+        //         //                             primary_key_from_row: e,
+        //         //                             rollback_error,
+        //         //                             code_occurence: crate::code_occurence_tufa_common!(),
+        //         //                         };
+        //         //                         crate :: common :: error_logs_logic :: error_log ::
+        //         //                     ErrorLog :: error_log(& error, app_info_state.as_ref(),) ;
+        //         //                         return TryUpdateResponseVariants::from(error);
+        //         //                     }
+        //         //                 },
+        //         //             }
+        //         //         }
+        //         //         typed_updated_rows
+        //         //     };
+        //         // {
+        //         //     let non_existing_primary_keys = {
+        //         //         let mut non_existing_primary_keys =
+        //         //             Vec::with_capacity(expected_updated_primary_keys.len());
+        //         //         for expected_updated_primary_key in expected_updated_primary_keys {
+        //         //             if let false =
+        //         //                 typed_updated_rows.contains(&expected_updated_primary_key)
+        //         //             {
+        //         //                 non_existing_primary_keys.push(expected_updated_primary_key);
+        //         //             }
+        //         //         }
+        //         //         non_existing_primary_keys
+        //         //     };
+        //         //     if let false = non_existing_primary_keys.is_empty() {
+        //         //         match postgres_transaction.rollback().await {
+        //         //             Ok(_) => {
+        //         //                 let error = TryUpdate::NonExistingPrimaryKeys {
+        //         //                     non_existing_primary_keys,
+        //         //                     code_occurence: crate::code_occurence_tufa_common!(),
+        //         //                 };
+        //         //                 crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+        //         //                     &error,
+        //         //                     app_info_state.as_ref(),
+        //         //                 );
+        //         //                 return TryUpdateResponseVariants::from(error);
+        //         //             }
+        //         //             Err(e) => {
+        //         //                 let error = TryUpdate::NonExistingPrimaryKeysAndFailedRollback {
+        //         //                     non_existing_primary_keys,
+        //         //                     rollback_error: e,
+        //         //                     code_occurence: crate::code_occurence_tufa_common!(),
+        //         //                 };
+        //         //                 crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+        //         //                     &error,
+        //         //                     app_info_state.as_ref(),
+        //         //                 );
+        //         //                 return TryUpdateResponseVariants::from(error);
+        //         //             }
+        //         //         }
+        //         //     }
+        //         // }
+        //         // match postgres_transaction.commit().await {
+        //         //     Ok(_) => TryUpdateResponseVariants::Desirable(()),
+        //         //     Err(e) => {
+        //         //         let error = TryUpdate::CommitFailed {
+        //         //             commit_error: e,
+        //         //             code_occurence: crate::code_occurence_tufa_common!(),
+        //         //         };
+        //         //         crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+        //         //             &error,
+        //         //             app_info_state.as_ref(),
+        //         //         );
+        //         //         return TryUpdateResponseVariants::from(error);
+        //         //     }
+        //         // }
+        //         println!("rows");
+        //     }
+        //     Err(e) => todo!(),
+        // }
+        // postgres_transaction.rollback().await.unwrap();
+        todo!()
+    }
+}
