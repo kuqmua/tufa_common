@@ -861,9 +861,9 @@ pub enum TryDeleteWithBody {
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_500_internal_server_error]
-    DeleteAndRollbackFailed {
+    QueryAndRollbackFailed {
         #[eo_display]
-        delete_error: sqlx::Error,
+        query_error: sqlx::Error,
         #[eo_display]
         rollback_error: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence,
@@ -1061,9 +1061,9 @@ pub enum TryDelete {
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_500_internal_server_error]
-    DeleteAndRollbackFailed {
+    QueryAndRollbackFailed {
         #[eo_display]
-        delete_error: sqlx::Error,
+        query_error: sqlx::Error,
         #[eo_display]
         rollback_error: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence,
@@ -1945,9 +1945,9 @@ pub enum TryUpdate {
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_500_internal_server_error]
-    UpdateAndRollbackFailed {
+    QueryAndRollbackFailed {
         #[eo_display]
-        update_error: sqlx::Error,
+        query_error: sqlx::Error,
         #[eo_display]
         rollback_error: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence,
