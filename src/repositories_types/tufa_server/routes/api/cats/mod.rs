@@ -1971,11 +1971,11 @@ impl CreateBatchParameters {
     DynArcGetConfigGetPostgresPoolSendSync,
     ) -> TryCreateBatchResponseVariants {
         let query_string = {
-            "insert into cats (color, name) select color, name from unnest($1, $2) as a(color, name)"
+            format!("insert into {} (color, name) select color, name from unnest($1, $2) as a(color, name)", ROUTE_NAME)
         };
         println!("{}", query_string);
         let binded_query = {
-            let mut query = sqlx::query::<sqlx::Postgres>(query_string);
+            let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
             let current_vec_len = self.payload.len();
             let (
                 name_vec,
