@@ -1971,58 +1971,25 @@ impl CreateBatchParameters {
     DynArcGetConfigGetPostgresPoolSendSync,
     ) -> TryCreateBatchResponseVariants {
         let query_string = {
-            format!("insert into {}(name, color) values {}", ROUTE_NAME, {
-                let mut increment: u64 = 0;
-                let mut bind_increments = std::string::String::default();
-                for element in &self.payload {
-                    bind_increments.push_str(&format!("({}), ", {
-                        let mut element_bind_increments = std::string::String::default();
-                        match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(&element.name, &mut increment) {
-                            Ok(value) => {
-                                element_bind_increments.push_str(& format! ("{value}, ")) ;
-                            }, 
-                            Err(e) => {
-                                return TryCreateBatchResponseVariants :: BindQuery {
-                                    checked_add : e.into_serialize_deserialize_version(),
-                                    code_occurence : crate :: code_occurence_tufa_common! ()
-                                } ;
-                            },
-                        }
-                        match crate::server::postgres::bind_query::BindQuery::try_generate_bind_increments(& element.color, & mut increment)
-                        {
-                            Ok(value) =>
-                            {
-                                element_bind_increments.push_str(& format! ("{value}")) ;
-                            }, Err(e) =>
-                            {
-                                return TryCreateBatchResponseVariants :: BindQuery
-                                {
-                                    checked_add : e.into_serialize_deserialize_version(),
-                                    code_occurence : crate :: code_occurence_tufa_common! ()
-                                } ;
-                            },
-                        }
-                        element_bind_increments
-                    }));
-                }
-                bind_increments.pop();
-                bind_increments.pop();
-                bind_increments
-            })
+            "insert into cats (color, name) select color, name from unnest($1, $2) as a(color, name)"
         };
         println!("{}", query_string);
         let binded_query = {
-            let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
-            for element in self.payload {
-                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
-                    element.name,
-                    query,
-                );
-                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
-                    element.color,
-                    query,
-                );
-            }
+            let mut query = sqlx::query::<sqlx::Postgres>(query_string);
+            let current_vec_len = self.payload.len();
+            let (
+                name_vec,
+                color_vec
+            ) = self.payload.into_iter().fold((
+                Vec::with_capacity(current_vec_len),
+                Vec::with_capacity(current_vec_len)
+            ), |mut acc, element| {
+                acc.0.push(element.name);
+                acc.1.push(element.color);
+                acc
+            });
+            query = query.bind(name_vec);
+            query = query.bind(color_vec);
             query
         };
         let mut pool_connection = match app_info_state.get_postgres_pool().acquire().await {
@@ -2047,32 +2014,6 @@ impl CreateBatchParameters {
                 return TryCreateBatchResponseVariants::from(error);
             }
         };
-        {
-            let current_vec = vec![(String::from("abc2222"), String::from("dez22221")), (String::from("xyz2222"), String::from("nuts2222"))];
-            let current_vec_len = current_vec.len();
-            let (
-                v1,
-                v2
-            ) = current_vec.into_iter().fold((
-                Vec::with_capacity(current_vec_len),
-                Vec::with_capacity(current_vec_len)
-            ), |mut acc, element| {
-                acc.0.push(element.0);
-                acc.1.push(element.1);
-                acc
-            });
-            let todo = sqlx::query(
-                r#"insert into cats (color, name)
-                select color, name
-                from unnest($1, $2) as a(color, name)
-                returning id"#,
-            )
-            .bind(&v1)
-            .bind(&v2)
-            .execute(pg_connection.as_mut())
-            .await.unwrap();
-            println!("done");
-        }
         match binded_query.execute(pg_connection.as_mut()).await {
             Ok(_) => TryCreateBatchResponseVariants::Desirable(()),
             Err(e) => {
