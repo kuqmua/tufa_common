@@ -1,6 +1,5 @@
 //todo openapi
 //todo test if create\update\delete empty array
-pub const ROUTE_NAME: &str = "cats";
 pub trait GetConfigGetPostgresPool:
     crate::repositories_types::tufa_server::config::config_struct::GetConfig
     + crate::server::routes::helpers::get_postgres_pool::GetPostgresPool
@@ -21,6 +20,7 @@ pub type DynArcGetConfigGetPostgresPoolSendSync = std::sync::Arc<
     serde_derive::Deserialize,
     generate_postgresql_crud::GeneratePostgresqlCrud,
 )]
+#[generate_postgresql_crud::generate_postgresql_crud_route_name(cats)]
 pub struct Cat {
     #[generate_postgresql_crud_id]
     pub id: i64, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
