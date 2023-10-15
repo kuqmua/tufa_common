@@ -28,14 +28,6 @@ pub struct Cat {
     pub color: String,
 }
 
-impl crate::common::serde_urlencoded::SerdeUrlencodedParameter for CatOrderByWrapper {
-    fn serde_urlencoded_parameter(self) -> std::string::String {
-        let column = &self.0.column;
-        let order = self.0.order.unwrap_or_default();
-        format!("column={column},order={order}")
-    }
-}
-
 fn deserialize_cat_order_by<'de, D>(
     deserializer: D,
 ) -> Result<crate::server::postgres::order_by::OrderBy<CatColumn>, D::Error>
