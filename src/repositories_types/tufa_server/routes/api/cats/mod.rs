@@ -22,7 +22,7 @@ pub type DynArcGetConfigGetPostgresPoolSendSync = std::sync::Arc<
 )]
 #[generate_postgresql_crud::generate_postgresql_crud_route_name(cats)]
 pub struct Cat {
-    #[generate_postgresql_crud_id]
+    #[generate_postgresql_crud_primary_key]
     pub id: i64, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
     pub name: String,
     pub color: String,
