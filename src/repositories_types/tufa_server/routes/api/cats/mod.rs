@@ -18,6 +18,7 @@ pub type DynArcGetConfigGetPostgresPoolSendSync = std::sync::Arc<
     Debug,
     serde_derive::Serialize,
     serde_derive::Deserialize,
+    utoipa::ToSchema,
     generate_postgresql_crud::GeneratePostgresqlCrud,
 )]
 #[generate_postgresql_crud::generate_postgresql_crud_route_name(cats)]
