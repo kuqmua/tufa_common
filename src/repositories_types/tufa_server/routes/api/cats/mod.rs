@@ -2144,25 +2144,26 @@ tufa_server :: routes :: api :: cats :: DynArcGetConfigGetPostgresPoolSendSync
                 //
                 let name_handle = match parameters.payload.name {
                     Some(value) => {
-                        let handle_unique = {
+                        let is_unique = {
                             let mut vec = Vec::with_capacity(value.len());
-                            let mut handle_unique = Vec::with_capacity(value.len());
+                            let mut is_unique = true;
                             for element in &value {
                                 match vec.contains(&element) {
                                     true => {
-                                        handle_unique.push(element);
+                                        is_unique = false;
+                                        break;
                                     }
                                     false => {
                                         vec.push(element);
                                     }
                                 }
                             }
-                            handle_unique
+                            is_unique
                         };
-                        match handle_unique.is_empty() {
+                        println!("is_unique {:#?}", is_unique);
+                        match is_unique {
                             true => Some(value),
                             false => {
-                                // println!("not_unique_name_vec {:#?}", not_unique_name_vec);
                                 let not_unique_name_vec = {
                                     let mut vec = Vec::with_capacity(value.len());
                                     let mut not_unique_name_vec = Vec::with_capacity(value.len());
