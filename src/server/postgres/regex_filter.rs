@@ -1,7 +1,13 @@
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, serde::Serialize, serde::Deserialize, Eq, PartialEq)]
 pub struct RegexFilter {
     pub regex: std::string::String,
     pub conjuctive_operator: crate::server::postgres::conjuctive_operator::ConjunctiveOperator,
+}
+
+impl std::fmt::Display for RegexFilter {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "regex: {}, conjuctive_operator: {}", self.regex, self.conjuctive_operator)
+    }
 }
 
 impl crate::server::postgres::bind_query::BindQuery for RegexFilter {

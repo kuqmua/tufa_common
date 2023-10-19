@@ -669,6 +669,12 @@ pub enum TryDeleteWithBody {
         not_unique_primary_keys: Vec<i64>,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
+    #[tvfrr_400_bad_request]
+    NotUniqueNameVec {
+        #[eo_vec_display_with_serialize_deserialize]
+        not_unique_name_vec: Vec<crate::server::postgres::regex_filter::RegexFilter>,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
     #[tvfrr_500_internal_server_error]
     BindQuery {
         #[eo_error_occurence]
@@ -1841,3 +1847,498 @@ pub enum TryUpdate {
     },
 }
 //////
+pub async fn delete_with_body<'a>(
+    app_info_state : axum :: extract :: State < crate :: repositories_types ::
+tufa_server :: routes :: api :: cats :: DynArcGetConfigGetPostgresPoolSendSync
+>,
+    payload_extraction_result: Result<
+        axum::Json<DeleteWithBodyPayload>,
+        axum::extract::rejection::JsonRejection,
+    >,
+) -> impl axum::response::IntoResponse {
+    let parameters = DeleteWithBodyParameters {
+        payload:
+            match crate::server::routes::helpers::json_extractor_error::JsonValueResultExtractor::<
+                DeleteWithBodyPayload,
+                TryDeleteWithBodyResponseVariants,
+            >::try_extract_value(payload_extraction_result, &app_info_state)
+            {
+                Ok(value) => value,
+                Err(err) => {
+                    return err;
+                }
+            },
+    };
+    println!("{:#?}", parameters);
+    {
+        if let (None, None, None) = (
+            &parameters.payload.id,
+            &parameters.payload.name,
+            &parameters.payload.color,
+        ) {
+            return TryDeleteWithBodyResponseVariants::NoPayloadFields {
+                no_payload_fields: std::string::String::from("no payload fields"),
+                code_occurence: crate::code_occurence_tufa_common!(),
+            };
+        }
+        match (
+            &parameters.payload.id,
+            &parameters.payload.name,
+            &parameters.payload.color,
+        ) {
+            (Some(id), None, None) => {
+                {
+                    let not_unique_primary_keys = {
+                        let mut vec = Vec::with_capacity(id.len());
+                        let mut not_unique_primary_keys = Vec::with_capacity(id.len());
+                        for element in id {
+                            let handle = element.to_inner();
+                            match vec.contains(&handle) {
+                                true => {
+                                    not_unique_primary_keys.push(*element.to_inner());
+                                }
+                                false => {
+                                    vec.push(element.to_inner());
+                                }
+                            }
+                        }
+                        not_unique_primary_keys
+                    };
+                    if let false = not_unique_primary_keys.is_empty() {
+                        let error = TryDeleteWithBody::NotUniquePrimeryKey {
+                            not_unique_primary_keys,
+                            code_occurence: crate::code_occurence_tufa_common!(),
+                        };
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return TryDeleteWithBodyResponseVariants::from(error);
+                    }
+                }
+                let expected_updated_primary_keys = {
+                    id.iter()
+                        .map(|element| element.to_inner().clone())
+                        .collect::<Vec<i64>>()
+                };
+                let binded_query = {
+                    let query_string =
+                        { "delete from cats where id in (select unnest($1)) returning id" };
+                    println!("{}", query_string);
+                    let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
+                    query = query.bind(
+                        id.into_iter()
+                            .map(|element| element.clone().into_inner())
+                            .collect::<Vec<i64>>(),
+                    );
+                    query
+                };
+                let mut pool_connection = match app_info_state.get_postgres_pool().acquire().await {
+                    Ok(value) => value,
+                    Err(e) => {
+                        let error = TryDeleteWithBody::from(e);
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return TryDeleteWithBodyResponseVariants::from(error);
+                    }
+                };
+                let pg_connection = match sqlx::Acquire::acquire(&mut pool_connection).await {
+                    Ok(value) => value,
+                    Err(e) => {
+                        let error = TryDeleteWithBody::from(e);
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return TryDeleteWithBodyResponseVariants::from(error);
+                    }
+                };
+                let mut postgres_transaction = match {
+                    use sqlx::Acquire;
+                    pg_connection.begin()
+                }
+                .await
+                {
+                    Ok(value) => value,
+                    Err(e) => {
+                        let error = TryDeleteWithBody::from(e);
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return TryDeleteWithBodyResponseVariants::from(error);
+                    }
+                };
+                let results_vec = {
+                    let mut results_vec = Vec::with_capacity(expected_updated_primary_keys.len());
+                    let mut option_error: Option<sqlx::Error> = None;
+                    {
+                        let mut rows = binded_query.fetch(postgres_transaction.as_mut());
+                        while let (Some(Some(row)), None) = (
+                            match {
+                                use futures::TryStreamExt;
+                                rows.try_next()
+                            }
+                            .await
+                            {
+                                Ok(value) => Some(value),
+                                Err(e) => {
+                                    option_error = Some(e);
+                                    None
+                                }
+                            },
+                            &option_error,
+                        ) {
+                            results_vec.push(row);
+                        }
+                    }
+                    if let Some(e) = option_error {
+                        match postgres_transaction.rollback().await {
+                            Ok(_) => {
+                                let error = TryDeleteWithBody::from(e);
+                                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                                    &error,
+                                    app_info_state.as_ref(),
+                                );
+                                return TryDeleteWithBodyResponseVariants::from(error);
+                            }
+                            Err(rollback_error) => {
+                                let error = TryDeleteWithBody::QueryAndRollbackFailed {
+                                    query_error: e,
+                                    rollback_error,
+                                    code_occurence: crate::code_occurence_tufa_common!(),
+                                };
+                                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                                    &error,
+                                    app_info_state.as_ref(),
+                                );
+                                return TryDeleteWithBodyResponseVariants::from(error);
+                            }
+                        }
+                    }
+                    results_vec
+                };
+                let primary_key_vec = {
+                    let mut primary_key_vec =
+                        Vec::with_capacity(expected_updated_primary_keys.len());
+                    for element in results_vec {
+                        match primary_key_try_from_sqlx_row(&element) {
+                            Ok(primary_key) => {
+                                primary_key_vec.push(primary_key);
+                            }
+                            Err(e) => {
+                                match postgres_transaction.rollback().await {
+                                    Ok(_) => {
+                                        let error = TryDeleteWithBody::from(e);
+                                        crate :: common
+                                    :: error_logs_logic :: error_log :: ErrorLog ::
+                                    error_log(& error, app_info_state.as_ref(),) ;
+                                        return TryDeleteWithBodyResponseVariants::from(error);
+                                    }
+                                    Err(rollback_error) => {
+                                        let error =
+                                            TryDeleteWithBody::PrimaryKeyFromRowAndFailedRollback {
+                                                primary_key_from_row: e,
+                                                rollback_error,
+                                                code_occurence: crate::code_occurence_tufa_common!(),
+                                            };
+                                        crate :: common :: error_logs_logic :: error_log ::
+                                    ErrorLog :: error_log(& error, app_info_state.as_ref(),) ;
+                                        return TryDeleteWithBodyResponseVariants::from(error);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    primary_key_vec
+                };
+                {
+                    let non_existing_primary_keys = {
+                        let len = expected_updated_primary_keys.len();
+                        expected_updated_primary_keys.into_iter().fold(
+                            Vec::with_capacity(len),
+                            |mut acc, element| {
+                                if let false = primary_key_vec.contains(&element) {
+                                    acc.push(element);
+                                }
+                                acc
+                            },
+                        )
+                    };
+                    if let false = non_existing_primary_keys.is_empty() {
+                        match postgres_transaction.rollback().await {
+                            Ok(_) => {
+                                let error = TryDeleteWithBody::NonExistingPrimaryKeys {
+                                    non_existing_primary_keys,
+                                    code_occurence: crate::code_occurence_tufa_common!(),
+                                };
+                                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                                    &error,
+                                    app_info_state.as_ref(),
+                                );
+                                return TryDeleteWithBodyResponseVariants::from(error);
+                            }
+                            Err(e) => {
+                                let error =
+                                    TryDeleteWithBody::NonExistingPrimaryKeysAndFailedRollback {
+                                        non_existing_primary_keys,
+                                        rollback_error: e,
+                                        code_occurence: crate::code_occurence_tufa_common!(),
+                                    };
+                                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                                    &error,
+                                    app_info_state.as_ref(),
+                                );
+                                return TryDeleteWithBodyResponseVariants::from(error);
+                            }
+                        }
+                    }
+                }
+                match postgres_transaction.commit().await {
+                    Ok(_) => TryDeleteWithBodyResponseVariants::Desirable(()),
+                    Err(e) => {
+                        let error = TryDeleteWithBody::CommitFailed {
+                            commit_error: e,
+                            code_occurence: crate::code_occurence_tufa_common!(),
+                        };
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        TryDeleteWithBodyResponseVariants::from(error)
+                    }
+                }
+            }
+            _ => {
+                if let Some(id) = &parameters.payload.id {
+                    let not_unique_primary_keys = {
+                        let mut vec = Vec::with_capacity(id.len());
+                        let mut not_unique_primary_keys = Vec::with_capacity(id.len());
+                        for element in id {
+                            let handle = element.to_inner();
+                            match vec.contains(&handle) {
+                                true => {
+                                    not_unique_primary_keys.push(*element.to_inner());
+                                }
+                                false => {
+                                    vec.push(element.to_inner());
+                                }
+                            }
+                        }
+                        not_unique_primary_keys
+                    };
+                    if let false = not_unique_primary_keys.is_empty() {
+                        let error = TryDeleteWithBody::NotUniquePrimeryKey {
+                            not_unique_primary_keys,
+                            code_occurence: crate::code_occurence_tufa_common!(),
+                        };
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return TryDeleteWithBodyResponseVariants::from(error);
+                    }
+                }
+                //
+                let name_handle = match parameters.payload.name {
+                    Some(value) => {
+                        let handle_unique = {
+                            let mut vec = Vec::with_capacity(value.len());
+                            let mut handle_unique = Vec::with_capacity(value.len());
+                            for element in &value {
+                                match vec.contains(&element) {
+                                    true => {
+                                        handle_unique.push(element);
+                                    }
+                                    false => {
+                                        vec.push(element);
+                                    }
+                                }
+                            }
+                            handle_unique
+                        };
+                        match handle_unique.is_empty() {
+                            true => Some(value),
+                            false => {
+                                // println!("not_unique_name_vec {:#?}", not_unique_name_vec);
+                                let not_unique_name_vec = {
+                                    let mut vec = Vec::with_capacity(value.len());
+                                    let mut not_unique_name_vec = Vec::with_capacity(value.len());
+                                    for element in value {
+                                        match vec.contains(&element) {
+                                            true => {
+                                                not_unique_name_vec.push(element);
+                                            }
+                                            false => {
+                                                vec.push(element);
+                                            }
+                                        }
+                                    }
+                                    not_unique_name_vec
+                                };
+                                let error = TryDeleteWithBody::NotUniqueNameVec {
+                                    not_unique_name_vec,
+                                    code_occurence: crate::code_occurence_tufa_common!(),
+                                };
+                                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                                    &error,
+                                    app_info_state.as_ref(),
+                                );
+                                return TryDeleteWithBodyResponseVariants::from(error);
+                            }
+                        }
+                    },
+                    None => None
+                };
+                // if let Some(value) = parameters.payload.color {
+                        
+                // }
+                //
+                let query_string = {
+                    format!("delete from cats where {}", {
+                        let mut increment: u64 = 0;
+                        let mut additional_parameters = std::string::String::default();
+                        if let Some(value) = &name_handle {
+                            match crate::server::postgres::bind_query::BindQuery::try_increment(
+                                value,
+                                &mut increment,
+                            ) {
+                                Ok(_) => {
+                                    let handle = format!("name = ${increment}");
+                                    match additional_parameters.is_empty() {
+                                        true => {
+                                            additional_parameters.push_str(&handle);
+                                        }
+                                        false => {
+                                            additional_parameters
+                                                .push_str(&format!(" AND {handle}"));
+                                        }
+                                    }
+                                }
+                                Err(e) => {
+                                    return TryDeleteWithBodyResponseVariants::BindQuery {
+                                        checked_add: e.into_serialize_deserialize_version(),
+                                        code_occurence: crate::code_occurence_tufa_common!(),
+                                    };
+                                }
+                            }
+                        }
+                        if let Some(value) = &parameters.payload.color {
+                            match crate::server::postgres::bind_query::BindQuery::try_increment(
+                                value,
+                                &mut increment,
+                            ) {
+                                Ok(_) => {
+                                    let handle = format!("color = ${increment}");
+                                    match additional_parameters.is_empty() {
+                                        true => {
+                                            additional_parameters.push_str(&handle);
+                                        }
+                                        false => {
+                                            additional_parameters
+                                                .push_str(&format!(" AND {handle}"));
+                                        }
+                                    }
+                                }
+                                Err(e) => {
+                                    return TryDeleteWithBodyResponseVariants::BindQuery {
+                                        checked_add: e.into_serialize_deserialize_version(),
+                                        code_occurence: crate::code_occurence_tufa_common!(),
+                                    };
+                                }
+                            }
+                        }
+                        if let Some(id) = &parameters.payload.id {
+                            if let false = additional_parameters.is_empty() {
+                                additional_parameters.push_str(" and");
+                            }
+                            additional_parameters.push_str(& format!
+                            (" id in ({})",
+                            {
+                                let mut additional_parameters = std :: string :: String ::
+                                default() ; for element in id
+                                {
+                                    match crate :: server :: postgres :: bind_query :: BindQuery
+                                    :: try_increment(element, & mut increment,)
+                                    {
+                                        Ok(_) =>
+                                        {
+                                            additional_parameters.push_str(& format! ("${increment},"))
+                                            ;
+                                        } Err(e) =>
+                                        {
+                                            return TryDeleteWithBodyResponseVariants :: BindQuery
+                                            {
+                                                checked_add : e.into_serialize_deserialize_version(),
+                                                code_occurence : crate :: code_occurence_tufa_common! ()
+                                            } ;
+                                        }
+                                    }
+                                } additional_parameters.pop() ; additional_parameters
+                            })) ;
+                        }
+                        additional_parameters
+                    })
+                };
+                println!("{}", query_string);
+                let binded_query = {
+                    let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
+                    if let Some(value) = name_handle {
+                        query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                            value, query,
+                        );
+                    }
+                    if let Some(value) = parameters.payload.color {
+                        query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                            value, query,
+                        );
+                    }
+                    if let Some(id) = parameters.payload.id {
+                        for element in id {
+                            query =
+                                crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                                    element, query,
+                                );
+                        }
+                    }
+                    query
+                };
+                let mut pool_connection = match app_info_state.get_postgres_pool().acquire().await {
+                    Ok(value) => value,
+                    Err(e) => {
+                        let error = TryDeleteWithBody::from(e);
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return TryDeleteWithBodyResponseVariants::from(error);
+                    }
+                };
+                let pg_connection = match sqlx::Acquire::acquire(&mut pool_connection).await {
+                    Ok(value) => value,
+                    Err(e) => {
+                        let error = TryDeleteWithBody::from(e);
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return TryDeleteWithBodyResponseVariants::from(error);
+                    }
+                };
+                match binded_query.execute(pg_connection.as_mut()).await {
+                    Ok(_) => TryDeleteWithBodyResponseVariants::Desirable(()),
+                    Err(e) => {
+                        let error = TryDeleteWithBody::from(e);
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return TryDeleteWithBodyResponseVariants::from(error);
+                    }
+                }
+            }
+        }
+    }
+}

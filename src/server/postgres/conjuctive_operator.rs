@@ -1,4 +1,4 @@
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, serde::Serialize, serde::Deserialize, Eq, PartialEq)]
 pub enum ConjunctiveOperator {
     Or,
     And,
