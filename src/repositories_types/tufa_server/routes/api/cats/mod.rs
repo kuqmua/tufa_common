@@ -2210,6 +2210,7 @@ tufa_server :: routes :: api :: cats :: DynArcGetConfigGetPostgresPoolSendSync
                     }
                     None => None,
                 };
+                println!("name_handle {:#?}", name_handle);
                 let color_handle = match parameters.query.color {
                     Some(value) => {
                         let is_unique = {
@@ -2260,59 +2261,118 @@ tufa_server :: routes :: api :: cats :: DynArcGetConfigGetPostgresPoolSendSync
                     }
                     None => None,
                 };
+                println!("color_handle {:#?}", color_handle);
                 let query_string = {
                     format!("delete from cats where {}", {
                         let mut increment: u64 = 0;
                         let mut additional_parameters = std::string::String::default();
                         if let Some(value) = &name_handle {
-                            match crate::server::postgres::bind_query::BindQuery::try_increment(
-                                value,
-                                &mut increment,
-                            ) {
-                                Ok(_) => {
-                                    let handle = format!("name = ${increment}");
-                                    match additional_parameters.is_empty() {
-                                        true => {
-                                            additional_parameters.push_str(&handle);
+                            //
+                            for _ in &value.0 {
+                                match increment.checked_add(1) {
+                                    Some(incr) => {
+                                        increment = incr;
+                                        //
+                                        let handle = format!("name = ${increment}");
+                                        match additional_parameters.is_empty() {
+                                            true => {
+                                                additional_parameters.push_str(&handle);
+                                            }
+                                            false => {
+                                                additional_parameters
+                                                    .push_str(&format!(" OR {handle}"));
+                                            }
                                         }
-                                        false => {
-                                            additional_parameters
-                                                .push_str(&format!(" AND {handle}"));
-                                        }
-                                    }
-                                }
-                                Err(e) => {
-                                    return TryDeleteResponseVariants::BindQuery {
-                                        checked_add: e.into_serialize_deserialize_version(),
-                                        code_occurence: crate::code_occurence_tufa_common!(),
-                                    };
+                                        //
+                                    },
+                                    None => {
+                                        return TryDeleteResponseVariants::BindQuery {
+                                            checked_add: crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed::CheckedAdd { 
+                                                checked_add: std::string::String::from("checked_add is None"), 
+                                                code_occurence: crate::code_occurence_tufa_common!(), 
+                                            }.into_serialize_deserialize_version(),
+                                            code_occurence: crate::code_occurence_tufa_common!(),
+                                        };
+                                    },
                                 }
                             }
+                            //
+                            // match crate::server::postgres::bind_query::BindQuery::try_increment(
+                            //     value,
+                            //     &mut increment,
+                            // ) {
+                            //     Ok(_) => {
+                            //         let handle = format!("name = ${increment}");
+                            //         match additional_parameters.is_empty() {
+                            //             true => {
+                            //                 additional_parameters.push_str(&handle);
+                            //             }
+                            //             false => {
+                            //                 additional_parameters
+                            //                     .push_str(&format!(" AND {handle}"));
+                            //             }
+                            //         }
+                            //     }
+                            //     Err(e) => {
+                            //         return TryDeleteResponseVariants::BindQuery {
+                            //             checked_add: e.into_serialize_deserialize_version(),
+                            //             code_occurence: crate::code_occurence_tufa_common!(),
+                            //         };
+                            //     }
+                            // }
                         }
                         if let Some(value) = &color_handle {
-                            match crate::server::postgres::bind_query::BindQuery::try_increment(
-                                value,
-                                &mut increment,
-                            ) {
-                                Ok(_) => {
-                                    let handle = format!("color = ${increment}");
-                                    match additional_parameters.is_empty() {
-                                        true => {
-                                            additional_parameters.push_str(&handle);
+                            for _ in &value.0 {
+                                match increment.checked_add(1) {
+                                    Some(incr) => {
+                                        increment = incr;
+                                        //
+                                        let handle = format!("color = ${increment}");
+                                        match additional_parameters.is_empty() {
+                                            true => {
+                                                additional_parameters.push_str(&handle);
+                                            }
+                                            false => {
+                                                additional_parameters
+                                                    .push_str(&format!(" OR {handle}"));
+                                            }
                                         }
-                                        false => {
-                                            additional_parameters
-                                                .push_str(&format!(" AND {handle}"));
-                                        }
-                                    }
-                                }
-                                Err(e) => {
-                                    return TryDeleteResponseVariants::BindQuery {
-                                        checked_add: e.into_serialize_deserialize_version(),
-                                        code_occurence: crate::code_occurence_tufa_common!(),
-                                    };
+                                        //
+                                    },
+                                    None => {
+                                        return TryDeleteResponseVariants::BindQuery {
+                                            checked_add: crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed::CheckedAdd { 
+                                                checked_add: std::string::String::from("checked_add is None"), 
+                                                code_occurence: crate::code_occurence_tufa_common!(), 
+                                            }.into_serialize_deserialize_version(),
+                                            code_occurence: crate::code_occurence_tufa_common!(),
+                                        };
+                                    },
                                 }
                             }
+                            // match crate::server::postgres::bind_query::BindQuery::try_increment(
+                            //     value,
+                            //     &mut increment,
+                            // ) {
+                            //     Ok(_) => {
+                            //         let handle = format!("color = ${increment}");
+                            //         match additional_parameters.is_empty() {
+                            //             true => {
+                            //                 additional_parameters.push_str(&handle);
+                            //             }
+                            //             false => {
+                            //                 additional_parameters
+                            //                     .push_str(&format!(" AND {handle}"));
+                            //             }
+                            //         }
+                            //     }
+                            //     Err(e) => {
+                            //         return TryDeleteResponseVariants::BindQuery {
+                            //             checked_add: e.into_serialize_deserialize_version(),
+                            //             code_occurence: crate::code_occurence_tufa_common!(),
+                            //         };
+                            //     }
+                            // }
                         }
                         if let Some(id) = &parameters.query.id {
                             if let false = additional_parameters.is_empty() {
@@ -2343,6 +2403,7 @@ tufa_server :: routes :: api :: cats :: DynArcGetConfigGetPostgresPoolSendSync
                                 } additional_parameters.pop() ; additional_parameters
                             })) ;
                         }
+                        println!("additional_parameters {additional_parameters}");
                         additional_parameters
                     })
                 };
