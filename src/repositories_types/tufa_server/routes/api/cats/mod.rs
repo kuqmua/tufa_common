@@ -899,12 +899,6 @@ pub enum TryDelete {
         not_unique_color_vec: Vec<crate::server::postgres::regex_filter::RegexFilter>,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
-    #[tvfrr_400_bad_request]
-    DeleteQueryTryFromUrlEncoding {
-        #[eo_error_occurence]
-        checked_add: DeleteQueryTryFromUrlEncodingErrorNamed, //todo renaming?
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
     #[tvfrr_500_internal_server_error]
     BindQuery {
         #[eo_error_occurence]
@@ -1871,63 +1865,6 @@ pub struct DeleteQuery {
     pub name: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
     pub color: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
 }
-// #[derive(Debug, thiserror :: Error, error_occurence :: ErrorOccurence)]
-// pub enum DeleteQueryTryFromUrlEncodingErrorNamed {
-//     IdIsEmpty {
-//         #[eo_display_with_serialize_deserialize]
-//         id_is_empty: std::string::String,
-//         code_occurence: crate::common::code_occurence::CodeOccurence,
-//     },
-//     BigserialTryFromStr {
-//         #[eo_error_occurence]
-//         bigserial_try_from_str: crate::server::postgres::bigserial::BigserialTryFromStrErrorNamed,
-//         code_occurence: crate::common::code_occurence::CodeOccurence,
-//     },
-// }
-//
-// impl std::convert::TryFrom<DeleteQueryForUrlEncoding> for DeleteQuery {
-//     type Error = DeleteQueryTryFromUrlEncodingErrorNamed;
-//     fn try_from(value: DeleteQueryForUrlEncoding) -> Result<Self, Self::Error> {
-//         let id = {
-//             match value.id {
-//                 Some(id) => {
-//                     let splitted = id.split(',').collect::<Vec<&str>>();
-//                     let mut bigserial_vec = Vec::with_capacity(splitted.len());
-//                     for splitted_element in splitted {
-//                         match crate::server::postgres::bigserial::Bigserial::try_from(
-//                             splitted_element,
-//                         ) {
-//                             Ok(bigserial) => {
-//                                 bigserial_vec.push(bigserial);
-//                             }
-//                             Err(e) => {
-//                                 return Err(
-//                                     DeleteQueryTryFromUrlEncodingErrorNamed::BigserialTryFromStr {
-//                                         bigserial_try_from_str: e,
-//                                         code_occurence: crate::code_occurence_tufa_common!(),
-//                                     },
-//                                 );
-//                             }
-//                         }
-//                     }
-//                     match bigserial_vec.is_empty() {
-//                         true => {
-//                             return Err(DeleteQueryTryFromUrlEncodingErrorNamed::IdIsEmpty {
-//                                 id_is_empty: std::string::String::from("id is empty"),
-//                                 code_occurence: crate::code_occurence_tufa_common!(),
-//                             });
-//                         }
-//                         false => Some(crate :: server:: postgres :: bigserial_ids :: BigserialIds(bigserial_vec)),
-//                     }
-//                 }
-//                 None => None,
-//             }
-//         };
-//         let name = { value.name };
-//         let color = { value.color };
-//         Ok(DeleteQuery { id, name, color })
-//     }
-// }
 //
 pub async fn delete<'a>(
     query_extraction_result: Result<
