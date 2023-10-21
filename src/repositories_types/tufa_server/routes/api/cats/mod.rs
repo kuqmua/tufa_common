@@ -1865,10 +1865,6 @@ pub enum TryUpdate {
     },
 }
 //////
-#[derive(Debug, serde :: Deserialize)]
-pub struct DeleteParameters {
-    pub query: DeleteQuery,
-}
 #[derive(Debug, serde :: Serialize, serde :: Deserialize)]
 pub struct DeleteQuery {
     pub id: Option<crate :: server:: postgres :: bigserial_ids :: BigserialIds>,
@@ -1951,22 +1947,7 @@ tufa_server :: routes :: api :: cats :: DynArcGetConfigGetPostgresPoolSendSync
             {
                 Ok(value) => {
                     println!("value {:#?}", value);
-                //     match DeleteQuery::try_from(value) {
-                //     Ok(value) => value,
-                //     Err(e) => {
-                //         let error = TryDelete::DeleteQueryTryFromUrlEncoding {
-                //             checked_add: e,
-                //             code_occurence: crate::code_occurence_tufa_common!(),
-                //         };
-                //         crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                //             &error,
-                //             app_info_state.as_ref(),
-                //         );
-                //         return TryDeleteResponseVariants::from(error);
-                //     }
-                    
-                // }
-                value
+                    value
                 },
                 Err(err) => {
                     return err;
