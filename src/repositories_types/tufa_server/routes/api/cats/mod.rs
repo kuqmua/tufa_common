@@ -1871,10 +1871,9 @@ pub struct DeleteParameters {
 }
 #[derive(Debug, serde :: Serialize, serde :: Deserialize)]
 pub struct DeleteQuery {
-    pub id: Option<crate :: server
-    :: postgres :: bigserial_ids :: BigserialIds>,
-    pub name: Option<String>,
-    pub color: Option<String>,
+    pub id: Option<crate :: server:: postgres :: bigserial_ids :: BigserialIds>,
+    pub name: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
+    pub color: Option<crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma>,
 }
 #[derive(Debug, thiserror :: Error, error_occurence :: ErrorOccurence)]
 pub enum DeleteQueryTryFromUrlEncodingErrorNamed {
@@ -1890,53 +1889,53 @@ pub enum DeleteQueryTryFromUrlEncodingErrorNamed {
     },
 }
 //
-impl std::convert::TryFrom<DeleteQueryForUrlEncoding> for DeleteQuery {
-    type Error = DeleteQueryTryFromUrlEncodingErrorNamed;
-    fn try_from(value: DeleteQueryForUrlEncoding) -> Result<Self, Self::Error> {
-        let id = {
-            match value.id {
-                Some(id) => {
-                    let splitted = id.split(',').collect::<Vec<&str>>();
-                    let mut bigserial_vec = Vec::with_capacity(splitted.len());
-                    for splitted_element in splitted {
-                        match crate::server::postgres::bigserial::Bigserial::try_from(
-                            splitted_element,
-                        ) {
-                            Ok(bigserial) => {
-                                bigserial_vec.push(bigserial);
-                            }
-                            Err(e) => {
-                                return Err(
-                                    DeleteQueryTryFromUrlEncodingErrorNamed::BigserialTryFromStr {
-                                        bigserial_try_from_str: e,
-                                        code_occurence: crate::code_occurence_tufa_common!(),
-                                    },
-                                );
-                            }
-                        }
-                    }
-                    match bigserial_vec.is_empty() {
-                        true => {
-                            return Err(DeleteQueryTryFromUrlEncodingErrorNamed::IdIsEmpty {
-                                id_is_empty: std::string::String::from("id is empty"),
-                                code_occurence: crate::code_occurence_tufa_common!(),
-                            });
-                        }
-                        false => Some(crate :: server:: postgres :: bigserial_ids :: BigserialIds(bigserial_vec)),
-                    }
-                }
-                None => None,
-            }
-        };
-        let name = { value.name };
-        let color = { value.color };
-        Ok(DeleteQuery { id, name, color })
-    }
-}
+// impl std::convert::TryFrom<DeleteQueryForUrlEncoding> for DeleteQuery {
+//     type Error = DeleteQueryTryFromUrlEncodingErrorNamed;
+//     fn try_from(value: DeleteQueryForUrlEncoding) -> Result<Self, Self::Error> {
+//         let id = {
+//             match value.id {
+//                 Some(id) => {
+//                     let splitted = id.split(',').collect::<Vec<&str>>();
+//                     let mut bigserial_vec = Vec::with_capacity(splitted.len());
+//                     for splitted_element in splitted {
+//                         match crate::server::postgres::bigserial::Bigserial::try_from(
+//                             splitted_element,
+//                         ) {
+//                             Ok(bigserial) => {
+//                                 bigserial_vec.push(bigserial);
+//                             }
+//                             Err(e) => {
+//                                 return Err(
+//                                     DeleteQueryTryFromUrlEncodingErrorNamed::BigserialTryFromStr {
+//                                         bigserial_try_from_str: e,
+//                                         code_occurence: crate::code_occurence_tufa_common!(),
+//                                     },
+//                                 );
+//                             }
+//                         }
+//                     }
+//                     match bigserial_vec.is_empty() {
+//                         true => {
+//                             return Err(DeleteQueryTryFromUrlEncodingErrorNamed::IdIsEmpty {
+//                                 id_is_empty: std::string::String::from("id is empty"),
+//                                 code_occurence: crate::code_occurence_tufa_common!(),
+//                             });
+//                         }
+//                         false => Some(crate :: server:: postgres :: bigserial_ids :: BigserialIds(bigserial_vec)),
+//                     }
+//                 }
+//                 None => None,
+//             }
+//         };
+//         let name = { value.name };
+//         let color = { value.color };
+//         Ok(DeleteQuery { id, name, color })
+//     }
+// }
 //
 pub async fn delete<'a>(
     query_extraction_result: Result<
-        axum::extract::Query<DeleteQueryForUrlEncoding>,
+        axum::extract::Query<DeleteQuery>,
         axum::extract::rejection::QueryRejection,
     >,
     app_info_state : axum :: extract :: State < crate :: repositories_types ::
@@ -1946,26 +1945,28 @@ tufa_server :: routes :: api :: cats :: DynArcGetConfigGetPostgresPoolSendSync
     let parameters = DeleteParameters {
         query:
             match crate::server::routes::helpers::query_extractor_error::QueryValueResultExtractor::<
-                DeleteQueryForUrlEncoding,
+                DeleteQuery,
                 TryDeleteResponseVariants,
             >::try_extract_value(query_extraction_result, &app_info_state)
             {
                 Ok(value) => {
                     println!("value {:#?}", value);
-                    match DeleteQuery::try_from(value) {
-                    Ok(value) => value,
-                    Err(e) => {
-                        let error = TryDelete::DeleteQueryTryFromUrlEncoding {
-                            checked_add: e,
-                            code_occurence: crate::code_occurence_tufa_common!(),
-                        };
-                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                            &error,
-                            app_info_state.as_ref(),
-                        );
-                        return TryDeleteResponseVariants::from(error);
-                    }
-                }
+                //     match DeleteQuery::try_from(value) {
+                //     Ok(value) => value,
+                //     Err(e) => {
+                //         let error = TryDelete::DeleteQueryTryFromUrlEncoding {
+                //             checked_add: e,
+                //             code_occurence: crate::code_occurence_tufa_common!(),
+                //         };
+                //         crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                //             &error,
+                //             app_info_state.as_ref(),
+                //         );
+                //         return TryDeleteResponseVariants::from(error);
+                //     }
+                    
+                // }
+                value
                 },
                 Err(err) => {
                     return err;
@@ -2527,6 +2528,9 @@ ReadQuery
     postgres_bigint :: PostgresBigint, pub offset : Option < crate :: server
     :: postgres :: postgres_bigint :: PostgresBigint >,
 }
+//
+
+//
 pub async fn read(
     query_extraction_result: Result<
         axum::extract::Query<ReadQuery>,
