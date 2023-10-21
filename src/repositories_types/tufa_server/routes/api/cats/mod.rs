@@ -664,7 +664,7 @@ pub enum TryDeleteWithBody {
     },
     //
     #[tvfrr_400_bad_request]
-    NotUniquePrimeryKey {
+    NotUniquePrimaryKey {
         #[eo_vec_display_with_serialize_deserialize]
         not_unique_primary_keys: Vec<i64>,
         code_occurence: crate::common::code_occurence::CodeOccurence,
@@ -882,7 +882,7 @@ pub enum TryDelete {
     },
     //
     #[tvfrr_400_bad_request]
-    NotUniquePrimeryKey {
+    NotUniquePrimaryKey {
         #[eo_vec_display_with_serialize_deserialize]
         not_unique_primary_keys: Vec<i64>,
         code_occurence: crate::common::code_occurence::CodeOccurence,
@@ -1263,7 +1263,7 @@ pub enum TryReadWithBody {
     },
     //
     #[tvfrr_400_bad_request]
-    NotUniquePrimeryKey {
+    NotUniquePrimaryKey {
         #[eo_vec_display_with_serialize_deserialize]
         not_unique_primary_keys: Vec<i64>,
         code_occurence: crate::common::code_occurence::CodeOccurence,
@@ -1413,7 +1413,7 @@ pub enum TryRead {
     },
     //
     #[tvfrr_400_bad_request]
-    NotUniquePrimeryKey {
+    NotUniquePrimaryKey {
         #[eo_vec_display_with_serialize_deserialize]
         not_unique_primary_keys: Vec<i64>,
         code_occurence: crate::common::code_occurence::CodeOccurence,
@@ -1784,7 +1784,7 @@ pub enum TryUpdate {
     },
     //
     #[tvfrr_400_bad_request]
-    NotUniquePrimeryKey {
+    NotUniquePrimaryKey {
         #[eo_vec_display_with_serialize_deserialize]
         not_unique_primary_keys: Vec<i64>,
         code_occurence: crate::common::code_occurence::CodeOccurence,
