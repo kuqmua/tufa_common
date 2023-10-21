@@ -1437,6 +1437,18 @@ pub enum TryRead {
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_400_bad_request]
+    NotUniqueNameVec {
+        #[eo_vec_display_with_serialize_deserialize]
+        not_unique_name_vec: Vec<std::string::String>,//todo crate::server::postgres::regex_filter::RegexFilter
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_400_bad_request]
+    NotUniqueColorVec {
+        #[eo_vec_display_with_serialize_deserialize]
+        not_unique_color_vec: Vec<std::string::String>,//todo crate::server::postgres::regex_filter::RegexFilter
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_400_bad_request]
     FailedToDeserializeQueryString {
         #[eo_display_with_serialize_deserialize]
         failed_to_deserialize_query_string: std::string::String,
