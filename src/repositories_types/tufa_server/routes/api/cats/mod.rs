@@ -371,7 +371,7 @@ pub enum TryCreateOne {
     (),
     tvfrr_200_ok
 )]
-pub enum TryDeleteById {
+pub enum TryDeleteOne {
     #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
