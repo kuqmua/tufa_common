@@ -1482,7 +1482,7 @@ pub enum TryReadMany {
     (),
     tvfrr_200_ok
 )]
-pub enum TryUpdateById {
+pub enum TryUpdateOne {
     #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
@@ -1884,12 +1884,12 @@ pub enum TryUpdate {
 }
 //////
 // pub enum CatRule {
-//     create_batch,
-//     create,
-//     delete_by_id,
-//     delete,
-//     read_by_id,
-//     read,
-//     update_by_id,
-//     update
+//     create_many,
+//     create_one,
+//     delete_one,
+//     delete_many,
+//     read_one,
+//     read_many,
+//     update_one,
+//     update_many
 // }
