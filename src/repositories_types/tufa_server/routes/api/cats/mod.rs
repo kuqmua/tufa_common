@@ -1883,13 +1883,25 @@ pub enum TryUpdateMany {
     },
 }
 //////
-// pub enum CatRule {
-//     create_many,
-//     create_one,
-//     delete_one,
-//     delete_many,
-//     read_one,
-//     read_many,
-//     update_one,
-//     update_many
+// https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
+// pub enum CatNaiveCrudRule {
+//     Create,
+//     Read,
+//     Update
+//     Delete,
+// }
+
+// pub enum CatCrudRule {
+//     Create,
+//     Read,
+//     Update
+//     Delete,
+// }
+
+// pub enum CatCrudFieldRule {
+//     // Id Name Color
+//     Create,
+//     Read,
+//     Update
+//     Delete,
 // }
