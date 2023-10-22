@@ -7,7 +7,7 @@
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_from_checker_paths(
     crate::repositories_types::tufa_server::routes::api::cats::TryRead,
     crate::repositories_types::tufa_server::routes::api::cats::TryReadById,
-    crate::repositories_types::tufa_server::routes::api::cats::TryDelete
+    crate::repositories_types::tufa_server::routes::api::cats::TryDeleteMany
 )]
 pub enum QueryExtractorErrorNamed {
     #[tvfrr_400_bad_request]

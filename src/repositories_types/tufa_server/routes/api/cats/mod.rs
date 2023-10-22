@@ -757,7 +757,7 @@ pub enum TryDeleteManyWithBody {
     (),
     tvfrr_200_ok
 )]
-pub enum TryDelete {
+pub enum TryDeleteMany {
     #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
