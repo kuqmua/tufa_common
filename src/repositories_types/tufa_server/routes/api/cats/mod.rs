@@ -40,7 +40,7 @@ pub struct Cat {
     (),
     tvfrr_201_created
 )]
-pub enum TryCreateBatch {
+pub enum TryCreateMany {
     #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
@@ -1883,3 +1883,13 @@ pub enum TryUpdate {
     },
 }
 //////
+// pub enum CatRule {
+//     create_batch,
+//     create,
+//     delete_by_id,
+//     delete,
+//     read_by_id,
+//     read,
+//     update_by_id,
+//     update
+// }
