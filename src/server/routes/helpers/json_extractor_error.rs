@@ -8,7 +8,7 @@
     crate::repositories_types::tufa_server::routes::api::cats::TryCreateOne,
     crate::repositories_types::tufa_server::routes::api::cats::TryCreateMany,
     crate::repositories_types::tufa_server::routes::api::cats::TryUpdateOne,
-    crate::repositories_types::tufa_server::routes::api::cats::TryUpdate,
+    crate::repositories_types::tufa_server::routes::api::cats::TryUpdateMany,
     crate::repositories_types::tufa_server::routes::api::cats::TryReadManyWithBody,
     crate::repositories_types::tufa_server::routes::api::cats::TryDeleteManyWithBody
 )]
