@@ -969,7 +969,7 @@ pub enum TryDeleteMany {
     crate::repositories_types::tufa_server::routes::api::cats::CatOptions,
     tvfrr_200_ok
 )]
-pub enum TryReadById {
+pub enum TryReadOne {
     #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
