@@ -1126,7 +1126,7 @@ pub enum TryReadOne {
     Vec::<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>,
     tvfrr_200_ok
 )]
-pub enum TryReadWithBody {
+pub enum TryReadManyWithBody {
     #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
