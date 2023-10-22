@@ -209,7 +209,7 @@ pub enum TryCreateMany {
     (),
     tvfrr_201_created
 )]
-pub enum TryCreate {
+pub enum TryCreateOne {
     #[tvfrr_400_bad_request]
     ProjectCommitExtractorNotEqual {
         #[eo_display_with_serialize_deserialize]
