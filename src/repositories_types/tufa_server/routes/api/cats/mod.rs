@@ -1271,7 +1271,7 @@ pub enum TryReadManyWithBody {
     #[tvfrr_400_bad_request]
     NotUniquePrimaryKey {
         #[eo_vec_display_with_serialize_deserialize]
-        not_unique_primary_keys: Vec<i64>,
+        not_unique_primary_keys: Vec<std::string::String>,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_400_bad_request]
@@ -1884,3 +1884,4 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
+
