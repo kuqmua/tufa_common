@@ -21,10 +21,10 @@ pub type DynArcGetConfigGetPostgresPoolSendSync = std::sync::Arc<
     utoipa::ToSchema,
     generate_postgresql_crud::GeneratePostgresqlCrud,
 )]
-#[generate_postgresql_crud::generate_postgresql_crud_route_name(cats)]
-pub struct Cat {
+#[generate_postgresql_crud::generate_postgresql_crud_route_name(dogs)]
+pub struct Dog {
     #[generate_postgresql_crud_primary_key]
-    pub id: i64, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
+    pub id: std::string::String, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
     pub name: String,
     pub color: String,
 }
@@ -966,7 +966,7 @@ pub enum TryDeleteMany {
     type_variants_from_reqwest_response::TypeVariantsFromReqwestResponse,
 )]
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_attribute(
-    crate::repositories_types::tufa_server::routes::api::cats::CatOptions,
+    crate::repositories_types::tufa_server::routes::api::cats::DogOptions,
     tvfrr_200_ok
 )]
 pub enum TryReadOne {
@@ -1123,7 +1123,7 @@ pub enum TryReadOne {
     type_variants_from_reqwest_response::TypeVariantsFromReqwestResponse,
 )]
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_attribute(
-    Vec::<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>,
+    Vec::<crate::repositories_types::tufa_server::routes::api::cats::DogOptions>,
     tvfrr_200_ok
 )]
 pub enum TryReadManyWithBody {
@@ -1310,7 +1310,7 @@ pub enum TryReadManyWithBody {
     type_variants_from_reqwest_response::TypeVariantsFromReqwestResponse,
 )]
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_attribute(
-    Vec::<crate::repositories_types::tufa_server::routes::api::cats::CatOptions>,
+    Vec::<crate::repositories_types::tufa_server::routes::api::cats::DogOptions>,
     tvfrr_200_ok
 )]
 pub enum TryReadMany {
