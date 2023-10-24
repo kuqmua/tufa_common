@@ -38,7 +38,7 @@ thiserror = {version = "=1.0.48"}
 tokio = {version = "=1.29.1", features = ["macros", "rt-multi-thread"]}
 itertools = {version = "=0.10.1"}
 uuid = {version = "=0.8", features = ["v4", "serde"]}
-sqlx = {version = "=0.7.1", features = ["postgres", "runtime-tokio"]}
+sqlx = {version = "=0.7.1", features = ["postgres", "uuid", "runtime-tokio"]}
 valuable = {version = "=0.1.0", features = ["default", "std", "alloc", "derive", "valuable-derive"]}#maybe not all features needed
 unicode-segmentation = {version = "=1"}
 validator = {version = "=0.16.0"}
