@@ -1,12 +1,12 @@
 #need to enable vscode rest client extension https://marketplace.visualstudio.com/items?itemName=humao.rest-client to send requests
 
-# GET http://127.0.0.1:8080/api/cats/?limit=10&id=65&name=murzik&color=blue&select=id,name HTTP/1.1
-# Accept: */*
-# project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
+GET http://127.0.0.1:8080/api/dogs?limit=10 HTTP/1.1
+Accept: */*
+project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
  
-POST http://127.0.0.1:8080/api/cats/batch HTTP/1.1
+POST http://127.0.0.1:8080/api/dogs/batch HTTP/1.1
 Accept: */*
 content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
@@ -24,7 +24,7 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
 
-POST http://127.0.0.1:8080/api/cats HTTP/1.1
+POST http://127.0.0.1:8080/api/dogs HTTP/1.1
 Accept: */*
 content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
@@ -36,13 +36,13 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
 
-DELETE http://127.0.0.1:8080/api/cats/55 HTTP/1.1
+DELETE http://127.0.0.1:8080/api/dogs/55 HTTP/1.1
 Accept: */*
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
 
-DELETE http://127.0.0.1:8080/api/cats/search HTTP/1.1
+DELETE http://127.0.0.1:8080/api/dogs/search HTTP/1.1
 Accept: */*
 content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
@@ -65,19 +65,19 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ### todo name and color must be  arrays              
 
-DELETE http://127.0.0.1:8080/api/cats?id=161,162&name=first_test_name_create,fdf&color=first_test_color_create,blue HTTP/1.1
+DELETE http://127.0.0.1:8080/api/dogs?id=161,162&name=first_test_name_create,fdf&color=first_test_color_create,blue HTTP/1.1
 Accept: */*
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
 
-GET http://127.0.0.1:8080/api/cats/162?&select=IdName HTTP/1.1
+GET http://127.0.0.1:8080/api/dogs/162?&select=IdName HTTP/1.1
 Accept: */*
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
 
-POST http://127.0.0.1:8080/api/cats/search HTTP/1.1
+POST http://127.0.0.1:8080/api/dogs/search HTTP/1.1
 Accept: */*
 content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
@@ -107,13 +107,13 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###   
 
-GET http://127.0.0.1:8080/api/cats?limit=10&id=136&name=test_name,test_nam&color=test_color&select=IdName&order_by=column=id,order=asc&offset=1 HTTP/1.1
+GET http://127.0.0.1:8080/api/dogs?limit=10&id=136&name=test_name,test_nam&color=test_color&select=IdName&order_by=column=id,order=asc&offset=1 HTTP/1.1
 Accept: */*
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
 
-PATCH http://127.0.0.1:8080/api/cats/168 HTTP/1.1
+PATCH http://127.0.0.1:8080/api/dogs/168 HTTP/1.1
 Accept: */*
 content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
@@ -125,7 +125,7 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ### fix this
 
-PATCH http://127.0.0.1:8080/api/cats/batch HTTP/1.1
+PATCH http://127.0.0.1:8080/api/dogs/batch HTTP/1.1
 Accept: */* 
 content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
