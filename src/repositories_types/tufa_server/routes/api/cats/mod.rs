@@ -666,7 +666,7 @@ pub enum TryDeleteManyWithBody {
     #[tvfrr_400_bad_request]
     NotUniquePrimaryKey {
         #[eo_vec_display_with_serialize_deserialize]
-        not_unique_primary_keys: Vec<i64>,
+        not_unique_primary_keys: Vec<std::string::String>,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_400_bad_request]
@@ -701,15 +701,15 @@ pub enum TryDeleteManyWithBody {
     },
     #[tvfrr_400_bad_request]
     NonExistingPrimaryKeys {
-        #[eo_vec_display]
-        non_existing_primary_keys: Vec<i64>,
+        #[eo_vec_display_with_serialize_deserialize]
+        non_existing_primary_keys: Vec<std::string::String>,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_400_bad_request]
     //todo what status code should return if non_existing_primary_keys = 400, but transaction rollback failed = 500
     NonExistingPrimaryKeysAndFailedRollback {
-        #[eo_vec_display]
-        non_existing_primary_keys: Vec<i64>,
+        #[eo_vec_display_with_serialize_deserialize]
+        non_existing_primary_keys: Vec<std::string::String>,
         #[eo_display]
         rollback_error: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence,
