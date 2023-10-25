@@ -14,3 +14,4 @@ pub mod postgres_delete_all_from_providers_link_parts_tables;
 pub mod postgres_insert_link_parts_into_providers_tables;
 pub mod regex_filter;
 pub mod sqlx_postgres_error;
+pub mod uuid_wrapper;
