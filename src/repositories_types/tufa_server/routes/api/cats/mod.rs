@@ -1897,7 +1897,7 @@ pub struct ReadOneParameters {
 }
 #[derive(Debug, serde :: Deserialize)]
 pub struct ReadOnePath {
-    pub id: crate::server::postgres::bigserial::Bigserial,
+    pub id: crate::server::postgres::uuid_wrapper::UuidWrapper,
 }
 #[derive(Debug, serde :: Serialize, serde :: Deserialize)]
 pub struct ReadOneQuery {

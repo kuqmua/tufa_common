@@ -77,6 +77,28 @@ impl std::convert::TryFrom<&str> for UuidWrapper {
     }
 }
 
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum UuidWrapperTryIntoSqlxTypesUuidErrorNamed {
+    NotUuid {
+        #[eo_display]
+        not_uuid: sqlx::types::uuid::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+}
+
+impl std::convert::TryInto<sqlx::types::Uuid> for UuidWrapper {
+    type Error = UuidWrapperTryIntoSqlxTypesUuidErrorNamed;
+    fn try_into(self) -> Result<sqlx::types::Uuid, Self::Error> {
+        match sqlx::types::Uuid::parse_str(self.to_inner()) {
+            Ok(value) => Ok(value),
+            Err(e) => Err(UuidWrapperTryIntoSqlxTypesUuidErrorNamed::NotUuid {
+                not_uuid: e,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            }),
+        }
+    }
+}
+
 impl crate::server::postgres::bind_query::BindQuery for UuidWrapper {
     fn try_increment(
         &self,
@@ -115,7 +137,9 @@ impl crate::server::postgres::bind_query::BindQuery for UuidWrapper {
         self,
         mut query: sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments>,
     ) -> sqlx::query::Query<sqlx::Postgres, sqlx::postgres::PgArguments> {
-        query = query.bind(self.into_inner());
+        let f: Result<sqlx::types::Uuid, UuidWrapperTryIntoSqlxTypesUuidErrorNamed> =
+            self.try_into();
+        query = query.bind(f.unwrap());
         query
     }
 }
