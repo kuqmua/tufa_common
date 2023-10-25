@@ -99,6 +99,12 @@ impl std::convert::TryInto<sqlx::types::Uuid> for UuidWrapper {
     }
 }
 
+impl std::convert::From<sqlx::types::Uuid> for UuidWrapper {
+    fn from(value: sqlx::types::Uuid) -> UuidWrapper {
+        Self(value.to_string())
+    }
+}
+
 impl crate::server::postgres::bind_query::BindQuery for UuidWrapper {
     fn try_increment(
         &self,
