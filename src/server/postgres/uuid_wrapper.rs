@@ -77,6 +77,19 @@ impl std::convert::TryFrom<&str> for UuidWrapper {
     }
 }
 
+impl std::convert::TryFrom<std::string::String> for UuidWrapper {
+    type Error = UuidWrapperTryFromStrErrorNamed;
+    fn try_from(value: std::string::String) -> Result<Self, Self::Error> {
+        match sqlx::types::Uuid::parse_str(&value) {
+            Ok(_) => Ok(UuidWrapper(value.to_string())),
+            Err(e) => Err(UuidWrapperTryFromStrErrorNamed::NotUuid {
+                not_uuid: e,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            }),
+        }
+    }
+}
+
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum UuidWrapperTryIntoSqlxTypesUuidErrorNamed {
     NotUuid {
