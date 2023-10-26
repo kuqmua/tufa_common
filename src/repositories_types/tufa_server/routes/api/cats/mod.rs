@@ -1111,6 +1111,13 @@ pub enum TryReadOne {
         failed_to_deserialize_query_string: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
+    #[tvfrr_400_bad_request]
+    UuidWrapperTryIntoSqlxTypesUuid {
+        #[eo_error_occurence]
+        uuid_wrapper_try_into_sqlx_types:
+            crate::server::postgres::uuid_wrapper::UuidWrapperTryIntoSqlxTypesUuidErrorNamed,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
     //#[non_exhaustive] case
     #[tvfrr_500_internal_server_error]
     UnexpectedCase {
@@ -2015,10 +2022,26 @@ extract :: State < crate :: repositories_types :: tufa_server :: routes :: api
         println!("{}", query_string);
         let binded_query = {
             let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
-            query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
-                parameters.path.id,
-                query,
-            );
+            let try_into_result: Result<
+                sqlx::types::Uuid,
+                crate::server::postgres::uuid_wrapper::UuidWrapperTryIntoSqlxTypesUuidErrorNamed,
+            > = parameters.path.id.try_into();
+            match try_into_result {
+                Ok(value) => {
+                    query = query.bind(value);
+                }
+                Err(e) => {
+                    let error = TryReadOne::UuidWrapperTryIntoSqlxTypesUuid {
+                        uuid_wrapper_try_into_sqlx_types: e,
+                        code_occurence: crate::code_occurence_tufa_common!(),
+                    };
+                    crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                        &error,
+                        app_info_state.as_ref(),
+                    );
+                    return TryReadOneResponseVariants::from(error);
+                }
+            }
             query
         };
         let mut pool_connection = match app_info_state.get_postgres_pool().acquire().await {
