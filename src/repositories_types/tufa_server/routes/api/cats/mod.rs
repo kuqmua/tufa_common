@@ -29,12 +29,6 @@ pub struct Dog {
     pub color: String,
 }
 
-// #[derive(Debug, serde_derive::Serialize, serde_derive::Deserialize)]
-// pub struct PossibleUuid(std::string::String);
-
-// #[derive(Debug)]
-// pub struct SqlxTypesUuidWrapper(sqlx::types::Uuid);
-
 #[derive(
     Debug,
     thiserror::Error,
@@ -1112,10 +1106,10 @@ pub enum TryReadOne {
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_400_bad_request]
-    UuidWrapperTryIntoSqlxTypesUuid {
+    PossibleUuidWrapperTryIntoSqlxTypesUuid {
         #[eo_error_occurence]
         uuid_wrapper_try_into_sqlx_types:
-            crate::server::postgres::uuid_wrapper::UuidWrapperTryIntoSqlxTypesUuidErrorNamed,
+            crate::server::postgres::uuid_wrapper::PossibleUuidWrapperTryIntoSqlxTypesUuidErrorNamed,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     //#[non_exhaustive] case
@@ -1903,3 +1897,195 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
+#[derive(Debug, serde :: Deserialize)]
+pub struct ReadOneParameters {
+    pub path: ReadOnePath,
+    pub query: ReadOneQuery,
+}
+#[derive(Debug, serde :: Deserialize)]
+pub struct ReadOnePath {
+    pub id: crate::server::postgres::uuid_wrapper::PossibleUuidWrapper,
+}
+#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
+pub struct ReadOneQuery {
+    pub select: Option<DogColumnSelect>,
+}
+#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
+struct ReadOneQueryForUrlEncoding {
+    select: Option<std::string::String>,
+}
+impl ReadOneQuery {
+    fn into_url_encoding_version(self) -> ReadOneQueryForUrlEncoding {
+        let select = self.select.map(|value| {
+            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                value,
+            )
+        });
+        ReadOneQueryForUrlEncoding { select }
+    }
+}
+#[derive(Debug, thiserror :: Error, error_occurence :: ErrorOccurence)]
+pub enum TryReadOneErrorNamed {
+    QueryEncode {
+        #[eo_display]
+        url_encoding: serde_urlencoded::ser::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    RequestError {
+        #[eo_error_occurence]
+        request_error: TryReadOneRequestError,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+}
+pub async fn try_read_one(
+    server_location: &str,
+    parameters: ReadOneParameters,
+) -> Result<DogOptions, TryReadOneErrorNamed> {
+    let encoded_query =
+        match serde_urlencoded::to_string(parameters.query.into_url_encoding_version()) {
+            Ok(value) => value,
+            Err(e) => {
+                return Err(TryReadOneErrorNamed::QueryEncode {
+                    url_encoding: e,
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                });
+            }
+        };
+    let url = format!(
+        "{}/dogs/{}?{}",
+        server_location, parameters.path.id, encoded_query
+    );
+    match tvfrr_extraction_logic_try_read_one(
+        reqwest::Client::new()
+            .get(&url)
+            .header(
+                crate::common::git::project_git_info::PROJECT_COMMIT,
+                crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
+                    .project_commit,
+            )
+            .send(),
+    )
+    .await
+    {
+        Ok(value) => Ok(value),
+        Err(e) => Err(TryReadOneErrorNamed::RequestError {
+            request_error: e,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        }),
+    }
+}
+pub async fn read_one(
+    path_extraction_result: Result<
+        axum::extract::Path<ReadOnePath>,
+        axum::extract::rejection::PathRejection,
+    >,
+    query_extraction_result: Result<
+        axum::extract::Query<ReadOneQuery>,
+        axum::extract::rejection::QueryRejection,
+    >,
+    app_info_state : axum ::
+extract :: State < crate :: repositories_types :: tufa_server :: routes :: api
+:: cats :: DynArcGetConfigGetPostgresPoolSendSync >,
+) -> impl axum::response::IntoResponse {
+    let parameters = ReadOneParameters {
+        path: match crate::server::routes::helpers::path_extractor_error::PathValueResultExtractor::<
+            ReadOnePath,
+            TryReadOneResponseVariants,
+        >::try_extract_value(path_extraction_result, &app_info_state)
+        {
+            Ok(value) => value,
+            Err(err) => {
+                return err;
+            }
+        },
+        query:
+            match crate::server::routes::helpers::query_extractor_error::QueryValueResultExtractor::<
+                ReadOneQuery,
+                TryReadOneResponseVariants,
+            >::try_extract_value(query_extraction_result, &app_info_state)
+            {
+                Ok(value) => value,
+                Err(err) => {
+                    return err;
+                }
+            },
+    };
+    println!("{:#?}", parameters);
+    {
+        let select = parameters.query.select.unwrap_or_default();
+        let query_string = {
+            format!(
+                "select {} from dogs where id = $1",
+                crate::server::postgres::generate_query::GenerateQuery::generate_query(&select),
+            )
+        };
+        println!("{}", query_string);
+        let binded_query = {
+            let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
+            let try_into_result: Result<
+                sqlx::types::Uuid,
+                crate::server::postgres::uuid_wrapper::PossibleUuidWrapperTryIntoSqlxTypesUuidErrorNamed,
+            > = parameters.path.id.try_into();
+            match try_into_result {
+                Ok(value) => {
+                    query = query.bind(value);
+                }
+                Err(e) => {
+                    let error = TryReadOne::PossibleUuidWrapperTryIntoSqlxTypesUuid {
+                        uuid_wrapper_try_into_sqlx_types: e,
+                        code_occurence: crate::code_occurence_tufa_common!(),
+                    };
+                    crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                        &error,
+                        app_info_state.as_ref(),
+                    );
+                    return TryReadOneResponseVariants::from(error);
+                }
+            }
+            query
+        };
+        let mut pool_connection = match app_info_state.get_postgres_pool().acquire().await {
+            Ok(value) => value,
+            Err(e) => {
+                let error = TryReadOne::from(e);
+                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                    &error,
+                    app_info_state.as_ref(),
+                );
+                return TryReadOneResponseVariants::from(error);
+            }
+        };
+        let pg_connection = match sqlx::Acquire::acquire(&mut pool_connection).await {
+            Ok(value) => value,
+            Err(e) => {
+                let error = TryReadOne::from(e);
+                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                    &error,
+                    app_info_state.as_ref(),
+                );
+                return TryReadOneResponseVariants::from(error);
+            }
+        };
+        match binded_query.fetch_one(pg_connection.as_mut()).await {
+            Ok(row) => match select.options_try_from_sqlx_row(&row) {
+                Ok(value) => TryReadOneResponseVariants::Desirable(value),
+                Err(e) => {
+                    let error = TryReadOne::from(e);
+                    crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                        &error,
+                        app_info_state.as_ref(),
+                    );
+                    return TryReadOneResponseVariants::from(error);
+                }
+            },
+            Err(e) => {
+                let error = TryReadOne::from(e);
+                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                    &error,
+                    app_info_state.as_ref(),
+                );
+                return TryReadOneResponseVariants::from(error);
+            }
+        }
+    }
+}

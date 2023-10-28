@@ -1,9 +1,14 @@
+//
+// #[derive(Debug)]
+// pub struct UuidWrapper(sqlx::types::Uuid);
+//
+
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
-pub struct UuidWrapper(#[serde(deserialize_with = "deserialize_uuid_wrapper")] std::string::String); //sqlx::types::Uuid
+pub struct PossibleUuidWrapper(#[serde(deserialize_with = "deserialize_uuid_wrapper")] std::string::String); //sqlx::types::Uuid
 
 // DB is the database driver
 // `'r` is the lifetime of the `Row` being decoded
-impl<'r, DB: sqlx::Database> sqlx::Decode<'r, DB> for UuidWrapper
+impl<'r, DB: sqlx::Database> sqlx::Decode<'r, DB> for PossibleUuidWrapper
 where
     // we want to delegate some of the work to string decoding so let's make sure strings
     // are supported by the database
@@ -11,7 +16,7 @@ where
 {
     fn decode(
         value: <DB as sqlx::database::HasValueRef<'r>>::ValueRef,
-    ) -> Result<UuidWrapper, Box<dyn std::error::Error + 'static + Send + Sync>> {
+    ) -> Result<PossibleUuidWrapper, Box<dyn std::error::Error + 'static + Send + Sync>> {
         // the interface of ValueRef is largely unstable at the moment
         // so this is not directly implementable
 
@@ -24,7 +29,7 @@ where
     }
 }
 
-impl UuidWrapper {
+impl PossibleUuidWrapper {
     pub fn to_inner(&self) -> &std::string::String {
         &self.0
     }
@@ -39,24 +44,24 @@ where
 {
     use serde::Deserialize;
     let value = std::string::String::deserialize(deserializer)?;
-    match UuidWrapper::try_from(value.as_str()) {
+    match PossibleUuidWrapper::try_from(value.as_str()) {
         Ok(_) => Ok(value),
         Err(e) => match e {
-            UuidWrapperTryFromStrErrorNamed::NotUuid { not_uuid, code_occurence } => Err(serde::de::Error::custom(&format!(
-                "invalid type: Postgresql UuidWrapper, expected Postgresql Uuid. Error: `{not_uuid}` code_occurence: `{code_occurence}`")
+            PossibleUuidWrapperTryFromStrErrorNamed::NotUuid { not_uuid, code_occurence } => Err(serde::de::Error::custom(&format!(
+                "invalid type: Postgresql PossibleUuidWrapper, expected Postgresql Uuid. Error: `{not_uuid}` code_occurence: `{code_occurence}`")
             )),
         },
     }
 }
 
-impl std::fmt::Display for UuidWrapper {
+impl std::fmt::Display for PossibleUuidWrapper {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.0)
     }
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum UuidWrapperTryFromStrErrorNamed {
+pub enum PossibleUuidWrapperTryFromStrErrorNamed {
     NotUuid {
         #[eo_display]
         not_uuid: sqlx::types::uuid::Error,
@@ -64,12 +69,12 @@ pub enum UuidWrapperTryFromStrErrorNamed {
     },
 }
 
-impl std::convert::TryFrom<&str> for UuidWrapper {
-    type Error = UuidWrapperTryFromStrErrorNamed;
+impl std::convert::TryFrom<&str> for PossibleUuidWrapper {
+    type Error = PossibleUuidWrapperTryFromStrErrorNamed;
     fn try_from(value: &str) -> Result<Self, Self::Error> {
         match sqlx::types::Uuid::parse_str(value) {
-            Ok(_) => Ok(UuidWrapper(value.to_string())),
-            Err(e) => Err(UuidWrapperTryFromStrErrorNamed::NotUuid {
+            Ok(_) => Ok(PossibleUuidWrapper(value.to_string())),
+            Err(e) => Err(PossibleUuidWrapperTryFromStrErrorNamed::NotUuid {
                 not_uuid: e,
                 code_occurence: crate::code_occurence_tufa_common!(),
             }),
@@ -77,12 +82,12 @@ impl std::convert::TryFrom<&str> for UuidWrapper {
     }
 }
 
-impl std::convert::TryFrom<std::string::String> for UuidWrapper {
-    type Error = UuidWrapperTryFromStrErrorNamed;
+impl std::convert::TryFrom<std::string::String> for PossibleUuidWrapper {
+    type Error = PossibleUuidWrapperTryFromStrErrorNamed;
     fn try_from(value: std::string::String) -> Result<Self, Self::Error> {
         match sqlx::types::Uuid::parse_str(&value) {
-            Ok(_) => Ok(UuidWrapper(value.to_string())),
-            Err(e) => Err(UuidWrapperTryFromStrErrorNamed::NotUuid {
+            Ok(_) => Ok(PossibleUuidWrapper(value.to_string())),
+            Err(e) => Err(PossibleUuidWrapperTryFromStrErrorNamed::NotUuid {
                 not_uuid: e,
                 code_occurence: crate::code_occurence_tufa_common!(),
             }),
@@ -91,7 +96,7 @@ impl std::convert::TryFrom<std::string::String> for UuidWrapper {
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum UuidWrapperTryIntoSqlxTypesUuidErrorNamed {
+pub enum PossibleUuidWrapperTryIntoSqlxTypesUuidErrorNamed {
     NotUuid {
         #[eo_display]
         not_uuid: sqlx::types::uuid::Error,
@@ -99,12 +104,12 @@ pub enum UuidWrapperTryIntoSqlxTypesUuidErrorNamed {
     },
 }
 
-impl std::convert::TryInto<sqlx::types::Uuid> for UuidWrapper {
-    type Error = UuidWrapperTryIntoSqlxTypesUuidErrorNamed;
+impl std::convert::TryInto<sqlx::types::Uuid> for PossibleUuidWrapper {
+    type Error = PossibleUuidWrapperTryIntoSqlxTypesUuidErrorNamed;
     fn try_into(self) -> Result<sqlx::types::Uuid, Self::Error> {
         match sqlx::types::Uuid::parse_str(self.to_inner()) {
             Ok(value) => Ok(value),
-            Err(e) => Err(UuidWrapperTryIntoSqlxTypesUuidErrorNamed::NotUuid {
+            Err(e) => Err(PossibleUuidWrapperTryIntoSqlxTypesUuidErrorNamed::NotUuid {
                 not_uuid: e,
                 code_occurence: crate::code_occurence_tufa_common!(),
             }),
@@ -112,19 +117,19 @@ impl std::convert::TryInto<sqlx::types::Uuid> for UuidWrapper {
     }
 }
 
-impl std::convert::From<sqlx::types::Uuid> for UuidWrapper {
-    fn from(value: sqlx::types::Uuid) -> UuidWrapper {
+impl std::convert::From<sqlx::types::Uuid> for PossibleUuidWrapper {
+    fn from(value: sqlx::types::Uuid) -> PossibleUuidWrapper {
         Self(value.to_string())
     }
 }
 
-impl crate::common::serde_urlencoded::SerdeUrlencodedParameter for UuidWrapper {
+impl crate::common::serde_urlencoded::SerdeUrlencodedParameter for PossibleUuidWrapper {
     fn serde_urlencoded_parameter(self) -> std::string::String {
         self.0
     }
 }
 
-impl crate::common::serde_urlencoded::SerdeUrlencodedParameter for Vec<UuidWrapper> {
+impl crate::common::serde_urlencoded::SerdeUrlencodedParameter for Vec<PossibleUuidWrapper> {
     fn serde_urlencoded_parameter(self) -> std::string::String {
         let mut value = std::string::String::from("");
         for element in self {
