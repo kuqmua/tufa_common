@@ -1918,8 +1918,18 @@ pub enum ReadOneParametersTryFromReadOneParametersWithSerializeDeserializeErrorN
 impl std::convert::TryFrom<ReadOneParametersWithSerializeDeserialize> for ReadOneParameters {
     type Error = ReadOneParametersTryFromReadOneParametersWithSerializeDeserializeErrorNamed;
     fn try_from(value: ReadOneParametersWithSerializeDeserialize) -> Result<Self, Self::Error> {
-        let path = todo!();
-        let query = todo!();
+        let path = match ReadOnePath::try_from(value.path) {
+            Ok(value) => value,
+            Err(e) => {
+                todo!()
+            }
+        };
+        let query = match ReadOneQuery::try_from(value.query) {
+            Ok(value) => value,
+            Err(e) => {
+                todo!()
+            }
+        };
         Ok(Self {
             path,
             query,
@@ -1960,13 +1970,9 @@ impl std::convert::TryFrom<ReadOnePathForUrlEncoding> for ReadOnePath {
     }
 }
 //
-#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
+#[derive(Debug)]
 pub struct ReadOneQuery {
     pub select: Option<DogColumnSelect>,
-}
-#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
-struct ReadOneQueryForUrlEncoding {
-    select: Option<std::string::String>,
 }
 impl ReadOneQuery {
     fn into_url_encoding_version(self) -> ReadOneQueryForUrlEncoding {
@@ -1978,6 +1984,28 @@ impl ReadOneQuery {
         ReadOneQueryForUrlEncoding { select }
     }
 }
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum ReadOneQueryTryFromReadOneQueryForUrlEncodingErrorNamed {
+    Todo {
+        #[eo_display_with_serialize_deserialize]
+        todo: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+}
+impl std::convert::TryFrom<ReadOneQueryForUrlEncoding> for ReadOneQuery {
+    type Error = ReadOneQueryTryFromReadOneQueryForUrlEncodingErrorNamed;
+    fn try_from(value: ReadOneQueryForUrlEncoding) -> Result<Self, Self::Error> {
+        let select = todo!();
+        Ok(Self {
+            select
+        })
+    }
+}
+#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
+struct ReadOneQueryForUrlEncoding {
+    select: Option<std::string::String>,
+}
+
 #[derive(Debug, thiserror :: Error, error_occurence :: ErrorOccurence)]
 pub enum TryReadOneErrorNamed {
     QueryEncode {
