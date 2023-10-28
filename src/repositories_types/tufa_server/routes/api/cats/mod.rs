@@ -2022,26 +2022,26 @@ extract :: State < crate :: repositories_types :: tufa_server :: routes :: api
         println!("{}", query_string);
         let binded_query = {
             let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
-            let try_into_result: Result<
-                sqlx::types::Uuid,
-                crate::server::postgres::uuid_wrapper::PossibleUuidWrapperTryIntoSqlxTypesUuidErrorNamed,
-            > = parameters.path.id.try_into();
-            match try_into_result {
-                Ok(value) => {
-                    query = query.bind(value);
-                }
-                Err(e) => {
-                    let error = TryReadOne::PossibleUuidWrapperTryIntoSqlxTypesUuid {
-                        uuid_wrapper_try_into_sqlx_types: e,
-                        code_occurence: crate::code_occurence_tufa_common!(),
-                    };
-                    crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                        &error,
-                        app_info_state.as_ref(),
-                    );
-                    return TryReadOneResponseVariants::from(error);
-                }
-            }
+            // let try_into_result: Result<
+            //     sqlx::types::Uuid,
+            //     crate::server::postgres::uuid_wrapper::PossibleUuidWrapperTryIntoSqlxTypesUuidErrorNamed,
+            // > = parameters.path.id.try_into();
+            // match try_into_result {
+            //     Ok(value) => {
+            //         query = query.bind(value);
+            //     }
+            //     Err(e) => {
+            //         let error = TryReadOne::PossibleUuidWrapperTryIntoSqlxTypesUuid {
+            //             uuid_wrapper_try_into_sqlx_types: e,
+            //             code_occurence: crate::code_occurence_tufa_common!(),
+            //         };
+            //         crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+            //             &error,
+            //             app_info_state.as_ref(),
+            //         );
+            //         return TryReadOneResponseVariants::from(error);
+            //     }
+            // }
             query
         };
         let mut pool_connection = match app_info_state.get_postgres_pool().acquire().await {

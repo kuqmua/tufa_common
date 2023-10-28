@@ -1,6 +1,6 @@
 //
-// #[derive(Debug)]
-// pub struct UuidWrapper(sqlx::types::Uuid);
+#[derive(Debug)]
+pub struct UuidWrapper(sqlx::types::Uuid);
 //
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -29,14 +29,14 @@ where
     }
 }
 
-impl PossibleUuidWrapper {
-    pub fn to_inner(&self) -> &std::string::String {
-        &self.0
-    }
-    pub fn into_inner(self) -> std::string::String {
-        self.0
-    }
-}
+// impl PossibleUuidWrapper {
+//     pub fn to_inner(&self) -> &std::string::String {
+//         &self.0
+//     }
+//     pub fn into_inner(self) -> std::string::String {
+//         self.0
+//     }
+// }
 
 fn deserialize_uuid_wrapper<'de, D>(deserializer: D) -> Result<std::string::String, D::Error>
 where
@@ -104,18 +104,18 @@ pub enum PossibleUuidWrapperTryIntoSqlxTypesUuidErrorNamed {
     },
 }
 
-impl std::convert::TryInto<sqlx::types::Uuid> for PossibleUuidWrapper {
-    type Error = PossibleUuidWrapperTryIntoSqlxTypesUuidErrorNamed;
-    fn try_into(self) -> Result<sqlx::types::Uuid, Self::Error> {
-        match sqlx::types::Uuid::parse_str(self.to_inner()) {
-            Ok(value) => Ok(value),
-            Err(e) => Err(PossibleUuidWrapperTryIntoSqlxTypesUuidErrorNamed::NotUuid {
-                not_uuid: e,
-                code_occurence: crate::code_occurence_tufa_common!(),
-            }),
-        }
-    }
-}
+// impl std::convert::TryInto<sqlx::types::Uuid> for PossibleUuidWrapper {
+//     type Error = PossibleUuidWrapperTryIntoSqlxTypesUuidErrorNamed;
+//     fn try_into(self) -> Result<sqlx::types::Uuid, Self::Error> {
+//         match sqlx::types::Uuid::parse_str(self.to_inner()) {
+//             Ok(value) => Ok(value),
+//             Err(e) => Err(PossibleUuidWrapperTryIntoSqlxTypesUuidErrorNamed::NotUuid {
+//                 not_uuid: e,
+//                 code_occurence: crate::code_occurence_tufa_common!(),
+//             }),
+//         }
+//     }
+// }
 
 impl std::convert::From<sqlx::types::Uuid> for PossibleUuidWrapper {
     fn from(value: sqlx::types::Uuid) -> PossibleUuidWrapper {
