@@ -1105,13 +1105,12 @@ pub enum TryReadOne {
         failed_to_deserialize_query_string: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
-    // #[tvfrr_400_bad_request]
-    // PossibleUuidWrapperTryIntoSqlxTypesUuid {
-    //     #[eo_error_occurence]
-    //     uuid_wrapper_try_into_sqlx_types:
-    //         crate::server::postgres::uuid_wrapper::PossibleUuidWrapperTryIntoSqlxTypesUuidErrorNamed,
-    //     code_occurence: crate::common::code_occurence::CodeOccurence,
-    // },
+    #[tvfrr_400_bad_request]
+    ReadOnePathTryFromReadOnePathForUrlEncoding {
+        #[eo_error_occurence]
+        read_one_path_try_from_read_one_path_for_url_encoding: ReadOnePathTryFromReadOnePathForUrlEncodingErrorNamed,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
     //#[non_exhaustive] case
     #[tvfrr_500_internal_server_error]
     UnexpectedCase {
@@ -1902,46 +1901,12 @@ pub struct ReadOneParameters {
     pub path: ReadOnePath,
     pub query: ReadOneQuery,
 }
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub struct ReadOneParametersWithSerializeDeserialize {
-    pub path: ReadOnePathForUrlEncoding,
-    pub query: ReadOneQueryForUrlEncoding,
-}
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum ReadOneParametersTryFromReadOneParametersWithSerializeDeserializeErrorNamed {
-    NotUuid {
-        #[eo_error_occurence]
-        not_uuid: crate::server::postgres::uuid_wrapper::UuidWrapperTryFromPossibleUuidWrapperErrorNamed,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-}
-impl std::convert::TryFrom<ReadOneParametersWithSerializeDeserialize> for ReadOneParameters {
-    type Error = ReadOneParametersTryFromReadOneParametersWithSerializeDeserializeErrorNamed;
-    fn try_from(value: ReadOneParametersWithSerializeDeserialize) -> Result<Self, Self::Error> {
-        let path = match ReadOnePath::try_from(value.path) {
-            Ok(value) => value,
-            Err(e) => {
-                todo!()
-            }
-        };
-        let query = match ReadOneQuery::try_from(value.query) {
-            Ok(value) => value,
-            Err(e) => {
-                todo!()
-            }
-        };
-        Ok(Self {
-            path,
-            query,
-        })
-    }
-}
 #[derive(Debug)]
 pub struct ReadOnePath {
     pub id: crate::server::postgres::uuid_wrapper::UuidWrapper,
 }
 #[derive(Debug, serde :: Serialize, serde :: Deserialize)]
-struct ReadOnePathForUrlEncoding {
+pub struct ReadOnePathForUrlEncoding {
     id: crate::server::postgres::uuid_wrapper::PossibleUuidWrapper,
 }
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
@@ -1970,7 +1935,7 @@ impl std::convert::TryFrom<ReadOnePathForUrlEncoding> for ReadOnePath {
     }
 }
 //
-#[derive(Debug)]
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct ReadOneQuery {
     pub select: Option<DogColumnSelect>,
 }
@@ -1984,25 +1949,8 @@ impl ReadOneQuery {
         ReadOneQueryForUrlEncoding { select }
     }
 }
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum ReadOneQueryTryFromReadOneQueryForUrlEncodingErrorNamed {
-    Todo {
-        #[eo_display_with_serialize_deserialize]
-        todo: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-}
-impl std::convert::TryFrom<ReadOneQueryForUrlEncoding> for ReadOneQuery {
-    type Error = ReadOneQueryTryFromReadOneQueryForUrlEncodingErrorNamed;
-    fn try_from(value: ReadOneQueryForUrlEncoding) -> Result<Self, Self::Error> {
-        let select = todo!();
-        Ok(Self {
-            select
-        })
-    }
-}
 #[derive(Debug, serde :: Serialize, serde :: Deserialize)]
-struct ReadOneQueryForUrlEncoding {
+pub struct ReadOneQueryForUrlEncoding {
     select: Option<std::string::String>,
 }
 
@@ -2062,7 +2010,7 @@ pub async fn read_one(
         axum::extract::rejection::PathRejection,
     >,
     query_extraction_result: Result<
-        axum::extract::Query<ReadOneQueryForUrlEncoding>,
+        axum::extract::Query<ReadOneQuery>,
         axum::extract::rejection::QueryRejection,
     >,
     app_info_state : axum ::
@@ -2070,18 +2018,31 @@ extract :: State < crate :: repositories_types :: tufa_server :: routes :: api
 :: cats :: DynArcGetConfigGetPostgresPoolSendSync >,
 ) -> impl axum::response::IntoResponse {
     let parameters = {
-        let parameters_with_serialize_deserialize = ReadOneParametersWithSerializeDeserialize {
+        let parameters_with_serialize_deserialize = ReadOneParameters {
             path: match crate::server::routes::helpers::path_extractor_error::PathValueResultExtractor::<
                 ReadOnePathForUrlEncoding,
                 TryReadOneResponseVariants,
             >::try_extract_value(path_extraction_result, &app_info_state) {
-                Ok(value) => value,
+                Ok(value) => match ReadOnePath::try_from(value) {
+                    Ok(value) => value,
+                    Err(e) => {
+                        let error = TryReadOne::ReadOnePathTryFromReadOnePathForUrlEncoding {
+                            read_one_path_try_from_read_one_path_for_url_encoding: e,
+                            code_occurence: crate::code_occurence_tufa_common!(),
+                        };
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return TryReadOneResponseVariants::from(error);
+                    }
+                },
                 Err(err) => {
                     return err;
                 }
             },
             query: match crate::server::routes::helpers::query_extractor_error::QueryValueResultExtractor::<
-                ReadOneQueryForUrlEncoding,
+                ReadOneQuery,
                 TryReadOneResponseVariants,
             >::try_extract_value(query_extraction_result, &app_info_state) {
                 Ok(value) => value,
@@ -2110,13 +2071,14 @@ extract :: State < crate :: repositories_types :: tufa_server :: routes :: api
         println!("{}", query_string);
         let binded_query = {
             let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
+            query = query.bind(parameters.path.id.into_inner());
             // let try_into_result: Result<
             //     sqlx::types::Uuid,
             //     crate::server::postgres::uuid_wrapper::PossibleUuidWrapperTryIntoSqlxTypesUuidErrorNamed,
-            // > = parameters.path.id.try_into();
+            // > = );
             // match try_into_result {
             //     Ok(value) => {
-            //         query = query.bind(value);
+                    
             //     }
             //     Err(e) => {
             //         let error = TryReadOne::PossibleUuidWrapperTryIntoSqlxTypesUuid {
