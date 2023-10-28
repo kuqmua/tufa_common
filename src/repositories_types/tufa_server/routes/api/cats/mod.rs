@@ -1105,13 +1105,13 @@ pub enum TryReadOne {
         failed_to_deserialize_query_string: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
-    #[tvfrr_400_bad_request]
-    PossibleUuidWrapperTryIntoSqlxTypesUuid {
-        #[eo_error_occurence]
-        uuid_wrapper_try_into_sqlx_types:
-            crate::server::postgres::uuid_wrapper::PossibleUuidWrapperTryIntoSqlxTypesUuidErrorNamed,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
+    // #[tvfrr_400_bad_request]
+    // PossibleUuidWrapperTryIntoSqlxTypesUuid {
+    //     #[eo_error_occurence]
+    //     uuid_wrapper_try_into_sqlx_types:
+    //         crate::server::postgres::uuid_wrapper::PossibleUuidWrapperTryIntoSqlxTypesUuidErrorNamed,
+    //     code_occurence: crate::common::code_occurence::CodeOccurence,
+    // },
     //#[non_exhaustive] case
     #[tvfrr_500_internal_server_error]
     UnexpectedCase {
