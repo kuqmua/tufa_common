@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct UuidWrapper(sqlx::types::Uuid);
 
 impl UuidWrapper {
