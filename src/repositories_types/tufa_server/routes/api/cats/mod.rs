@@ -1832,8 +1832,8 @@ pub enum TryUpdateMany {
     //
     #[tvfrr_400_bad_request]
     NotUniquePrimaryKey {
-        #[eo_vec_display_with_serialize_deserialize]
-        not_unique_primary_keys: Vec<std::string::String>,
+        #[eo_vec_display]
+        not_unique_primary_keys: Vec<crate::server::postgres::uuid_wrapper::UuidWrapper>,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_500_internal_server_error]
@@ -2055,7 +2055,7 @@ tufa_server :: routes :: api :: cats :: DynArcGetConfigGetPostgresPoolSendSync
                 .payload
                 .iter()
                 .map(|element| element.id.clone())
-                .collect::<Vec<std::string::String>>()
+                .collect::<Vec<crate::server::postgres::uuid_wrapper::UuidWrapper>>()
         };
         let binded_query = {
             let query_string = {
@@ -2080,8 +2080,8 @@ tufa_server :: routes :: api :: cats :: DynArcGetConfigGetPostgresPoolSendSync
             query = query.bind(
                 id_vec
                     .into_iter()
-                    .map(|element| element.clone())
-                    .collect::<Vec<std::string::String>>(),
+                    .map(|element| element.into_inner())
+                    .collect::<Vec<sqlx::types::Uuid>>(),
             );
             query = query.bind(name_vec);
             query = query.bind(color_vec);
