@@ -117,8 +117,14 @@ impl std::fmt::Display for PossibleUuidWrapper {
 }
 
 impl std::convert::From<sqlx::types::Uuid> for PossibleUuidWrapper {
-    fn from(value: sqlx::types::Uuid) -> PossibleUuidWrapper {
+    fn from(value: sqlx::types::Uuid) -> Self {
         Self(value.to_string())
+    }
+}
+
+impl std::convert::From<UuidWrapper> for PossibleUuidWrapper {
+    fn from(value: UuidWrapper) -> Self {
+        Self(value.into_inner().to_string())
     }
 }
 
