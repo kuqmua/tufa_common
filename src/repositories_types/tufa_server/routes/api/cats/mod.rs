@@ -1894,7 +1894,7 @@ pub enum TryUpdateMany {
     #[tvfrr_400_bad_request]
     UpdateManyPayloadElementTryFromUpdateManyPayloadElementWithSerializeDeserialize {
         #[eo_error_occurence]
-        update_many_payload_try_from_update_many_paylaod_with_serialize_deserialize: UpdateManyPayloadElementTryFromUpdateManyPayloadElementWithSerializeDeserializeErrorNamed,
+        update_many_payload_element_try_from_update_many_payload_element_with_serialize_deserialize: UpdateManyPayloadElementTryFromUpdateManyPayloadElementWithSerializeDeserializeErrorNamed,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     //#[non_exhaustive] case
@@ -1907,286 +1907,284 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-pub async fn update_many<'a>(
-    app_info_state : axum :: extract :: State < crate :: repositories_types ::
-tufa_server :: routes :: api :: cats :: DynArcGetConfigGetPostgresPoolSendSync
->,
-    payload_extraction_result: Result<
-        axum::Json<Vec<UpdateManyPayloadElementWithSerializeDeserialize>>,
-        axum::extract::rejection::JsonRejection,
-    >,
-) -> impl axum::response::IntoResponse {
-    let parameters = UpdateManyParameters {
-        payload:
-            match crate::server::routes::helpers::json_extractor_error::JsonValueResultExtractor::<
-                Vec<UpdateManyPayloadElementWithSerializeDeserialize>,
-                TryUpdateManyResponseVariants,
-            >::try_extract_value(payload_extraction_result, &app_info_state)
-            {
-                Ok(value) => {
-                    let result = value.into_iter().map(|element|UpdateManyPayloadElement::try_from(element)).collect::<Result<Vec<UpdateManyPayloadElement>, UpdateManyPayloadElementTryFromUpdateManyPayloadElementWithSerializeDeserializeErrorNamed>>();
-                    match result {
-                        Ok(value) => value,
-                        Err(e) => {
-                            let error = TryUpdateMany::UpdateManyPayloadElementTryFromUpdateManyPayloadElementWithSerializeDeserialize {
-                                update_many_payload_try_from_update_many_paylaod_with_serialize_deserialize: e,
-                                code_occurence: crate::code_occurence_tufa_common!(),
-                            };
-                            crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                                &error,
-                                app_info_state.as_ref(),
-                            );
-                            return TryUpdateManyResponseVariants::from(error);
-                        }
-                    }
-                },
-                Err(e) => {
-                    return e;
-                }
-            },
-    };
-    println!("{:#?}", parameters);
-    {
-        {
-            let not_unique_primary_keys = {
-                let mut vec = Vec::with_capacity(parameters.payload.len());
-                let mut not_unique_primary_keys = Vec::with_capacity(parameters.payload.len());
-                for element in &parameters.payload {
-                    let handle = &element.id;
-                    match vec.contains(&handle) {
-                        true => {
-                            not_unique_primary_keys.push(element.id.clone());
-                        }
-                        false => {
-                            vec.push(&element.id);
-                        }
-                    }
-                }
-                not_unique_primary_keys
-            };
-            if let false = not_unique_primary_keys.is_empty() {
-                let error = TryUpdateMany::NotUniquePrimaryKey {
-                    not_unique_primary_keys,
-                    code_occurence: crate::code_occurence_tufa_common!(),
-                };
-                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                    &error,
-                    app_info_state.as_ref(),
-                );
-                return TryUpdateManyResponseVariants::from(error);
-            }
-        }
-        let expected_updated_primary_keys = {
-            parameters
-                .payload
-                .iter()
-                .map(|element| element.id.clone())
-                .collect::<Vec<crate::server::postgres::uuid_wrapper::UuidWrapper>>()
-        };
-        let binded_query = {
-            let query_string = {
-                "update dogs as t set name = data.name, color = data.color from (select * from unnest($1, $2, $3)) as data(id, name, color) where t.id = data.id returning data.id"
-            };
-            println!("{}", query_string);
-            let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
-            let current_vec_len = parameters.payload.len();
-            let (id_vec, name_vec, color_vec) = parameters.payload.into_iter().fold(
-                (
-                    Vec::with_capacity(current_vec_len),
-                    Vec::with_capacity(current_vec_len),
-                    Vec::with_capacity(current_vec_len),
-                ),
-                |mut acc, element| {
-                    acc.0.push(element.id);
-                    acc.1.push(element.name);
-                    acc.2.push(element.color);
-                    acc
-                },
-            );
-            query = query.bind(
-                id_vec
-                    .into_iter()
-                    .map(|element| element.into_inner())
-                    .collect::<Vec<sqlx::types::Uuid>>(),
-            );
-            query = query.bind(name_vec);
-            query = query.bind(color_vec);
-            query
-        };
-        let mut pool_connection = match app_info_state.get_postgres_pool().acquire().await {
-            Ok(value) => value,
-            Err(e) => {
-                let error = TryUpdateMany::from(e);
-                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                    &error,
-                    app_info_state.as_ref(),
-                );
-                return TryUpdateManyResponseVariants::from(error);
-            }
-        };
-        let pg_connection = match sqlx::Acquire::acquire(&mut pool_connection).await {
-            Ok(value) => value,
-            Err(e) => {
-                let error = TryUpdateMany::from(e);
-                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                    &error,
-                    app_info_state.as_ref(),
-                );
-                return TryUpdateManyResponseVariants::from(error);
-            }
-        };
-        let mut postgres_transaction = match {
-            use sqlx::Acquire;
-            pg_connection.begin()
-        }
-        .await
-        {
-            Ok(value) => value,
-            Err(e) => {
-                let error = TryUpdateMany::from(e);
-                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                    &error,
-                    app_info_state.as_ref(),
-                );
-                return TryUpdateManyResponseVariants::from(error);
-            }
-        };
-        let results_vec = {
-            let mut results_vec = Vec::with_capacity(expected_updated_primary_keys.len());
-            let mut option_error: Option<sqlx::Error> = None;
-            {
-                let mut rows = binded_query.fetch(postgres_transaction.as_mut());
-                while let (Some(Some(row)), None) = (
-                    match {
-                        use futures::TryStreamExt;
-                        rows.try_next()
-                    }
-                    .await
-                    {
-                        Ok(value) => Some(value),
-                        Err(e) => {
-                            option_error = Some(e);
-                            None
-                        }
-                    },
-                    &option_error,
-                ) {
-                    results_vec.push(row);
-                }
-            }
-            if let Some(e) = option_error {
-                match postgres_transaction.rollback().await {
-                    Ok(_) => {
-                        let error = TryUpdateMany::from(e);
-                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                            &error,
-                            app_info_state.as_ref(),
-                        );
-                        return TryUpdateManyResponseVariants::from(error);
-                    }
-                    Err(rollback_error) => {
-                        let error = TryUpdateMany::QueryAndRollbackFailed {
-                            query_error: e,
-                            rollback_error,
-                            code_occurence: crate::code_occurence_tufa_common!(),
-                        };
-                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                            &error,
-                            app_info_state.as_ref(),
-                        );
-                        return TryUpdateManyResponseVariants::from(error);
-                    }
-                }
-            }
-            results_vec
-        };
-        let primary_key_vec = {
-            let mut primary_key_vec = Vec::with_capacity(expected_updated_primary_keys.len());
-            for element in results_vec {
-                match primary_key_uuid_wrapper_try_from_sqlx_row(&element) {
-                    Ok(primary_key) => {
-                        primary_key_vec.push(primary_key);
-                    }
-                    Err(e) => match postgres_transaction.rollback().await {
-                        Ok(_) => {
-                            let error = TryUpdateMany::from(e);
-                            crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                                &error,
-                                app_info_state.as_ref(),
-                            );
-                            return TryUpdateManyResponseVariants::from(error);
-                        }
-                        Err(rollback_error) => {
-                            let error = TryUpdateMany::PrimaryKeyFromRowAndFailedRollback {
-                                primary_key_from_row: e,
-                                rollback_error,
-                                code_occurence: crate::code_occurence_tufa_common!(),
-                            };
-                            crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                                &error,
-                                app_info_state.as_ref(),
-                            );
-                            return TryUpdateManyResponseVariants::from(error);
-                        }
-                    },
-                }
-            }
-            primary_key_vec
-        };
-        {
-            let non_existing_primary_keys = {
-                let len = expected_updated_primary_keys.len();
-                expected_updated_primary_keys.into_iter().fold(
-                    Vec::with_capacity(len),
-                    |mut acc, element| {
-                        if let false = primary_key_vec.contains(&element) {
-                            acc.push(element);
-                        }
-                        acc
-                    },
-                )
-            };
-            if let false = non_existing_primary_keys.is_empty() {
-                match postgres_transaction.rollback().await {
-                    Ok(_) => {
-                        let error = TryUpdateMany::NonExistingPrimaryKeys {
-                            non_existing_primary_keys,
-                            code_occurence: crate::code_occurence_tufa_common!(),
-                        };
-                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                            &error,
-                            app_info_state.as_ref(),
-                        );
-                        return TryUpdateManyResponseVariants::from(error);
-                    }
-                    Err(e) => {
-                        let error = TryUpdateMany::NonExistingPrimaryKeysAndFailedRollback {
-                            non_existing_primary_keys,
-                            rollback_error: e,
-                            code_occurence: crate::code_occurence_tufa_common!(),
-                        };
-                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                            &error,
-                            app_info_state.as_ref(),
-                        );
-                        return TryUpdateManyResponseVariants::from(error);
-                    }
-                }
-            }
-        }
-        match postgres_transaction.commit().await {
-            Ok(_) => TryUpdateManyResponseVariants::Desirable(()),
-            Err(e) => {
-                let error = TryUpdateMany::CommitFailed {
-                    commit_error: e,
-                    code_occurence: crate::code_occurence_tufa_common!(),
-                };
-                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
-                    &error,
-                    app_info_state.as_ref(),
-                );
-                TryUpdateManyResponseVariants::from(error)
-            }
-        }
-    }
-}
+// pub async fn update_many<'a>(
+//     app_info_state : axum :: extract :: State < crate :: repositories_types ::
+// tufa_server :: routes :: api :: cats :: DynArcGetConfigGetPostgresPoolSendSync
+// >,
+//     payload_extraction_result: Result<
+//         axum::Json<Vec<UpdateManyPayloadElementWithSerializeDeserialize>>,
+//         axum::extract::rejection::JsonRejection,
+//     >,
+// ) -> impl axum::response::IntoResponse {
+//     let parameters = UpdateManyParameters {
+//         payload:
+//             match crate::server::routes::helpers::json_extractor_error::JsonValueResultExtractor::<
+//                 Vec<UpdateManyPayloadElementWithSerializeDeserialize>,
+//                 TryUpdateManyResponseVariants,
+//             >::try_extract_value(payload_extraction_result, &app_info_state)
+//             {
+//                 Ok(value) => match value.into_iter().map(|element|UpdateManyPayloadElement::try_from(element)).collect::<Result<Vec<UpdateManyPayloadElement>,      UpdateManyPayloadElementTryFromUpdateManyPayloadElementWithSerializeDeserializeErrorNamed>>() {
+//                         Ok(value) => value,
+//                         Err(e) => {
+//                             let error = TryUpdateMany::UpdateManyPayloadElementTryFromUpdateManyPayloadElementWithSerializeDeserialize {
+//                                 update_many_payload_try_from_update_many_payload_with_serialize_deserialize: e,
+//                                 code_occurence: crate::code_occurence_tufa_common!(),
+//                             };
+//                             crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                                 &error,
+//                                 app_info_state.as_ref(),
+//                             );
+//                             return TryUpdateManyResponseVariants::from(error);
+//                         }
+//                 },
+//                 Err(e) => {
+//                     return e;
+//                 }
+//             },
+//     };
+//     println!("{:#?}", parameters);
+//     {
+//         {
+//             let not_unique_primary_keys = {
+//                 let mut vec = Vec::with_capacity(parameters.payload.len());
+//                 let mut not_unique_primary_keys = Vec::with_capacity(parameters.payload.len());
+//                 for element in &parameters.payload {
+//                     let handle = &element.id;
+//                     match vec.contains(&handle) {
+//                         true => {
+//                             not_unique_primary_keys.push(element.id.clone());
+//                         }
+//                         false => {
+//                             vec.push(&element.id);
+//                         }
+//                     }
+//                 }
+//                 not_unique_primary_keys
+//             };
+//             if let false = not_unique_primary_keys.is_empty() {
+//                 let error = TryUpdateMany::NotUniquePrimaryKey {
+//                     not_unique_primary_keys,
+//                     code_occurence: crate::code_occurence_tufa_common!(),
+//                 };
+//                 crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                     &error,
+//                     app_info_state.as_ref(),
+//                 );
+//                 return TryUpdateManyResponseVariants::from(error);
+//             }
+//         }
+//         let expected_updated_primary_keys = {
+//             parameters
+//                 .payload
+//                 .iter()
+//                 .map(|element| element.id.clone())
+//                 .collect::<Vec<crate::server::postgres::uuid_wrapper::UuidWrapper>>()
+//         };
+//         let binded_query = {
+//             let query_string = {
+//                 "update dogs as t set name = data.name, color = data.color from (select * from unnest($1, $2, $3)) as data(id, name, color) where t.id = data.id returning data.id"
+//             };
+//             println!("{}", query_string);
+//             let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
+//             let current_vec_len = parameters.payload.len();
+//             let (id_vec, name_vec, color_vec) = parameters.payload.into_iter().fold(
+//                 (
+//                     Vec::with_capacity(current_vec_len),
+//                     Vec::with_capacity(current_vec_len),
+//                     Vec::with_capacity(current_vec_len),
+//                 ),
+//                 |mut acc, element| {
+//                     acc.0.push(element.id);
+//                     acc.1.push(element.name);
+//                     acc.2.push(element.color);
+//                     acc
+//                 },
+//             );
+//             query = query.bind(
+//                 id_vec
+//                     .into_iter()
+//                     .map(|element| element.into_inner())
+//                     .collect::<Vec<sqlx::types::Uuid>>(),
+//             );
+//             query = query.bind(name_vec);
+//             query = query.bind(color_vec);
+//             query
+//         };
+//         let mut pool_connection = match app_info_state.get_postgres_pool().acquire().await {
+//             Ok(value) => value,
+//             Err(e) => {
+//                 let error = TryUpdateMany::from(e);
+//                 crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                     &error,
+//                     app_info_state.as_ref(),
+//                 );
+//                 return TryUpdateManyResponseVariants::from(error);
+//             }
+//         };
+//         let pg_connection = match sqlx::Acquire::acquire(&mut pool_connection).await {
+//             Ok(value) => value,
+//             Err(e) => {
+//                 let error = TryUpdateMany::from(e);
+//                 crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                     &error,
+//                     app_info_state.as_ref(),
+//                 );
+//                 return TryUpdateManyResponseVariants::from(error);
+//             }
+//         };
+//         let mut postgres_transaction = match {
+//             use sqlx::Acquire;
+//             pg_connection.begin()
+//         }
+//         .await
+//         {
+//             Ok(value) => value,
+//             Err(e) => {
+//                 let error = TryUpdateMany::from(e);
+//                 crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                     &error,
+//                     app_info_state.as_ref(),
+//                 );
+//                 return TryUpdateManyResponseVariants::from(error);
+//             }
+//         };
+//         let results_vec = {
+//             let mut results_vec = Vec::with_capacity(expected_updated_primary_keys.len());
+//             let mut option_error: Option<sqlx::Error> = None;
+//             {
+//                 let mut rows = binded_query.fetch(postgres_transaction.as_mut());
+//                 while let (Some(Some(row)), None) = (
+//                     match {
+//                         use futures::TryStreamExt;
+//                         rows.try_next()
+//                     }
+//                     .await
+//                     {
+//                         Ok(value) => Some(value),
+//                         Err(e) => {
+//                             option_error = Some(e);
+//                             None
+//                         }
+//                     },
+//                     &option_error,
+//                 ) {
+//                     results_vec.push(row);
+//                 }
+//             }
+//             if let Some(e) = option_error {
+//                 match postgres_transaction.rollback().await {
+//                     Ok(_) => {
+//                         let error = TryUpdateMany::from(e);
+//                         crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                             &error,
+//                             app_info_state.as_ref(),
+//                         );
+//                         return TryUpdateManyResponseVariants::from(error);
+//                     }
+//                     Err(rollback_error) => {
+//                         let error = TryUpdateMany::QueryAndRollbackFailed {
+//                             query_error: e,
+//                             rollback_error,
+//                             code_occurence: crate::code_occurence_tufa_common!(),
+//                         };
+//                         crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                             &error,
+//                             app_info_state.as_ref(),
+//                         );
+//                         return TryUpdateManyResponseVariants::from(error);
+//                     }
+//                 }
+//             }
+//             results_vec
+//         };
+//         let primary_key_vec = {
+//             let mut primary_key_vec = Vec::with_capacity(expected_updated_primary_keys.len());
+//             for element in results_vec {
+//                 match primary_key_uuid_wrapper_try_from_sqlx_row(&element) {
+//                     Ok(primary_key) => {
+//                         primary_key_vec.push(primary_key);
+//                     }
+//                     Err(e) => match postgres_transaction.rollback().await {
+//                         Ok(_) => {
+//                             let error = TryUpdateMany::from(e);
+//                             crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                                 &error,
+//                                 app_info_state.as_ref(),
+//                             );
+//                             return TryUpdateManyResponseVariants::from(error);
+//                         }
+//                         Err(rollback_error) => {
+//                             let error = TryUpdateMany::PrimaryKeyFromRowAndFailedRollback {
+//                                 primary_key_from_row: e,
+//                                 rollback_error,
+//                                 code_occurence: crate::code_occurence_tufa_common!(),
+//                             };
+//                             crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                                 &error,
+//                                 app_info_state.as_ref(),
+//                             );
+//                             return TryUpdateManyResponseVariants::from(error);
+//                         }
+//                     },
+//                 }
+//             }
+//             primary_key_vec
+//         };
+//         {
+//             let non_existing_primary_keys = {
+//                 let len = expected_updated_primary_keys.len();
+//                 expected_updated_primary_keys.into_iter().fold(
+//                     Vec::with_capacity(len),
+//                     |mut acc, element| {
+//                         if let false = primary_key_vec.contains(&element) {
+//                             acc.push(element);
+//                         }
+//                         acc
+//                     },
+//                 )
+//             };
+//             if let false = non_existing_primary_keys.is_empty() {
+//                 match postgres_transaction.rollback().await {
+//                     Ok(_) => {
+//                         let error = TryUpdateMany::NonExistingPrimaryKeys {
+//                             non_existing_primary_keys,
+//                             code_occurence: crate::code_occurence_tufa_common!(),
+//                         };
+//                         crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                             &error,
+//                             app_info_state.as_ref(),
+//                         );
+//                         return TryUpdateManyResponseVariants::from(error);
+//                     }
+//                     Err(e) => {
+//                         let error = TryUpdateMany::NonExistingPrimaryKeysAndFailedRollback {
+//                             non_existing_primary_keys,
+//                             rollback_error: e,
+//                             code_occurence: crate::code_occurence_tufa_common!(),
+//                         };
+//                         crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                             &error,
+//                             app_info_state.as_ref(),
+//                         );
+//                         return TryUpdateManyResponseVariants::from(error);
+//                     }
+//                 }
+//             }
+//         }
+//         match postgres_transaction.commit().await {
+//             Ok(_) => TryUpdateManyResponseVariants::Desirable(()),
+//             Err(e) => {
+//                 let error = TryUpdateMany::CommitFailed {
+//                     commit_error: e,
+//                     code_occurence: crate::code_occurence_tufa_common!(),
+//                 };
+//                 crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+//                     &error,
+//                     app_info_state.as_ref(),
+//                 );
+//                 TryUpdateManyResponseVariants::from(error)
+//             }
+//         }
+//     }
+// }
+// https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
