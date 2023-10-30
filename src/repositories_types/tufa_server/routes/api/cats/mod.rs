@@ -1907,13 +1907,6 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
-pub struct UpdateManyPayloadElementWithSerializeDeserialize {
-    pub id: crate::server::postgres::uuid_wrapper::PossibleUuidWrapper,
-    pub name: String,
-    pub color: String,
-}
-//
 impl std::convert::From<UpdateManyPayloadElement> for UpdateManyPayloadElementWithSerializeDeserialize {
     fn from(value: UpdateManyPayloadElement) -> Self {
         let id = crate::server::postgres::uuid_wrapper::PossibleUuidWrapper::from(value.id);
