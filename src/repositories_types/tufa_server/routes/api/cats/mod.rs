@@ -1907,18 +1907,18 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-impl std::convert::From<UpdateManyPayloadElement> for UpdateManyPayloadElementWithSerializeDeserialize {
-    fn from(value: UpdateManyPayloadElement) -> Self {
-        let id = crate::server::postgres::uuid_wrapper::PossibleUuidWrapper::from(value.id);
-        let name = value.name;
-        let color = value.color;
-        Self{
-            id,
-            name,
-            color
-        }
-    }
-}
+// impl std::convert::From<UpdateManyPayloadElement> for UpdateManyPayloadElementWithSerializeDeserialize {
+//     fn from(value: UpdateManyPayloadElement) -> Self {
+//         let id = crate::server::postgres::uuid_wrapper::PossibleUuidWrapper::from(value.id);
+//         let name = value.name;
+//         let color = value.color;
+//         Self{
+//             id,
+//             name,
+//             color
+//         }
+//     }
+// }
 //
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum UpdateManyPayloadElementTryFromUpdateManyPayloadElementWithSerializeDeserializeErrorNamed {
