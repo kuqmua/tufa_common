@@ -24,7 +24,7 @@ pub type DynArcGetConfigGetPostgresPoolSendSync = std::sync::Arc<
 #[generate_postgresql_crud::generate_postgresql_crud_route_name(dogs)]
 pub struct Dog {
     #[generate_postgresql_crud_primary_key]
-    pub id: std::string::String, //todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
+    pub id: std::string::String, //todo make it UuidWrapper todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
     pub name: String,
     pub color: String,
 }
@@ -1907,26 +1907,6 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-//
-fn primary_key_try_from_sqlx_row<'a, R: sqlx::Row>(row: &'a R) -> sqlx::Result<std::string::String>
-where
-    &'a std::primitive::str: sqlx::ColumnIndex<R>,
-    std::string::String: sqlx::decode::Decode<'a, R::Database>,
-    std::string::String: sqlx::types::Type<R::Database>,
-{
-    let primary_key: std::string::String = row.try_get("id")?;
-    Ok(primary_key)
-}
-fn primary_key_uuid_wrapper_try_from_sqlx_row<'a, R: sqlx::Row>(row: &'a R) -> sqlx::Result<crate::server::postgres::uuid_wrapper::UuidWrapper>
-where
-    &'a std::primitive::str: sqlx::ColumnIndex<R>,
-    sqlx::types::Uuid: sqlx::decode::Decode<'a, R::Database>,
-    sqlx::types::Uuid: sqlx::types::Type<R::Database>,
-{
-    let primary_key: sqlx::types::Uuid = row.try_get("id")?;
-    Ok(crate::server::postgres::uuid_wrapper::UuidWrapper::from(primary_key))
-}
-//
 #[derive(Debug)]
 pub struct UpdateManyParameters {
     pub payload: Vec<UpdateManyPayloadElement>,
