@@ -1907,12 +1907,6 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-#[derive(Debug)]
-pub struct UpdateManyPayloadElement {
-    pub id: crate::server::postgres::uuid_wrapper::UuidWrapper,
-    pub name: String,
-    pub color: String,
-}
 #[derive(Debug, serde :: Serialize, serde :: Deserialize)]
 pub struct UpdateManyPayloadElementWithSerializeDeserialize {
     pub id: crate::server::postgres::uuid_wrapper::PossibleUuidWrapper,
