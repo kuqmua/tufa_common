@@ -1948,7 +1948,12 @@ impl std::convert::TryFrom<DeleteManyWithBodyPayloadWithSerializeDeserialize> fo
                 crate::server::postgres::uuid_wrapper::UuidWrapperTryFromPossibleUuidWrapperErrorNamed
             >>() {
                 Ok(value) => Some(value),
-                Err(e) => todo!(),
+                Err(e) => {
+                    return Err(DeleteManyWithBodyPayloadTryFromDeleteManyWithBodyPayloadWithSerializeDeserializeErrorNamed::NotUuid {
+                        not_uuid: e,
+                        code_occurence: crate::code_occurence_tufa_common!(),
+                    });
+                },
             },
             None => None,
         };
@@ -1959,6 +1964,23 @@ impl std::convert::TryFrom<DeleteManyWithBodyPayloadWithSerializeDeserialize> fo
             name,
             color
         })
+    }
+}
+impl std::convert::From<DeleteManyWithBodyPayload> for DeleteManyWithBodyPayloadWithSerializeDeserialize {
+    fn from(value: DeleteManyWithBodyPayload) -> Self {
+        let id = match value.id {
+            Some(value) => Some(value.into_iter()
+                .map(|element|crate::server::postgres::uuid_wrapper::PossibleUuidWrapper::from(element))
+                .collect::<Vec<crate::server::postgres::uuid_wrapper::PossibleUuidWrapper>>()),
+            None => None,
+        };
+        let name = value.name;
+        let color = value.color;
+        Self{
+            id,
+            name,
+            color
+        }
     }
 }
 //
@@ -1979,18 +2001,7 @@ pub async fn try_delete_many_with_body<'a>(
     server_location: &str,
     parameters: DeleteManyWithBodyParameters,
 ) -> Result<(), TryDeleteManyWithBodyErrorNamed> {
-    let payload = match serde_json::to_string(
-            &DeleteManyWithBodyPayloadWithSerializeDeserialize {
-                id: match parameters.payload.id {
-                    Some(value) => Some(value.into_iter()
-                        .map(|element|crate::server::postgres::uuid_wrapper::PossibleUuidWrapper::from(element))
-                        .collect::<Vec<crate::server::postgres::uuid_wrapper::PossibleUuidWrapper>>()),
-                    None => None,
-                },
-                name: parameters.payload.name,
-                color: parameters.payload.color,
-            }
-        ) {
+    let payload = match serde_json::to_string(&DeleteManyWithBodyPayloadWithSerializeDeserialize::from(parameters.payload)) {
         Ok(value) => value,
         Err(e) => {
             return Err(TryDeleteManyWithBodyErrorNamed::SerdeJsonToString {
