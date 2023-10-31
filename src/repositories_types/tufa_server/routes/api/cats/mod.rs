@@ -1913,30 +1913,6 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-pub async fn try_delete_one<'a>(
-    server_location: &str,
-    parameters: DeleteOneParameters,
-) -> Result<(), TryDeleteOneErrorNamed> {
-    let url = format!("{}/dogs/{}", server_location, parameters.path.id);
-    match tvfrr_extraction_logic_try_delete_one(
-        reqwest::Client::new()
-            .delete(&url)
-            .header(
-                crate::common::git::project_git_info::PROJECT_COMMIT,
-                crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
-                    .project_commit,
-            )
-            .send(),
-    )
-    .await
-    {
-        Ok(value) => Ok(value),
-        Err(e) => Err(TryDeleteOneErrorNamed::RequestError {
-            request_error: e,
-            code_occurence: crate::code_occurence_tufa_common!(),
-        }),
-    }
-}
 #[utoipa ::
 path(delete, path = "/api/cats",
 responses((status = 200, description = "delete cat by id", body =
