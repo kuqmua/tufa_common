@@ -1913,18 +1913,6 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-#[derive(Debug)]
-pub struct DeleteOneParameters {
-    pub path: DeleteOnePath,
-}
-#[derive(Debug)]
-pub struct DeleteOnePath {
-    pub id: crate::server::postgres::uuid_wrapper::UuidWrapper,
-}
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub struct DeleteOnePathWithSerializeDeserialize {
-    pub id: crate::server::postgres::uuid_wrapper::PossibleUuidWrapper,
-}
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum DeleteOnePathTryFromDeleteOnePathWithSerializeDeserializeErrorNamed {
     NotUuid {
