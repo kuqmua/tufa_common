@@ -1913,14 +1913,6 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum DeleteOnePathTryFromDeleteOnePathWithSerializeDeserializeErrorNamed {
-    NotUuid {
-        #[eo_error_occurence]
-        not_uuid: crate::server::postgres::uuid_wrapper::UuidWrapperTryFromPossibleUuidWrapperErrorNamed,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-}
 impl std::convert::TryFrom<DeleteOnePathWithSerializeDeserialize> for DeleteOnePath {
     type Error = DeleteOnePathTryFromDeleteOnePathWithSerializeDeserializeErrorNamed;
     fn try_from(value: DeleteOnePathWithSerializeDeserialize) -> Result<Self, Self::Error> {
