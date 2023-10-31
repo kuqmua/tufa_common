@@ -52,7 +52,7 @@ impl std::convert::TryFrom<PossibleUuidWrapper> for UuidWrapper {
     type Error = UuidWrapperTryFromPossibleUuidWrapperErrorNamed;
     fn try_from(value: PossibleUuidWrapper) -> Result<Self, Self::Error> {
         match sqlx::types::Uuid::parse_str(value.to_inner()) {
-            Ok(value) => Ok(UuidWrapper(value)),
+            Ok(value) => Ok(Self(value)),
             Err(e) => Err(UuidWrapperTryFromPossibleUuidWrapperErrorNamed::NotUuid {
                 not_uuid: e,
                 code_occurence: crate::code_occurence_tufa_common!(),
