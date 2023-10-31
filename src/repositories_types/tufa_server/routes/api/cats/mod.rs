@@ -1913,14 +1913,6 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-#[derive(Debug, thiserror :: Error, error_occurence :: ErrorOccurence)]
-pub enum TryDeleteOneErrorNamed {
-    RequestError {
-        #[eo_error_occurence]
-        request_error: TryDeleteOneRequestError,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-}
 pub async fn try_delete_one<'a>(
     server_location: &str,
     parameters: DeleteOneParameters,
