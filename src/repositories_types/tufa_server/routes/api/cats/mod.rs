@@ -1919,42 +1919,6 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum DeleteManyWithBodyPayloadTryFromDeleteManyWithBodyPayloadWithSerializeDeserializeErrorNamed {
-    NotUuid {
-        #[eo_display]
-        not_uuid: crate::server::postgres::uuid_wrapper::UuidWrapperTryFromPossibleUuidWrapperErrorNamed,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-}
-
-impl std::convert::TryFrom<DeleteManyWithBodyPayloadWithSerializeDeserialize> for DeleteManyWithBodyPayload {
-    type Error = DeleteManyWithBodyPayloadTryFromDeleteManyWithBodyPayloadWithSerializeDeserializeErrorNamed;
-    fn try_from(value: DeleteManyWithBodyPayloadWithSerializeDeserialize) -> Result<Self, Self::Error> {
-        let id = match value.id {
-            Some(value) => match value.into_iter().map(|element|crate::server::postgres::uuid_wrapper::UuidWrapper::try_from(element)).collect::<Result<
-                Vec<crate::server::postgres::uuid_wrapper::UuidWrapper>,                    
-                crate::server::postgres::uuid_wrapper::UuidWrapperTryFromPossibleUuidWrapperErrorNamed
-            >>() {
-                Ok(value) => Some(value),
-                Err(e) => {
-                    return Err(DeleteManyWithBodyPayloadTryFromDeleteManyWithBodyPayloadWithSerializeDeserializeErrorNamed::NotUuid {
-                        not_uuid: e,
-                        code_occurence: crate::code_occurence_tufa_common!(),
-                    });
-                },
-            },
-            None => None,
-        };
-        let name = value.name;
-        let color = value.color;
-        Ok(Self {
-            id,
-            name,
-            color
-        })
-    }
-}
 impl std::convert::From<DeleteManyWithBodyPayload> for DeleteManyWithBodyPayloadWithSerializeDeserialize {
     fn from(value: DeleteManyWithBodyPayload) -> Self {
         let id = match value.id {
