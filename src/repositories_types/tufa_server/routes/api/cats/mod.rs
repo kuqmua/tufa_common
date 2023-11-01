@@ -1919,13 +1919,6 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
-pub struct DeleteManyWithBodyPayloadWithSerializeDeserialize {
-    pub id: Option<Vec<crate::server::postgres::uuid_wrapper::PossibleUuidWrapper>>,
-    pub name: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
-    pub color: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
-}
-//
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum DeleteManyWithBodyPayloadTryFromDeleteManyWithBodyPayloadWithSerializeDeserializeErrorNamed {
     NotUuid {
