@@ -1919,24 +1919,6 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-impl std::convert::From<DeleteManyWithBodyPayload> for DeleteManyWithBodyPayloadWithSerializeDeserialize {
-    fn from(value: DeleteManyWithBodyPayload) -> Self {
-        let id = match value.id {
-            Some(value) => Some(value.into_iter()
-                .map(|element|crate::server::postgres::uuid_wrapper::PossibleUuidWrapper::from(element))
-                .collect::<Vec<crate::server::postgres::uuid_wrapper::PossibleUuidWrapper>>()),
-            None => None,
-        };
-        let name = value.name;
-        let color = value.color;
-        Self{
-            id,
-            name,
-            color
-        }
-    }
-}
-//
 #[derive(Debug, thiserror :: Error, error_occurence :: ErrorOccurence)]
 pub enum TryDeleteManyWithBodyErrorNamed {
     RequestError {
