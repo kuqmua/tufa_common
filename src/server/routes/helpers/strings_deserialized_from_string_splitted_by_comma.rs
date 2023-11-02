@@ -19,6 +19,16 @@ where
     .collect::<Vec<std::string::String>>())
 }
 
+impl std::convert::From<std::string::String> for StringsDeserializedFromStringSplittedByComma {
+    fn from(value: std::string::String) -> StringsDeserializedFromStringSplittedByComma {
+        Self(
+            value.split(',')
+            .map(|element| element.to_string())
+            .collect::<Vec<std::string::String>>()
+        )
+    }
+}
+
 impl crate::server::postgres::bind_query::BindQuery
     for StringsDeserializedFromStringSplittedByComma
 {
