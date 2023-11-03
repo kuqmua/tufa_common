@@ -1680,9 +1680,9 @@ pub enum TryUpdateOne {
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_400_bad_request]
-    UpdateOnePathTryFromUpdateOnePathForUrlEncoding {
+    UpdateOnePathTryFromUpdateOnePathWithSerializeDeserialize {
         #[eo_error_occurence]
-        update_one_path_try_from_update_one_path_for_url_encoding: UpdateOnePathTryFromUpdateOnePathForUrlEncodingErrorNamed,
+        update_one_path_try_from_update_one_path_with_serialize_deserialize: UpdateOnePathTryFromUpdateOnePathWithSerializeDeserializeErrorNamed,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     //#[non_exhaustive] case
