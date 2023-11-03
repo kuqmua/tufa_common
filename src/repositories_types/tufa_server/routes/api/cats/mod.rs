@@ -961,9 +961,9 @@ pub enum TryDeleteMany {
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_400_bad_request]
-    DeleteManyQueryTryFromDeleteManyQueryForUrlEncoding {
+    DeleteManyQueryTryFromDeleteManyQueryWithSerializeDeserialize {
         #[eo_error_occurence]
-        delete_many_query_try_from_delete_many_query_for_url_encoding: DeleteManyQueryTryFromDeleteManyQueryForUrlEncodingErrorNamed,
+        delete_many_query_try_from_delete_many_query_with_serialize_deserialize: DeleteManyQueryTryFromDeleteManyQueryWithSerializeDeserializeErrorNamed,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     //#[non_exhaustive] case
