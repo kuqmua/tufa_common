@@ -1124,9 +1124,9 @@ pub enum TryReadOne {
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_400_bad_request]
-    ReadOnePathTryFromReadOnePathForUrlEncoding {
+    ReadOnePathTryFromReadOnePathWithSerializeDeserialize {
         #[eo_error_occurence]
-        read_one_path_try_from_read_one_path_for_url_encoding: ReadOnePathTryFromReadOnePathForUrlEncodingErrorNamed,
+        read_one_path_try_from_read_one_path_with_serialize_deserialize: ReadOnePathTryFromReadOnePathWithSerializeDeserializeErrorNamed,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     //#[non_exhaustive] case
