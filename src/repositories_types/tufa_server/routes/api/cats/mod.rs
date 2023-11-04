@@ -1916,7 +1916,6 @@ pub enum TryUpdateMany {
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     //#[non_exhaustive] case
-
     #[tvfrr_500_internal_server_error]
     UnexpectedCase {
         #[eo_display_with_serialize_deserialize]
@@ -1926,27 +1925,6 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-impl std::str::FromStr for DogColumnSelect {
-    type Err = DogColumnSelectFromStrErrorNamed;
-    fn from_str(value: &str) -> Result<Self, Self::Err> {
-        match value {
-            "id" => Ok(Self::Id),
-            "name" => Ok(Self::Name),
-            "color" => Ok(Self::Color),
-            "id,name" => Ok(Self::IdName),
-            "id,color" => Ok(Self::IdColor),
-            "name,color" => Ok(Self::NameColor),
-            "id,name,color" => Ok(Self::IdNameColor),
-            _ => Err(Self::Err::NotCorrect {
-                not_correct_value: std::string::String::from(value),
-                supported_values: std::string::String::from("\"id\",\"name\",\"color\",\"id,name\",\"id,color\",\"name,color\",\"id,name,color\""),
-                code_occurence: crate::code_occurence_tufa_common!(),
-            }),
-        }
-    }
-}
-
-/////////////
 #[derive(Debug)]
 pub struct ReadManyParameters {
     pub query: ReadManyQuery,
