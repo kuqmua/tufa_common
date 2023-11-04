@@ -1462,8 +1462,8 @@ pub enum TryReadMany {
     //
     #[tvfrr_400_bad_request]
     NotUniquePrimaryKey {
-        #[eo_vec_display_with_serialize_deserialize]
-        not_unique_primary_keys: Vec<std::string::String>,
+        #[eo_vec_display]
+        not_unique_primary_keys: Vec<crate::server::postgres::uuid_wrapper::UuidWrapper>,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_400_bad_request]
@@ -1926,3 +1926,571 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
+impl std::str::FromStr for DogColumnSelect {
+    type Err = DogColumnSelectFromStrErrorNamed;
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
+        match value {
+            "id" => Ok(Self::Id),
+            "name" => Ok(Self::Name),
+            "color" => Ok(Self::Color),
+            "id,name" => Ok(Self::IdName),
+            "id,color" => Ok(Self::IdColor),
+            "name,color" => Ok(Self::NameColor),
+            "id,name,color" => Ok(Self::IdNameColor),
+            _ => Err(Self::Err::NotCorrect {
+                not_correct_value: std::string::String::from(value),
+                supported_values: std::string::String::from("\"id\",\"name\",\"color\",\"id,name\",\"id,color\",\"name,color\",\"id,name,color\""),
+                code_occurence: crate::code_occurence_tufa_common!(),
+            }),
+        }
+    }
+}
+
+/////////////
+#[derive(Debug)]
+pub struct ReadManyParameters {
+    pub query: ReadManyQuery,
+}
+#[derive(Debug)]
+pub struct ReadManyQuery {
+    pub select : Option < DogColumnSelect >, 
+    pub id : Option<Vec<crate::server::postgres::uuid_wrapper::UuidWrapper>>, 
+    pub name : Option < crate :: server :: routes ::helpers :: strings_deserialized_from_string_splitted_by_comma ::StringsDeserializedFromStringSplittedByComma >, 
+    pub color : Option < crate:: server :: routes :: helpers ::strings_deserialized_from_string_splitted_by_comma ::StringsDeserializedFromStringSplittedByComma >, 
+    pub order_by : Option <DogOrderByWrapper >, 
+    pub limit : crate :: server :: postgres ::postgres_bigint :: PostgresBigint, 
+    pub offset : Option < crate :: server:: postgres :: postgres_bigint :: PostgresBigint >,
+}
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
+pub struct ReadManyQueryWithSerializeDeserialize {
+    pub select: Option<std::string::String>,
+    pub id: Option<std::string::String>,
+    pub name: Option<std::string::String>,
+    pub color: Option<std::string::String>,
+    pub order_by: Option<std::string::String>,
+    pub limit: std::string::String,
+    pub offset: Option<std::string::String>,
+}
+//
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum ReadManyQueryTryFromReadManyQueryWithSerializeDeserializeErrorNamed {
+    NotUuid {
+        #[eo_display]
+        not_uuid: crate::server::postgres::uuid_wrapper::UuidWrapperTryFromPossibleUuidWrapperErrorNamed,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+}
+
+impl std::convert::TryFrom<ReadManyQueryWithSerializeDeserialize> for ReadManyQuery {
+    type Error = ReadManyQueryTryFromReadManyQueryWithSerializeDeserializeErrorNamed;
+    fn try_from(value: ReadManyQueryWithSerializeDeserialize) -> Result<Self, Self::Error> {
+        // let select = value.select;
+        let id = match value.id {
+            Some(value) => match value.split(',')
+                .map(|element| crate::server::postgres::uuid_wrapper::UuidWrapper::try_from(crate::server::postgres::uuid_wrapper::PossibleUuidWrapper::from(element.to_string())))
+                .collect::<Result<Vec<crate::server::postgres::uuid_wrapper::UuidWrapper>, crate::server::postgres::uuid_wrapper::UuidWrapperTryFromPossibleUuidWrapperErrorNamed>>() {
+                    Ok(value) => Some(value),
+                    Err(e) => {
+                        return Err(Self::Error::NotUuid {
+                            not_uuid: e,
+                            code_occurence: crate::code_occurence_tufa_common!(),
+                        });
+                    }
+                }
+
+            None => None
+        };
+        todo!()
+        // let id = value.id;
+        // let name = value.name;
+        // let color = value.color;
+        // let order_by = value.order_by;
+        // let limit = value.limit;
+        // let offset = value.offset;
+        // Self {
+        //     select, 
+        //     id, 
+        //     name, 
+        //     color, 
+        //     order_by, 
+        //     limit, 
+        //     offset,   
+        // }
+    }
+}
+//
+impl ReadManyQuery {
+    fn into_url_encoding_version(self) -> ReadManyQueryWithSerializeDeserialize {
+        let select = self.select.map(|value| {
+            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                value,
+            )
+        });
+        let id = self.id.map(|value| {
+            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                value,
+            )
+        });
+        let name = self.name.map(|value| {
+            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                value,
+            )
+        });
+        let color = self.color.map(|value| {
+            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                value,
+            )
+        });
+        let order_by = self.order_by.map(|value| {
+            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                value,
+            )
+        });
+        let limit =
+            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                self.limit,
+            );
+        let offset = self.offset.map(|value| {
+            crate::common::serde_urlencoded::SerdeUrlencodedParameter::serde_urlencoded_parameter(
+                value,
+            )
+        });
+        ReadManyQueryWithSerializeDeserialize {
+            select,
+            id,
+            name,
+            color,
+            order_by,
+            limit,
+            offset,
+        }
+    }
+}
+#[derive(Debug, thiserror :: Error, error_occurence :: ErrorOccurence)]
+pub enum TryReadManyErrorNamed {
+    QueryEncode {
+        #[eo_display]
+        url_encoding: serde_urlencoded::ser::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    RequestError {
+        #[eo_error_occurence]
+        request_error: TryReadManyRequestError,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+}
+pub async fn try_read_many<'a>(
+    server_location: &str,
+    parameters: ReadManyParameters,
+) -> Result<Vec<DogOptions>, TryReadManyErrorNamed> {
+    let encoded_query =
+        match serde_urlencoded::to_string(parameters.query.into_url_encoding_version()) {
+            Ok(value) => value,
+            Err(e) => {
+                return Err(TryReadManyErrorNamed::QueryEncode {
+                    url_encoding: e,
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                });
+            }
+        };
+    let url = format!("{}/dogs?{}", server_location, encoded_query);
+    match tvfrr_extraction_logic_try_read_many(
+        reqwest::Client::new()
+            .get(&url)
+            .header(
+                crate::common::git::project_git_info::PROJECT_COMMIT,
+                crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
+                    .project_commit,
+            )
+            .send(),
+    )
+    .await
+    {
+        Ok(value) => Ok(value),
+        Err(e) => Err(TryReadManyErrorNamed::RequestError {
+            request_error: e,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        }),
+    }
+}
+pub async fn read_many(
+    query_extraction_result: Result<
+        axum::extract::Query<ReadManyQueryWithSerializeDeserialize>,
+        axum::extract::rejection::QueryRejection,
+    >,
+    app_info_state: axum::extract :: State < crate :: repositories_types ::tufa_server :: routes :: api :: cats :: DynArcGetConfigGetPostgresPoolSendSync
+>,
+) -> impl axum::response::IntoResponse {
+    let parameters = ReadManyParameters {
+        query:
+            match crate::server::routes::helpers::query_extractor_error::QueryValueResultExtractor::<
+                ReadManyQueryWithSerializeDeserialize,
+                TryReadManyResponseVariants,
+            >::try_extract_value(query_extraction_result, &app_info_state)
+            {
+                Ok(value) => todo!(),
+                Err(err) => {
+                    return err;
+                }
+            },
+    };
+    println!("{:#?}", parameters);
+    {
+        if let Some(id) = &parameters.query.id {
+            let not_unique_primary_keys = {
+                let mut vec = Vec::with_capacity(id.len());
+                let mut not_unique_primary_keys = Vec::with_capacity(id.len());
+                for element in id {
+                    let handle = element;
+                    match vec.contains(&handle) {
+                        true => {
+                            not_unique_primary_keys.push(element.clone());
+                        }
+                        false => {
+                            vec.push(element);
+                        }
+                    }
+                }
+                not_unique_primary_keys
+            };
+            if let false = not_unique_primary_keys.is_empty() {
+                let error = TryReadMany::NotUniquePrimaryKey {
+                    not_unique_primary_keys,
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                };
+                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                    &error,
+                    app_info_state.as_ref(),
+                );
+                return TryReadManyResponseVariants::from(error);
+            }
+        }
+        let name_handle = match parameters.query.name {
+            Some(value) => {
+                let is_unique = {
+                    let mut vec = Vec::with_capacity(value.0.len());
+                    let mut is_unique = true;
+                    for element in &value.0 {
+                        match vec.contains(&element) {
+                            true => {
+                                is_unique = false;
+                                break;
+                            }
+                            false => {
+                                vec.push(element);
+                            }
+                        }
+                    }
+                    is_unique
+                };
+                match is_unique {
+                    true => Some(value),
+                    false => {
+                        let not_unique_name_vec = {
+                            let mut vec = Vec::with_capacity(value.0.len());
+                            let mut not_unique_name_vec = Vec::with_capacity(value.0.len());
+                            for element in value.0 {
+                                match vec.contains(&element) {
+                                    true => {
+                                        not_unique_name_vec.push(element);
+                                    }
+                                    false => {
+                                        vec.push(element);
+                                    }
+                                }
+                            }
+                            not_unique_name_vec
+                        };
+                        let error = TryReadMany::NotUniqueNameVec {
+                            not_unique_name_vec,
+                            code_occurence: crate::code_occurence_tufa_common!(),
+                        };
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return TryReadManyResponseVariants::from(error);
+                    }
+                }
+            }
+            None => None,
+        };
+        let color_handle = match parameters.query.color {
+            Some(value) => {
+                let is_unique = {
+                    let mut vec = Vec::with_capacity(value.0.len());
+                    let mut is_unique = true;
+                    for element in &value.0 {
+                        match vec.contains(&element) {
+                            true => {
+                                is_unique = false;
+                                break;
+                            }
+                            false => {
+                                vec.push(element);
+                            }
+                        }
+                    }
+                    is_unique
+                };
+                match is_unique {
+                    true => Some(value),
+                    false => {
+                        let not_unique_color_vec = {
+                            let mut vec = Vec::with_capacity(value.0.len());
+                            let mut not_unique_color_vec = Vec::with_capacity(value.0.len());
+                            for element in value.0 {
+                                match vec.contains(&element) {
+                                    true => {
+                                        not_unique_color_vec.push(element);
+                                    }
+                                    false => {
+                                        vec.push(element);
+                                    }
+                                }
+                            }
+                            not_unique_color_vec
+                        };
+                        let error = TryReadMany::NotUniqueColorVec {
+                            not_unique_color_vec,
+                            code_occurence: crate::code_occurence_tufa_common!(),
+                        };
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return TryReadManyResponseVariants::from(error);
+                    }
+                }
+            }
+            None => None,
+        };
+        let select = DogColumnSelect::from(parameters.query.select.clone());
+        let query_string = {
+            format!(
+                "select {} from dogs {}",
+                crate::server::postgres::generate_query::GenerateQuery::generate_query(&select),
+                {
+                    let mut increment: u64 = 0;
+                    let mut additional_parameters = std::string::String::default();
+                    if let Some(value) = &parameters.query.id {
+                        let prefix = match additional_parameters.is_empty() {
+                            true => "where",
+                            false => " and",
+                        };
+                        match increment.checked_add(1) {
+                            Some(value) => {
+                                increment = value;
+                            }
+                            None => {
+                                let e = crate :: server :: postgres :: bind_query ::
+                            TryGenerateBindIncrementsErrorNamed :: CheckedAdd
+                            {
+                                checked_add : std :: string :: String ::
+                                from("checked_add is None"), code_occurence : crate ::
+                                code_occurence_tufa_common! (),
+                            } ;
+                                return TryReadManyResponseVariants::BindQuery {
+                                    checked_add: e.into_serialize_deserialize_version(),
+                                    code_occurence: crate::code_occurence_tufa_common!(),
+                                };
+                            }
+                        }
+                        additional_parameters
+                            .push_str(&format!("{} id in (select unnest(${}))", prefix, increment));
+                    }
+                    if let Some(value) = &name_handle {
+                        let prefix = match additional_parameters.is_empty() {
+                            true => "where",
+                            false => " and",
+                        };
+                        let value = match
+                    crate :: server :: postgres :: bind_query :: BindQuery ::
+                    try_generate_bind_increments(value, & mut increment)
+                    {
+                        Ok(value) => value, Err(e) =>
+                        {
+                            return TryReadManyResponseVariants :: BindQuery
+                            {
+                                checked_add : e.into_serialize_deserialize_version(),
+                                code_occurence : crate :: code_occurence_tufa_common! ()
+                            } ;
+                        },
+                    } ;
+                        additional_parameters
+                            .push_str(&format!("{prefix} name = any(array[{value}])"));
+                    }
+                    if let Some(value) = &color_handle {
+                        let prefix = match additional_parameters.is_empty() {
+                            true => "where",
+                            false => " and",
+                        };
+                        let value = match
+                    crate :: server :: postgres :: bind_query :: BindQuery ::
+                    try_generate_bind_increments(value, & mut increment)
+                    {
+                        Ok(value) => value, Err(e) =>
+                        {
+                            return TryReadManyResponseVariants :: BindQuery
+                            {
+                                checked_add : e.into_serialize_deserialize_version(),
+                                code_occurence : crate :: code_occurence_tufa_common! ()
+                            } ;
+                        },
+                    } ;
+                        additional_parameters
+                            .push_str(&format!("{prefix} color = any(array[{value}])"));
+                    }
+                    if let Some(value) = &parameters.query.order_by {
+                        let prefix = match additional_parameters.is_empty() {
+                            true => "",
+                            false => " ",
+                        };
+                        let order_stringified = match &value.0.order {
+                            Some(order) => order.to_string(),
+                            None => crate::server::postgres::order::Order::default().to_string(),
+                        };
+                        additional_parameters.push_str(&format!(
+                            "{}order by {} {}",
+                            prefix, value.0.column, order_stringified
+                        ));
+                    }
+                    {
+                        let prefix = match additional_parameters.is_empty() {
+                            true => "",
+                            false => " ",
+                        };
+                        let value = match crate ::
+                    server :: postgres :: bind_query :: BindQuery ::
+                    try_generate_bind_increments(& parameters.query.limit, & mut
+                    increment)
+                    {
+                        Ok(value) => value, Err(e) =>
+                        {
+                            return TryReadManyResponseVariants :: BindQuery
+                            {
+                                checked_add : e.into_serialize_deserialize_version(),
+                                code_occurence : crate :: code_occurence_tufa_common! ()
+                            } ;
+                        },
+                    } ;
+                        additional_parameters.push_str(&format!("{}limit {}", prefix, value));
+                    }
+                    if let Some(value) = &parameters.query.offset {
+                        let prefix = match additional_parameters.is_empty() {
+                            true => "",
+                            false => " ",
+                        };
+                        let value = match crate ::
+                    server :: postgres :: bind_query :: BindQuery ::
+                    try_generate_bind_increments(value, & mut increment)
+                    {
+                        Ok(value) => value, Err(e) =>
+                        {
+                            return TryReadManyResponseVariants :: BindQuery
+                            {
+                                checked_add : e.into_serialize_deserialize_version(),
+                                code_occurence : crate :: code_occurence_tufa_common! ()
+                            } ;
+                        },
+                    } ;
+                        additional_parameters.push_str(&format!("{}offset {}", prefix, value));
+                    }
+                    additional_parameters
+                }
+            )
+        };
+        println!("{}", query_string);
+        let binded_query = {
+            let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
+            if let Some(value) = parameters.query.id {
+                query = query.bind(
+                    value
+                        .into_iter()
+                        .map(|element| element.into_inner().clone())
+                        .collect::<Vec<sqlx::types::Uuid>>(),
+                );
+            }
+            if let Some(value) = name_handle {
+                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                    value, query,
+                );
+            }
+            if let Some(value) = color_handle {
+                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                    value, query,
+                );
+            }
+            query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                parameters.query.limit,
+                query,
+            );
+            if let Some(value) = parameters.query.offset {
+                query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                    value, query,
+                );
+            }
+            query
+        };
+        let vec_values = {
+            let mut pool_connection = match app_info_state.get_postgres_pool().acquire().await {
+                Ok(value) => value,
+                Err(e) => {
+                    let error = TryReadMany::from(e);
+                    crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                        &error,
+                        app_info_state.as_ref(),
+                    );
+                    return TryReadManyResponseVariants::from(error);
+                }
+            };
+            let pg_connection = match sqlx::Acquire::acquire(&mut pool_connection).await {
+                Ok(value) => value,
+                Err(e) => {
+                    let error = TryReadMany::from(e);
+                    crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                        &error,
+                        app_info_state.as_ref(),
+                    );
+                    return TryReadManyResponseVariants::from(error);
+                }
+            };
+            let mut rows = binded_query.fetch(pg_connection.as_mut());
+            let mut vec_values = Vec::new();
+            while let Some(row) = {
+                match {
+                    use futures::TryStreamExt;
+                    rows.try_next()
+                }
+                .await
+                {
+                    Ok(value) => value,
+                    Err(e) => {
+                        let error = TryReadMany::from(e);
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return TryReadManyResponseVariants::from(error);
+                    }
+                }
+            } {
+                match select.options_try_from_sqlx_row(&row) {
+                    Ok(value) => {
+                        vec_values.push(value);
+                    }
+                    Err(e) => {
+                        let error = TryReadMany::from(e);
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return TryReadManyResponseVariants::from(error);
+                    }
+                }
+            }
+            vec_values
+        };
+        TryReadManyResponseVariants::Desirable(vec_values)
+    }
+}
