@@ -1925,6 +1925,212 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
+//
+// #[derive(Debug, serde :: Serialize, serde :: Deserialize)]
+// pub struct DogOrderByWrapper(
+//     #[serde(deserialize_with = "deserialize_dog_order_by")]
+//     pub  crate::server::postgres::order_by::OrderBy<DogColumn>,
+// );
+
+#[derive(Debug, thiserror :: Error, error_occurence :: ErrorOccurence)]
+pub enum DogOrderByWrapperFromErrorNamed {
+    ColumnFromStr {
+        #[eo_display_with_serialize_deserialize]
+        column_from_str: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    ColumnNoOffsetValue {
+        #[eo_display_with_serialize_deserialize]
+        column_no_offset_value: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    ColumnOffsetSliceGet {
+        #[eo_display_with_serialize_deserialize]
+        column_offset_slice_get: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    ColumnStringDeserializedGet {
+        #[eo_display_with_serialize_deserialize]
+        column_string_deserialized_get: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },   
+    ColumnIndexCheckedAdd {
+        #[eo_display_with_serialize_deserialize]
+        column_index_checked_add: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    ColumnStringDeserializedFind {
+        #[eo_display_with_serialize_deserialize]
+        column_string_deserialized_find: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },    
+    //todo make client explicitly write order and column
+    OrderFromStr {
+        #[eo_display_with_serialize_deserialize]
+        order_from_str: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    OrderOffsetSliceGetNone {
+        #[eo_display_with_serialize_deserialize]
+        order_offset_slice_get_none: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    OrderStringDeserializedGetNone {
+        #[eo_display_with_serialize_deserialize]
+        order_string_deserialized_get_none: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    OrderIndexCheckedAdd {
+        #[eo_display_with_serialize_deserialize]
+        order_index_checked_add: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+}
+
+impl std::str::FromStr for DogOrderByWrapper {
+    type Err = DogOrderByWrapperFromErrorNamed;
+    fn from_str(value: &str) -> Result<Self, Self::Err> {//crate::server::postgres::order_by::OrderBy<DogColumn>
+        let string_deserialized = value.to_string();
+        let split_inner_url_parameters_symbol = ',';
+        let default_message = format!("Invalid DogOrderBy:");
+        let column_equal_str = "column=";
+        let order_equal_str = "order=";
+        let column = match string_deserialized.find(column_equal_str) {
+            Some(index) => match index.checked_add(column_equal_str.len()) {
+                Some(offset) => match string_deserialized.get(offset..) {
+                    Some(offset_slice) => match offset_slice.find(split_inner_url_parameters_symbol) {
+                        Some(offset_slice_next_comma_index) => {
+                            match offset_slice.get(0..offset_slice_next_comma_index) {
+                                Some(possible_column) => match {
+                                    use std::str::FromStr;
+                                    DogColumn::from_str(possible_column)
+                                } {
+                                    Ok(column) => column,
+                                    Err(e) => {
+                                        return Err(Self::Err::ColumnFromStr {
+                                            column_from_str: e,
+                                            code_occurence: crate::code_occurence_tufa_common!(),
+                                        });
+                                    }
+                                },
+                                None => {
+                                    return Err(Self::Err::ColumnNoOffsetValue {
+                                        column_no_offset_value: std::string::String::from("no offset value"),
+                                        code_occurence: crate::code_occurence_tufa_common!(),
+                                    });
+                                }
+                            }
+                        }
+                        None => match offset_slice.get(0..) {
+                            Some(possible_column) => match {
+                                use std::str::FromStr;
+                                DogColumn::from_str(possible_column)
+                            } {
+                                Ok(column) => column,
+                                Err(e) => {
+                                    return Err(Self::Err::ColumnFromStr {
+                                        column_from_str: e,
+                                        code_occurence: crate::code_occurence_tufa_common!(),
+                                    });
+                                }
+                            },
+                            None => {
+                                return Err(Self::Err::ColumnOffsetSliceGet {
+                                    column_offset_slice_get: std::string::String::from("offset_slice_get"),
+                                    code_occurence: crate::code_occurence_tufa_common!(),
+                                });
+                            }
+                        },
+                    },
+                    None => {
+                        return Err(Self::Err::ColumnStringDeserializedGet {
+                            column_string_deserialized_get: std::string::String::from("string_deserialized_get"),
+                            code_occurence: crate::code_occurence_tufa_common!(),
+                        });
+                    }
+                },
+                None => {
+                    return Err(Self::Err::ColumnIndexCheckedAdd {
+                        column_index_checked_add: std::string::String::from("index_checked_add"),
+                        code_occurence: crate::code_occurence_tufa_common!(),
+                    });
+                }
+            },
+            None => {
+                return Err(Self::Err::ColumnStringDeserializedFind {
+                    column_string_deserialized_find: std::string::String::from("string_deserialized_find"),
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                });
+            }
+        };
+        let order = match string_deserialized.find(order_equal_str) {
+            Some(index) => match index.checked_add(order_equal_str.len()) {
+                Some(offset) => match string_deserialized.get(offset..) {
+                    Some(offset_slice) => match offset_slice.find(split_inner_url_parameters_symbol) {
+                        Some(offset_slice_next_comma_index) => {
+                            match offset_slice.get(0..offset_slice_next_comma_index) {
+                                Some(possible_order) => match {
+                                    use std::str::FromStr;
+                                    crate::server::postgres::order::Order::from_str(possible_order)
+                                } {
+                                    Ok(order) => Some(order),
+                                    Err(e) => {
+                                        return Err(Self::Err::OrderFromStr {
+                                            order_from_str: e,
+                                            code_occurence: crate::code_occurence_tufa_common!(),
+                                        });
+                                    }
+                                },
+                                None => {
+                                    return Err(Self::Err::OrderOffsetSliceGetNone {
+                                        order_offset_slice_get_none: std::string::String::from("order_offset_slice_get_none"),
+                                        code_occurence: crate::code_occurence_tufa_common!(),
+                                    });
+                                }
+                            }
+                        }
+                        None => match offset_slice.get(0..) {
+                            Some(possible_order) => match {
+                                use std::str::FromStr;
+                                crate::server::postgres::order::Order::from_str(possible_order)
+                            } {
+                                Ok(order) => Some(order),
+                                Err(e) => {
+                                    return Err(Self::Err::OrderFromStr {
+                                        order_from_str: e,
+                                        code_occurence: crate::code_occurence_tufa_common!()
+                                    });
+                                }
+                            },
+                            None => {
+                                return Err(Self::Err::OrderOffsetSliceGetNone {
+                                    order_offset_slice_get_none: std::string::String::from("order_offset_slice_get_none"),
+                                    code_occurence: crate::code_occurence_tufa_common!(),
+                                });
+                            }
+                        },
+                    },
+                    None => {
+                        return Err(Self::Err::OrderStringDeserializedGetNone {
+                            order_string_deserialized_get_none: std::string::String::from("string_deserialized_get_none"),
+                            code_occurence: crate::code_occurence_tufa_common!(),
+                        });
+                    }
+                },
+                None => {
+                    return Err(Self::Err::OrderIndexCheckedAdd {
+                        order_index_checked_add: std::string::String::from("order_index_checked_add"),
+                        code_occurence: crate::code_occurence_tufa_common!(),
+                    });
+                }
+            },
+            None => None,
+        };
+        Ok(Self(crate::server::postgres::order_by::OrderBy { column, order }))
+    }
+}
+//
+//////////////////////////////////
 #[derive(Debug)]
 pub struct ReadManyParameters {
     pub query: ReadManyQuery,
@@ -1952,8 +2158,13 @@ pub struct ReadManyQueryWithSerializeDeserialize {
 //
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum ReadManyQueryTryFromReadManyQueryWithSerializeDeserializeErrorNamed {
+    ColumnSelectFromStr {
+        #[eo_error_occurence]
+        column_select_from_str: DogColumnSelectFromStrErrorNamed,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
     NotUuid {
-        #[eo_display]
+        #[eo_error_occurence]
         not_uuid: crate::server::postgres::uuid_wrapper::UuidWrapperTryFromPossibleUuidWrapperErrorNamed,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
@@ -1962,7 +2173,21 @@ pub enum ReadManyQueryTryFromReadManyQueryWithSerializeDeserializeErrorNamed {
 impl std::convert::TryFrom<ReadManyQueryWithSerializeDeserialize> for ReadManyQuery {
     type Error = ReadManyQueryTryFromReadManyQueryWithSerializeDeserializeErrorNamed;
     fn try_from(value: ReadManyQueryWithSerializeDeserialize) -> Result<Self, Self::Error> {
-        // let select = value.select;
+        let select = match value.select {
+            Some(value) => match {
+                use std::str::FromStr;
+                DogColumnSelect::from_str(&value)
+            } {
+                Ok(value) => Some(value),
+                Err(e) => {
+                    return Err(Self::Error::ColumnSelectFromStr {
+                        column_select_from_str: e,
+                        code_occurence: crate::code_occurence_tufa_common!(),
+                    });
+                }
+            },
+            None => None
+        };
         let id = match value.id {
             Some(value) => match value.split(',')
                 .map(|element| crate::server::postgres::uuid_wrapper::UuidWrapper::try_from(crate::server::postgres::uuid_wrapper::PossibleUuidWrapper::from(element.to_string())))
@@ -1978,10 +2203,15 @@ impl std::convert::TryFrom<ReadManyQueryWithSerializeDeserialize> for ReadManyQu
 
             None => None
         };
-        todo!()
-        // let id = value.id;
-        // let name = value.name;
-        // let color = value.color;
+        
+        let name = match value.name {
+            Some(value) => Some(crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma::from(value)),
+            None => None
+        };
+        let color = match value.color {
+            Some(value) => Some(crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma::from(value)),
+            None => None
+        };
         // let order_by = value.order_by;
         // let limit = value.limit;
         // let offset = value.offset;
@@ -1994,6 +2224,7 @@ impl std::convert::TryFrom<ReadManyQueryWithSerializeDeserialize> for ReadManyQu
         //     limit, 
         //     offset,   
         // }
+        todo!()
     }
 }
 //
