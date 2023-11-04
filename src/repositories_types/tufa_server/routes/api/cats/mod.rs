@@ -1933,7 +1933,7 @@ pub enum TryUpdateMany {
 // );
 
 #[derive(Debug, thiserror :: Error, error_occurence :: ErrorOccurence)]
-pub enum DogOrderByWrapperFromErrorNamed {
+pub enum DogOrderByWrapperFromStrErrorNamed {
     ColumnFromStr {
         #[eo_display_with_serialize_deserialize]
         column_from_str: std::string::String,
@@ -1988,7 +1988,7 @@ pub enum DogOrderByWrapperFromErrorNamed {
 }
 
 impl std::str::FromStr for DogOrderByWrapper {
-    type Err = DogOrderByWrapperFromErrorNamed;
+    type Err = DogOrderByWrapperFromStrErrorNamed;
     fn from_str(value: &str) -> Result<Self, Self::Err> {//crate::server::postgres::order_by::OrderBy<DogColumn>
         let string_deserialized = value.to_string();
         let split_inner_url_parameters_symbol = ',';
@@ -2168,6 +2168,21 @@ pub enum ReadManyQueryTryFromReadManyQueryWithSerializeDeserializeErrorNamed {
         not_uuid: crate::server::postgres::uuid_wrapper::UuidWrapperTryFromPossibleUuidWrapperErrorNamed,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
+    OrderByWrapperFromStr {
+        #[eo_error_occurence]
+        order_by_wrapper_from_str: DogOrderByWrapperFromStrErrorNamed,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    LimitPostgresBigintFromStr {
+        #[eo_error_occurence]
+        limit_postgres_bigint_from_str: crate::server::postgres::postgres_bigint::PostgresBigintFromStrErrorNamed,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    OffsetPostgresBigintFromStr {
+        #[eo_error_occurence]
+        offset_postgres_bigint_from_str: crate::server::postgres::postgres_bigint::PostgresBigintFromStrErrorNamed,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
 }
 
 impl std::convert::TryFrom<ReadManyQueryWithSerializeDeserialize> for ReadManyQuery {
@@ -2203,7 +2218,6 @@ impl std::convert::TryFrom<ReadManyQueryWithSerializeDeserialize> for ReadManyQu
 
             None => None
         };
-        
         let name = match value.name {
             Some(value) => Some(crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma::from(value)),
             None => None
@@ -2212,19 +2226,57 @@ impl std::convert::TryFrom<ReadManyQueryWithSerializeDeserialize> for ReadManyQu
             Some(value) => Some(crate::server::routes::helpers::strings_deserialized_from_string_splitted_by_comma::StringsDeserializedFromStringSplittedByComma::from(value)),
             None => None
         };
-        // let order_by = value.order_by;
-        // let limit = value.limit;
-        // let offset = value.offset;
-        // Self {
-        //     select, 
-        //     id, 
-        //     name, 
-        //     color, 
-        //     order_by, 
-        //     limit, 
-        //     offset,   
-        // }
-        todo!()
+        let order_by = match value.order_by {
+            Some(value) => match {
+                use std::str::FromStr;
+                DogOrderByWrapper::from_str(&value)
+            } {
+                Ok(value) => Some(value),
+                Err(e) => {
+                    return Err(Self::Error::OrderByWrapperFromStr {
+                        order_by_wrapper_from_str: e,
+                        code_occurence: crate::code_occurence_tufa_common!(),
+                    });
+                }
+            },
+            None => None
+        };
+        let limit = match {
+            use std::str::FromStr;
+            crate::server::postgres::postgres_bigint::PostgresBigint::from_str(&value.limit)
+        } {
+            Ok(value) => value,
+            Err(e) => {
+                return Err(Self::Error::LimitPostgresBigintFromStr {
+                    limit_postgres_bigint_from_str: e,
+                    code_occurence: crate::code_occurence_tufa_common!(),
+                });
+            }
+        };
+        let offset = match value.offset {
+            Some(value) => match {
+                use std::str::FromStr;
+                crate::server::postgres::postgres_bigint::PostgresBigint::from_str(&value)
+            } {
+                Ok(value) => Some(value),
+                Err(e) => {
+                    return Err(Self::Error::OffsetPostgresBigintFromStr {
+                        offset_postgres_bigint_from_str: e,
+                        code_occurence: crate::code_occurence_tufa_common!(),
+                    });
+                }
+            },
+            None => None,
+        };
+        Ok(Self {
+            select, 
+            id, 
+            name, 
+            color, 
+            order_by, 
+            limit, 
+            offset,   
+        })
     }
 }
 //
