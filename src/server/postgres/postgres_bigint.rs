@@ -49,3 +49,25 @@ impl crate::common::serde_urlencoded::SerdeUrlencodedParameter for PostgresBigin
         self.to_string()
     }
 }
+
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+pub enum PostgresBigintFromStrErrorNamed {
+    NotCorrectValue {
+        #[eo_display_with_serialize_deserialize]
+        not_correct_value: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+}
+
+impl std::str::FromStr for PostgresBigint {
+    type Err = PostgresBigintFromStrErrorNamed;
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
+        match std::str::FromStr::from_str(value) {
+            Ok(value) => Ok(Self(value)),
+            Err(e) => Err(Self::Err::NotCorrectValue {
+                not_correct_value: format!("wrong rust i64 value: {value}, error: {e}"),
+                code_occurence: crate::code_occurence_tufa_common!(),
+            })
+        }
+    }
+}
