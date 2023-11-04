@@ -1490,6 +1490,13 @@ pub enum TryReadMany {
         checked_add: crate::server::postgres::bind_query::TryGenerateBindIncrementsErrorNamed,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
+    #[tvfrr_400_bad_request]
+    ReadManyQueryTryFromReadManyQueryWithSerializeDeserialize {
+        #[eo_error_occurence]
+        read_many_query_try_from_read_many_query_with_serialize_deserialize: ReadManyQueryTryFromReadManyQueryWithSerializeDeserializeErrorNamed,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    //
     //#[non_exhaustive] case
     #[tvfrr_500_internal_server_error]
     UnexpectedCase {
@@ -2389,7 +2396,20 @@ pub async fn read_many(
                 TryReadManyResponseVariants,
             >::try_extract_value(query_extraction_result, &app_info_state)
             {
-                Ok(value) => todo!(),
+                Ok(value) => match ReadManyQuery::try_from(value) {
+                    Ok(value) => value,
+                    Err(e) => {
+                        let error = TryReadMany::ReadManyQueryTryFromReadManyQueryWithSerializeDeserialize {
+                            read_many_query_try_from_read_many_query_with_serialize_deserialize: e,
+                            code_occurence:  crate::code_occurence_tufa_common!(),
+                        };
+                        crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                            &error,
+                            app_info_state.as_ref(),
+                        );
+                        return TryReadManyResponseVariants::from(error);
+                    }
+                },
                 Err(err) => {
                     return err;
                 }
