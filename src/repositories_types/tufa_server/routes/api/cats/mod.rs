@@ -1933,17 +1933,6 @@ pub enum TryUpdateMany {
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
 //////////////////////////////////
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub struct ReadManyQueryWithSerializeDeserialize {
-    pub select: Option<std::string::String>,
-    pub id: Option<std::string::String>,
-    pub name: Option<std::string::String>,
-    pub color: Option<std::string::String>,
-    pub order_by: Option<std::string::String>,
-    pub limit: std::string::String,
-    pub offset: Option<std::string::String>,
-}
-//
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum ReadManyQueryTryFromReadManyQueryWithSerializeDeserializeErrorNamed {
     ColumnSelectFromStr {
