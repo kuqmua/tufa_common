@@ -1932,7 +1932,6 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-//
 // #[derive(Debug, serde :: Serialize, serde :: Deserialize)]
 // pub struct DogOrderByWrapper(
 //     #[serde(deserialize_with = "deserialize_dog_order_by")]
