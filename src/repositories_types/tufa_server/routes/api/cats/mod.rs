@@ -1932,61 +1932,6 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-#[derive(Debug, thiserror :: Error, error_occurence :: ErrorOccurence)]
-pub enum DogOrderByWrapperFromStrErrorNamed {
-    ColumnFromStr {
-        #[eo_display_with_serialize_deserialize]
-        column_from_str: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    ColumnNoOffsetValue {
-        #[eo_display_with_serialize_deserialize]
-        column_no_offset_value: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    ColumnOffsetSliceGet {
-        #[eo_display_with_serialize_deserialize]
-        column_offset_slice_get: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    ColumnStringDeserializedGet {
-        #[eo_display_with_serialize_deserialize]
-        column_string_deserialized_get: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },   
-    ColumnIndexCheckedAdd {
-        #[eo_display_with_serialize_deserialize]
-        column_index_checked_add: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    ColumnStringDeserializedFind {
-        #[eo_display_with_serialize_deserialize]
-        column_string_deserialized_find: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },    
-    //todo make client explicitly write order and column
-    OrderFromStr {
-        #[eo_display_with_serialize_deserialize]
-        order_from_str: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    OrderOffsetSliceGetNone {
-        #[eo_display_with_serialize_deserialize]
-        order_offset_slice_get_none: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    OrderStringDeserializedGetNone {
-        #[eo_display_with_serialize_deserialize]
-        order_string_deserialized_get_none: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    OrderIndexCheckedAdd {
-        #[eo_display_with_serialize_deserialize]
-        order_index_checked_add: std::string::String,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-}
-
 impl std::str::FromStr for DogOrderByWrapper {
     type Err = DogOrderByWrapperFromStrErrorNamed;
     fn from_str(value: &str) -> Result<Self, Self::Err> {//crate::server::postgres::order_by::OrderBy<DogColumn>
