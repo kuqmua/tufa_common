@@ -1938,20 +1938,6 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-#[derive(Debug)]
-pub struct ReadManyWithBodyParameters {
-    pub payload: ReadManyWithBodyPayload,
-}
-#[derive(Debug)]
-pub struct ReadManyWithBodyPayload {
-    pub select: DogColumnSelect,
-    pub id: Option<Vec<crate::server::postgres::uuid_wrapper::UuidWrapper>>,
-    pub name: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
-    pub color: Option<Vec<crate::server::postgres::regex_filter::RegexFilter>>,
-    pub order_by: crate::server::postgres::order_by::OrderBy<DogColumn>,
-    pub limit: crate::server::postgres::postgres_bigint::PostgresBigint,
-    pub offset: crate::server::postgres::postgres_bigint::PostgresBigint,
-}
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct ReadManyWithBodyPayloadWithSerializeDeserialize {
     pub select: DogColumnSelect,
