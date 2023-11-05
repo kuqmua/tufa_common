@@ -1933,35 +1933,6 @@ pub enum TryUpdateMany {
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
 //////////////////////////////////
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum ReadManyQueryTryFromReadManyQueryWithSerializeDeserializeErrorNamed {
-    ColumnSelectFromStr {
-        #[eo_error_occurence]
-        column_select_from_str: DogColumnSelectFromStrErrorNamed,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    NotUuid {
-        #[eo_error_occurence]
-        not_uuid: crate::server::postgres::uuid_wrapper::UuidWrapperTryFromPossibleUuidWrapperErrorNamed,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    OrderByWrapperFromStr {
-        #[eo_error_occurence]
-        order_by_wrapper_from_str: DogOrderByWrapperFromStrErrorNamed,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    LimitPostgresBigintFromStr {
-        #[eo_error_occurence]
-        limit_postgres_bigint_from_str: crate::server::postgres::postgres_bigint::PostgresBigintFromStrErrorNamed,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    OffsetPostgresBigintFromStr {
-        #[eo_error_occurence]
-        offset_postgres_bigint_from_str: crate::server::postgres::postgres_bigint::PostgresBigintFromStrErrorNamed,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-}
-
 impl std::convert::TryFrom<ReadManyQueryWithSerializeDeserialize> for ReadManyQuery {
     type Error = ReadManyQueryTryFromReadManyQueryWithSerializeDeserializeErrorNamed;
     fn try_from(value: ReadManyQueryWithSerializeDeserialize) -> Result<Self, Self::Error> {
