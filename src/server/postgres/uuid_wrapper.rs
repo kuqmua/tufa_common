@@ -116,6 +116,12 @@ impl std::fmt::Display for PossibleUuidWrapper {
     }
 }
 
+impl std::convert::From<&str> for PossibleUuidWrapper {
+    fn from(value: &str) -> Self {
+        Self(value.to_string())
+    }
+}
+
 impl std::convert::From<std::string::String> for PossibleUuidWrapper {
     fn from(value: std::string::String) -> Self {
         Self(value)
