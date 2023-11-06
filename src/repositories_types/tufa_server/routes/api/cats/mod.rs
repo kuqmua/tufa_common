@@ -1938,15 +1938,6 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum ReadManyWithBodyPayloadTryFromReadManyWithBodyPayloadWithSerializeDeserializeErrorNamed {
-    NotUuid {
-        #[eo_error_occurence]
-        not_uuid: crate::server::postgres::uuid_wrapper::UuidWrapperTryFromPossibleUuidWrapperErrorNamed,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-}
-
 impl std::convert::TryFrom<ReadManyWithBodyPayloadWithSerializeDeserialize> for ReadManyWithBodyPayload {
     type Error = ReadManyWithBodyPayloadTryFromReadManyWithBodyPayloadWithSerializeDeserializeErrorNamed;
     fn try_from(value: ReadManyWithBodyPayloadWithSerializeDeserialize) -> Result<Self, Self::Error> {
