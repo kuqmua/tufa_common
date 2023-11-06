@@ -1938,41 +1938,6 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-pub async fn try_read_many_with_body<'a>(
-    server_location: &str,
-    parameters: ReadManyWithBodyParameters,
-) -> Result<Vec<DogOptions>, TryReadManyWithBodyErrorNamed> {
-    let payload = match serde_json::to_string(&ReadManyWithBodyPayloadWithSerializeDeserialize::from(parameters.payload)) {
-        Ok(value) => value,
-        Err(e) => {
-            return Err(TryReadManyWithBodyErrorNamed::SerdeJsonToString {
-                serde_json_to_string: e,
-                code_occurence: crate::code_occurence_tufa_common!(),
-            });
-        }
-    };
-    let url = format!("{}/dogs/search", server_location);
-    match tvfrr_extraction_logic_try_read_many_with_body(
-        reqwest::Client::new()
-            .post(&url)
-            .header(
-                crate::common::git::project_git_info::PROJECT_COMMIT,
-                crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
-                    .project_commit,
-            )
-            .header(reqwest::header::CONTENT_TYPE, "application/json")
-            .body(payload)
-            .send(),
-    )
-    .await
-    {
-        Ok(value) => Ok(value),
-        Err(e) => Err(TryReadManyWithBodyErrorNamed::RequestError {
-            request_error: e,
-            code_occurence: crate::code_occurence_tufa_common!(),
-        }),
-    }
-}
 pub async fn read_many_with_body(
     app_info_state : axum :: extract :: State < crate ::
 repositories_types :: tufa_server :: routes :: api :: cats ::
