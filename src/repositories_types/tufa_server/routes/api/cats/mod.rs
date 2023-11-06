@@ -1944,47 +1944,6 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-pub async fn try_create_one<'a>(
-    server_location: &str,
-    parameters: CreateOneParameters,
-) -> Result<crate::server::postgres::uuid_wrapper::UuidWrapper, TryCreateOneErrorNamed> {
-    let payload = match serde_json::to_string(&parameters.payload) {
-        Ok(value) => value,
-        Err(e) => {
-            return Err(TryCreateOneErrorNamed::SerdeJsonToString {
-                serde_json_to_string: e,
-                code_occurence: crate::code_occurence_tufa_common!(),
-            });
-        }
-    };
-    let url = format!("{}/dogs", server_location);
-    match tvfrr_extraction_logic_try_create_one(
-        reqwest::Client::new()
-            .post(&url)
-            .header(
-                crate::common::git::project_git_info::PROJECT_COMMIT,
-                crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
-                    .project_commit,
-            )
-            .header(reqwest::header::CONTENT_TYPE, "application/json")
-            .body(payload)
-            .send(),
-    )
-    .await
-    {
-        Ok(value) => match crate::server::postgres::uuid_wrapper::UuidWrapper::try_from(value) {
-            Ok(value) => Ok(value),
-            Err(e) => Err(TryCreateOneErrorNamed::CreatedButCannotConvertUuidWrapperFromPossibleUuidWrapperInClient {
-                uuid_wrapper_try_from_possible_uuid_wrapper_in_client: e,
-                code_occurence: crate::code_occurence_tufa_common!(),
-            })
-        },
-        Err(e) => Err(TryCreateOneErrorNamed::RequestError {
-            request_error: e,
-            code_occurence: crate::code_occurence_tufa_common!(),
-        }),
-    }
-}
 pub async fn create_one(
     app_info_state : axum :: extract :: State < crate ::
 repositories_types :: tufa_server :: routes :: api :: cats ::
