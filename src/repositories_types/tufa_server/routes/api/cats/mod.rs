@@ -206,7 +206,7 @@ pub enum TryCreateMany {
     type_variants_from_reqwest_response::TypeVariantsFromReqwestResponse,
 )]
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_attribute(
-    (),
+    crate::server::postgres::uuid_wrapper::PossibleUuidWrapper,
     tvfrr_201_created
 )]
 pub enum TryCreateOne {
@@ -348,6 +348,12 @@ pub enum TryCreateOne {
     BytesRejection {
         #[eo_display_with_serialize_deserialize]
         bytes_rejection: std::string::String,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    #[tvfrr_500_internal_server_error]//todo what status should be there?
+    CreatedButCannotConvertUuidWrapperFromPossibleUuidWrapperInServer {
+        #[eo_display]
+        uuid_wrapper_try_from_possible_uuid_wrapper_in_server: sqlx::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     //#[non_exhaustive] case
@@ -1938,3 +1944,160 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
+#[derive(Debug, serde_derive :: Serialize, serde_derive :: Deserialize)]
+pub struct CreateOneParameters {
+    pub payload: CreateOnePayload,
+}
+#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
+pub struct CreateOnePayload {
+    pub name: String,
+    pub color: String,
+}
+#[derive(Debug, thiserror :: Error, error_occurence :: ErrorOccurence)]
+pub enum TryCreateOneErrorNamed {
+    RequestError {
+        #[eo_error_occurence]
+        request_error: TryCreateOneRequestError,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    SerdeJsonToString {
+        #[eo_display]
+        serde_json_to_string: serde_json::Error,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+    CreatedButCannotConvertUuidWrapperFromPossibleUuidWrapperInClient {
+        #[eo_error_occurence]
+        uuid_wrapper_try_from_possible_uuid_wrapper_in_client: crate::server::postgres::uuid_wrapper::UuidWrapperTryFromPossibleUuidWrapperErrorNamed,
+        code_occurence: crate::common::code_occurence::CodeOccurence,
+    },
+}
+pub async fn try_create_one<'a>(
+    server_location: &str,
+    parameters: CreateOneParameters,
+) -> Result<crate::server::postgres::uuid_wrapper::UuidWrapper, TryCreateOneErrorNamed> {
+    let payload = match serde_json::to_string(&parameters.payload) {
+        Ok(value) => value,
+        Err(e) => {
+            return Err(TryCreateOneErrorNamed::SerdeJsonToString {
+                serde_json_to_string: e,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            });
+        }
+    };
+    let url = format!("{}/dogs", server_location);
+    match tvfrr_extraction_logic_try_create_one(
+        reqwest::Client::new()
+            .post(&url)
+            .header(
+                crate::common::git::project_git_info::PROJECT_COMMIT,
+                crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
+                    .project_commit,
+            )
+            .header(reqwest::header::CONTENT_TYPE, "application/json")
+            .body(payload)
+            .send(),
+    )
+    .await
+    {
+        Ok(value) => match crate::server::postgres::uuid_wrapper::UuidWrapper::try_from(value) {
+            Ok(value) => Ok(value),
+            Err(e) => Err(TryCreateOneErrorNamed::CreatedButCannotConvertUuidWrapperFromPossibleUuidWrapperInClient {
+                uuid_wrapper_try_from_possible_uuid_wrapper_in_client: e,
+                code_occurence: crate::code_occurence_tufa_common!(),
+            })
+        },
+        Err(e) => Err(TryCreateOneErrorNamed::RequestError {
+            request_error: e,
+            code_occurence: crate::code_occurence_tufa_common!(),
+        }),
+    }
+}
+pub async fn create_one(
+    app_info_state : axum :: extract :: State < crate ::
+repositories_types :: tufa_server :: routes :: api :: cats ::
+DynArcGetConfigGetPostgresPoolSendSync >,
+    payload_extraction_result: Result<
+        axum::Json<CreateOnePayload>,
+        axum::extract::rejection::JsonRejection,
+    >,
+) -> impl axum::response::IntoResponse {
+    let parameters = CreateOneParameters {
+        payload:
+            match crate::server::routes::helpers::json_extractor_error::JsonValueResultExtractor::<
+                CreateOnePayload,
+                TryCreateOneResponseVariants,
+            >::try_extract_value(payload_extraction_result, &app_info_state)
+            {
+                Ok(value) => value,
+                Err(err) => {
+                    return err;
+                }
+            },
+    };
+    println!("{:#?}", parameters);
+    {
+        let query_string = { "insert into dogs(name, color) values ($1, $2) returning id" };
+        println!("{}", query_string);
+        let binded_query = {
+            let mut query = sqlx::query::<sqlx::Postgres>(&query_string);
+            query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                parameters.payload.name,
+                query,
+            );
+            query = crate::server::postgres::bind_query::BindQuery::bind_value_to_query(
+                parameters.payload.color,
+                query,
+            );
+            query
+        };
+        let mut pool_connection = match app_info_state.get_postgres_pool().acquire().await {
+            Ok(value) => value,
+            Err(e) => {
+                let error = TryCreateOne::from(e);
+                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                    &error,
+                    app_info_state.as_ref(),
+                );
+                return TryCreateOneResponseVariants::from(error);
+            }
+        };
+        let pg_connection = match sqlx::Acquire::acquire(&mut pool_connection).await {
+            Ok(value) => value,
+            Err(e) => {
+                let error = TryCreateOne::from(e);
+                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                    &error,
+                    app_info_state.as_ref(),
+                );
+                return TryCreateOneResponseVariants::from(error);
+            }
+        };
+        match binded_query.fetch_one(pg_connection.as_mut()).await {
+            Ok(value) => match {
+                use sqlx::Row;
+                value.try_get::<sqlx::types::Uuid, &str>("id")
+            } {
+                Ok(value) => TryCreateOneResponseVariants::Desirable(crate::server::postgres::uuid_wrapper::PossibleUuidWrapper::from(value)),
+                Err(e) => {
+                    let error = TryCreateOne::CreatedButCannotConvertUuidWrapperFromPossibleUuidWrapperInServer {
+                        uuid_wrapper_try_from_possible_uuid_wrapper_in_server: e,
+                        code_occurence: crate::code_occurence_tufa_common!(),
+                    };
+                    crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                        &error,
+                        app_info_state.as_ref(),
+                    );
+                    return TryCreateOneResponseVariants::from(error);
+                }
+            },
+            Err(e) => {
+                let error = TryCreateOne::from(e);
+                crate::common::error_logs_logic::error_log::ErrorLog::error_log(
+                    &error,
+                    app_info_state.as_ref(),
+                );
+                return TryCreateOneResponseVariants::from(error);
+            }
+        }
+    }
+}
