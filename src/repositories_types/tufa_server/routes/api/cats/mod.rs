@@ -1944,33 +1944,6 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-#[derive(Debug, serde_derive :: Serialize, serde_derive :: Deserialize)]
-pub struct CreateOneParameters {
-    pub payload: CreateOnePayload,
-}
-#[derive(Debug, serde :: Serialize, serde :: Deserialize)]
-pub struct CreateOnePayload {
-    pub name: String,
-    pub color: String,
-}
-#[derive(Debug, thiserror :: Error, error_occurence :: ErrorOccurence)]
-pub enum TryCreateOneErrorNamed {
-    RequestError {
-        #[eo_error_occurence]
-        request_error: TryCreateOneRequestError,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    SerdeJsonToString {
-        #[eo_display]
-        serde_json_to_string: serde_json::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    CreatedButCannotConvertUuidWrapperFromPossibleUuidWrapperInClient {
-        #[eo_error_occurence]
-        uuid_wrapper_try_from_possible_uuid_wrapper_in_client: crate::server::postgres::uuid_wrapper::UuidWrapperTryFromPossibleUuidWrapperErrorNamed,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-}
 pub async fn try_create_one<'a>(
     server_location: &str,
     parameters: CreateOneParameters,
