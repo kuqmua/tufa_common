@@ -1938,30 +1938,6 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-impl std::convert::From<ReadManyWithBodyPayload> for ReadManyWithBodyPayloadWithSerializeDeserialize {
-    fn from(value: ReadManyWithBodyPayload) -> Self {
-        let select = value.select;
-        let id = match value.id {
-            Some(value) => Some(value.into_iter().map(|element|element.to_string()).collect::<Vec<std::string::String>>()),
-            None => None
-        };
-        let name = value.name;
-        let color = value.color;
-        let order_by = value.order_by;
-        let limit = value.limit;
-        let offset = value.offset;
-        Self{
-            select,
-            id,
-            name,
-            color,
-            order_by,
-            limit,
-            offset,
-        }
-    }
-}
-//
 #[derive(Debug, thiserror :: Error, error_occurence :: ErrorOccurence)]
 pub enum TryReadManyWithBodyErrorNamed {
     RequestError {
