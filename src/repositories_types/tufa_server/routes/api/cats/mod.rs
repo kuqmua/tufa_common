@@ -1938,44 +1938,6 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-impl std::convert::TryFrom<ReadManyWithBodyPayloadWithSerializeDeserialize> for ReadManyWithBodyPayload {
-    type Error = ReadManyWithBodyPayloadTryFromReadManyWithBodyPayloadWithSerializeDeserializeErrorNamed;
-    fn try_from(value: ReadManyWithBodyPayloadWithSerializeDeserialize) -> Result<Self, Self::Error> {
-        let select = value.select;
-        let id = match value.id {
-            Some(value) => match value.into_iter()
-                .map(|element|crate::server::postgres::uuid_wrapper::UuidWrapper::try_from(crate::server::postgres::uuid_wrapper::PossibleUuidWrapper::from(element)))
-                .collect::<Result<
-                    Vec<crate::server::postgres::uuid_wrapper::UuidWrapper>,
-                    crate::server::postgres::uuid_wrapper::UuidWrapperTryFromPossibleUuidWrapperErrorNamed
-                >>() 
-            {
-                Ok(value) => Some(value),
-                Err(e) => {
-                    return Err(Self::Error::NotUuid {
-                        not_uuid: e,
-                        code_occurence: crate::code_occurence_tufa_common!(),
-                    });
-                }
-            },
-            None => None
-        };
-        let name = value.name;
-        let color = value.color;
-        let order_by = value.order_by;
-        let limit = value.limit;
-        let offset = value.offset;
-        Ok(Self {
-            select,
-            id,
-            name,
-            color,
-            order_by,
-            limit,
-            offset,
-        })
-    }
-}
 impl std::convert::From<ReadManyWithBodyPayload> for ReadManyWithBodyPayloadWithSerializeDeserialize {
     fn from(value: ReadManyWithBodyPayload) -> Self {
         let select = value.select;
