@@ -1,4 +1,4 @@
-pub trait VecToStringWithConfigToString<'a, ConfigGeneric> {
+pub trait VecToStringWithConfigToString<'a, ConfigGeneric: ?Sized> {
     fn vec_to_string_with_config_to_string(&self, config: &ConfigGeneric) -> String;
 }
 
@@ -8,7 +8,8 @@ where
     VecElementGeneric:
         crate::common::error_logs_logic::to_string_with_config::ToStringWithConfig<'a>,
     ConfigGeneric: crate::common::config::config_fields::GetSourcePlaceType
-        + crate::common::config::config_fields::GetTimezone,
+        + crate::common::config::config_fields::GetTimezone
+        + ?Sized
 {
     fn vec_to_string_with_config_to_string(&self, config: &ConfigGeneric) -> String {
         crate::common::error_logs_logic::helpers::stringified_lines_error_vec(self.iter().fold(
