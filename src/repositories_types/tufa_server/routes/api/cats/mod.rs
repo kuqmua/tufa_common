@@ -1956,25 +1956,6 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-#[derive(Debug, thiserror :: Error, error_occurence :: ErrorOccurence)]
-pub enum TryCreateManyErrorNamed {
-    RequestError {
-        #[eo_error_occurence]
-        request_error: TryCreateManyRequestError,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    SerdeJsonToString {
-        #[eo_display]
-        serde_json_to_string: serde_json::Error,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    CreatedButCannotConvertUuidWrapperFromPossibleUuidWrapperInClient {
-        #[eo_vec_error_occurence]
-        uuid_wrapper_try_from_possible_uuid_wrapper_in_client: Vec<CreatedButCannotConvertUuidWrapperFromPossibleUuidWrapperInClientErrorUnnamed>,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-}
-
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
 pub enum CreatedButCannotConvertUuidWrapperFromPossibleUuidWrapperInClientErrorUnnamed {
     CreatedButCannotConvertUuidWrapperFromPossibleUuidWrapperInClient(crate::server::postgres::uuid_wrapper::UuidWrapperTryFromPossibleUuidWrapperErrorNamed),
@@ -2027,7 +2008,7 @@ pub async fn try_create_many<'a>(
             }
             if let false = vec_errors.is_empty() {
                 return Err(TryCreateManyErrorNamed::CreatedButCannotConvertUuidWrapperFromPossibleUuidWrapperInClient {
-                    uuid_wrapper_try_from_possible_uuid_wrapper_in_client: vec_errors,
+                    created_but_cannot_convert_uuid_wrapper_from_possible_uuid_wrapper_in_client: vec_errors,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
             }
