@@ -1,31 +1,28 @@
 #need to enable vscode rest client extension https://marketplace.visualstudio.com/items?itemName=humao.rest-client to send requests
 
 GET http://127.0.0.1:8080/api/dogs?limit=10 HTTP/1.1
-Accept: */*
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
  
 POST http://127.0.0.1:8080/api/dogs/batch HTTP/1.1
-Accept: */*
 content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 [
     {
-        "name": "1111111111",
-        "color": "11111111111"
+        "name": "3333333333",
+        "color": "3333333333"
     },
     {
-        "name": "222222222",
-        "color": "2222222"
+        "name": "4444444444",
+        "color": "44444444"
     }
 ]
 
 ###
 
 POST http://127.0.0.1:8080/api/dogs HTTP/1.1
-Accept: */*
 content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
@@ -36,19 +33,20 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
 
-DELETE http://127.0.0.1:8080/api/dogs/55 HTTP/1.1
-Accept: */*
+DELETE http://127.0.0.1:8080/api/dogs/5829d06c-4141-4734-8266-b3d1e618c4de HTTP/1.1
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
 
 DELETE http://127.0.0.1:8080/api/dogs/search HTTP/1.1
-Accept: */*
 content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 {
-    "id": [136],
+    "id": [
+      "c95d2f1c-41af-41f9-9a1b-42c5311d87d1",
+      "209f34c3-c6f1-4ce4-913d-9a83ee39b609"
+    ],
     "name":[
         {
             "regex":"^tesft_namfe$",
@@ -65,26 +63,27 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ### todo name and color must be  arrays              
 
-DELETE http://127.0.0.1:8080/api/dogs?id=161,162&name=first_test_name_create,fdf&color=first_test_color_create,blue HTTP/1.1
-Accept: */*
+DELETE http://127.0.0.1:8080/api/dogs?id=c95d2f1c-41af-41f9-9a1b-42c5311d87d1,58dd8518-3657-4922-98ce-3e7ee8c174f8&name=first_test_name_create,fdf&color=first_test_color_create,blue HTTP/1.1
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
 
-GET http://127.0.0.1:8080/api/dogs/162?&select=IdName HTTP/1.1
-Accept: */*
+GET http://127.0.0.1:8080/api/dogs/5829d06c-4141-4734-8266-b3d1e618c4de?&select=IdName HTTP/1.1
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
-###
+### 
 
 POST http://127.0.0.1:8080/api/dogs/search HTTP/1.1
-Accept: */*
 content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 {
     "select": "Id",
-    "id": [136,138],
+    "id": [
+        "7b51bb9c-124e-44ba-9941-7f32a2c18c78",
+        "5829d06c-4141-4734-8266-b3d1e618c4de",
+        "be13a118-e5e5-4cb6-93fe-5a1f1767d666"
+    ],
     "name":[
         {
             "regex":"^tesft_namfe$",
@@ -105,53 +104,48 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
     "offset": 0
 }
 
-###   
+###     
 
-GET http://127.0.0.1:8080/api/dogs?limit=10&id=136&name=test_name,test_nam&color=test_color&select=IdName&order_by=column=id,order=asc&offset=1 HTTP/1.1
-Accept: */*
+GET http://127.0.0.1:8080/api/dogs?limit=10&id=7b51bb9c-124e-44ba-9941-7f32a2c18c78&name=test_name,test_nam&color=test_color&select=IdName&order_by=column=id,order=asc&offset=1 HTTP/1.1
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
 
-PATCH http://127.0.0.1:8080/api/dogs/168 HTTP/1.1
-Accept: */*
+PATCH http://127.0.0.1:8080/api/dogs/7b51bb9c-124e-44ba-9941-7f32a2c18c78 HTTP/1.1
 content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 {
-    "name": "namef",
-    "color":"colorf"
+    "name": "namef666668",
+    "color":"colorf66666666866"
 }
 
 ### fix this
 
-PATCH http://127.0.0.1:8080/api/dogs/batch HTTP/1.1
-Accept: */* 
+PATCH http://127.0.0.1:8080/api/dogs/batch HTTP/1.1 
 content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 [
     {
-        "id": 136,
-        "name": "34535345me",
-        "color":"1343243e"
+        "id": "1e7d0bc2-0364-4de6-9306-179b9d565de0",
+        "name": "meowmoew",
+        "color":"meow"
     },
     {
-        "id": 136,
-        "name": "s23452345dddddddddddsdod",
-        "color":"secosdd25432523453ddddddfnd"
+        "id": "b129a42c-5f99-4a3e-ab25-154f3549f638",
+        "name": "ffffff",
+        "color":"gfggggggggggggg"
     }
 ]
 
 ###
 
 GET http://127.0.0.1:8080/health_check HTTP/1.1
-Accept: */*
 
 ###
 
 GET http://127.0.0.1:8080/git_info HTTP/1.1
-Accept: */*
 
 ###
 
