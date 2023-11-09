@@ -1956,63 +1956,6 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-pub async fn try_create_many<'a>(
-    server_location: &str,
-    parameters: CreateManyParameters,
-) -> Result<Vec<crate::server::postgres::uuid_wrapper::UuidWrapper>, TryCreateManyErrorNamed> {
-    let payload = match serde_json::to_string(&parameters.payload) {
-        Ok(value) => value,
-        Err(e) => {
-            return Err(TryCreateManyErrorNamed::SerdeJsonToString {
-                serde_json_to_string: e,
-                code_occurence: crate::code_occurence_tufa_common!(),
-            });
-        }
-    };
-    let url = format!("{}/dogs", server_location,);
-    match tvfrr_extraction_logic_try_create_many(
-        reqwest::Client::new()
-            .post(&url)
-            .header(
-                crate::common::git::project_git_info::PROJECT_COMMIT,
-                crate::global_variables::compile_time::project_git_info::PROJECT_GIT_INFO
-                    .project_commit,
-            )
-            .header(reqwest::header::CONTENT_TYPE, "application/json")
-            .body(payload)
-            .send(),
-    )
-    .await
-    {
-        Ok(value) => {
-            let mut vec_values = Vec::with_capacity(value.len());
-            let mut vec_errors = Vec::with_capacity(value.len());
-            for element in value {
-                match crate::server::postgres::uuid_wrapper::UuidWrapper::try_from(element) {
-                    Ok(value) => {
-                        vec_values.push(value);
-                    }
-                    Err(e) => {
-                        vec_errors.push(
-                            CreatedButCannotConvertUuidWrapperFromPossibleUuidWrapperInClientErrorUnnamed::CreatedButCannotConvertUuidWrapperFromPossibleUuidWrapperInClient(e)
-                        );
-                    }
-                }
-            }
-            if let false = vec_errors.is_empty() {
-                return Err(TryCreateManyErrorNamed::CreatedButCannotConvertUuidWrapperFromPossibleUuidWrapperInClient {
-                    created_but_cannot_convert_uuid_wrapper_from_possible_uuid_wrapper_in_client: vec_errors,
-                    code_occurence: crate::code_occurence_tufa_common!(),
-                });
-            }
-            Ok(vec_values)
-        }
-        Err(e) => Err(TryCreateManyErrorNamed::RequestError {
-            request_error: e,
-            code_occurence: crate::code_occurence_tufa_common!(),
-        }),
-    }
-}
 pub async fn create_many(
     app_info_state : axum :: extract :: State < crate ::
 repositories_types :: tufa_server :: routes :: api :: cats ::
