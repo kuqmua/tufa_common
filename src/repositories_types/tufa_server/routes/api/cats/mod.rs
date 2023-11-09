@@ -1956,13 +1956,6 @@ pub enum TryUpdateMany {
 }
 //////
 // https://learn.microsoft.com/en-us/rest/api/storageservices/table-service-rest-api
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
-pub enum CreatedButCannotConvertUuidWrapperFromPossibleUuidWrapperInClientErrorUnnamed {
-    CreatedButCannotConvertUuidWrapperFromPossibleUuidWrapperInClient(crate::server::postgres::uuid_wrapper::UuidWrapperTryFromPossibleUuidWrapperErrorNamed),
-}
-//////////////////////
-
-//////////////////////
 pub async fn try_create_many<'a>(
     server_location: &str,
     parameters: CreateManyParameters,
