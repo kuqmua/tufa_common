@@ -19,7 +19,7 @@ pub enum NoItemsErrorNamed {
     },
 }
 
-impl<'a> NoItemsErrorNamed {
+impl NoItemsErrorNamed {
     pub fn get_stringified_kind(error: &NoItemsErrorNamed) -> &'static str {
         match error {
             NoItemsErrorNamed::ThereIsTag {

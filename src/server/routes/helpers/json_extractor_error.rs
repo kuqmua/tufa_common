@@ -2,43 +2,43 @@
     Debug,
     thiserror::Error,
     error_occurence::ErrorOccurence,
-    type_variants_from_reqwest_response::TypeVariantsFromReqwestResponseFromChecker,
+    // type_variants_from_reqwest_response::TypeVariantsFromReqwestResponseFromChecker, //(rust analyzer does not work if type_variants_from_reqwest_response::TypeVariantsFromReqwestResponseFromChecker macro works for some reason)
 )]
-#[type_variants_from_reqwest_response::type_variants_from_reqwest_response_from_checker_paths(
-    crate::repositories_types::tufa_server::routes::api::cats::TryCreateOne,
-    crate::repositories_types::tufa_server::routes::api::cats::TryCreateMany,
-    crate::repositories_types::tufa_server::routes::api::cats::TryUpdateOne,
-    crate::repositories_types::tufa_server::routes::api::cats::TryUpdateMany,
-    crate::repositories_types::tufa_server::routes::api::cats::TryReadManyWithBody,
-    crate::repositories_types::tufa_server::routes::api::cats::TryDeleteManyWithBody
-)]
+// #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_from_checker_paths(
+//     crate::repositories_types::tufa_server::routes::api::cats::TryCreateOne,
+//     crate::repositories_types::tufa_server::routes::api::cats::TryCreateMany,
+//     crate::repositories_types::tufa_server::routes::api::cats::TryUpdateOne,
+//     crate::repositories_types::tufa_server::routes::api::cats::TryUpdateMany,
+//     crate::repositories_types::tufa_server::routes::api::cats::TryReadManyWithBody,
+//     crate::repositories_types::tufa_server::routes::api::cats::TryDeleteManyWithBody
+// )]
 pub enum JsonExtractorErrorNamed {
-    #[tvfrr_400_bad_request]
+    //#[tvfrr_400_bad_request]
     JsonDataError {
         #[eo_display_with_serialize_deserialize]
         json_data_error: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
-    #[tvfrr_400_bad_request]
+    //#[tvfrr_400_bad_request]
     JsonSyntaxError {
         #[eo_display_with_serialize_deserialize]
         json_syntax_error: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
-    #[tvfrr_400_bad_request]
+    //#[tvfrr_400_bad_request]
     MissingJsonContentType {
         #[eo_display_with_serialize_deserialize]
         json_syntax_error: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
-    #[tvfrr_500_internal_server_error]
+    //#[tvfrr_500_internal_server_error]
     BytesRejection {
         #[eo_display_with_serialize_deserialize]
         bytes_rejection: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     //#[non_exhaustive] case
-    #[tvfrr_500_internal_server_error]
+    //#[tvfrr_500_internal_server_error]
     UnexpectedCase {
         #[eo_display_with_serialize_deserialize]
         unexpected_case: std::string::String,
@@ -141,6 +141,636 @@ where
                 );
                 Err(ErrorGeneric::from(error))
             }
+        }
+    }
+}
+
+////////////////////////////todo remove it (rust analyzer does not work if type_variants_from_reqwest_response::TypeVariantsFromReqwestResponseFromChecker macro works for some reason)
+impl std::convert::From<JsonExtractorErrorNamed>
+    for crate::repositories_types::tufa_server::routes::api::cats::TryCreateOneResponseVariants
+{
+    fn from(val: JsonExtractorErrorNamed) -> Self {
+        match val.into_serialize_deserialize_version() {
+            JsonExtractorErrorNamedWithSerializeDeserialize::JsonDataError {
+                json_data_error,
+                code_occurence,
+            } => Self::JsonDataError {
+                json_data_error,
+                code_occurence,
+            },
+            JsonExtractorErrorNamedWithSerializeDeserialize::JsonSyntaxError {
+                json_syntax_error,
+                code_occurence,
+            } => Self::JsonSyntaxError {
+                json_syntax_error,
+                code_occurence,
+            },
+            JsonExtractorErrorNamedWithSerializeDeserialize::MissingJsonContentType {
+                json_syntax_error,
+                code_occurence,
+            } => Self::MissingJsonContentType {
+                json_syntax_error,
+                code_occurence,
+            },
+            JsonExtractorErrorNamedWithSerializeDeserialize::BytesRejection {
+                bytes_rejection,
+                code_occurence,
+            } => Self::BytesRejection {
+                bytes_rejection,
+                code_occurence,
+            },
+            JsonExtractorErrorNamedWithSerializeDeserialize::UnexpectedCase {
+                unexpected_case,
+                code_occurence,
+            } => Self::UnexpectedCase {
+                unexpected_case,
+                code_occurence,
+            },
+        }
+    }
+}
+impl std::convert::From<JsonExtractorErrorNamed>
+    for crate::repositories_types::tufa_server::routes::api::cats::TryCreateManyResponseVariants
+{
+    fn from(val: JsonExtractorErrorNamed) -> Self {
+        match val.into_serialize_deserialize_version() {
+            JsonExtractorErrorNamedWithSerializeDeserialize::JsonDataError {
+                json_data_error,
+                code_occurence,
+            } => Self::JsonDataError {
+                json_data_error,
+                code_occurence,
+            },
+            JsonExtractorErrorNamedWithSerializeDeserialize::JsonSyntaxError {
+                json_syntax_error,
+                code_occurence,
+            } => Self::JsonSyntaxError {
+                json_syntax_error,
+                code_occurence,
+            },
+            JsonExtractorErrorNamedWithSerializeDeserialize::MissingJsonContentType {
+                json_syntax_error,
+                code_occurence,
+            } => Self::MissingJsonContentType {
+                json_syntax_error,
+                code_occurence,
+            },
+            JsonExtractorErrorNamedWithSerializeDeserialize::BytesRejection {
+                bytes_rejection,
+                code_occurence,
+            } => Self::BytesRejection {
+                bytes_rejection,
+                code_occurence,
+            },
+            JsonExtractorErrorNamedWithSerializeDeserialize::UnexpectedCase {
+                unexpected_case,
+                code_occurence,
+            } => Self::UnexpectedCase {
+                unexpected_case,
+                code_occurence,
+            },
+        }
+    }
+}
+impl std::convert::From<JsonExtractorErrorNamed>
+    for crate::repositories_types::tufa_server::routes::api::cats::TryUpdateOneResponseVariants
+{
+    fn from(val: JsonExtractorErrorNamed) -> Self {
+        match val.into_serialize_deserialize_version() {
+            JsonExtractorErrorNamedWithSerializeDeserialize::JsonDataError {
+                json_data_error,
+                code_occurence,
+            } => Self::JsonDataError {
+                json_data_error,
+                code_occurence,
+            },
+            JsonExtractorErrorNamedWithSerializeDeserialize::JsonSyntaxError {
+                json_syntax_error,
+                code_occurence,
+            } => Self::JsonSyntaxError {
+                json_syntax_error,
+                code_occurence,
+            },
+            JsonExtractorErrorNamedWithSerializeDeserialize::MissingJsonContentType {
+                json_syntax_error,
+                code_occurence,
+            } => Self::MissingJsonContentType {
+                json_syntax_error,
+                code_occurence,
+            },
+            JsonExtractorErrorNamedWithSerializeDeserialize::BytesRejection {
+                bytes_rejection,
+                code_occurence,
+            } => Self::BytesRejection {
+                bytes_rejection,
+                code_occurence,
+            },
+            JsonExtractorErrorNamedWithSerializeDeserialize::UnexpectedCase {
+                unexpected_case,
+                code_occurence,
+            } => Self::UnexpectedCase {
+                unexpected_case,
+                code_occurence,
+            },
+        }
+    }
+}
+impl std::convert::From<JsonExtractorErrorNamed>
+    for crate::repositories_types::tufa_server::routes::api::cats::TryUpdateManyResponseVariants
+{
+    fn from(val: JsonExtractorErrorNamed) -> Self {
+        match val.into_serialize_deserialize_version() {
+            JsonExtractorErrorNamedWithSerializeDeserialize::JsonDataError {
+                json_data_error,
+                code_occurence,
+            } => Self::JsonDataError {
+                json_data_error,
+                code_occurence,
+            },
+            JsonExtractorErrorNamedWithSerializeDeserialize::JsonSyntaxError {
+                json_syntax_error,
+                code_occurence,
+            } => Self::JsonSyntaxError {
+                json_syntax_error,
+                code_occurence,
+            },
+            JsonExtractorErrorNamedWithSerializeDeserialize::MissingJsonContentType {
+                json_syntax_error,
+                code_occurence,
+            } => Self::MissingJsonContentType {
+                json_syntax_error,
+                code_occurence,
+            },
+            JsonExtractorErrorNamedWithSerializeDeserialize::BytesRejection {
+                bytes_rejection,
+                code_occurence,
+            } => Self::BytesRejection {
+                bytes_rejection,
+                code_occurence,
+            },
+            JsonExtractorErrorNamedWithSerializeDeserialize::UnexpectedCase {
+                unexpected_case,
+                code_occurence,
+            } => Self::UnexpectedCase {
+                unexpected_case,
+                code_occurence,
+            },
+        }
+    }
+}
+impl std :: convert :: From < JsonExtractorErrorNamed > for crate ::
+repositories_types :: tufa_server :: routes :: api :: cats ::
+TryReadManyWithBodyResponseVariants
+{
+    fn from(val : JsonExtractorErrorNamed) -> Self
+    {
+        match val.into_serialize_deserialize_version()
+        {
+            JsonExtractorErrorNamedWithSerializeDeserialize :: JsonDataError
+            { json_data_error, code_occurence } => Self :: JsonDataError
+            { json_data_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: JsonSyntaxError
+            { json_syntax_error, code_occurence } => Self :: JsonSyntaxError
+            { json_syntax_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize ::
+            MissingJsonContentType { json_syntax_error, code_occurence } =>
+            Self :: MissingJsonContentType
+            { json_syntax_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: BytesRejection
+            { bytes_rejection, code_occurence } => Self :: BytesRejection
+            { bytes_rejection, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: UnexpectedCase
+            { unexpected_case, code_occurence } => Self :: UnexpectedCase
+            { unexpected_case, code_occurence }
+        }
+    }
+}
+impl std :: convert :: From < JsonExtractorErrorNamed > for crate ::
+repositories_types :: tufa_server :: routes :: api :: cats ::
+TryDeleteManyWithBodyResponseVariants
+{
+    fn from(val : JsonExtractorErrorNamed) -> Self
+    {
+        match val.into_serialize_deserialize_version()
+        {
+            JsonExtractorErrorNamedWithSerializeDeserialize :: JsonDataError
+            { json_data_error, code_occurence } => Self :: JsonDataError
+            { json_data_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: JsonSyntaxError
+            { json_syntax_error, code_occurence } => Self :: JsonSyntaxError
+            { json_syntax_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize ::
+            MissingJsonContentType { json_syntax_error, code_occurence } =>
+            Self :: MissingJsonContentType
+            { json_syntax_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: BytesRejection
+            { bytes_rejection, code_occurence } => Self :: BytesRejection
+            { bytes_rejection, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: UnexpectedCase
+            { unexpected_case, code_occurence } => Self :: UnexpectedCase
+            { unexpected_case, code_occurence }
+        }
+    }
+}
+impl std :: convert :: From < JsonExtractorErrorNamed > for crate ::
+repositories_types :: tufa_server :: routes :: api :: cats ::
+TryCreateOneWithSerializeDeserialize
+{
+    fn from(val : JsonExtractorErrorNamed) -> Self
+    {
+        match val.into_serialize_deserialize_version()
+        {
+            JsonExtractorErrorNamedWithSerializeDeserialize :: JsonDataError
+            { json_data_error, code_occurence } => Self :: JsonDataError
+            { json_data_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: JsonSyntaxError
+            { json_syntax_error, code_occurence } => Self :: JsonSyntaxError
+            { json_syntax_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize ::
+            MissingJsonContentType { json_syntax_error, code_occurence } =>
+            Self :: MissingJsonContentType
+            { json_syntax_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: BytesRejection
+            { bytes_rejection, code_occurence } => Self :: BytesRejection
+            { bytes_rejection, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: UnexpectedCase
+            { unexpected_case, code_occurence } => Self :: UnexpectedCase
+            { unexpected_case, code_occurence }
+        }
+    }
+}
+impl std :: convert :: From < JsonExtractorErrorNamed > for crate ::
+repositories_types :: tufa_server :: routes :: api :: cats ::
+TryCreateManyWithSerializeDeserialize
+{
+    fn from(val : JsonExtractorErrorNamed) -> Self
+    {
+        match val.into_serialize_deserialize_version()
+        {
+            JsonExtractorErrorNamedWithSerializeDeserialize :: JsonDataError
+            { json_data_error, code_occurence } => Self :: JsonDataError
+            { json_data_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: JsonSyntaxError
+            { json_syntax_error, code_occurence } => Self :: JsonSyntaxError
+            { json_syntax_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize ::
+            MissingJsonContentType { json_syntax_error, code_occurence } =>
+            Self :: MissingJsonContentType
+            { json_syntax_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: BytesRejection
+            { bytes_rejection, code_occurence } => Self :: BytesRejection
+            { bytes_rejection, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: UnexpectedCase
+            { unexpected_case, code_occurence } => Self :: UnexpectedCase
+            { unexpected_case, code_occurence }
+        }
+    }
+}
+impl std :: convert :: From < JsonExtractorErrorNamed > for crate ::
+repositories_types :: tufa_server :: routes :: api :: cats ::
+TryUpdateOneWithSerializeDeserialize
+{
+    fn from(val : JsonExtractorErrorNamed) -> Self
+    {
+        match val.into_serialize_deserialize_version()
+        {
+            JsonExtractorErrorNamedWithSerializeDeserialize :: JsonDataError
+            { json_data_error, code_occurence } => Self :: JsonDataError
+            { json_data_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: JsonSyntaxError
+            { json_syntax_error, code_occurence } => Self :: JsonSyntaxError
+            { json_syntax_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize ::
+            MissingJsonContentType { json_syntax_error, code_occurence } =>
+            Self :: MissingJsonContentType
+            { json_syntax_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: BytesRejection
+            { bytes_rejection, code_occurence } => Self :: BytesRejection
+            { bytes_rejection, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: UnexpectedCase
+            { unexpected_case, code_occurence } => Self :: UnexpectedCase
+            { unexpected_case, code_occurence }
+        }
+    }
+}
+impl std :: convert :: From < JsonExtractorErrorNamed > for crate ::
+repositories_types :: tufa_server :: routes :: api :: cats ::
+TryUpdateManyWithSerializeDeserialize
+{
+    fn from(val : JsonExtractorErrorNamed) -> Self
+    {
+        match val.into_serialize_deserialize_version()
+        {
+            JsonExtractorErrorNamedWithSerializeDeserialize :: JsonDataError
+            { json_data_error, code_occurence } => Self :: JsonDataError
+            { json_data_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: JsonSyntaxError
+            { json_syntax_error, code_occurence } => Self :: JsonSyntaxError
+            { json_syntax_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize ::
+            MissingJsonContentType { json_syntax_error, code_occurence } =>
+            Self :: MissingJsonContentType
+            { json_syntax_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: BytesRejection
+            { bytes_rejection, code_occurence } => Self :: BytesRejection
+            { bytes_rejection, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: UnexpectedCase
+            { unexpected_case, code_occurence } => Self :: UnexpectedCase
+            { unexpected_case, code_occurence }
+        }
+    }
+}
+impl std :: convert :: From < JsonExtractorErrorNamed > for crate ::
+repositories_types :: tufa_server :: routes :: api :: cats ::
+TryReadManyWithBodyWithSerializeDeserialize
+{
+    fn from(val : JsonExtractorErrorNamed) -> Self
+    {
+        match val.into_serialize_deserialize_version()
+        {
+            JsonExtractorErrorNamedWithSerializeDeserialize :: JsonDataError
+            { json_data_error, code_occurence } => Self :: JsonDataError
+            { json_data_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: JsonSyntaxError
+            { json_syntax_error, code_occurence } => Self :: JsonSyntaxError
+            { json_syntax_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize ::
+            MissingJsonContentType { json_syntax_error, code_occurence } =>
+            Self :: MissingJsonContentType
+            { json_syntax_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: BytesRejection
+            { bytes_rejection, code_occurence } => Self :: BytesRejection
+            { bytes_rejection, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: UnexpectedCase
+            { unexpected_case, code_occurence } => Self :: UnexpectedCase
+            { unexpected_case, code_occurence }
+        }
+    }
+}
+impl std :: convert :: From < JsonExtractorErrorNamed > for crate ::
+repositories_types :: tufa_server :: routes :: api :: cats ::
+TryDeleteManyWithBodyWithSerializeDeserialize
+{
+    fn from(val : JsonExtractorErrorNamed) -> Self
+    {
+        match val.into_serialize_deserialize_version()
+        {
+            JsonExtractorErrorNamedWithSerializeDeserialize :: JsonDataError
+            { json_data_error, code_occurence } => Self :: JsonDataError
+            { json_data_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: JsonSyntaxError
+            { json_syntax_error, code_occurence } => Self :: JsonSyntaxError
+            { json_syntax_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize ::
+            MissingJsonContentType { json_syntax_error, code_occurence } =>
+            Self :: MissingJsonContentType
+            { json_syntax_error, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: BytesRejection
+            { bytes_rejection, code_occurence } => Self :: BytesRejection
+            { bytes_rejection, code_occurence },
+            JsonExtractorErrorNamedWithSerializeDeserialize :: UnexpectedCase
+            { unexpected_case, code_occurence } => Self :: UnexpectedCase
+            { unexpected_case, code_occurence }
+        }
+    }
+}
+impl From<&JsonExtractorErrorNamed> for http::StatusCode {
+    fn from(val: &JsonExtractorErrorNamed) -> Self {
+        match &val {
+            JsonExtractorErrorNamed::JsonDataError {
+                json_data_error: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+            JsonExtractorErrorNamed::JsonSyntaxError {
+                json_syntax_error: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+            JsonExtractorErrorNamed::MissingJsonContentType {
+                json_syntax_error: _,
+                code_occurence: _,
+            } => http::StatusCode::BAD_REQUEST,
+            JsonExtractorErrorNamed::BytesRejection {
+                bytes_rejection: _,
+                code_occurence: _,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
+            JsonExtractorErrorNamed::UnexpectedCase {
+                unexpected_case: _,
+                code_occurence: _,
+            } => http::StatusCode::INTERNAL_SERVER_ERROR,
+        }
+    }
+}
+#[allow(clippy::enum_variant_names, dead_code)]
+enum JsonExtractorErrorNamedStatusCodesChecker {
+    JsonDataErrorTvfrr400BadRequest,
+    JsonSyntaxErrorTvfrr400BadRequest,
+    MissingJsonContentTypeTvfrr400BadRequest,
+    BytesRejectionTvfrr500InternalServerError,
+    UnexpectedCaseTvfrr500InternalServerError,
+}
+impl std::convert::From<JsonExtractorErrorNamedStatusCodesChecker>
+    for crate::repositories_types::tufa_server::routes::api::cats::TryCreateOneStatusCodesChecker
+{
+    fn from(val: JsonExtractorErrorNamedStatusCodesChecker) -> Self {
+        match val
+        {
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            JsonDataErrorTvfrr400BadRequest => crate :: repositories_types ::
+            tufa_server :: routes :: api :: cats ::
+            TryCreateOneStatusCodesChecker :: JsonDataErrorTvfrr400BadRequest,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            JsonSyntaxErrorTvfrr400BadRequest => crate :: repositories_types
+            :: tufa_server :: routes :: api :: cats ::
+            TryCreateOneStatusCodesChecker ::
+            JsonSyntaxErrorTvfrr400BadRequest,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            MissingJsonContentTypeTvfrr400BadRequest => crate ::
+            repositories_types :: tufa_server :: routes :: api :: cats ::
+            TryCreateOneStatusCodesChecker ::
+            MissingJsonContentTypeTvfrr400BadRequest,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            BytesRejectionTvfrr500InternalServerError => crate ::
+            repositories_types :: tufa_server :: routes :: api :: cats ::
+            TryCreateOneStatusCodesChecker ::
+            BytesRejectionTvfrr500InternalServerError,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            UnexpectedCaseTvfrr500InternalServerError => crate ::
+            repositories_types :: tufa_server :: routes :: api :: cats ::
+            TryCreateOneStatusCodesChecker ::
+            UnexpectedCaseTvfrr500InternalServerError
+        }
+    }
+}
+impl std::convert::From<JsonExtractorErrorNamedStatusCodesChecker>
+    for crate::repositories_types::tufa_server::routes::api::cats::TryCreateManyStatusCodesChecker
+{
+    fn from(val: JsonExtractorErrorNamedStatusCodesChecker) -> Self {
+        match val
+        {
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            JsonDataErrorTvfrr400BadRequest => crate :: repositories_types ::
+            tufa_server :: routes :: api :: cats ::
+            TryCreateManyStatusCodesChecker ::
+            JsonDataErrorTvfrr400BadRequest,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            JsonSyntaxErrorTvfrr400BadRequest => crate :: repositories_types
+            :: tufa_server :: routes :: api :: cats ::
+            TryCreateManyStatusCodesChecker ::
+            JsonSyntaxErrorTvfrr400BadRequest,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            MissingJsonContentTypeTvfrr400BadRequest => crate ::
+            repositories_types :: tufa_server :: routes :: api :: cats ::
+            TryCreateManyStatusCodesChecker ::
+            MissingJsonContentTypeTvfrr400BadRequest,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            BytesRejectionTvfrr500InternalServerError => crate ::
+            repositories_types :: tufa_server :: routes :: api :: cats ::
+            TryCreateManyStatusCodesChecker ::
+            BytesRejectionTvfrr500InternalServerError,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            UnexpectedCaseTvfrr500InternalServerError => crate ::
+            repositories_types :: tufa_server :: routes :: api :: cats ::
+            TryCreateManyStatusCodesChecker ::
+            UnexpectedCaseTvfrr500InternalServerError
+        }
+    }
+}
+impl std::convert::From<JsonExtractorErrorNamedStatusCodesChecker>
+    for crate::repositories_types::tufa_server::routes::api::cats::TryUpdateOneStatusCodesChecker
+{
+    fn from(val: JsonExtractorErrorNamedStatusCodesChecker) -> Self {
+        match val
+        {
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            JsonDataErrorTvfrr400BadRequest => crate :: repositories_types ::
+            tufa_server :: routes :: api :: cats ::
+            TryUpdateOneStatusCodesChecker :: JsonDataErrorTvfrr400BadRequest,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            JsonSyntaxErrorTvfrr400BadRequest => crate :: repositories_types
+            :: tufa_server :: routes :: api :: cats ::
+            TryUpdateOneStatusCodesChecker ::
+            JsonSyntaxErrorTvfrr400BadRequest,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            MissingJsonContentTypeTvfrr400BadRequest => crate ::
+            repositories_types :: tufa_server :: routes :: api :: cats ::
+            TryUpdateOneStatusCodesChecker ::
+            MissingJsonContentTypeTvfrr400BadRequest,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            BytesRejectionTvfrr500InternalServerError => crate ::
+            repositories_types :: tufa_server :: routes :: api :: cats ::
+            TryUpdateOneStatusCodesChecker ::
+            BytesRejectionTvfrr500InternalServerError,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            UnexpectedCaseTvfrr500InternalServerError => crate ::
+            repositories_types :: tufa_server :: routes :: api :: cats ::
+            TryUpdateOneStatusCodesChecker ::
+            UnexpectedCaseTvfrr500InternalServerError
+        }
+    }
+}
+impl std::convert::From<JsonExtractorErrorNamedStatusCodesChecker>
+    for crate::repositories_types::tufa_server::routes::api::cats::TryUpdateManyStatusCodesChecker
+{
+    fn from(val: JsonExtractorErrorNamedStatusCodesChecker) -> Self {
+        match val
+        {
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            JsonDataErrorTvfrr400BadRequest => crate :: repositories_types ::
+            tufa_server :: routes :: api :: cats ::
+            TryUpdateManyStatusCodesChecker ::
+            JsonDataErrorTvfrr400BadRequest,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            JsonSyntaxErrorTvfrr400BadRequest => crate :: repositories_types
+            :: tufa_server :: routes :: api :: cats ::
+            TryUpdateManyStatusCodesChecker ::
+            JsonSyntaxErrorTvfrr400BadRequest,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            MissingJsonContentTypeTvfrr400BadRequest => crate ::
+            repositories_types :: tufa_server :: routes :: api :: cats ::
+            TryUpdateManyStatusCodesChecker ::
+            MissingJsonContentTypeTvfrr400BadRequest,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            BytesRejectionTvfrr500InternalServerError => crate ::
+            repositories_types :: tufa_server :: routes :: api :: cats ::
+            TryUpdateManyStatusCodesChecker ::
+            BytesRejectionTvfrr500InternalServerError,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            UnexpectedCaseTvfrr500InternalServerError => crate ::
+            repositories_types :: tufa_server :: routes :: api :: cats ::
+            TryUpdateManyStatusCodesChecker ::
+            UnexpectedCaseTvfrr500InternalServerError
+        }
+    }
+}
+impl std :: convert :: From < JsonExtractorErrorNamedStatusCodesChecker >
+for crate :: repositories_types :: tufa_server :: routes :: api :: cats ::
+TryReadManyWithBodyStatusCodesChecker
+{
+    fn from(val : JsonExtractorErrorNamedStatusCodesChecker,) -> Self
+    {
+        match val
+        {
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            JsonDataErrorTvfrr400BadRequest => crate :: repositories_types ::
+            tufa_server :: routes :: api :: cats ::
+            TryReadManyWithBodyStatusCodesChecker ::
+            JsonDataErrorTvfrr400BadRequest,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            JsonSyntaxErrorTvfrr400BadRequest => crate :: repositories_types
+            :: tufa_server :: routes :: api :: cats ::
+            TryReadManyWithBodyStatusCodesChecker ::
+            JsonSyntaxErrorTvfrr400BadRequest,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            MissingJsonContentTypeTvfrr400BadRequest => crate ::
+            repositories_types :: tufa_server :: routes :: api :: cats ::
+            TryReadManyWithBodyStatusCodesChecker ::
+            MissingJsonContentTypeTvfrr400BadRequest,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            BytesRejectionTvfrr500InternalServerError => crate ::
+            repositories_types :: tufa_server :: routes :: api :: cats ::
+            TryReadManyWithBodyStatusCodesChecker ::
+            BytesRejectionTvfrr500InternalServerError,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            UnexpectedCaseTvfrr500InternalServerError => crate ::
+            repositories_types :: tufa_server :: routes :: api :: cats ::
+            TryReadManyWithBodyStatusCodesChecker ::
+            UnexpectedCaseTvfrr500InternalServerError
+        }
+    }
+}
+impl std :: convert :: From < JsonExtractorErrorNamedStatusCodesChecker >
+for crate :: repositories_types :: tufa_server :: routes :: api :: cats ::
+TryDeleteManyWithBodyStatusCodesChecker
+{
+    fn from(val : JsonExtractorErrorNamedStatusCodesChecker,) -> Self
+    {
+        match val
+        {
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            JsonDataErrorTvfrr400BadRequest => crate :: repositories_types ::
+            tufa_server :: routes :: api :: cats ::
+            TryDeleteManyWithBodyStatusCodesChecker ::
+            JsonDataErrorTvfrr400BadRequest,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            JsonSyntaxErrorTvfrr400BadRequest => crate :: repositories_types
+            :: tufa_server :: routes :: api :: cats ::
+            TryDeleteManyWithBodyStatusCodesChecker ::
+            JsonSyntaxErrorTvfrr400BadRequest,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            MissingJsonContentTypeTvfrr400BadRequest => crate ::
+            repositories_types :: tufa_server :: routes :: api :: cats ::
+            TryDeleteManyWithBodyStatusCodesChecker ::
+            MissingJsonContentTypeTvfrr400BadRequest,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            BytesRejectionTvfrr500InternalServerError => crate ::
+            repositories_types :: tufa_server :: routes :: api :: cats ::
+            TryDeleteManyWithBodyStatusCodesChecker ::
+            BytesRejectionTvfrr500InternalServerError,
+            JsonExtractorErrorNamedStatusCodesChecker ::
+            UnexpectedCaseTvfrr500InternalServerError => crate ::
+            repositories_types :: tufa_server :: routes :: api :: cats ::
+            TryDeleteManyWithBodyStatusCodesChecker ::
+            UnexpectedCaseTvfrr500InternalServerError
         }
     }
 }
