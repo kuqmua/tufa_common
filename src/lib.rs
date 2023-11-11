@@ -14,5 +14,3 @@ pub mod repositories_types;
 pub mod server;
 
 pub mod dev;
-
-check_specific_dependency_version_usage::check_specific_dependency_version_usage!();
