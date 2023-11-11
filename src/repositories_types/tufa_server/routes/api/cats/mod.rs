@@ -21,7 +21,6 @@ pub type DynArcGetConfigGetPostgresPoolSendSync = std::sync::Arc<
     utoipa::ToSchema,
     generate_postgresql_crud::GeneratePostgresqlCrud,
 )]
-#[generate_postgresql_crud::generate_postgresql_crud_route_name(dogs)]
 pub struct Dog {
     #[generate_postgresql_crud_primary_key]
     pub id: std::string::String, //todo make it UuidWrapper todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
