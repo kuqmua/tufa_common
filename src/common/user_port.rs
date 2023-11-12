@@ -28,14 +28,14 @@ impl std::convert::TryFrom<u16> for UserPort {
     type Error = UserPortTryFromU16ErrorNamed;
     fn try_from(value: u16) -> Result<Self, Self::Error> {
         if value < 1024 {
-            Err(UserPortTryFromU16ErrorNamed::SystemPort {
+            Err(Self::Error::SystemPort {
                 port: value,
                 code_occurence: crate::code_occurence_tufa_common!(),
             })
         } else if value < 49152 {
             Ok(Self { port: value })
         } else {
-            Err(UserPortTryFromU16ErrorNamed::EphemeralPort {
+            Err(Self::Error::EphemeralPort {
                 port: value,
                 code_occurence: crate::code_occurence_tufa_common!(),
             })

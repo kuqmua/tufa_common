@@ -60,7 +60,7 @@ impl std::convert::TryFrom<ConfigUnchecked> for Config {
         let server_port = match crate::common::user_port::UserPort::try_from(value.server_port) {
             Ok(user_port) => user_port,
             Err(e) => {
-                return Err(ConfigCheckErrorNamed::ServerPort {
+                return Err(Self::Error::ServerPort {
                     server_port: e,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
@@ -69,7 +69,7 @@ impl std::convert::TryFrom<ConfigUnchecked> for Config {
         let socket_addr: std::net::SocketAddr = match format!("127.0.0.1:{server_port}").parse() {
             Ok(socket_addr) => socket_addr,
             Err(e) => {
-                return Err(ConfigCheckErrorNamed::SocketAddr {
+                return Err(Self::Error::SocketAddr {
                     socket_addr: e,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
@@ -77,7 +77,7 @@ impl std::convert::TryFrom<ConfigUnchecked> for Config {
         };
         let hmac_secret = match value.hmac_secret.is_empty() {
             true => {
-                return Err(ConfigCheckErrorNamed::HmacSecret {
+                return Err(Self::Error::HmacSecret {
                     hmac_secret: value.hmac_secret,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
@@ -86,7 +86,7 @@ impl std::convert::TryFrom<ConfigUnchecked> for Config {
         };
         let base_url = match value.base_url.is_empty() {
             true => {
-                return Err(ConfigCheckErrorNamed::BaseUrl {
+                return Err(Self::Error::BaseUrl {
                     base_url: value.base_url,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
@@ -96,7 +96,7 @@ impl std::convert::TryFrom<ConfigUnchecked> for Config {
         let access_control_max_age = value.access_control_max_age;
         let access_control_allow_origin = match value.access_control_allow_origin.is_empty() {
             true => {
-                return Err(ConfigCheckErrorNamed::AccessControlAllowOrigin {
+                return Err(Self::Error::AccessControlAllowOrigin {
                     access_control_allow_origin: value.access_control_allow_origin,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 }); //todo - maybe add check if its uri\url
@@ -106,7 +106,7 @@ impl std::convert::TryFrom<ConfigUnchecked> for Config {
 
         let github_name = match value.github_name.is_empty() {
             true => {
-                return Err(ConfigCheckErrorNamed::GithubName {
+                return Err(Self::Error::GithubName {
                     github_name: value.github_name,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
@@ -115,7 +115,7 @@ impl std::convert::TryFrom<ConfigUnchecked> for Config {
         };
         let github_token = match value.github_token.is_empty() {
             true => {
-                return Err(ConfigCheckErrorNamed::GithubToken {
+                return Err(Self::Error::GithubToken {
                     github_token: value.github_token,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
@@ -126,7 +126,7 @@ impl std::convert::TryFrom<ConfigUnchecked> for Config {
         let timezone = match chrono::FixedOffset::east_opt(value.timezone) {
             Some(fixed_offset) => fixed_offset,
             None => {
-                return Err(ConfigCheckErrorNamed::Timezone {
+                return Err(Self::Error::Timezone {
                     timezone: value.timezone,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
@@ -135,7 +135,7 @@ impl std::convert::TryFrom<ConfigUnchecked> for Config {
 
         let redis_url = match value.redis_url.is_empty() {
             true => {
-                return Err(ConfigCheckErrorNamed::RedisUrl {
+                return Err(Self::Error::RedisUrl {
                     redis_url: value.redis_url,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
@@ -145,7 +145,7 @@ impl std::convert::TryFrom<ConfigUnchecked> for Config {
 
         let mongo_url = match value.mongo_url.is_empty() {
             true => {
-                return Err(ConfigCheckErrorNamed::MongoUrl {
+                return Err(Self::Error::MongoUrl {
                     mongo_url: value.mongo_url,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
@@ -155,7 +155,7 @@ impl std::convert::TryFrom<ConfigUnchecked> for Config {
 
         let database_url = match value.database_url.is_empty() {
             true => {
-                return Err(ConfigCheckErrorNamed::DatabaseUrl {
+                return Err(Self::Error::DatabaseUrl {
                     database_url: value.database_url,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });
@@ -165,7 +165,7 @@ impl std::convert::TryFrom<ConfigUnchecked> for Config {
 
         let starting_check_link = match value.starting_check_link.is_empty() {
             true => {
-                return Err(ConfigCheckErrorNamed::StartingCheckLink {
+                return Err(Self::Error::StartingCheckLink {
                     starting_check_link: value.starting_check_link,
                     code_occurence: crate::code_occurence_tufa_common!(),
                 });

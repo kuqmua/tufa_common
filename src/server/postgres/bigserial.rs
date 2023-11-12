@@ -69,8 +69,8 @@ impl std::convert::TryFrom<i64> for Bigserial {
     type Error = BigserialTryFromI64ErrorNamed;
     fn try_from(value: i64) -> Result<Self, Self::Error> {
         match value.is_positive() {
-            true => Ok(Bigserial(value)),
-            false => Err(BigserialTryFromI64ErrorNamed::NotPositive {
+            true => Ok(Self(value)),
+            false => Err(Self::Error::NotPositive {
                 not_positive: value,
                 code_occurence: crate::code_occurence_tufa_common!(),
             }),
