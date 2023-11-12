@@ -16,16 +16,16 @@ pub type DynArcGetConfigGetPostgresPoolSendSync = std::sync::Arc<
 
 #[derive(
     Debug,
-    serde_derive::Serialize,
-    serde_derive::Deserialize,
+    // serde_derive::Serialize,
+    // serde_derive::Deserialize,
     utoipa::ToSchema,
     generate_postgresql_crud::GeneratePostgresqlCrud,
 )]
 pub struct Dog {
     #[generate_postgresql_crud_primary_key]
     pub id: std::string::String, //todo make it UuidWrapper todo - if using js JSON.parse() - must be two variants - for usage and deserialization - coz json number type capacity less than i64::MAX
-    pub name: String,
-    pub color: String,
+    pub name: std::string::String,
+    pub color: std::string::String,
 }
 
 #[derive(
