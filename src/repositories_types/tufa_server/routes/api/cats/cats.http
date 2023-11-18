@@ -1,9 +1,4 @@
 #need to enable vscode rest client extension https://marketplace.visualstudio.com/items?itemName=humao.rest-client to send requests
-
-GET http://127.0.0.1:8080/api/dogs?limit=10 HTTP/1.1
-project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
-
-###
  
 POST http://127.0.0.1:8080/api/dogs/batch HTTP/1.1
 content-type: application/json
@@ -63,11 +58,6 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ### todo name and color must be  arrays              
 
-DELETE http://127.0.0.1:8080/api/dogs?id=c95d2f1c-41af-41f9-9a1b-42c5311d87d1,58dd8518-3657-4922-98ce-3e7ee8c174f8&name=first_test_name_create,fdf&color=first_test_color_create,blue HTTP/1.1
-project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
-
-###
-
 GET http://127.0.0.1:8080/api/dogs/5829d06c-4141-4734-8266-b3d1e618c4de?&select=IdName HTTP/1.1
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
@@ -103,11 +93,6 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
     "limit": 10,
     "offset": 0
 }
-
-###     
-
-GET http://127.0.0.1:8080/api/dogs?limit=10&id=7b51bb9c-124e-44ba-9941-7f32a2c18c78&name=test_name,test_nam&color=test_color&select=IdName&order_by=column=id,order=asc&offset=1 HTTP/1.1
-project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
 
