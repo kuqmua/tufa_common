@@ -61,3 +61,10 @@ generate_getter_traits_for_struct_fields = {path = "../proc_macros/generate_gett
 generate_postgresql_crud = {path = "../proc_macros/generate_postgresql_crud"}
 init_from_env = {path = "../proc_macros/init_from_env"}
 user_port_try_from_u16 = {path = "../proc_macros/user_port_try_from_u16"}
+
+# forbid
+# deny
+# warn
+# allow
+[lints.rust]
+unsafe_code = { level = "forbid", priority = 0 }
