@@ -62,6 +62,9 @@ generate_postgresql_crud = {path = "../proc_macros/generate_postgresql_crud"}
 init_from_env = {path = "../proc_macros/init_from_env"}
 user_port_try_from_u16 = {path = "../proc_macros/user_port_try_from_u16"}
 
+[lints]
+workspace = true
+
 # forbid
 # deny
 # warn
