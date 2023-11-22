@@ -64,10 +64,3 @@ user_port_try_from_u16 = {path = "../proc_macros/user_port_try_from_u16"}
 
 [lints]
 workspace = true
-
-# forbid
-# deny
-# warn
-# allow
-[lints.rust]
-unsafe_code = { level = "forbid", priority = 0 }
