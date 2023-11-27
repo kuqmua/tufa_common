@@ -5,7 +5,6 @@
     clippy::float_arithmetic
 )]
 #![allow(clippy::too_many_arguments)]
-#![feature(async_fn_in_trait)]
 
 pub mod client;
 pub mod common;
