@@ -1,5 +1,5 @@
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub struct ProjectCommitExtractor {}
+// #[derive(Debug, serde::Serialize, serde::Deserialize)]
+// pub struct ProjectCommitExtractor {}
 
 #[derive(
     Debug,
