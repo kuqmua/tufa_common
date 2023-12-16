@@ -28,6 +28,7 @@ pub type DynArcGetConfigGetPostgresPoolSendSync = std::sync::Arc<
 #[generate_postgresql_crud::delete_many_with_body_additional_http_status_codes_error_variants{}]
 
 #[generate_postgresql_crud::additional_http_status_codes_error_variants{
+    #[path(crate::server::extractors::project_commit_extractor::)]
     enum ProjectCommitExtractorCheckErrorNamed {
         #[tvfrr_400_bad_request]
         ProjectCommitExtractorNotEqual {
@@ -67,4 +68,11 @@ pub struct Dog {
     pub name: std::string::String,
     #[generate_postgresql_crud_varchar]
     pub color: std::string::String,
+}
+
+fn s() {
+    let f = crate::server::extractors::project_commit_extractor::ProjectCommitExtractorCheckErrorNamed::NoProjectCommitExtractorHeader {
+            no_project_commit_header: std::string::String::from(""),
+            code_occurence: crate::code_occurence_tufa_common!(),
+        };
 }
