@@ -18,6 +18,14 @@ pub type DynArcGetConfigGetPostgresPoolSendSync = std::sync::Arc<
     Debug,
     generate_postgresql_crud::GeneratePostgresqlCrud,
 )]
+#[generate_postgresql_crud::generate_postgresql_crud_create_many_additional_http_status_codes_error_variants{}]
+#[generate_postgresql_crud::generate_postgresql_crud_create_one_additional_http_status_codes_error_variants{}]
+#[generate_postgresql_crud::generate_postgresql_crud_read_one_additional_http_status_codes_error_variants{}]
+#[generate_postgresql_crud::generate_postgresql_crud_read_many_with_body_additional_http_status_codes_error_variants{}]
+#[generate_postgresql_crud::generate_postgresql_crud_update_one_additional_http_status_codes_error_variants{}]
+#[generate_postgresql_crud::generate_postgresql_crud_update_many_additional_http_status_codes_error_variants{}]
+#[generate_postgresql_crud::generate_postgresql_crud_delete_one_additional_http_status_codes_error_variants{}]
+#[generate_postgresql_crud::generate_postgresql_crud_delete_many_with_body_additional_http_status_codes_error_variants{}]
 #[generate_postgresql_crud::generate_postgresql_crud_additional_http_status_codes_error_variants{
     enum ProjectCommitExtractorCheckErrorNamed {
         #[tvfrr_400_bad_request]
