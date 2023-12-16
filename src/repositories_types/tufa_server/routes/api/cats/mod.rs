@@ -41,15 +41,15 @@ pub type DynArcGetConfigGetPostgresPoolSendSync = std::sync::Arc<
             code_occurence: crate::common::code_occurence::CodeOccurence,
         },
     }
-    ;
-    enum SomethingErrorNamed {
-        #[tvfrr_400_bad_request]
-        SomethingVariant {
-            #[eo_display_with_serialize_deserialize]
-            something_field: std::string::String,
-            code_occurence: crate::common::code_occurence::CodeOccurence,
-        },
-    }
+    // ;
+    // enum SomethingErrorNamed {
+    //     #[tvfrr_400_bad_request]
+    //     SomethingVariant {
+    //         #[eo_display_with_serialize_deserialize]
+    //         something_field: std::string::String,
+    //         code_occurence: crate::common::code_occurence::CodeOccurence,
+    //     },
+    // }
 }]
 pub struct Dog {
     #[generate_postgresql_crud_primary_key]
