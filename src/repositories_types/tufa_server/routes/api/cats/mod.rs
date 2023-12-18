@@ -70,9 +70,9 @@ pub struct Dog {
     pub color: std::string::String,
 }
 
-fn s() {
-    let f = crate::server::extractors::project_commit_extractor::ProjectCommitExtractorCheckErrorNamed::NoProjectCommitExtractorHeader {
-            no_project_commit_header: std::string::String::from(""),
-            code_occurence: crate::code_occurence_tufa_common!(),
-        };
-}
+// fn s() {
+//     let f = crate::server::extractors::project_commit_extractor::ProjectCommitExtractorCheckErrorNamed::NoProjectCommitExtractorHeader {
+//             no_project_commit_header: std::string::String::from(""),
+//             code_occurence: crate::code_occurence_tufa_common!(),
+//         };
+// }
