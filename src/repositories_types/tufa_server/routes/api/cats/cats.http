@@ -15,7 +15,7 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
     }
 ]
 
-###
+### 
 
 POST http://127.0.0.1:8080/api/dogs HTTP/1.1
 content-type: application/json
@@ -26,35 +26,7 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
     "color": "first_test_color_create"
 }
 
-###
 
-DELETE http://127.0.0.1:8080/api/dogs/5829d06c-4141-4734-8266-b3d1e618c4de HTTP/1.1
-project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
-
-###
-
-DELETE http://127.0.0.1:8080/api/dogs/search HTTP/1.1
-content-type: application/json
-project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
-
-{
-    "id": [
-      "c95d2f1c-41af-41f9-9a1b-42c5311d87d1",
-      "209f34c3-c6f1-4ce4-913d-9a83ee39b609"
-    ],
-    "name":[
-        {
-            "regex":"^tesft_namfe$",
-            "conjuctive_operator":"Or"
-        }
-    ],
-    "color":[
-        {
-            "regex":"test",
-            "conjuctive_operator":"Or"
-        }
-    ]
-}
 
 ### todo name and color must be  arrays              
 
@@ -68,29 +40,29 @@ content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 {
-    "select": "Id",
-    "id": [
-        "7b51bb9c-124e-44ba-9941-7f32a2c18c78",
-        "5829d06c-4141-4734-8266-b3d1e618c4de",
-        "be13a118-e5e5-4cb6-93fe-5a1f1767d666"
-    ],
-    "name":[
-        {
-            "regex":"^tesft_namfe$",
-            "conjuctive_operator":"Or"
-        }
-    ],
-    "color":[
-        {
-            "regex":"test",
-            "conjuctive_operator":"Or"
-        }
-    ],
+    "select": "IdNameColor",
+    # "id": [
+    #     "7b51bb9c-124e-44ba-9941-7f32a2c18c78",
+    #     "5829d06c-4141-4734-8266-b3d1e618c4de",
+    #     "be13a118-e5e5-4cb6-93fe-5a1f1767d666"
+    # ],
+    # "name":[
+    #     {
+    #         "regex":"^tesft_namfe$",
+    #         "conjuctive_operator":"Or"
+    #     }
+    # ],
+    # "color":[
+    #     {
+    #         "regex":"test",
+    #         "conjuctive_operator":"Or"
+    #     }
+    # ],
     "order_by": {
         "column": "id",
         "order": "desc"
     },
-    "limit": 10,
+    "limit": 100,
     "offset": 0
 }
 
@@ -113,16 +85,47 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 [
     {
-        "id": "1e7d0bc2-0364-4de6-9306-179b9d565de0",
+        "id": "cf0c345f-bd66-43ab-ae2e-1ed2dc00299a",
         "name": "meowmoew",
         "color":"meow"
     },
     {
-        "id": "b129a42c-5f99-4a3e-ab25-154f3549f638",
+        "id": "b5d3c50e-b99f-4ada-a89d-8a8af63f9a0c",
         "name": "ffffff",
         "color":"gfggggggggggggg"
     }
 ]
+
+###
+
+DELETE http://127.0.0.1:8080/api/dogs/4e8b15b8-d7f5-4ec0-a97d-e752f08bf12d HTTP/1.1
+project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
+
+####"^first_test_name_create$" 
+
+DELETE http://127.0.0.1:8080/api/dogs/search HTTP/1.1
+content-type: application/json
+project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
+
+{
+    "id": [
+      "f4977a3c-ca1f-41da-b135-ee6a47936ff8",
+      "f854a08d-9c4a-453e-9561-d91f2caf1fc1"
+    ]
+    # ,
+    # "name":[
+    #     {
+    #         "regex":"first_test_name_create",
+    #         "conjuctive_operator":"Or"
+    #     }
+    # ],
+    # "color":[
+    #     {
+    #         "regex":"first_test_color_create",
+    #         "conjuctive_operator":"Or"
+    #     }
+    # ]
+}
 
 ###
 
