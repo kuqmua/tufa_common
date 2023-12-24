@@ -26,13 +26,13 @@ pub enum SqlxPostgresErrorErrorNamed {
     #[tvfrr_500_internal_server_error]
     Io {
         #[eo_display]
-        io_error: std::io::Error,
+        io: std::io::Error,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_500_internal_server_error]
     Tls {
         #[eo_display_with_serialize_deserialize]
-        box_dyn_error: std::string::String,
+        tls: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_500_internal_server_error]
@@ -119,9 +119,9 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
         // todo https://github.com/cschaible/actix-web-security-samples/blob/46bb7aa62ada7cb176d8765e2f60b497392b1840/oauth-resource-server/backend/src/error/mod.rs#L46
         // todo https://www.postgresql.org/docs/current/errcodes-appendix.html
         match e {
-            sqlx::Error::Configuration(box_dyn_error) => {
+            sqlx::Error::Configuration(value) => {
                 SqlxPostgresErrorErrorNamed::Configuration {
-                    configuration: box_dyn_error.to_string(),
+                    configuration: value.to_string(),
                     code_occurence: crate::code_occurence_tufa_common!(),
                 }
             }
@@ -131,12 +131,12 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
                     code_occurence: crate::code_occurence_tufa_common!(),
                 }
             }
-            sqlx::Error::Io(io_error) => SqlxPostgresErrorErrorNamed::Io {
-                io_error,
+            sqlx::Error::Io(io) => SqlxPostgresErrorErrorNamed::Io {
+                io,
                 code_occurence: crate::code_occurence_tufa_common!(),
             },
-            sqlx::Error::Tls(box_dyn_error) => SqlxPostgresErrorErrorNamed::Tls {
-                box_dyn_error: box_dyn_error.to_string(),
+            sqlx::Error::Tls(value) => SqlxPostgresErrorErrorNamed::Tls {
+                tls: value.to_string(),
                 code_occurence: crate::code_occurence_tufa_common!(),
             },
             sqlx::Error::Protocol(string) => SqlxPostgresErrorErrorNamed::Protocol {
@@ -171,8 +171,8 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
                     code_occurence: crate::code_occurence_tufa_common!(),
                 }
             }
-            sqlx::Error::Decode(decode_box_dyn_error) => SqlxPostgresErrorErrorNamed::Decode {
-                decode_box_dyn_error: decode_box_dyn_error.to_string(),
+            sqlx::Error::Decode(value) => SqlxPostgresErrorErrorNamed::Decode {
+                decode_box_dyn_error: value.to_string(),
                 code_occurence: crate::code_occurence_tufa_common!(),
             },
             sqlx::Error::PoolTimedOut => SqlxPostgresErrorErrorNamed::PoolTimedOut {
@@ -219,17 +219,17 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Io {
-//                 io_error,
+//                 io,
 //                 code_occurence,
 //             } => Self::Io {
-//                 io_error,
+//                 io,
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Tls {
-//                 box_dyn_error,
+//                 tls,
 //                 code_occurence,
 //             } => Self::Tls {
-//                 box_dyn_error,
+//                 tls,
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Protocol {
@@ -343,17 +343,17 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Io {
-//                 io_error,
+//                 io,
 //                 code_occurence,
 //             } => Self::Io {
-//                 io_error,
+//                 io,
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Tls {
-//                 box_dyn_error,
+//                 tls,
 //                 code_occurence,
 //             } => Self::Tls {
-//                 box_dyn_error,
+//                 tls,
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Protocol {
@@ -463,11 +463,11 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //             { database, code_occurence } => Self :: Database
 //             { database, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Io
-//             { io_error, code_occurence } => Self :: Io
-//             { io_error, code_occurence },
+//             { io, code_occurence } => Self :: Io
+//             { io, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Tls
-//             { box_dyn_error, code_occurence } => Self :: Tls
-//             { box_dyn_error, code_occurence },
+//             { tls, code_occurence } => Self :: Tls
+//             { tls, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Protocol
 //             { protocol, code_occurence } => Self :: Protocol
 //             { protocol, code_occurence },
@@ -527,11 +527,11 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //             { database, code_occurence } => Self :: Database
 //             { database, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Io
-//             { io_error, code_occurence } => Self :: Io
-//             { io_error, code_occurence },
+//             { io, code_occurence } => Self :: Io
+//             { io, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Tls
-//             { box_dyn_error, code_occurence } => Self :: Tls
-//             { box_dyn_error, code_occurence },
+//             { tls, code_occurence } => Self :: Tls
+//             { tls, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Protocol
 //             { protocol, code_occurence } => Self :: Protocol
 //             { protocol, code_occurence },
@@ -587,11 +587,11 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //                 code_occurence: _,
 //             } => http::StatusCode::INTERNAL_SERVER_ERROR,
 //             SqlxPostgresErrorErrorNamed::Io {
-//                 io_error: _,
+//                 io: _,
 //                 code_occurence: _,
 //             } => http::StatusCode::INTERNAL_SERVER_ERROR,
 //             SqlxPostgresErrorErrorNamed::Tls {
-//                 box_dyn_error: _,
+//                 tls: _,
 //                 code_occurence: _,
 //             } => http::StatusCode::INTERNAL_SERVER_ERROR,
 //             SqlxPostgresErrorErrorNamed::Protocol {
@@ -853,17 +853,17 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Io {
-//                 io_error,
+//                 io,
 //                 code_occurence,
 //             } => Self::Io {
-//                 io_error,
+//                 io,
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Tls {
-//                 box_dyn_error,
+//                 tls,
 //                 code_occurence,
 //             } => Self::Tls {
-//                 box_dyn_error,
+//                 tls,
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Protocol {
@@ -977,17 +977,17 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Io {
-//                 io_error,
+//                 io,
 //                 code_occurence,
 //             } => Self::Io {
-//                 io_error,
+//                 io,
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Tls {
-//                 box_dyn_error,
+//                 tls,
 //                 code_occurence,
 //             } => Self::Tls {
-//                 box_dyn_error,
+//                 tls,
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Protocol {
@@ -1097,11 +1097,11 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //             { database, code_occurence } => Self :: Database
 //             { database, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Io
-//             { io_error, code_occurence } => Self :: Io
-//             { io_error, code_occurence },
+//             { io, code_occurence } => Self :: Io
+//             { io, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Tls
-//             { box_dyn_error, code_occurence } => Self :: Tls
-//             { box_dyn_error, code_occurence },
+//             { tls, code_occurence } => Self :: Tls
+//             { tls, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Protocol
 //             { protocol, code_occurence } => Self :: Protocol
 //             { protocol, code_occurence },
@@ -1161,11 +1161,11 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //             { database, code_occurence } => Self :: Database
 //             { database, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Io
-//             { io_error, code_occurence } => Self :: Io
-//             { io_error, code_occurence },
+//             { io, code_occurence } => Self :: Io
+//             { io, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Tls
-//             { box_dyn_error, code_occurence } => Self :: Tls
-//             { box_dyn_error, code_occurence },
+//             { tls, code_occurence } => Self :: Tls
+//             { tls, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Protocol
 //             { protocol, code_occurence } => Self :: Protocol
 //             { protocol, code_occurence },
@@ -1225,11 +1225,11 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //             { database, code_occurence } => Self :: Database
 //             { database, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Io
-//             { io_error, code_occurence } => Self :: Io
-//             { io_error, code_occurence },
+//             { io, code_occurence } => Self :: Io
+//             { io, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Tls
-//             { box_dyn_error, code_occurence } => Self :: Tls
-//             { box_dyn_error, code_occurence },
+//             { tls, code_occurence } => Self :: Tls
+//             { tls, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Protocol
 //             { protocol, code_occurence } => Self :: Protocol
 //             { protocol, code_occurence },
@@ -1289,11 +1289,11 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //             { database, code_occurence } => Self :: Database
 //             { database, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Io
-//             { io_error, code_occurence } => Self :: Io
-//             { io_error, code_occurence },
+//             { io, code_occurence } => Self :: Io
+//             { io, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Tls
-//             { box_dyn_error, code_occurence } => Self :: Tls
-//             { box_dyn_error, code_occurence },
+//             { tls, code_occurence } => Self :: Tls
+//             { tls, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Protocol
 //             { protocol, code_occurence } => Self :: Protocol
 //             { protocol, code_occurence },
