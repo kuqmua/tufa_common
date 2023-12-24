@@ -28,7 +28,7 @@ pub enum JsonExtractorErrorNamed {
     #[tvfrr_400_bad_request]
     MissingJsonContentType {
         #[eo_display_with_serialize_deserialize]
-        json_syntax_error: std::string::String,
+        missing_json_content_type: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_500_internal_server_error]
@@ -52,7 +52,7 @@ impl std::convert::From<axum::extract::rejection::JsonRejection> for JsonExtract
             axum::extract::rejection::JsonRejection::JsonDataError(json_data_error) => JsonExtractorErrorNamed::serde_json_error_response(json_data_error),
             axum::extract::rejection::JsonRejection::JsonSyntaxError(json_syntax_error) => JsonExtractorErrorNamed::serde_json_error_response(json_syntax_error),
             axum::extract::rejection::JsonRejection::MissingJsonContentType(_) => Self::MissingJsonContentType {
-                json_syntax_error: crate::server::routes::helpers::hardcode::MISSING_CONTENT_TYPE_APPLICATION_JSON_HEADER.to_string(),
+                missing_json_content_type: crate::server::routes::helpers::hardcode::MISSING_CONTENT_TYPE_APPLICATION_JSON_HEADER.to_string(),
                 code_occurence: crate::code_occurence_tufa_common!(),
             },
             axum::extract::rejection::JsonRejection::BytesRejection(_) => {
@@ -166,10 +166,10 @@ where
 //                 code_occurence,
 //             },
 //             JsonExtractorErrorNamedWithSerializeDeserialize::MissingJsonContentType {
-//                 json_syntax_error,
+//                 missing_json_content_type,
 //                 code_occurence,
 //             } => Self::MissingJsonContentType {
-//                 json_syntax_error,
+//                 missing_json_content_type,
 //                 code_occurence,
 //             },
 //             JsonExtractorErrorNamedWithSerializeDeserialize::BytesRejection {
@@ -209,10 +209,10 @@ where
 //                 code_occurence,
 //             },
 //             JsonExtractorErrorNamedWithSerializeDeserialize::MissingJsonContentType {
-//                 json_syntax_error,
+//                 missing_json_content_type,
 //                 code_occurence,
 //             } => Self::MissingJsonContentType {
-//                 json_syntax_error,
+//                 missing_json_content_type,
 //                 code_occurence,
 //             },
 //             JsonExtractorErrorNamedWithSerializeDeserialize::BytesRejection {
@@ -252,10 +252,10 @@ where
 //                 code_occurence,
 //             },
 //             JsonExtractorErrorNamedWithSerializeDeserialize::MissingJsonContentType {
-//                 json_syntax_error,
+//                 missing_json_content_type,
 //                 code_occurence,
 //             } => Self::MissingJsonContentType {
-//                 json_syntax_error,
+//                 missing_json_content_type,
 //                 code_occurence,
 //             },
 //             JsonExtractorErrorNamedWithSerializeDeserialize::BytesRejection {
@@ -295,10 +295,10 @@ where
 //                 code_occurence,
 //             },
 //             JsonExtractorErrorNamedWithSerializeDeserialize::MissingJsonContentType {
-//                 json_syntax_error,
+//                 missing_json_content_type,
 //                 code_occurence,
 //             } => Self::MissingJsonContentType {
-//                 json_syntax_error,
+//                 missing_json_content_type,
 //                 code_occurence,
 //             },
 //             JsonExtractorErrorNamedWithSerializeDeserialize::BytesRejection {
@@ -333,9 +333,9 @@ where
 //             { json_syntax_error, code_occurence } => Self :: JsonSyntaxError
 //             { json_syntax_error, code_occurence },
 //             JsonExtractorErrorNamedWithSerializeDeserialize ::
-//             MissingJsonContentType { json_syntax_error, code_occurence } =>
+//             MissingJsonContentType { missing_json_content_type, code_occurence } =>
 //             Self :: MissingJsonContentType
-//             { json_syntax_error, code_occurence },
+//             { missing_json_content_type, code_occurence },
 //             JsonExtractorErrorNamedWithSerializeDeserialize :: BytesRejection
 //             { bytes_rejection, code_occurence } => Self :: BytesRejection
 //             { bytes_rejection, code_occurence },
@@ -360,9 +360,9 @@ where
 //             { json_syntax_error, code_occurence } => Self :: JsonSyntaxError
 //             { json_syntax_error, code_occurence },
 //             JsonExtractorErrorNamedWithSerializeDeserialize ::
-//             MissingJsonContentType { json_syntax_error, code_occurence } =>
+//             MissingJsonContentType { missing_json_content_type, code_occurence } =>
 //             Self :: MissingJsonContentType
-//             { json_syntax_error, code_occurence },
+//             { missing_json_content_type, code_occurence },
 //             JsonExtractorErrorNamedWithSerializeDeserialize :: BytesRejection
 //             { bytes_rejection, code_occurence } => Self :: BytesRejection
 //             { bytes_rejection, code_occurence },
@@ -387,9 +387,9 @@ where
 //             { json_syntax_error, code_occurence } => Self :: JsonSyntaxError
 //             { json_syntax_error, code_occurence },
 //             JsonExtractorErrorNamedWithSerializeDeserialize ::
-//             MissingJsonContentType { json_syntax_error, code_occurence } =>
+//             MissingJsonContentType { missing_json_content_type, code_occurence } =>
 //             Self :: MissingJsonContentType
-//             { json_syntax_error, code_occurence },
+//             { missing_json_content_type, code_occurence },
 //             JsonExtractorErrorNamedWithSerializeDeserialize :: BytesRejection
 //             { bytes_rejection, code_occurence } => Self :: BytesRejection
 //             { bytes_rejection, code_occurence },
@@ -414,9 +414,9 @@ where
 //             { json_syntax_error, code_occurence } => Self :: JsonSyntaxError
 //             { json_syntax_error, code_occurence },
 //             JsonExtractorErrorNamedWithSerializeDeserialize ::
-//             MissingJsonContentType { json_syntax_error, code_occurence } =>
+//             MissingJsonContentType { missing_json_content_type, code_occurence } =>
 //             Self :: MissingJsonContentType
-//             { json_syntax_error, code_occurence },
+//             { missing_json_content_type, code_occurence },
 //             JsonExtractorErrorNamedWithSerializeDeserialize :: BytesRejection
 //             { bytes_rejection, code_occurence } => Self :: BytesRejection
 //             { bytes_rejection, code_occurence },
@@ -441,9 +441,9 @@ where
 //             { json_syntax_error, code_occurence } => Self :: JsonSyntaxError
 //             { json_syntax_error, code_occurence },
 //             JsonExtractorErrorNamedWithSerializeDeserialize ::
-//             MissingJsonContentType { json_syntax_error, code_occurence } =>
+//             MissingJsonContentType { missing_json_content_type, code_occurence } =>
 //             Self :: MissingJsonContentType
-//             { json_syntax_error, code_occurence },
+//             { missing_json_content_type, code_occurence },
 //             JsonExtractorErrorNamedWithSerializeDeserialize :: BytesRejection
 //             { bytes_rejection, code_occurence } => Self :: BytesRejection
 //             { bytes_rejection, code_occurence },
@@ -468,9 +468,9 @@ where
 //             { json_syntax_error, code_occurence } => Self :: JsonSyntaxError
 //             { json_syntax_error, code_occurence },
 //             JsonExtractorErrorNamedWithSerializeDeserialize ::
-//             MissingJsonContentType { json_syntax_error, code_occurence } =>
+//             MissingJsonContentType { missing_json_content_type, code_occurence } =>
 //             Self :: MissingJsonContentType
-//             { json_syntax_error, code_occurence },
+//             { missing_json_content_type, code_occurence },
 //             JsonExtractorErrorNamedWithSerializeDeserialize :: BytesRejection
 //             { bytes_rejection, code_occurence } => Self :: BytesRejection
 //             { bytes_rejection, code_occurence },
@@ -495,9 +495,9 @@ where
 //             { json_syntax_error, code_occurence } => Self :: JsonSyntaxError
 //             { json_syntax_error, code_occurence },
 //             JsonExtractorErrorNamedWithSerializeDeserialize ::
-//             MissingJsonContentType { json_syntax_error, code_occurence } =>
+//             MissingJsonContentType { missing_json_content_type, code_occurence } =>
 //             Self :: MissingJsonContentType
-//             { json_syntax_error, code_occurence },
+//             { missing_json_content_type, code_occurence },
 //             JsonExtractorErrorNamedWithSerializeDeserialize :: BytesRejection
 //             { bytes_rejection, code_occurence } => Self :: BytesRejection
 //             { bytes_rejection, code_occurence },
@@ -522,9 +522,9 @@ where
 //             { json_syntax_error, code_occurence } => Self :: JsonSyntaxError
 //             { json_syntax_error, code_occurence },
 //             JsonExtractorErrorNamedWithSerializeDeserialize ::
-//             MissingJsonContentType { json_syntax_error, code_occurence } =>
+//             MissingJsonContentType { missing_json_content_type, code_occurence } =>
 //             Self :: MissingJsonContentType
-//             { json_syntax_error, code_occurence },
+//             { missing_json_content_type, code_occurence },
 //             JsonExtractorErrorNamedWithSerializeDeserialize :: BytesRejection
 //             { bytes_rejection, code_occurence } => Self :: BytesRejection
 //             { bytes_rejection, code_occurence },
@@ -546,7 +546,7 @@ where
 //                 code_occurence: _,
 //             } => http::StatusCode::BAD_REQUEST,
 //             JsonExtractorErrorNamed::MissingJsonContentType {
-//                 json_syntax_error: _,
+//                 missing_json_content_type: _,
 //                 code_occurence: _,
 //             } => http::StatusCode::BAD_REQUEST,
 //             JsonExtractorErrorNamed::BytesRejection {
