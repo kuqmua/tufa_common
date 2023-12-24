@@ -14,7 +14,7 @@ pub enum SqlxPostgresErrorErrorNamed {
     #[tvfrr_500_internal_server_error]
     Configuration {
         #[eo_display_with_serialize_deserialize]
-        configuration_box_dyn_error: std::string::String,
+        configuration: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_500_internal_server_error]
@@ -121,7 +121,7 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
         match e {
             sqlx::Error::Configuration(box_dyn_error) => {
                 SqlxPostgresErrorErrorNamed::Configuration {
-                    configuration_box_dyn_error: box_dyn_error.to_string(),
+                    configuration: box_dyn_error.to_string(),
                     code_occurence: crate::code_occurence_tufa_common!(),
                 }
             }
@@ -205,10 +205,10 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //     fn from(val: SqlxPostgresErrorErrorNamed) -> Self {
 //         match val.into_serialize_deserialize_version() {
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Configuration {
-//                 configuration_box_dyn_error,
+//                 configuration,
 //                 code_occurence,
 //             } => Self::Configuration {
-//                 configuration_box_dyn_error,
+//                 configuration,
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Database {
@@ -329,10 +329,10 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //     fn from(val: SqlxPostgresErrorErrorNamed) -> Self {
 //         match val.into_serialize_deserialize_version() {
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Configuration {
-//                 configuration_box_dyn_error,
+//                 configuration,
 //                 code_occurence,
 //             } => Self::Configuration {
-//                 configuration_box_dyn_error,
+//                 configuration,
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Database {
@@ -456,9 +456,9 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //         match val.into_serialize_deserialize_version()
 //         {
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize ::
-//             Configuration { configuration_box_dyn_error, code_occurence } =>
+//             Configuration { configuration, code_occurence } =>
 //             Self :: Configuration
-//             { configuration_box_dyn_error, code_occurence },
+//             { configuration, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Database
 //             { box_dyn_database_error, code_occurence } => Self :: Database
 //             { box_dyn_database_error, code_occurence },
@@ -520,9 +520,9 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //         match val.into_serialize_deserialize_version()
 //         {
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize ::
-//             Configuration { configuration_box_dyn_error, code_occurence } =>
+//             Configuration { configuration, code_occurence } =>
 //             Self :: Configuration
-//             { configuration_box_dyn_error, code_occurence },
+//             { configuration, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Database
 //             { box_dyn_database_error, code_occurence } => Self :: Database
 //             { box_dyn_database_error, code_occurence },
@@ -579,7 +579,7 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //     fn from(val: &SqlxPostgresErrorErrorNamed) -> Self {
 //         match &val {
 //             SqlxPostgresErrorErrorNamed::Configuration {
-//                 configuration_box_dyn_error: _,
+//                 configuration: _,
 //                 code_occurence: _,
 //             } => http::StatusCode::INTERNAL_SERVER_ERROR,
 //             SqlxPostgresErrorErrorNamed::Database {
@@ -839,10 +839,10 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //     fn from(val: SqlxPostgresErrorErrorNamed) -> Self {
 //         match val.into_serialize_deserialize_version() {
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Configuration {
-//                 configuration_box_dyn_error,
+//                 configuration,
 //                 code_occurence,
 //             } => Self::Configuration {
-//                 configuration_box_dyn_error,
+//                 configuration,
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Database {
@@ -963,10 +963,10 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //     fn from(val: SqlxPostgresErrorErrorNamed) -> Self {
 //         match val.into_serialize_deserialize_version() {
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Configuration {
-//                 configuration_box_dyn_error,
+//                 configuration,
 //                 code_occurence,
 //             } => Self::Configuration {
-//                 configuration_box_dyn_error,
+//                 configuration,
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Database {
@@ -1090,9 +1090,9 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //         match val.into_serialize_deserialize_version()
 //         {
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize ::
-//             Configuration { configuration_box_dyn_error, code_occurence } =>
+//             Configuration { configuration, code_occurence } =>
 //             Self :: Configuration
-//             { configuration_box_dyn_error, code_occurence },
+//             { configuration, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Database
 //             { box_dyn_database_error, code_occurence } => Self :: Database
 //             { box_dyn_database_error, code_occurence },
@@ -1154,9 +1154,9 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //         match val.into_serialize_deserialize_version()
 //         {
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize ::
-//             Configuration { configuration_box_dyn_error, code_occurence } =>
+//             Configuration { configuration, code_occurence } =>
 //             Self :: Configuration
-//             { configuration_box_dyn_error, code_occurence },
+//             { configuration, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Database
 //             { box_dyn_database_error, code_occurence } => Self :: Database
 //             { box_dyn_database_error, code_occurence },
@@ -1218,9 +1218,9 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //         match val.into_serialize_deserialize_version()
 //         {
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize ::
-//             Configuration { configuration_box_dyn_error, code_occurence } =>
+//             Configuration { configuration, code_occurence } =>
 //             Self :: Configuration
-//             { configuration_box_dyn_error, code_occurence },
+//             { configuration, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Database
 //             { box_dyn_database_error, code_occurence } => Self :: Database
 //             { box_dyn_database_error, code_occurence },
@@ -1282,9 +1282,9 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //         match val.into_serialize_deserialize_version()
 //         {
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize ::
-//             Configuration { configuration_box_dyn_error, code_occurence } =>
+//             Configuration { configuration, code_occurence } =>
 //             Self :: Configuration
-//             { configuration_box_dyn_error, code_occurence },
+//             { configuration, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Database
 //             { box_dyn_database_error, code_occurence } => Self :: Database
 //             { box_dyn_database_error, code_occurence },
