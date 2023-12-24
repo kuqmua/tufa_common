@@ -78,7 +78,7 @@ pub enum SqlxPostgresErrorErrorNamed {
     #[tvfrr_500_internal_server_error]
     Decode {
         #[eo_display_with_serialize_deserialize]
-        decode_box_dyn_error: std::string::String,
+        decode: std::string::String,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     #[tvfrr_408_request_timeout]
@@ -172,7 +172,7 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
                 }
             }
             sqlx::Error::Decode(value) => SqlxPostgresErrorErrorNamed::Decode {
-                decode_box_dyn_error: value.to_string(),
+                decode: value.to_string(),
                 code_occurence: crate::code_occurence_tufa_common!(),
             },
             sqlx::Error::PoolTimedOut => SqlxPostgresErrorErrorNamed::PoolTimedOut {
@@ -279,10 +279,10 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Decode {
-//                 decode_box_dyn_error,
+//                 decode,
 //                 code_occurence,
 //             } => Self::Decode {
-//                 decode_box_dyn_error,
+//                 decode,
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::PoolTimedOut {
@@ -403,10 +403,10 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Decode {
-//                 decode_box_dyn_error,
+//                 decode,
 //                 code_occurence,
 //             } => Self::Decode {
-//                 decode_box_dyn_error,
+//                 decode,
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::PoolTimedOut {
@@ -491,8 +491,8 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //             ColumnDecode
 //             { column_decode_index, source_handle, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Decode
-//             { decode_box_dyn_error, code_occurence } => Self :: Decode
-//             { decode_box_dyn_error, code_occurence },
+//             { decode, code_occurence } => Self :: Decode
+//             { decode, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize ::
 //             PoolTimedOut { pool_timed_out, code_occurence } => Self ::
 //             PoolTimedOut { pool_timed_out, code_occurence },
@@ -555,8 +555,8 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //             ColumnDecode
 //             { column_decode_index, source_handle, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Decode
-//             { decode_box_dyn_error, code_occurence } => Self :: Decode
-//             { decode_box_dyn_error, code_occurence },
+//             { decode, code_occurence } => Self :: Decode
+//             { decode, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize ::
 //             PoolTimedOut { pool_timed_out, code_occurence } => Self ::
 //             PoolTimedOut { pool_timed_out, code_occurence },
@@ -621,7 +621,7 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //                 code_occurence: _,
 //             } => http::StatusCode::INTERNAL_SERVER_ERROR,
 //             SqlxPostgresErrorErrorNamed::Decode {
-//                 decode_box_dyn_error: _,
+//                 decode: _,
 //                 code_occurence: _,
 //             } => http::StatusCode::INTERNAL_SERVER_ERROR,
 //             SqlxPostgresErrorErrorNamed::PoolTimedOut {
@@ -913,10 +913,10 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Decode {
-//                 decode_box_dyn_error,
+//                 decode,
 //                 code_occurence,
 //             } => Self::Decode {
-//                 decode_box_dyn_error,
+//                 decode,
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::PoolTimedOut {
@@ -1037,10 +1037,10 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::Decode {
-//                 decode_box_dyn_error,
+//                 decode,
 //                 code_occurence,
 //             } => Self::Decode {
-//                 decode_box_dyn_error,
+//                 decode,
 //                 code_occurence,
 //             },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize::PoolTimedOut {
@@ -1125,8 +1125,8 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //             ColumnDecode
 //             { column_decode_index, source_handle, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Decode
-//             { decode_box_dyn_error, code_occurence } => Self :: Decode
-//             { decode_box_dyn_error, code_occurence },
+//             { decode, code_occurence } => Self :: Decode
+//             { decode, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize ::
 //             PoolTimedOut { pool_timed_out, code_occurence } => Self ::
 //             PoolTimedOut { pool_timed_out, code_occurence },
@@ -1189,8 +1189,8 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //             ColumnDecode
 //             { column_decode_index, source_handle, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Decode
-//             { decode_box_dyn_error, code_occurence } => Self :: Decode
-//             { decode_box_dyn_error, code_occurence },
+//             { decode, code_occurence } => Self :: Decode
+//             { decode, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize ::
 //             PoolTimedOut { pool_timed_out, code_occurence } => Self ::
 //             PoolTimedOut { pool_timed_out, code_occurence },
@@ -1253,8 +1253,8 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //             ColumnDecode
 //             { column_decode_index, source_handle, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Decode
-//             { decode_box_dyn_error, code_occurence } => Self :: Decode
-//             { decode_box_dyn_error, code_occurence },
+//             { decode, code_occurence } => Self :: Decode
+//             { decode, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize ::
 //             PoolTimedOut { pool_timed_out, code_occurence } => Self ::
 //             PoolTimedOut { pool_timed_out, code_occurence },
@@ -1317,8 +1317,8 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //             ColumnDecode
 //             { column_decode_index, source_handle, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize :: Decode
-//             { decode_box_dyn_error, code_occurence } => Self :: Decode
-//             { decode_box_dyn_error, code_occurence },
+//             { decode, code_occurence } => Self :: Decode
+//             { decode, code_occurence },
 //             SqlxPostgresErrorErrorNamedWithSerializeDeserialize ::
 //             PoolTimedOut { pool_timed_out, code_occurence } => Self ::
 //             PoolTimedOut { pool_timed_out, code_occurence },
