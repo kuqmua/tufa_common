@@ -6,9 +6,9 @@ version = "0.1.0"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-axum = {version = "=0.6.19", features = ["headers", "macros"]}
+axum = {version = "=0.7.2", features = ["macros"]}
 tower = {version = "=0.4.13"}
-tower-http = {version = "=0.4.3", features = ["trace", "fs", "cors"]}
+tower-http = {version = "=0.5.0", features = ["trace", "fs", "cors"]}
 bytes = {version = "=1.2.1"}
 chrono = {version = "=0.4"}
 convert_case = {version = "=0.6.0"}
