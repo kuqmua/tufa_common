@@ -64,7 +64,7 @@ impl<'a> crate::common::git::git_fields::GetGitRepoLink for GitInfo<'a> {
 // }
 
 #[derive(
-    Debug, serde_derive::Serialize, serde_derive::Deserialize, Clone, Eq, Hash, PartialEq, Default,
+    Debug, serde_derive::Serialize, serde_derive::Deserialize, Clone, Eq, Hash, PartialEq, Default, utoipa::ToSchema
 )]
 pub struct GitInfoWithoutLifetime {
     pub git_commit_id: std::string::String,
