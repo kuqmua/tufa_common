@@ -30,7 +30,7 @@ pub struct ConfigUnchecked {
 )]
 pub struct Config {
     server_port: crate::common::user_port::UserPort,
-    socket_addr: std::net::SocketAddr,
+    socket_addr: std::string::String,
     hmac_secret: secrecy::Secret<std::string::String>,
     base_url: std::string::String,
     access_control_max_age: usize,
@@ -66,15 +66,7 @@ impl std::convert::TryFrom<ConfigUnchecked> for Config {
                 });
             }
         };
-        let socket_addr: std::net::SocketAddr = match format!("127.0.0.1:{server_port}").parse() {
-            Ok(socket_addr) => socket_addr,
-            Err(e) => {
-                return Err(Self::Error::SocketAddr {
-                    socket_addr: e,
-                    code_occurence: crate::code_occurence_tufa_common!(),
-                });
-            }
-        };
+        let socket_addr = format!("127.0.0.1:{server_port}");
         let hmac_secret = match value.hmac_secret.is_empty() {
             true => {
                 return Err(Self::Error::HmacSecret {
@@ -209,11 +201,6 @@ pub enum ConfigCheckErrorNamed {
     ServerPort {
         #[eo_error_occurence]
         server_port: crate::common::user_port::UserPortTryFromU16ErrorNamed,
-        code_occurence: crate::common::code_occurence::CodeOccurence,
-    },
-    SocketAddr {
-        #[eo_display]
-        socket_addr: std::net::AddrParseError,
         code_occurence: crate::common::code_occurence::CodeOccurence,
     },
     HmacSecret {

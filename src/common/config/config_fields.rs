@@ -2,7 +2,7 @@ pub trait GetServerPort {
     fn get_server_port(&self) -> &crate::common::user_port::UserPort;
 }
 pub trait GetSocketAddr {
-    fn get_socket_addr(&self) -> &std::net::SocketAddr;
+    fn get_socket_addr(&self) -> &std::string::String;
 }
 pub trait GetHmacSecret {
     fn get_hmac_secret(&self) -> &secrecy::Secret<std::string::String>;
