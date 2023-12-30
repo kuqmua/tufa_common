@@ -6,7 +6,6 @@ pub trait GitInfoRouteParameters:
     + crate::common::git::get_git_commit_link::GetGitCommitLink
 {
 }
-
 #[derive(serde::Serialize, utoipa::ToSchema, Clone)]
 pub struct GitInfo {
     #[schema(example = "Buy groceries")]//todo
@@ -14,19 +13,11 @@ pub struct GitInfo {
     commit: std::string::String,
 }
 
-#[derive(serde::Serialize, serde::Deserialize, utoipa::ToSchema, Clone)]
-pub struct Todo {
-    id: i32,
-    #[schema(example = "Buy groceries")]
-    value: String,
-    done: bool,
-}
-
 #[utoipa::path(
     get,
-    path = "/todo",
+    path = "/git_info",
     responses(
-        (status = 200, description = "List all todos successfully", body = [Todo])
+        (status = 200, description = "source code repository git information", body = [GitInfo])
     )
 )]
 pub async fn git_info(
