@@ -1,4 +1,4 @@
-#[derive(Debug, serde::Serialize, serde::Deserialize, Clone)]
+#[derive(Debug, serde::Serialize, serde::Deserialize, utoipa::ToSchema, Clone)]
 pub struct CodeOccurence {
     file: std::string::String,
     line: u32,

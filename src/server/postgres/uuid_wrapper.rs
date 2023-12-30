@@ -98,7 +98,7 @@ impl crate::server::postgres::bind_query::BindQuery for UuidWrapper {
     }
 }
 
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize, utoipa::ToSchema)]
 pub struct PossibleUuidWrapper(std::string::String);
 
 impl PossibleUuidWrapper {

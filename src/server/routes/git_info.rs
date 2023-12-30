@@ -6,7 +6,7 @@ pub trait GitInfoRouteParameters:
     + crate::common::git::get_git_commit_link::GetGitCommitLink
 {
 }
-#[derive(serde::Serialize, utoipa::ToSchema, Clone)]
+#[derive(serde::Serialize, utoipa::ToSchema)]
 pub struct GitInfo {
     #[schema(example = "Buy groceries")]//todo
     project_commit: std::string::String,
