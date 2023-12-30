@@ -37,5 +37,4 @@ pub async fn project_commit_checker(//todo maybe check not wrapper repo commit i
         },
         false => Ok(next.run(req).await),
     }
-    // todo!()
 }
