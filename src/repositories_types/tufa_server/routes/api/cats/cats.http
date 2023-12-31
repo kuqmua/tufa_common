@@ -1,6 +1,6 @@
-#need to enable vscode rest client extension https://marketplace.visualstudio.com/items?itemName=humao.rest-client to send requests
+#need to enable vscode rest client  extension https://marketplace.visualstudio.com/items?itemName=humao.rest-client to send requests
  
-POST http://127.0.0.1:8080/api/dogs/batch HTTP/1.1
+POST http://127.0.0.1:8080/dogs/batch HTTP/1.1
 content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
@@ -17,7 +17,7 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ### 
 
-POST http://127.0.0.1:8080/api/dogs HTTP/1.1
+POST http://127.0.0.1:8080/dogs HTTP/1.1
 content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
@@ -30,12 +30,12 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ### todo name and color must be  arrays              
 
-GET http://127.0.0.1:8080/api/dogs/5829d06c-4141-4734-8266-b3d1e618c4de?&select=IdName HTTP/1.1
+GET http://127.0.0.1:8080/dogs/5829d06c-4141-4734-8266-b3d1e618c4de?&select=IdName HTTP/1.1
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ### 
 
-POST http://127.0.0.1:8080/api/dogs/search HTTP/1.1
+POST http://127.0.0.1:8080/dogs/search HTTP/1.1
 content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
@@ -68,7 +68,7 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ### 
 
-PATCH http://127.0.0.1:8080/api/dogs/b5d3c50e-b99f-4ada-a89d-8a8af63f9a0c HTTP/1.1
+PATCH http://127.0.0.1:8080/dogs/b5d3c50e-b99f-4ada-a89d-8a8af63f9a0c HTTP/1.1
 content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
@@ -79,7 +79,7 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ### fix this
 
-PATCH http://127.0.0.1:8080/api/dogs/batch HTTP/1.1 
+PATCH http://127.0.0.1:8080/dogs/batch HTTP/1.1 
 content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
@@ -98,12 +98,12 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
 
-DELETE http://127.0.0.1:8080/api/dogs/4e8b15b8-d7f5-4ec0-a97d-e752f08bf12d HTTP/1.1
+DELETE http://127.0.0.1:8080/dogs/4e8b15b8-d7f5-4ec0-a97d-e752f08bf12d HTTP/1.1
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
-####"^first_test_name_create$" 
+####"^first_test_name_create$"  
 
-DELETE http://127.0.0.1:8080/api/dogs/search HTTP/1.1
+DELETE http://127.0.0.1:8080/dogs/search HTTP/1.1
 content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
@@ -131,7 +131,7 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 GET http://127.0.0.1:8080/health_check HTTP/1.1
 
-###
+### 
 
 GET http://127.0.0.1:8080/git_info HTTP/1.1
 
