@@ -8,8 +8,9 @@ pub trait GitInfoRouteParameters:
 }
 #[derive(serde::Serialize, utoipa::ToSchema)]
 pub struct GitInfo {
-    #[schema(example = "Buy groceries")]//todo
+    #[schema(example = "https://github.com/kuqmua/tufa_project/tree/f7de4c3c218579600cd0737d5a6b6c8362cbd88b")]
     project_commit: std::string::String,
+    #[schema(example = "github.com:kuqmua/tufa_server/tree/d3c188743f23a3b2433399a3725b0a431165ed6d")]
     commit: std::string::String,
 }
 
