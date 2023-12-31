@@ -6,6 +6,7 @@ pub mod declarative_macros;
 pub mod display_foreign_type;
 pub mod error_logs_logic;
 pub mod git;
+pub mod utoipa;
 pub mod numeric;
 pub mod postgres_credentials;
 pub mod serde_urlencoded;
