@@ -5,7 +5,7 @@ pub struct CodeOccurence {
     column: u32,
     #[schema(value_type = GitInfoWithoutLifetime)]
     git_info: crate::common::git::git_info::GitInfoWithoutLifetime,
-    #[schema(value_type = Duration)]
+    #[schema(value_type = StdTimeDuration)]
     duration: std::time::Duration,
 }
 
