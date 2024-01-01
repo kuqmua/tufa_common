@@ -76,6 +76,3 @@ pub struct Dog {
 //             code_occurence: crate::code_occurence_tufa_common!(),
 //         };
 // }
-
-//////////////////////////
-
