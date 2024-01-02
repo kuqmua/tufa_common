@@ -30,8 +30,14 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ### todo name and color must be  arrays              
 
-GET http://127.0.0.1:8080/dogs/5829d06c-4141-4734-8266-b3d1e618c4de?&select=IdName HTTP/1.1
+POST http://127.0.0.1:8080/dogs/read HTTP/1.1
+content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
+
+{
+    "id": "75ef376b-0f75-4a2b-aff2-f61e9f44099a",
+    "select": "IdName"
+}
 
 ### 
 
