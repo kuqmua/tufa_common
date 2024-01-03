@@ -21,11 +21,11 @@ pub type DynArcGetConfigGetPostgresPoolSendSync = std::sync::Arc<
 #[generate_postgresql_crud::create_many_additional_http_status_codes_error_variants{}]
 #[generate_postgresql_crud::create_one_additional_http_status_codes_error_variants{}]
 #[generate_postgresql_crud::read_one_additional_http_status_codes_error_variants{}]
-#[generate_postgresql_crud::read_many_with_body_additional_http_status_codes_error_variants{}]
+#[generate_postgresql_crud::read_many_additional_http_status_codes_error_variants{}]
 #[generate_postgresql_crud::update_one_additional_http_status_codes_error_variants{}]
 #[generate_postgresql_crud::update_many_additional_http_status_codes_error_variants{}]
 #[generate_postgresql_crud::delete_one_additional_http_status_codes_error_variants{}]
-#[generate_postgresql_crud::delete_many_with_body_additional_http_status_codes_error_variants{}]
+#[generate_postgresql_crud::delete_many_additional_http_status_codes_error_variants{}]
 
 #[generate_postgresql_crud::additional_http_status_codes_error_variants{
     #[path(crate::server::extractors::project_commit_extractor::)]

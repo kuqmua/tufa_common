@@ -5,10 +5,14 @@
     type_variants_from_reqwest_response::TypeVariantsFromReqwestResponseFromChecker,
 )]
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_from_checker_paths(
-    crate::repositories_types::tufa_server::routes::api::cats::TryReadOne,
-    crate::repositories_types::tufa_server::routes::api::cats::TryCreateOne,
     crate::repositories_types::tufa_server::routes::api::cats::TryCreateMany,
-    crate::repositories_types::tufa_server::routes::api::cats::TryReadManyWithBody
+    crate::repositories_types::tufa_server::routes::api::cats::TryCreateOne,
+    crate::repositories_types::tufa_server::routes::api::cats::TryReadMany,
+    crate::repositories_types::tufa_server::routes::api::cats::TryReadOne,
+    crate::repositories_types::tufa_server::routes::api::cats::TryUpdateMany,
+    crate::repositories_types::tufa_server::routes::api::cats::TryUpdateOne,
+    crate::repositories_types::tufa_server::routes::api::cats::TryDeleteMany,
+    crate::repositories_types::tufa_server::routes::api::cats::TryDeleteOne
 )]
 pub enum SqlxPostgresErrorErrorNamed {
     #[tvfrr_500_internal_server_error]
@@ -1083,7 +1087,7 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 // }
 // impl std :: convert :: From < SqlxPostgresErrorErrorNamed > for crate ::
 // repositories_types :: tufa_server :: routes :: api :: cats ::
-// TryReadManyWithBodyResponseVariants
+// TryReadManyResponseVariants
 // {
 //     fn from(val : SqlxPostgresErrorErrorNamed) -> Self
 //     {
@@ -1275,7 +1279,7 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 // }
 // impl std :: convert :: From < SqlxPostgresErrorErrorNamed > for crate ::
 // repositories_types :: tufa_server :: routes :: api :: cats ::
-// TryReadManyWithBodyWithSerializeDeserialize
+// TryReadManyWithSerializeDeserialize
 // {
 //     fn from(val : SqlxPostgresErrorErrorNamed) -> Self
 //     {
@@ -1509,7 +1513,7 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 // }
 // impl std :: convert :: From < SqlxPostgresErrorErrorNamedStatusCodesChecker
 // > for crate :: repositories_types :: tufa_server :: routes :: api :: cats ::
-// TryReadManyWithBodyStatusCodesChecker
+// TryReadManyStatusCodesChecker
 // {
 //     fn from(val : SqlxPostgresErrorErrorNamedStatusCodesChecker,) -> Self
 //     {
@@ -1518,82 +1522,82 @@ impl std::convert::From<sqlx::Error> for SqlxPostgresErrorErrorNamed {
 //             SqlxPostgresErrorErrorNamedStatusCodesChecker ::
 //             ConfigurationTvfrr500InternalServerError => crate ::
 //             repositories_types :: tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             ConfigurationTvfrr500InternalServerError,
 //             SqlxPostgresErrorErrorNamedStatusCodesChecker ::
 //             DatabaseTvfrr500InternalServerError => crate :: repositories_types
 //             :: tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             DatabaseTvfrr500InternalServerError,
 //             SqlxPostgresErrorErrorNamedStatusCodesChecker ::
 //             IoTvfrr500InternalServerError => crate :: repositories_types ::
 //             tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             IoTvfrr500InternalServerError,
 //             SqlxPostgresErrorErrorNamedStatusCodesChecker ::
 //             TlsTvfrr500InternalServerError => crate :: repositories_types ::
 //             tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             TlsTvfrr500InternalServerError,
 //             SqlxPostgresErrorErrorNamedStatusCodesChecker ::
 //             ProtocolTvfrr500InternalServerError => crate :: repositories_types
 //             :: tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             ProtocolTvfrr500InternalServerError,
 //             SqlxPostgresErrorErrorNamedStatusCodesChecker ::
 //             RowNotFoundTvfrr404NotFound => crate :: repositories_types ::
 //             tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             RowNotFoundTvfrr404NotFound,
 //             SqlxPostgresErrorErrorNamedStatusCodesChecker ::
 //             TypeNotFoundTvfrr400BadRequest => crate :: repositories_types ::
 //             tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             TypeNotFoundTvfrr400BadRequest,
 //             SqlxPostgresErrorErrorNamedStatusCodesChecker ::
 //             ColumnIndexOutOfBoundsTvfrr500InternalServerError => crate ::
 //             repositories_types :: tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             ColumnIndexOutOfBoundsTvfrr500InternalServerError,
 //             SqlxPostgresErrorErrorNamedStatusCodesChecker ::
 //             ColumnNotFoundTvfrr400BadRequest => crate :: repositories_types ::
 //             tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             ColumnNotFoundTvfrr400BadRequest,
 //             SqlxPostgresErrorErrorNamedStatusCodesChecker ::
 //             ColumnDecodeTvfrr500InternalServerError => crate ::
 //             repositories_types :: tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             ColumnDecodeTvfrr500InternalServerError,
 //             SqlxPostgresErrorErrorNamedStatusCodesChecker ::
 //             DecodeTvfrr500InternalServerError => crate :: repositories_types
 //             :: tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             DecodeTvfrr500InternalServerError,
 //             SqlxPostgresErrorErrorNamedStatusCodesChecker ::
 //             PoolTimedOutTvfrr408RequestTimeout => crate :: repositories_types
 //             :: tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             PoolTimedOutTvfrr408RequestTimeout,
 //             SqlxPostgresErrorErrorNamedStatusCodesChecker ::
 //             PoolClosedTvfrr500InternalServerError => crate ::
 //             repositories_types :: tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             PoolClosedTvfrr500InternalServerError,
 //             SqlxPostgresErrorErrorNamedStatusCodesChecker ::
 //             WorkerCrashedTvfrr500InternalServerError => crate ::
 //             repositories_types :: tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             WorkerCrashedTvfrr500InternalServerError,
 //             SqlxPostgresErrorErrorNamedStatusCodesChecker ::
 //             MigrateTvfrr500InternalServerError => crate :: repositories_types
 //             :: tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             MigrateTvfrr500InternalServerError,
 //             SqlxPostgresErrorErrorNamedStatusCodesChecker ::
 //             UnexpectedCaseTvfrr500InternalServerError => crate ::
 //             repositories_types :: tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             UnexpectedCaseTvfrr500InternalServerError
 //         }
 //     }

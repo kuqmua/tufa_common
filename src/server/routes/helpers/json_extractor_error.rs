@@ -5,14 +5,14 @@
     type_variants_from_reqwest_response::TypeVariantsFromReqwestResponseFromChecker, //(rust analyzer does not work if type_variants_from_reqwest_response::TypeVariantsFromReqwestResponseFromChecker macro works for some reason)
 )]
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_from_checker_paths(
-    crate::repositories_types::tufa_server::routes::api::cats::TryCreateOne,
     crate::repositories_types::tufa_server::routes::api::cats::TryCreateMany,
+    crate::repositories_types::tufa_server::routes::api::cats::TryCreateOne,
+    crate::repositories_types::tufa_server::routes::api::cats::TryReadMany,
     crate::repositories_types::tufa_server::routes::api::cats::TryReadOne,
-    crate::repositories_types::tufa_server::routes::api::cats::TryUpdateOne,
     crate::repositories_types::tufa_server::routes::api::cats::TryUpdateMany,
-    crate::repositories_types::tufa_server::routes::api::cats::TryReadManyWithBody,
-    crate::repositories_types::tufa_server::routes::api::cats::TryDeleteOne,
-    crate::repositories_types::tufa_server::routes::api::cats::TryDeleteManyWithBody
+    crate::repositories_types::tufa_server::routes::api::cats::TryUpdateOne,
+    crate::repositories_types::tufa_server::routes::api::cats::TryDeleteMany,
+    crate::repositories_types::tufa_server::routes::api::cats::TryDeleteOne
 )]
 pub enum JsonExtractorErrorNamed {
     #[tvfrr_400_bad_request]
@@ -322,7 +322,7 @@ where
 // }
 // impl std :: convert :: From < JsonExtractorErrorNamed > for crate ::
 // repositories_types :: tufa_server :: routes :: api :: cats ::
-// TryReadManyWithBodyResponseVariants
+// TryReadManyResponseVariants
 // {
 //     fn from(val : JsonExtractorErrorNamed) -> Self
 //     {
@@ -349,7 +349,7 @@ where
 // }
 // impl std :: convert :: From < JsonExtractorErrorNamed > for crate ::
 // repositories_types :: tufa_server :: routes :: api :: cats ::
-// TryDeleteManyWithBodyResponseVariants
+// TryDeleteManyResponseVariants
 // {
 //     fn from(val : JsonExtractorErrorNamed) -> Self
 //     {
@@ -484,7 +484,7 @@ where
 // }
 // impl std :: convert :: From < JsonExtractorErrorNamed > for crate ::
 // repositories_types :: tufa_server :: routes :: api :: cats ::
-// TryReadManyWithBodyWithSerializeDeserialize
+// TryReadManyWithSerializeDeserialize
 // {
 //     fn from(val : JsonExtractorErrorNamed) -> Self
 //     {
@@ -511,7 +511,7 @@ where
 // }
 // impl std :: convert :: From < JsonExtractorErrorNamed > for crate ::
 // repositories_types :: tufa_server :: routes :: api :: cats ::
-// TryDeleteManyWithBodyWithSerializeDeserialize
+// TryDeleteManyWithSerializeDeserialize
 // {
 //     fn from(val : JsonExtractorErrorNamed) -> Self
 //     {
@@ -706,7 +706,7 @@ where
 // }
 // impl std :: convert :: From < JsonExtractorErrorNamedStatusCodesChecker >
 // for crate :: repositories_types :: tufa_server :: routes :: api :: cats ::
-// TryReadManyWithBodyStatusCodesChecker
+// TryReadManyStatusCodesChecker
 // {
 //     fn from(val : JsonExtractorErrorNamedStatusCodesChecker,) -> Self
 //     {
@@ -715,34 +715,34 @@ where
 //             JsonExtractorErrorNamedStatusCodesChecker ::
 //             JsonDataErrorTvfrr400BadRequest => crate :: repositories_types ::
 //             tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             JsonDataErrorTvfrr400BadRequest,
 //             JsonExtractorErrorNamedStatusCodesChecker ::
 //             JsonSyntaxErrorTvfrr400BadRequest => crate :: repositories_types
 //             :: tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             JsonSyntaxErrorTvfrr400BadRequest,
 //             JsonExtractorErrorNamedStatusCodesChecker ::
 //             MissingJsonContentTypeTvfrr400BadRequest => crate ::
 //             repositories_types :: tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             MissingJsonContentTypeTvfrr400BadRequest,
 //             JsonExtractorErrorNamedStatusCodesChecker ::
 //             BytesRejectionTvfrr500InternalServerError => crate ::
 //             repositories_types :: tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             BytesRejectionTvfrr500InternalServerError,
 //             JsonExtractorErrorNamedStatusCodesChecker ::
 //             UnexpectedCaseTvfrr500InternalServerError => crate ::
 //             repositories_types :: tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             UnexpectedCaseTvfrr500InternalServerError
 //         }
 //     }
 // }
 // impl std :: convert :: From < JsonExtractorErrorNamedStatusCodesChecker >
 // for crate :: repositories_types :: tufa_server :: routes :: api :: cats ::
-// TryDeleteManyWithBodyStatusCodesChecker
+// TryDeleteManyStatusCodesChecker
 // {
 //     fn from(val : JsonExtractorErrorNamedStatusCodesChecker,) -> Self
 //     {
@@ -751,27 +751,27 @@ where
 //             JsonExtractorErrorNamedStatusCodesChecker ::
 //             JsonDataErrorTvfrr400BadRequest => crate :: repositories_types ::
 //             tufa_server :: routes :: api :: cats ::
-//             TryDeleteManyWithBodyStatusCodesChecker ::
+//             TryDeleteManyStatusCodesChecker ::
 //             JsonDataErrorTvfrr400BadRequest,
 //             JsonExtractorErrorNamedStatusCodesChecker ::
 //             JsonSyntaxErrorTvfrr400BadRequest => crate :: repositories_types
 //             :: tufa_server :: routes :: api :: cats ::
-//             TryDeleteManyWithBodyStatusCodesChecker ::
+//             TryDeleteManyStatusCodesChecker ::
 //             JsonSyntaxErrorTvfrr400BadRequest,
 //             JsonExtractorErrorNamedStatusCodesChecker ::
 //             MissingJsonContentTypeTvfrr400BadRequest => crate ::
 //             repositories_types :: tufa_server :: routes :: api :: cats ::
-//             TryDeleteManyWithBodyStatusCodesChecker ::
+//             TryDeleteManyStatusCodesChecker ::
 //             MissingJsonContentTypeTvfrr400BadRequest,
 //             JsonExtractorErrorNamedStatusCodesChecker ::
 //             BytesRejectionTvfrr500InternalServerError => crate ::
 //             repositories_types :: tufa_server :: routes :: api :: cats ::
-//             TryDeleteManyWithBodyStatusCodesChecker ::
+//             TryDeleteManyStatusCodesChecker ::
 //             BytesRejectionTvfrr500InternalServerError,
 //             JsonExtractorErrorNamedStatusCodesChecker ::
 //             UnexpectedCaseTvfrr500InternalServerError => crate ::
 //             repositories_types :: tufa_server :: routes :: api :: cats ::
-//             TryDeleteManyWithBodyStatusCodesChecker ::
+//             TryDeleteManyStatusCodesChecker ::
 //             UnexpectedCaseTvfrr500InternalServerError
 //         }
 //     }

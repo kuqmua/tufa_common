@@ -8,10 +8,14 @@
     type_variants_from_reqwest_response::TypeVariantsFromReqwestResponseFromChecker,
 )]
 #[type_variants_from_reqwest_response::type_variants_from_reqwest_response_from_checker_paths(
-    crate::repositories_types::tufa_server::routes::api::cats::TryReadOne,
-    crate::repositories_types::tufa_server::routes::api::cats::TryCreateOne,
     crate::repositories_types::tufa_server::routes::api::cats::TryCreateMany,
-    crate::repositories_types::tufa_server::routes::api::cats::TryReadManyWithBody
+    crate::repositories_types::tufa_server::routes::api::cats::TryCreateOne,
+    crate::repositories_types::tufa_server::routes::api::cats::TryReadMany,
+    crate::repositories_types::tufa_server::routes::api::cats::TryReadOne,
+    crate::repositories_types::tufa_server::routes::api::cats::TryUpdateMany,
+    crate::repositories_types::tufa_server::routes::api::cats::TryUpdateOne,
+    crate::repositories_types::tufa_server::routes::api::cats::TryDeleteMany,
+    crate::repositories_types::tufa_server::routes::api::cats::TryDeleteOne
 )]
 pub enum ProjectCommitExtractorCheckErrorNamed {
     #[tvfrr_400_bad_request]
@@ -169,7 +173,7 @@ impl crate::common::to_default_stringified_json::ToDefaultStringifiedJson
 // }
 // impl std :: convert :: From < ProjectCommitExtractorCheckErrorNamed > for
 // crate :: repositories_types :: tufa_server :: routes :: api :: cats ::
-// TryReadManyWithBodyResponseVariants
+// TryReadManyResponseVariants
 // {
 //     fn from(val : ProjectCommitExtractorCheckErrorNamed) -> Self
 //     {
@@ -319,7 +323,7 @@ impl crate::common::to_default_stringified_json::ToDefaultStringifiedJson
 // }
 // impl std :: convert :: From < ProjectCommitExtractorCheckErrorNamed > for
 // crate :: repositories_types :: tufa_server :: routes :: api :: cats ::
-// TryReadManyWithBodyWithSerializeDeserialize
+// TryReadManyWithSerializeDeserialize
 // {
 //     fn from(val : ProjectCommitExtractorCheckErrorNamed) -> Self
 //     {
@@ -471,7 +475,7 @@ impl crate::common::to_default_stringified_json::ToDefaultStringifiedJson
 // impl std :: convert :: From <
 // ProjectCommitExtractorCheckErrorNamedStatusCodesChecker > for crate ::
 // repositories_types :: tufa_server :: routes :: api :: cats ::
-// TryReadManyWithBodyStatusCodesChecker
+// TryReadManyStatusCodesChecker
 // {
 //     fn from(val : ProjectCommitExtractorCheckErrorNamedStatusCodesChecker,) ->
 //     Self
@@ -481,17 +485,17 @@ impl crate::common::to_default_stringified_json::ToDefaultStringifiedJson
 //             ProjectCommitExtractorCheckErrorNamedStatusCodesChecker ::
 //             ProjectCommitExtractorNotEqualTvfrr400BadRequest => crate ::
 //             repositories_types :: tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             ProjectCommitExtractorNotEqualTvfrr400BadRequest,
 //             ProjectCommitExtractorCheckErrorNamedStatusCodesChecker ::
 //             ProjectCommitExtractorToStrConversionTvfrr400BadRequest => crate
 //             :: repositories_types :: tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             ProjectCommitExtractorToStrConversionTvfrr400BadRequest,
 //             ProjectCommitExtractorCheckErrorNamedStatusCodesChecker ::
 //             NoProjectCommitExtractorHeaderTvfrr400BadRequest => crate ::
 //             repositories_types :: tufa_server :: routes :: api :: cats ::
-//             TryReadManyWithBodyStatusCodesChecker ::
+//             TryReadManyStatusCodesChecker ::
 //             NoProjectCommitExtractorHeaderTvfrr400BadRequest
 //         }
 //     }
