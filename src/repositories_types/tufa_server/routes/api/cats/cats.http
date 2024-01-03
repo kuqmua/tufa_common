@@ -72,7 +72,7 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
     "offset": 0
 }
 
-### 
+###  
 
 PATCH http://127.0.0.1:8080/dogs/update HTTP/1.1
 content-type: application/json
@@ -105,8 +105,13 @@ project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
 
 ###
 
-DELETE http://127.0.0.1:8080/dogs/4e8b15b8-d7f5-4ec0-a97d-e752f08bf12d HTTP/1.1
+DELETE http://127.0.0.1:8080/dogs/delete HTTP/1.1
+content-type: application/json
 project_commit: a07b8a91a46a2aa9c1bfce5d306811a37edba696
+
+{
+    "id": "b5d3c50e-b99f-4ada-a89d-8a8af63f9a0c"
+}
 
 ####"^first_test_name_create$"  
 
