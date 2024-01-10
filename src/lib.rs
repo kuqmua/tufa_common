@@ -11,5 +11,6 @@ pub mod common;
 pub mod global_variables;
 pub mod repositories_types;
 pub mod server;
+pub mod proc_macros;
 
 pub mod dev;

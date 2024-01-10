@@ -1,0 +1,1 @@
+pub mod postgresql_generate_crud;
