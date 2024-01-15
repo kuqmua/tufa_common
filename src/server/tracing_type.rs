@@ -25,6 +25,6 @@ impl Default for TracingType {
 
 impl std::fmt::Display for TracingType {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.to_lower_snake_case())
+        write!(f, "{}", self.to_snake_case())
     }
 }
