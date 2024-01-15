@@ -121,6 +121,6 @@
 //         format!("{self}")
 //     }
 //     fn get_postgres_table_name(&self) -> String {
-//         format!("{}_link_parts", self.to_lower_snake_case())
+//         format!("{}_link_parts", self.to_snake_case())
 //     }
 // }
