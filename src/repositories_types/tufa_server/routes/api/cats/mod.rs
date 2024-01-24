@@ -16,18 +16,17 @@ pub type DynArcGetConfigGetPostgresPoolSendSync = std::sync::Arc<
 
 #[derive(
     Debug,
-    generate_postgresql_crud::GeneratePostgresqlCrud,
+    tufa_postgresql_crud::GeneratePostgresqlCrud,
 )]
-#[generate_postgresql_crud::create_many_additional_http_status_codes_error_variants{}]
-#[generate_postgresql_crud::create_one_additional_http_status_codes_error_variants{}]
-#[generate_postgresql_crud::read_one_additional_http_status_codes_error_variants{}]
-#[generate_postgresql_crud::read_many_additional_http_status_codes_error_variants{}]
-#[generate_postgresql_crud::update_one_additional_http_status_codes_error_variants{}]
-#[generate_postgresql_crud::update_many_additional_http_status_codes_error_variants{}]
-#[generate_postgresql_crud::delete_one_additional_http_status_codes_error_variants{}]
-#[generate_postgresql_crud::delete_many_additional_http_status_codes_error_variants{}]
-
-#[generate_postgresql_crud::additional_http_status_codes_error_variants{
+#[tufa_postgresql_crud::create_many_additional_http_status_codes_error_variants{}]
+#[tufa_postgresql_crud::create_one_additional_http_status_codes_error_variants{}]
+#[tufa_postgresql_crud::read_one_additional_http_status_codes_error_variants{}]
+#[tufa_postgresql_crud::read_many_additional_http_status_codes_error_variants{}]
+#[tufa_postgresql_crud::update_one_additional_http_status_codes_error_variants{}]
+#[tufa_postgresql_crud::update_many_additional_http_status_codes_error_variants{}]
+#[tufa_postgresql_crud::delete_one_additional_http_status_codes_error_variants{}]
+#[tufa_postgresql_crud::delete_many_additional_http_status_codes_error_variants{}]
+#[tufa_postgresql_crud::additional_http_status_codes_error_variants{
     #[path(crate::server::extractors::project_commit_extractor::)]
     enum ProjectCommitExtractorCheckErrorNamed {
         #[tvfrr_400_bad_request]
