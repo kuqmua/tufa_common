@@ -35,7 +35,7 @@ impl error_occurence_lib::get_file::GetFile for CodeOccurence {
     }
 }
 
-impl crate::common::error_logs_logic::get_line::GetLine for CodeOccurence {
+impl error_occurence_lib::get_line::GetLine for CodeOccurence {
     fn get_line(&self) -> &u32 {
         &self.line
     }
