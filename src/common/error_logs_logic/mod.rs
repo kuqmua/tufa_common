@@ -20,7 +20,6 @@ pub mod hashmap_display_foreign_type_to_string_without_config_to_string;
 pub mod hashmap_display_to_string_with_config_to_string;
 pub mod hashmap_display_to_string_without_config_to_string;
 pub mod helpers;
-pub mod lines_space_backslash;
 pub mod source_to_string_with_config;
 pub mod source_to_string_without_config;
 #[cfg(test)]
