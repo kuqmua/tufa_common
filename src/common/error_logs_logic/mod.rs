@@ -1,6 +1,5 @@
 pub mod code_occurence_prepare_for_log;
 pub mod error_log;
-pub mod error_occurence_named;
 pub mod error_occurence_unnamed;
 pub mod form_error_path;
 pub mod get_code_occurence;

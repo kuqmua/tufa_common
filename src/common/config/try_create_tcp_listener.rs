@@ -7,7 +7,7 @@ pub trait TryCreateTcpListener<'a> {
     >;
 }
 
-#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]
+#[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]//
 pub enum TryCreateTcpListenerErrorNamed {
     TcpListenerBind {
         #[eo_display]
