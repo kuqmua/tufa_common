@@ -41,7 +41,7 @@ impl error_occurence_lib::get_line::GetLine for CodeOccurence {
     }
 }
 
-impl crate::common::error_logs_logic::get_column::GetColumn for CodeOccurence {
+impl error_occurence_lib::get_column::GetColumn for CodeOccurence {
     fn get_column(&self) -> &u32 {
         &self.column
     }

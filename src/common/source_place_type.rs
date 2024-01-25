@@ -18,7 +18,7 @@ impl<'a> SourcePlaceType {
         &self,
         code_occurence: &(impl error_occurence_lib::get_file::GetFile
               + error_occurence_lib::get_line::GetLine
-              + crate::common::error_logs_logic::get_column::GetColumn
+              + error_occurence_lib::get_column::GetColumn
               + crate::common::git::get_git_source_file_link::GetGitSourceFileLink<'a>),
     ) -> String {
         match self {
