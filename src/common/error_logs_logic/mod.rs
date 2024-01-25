@@ -33,6 +33,4 @@ pub mod vec_display_into_vec_string;
 pub mod vec_display_to_string;
 pub mod vec_to_string_with_config_to_string;
 pub mod vec_to_string_without_config_to_string;
-
 pub mod get_code_path_without_config;
-pub mod get_duration;

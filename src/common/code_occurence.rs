@@ -47,7 +47,7 @@ impl error_occurence_lib::get_column::GetColumn for CodeOccurence {
     }
 }
 
-impl crate::common::error_logs_logic::get_duration::GetDuration for CodeOccurence {
+impl error_occurence_lib::get_duration::GetDuration for CodeOccurence {
     fn get_duration(&self) -> std::time::Duration {
         self.duration
     }
