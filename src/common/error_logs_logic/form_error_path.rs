@@ -4,7 +4,7 @@ pub trait FormErrorPathDirectory {
 
 impl<SelfGeneric> FormErrorPathDirectory for SelfGeneric
 where
-    SelfGeneric: crate::common::error_logs_logic::get_file::GetFile
+    SelfGeneric: error_occurence_lib::get_file::GetFile
         + crate::common::error_logs_logic::get_line::GetLine
         + crate::common::error_logs_logic::get_column::GetColumn,
 {
@@ -24,7 +24,7 @@ pub trait FormErrorPathGithub {
 
 impl<'a, SelfGeneric> FormErrorPathGithub for SelfGeneric
 where
-    SelfGeneric: crate::common::error_logs_logic::get_file::GetFile
+    SelfGeneric: error_occurence_lib::get_file::GetFile
         + crate::common::error_logs_logic::get_line::GetLine
         + crate::common::error_logs_logic::get_column::GetColumn
         + crate::common::git::get_git_source_file_link::GetGitSourceFileLink<'a>,

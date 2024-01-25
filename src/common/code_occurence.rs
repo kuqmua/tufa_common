@@ -29,7 +29,7 @@ impl CodeOccurence {
     }
 }
 
-impl crate::common::error_logs_logic::get_file::GetFile for CodeOccurence {
+impl error_occurence_lib::get_file::GetFile for CodeOccurence {
     fn get_file(&self) -> &str {
         &self.file
     }

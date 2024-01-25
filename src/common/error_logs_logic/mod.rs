@@ -37,5 +37,4 @@ pub mod vec_to_string_without_config_to_string;
 pub mod get_code_path_without_config;
 pub mod get_column;
 pub mod get_duration;
-pub mod get_file;
 pub mod get_line;
