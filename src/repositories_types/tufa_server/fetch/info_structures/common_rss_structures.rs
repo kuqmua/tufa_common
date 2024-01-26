@@ -47,7 +47,7 @@ pub struct CommonRssPost {
     //medrxiv specific
 
     //reddit specific
-    // pub reddit_selftext: String,//into description feild
+    // pub reddit_selftext: std::string::String,//into description feild
     pub reddit_url_overridden_by_dest: Option<String>,
     pub reddit_subreddit: Option<String>,
     pub reddit_id: Option<String>,
@@ -139,7 +139,7 @@ impl CommonRssPost {
         //medrxiv specific
 
         //reddit specific
-        // reddit_selftext: String,//into description feild
+        // reddit_selftext: std::string::String,//into description feild
         reddit_url_overridden_by_dest: Option<String>,
         reddit_subreddit: Option<String>,
         reddit_id: Option<String>,
@@ -230,7 +230,7 @@ impl CommonRssPost {
             //medrxiv specific
 
             //reddit specific
-            // selftext: String,//into description feild
+            // selftext: std::string::String,//into description feild
             reddit_url_overridden_by_dest,
             reddit_subreddit,
             reddit_id,

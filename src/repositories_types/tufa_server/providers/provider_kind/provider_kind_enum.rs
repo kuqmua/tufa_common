@@ -5,11 +5,11 @@
 
 // #[derive(Debug)]
 // pub enum CleanLogsDirError {
-//     PathIsNotDir { path: String },
+//     PathIsNotDir { path: std::string::String },
 //     CannotRemoveDir { error: RemoveDirError },
 // }
 // impl From<String> for CleanLogsDirError {
-//     fn from(e: String) -> Self {
+//     fn from(e: std::string::String) -> Self {
 //         CleanLogsDirError::PathIsNotDir { path: e }
 //     }
 // }
@@ -49,7 +49,7 @@
 //         let capacity = links.len();
 //         let vec_to_return = futures::future::join_all(links.iter().map(|url| async move {
 //             let result = crate::server::http_request::wrappers::text::async_http_request_text::async_http_request_text_wrapper::<
-//                 String,
+//                 std::string::String,
 //                 reqwest::cookie::Jar,
 //                 core::time::Duration,
 //                 u32,
@@ -58,16 +58,16 @@
 //                 std::time::Duration,
 //                 std::net::IpAddr,
 //                 std::time::Duration,
-//                 String, //todo - dyn std::any::Any
-//                 String,
-//                 String,
-//                 String,
-//                 String,
-//                 String,
-//                 String,
-//                 String,
-//                 String,
-//                 String,
+//                 std::string::String, //todo - dyn std::any::Any
+//                 std::string::String,
+//                 std::string::String,
+//                 std::string::String,
+//                 std::string::String,
+//                 std::string::String,
+//                 std::string::String,
+//                 std::string::String,
+//                 std::string::String,
+//                 std::string::String,
 //             >(
 //                 url,
 //                 None,

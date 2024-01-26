@@ -59,7 +59,7 @@
 //                         }
 //                         None
 //                     })
-//                     .collect::<std::collections::HashMap<String, String>>()
+//                     .collect::<std::collections::HashMap<String, std::string::String>>()
 //                 };
 //                 if !no_collection_error_hashmap.is_empty() {
 //                     return Err(
@@ -88,7 +88,7 @@
 //                 let mut success_hashmap: std::collections::HashMap<crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind, Vec<String>> =
 //                     std::collections::HashMap::with_capacity(result_get_documents_hashmap.len());
 //                 let mut error_hashmap: std::collections::HashMap<
-//                     String,
+//                     std::string::String,
 //                     crate::server::mongo::mongo_get_providers_link_parts::MongoGetDocumentsAsStringVectorErrorUnnamed,
 //                 > = std::collections::HashMap::new();
 //                 for (pk, result) in result_get_documents_hashmap.into_iter() {

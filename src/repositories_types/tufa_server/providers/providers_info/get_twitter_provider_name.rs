@@ -1,4 +1,4 @@
-pub fn get_twitter_provider_name() -> String {
+pub fn get_twitter_provider_name() -> std::string::String {
     //todo: move it into env file (config) or into db
 
     // "nitter.42l.fr".to_string(),

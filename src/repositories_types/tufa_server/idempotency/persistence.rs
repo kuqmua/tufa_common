@@ -1,7 +1,7 @@
 // #[derive(Debug, sqlx::Type)]
 // #[sqlx(type_name = "header_pair")]
 // pub struct HeaderPairRecord {
-//     pub name: String,
+//     pub name: std::string::String,
 //     pub value: Vec<u8>,
 // }
 

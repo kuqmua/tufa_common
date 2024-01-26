@@ -1,7 +1,7 @@
 pub trait HashMapDisplayDisplayForeignTypeIntoHashMapStringString {
     fn hashmap_display_display_foreign_type_into_hashmap_string_string(
         self,
-    ) -> std::collections::HashMap<String, String>;
+    ) -> std::collections::HashMap<String, std::string::String>;
 }
 
 impl<HashMapKeyGeneric, HashMapValueGeneric> HashMapDisplayDisplayForeignTypeIntoHashMapStringString
@@ -12,7 +12,7 @@ where
 {
     fn hashmap_display_display_foreign_type_into_hashmap_string_string(
         self,
-    ) -> std::collections::HashMap<String, String> {
+    ) -> std::collections::HashMap<String, std::string::String> {
         self.into_iter()
             .map(|(k, v)| (k.to_string(), v.display_foreign_type()))
             .collect()

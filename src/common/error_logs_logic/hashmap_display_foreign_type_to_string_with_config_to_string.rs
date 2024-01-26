@@ -2,7 +2,7 @@ pub trait HashMapDisplayForeignTypeToStringWithConfigToString<'a, ConfigGeneric>
     fn hashmap_display_foreign_type_to_string_with_config_to_string(
         &self,
         config: &ConfigGeneric,
-    ) -> String;
+    ) -> std::string::String;
 }
 
 impl<'a, HashMapKeyGeneric, HashMapValueGeneric, ConfigGeneric>
@@ -18,7 +18,7 @@ where
     fn hashmap_display_foreign_type_to_string_with_config_to_string(
         &self,
         config: &ConfigGeneric,
-    ) -> String {
+    ) -> std::string::String {
         crate::common::error_logs_logic::helpers::error_occurence_hashmap_formatter(
             self.iter().fold(String::from(""), |mut acc, (key, value)| {
                 acc.push_str(

@@ -11,7 +11,7 @@
 //             crate::repositories_types::tufa_server::utils::status_codes::see_other("/login"),
 //         );
 //     };
-//     let mut msg_html = String::new();
+//     let mut msg_html = std::string::String::new();
 //     for m in flash_messages.iter() {
 //         use std::fmt::Write;
 //         writeln!(msg_html, "<p><i>{}</i></p>", m.content()).unwrap();

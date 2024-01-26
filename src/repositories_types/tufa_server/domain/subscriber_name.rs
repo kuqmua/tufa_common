@@ -2,13 +2,13 @@
 pub struct SubscriberName(String);
 
 impl SubscriberName {
-    pub fn inner(self) -> String {
+    pub fn inner(self) -> std::string::String {
         self.0
     }
     pub fn inner_mut(&mut self) -> &mut str {
         &mut self.0
     }
-    pub fn parse(s: String) -> Result<SubscriberName, String> {
+    pub fn parse(s: std::string::String) -> Result<SubscriberName, std::string::String> {
         let is_empty_or_whitespace = s.trim().is_empty();
         // A grapheme is defined by the Unicode standard as a "user-perceived"
         // character: `å` is a single grapheme, but it is composed of two characters

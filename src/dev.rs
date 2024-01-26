@@ -1,6 +1,6 @@
 // #[derive(Clone, valuable::Valuable)]
 // struct User {
-//     name: String,
+//     name: std::string::String,
 //     age: u32,
 //     something: Vec<bool>,
 //     address: Address,
@@ -8,9 +8,9 @@
 
 // #[derive(Clone, valuable::Valuable)]
 // struct Address {
-//     country: String,
-//     city: String,
-//     street: String,
+//     country: std::string::String,
+//     city: std::string::String,
+//     street: std::string::String,
 // }
 
 pub fn dev() {

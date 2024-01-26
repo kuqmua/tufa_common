@@ -51,9 +51,9 @@ pub enum DeleteTaskErrorNamed {
 }
 
 pub struct NewsletterIssue {
-    pub title: String,
-    pub text_content: String,
-    pub html_content: String,
+    pub title: std::string::String,
+    pub text_content: std::string::String,
+    pub html_content: std::string::String,
 }
 
 #[derive(Debug, thiserror::Error, error_occurence::ErrorOccurence)]

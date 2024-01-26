@@ -1,5 +1,5 @@
 pub trait VecToStringWithConfigToString<'a, ConfigGeneric: ?Sized> {
-    fn vec_to_string_with_config_to_string(&self, config: &ConfigGeneric) -> String;
+    fn vec_to_string_with_config_to_string(&self, config: &ConfigGeneric) -> std::string::String;
 }
 
 impl<'a, VecElementGeneric, ConfigGeneric> VecToStringWithConfigToString<'a, ConfigGeneric>
@@ -11,9 +11,9 @@ where
         + crate::common::config::config_fields::GetTimezone
         + ?Sized
 {
-    fn vec_to_string_with_config_to_string(&self, config: &ConfigGeneric) -> String {
+    fn vec_to_string_with_config_to_string(&self, config: &ConfigGeneric) -> std::string::String {
         crate::common::error_logs_logic::helpers::stringified_lines_error_vec(self.iter().fold(
-            String::from(""),
+            std::string::String::from(""),
             |mut acc, vec_element| {
                 acc.push_str(
                     &crate::common::error_logs_logic::helpers::lines_space_backslash_addition(

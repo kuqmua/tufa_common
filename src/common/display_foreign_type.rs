@@ -2,11 +2,11 @@ pub const CRATES_IO_SLASH_CRATES_SLASH_LINK: &str = "https://crates.io/crates/";
 pub const NON_EXHAUSTIVE: &str = "#[non_exhaustive]";
 
 pub trait DisplayForeignType {
-    fn display_foreign_type(&self) -> String;
+    fn display_foreign_type(&self) -> std::string::String;
 }
 
 // impl crate::common::display_foreign_type::DisplayForeignType for sqlx::Error {
-//     fn display_foreign_type(&self) -> String {
+//     fn display_foreign_type(&self) -> std::string::String {
 //         format!("{self}")
 //         // let link_to_crate = format!("{CRATES_IO_SLASH_CRATES_SLASH_LINK}sqlx");
 //         // match self {
@@ -33,19 +33,19 @@ pub trait DisplayForeignType {
 impl crate::common::display_foreign_type::DisplayForeignType
     for tracing::dispatcher::SetGlobalDefaultError
 {
-    fn display_foreign_type(&self) -> String {
-        String::from("tracing::dispatcher::SetGlobalDefaultError")
+    fn display_foreign_type(&self) -> std::string::String {
+        std::string::String::from("tracing::dispatcher::SetGlobalDefaultError")
     }
 }
 
 impl crate::common::display_foreign_type::DisplayForeignType for tracing::log::SetLoggerError {
-    fn display_foreign_type(&self) -> String {
-        String::from("tracing::log::SetLoggerError")
+    fn display_foreign_type(&self) -> std::string::String {
+        std::string::String::from("tracing::log::SetLoggerError")
     }
 }
 
 // impl crate::common::display_foreign_type::DisplayForeignType for mongodb::error::Error {
-//     fn display_foreign_type(&self) -> String {
+//     fn display_foreign_type(&self) -> std::string::String {
 //         format!("{self}")
 //         // let link_to_crate = format!("{CRATES_IO_SLASH_CRATES_SLASH_LINK}mongodb");
 //         // match *self.kind.clone() {
@@ -79,19 +79,19 @@ impl crate::common::display_foreign_type::DisplayForeignType for tracing::log::S
 // }
 
 impl crate::common::display_foreign_type::DisplayForeignType for reqwest::Error {
-    fn display_foreign_type(&self) -> String {
+    fn display_foreign_type(&self) -> std::string::String {
         format!("{self}")
     }
 }
 
 impl crate::common::display_foreign_type::DisplayForeignType for reqwest::StatusCode {
-    fn display_foreign_type(&self) -> String {
+    fn display_foreign_type(&self) -> std::string::String {
         format!("{self}")
     }
 }
 
 impl crate::common::display_foreign_type::DisplayForeignType for reqwest::header::HeaderMap {
-    fn display_foreign_type(&self) -> String {
+    fn display_foreign_type(&self) -> std::string::String {
         format!("{self:#?}") //todo
     }
 }

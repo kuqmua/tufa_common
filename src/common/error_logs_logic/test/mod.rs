@@ -298,7 +298,7 @@
 // }
 
 // pub struct DisplayStruct {
-//     display_struct: String,
+//     display_struct: std::string::String,
 // }
 // impl std::fmt::Display for DisplayStruct {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
@@ -325,7 +325,7 @@
 
 // #[derive(PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
 // pub struct DisplayWithSerializeDeserializeStructLifetime {
-//     display_with_serialize_deserialize_struct_lifetime: String,
+//     display_with_serialize_deserialize_struct_lifetime: std::string::String,
 // }
 // impl std::fmt::Display for DisplayWithSerializeDeserializeStructLifetime {
 //     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
@@ -335,12 +335,12 @@
 
 // #[derive(serde::Serialize, serde::Deserialize)]
 // pub struct DisplayForeignTypeSerializeDeserializeStruct {
-//     display_foreign_type_serialize_deserialize_struct: String,
+//     display_foreign_type_serialize_deserialize_struct: std::string::String,
 // }
 // impl crate::common::display_foreign_type::DisplayForeignType
 //     for DisplayForeignTypeSerializeDeserializeStruct
 // {
-//     fn display_foreign_type(&self) -> String {
+//     fn display_foreign_type(&self) -> std::string::String {
 //         std::string::String::from("DisplayForeignTypeSerializeDeserializeStruct")
 //     }
 // }
@@ -351,17 +351,17 @@
 // impl crate::common::display_foreign_type::DisplayForeignType
 //     for DisplayForeignTypeSerializeDeserializeStructLifetime
 // {
-//     fn display_foreign_type(&self) -> String {
+//     fn display_foreign_type(&self) -> std::string::String {
 //         std::string::String::from("DisplayForeignTypeSerializeDeserializeStructLifetime")
 //     }
 // }
 
 // #[derive(Hash, Eq, PartialEq)]
 // pub struct DisplayForeignTypeStruct {
-//     display_foreign_type_struct: String,
+//     display_foreign_type_struct: std::string::String,
 // }
 // impl crate::common::display_foreign_type::DisplayForeignType for DisplayForeignTypeStruct {
-//     fn display_foreign_type(&self) -> String {
+//     fn display_foreign_type(&self) -> std::string::String {
 //         std::string::String::from("DisplayForeignTypeStruct")
 //     }
 // }
@@ -370,7 +370,7 @@
 //     display_foreign_type_struct: std::string::String,
 // }
 // impl crate::common::display_foreign_type::DisplayForeignType for DisplayForeignTypeStructLifetime {
-//     fn display_foreign_type(&self) -> String {
+//     fn display_foreign_type(&self) -> std::string::String {
 //         std::string::String::from("DisplayForeignTypeStruct")
 //     }
 // }
@@ -379,7 +379,7 @@
 // pub enum InnerErrorNamed {
 //     Something {
 //         #[eo_display_with_serialize_deserialize]
-//         string: String,
+//         string: std::string::String,
 //         #[eo_display_with_serialize_deserialize]
 //         display_with_serialize_deserialize_struct_lifetime:
 //             DisplayWithSerializeDeserializeStructLifetime,
@@ -460,9 +460,9 @@
 //         eo_hashmap_key_string_display_with_serialize_deserialize_value_display_lifetime: std::collections::HashMap<std::string::String, crate::common::error_logs_logic::test::DisplayStructLifetime>,
 
 //         #[eo_hashmap_key_display_with_serialize_deserialize_value_display_with_serialize_deserialize]
-//         eo_hashmap_key_str_display_with_serialize_deserialize_value_str_display_with_serialize_deserialize: std::collections::HashMap<String, String>,
+//         eo_hashmap_key_str_display_with_serialize_deserialize_value_str_display_with_serialize_deserialize: std::collections::HashMap<String, std::string::String>,
 //         #[eo_hashmap_key_display_with_serialize_deserialize_value_display_with_serialize_deserialize]
-//         eo_hashmap_key_string_display_with_serialize_deserialize_value_str_display_with_serialize_deserialize: std::collections::HashMap<std::string::String, String>,
+//         eo_hashmap_key_string_display_with_serialize_deserialize_value_str_display_with_serialize_deserialize: std::collections::HashMap<std::string::String, std::string::String>,
 //         #[eo_hashmap_key_display_with_serialize_deserialize_value_display_with_serialize_deserialize]
 //         eo_hashmap_key_str_display_with_serialize_deserialize_value_string_display_with_serialize_deserialize: std::collections::HashMap<String, std::string::String>,
 //         #[eo_hashmap_key_display_with_serialize_deserialize_value_display_with_serialize_deserialize]
@@ -509,9 +509,9 @@
 //         eo_hashmap_key_display_foreign_type_lifetime_value_display_lifetime: std::collections::HashMap<crate::common::error_logs_logic::test::DisplayForeignTypeStructLifetime, crate::common::error_logs_logic::test::DisplayStructLifetime>,
 
 //         #[eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize]
-//         eo_hashmap_key_display_foreign_type_value_str_display_with_serialize_deserialize: std::collections::HashMap<crate::common::error_logs_logic::test::DisplayForeignTypeStruct, String>,
+//         eo_hashmap_key_display_foreign_type_value_str_display_with_serialize_deserialize: std::collections::HashMap<crate::common::error_logs_logic::test::DisplayForeignTypeStruct, std::string::String>,
 //         #[eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize]
-//         eo_hashmap_key_display_foreign_type_lifetime_value_str_display_with_serialize_deserialize: std::collections::HashMap<crate::common::error_logs_logic::test::DisplayForeignTypeStructLifetime, String>,
+//         eo_hashmap_key_display_foreign_type_lifetime_value_str_display_with_serialize_deserialize: std::collections::HashMap<crate::common::error_logs_logic::test::DisplayForeignTypeStructLifetime, std::string::String>,
 //         #[eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize]
 //         eo_hashmap_key_display_foreign_type_value_string_display_with_serialize_deserialize: std::collections::HashMap<crate::common::error_logs_logic::test::DisplayForeignTypeStruct, std::string::String>,
 //         #[eo_hashmap_key_display_foreign_type_value_display_with_serialize_deserialize]

@@ -66,7 +66,7 @@ impl std::fmt::Display for crate::common::code_occurence::CodeOccurence {
 impl<'a> crate::common::git::get_git_source_file_link::GetGitSourceFileLink<'a>
     for crate::common::code_occurence::CodeOccurence
 {
-    fn get_git_source_file_link(&self, file: &str, line: u32) -> String {
+    fn get_git_source_file_link(&self, file: &str, line: u32) -> std::string::String {
         self.git_info.get_git_source_file_link(file, line)
     }
 }
@@ -154,7 +154,7 @@ impl<'a> crate::common::git::get_git_source_file_link::GetGitSourceFileLink<'a>
 // impl<'a> crate::common::git::get_git_source_file_link::GetGitSourceFileLink<'a>
 //     for crate::common::code_occurence::CodeOccurenceWithSerializeDeserialize
 // {
-//     fn get_git_source_file_link(&self, file: &str, line: u32) -> String {
+//     fn get_git_source_file_link(&self, file: &str, line: u32) -> std::string::String {
 //         self.git_info.get_git_source_file_link(file, line)
 //     }
 // }

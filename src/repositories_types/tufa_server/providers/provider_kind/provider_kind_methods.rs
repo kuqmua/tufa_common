@@ -17,14 +17,14 @@
 // + std::marker::Send
 // + std::marker::Sync
 // )
-//     ) -> String {
+//     ) -> std::string::String {
 //         format!(
 //             "{self}second_part",
 //         )
 //     }
 //     fn get_init_local_data_file_path(
 //         &self,
-//     ) -> String {
+//     ) -> std::string::String {
 //         format!(
 //             "./providers_link_parts/{self}_link_parts.json",
 //         )
@@ -117,10 +117,10 @@
 //             .map(|pk| (format!("{pk}"), pk))
 //             .collect()
 //     }
-//     fn get_db_tag(&self) -> String {
+//     fn get_db_tag(&self) -> std::string::String {
 //         format!("{self}")
 //     }
-//     fn get_postgres_table_name(&self) -> String {
+//     fn get_postgres_table_name(&self) -> std::string::String {
 //         format!("{}_link_parts", self.to_snake_case())
 //     }
 // }

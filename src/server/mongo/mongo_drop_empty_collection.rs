@@ -17,7 +17,7 @@ pub enum MongoDropEmptyCollectionErrorNamed {
 pub async fn mongo_drop_empty_collection<'a>(
     mongo_client: &mongodb::Client,
     db_name: &'a str,
-    db_collection_name: String,
+    db_collection_name: std::string::String,
 ) -> Result<
     (),
     Box<crate::server::mongo::mongo_drop_empty_collection::MongoDropEmptyCollectionErrorNamed>,

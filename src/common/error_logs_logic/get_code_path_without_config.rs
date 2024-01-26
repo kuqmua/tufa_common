@@ -1,5 +1,5 @@
 pub trait GetCodePathWithoutConfig {
-    fn get_code_path_without_config(&self) -> String;
+    fn get_code_path_without_config(&self) -> std::string::String;
 }
 
 impl<SelfGeneric> GetCodePathWithoutConfig for SelfGeneric
@@ -8,7 +8,7 @@ where
         + error_occurence_lib::get_line::GetLine
         + error_occurence_lib::get_column::GetColumn,
 {
-    fn get_code_path_without_config(&self) -> String {
+    fn get_code_path_without_config(&self) -> std::string::String {
         format!(
             "src/{}:{}:{}", //todo "src" - hardcode, for some reason vscode stops following just {}:{}:{} path(without prefix "src")
             self.get_file(),

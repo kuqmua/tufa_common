@@ -30,7 +30,7 @@
 // ) -> Result<(), Box<crate::server::postgres::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginErrorNamed>>{
 //     let insertion_error_hashmap = futures::future::join_all(providers_json_local_data_hashmap.iter().map(
 //         |(pk, string_vec)| async {
-//             let mut values_string = String::from("");
+//             let mut values_string = std::string::String::from("");
 //             for link_part in string_vec.clone() {
 //                 values_string.push_str(&format!("('{link_part}'),"));
 //             }
@@ -64,7 +64,7 @@
 //         None
 //     })
 //     .collect::<std::collections::HashMap<
-//         String, crate::server::postgres::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginErrorEnumUnnamed
+//         std::string::String, crate::server::postgres::postgres_insert_link_parts_into_providers_tables::PostgresInsertLinkPartsIntoProvidersTablesOriginErrorEnumUnnamed
 //     >>();
 //     if !insertion_error_hashmap.is_empty() {
 //         return Err(Box::new(

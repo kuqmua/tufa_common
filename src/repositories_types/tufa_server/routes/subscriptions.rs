@@ -1,13 +1,13 @@
 // #[derive(serde::Deserialize)]
 // pub struct FormData {
-//     pub email: String,
-//     pub name: String,
+//     pub email: std::string::String,
+//     pub name: std::string::String,
 // }
 
 // impl std::convert::TryFrom<FormData>
 //     for crate::repositories_types::tufa_server::domain::NewSubscriber
 // {
-//     type Error = String;
+//     type Error = std::string::String;
 //     fn try_from(value: FormData) -> Result<Self, Self::Error> {
 //         let name =
 //             crate::repositories_types::tufa_server::domain::SubscriberName::parse(value.name)?;
@@ -82,7 +82,7 @@
 //     }
 // }
 
-// pub fn generate_subscription_token() -> String {
+// pub fn generate_subscription_token() -> std::string::String {
 //     let mut rng = rand::thread_rng();
 //     std::iter::repeat_with(|| {
 //         use rand::Rng;

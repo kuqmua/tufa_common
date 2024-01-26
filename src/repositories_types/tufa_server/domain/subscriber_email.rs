@@ -50,7 +50,7 @@ impl std::fmt::Display for SubscriberEmail {
 //     }
 
 //     #[derive(Debug, Clone)]
-//     struct ValidEmailFixture(pub String);
+//     struct ValidEmailFixture(pub std::string::String);
 
 //     impl quickcheck::Arbitrary for ValidEmailFixture {
 //         fn arbitrary<G: quickcheck::Gen>(g: &mut G) -> Self {

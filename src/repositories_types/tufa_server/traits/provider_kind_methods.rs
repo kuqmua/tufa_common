@@ -5,7 +5,7 @@
 // + std::marker::Send
 // + std::marker::Sync
 // )
-// ) -> String;
+// ) -> std::string::String;
 //     fn get_init_local_data_file_path(
 //         &self,
 //         config: &'static (
@@ -14,7 +14,7 @@
 // + std::marker::Send
 // + std::marker::Sync
 //         )
-//     ) -> String;
+//     ) -> std::string::String;
 //     fn generate_provider_links(
 //         &self,
 //         names_vector: Vec<String>,
@@ -38,10 +38,10 @@
 //     fn into_string_name_and_kind_hashmap() -> std::collections::HashMap<String, Self>
 //     where
 //         Self: Sized;
-//     fn get_db_tag(&self) -> String
+//     fn get_db_tag(&self) -> std::string::String
 //     where
 //         Self: Sized;
-//     fn get_postgres_table_name(&self) -> String
+//     fn get_postgres_table_name(&self) -> std::string::String
 //     where
 //         Self: Sized;
 // }

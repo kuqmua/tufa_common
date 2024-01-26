@@ -6,7 +6,7 @@ pub trait CodeOccurencePrepareForLogWithConfig {
     >(
         &self,
         config: &ConfigGeneric,
-    ) -> String;
+    ) -> std::string::String;
 }
 
 impl<'a, SelfGeneric> CodeOccurencePrepareForLogWithConfig for SelfGeneric
@@ -24,7 +24,7 @@ where
     >(
         &self,
         config: &ConfigGeneric,
-    ) -> String {
+    ) -> std::string::String {
         prepare_for_log(
             config.get_source_place_type().get_code_path(self),
             chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
@@ -36,7 +36,7 @@ where
 }
 
 pub trait CodeOccurencePrepareForLogWithoutConfig {
-    fn code_occurence_prepare_for_log_without_config(&self) -> String;
+    fn code_occurence_prepare_for_log_without_config(&self) -> std::string::String;
 }
 
 impl<SelfGeneric> CodeOccurencePrepareForLogWithoutConfig for SelfGeneric
@@ -44,7 +44,7 @@ where
     SelfGeneric: crate::common::error_logs_logic::form_error_path::FormErrorPathGithub
         + error_occurence_lib::get_duration::GetDuration,
 {
-    fn code_occurence_prepare_for_log_without_config(&self) -> String {
+    fn code_occurence_prepare_for_log_without_config(&self) -> std::string::String {
         prepare_for_log(
             self.form_error_path_github(),
             chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
@@ -56,7 +56,7 @@ where
 }
 
 pub trait CodeOccurencePrepareForLogWithoutConfigWithSerializeDeserialize {
-    fn code_occurence_prepare_for_log_without_config_with_serialize_deserialize(&self) -> String;
+    fn code_occurence_prepare_for_log_without_config_with_serialize_deserialize(&self) -> std::string::String;
 }
 
 impl<'a, SelfGeneric> CodeOccurencePrepareForLogWithoutConfigWithSerializeDeserialize
@@ -65,7 +65,7 @@ where
     SelfGeneric: crate::common::error_logs_logic::form_error_path::FormErrorPathGithub
         + error_occurence_lib::get_duration::GetDuration,
 {
-    fn code_occurence_prepare_for_log_without_config_with_serialize_deserialize(&self) -> String {
+    fn code_occurence_prepare_for_log_without_config_with_serialize_deserialize(&self) -> std::string::String {
         prepare_for_log(
             self.form_error_path_github(),
             chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
@@ -76,6 +76,6 @@ where
     }
 }
 
-fn prepare_for_log(path: String, time: String) -> String {
+fn prepare_for_log(path: std::string::String, time: std::string::String) -> std::string::String {
     format!("{path} {time}")
 }

@@ -12,7 +12,7 @@ where
 {
     let (vec_values, mut stringified_parse_fails, mut stringified_bigserial_fails) = {
         use serde::Deserialize;
-        String::deserialize(deserializer)?
+        std::string::String::deserialize(deserializer)?
     }
     .split(',')
     .fold(

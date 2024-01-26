@@ -25,7 +25,7 @@ pub enum ResponseTextResult {
 }
 
 impl crate::common::display_foreign_type::DisplayForeignType for ResponseTextResult {
-    fn display_foreign_type(&self) -> String {
+    fn display_foreign_type(&self) -> std::string::String {
         match self {
             ResponseTextResult::ReqwestError(reqwest_error) => format!("{reqwest_error}"),
             ResponseTextResult::ResponseText(response_text) => response_text.to_string(),

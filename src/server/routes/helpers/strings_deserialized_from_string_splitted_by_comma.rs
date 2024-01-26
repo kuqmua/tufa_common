@@ -12,7 +12,7 @@ where
 {
     Ok({
         use serde::Deserialize;
-        String::deserialize(deserializer)?
+        std::string::String::deserialize(deserializer)?
     }
     .split(',')
     .map(|element| element.to_string())
@@ -20,7 +20,7 @@ where
 }
 
 impl std::convert::From<std::string::String> for StringsDeserializedFromStringSplittedByComma {
-    fn from(value: std::string::String) -> StringsDeserializedFromStringSplittedByComma {
+    fn from(value: std::string::String) -> Self {
         Self(
             value.split(',')
             .map(|element| element.to_string())

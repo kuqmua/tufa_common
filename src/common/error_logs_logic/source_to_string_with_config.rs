@@ -6,5 +6,5 @@ pub trait SourceToStringWithConfig<'a> {
     >(
         &self,
         config: &ConfigGeneric,
-    ) -> String;
+    ) -> std::string::String;
 }

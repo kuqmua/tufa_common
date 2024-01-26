@@ -15,8 +15,8 @@ pub enum MongoInsertDocsInEmptyCollectionErrorNamed {
 pub async fn mongo_insert_docs_in_empty_collection<'a>(
     mongo_client: &mongodb::Client,
     db_name_handle: &str,
-    db_collection_handle: String,
-    collection_field_name: &'a String,
+    db_collection_handle: std::string::String,
+    collection_field_name: &'a std::string::String,
     vec_of_values: Vec<String>,
 ) -> Result<(), Box<MongoInsertDocsInEmptyCollectionErrorNamed>> {
     let collection = mongo_client

@@ -1,7 +1,7 @@
 // pub async fn login_form(
 //     flash_messages: actix_web_flash_messages::IncomingFlashMessages,
 // ) -> actix_web::HttpResponse {
-//     let mut error_html = String::new();
+//     let mut error_html = std::string::String::new();
 //     for m in flash_messages.iter() {
 //         use std::fmt::Write;
 //         writeln!(error_html, "<p><i>{}</i></p>", m.content()).unwrap();

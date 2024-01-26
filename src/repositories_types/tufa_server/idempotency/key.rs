@@ -19,7 +19,7 @@ impl std::fmt::Display for IdempotencyKeyTryFromStringError {
 impl TryFrom<String> for IdempotencyKey {
     type Error = IdempotencyKeyTryFromStringError;
 
-    fn try_from(s: String) -> Result<Self, Self::Error> {
+    fn try_from(s: std::string::String) -> Result<Self, Self::Error> {
         if s.is_empty() {
             return Err(IdempotencyKeyTryFromStringError::CannotBeEmpty(
                 std::string::String::from("The idempotency key cannot be empty"),
@@ -35,7 +35,7 @@ impl TryFrom<String> for IdempotencyKey {
     }
 }
 
-impl From<IdempotencyKey> for String {
+impl From<IdempotencyKey> for std::string::String {
     fn from(k: IdempotencyKey) -> Self {
         k.0
     }

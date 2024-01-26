@@ -24,12 +24,12 @@
 // // pub enum PostErrorVariant {
 // //     //todo: think about this naming
 // //     NoItems {
-// //         link: String,
+// //         link: std::string::String,
 // //         no_items_error: NoItemsError,
 // //         provider_kind: crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind,
 // //     },
 // //     RssFetchAndParseProviderDataError {
-// //         link: String,
+// //         link: std::string::String,
 // //         provider_kind: crate::repositories_types::tufa_server::providers::provider_kind::provider_kind_enum::ProviderKind,
 // //         error: RssFetchLinkError,
 // //     }, //rewrite this error coz it must not be string. dont know to to clone error between threads

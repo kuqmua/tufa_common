@@ -1,7 +1,7 @@
 // pub async fn publish_newsletter_form(
 //     flash_messages: actix_web_flash_messages::IncomingFlashMessages,
 // ) -> Result<actix_web::HttpResponse, actix_web::Error> {
-//     let mut msg_html = String::new();
+//     let mut msg_html = std::string::String::new();
 //     for m in flash_messages.iter() {
 //         use std::fmt::Write;
 //         writeln!(msg_html, "<p><i>{}</i></p>", m.content()).unwrap();
