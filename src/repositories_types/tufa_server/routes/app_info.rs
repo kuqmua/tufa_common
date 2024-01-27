@@ -48,7 +48,7 @@ impl<'a> crate::common::git::project_git_info::GetProjectGitCommitLink for AppIn
     }
 }
 
-impl<'a> crate::common::git::git_fields::GetGitCommitId for AppInfo<'a> {
+impl<'a> error_occurence_lib::git_fields::GetGitCommitId for AppInfo<'a> {
     fn get_git_commit_id(&self) -> std::string::String {
         self.repository_git_info.get_git_commit_id()
     }

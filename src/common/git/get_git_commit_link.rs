@@ -4,8 +4,8 @@ pub trait GetGitCommitLink {
 
 impl<T> GetGitCommitLink for T
 where
-    T: crate::common::git::git_fields::GetGitCommitId
-        + crate::common::git::git_fields::GetGitRepoLink,
+    T: error_occurence_lib::git_fields::GetGitCommitId
+        + error_occurence_lib::git_fields::GetGitRepoLink,
 {
     fn get_git_commit_link(&self) -> std::string::String {
         format!(
