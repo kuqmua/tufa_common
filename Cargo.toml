@@ -56,7 +56,7 @@ compile_time_git_info = {path = "../compile_time_git_info"}
 enum_extension = {path = "../enum_extension"}
 error_occurence = {path = "../error_occurence"}
 error_occurence_lib = {path = "../error_occurence_lib"}
-generate_getter_traits_for_struct_fields = {path = "../proc_macros/generate_getter_traits_for_struct_fields"}
+generate_getter_traits_for_struct_fields = {path = "../generate_getter_traits_for_struct_fields"}
 tufa_postgresql_crud = {path = "../tufa_postgresql_crud"}
 init_from_env = {path = "../proc_macros/init_from_env"}
 user_port_try_from_u16 = {path = "../proc_macros/user_port_try_from_u16"}
