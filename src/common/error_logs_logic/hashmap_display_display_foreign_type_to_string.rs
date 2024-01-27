@@ -6,7 +6,7 @@ impl<HashMapKeyGeneric, HashMapValueGeneric> HashMapDisplayDisplayForeignTypeToS
     for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
 where
     HashMapKeyGeneric: std::fmt::Display,
-    HashMapValueGeneric: crate::common::display_foreign_type::DisplayForeignType,
+    HashMapValueGeneric: error_occurence_lib::display_foreign_type::DisplayForeignType,
 {
     fn hashmap_display_display_foreign_type_to_string(&self) -> std::string::String {
         crate::common::error_logs_logic::helpers::error_occurence_hashmap_formatter(

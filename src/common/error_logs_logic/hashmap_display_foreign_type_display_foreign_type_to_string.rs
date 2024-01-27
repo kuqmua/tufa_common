@@ -5,8 +5,8 @@ pub trait HashMapDisplayForeignTypeDisplayForeignTypeToString {
 impl<HashMapKeyGeneric, HashMapValueGeneric> HashMapDisplayForeignTypeDisplayForeignTypeToString
     for std::collections::HashMap<HashMapKeyGeneric, HashMapValueGeneric>
 where
-    HashMapKeyGeneric: crate::common::display_foreign_type::DisplayForeignType,
-    HashMapValueGeneric: crate::common::display_foreign_type::DisplayForeignType,
+    HashMapKeyGeneric: error_occurence_lib::display_foreign_type::DisplayForeignType,
+    HashMapValueGeneric: error_occurence_lib::display_foreign_type::DisplayForeignType,
 {
     fn hashmap_display_foreign_type_display_foreign_type_to_string(&self) -> std::string::String {
         crate::common::error_logs_logic::helpers::error_occurence_hashmap_formatter(
