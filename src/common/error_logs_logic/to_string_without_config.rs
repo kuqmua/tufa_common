@@ -4,9 +4,8 @@ pub trait ToStringWithoutConfig<'a> {
 
 impl<'a, SelfGeneric> ToStringWithoutConfig<'a> for SelfGeneric
 where
-    SelfGeneric:
-        crate::common::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<'a>
-            + crate::common::error_logs_logic::get_code_occurence::GetCodeOccurence,
+    SelfGeneric: error_occurence_lib::source_to_string_without_config::SourceToStringWithoutConfig<'a>
+        + crate::common::error_logs_logic::get_code_occurence::GetCodeOccurence,
 {
     fn to_string_without_config(&self) -> std::string::String {
         crate::common::error_logs_logic::helpers::source_and_code_occurence_formatter(
@@ -22,9 +21,8 @@ pub trait ToStringWithoutConfigWithSerializeDeserialize<'a> {
 
 impl<'a, SelfGeneric> ToStringWithoutConfigWithSerializeDeserialize<'a> for SelfGeneric
 where
-    SelfGeneric:
-        crate::common::error_logs_logic::source_to_string_without_config::SourceToStringWithoutConfig<'a>
-            + crate::common::error_logs_logic::get_code_occurence::GetCodeOccurence,
+    SelfGeneric: error_occurence_lib::source_to_string_without_config::SourceToStringWithoutConfig<'a>
+        + crate::common::error_logs_logic::get_code_occurence::GetCodeOccurence,
 {
     fn to_string_without_config_with_serialize_deserialize(&self) -> std::string::String {
         crate::common::error_logs_logic::helpers::source_and_code_occurence_formatter(
