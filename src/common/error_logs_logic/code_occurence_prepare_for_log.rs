@@ -41,7 +41,7 @@ pub trait CodeOccurencePrepareForLogWithoutConfig {
 
 impl<SelfGeneric> CodeOccurencePrepareForLogWithoutConfig for SelfGeneric
 where
-    SelfGeneric: crate::common::error_logs_logic::form_error_path::FormErrorPathGithub
+    SelfGeneric: error_occurence_lib::form_error_path::FormErrorPathGithub
         + error_occurence_lib::get_duration::GetDuration,
 {
     fn code_occurence_prepare_for_log_without_config(&self) -> std::string::String {
@@ -64,7 +64,7 @@ pub trait CodeOccurencePrepareForLogWithoutConfigWithSerializeDeserialize {
 impl<'a, SelfGeneric> CodeOccurencePrepareForLogWithoutConfigWithSerializeDeserialize
     for SelfGeneric
 where
-    SelfGeneric: crate::common::error_logs_logic::form_error_path::FormErrorPathGithub
+    SelfGeneric: error_occurence_lib::form_error_path::FormErrorPathGithub
         + error_occurence_lib::get_duration::GetDuration,
 {
     fn code_occurence_prepare_for_log_without_config_with_serialize_deserialize(

@@ -22,8 +22,8 @@ impl<'a> SourcePlaceType {
               + error_occurence_lib::get_git_source_file_link::GetGitSourceFileLink<'a>),
     ) -> std::string::String {
         match self {
-            SourcePlaceType::Source => crate::common::error_logs_logic::form_error_path::FormErrorPathDirectory::form_error_path_directory(code_occurence),
-            SourcePlaceType::Github => crate::common::error_logs_logic::form_error_path::FormErrorPathGithub::form_error_path_github(code_occurence)
+            SourcePlaceType::Source => error_occurence_lib::form_error_path::FormErrorPathDirectory::form_error_path_directory(code_occurence),
+            SourcePlaceType::Github => error_occurence_lib::form_error_path::FormErrorPathGithub::form_error_path_github(code_occurence)
         }
     }
 }
