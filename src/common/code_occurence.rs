@@ -4,7 +4,7 @@ pub struct CodeOccurence {
     line: u32,
     column: u32,
     #[schema(value_type = GitInfoWithoutLifetime)]
-    git_info: crate::common::git::git_info::GitInfoWithoutLifetime,
+    git_info: error_occurence_lib::git_info::GitInfoWithoutLifetime,
     #[schema(value_type = StdTimeDuration)]
     duration: std::time::Duration,
 }
@@ -12,7 +12,7 @@ pub struct CodeOccurence {
 impl CodeOccurence {
     #[must_use]
     pub fn new(
-        git_info: crate::common::git::git_info::GitInfoWithoutLifetime,
+        git_info: error_occurence_lib::git_info::GitInfoWithoutLifetime,
         file: std::string::String,
         line: u32,
         column: u32,
