@@ -19,7 +19,7 @@ impl<'a> SourcePlaceType {
         code_occurence: &(impl error_occurence_lib::get_file::GetFile
               + error_occurence_lib::get_line::GetLine
               + error_occurence_lib::get_column::GetColumn
-              + crate::common::git::get_git_source_file_link::GetGitSourceFileLink<'a>),
+              + error_occurence_lib::get_git_source_file_link::GetGitSourceFileLink<'a>),
     ) -> std::string::String {
         match self {
             SourcePlaceType::Source => crate::common::error_logs_logic::form_error_path::FormErrorPathDirectory::form_error_path_directory(code_occurence),

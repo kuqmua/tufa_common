@@ -63,7 +63,7 @@ impl std::fmt::Display for crate::common::code_occurence::CodeOccurence {
     }
 }
 
-impl<'a> crate::common::git::get_git_source_file_link::GetGitSourceFileLink<'a>
+impl<'a> error_occurence_lib::get_git_source_file_link::GetGitSourceFileLink<'a>
     for crate::common::code_occurence::CodeOccurence
 {
     fn get_git_source_file_link(&self, file: &str, line: u32) -> std::string::String {

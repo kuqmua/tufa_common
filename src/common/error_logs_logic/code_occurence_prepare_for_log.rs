@@ -15,7 +15,7 @@ where
         + error_occurence_lib::get_line::GetLine
         + error_occurence_lib::get_column::GetColumn
         + error_occurence_lib::get_duration::GetDuration
-        + crate::common::git::get_git_source_file_link::GetGitSourceFileLink<'a>,
+        + error_occurence_lib::get_git_source_file_link::GetGitSourceFileLink<'a>,
 {
     fn code_occurence_prepare_for_log_with_config<
         ConfigGeneric: crate::common::config::config_fields::GetTimezone
@@ -56,7 +56,9 @@ where
 }
 
 pub trait CodeOccurencePrepareForLogWithoutConfigWithSerializeDeserialize {
-    fn code_occurence_prepare_for_log_without_config_with_serialize_deserialize(&self) -> std::string::String;
+    fn code_occurence_prepare_for_log_without_config_with_serialize_deserialize(
+        &self,
+    ) -> std::string::String;
 }
 
 impl<'a, SelfGeneric> CodeOccurencePrepareForLogWithoutConfigWithSerializeDeserialize
@@ -65,7 +67,9 @@ where
     SelfGeneric: crate::common::error_logs_logic::form_error_path::FormErrorPathGithub
         + error_occurence_lib::get_duration::GetDuration,
 {
-    fn code_occurence_prepare_for_log_without_config_with_serialize_deserialize(&self) -> std::string::String {
+    fn code_occurence_prepare_for_log_without_config_with_serialize_deserialize(
+        &self,
+    ) -> std::string::String {
         prepare_for_log(
             self.form_error_path_github(),
             chrono::DateTime::<chrono::Utc>::from(std::time::UNIX_EPOCH + self.get_duration())
