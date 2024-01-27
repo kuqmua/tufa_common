@@ -52,7 +52,7 @@ utoipa-swagger-ui = {version = "=5.0.0", features=["axum"]}
 type_variants_from_reqwest_response = {path = "../proc_macros/type_variants_from_reqwest_response"}
 from_str = {path = "../proc_macros/from_str"}
 from_sqlx_postgres_error = {path = "../proc_macros/from_sqlx_postgres_error"}
-compile_time_git_info = {path = "../proc_macros/compile_time_git_info"}
+compile_time_git_info = {path = "../compile_time_git_info"}
 enum_extension = {path = "../proc_macros/enum_extension"}
 error_occurence = {path = "../proc_macros/error_occurence"}
 error_occurence_lib = {path = "../error_occurence_lib"}
