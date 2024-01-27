@@ -54,7 +54,7 @@ from_str = {path = "../proc_macros/from_str"}
 from_sqlx_postgres_error = {path = "../proc_macros/from_sqlx_postgres_error"}
 compile_time_git_info = {path = "../compile_time_git_info"}
 enum_extension = {path = "../enum_extension"}
-error_occurence = {path = "../proc_macros/error_occurence"}
+error_occurence = {path = "../error_occurence"}
 error_occurence_lib = {path = "../error_occurence_lib"}
 generate_getter_traits_for_struct_fields = {path = "../proc_macros/generate_getter_traits_for_struct_fields"}
 tufa_postgresql_crud = {path = "../tufa_postgresql_crud"}
